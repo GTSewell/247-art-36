@@ -9,7 +9,7 @@ const CallToAction = () => {
         className="absolute inset-0 bg-contain bg-bottom bg-no-repeat pointer-events-none"
         style={{
           backgroundImage: "url('/lovable-uploads/46d3ecd0-002d-4ca2-a1f5-d7d67e0e2dc1.png')",
-          opacity: 1,
+          opacity: "100%",
           zIndex: 0,
         }}
       />
