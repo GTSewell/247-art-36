@@ -8,11 +8,11 @@ const CallToAction = () => {
       <div 
         className="absolute inset-0 bg-no-repeat pointer-events-none"
         style={{
-          backgroundImage: "url('/lovable-uploads/134d504e-d027-4519-9df2-6e7762e749bb.png')",
+          backgroundImage: "url('/lovable-uploads/c6b349e0-fb41-45b1-b791-aa7a85160549.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 1,
-          zIndex: 0,
+          mixBlendMode: 'multiply',
         }}
       />
       <motion.div 
