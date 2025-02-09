@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const CallToAction = () => {
   return (
-    <section className="py-20 px-4 relative overflow-visible min-h-[600px]">
+    <div className="py-20 px-4 relative overflow-visible min-h-[600px]">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -22,7 +22,7 @@ const CallToAction = () => {
           Get Started with ZAP! <img src="/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" alt="ZAP!" className="inline-block w-6 h-6 ml-2 drop-shadow-md" />
         </motion.button>
       </motion.div>
-    </section>
+    </div>
   );
 };
 
