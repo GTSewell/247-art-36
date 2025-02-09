@@ -4,6 +4,17 @@ import { motion } from "framer-motion";
 const CallToAction = () => {
   return (
     <div className="py-20 px-4 relative overflow-visible min-h-[600px]">
+      {/* Halftone Background */}
+      <div 
+        className="absolute inset-0 bg-no-repeat pointer-events-none"
+        style={{
+          backgroundImage: "url('/lovable-uploads/134d504e-d027-4519-9df2-6e7762e749bb.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.8,
+          zIndex: -1,
+        }}
+      />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
