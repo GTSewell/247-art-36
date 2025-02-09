@@ -16,6 +16,7 @@ const Index = () => {
           backgroundImage: "url('/lovable-uploads/4268b6e1-e1dd-4d68-ad90-2a05c748ebc7.png')",
           opacity: 1,
           zIndex: 0,
+          border: '1px solid red', // Debug border to see container
         }}
       />
       <Navigation />
