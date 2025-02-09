@@ -9,7 +9,7 @@ const benefits = [
   "Sell artwork online, in retail spaces, and at live events with seamless integrations.",
   "Use crypto or fiat—choose how you want to get paid.",
   "Get your own custom payment page & wallet.",
-  "Enjoy a simple, fun, and enjoyable experience."
+  "A simple, fun, and enjoyable experience."
 ];
 
 const WhyUseZap = () => {
