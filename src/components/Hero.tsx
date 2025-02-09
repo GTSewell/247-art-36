@@ -17,7 +17,7 @@ const Hero = () => {
         <img
           src="/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png"
           alt="Halftone Pattern"
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover"
         />
       </div>
 
