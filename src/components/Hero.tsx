@@ -55,7 +55,7 @@ const Hero = () => {
             <button className="bg-[#ea384c] text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
               Get Started
             </button>
-            <button className="border-2 border-zap-blue text-zap-blue px-8 py-3 rounded-full font-bold hover:bg-zap-blue hover:text-white transition-all duration-200">
+            <button className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200">
               Learn More
             </button>
           </motion.div>
