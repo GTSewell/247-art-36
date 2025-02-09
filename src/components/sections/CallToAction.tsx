@@ -6,7 +6,7 @@ const CallToAction = () => {
     <section className="py-20 px-4 relative overflow-visible min-h-[600px]">
       {/* Red halftone background */}
       <div 
-        className="absolute inset-0 bg-contain bg-bottom bg-no-repeat"
+        className="absolute inset-0 bg-contain bg-bottom bg-no-repeat pointer-events-none"
         style={{
           backgroundImage: "url('/lovable-uploads/46d3ecd0-002d-4ca2-a1f5-d7d67e0e2dc1.png')",
           opacity: 1,
@@ -15,7 +15,7 @@ const CallToAction = () => {
       />
       {/* Original background */}
       <div 
-        className="absolute inset-0 bg-contain bg-bottom bg-no-repeat"
+        className="absolute inset-0 bg-contain bg-bottom bg-no-repeat pointer-events-none"
         style={{
           backgroundImage: "url('/lovable-uploads/3b781448-7908-4fe1-9315-29de1dc710a5.png')",
           opacity: 1,
