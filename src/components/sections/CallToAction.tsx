@@ -4,6 +4,16 @@ import { motion } from "framer-motion";
 const CallToAction = () => {
   return (
     <section className="py-20 px-4 relative overflow-visible min-h-[600px]">
+      {/* Red halftone background */}
+      <div 
+        className="absolute inset-0 bg-contain bg-bottom bg-no-repeat"
+        style={{
+          backgroundImage: "url('/lovable-uploads/52fb5374-8069-4978-88ad-5fbc0fe30434.png')",
+          opacity: 1,
+          zIndex: 0,
+        }}
+      />
+      {/* Original background */}
       <div 
         className="absolute inset-0 bg-contain bg-bottom bg-no-repeat"
         style={{
