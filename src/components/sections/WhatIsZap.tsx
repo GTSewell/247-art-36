@@ -25,7 +25,7 @@ const WhatIsZap = () => {
           </div>
           <div className="flex-1">
             <img
-              src="/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png"
+              src="/lovable-uploads/fabe9e7e-67a9-437a-9925-50f19a230c53.png"
               alt="ZAP Platform"
               className="animate-float"
             />
