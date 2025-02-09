@@ -11,7 +11,7 @@ const CallToAction = () => {
           backgroundImage: "url('/lovable-uploads/134d504e-d027-4519-9df2-6e7762e749bb.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: 0.8,
+          opacity: 1,
           zIndex: 0,
         }}
       />
