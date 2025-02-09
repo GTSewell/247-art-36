@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Navigation />
       <Hero />
       
@@ -169,7 +170,15 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-zap-red relative z-10">
+      <section className="py-20 px-4 relative z-10">
+        <div 
+          className="absolute inset-0 bg-contain bg-bottom bg-no-repeat pointer-events-none z-[-1]"
+          style={{
+            backgroundImage: "url('/lovable-uploads/cdacafb1-8ece-4e24-b65b-d61c7aec7da0.png')",
+            height: "200%",
+            top: "-100%"
+          }}
+        />
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
