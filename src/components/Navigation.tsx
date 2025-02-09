@@ -19,11 +19,6 @@ const Navigation = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <img
-                src="/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png"
-                alt="ZAP! Logo"
-                className="h-8 w-8 animate-lightning"
-              />
-              <img
                 src="/lovable-uploads/1012b9a0-07f9-4f8d-9297-417bb4f99733.png"
                 alt="ZAP!"
                 className="h-8"
@@ -42,9 +37,11 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <button className="bg-zap-red text-white px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
-              Connect
-            </button>
+            <img
+              src="/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png"
+              alt="Connect"
+              className="h-8 cursor-pointer hover:opacity-90 transition-all duration-200 transform hover:scale-105"
+            />
           </div>
 
           {/* Mobile menu button */}
@@ -73,9 +70,13 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
-            <button className="w-full bg-zap-red text-white px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200">
-              Connect
-            </button>
+            <div className="px-3 py-2">
+              <img
+                src="/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png"
+                alt="Connect"
+                className="h-8 cursor-pointer hover:opacity-90 transition-all duration-200"
+              />
+            </div>
           </div>
         </div>
       )}
