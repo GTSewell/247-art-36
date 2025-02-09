@@ -8,7 +8,7 @@ const CallToAction = () => {
       <img 
         src="/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png"
         alt="Halftone Pattern"
-        className="absolute inset-0 w-full h-full object-cover opacity-50"
+        className="absolute inset-0 w-full h-full object-cover"
       />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
