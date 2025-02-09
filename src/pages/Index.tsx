@@ -29,7 +29,7 @@ const Index = () => {
                 Powered by <span className="font-bold">smart contracts and Web3 technology</span>, ZAP! ensures that everyone involved in a sale—whether it's an artist, curator, gallery, or service provider—<span className="font-bold">gets paid instantly, automatically, and fairly.</span>
               </p>
               <p className="text-lg">
-                ZAP! is designed to be <span className="font-bold">fun, easy-to-use, and completely artist-first</span>, with a <span className="font-bold">bold, comic-book-inspired aesthetic</span> that makes handling finances as exciting as making art.
+                ZAP! is designed to be fun, easy-to-use, and completely artist-first, that makes handling finances as exciting as making art.
               </p>
             </div>
             <div className="flex-1">
