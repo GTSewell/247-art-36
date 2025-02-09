@@ -12,6 +12,15 @@ const Hero = () => {
         }} />
       </div>
 
+      {/* Halftone Background Image */}
+      <div className="absolute inset-0">
+        <img
+          src="/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png"
+          alt="Halftone Pattern"
+          className="w-full h-full object-cover opacity-30"
+        />
+      </div>
+
       <div className="container mx-auto px-4 py-32 relative z-10">
         <div className="text-center">
           <motion.div
