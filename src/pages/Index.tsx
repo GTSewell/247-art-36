@@ -81,12 +81,12 @@ const Index = () => {
       </section>
 
       {/* Who is ZAP for Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 relative">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="container mx-auto"
+          className="container mx-auto relative z-20"
         >
           <h2 className="text-4xl font-bold mb-12 text-center">Who is ZAP! for?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -169,15 +169,16 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 px-4 relative">
+      <section className="py-20 px-4 relative overflow-visible">
         <div 
-          className="absolute inset-0 bg-contain bg-bottom bg-no-repeat opacity-100"
+          className="absolute inset-0 bg-contain bg-bottom bg-no-repeat"
           style={{
             backgroundImage: "url('/lovable-uploads/cdacafb1-8ece-4e24-b65b-d61c7aec7da0.png')",
             height: "200%",
             top: "-100%",
-            zIndex: -1,
-            mixBlendMode: "multiply"
+            zIndex: 0,
+            mixBlendMode: "multiply",
+            opacity: 1
           }}
         />
         <motion.div 
