@@ -30,7 +30,7 @@ const CallToAction = () => {
 
         {/* Powered By Section */}
         <div className="mt-16 relative z-10">
-          <p className="text-gray-600 mb-6 text-lg font-bold">Powered by:</p>
+          <p className="text-black mb-6 text-lg font-extrabold">Powered by:</p>
           <div className="flex justify-center gap-4 flex-wrap">
             <motion.a
               href="https://www.247.art"
