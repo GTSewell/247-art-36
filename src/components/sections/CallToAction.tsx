@@ -12,7 +12,7 @@ const CallToAction = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 1,
-          mixBlendMode: 'multiply',
+          mixBlendMode: 'normal',
         }}
       />
       <motion.div 
