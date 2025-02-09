@@ -36,14 +36,15 @@ const Hero = () => {
             />
           </motion.div>
           
-          <motion.p
+          <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto"
+            className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold"
           >
-            The next-generation payment platform for artists, galleries, and creative services.
-          </motion.p>
+            <p className="mb-2">The next-generation payment platform</p>
+            <p>for artists, galleries, and creative services.</p>
+          </motion.div>
           
           <motion.div
             initial={{ y: 20, opacity: 0 }}
