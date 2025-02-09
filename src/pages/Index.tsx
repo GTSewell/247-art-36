@@ -1,4 +1,3 @@
-
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -34,9 +33,9 @@ const Index = () => {
             </div>
             <div className="flex-1">
               <img
-                src="/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png"
+                src="/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png"
                 alt="ZAP Platform"
-                className="rounded-lg shadow-2xl animate-float"
+                className="animate-float"
               />
             </div>
           </div>
