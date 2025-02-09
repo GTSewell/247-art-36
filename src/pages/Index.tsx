@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -11,7 +12,7 @@ const Index = () => {
       <Hero />
       
       {/* What is ZAP Section */}
-      <section className="py-20 px-4 bg-zap-blue relative z-10">
+      <section className="py-20 px-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -28,14 +29,14 @@ const Index = () => {
                 Powered by <span className="font-bold">smart contracts and Web3 technology</span>, ZAP! ensures that everyone involved in a sale—whether it's an artist, curator, gallery, or service provider—<span className="font-bold">gets paid instantly, automatically, and fairly.</span>
               </p>
               <p className="text-lg">
-                ZAP! is designed to be fun, easy-to-use, and completely artist-first, that makes handling finances as exciting as making art.
+                ZAP! is designed to be <span className="font-bold">fun, easy-to-use, and completely artist-first</span>, with a <span className="font-bold">bold, comic-book-inspired aesthetic</span> that makes handling finances as exciting as making art.
               </p>
             </div>
             <div className="flex-1">
               <img
-                src="/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png"
+                src="/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png"
                 alt="ZAP Platform"
-                className="animate-float"
+                className="rounded-lg shadow-2xl animate-float"
               />
             </div>
           </div>
@@ -43,7 +44,7 @@ const Index = () => {
       </section>
 
       {/* Why Use ZAP Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-zap-blue to-transparent relative z-10">
+      <section className="py-20 px-4 bg-gradient-to-b from-white/50 to-transparent">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +170,7 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-zap-red relative z-10">
+      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-white/50">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -185,7 +186,7 @@ const Index = () => {
             whileTap={{ scale: 0.95 }}
             className="bg-zap-blue text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-opacity-90 transition-colors"
           >
-            Get Started with ZAP! <img src="/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" alt="ZAP!" className="inline-block w-6 h-6 ml-2 drop-shadow-md" />
+            Get Started with ZAP! ⚡
           </motion.button>
         </motion.div>
       </section>

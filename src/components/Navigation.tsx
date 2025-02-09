@@ -20,7 +20,7 @@ const Navigation = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <img
-                src="/lovable-uploads/1c454459-5689-432c-abed-06d83b538cbb.png"
+                src="/lovable-uploads/1012b9a0-07f9-4f8d-9297-417bb4f99733.png"
                 alt="ZAP!"
                 className="h-8"
               />
