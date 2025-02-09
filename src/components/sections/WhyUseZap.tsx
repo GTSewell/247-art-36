@@ -8,7 +8,7 @@ const benefits = [
   "Automate split payments between artists, galleries, curators, and service providers.",
   "Sell artwork online, in retail spaces, and at live events with seamless integrations.",
   "Use crypto or fiat—choose how you want to get paid.",
-  "Get your own custom payment page & wallet.",
+  "Get your own custom payment page & account.",
   "A simple, fun, and enjoyable experience."
 ];
 
