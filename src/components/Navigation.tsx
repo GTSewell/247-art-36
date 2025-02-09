@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const navItems = [
     { name: "Artists", path: "/artists" },
@@ -38,9 +39,11 @@ const Navigation = () => {
               </Link>
             ))}
             <img
-              src="/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"
+              src={isHovered ? "/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png" : "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"}
               alt="Connect"
               className="h-8 cursor-pointer hover:opacity-90 transition-all duration-200 transform hover:scale-105"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             />
           </div>
 
@@ -72,9 +75,11 @@ const Navigation = () => {
             ))}
             <div className="px-3 py-2">
               <img
-                src="/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"
+                src={isHovered ? "/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png" : "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"}
                 alt="Connect"
                 className="h-8 cursor-pointer hover:opacity-90 transition-all duration-200"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
               />
             </div>
           </div>
