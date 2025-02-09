@@ -186,7 +186,7 @@ const Index = () => {
             whileTap={{ scale: 0.95 }}
             className="bg-zap-blue text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-opacity-90 transition-colors"
           >
-            Get Started with ZAP! ⚡
+            Get Started with ZAP! <img src="/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" alt="ZAP!" className="inline-block w-6 h-6 ml-2 drop-shadow-md" />
           </motion.button>
         </motion.div>
       </section>
