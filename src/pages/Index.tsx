@@ -1,4 +1,3 @@
-
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -44,7 +43,7 @@ const Index = () => {
       </section>
 
       {/* Why Use ZAP Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white/50 to-transparent">
+      <section className="py-20 px-4 bg-gradient-to-b from-zap-blue/10 to-transparent">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -170,7 +169,7 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-white/50">
+      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-zap-blue/10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
