@@ -43,7 +43,7 @@ const Index = () => {
       </section>
 
       {/* Why Use ZAP Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-zap-blue/75 to-transparent relative z-10">
+      <section className="py-20 px-4 bg-gradient-to-b from-zap-blue to-transparent relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -169,7 +169,7 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-zap-blue/75 relative z-10">
+      <section className="py-20 px-4 bg-gradient-to-b from-transparent to-zap-blue relative z-10">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
