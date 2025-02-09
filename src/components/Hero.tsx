@@ -42,7 +42,7 @@ const Hero = () => {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto"
           >
-            The next-generation Web3 payment platform for artists, galleries, and creative services.
+            The next-generation payment platform for artists, galleries, and creative services.
           </motion.p>
           
           <motion.div
