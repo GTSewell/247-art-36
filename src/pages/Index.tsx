@@ -13,7 +13,7 @@ const Index = () => {
       <div 
         className="absolute bottom-0 left-0 right-0 h-[600px] bg-contain bg-bottom bg-no-repeat pointer-events-none"
         style={{
-          backgroundImage: "url('/lovable-uploads/2f1883a5-8860-43b5-bfb1-3090b1b05c4f.png')",
+          backgroundImage: "url('/lovable-uploads/4268b6e1-e1dd-4d68-ad90-2a05c748ebc7.png')",
           opacity: 1,
           zIndex: 0,
         }}
