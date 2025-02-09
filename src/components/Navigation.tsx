@@ -1,0 +1,86 @@
+
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const Navigation = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const navItems = [
+    { name: "Artists", path: "/artists" },
+    { name: "Galleries", path: "/galleries" },
+    { name: "Services", path: "/services" },
+  ];
+
+  return (
+    <nav className="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-lg border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <img
+                src="/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png"
+                alt="ZAP! Logo"
+                className="h-8 w-8 animate-lightning"
+              />
+              <img
+                src="/lovable-uploads/1012b9a0-07f9-4f8d-9297-417bb4f99733.png"
+                alt="ZAP!"
+                className="h-8"
+              />
+            </Link>
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="text-gray-700 hover:text-zap-blue transition-colors duration-200 font-medium"
+              >
+                {item.name}
+              </Link>
+            ))}
+            <button className="bg-zap-red text-white px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
+              Connect Wallet
+            </button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-gray-700 hover:text-zap-blue"
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-b">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className="block px-3 py-2 text-gray-700 hover:text-zap-blue"
+                onClick={() => setIsOpen(false)}
+              >
+                {item.name}
+              </Link>
+            ))}
+            <button className="w-full bg-zap-red text-white px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200">
+              Connect Wallet
+            </button>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+};
+
+export default Navigation;
