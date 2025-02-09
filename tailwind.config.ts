@@ -21,9 +21,9 @@ export default {
     extend: {
       colors: {
         zap: {
-          blue: "#0EA5E9",
-          red: "#EF4444",
-          yellow: "#FCD34D",
+          yellow: "#f7cf1e",
+          red: "#ef3f36",
+          blue: "#00baef",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
