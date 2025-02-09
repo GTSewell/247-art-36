@@ -16,7 +16,7 @@ const CallToAction = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto text-center relative z-10"
       >
-        <h2 className="text-4xl font-bold mb-6">Join the ZAP! Revolution</h2>
+        <h1 className="text-5xl font-bold text-white mb-6">Join the ZAP! Revolution</h1>
         <p className="text-xl mb-8 max-w-2xl mx-auto">
           Tired of chasing payments? Want to <span className="font-bold">get paid instantly</span> and <span className="font-bold">focus on your creativity</span>? ZAP! is built <span className="font-bold">for creators, by creators</span> to make financial transactions <span className="font-bold">fast, fair, and fun.</span>
         </p>

@@ -12,7 +12,7 @@ const WhatIsZap = () => {
       >
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
-            <h2 className="text-4xl font-bold mb-6">What is ZAP!?</h2>
+            <h1 className="text-5xl font-bold text-white mb-6">What is ZAP!?</h1>
             <p className="text-lg mb-4">
               ZAP! is the <span className="font-bold">next-generation payments platform</span> built for <span className="font-bold">artists, galleries, and creative businesses</span>. We make payments <span className="font-bold">instant, automated, and transparent</span>, removing the delays, friction, and invoicing headaches that creatives face every day.
             </p>
