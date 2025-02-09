@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const CallToAction = () => {
   return (
-    <div className="py-20 px-4 relative overflow-visible min-h-[600px]">
+    <div className="py-20 px-4 relative overflow-visible min-h-[600px] bg-zap-yellow">
       {/* Halftone Background */}
       <div 
         className="absolute inset-0 bg-no-repeat pointer-events-none"
@@ -12,7 +12,7 @@ const CallToAction = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.8,
-          zIndex: -1,
+          zIndex: 0,
         }}
       />
       <motion.div 
