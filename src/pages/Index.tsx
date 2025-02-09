@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -173,7 +174,7 @@ const Index = () => {
         <div 
           className="absolute inset-0 bg-contain bg-bottom bg-no-repeat"
           style={{
-            backgroundImage: "url('/lovable-uploads/cdacafb1-8ece-4e24-b65b-d61c7aec7da0.png')",
+            backgroundImage: "url('/lovable-uploads/3dbe32ba-b0c5-44b3-a7cc-47faea6b5572.png')",
             height: "200%",
             top: "-100%",
             zIndex: 0,
