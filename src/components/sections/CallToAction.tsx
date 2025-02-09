@@ -6,11 +6,9 @@ const CallToAction = () => {
     <div className="py-20 px-4 relative overflow-visible min-h-[600px] bg-zap-yellow">
       {/* Halftone Background */}
       <div 
-        className="absolute inset-0 bg-no-repeat pointer-events-none"
+        className="absolute inset-0 bg-no-repeat pointer-events-none bg-cover bg-center"
         style={{
           backgroundImage: "url('/lovable-uploads/f50961f0-2a9d-4faa-989b-80dfca02d9e8.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
           opacity: 1,
           mixBlendMode: 'normal',
         }}
