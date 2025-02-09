@@ -1,4 +1,3 @@
-
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import { motion } from "framer-motion";
@@ -170,20 +169,22 @@ const Index = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 px-4 relative z-10">
+      <section className="py-20 px-4 relative">
         <div 
-          className="absolute inset-0 bg-contain bg-bottom bg-no-repeat pointer-events-none z-[-1]"
+          className="absolute inset-0 bg-contain bg-bottom bg-no-repeat opacity-100"
           style={{
             backgroundImage: "url('/lovable-uploads/cdacafb1-8ece-4e24-b65b-d61c7aec7da0.png')",
             height: "200%",
-            top: "-100%"
+            top: "-100%",
+            zIndex: -1,
+            mixBlendMode: "multiply"
           }}
         />
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="container mx-auto text-center"
+          className="container mx-auto text-center relative z-10"
         >
           <h2 className="text-4xl font-bold mb-6">Join the ZAP! Revolution</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
