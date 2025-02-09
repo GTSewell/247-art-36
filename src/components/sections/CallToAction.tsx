@@ -8,7 +8,7 @@ const CallToAction = () => {
       <div 
         className="absolute inset-0 bg-no-repeat pointer-events-none"
         style={{
-          backgroundImage: "url('/lovable-uploads/c6b349e0-fb41-45b1-b791-aa7a85160549.png')",
+          backgroundImage: "url('/lovable-uploads/f50961f0-2a9d-4faa-989b-80dfca02d9e8.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 1,
