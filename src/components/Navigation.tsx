@@ -43,7 +43,7 @@ const Navigation = () => {
               </Link>
             ))}
             <button className="bg-zap-red text-white px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
-              Connect Wallet
+              Connect
             </button>
           </div>
 
@@ -74,7 +74,7 @@ const Navigation = () => {
               </Link>
             ))}
             <button className="w-full bg-zap-red text-white px-6 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200">
-              Connect Wallet
+              Connect
             </button>
           </div>
         </div>
