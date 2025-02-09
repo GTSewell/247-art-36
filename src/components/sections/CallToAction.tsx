@@ -5,14 +5,10 @@ const CallToAction = () => {
   return (
     <div className="py-20 px-4 relative overflow-visible min-h-[600px] bg-zap-yellow">
       {/* Halftone Background */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url('/lovable-uploads/f50961f0-2a9d-4faa-989b-80dfca02d9e8.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
+      <img 
+        src="/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png"
+        alt="Halftone Pattern"
+        className="absolute inset-0 w-full h-full object-cover opacity-50"
       />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
