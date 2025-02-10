@@ -98,12 +98,12 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true, startIndex: selectedArtistIndex }}>
             <CarouselContent>
               {artists.map((artist) => (
-                <CarouselItem key={artist.id}>
+                <CarouselItem key={artist.id} className="p-6">
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.35)]"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] transition-shadow duration-300 hover:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.45)]"
                   >
                     <ArtistImagePanel 
                       artist={artist}
