@@ -33,7 +33,7 @@ const ArtistCard = ({
         .from('artist_images')
         .select('image_url')
         .eq('artist_id', id)
-        .single();
+        .maybeSingle();
       
       setIsImageFixed(!!data);
     };
