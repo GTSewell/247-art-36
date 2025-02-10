@@ -1,14 +1,16 @@
+
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
 import { SlidersHorizontal, Sun, Moon } from "lucide-react";
-import { featuredArtists, additionalArtists } from "@/data/artists";
+import { featuredArtists as initialFeaturedArtists, additionalArtists } from "@/data/artists";
 import ArtistCard from "@/components/artists/ArtistCard";
 import AtlasFilter from "@/components/artists/AtlasFilter";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
 import { toast } from "sonner";
+import { Artist } from "@/data/types/artist";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<number | null>(null);
@@ -19,26 +21,34 @@ const Artists = () => {
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
+  const [featuredArtists, setFeaturedArtists] = useState(initialFeaturedArtists);
 
   const { theme, setTheme } = useTheme();
   const { generateImage, isLoading } = useGenerateArtistImage();
 
-  const handleRegenerateImage = async (artist: typeof featuredArtists[0]) => {
+  const handleRegenerateImage = async (artist: Artist) => {
     if (isLoading) {
       toast.error("Please wait for the current generation to complete");
       return;
     }
 
-    toast.info("Generating new profile image...");
+    toast.info(`Generating new profile image for ${artist.name}...`);
     const imageUrl = await generateImage({
       name: artist.name,
       specialty: artist.specialty
     });
 
     if (imageUrl) {
-      toast.success("New profile image generated!");
-      // Note: In a real application, you would update the artist's image in the database
-      // For now, we'll just show a success message
+      // Update the artist's image in the state
+      if (artist.id <= 3) {
+        // Featured artists
+        setFeaturedArtists(prevArtists =>
+          prevArtists.map(a =>
+            a.id === artist.id ? { ...a, image: imageUrl } : a
+          )
+        );
+      }
+      toast.success(`New profile image generated for ${artist.name}!`);
     }
   };
 
@@ -141,3 +151,4 @@ const Artists = () => {
 };
 
 export default Artists;
+
