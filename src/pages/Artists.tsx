@@ -28,33 +28,44 @@ const Artists = () => {
   const [additionalArtists, setAdditionalArtists] = useState<Artist[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
+  const [isLoading, setIsLoading] = useState(true);
 
   const { theme, setTheme } = useTheme();
-  const { generateImage, isLoading } = useGenerateArtistImage();
+  const { generateImage, isLoading: isGenerating } = useGenerateArtistImage();
 
   // Load artists from Supabase
   useEffect(() => {
     const loadArtists = async () => {
-      const { data: artists, error } = await supabase
-        .from('artists')
-        .select('*')
-        .order('id');
+      try {
+        setIsLoading(true);
+        const { data: artists, error } = await supabase
+          .from('artists')
+          .select('*')
+          .order('id');
 
-      if (error) {
+        if (error) {
+          toast.error('Failed to load artists');
+          console.error('Error loading artists:', error);
+          return;
+        }
+
+        if (artists) {
+          // First 3 artists are featured
+          setFeaturedArtists(artists.slice(0, 3));
+          // Rest are additional artists
+          setAdditionalArtists(artists.slice(3));
+        }
+      } catch (error) {
+        console.error('Error in loadArtists:', error);
         toast.error('Failed to load artists');
-        return;
-      }
-
-      if (artists) {
-        setFeaturedArtists(artists.slice(0, 3));
-        setAdditionalArtists(artists.slice(3));
+      } finally {
+        setIsLoading(false);
       }
     };
 
     loadArtists();
   }, []);
 
-  // Handle favorite toggle
   const handleFavoriteToggle = (artistId: number, isFavorite: boolean) => {
     setFavoriteArtists(prev => {
       const newFavorites = new Set(prev);
@@ -83,7 +94,7 @@ const Artists = () => {
   };
 
   const handleRegenerateImage = async (artist: Artist) => {
-    if (isLoading) {
+    if (isGenerating) {
       toast.error("Please wait for the current generation to complete");
       return;
     }
@@ -140,6 +151,19 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-zap-yellow">
+        <Navigation />
+        <div className="container mx-auto pt-20 px-4">
+          <div className="flex justify-center items-center h-64">
+            <p className="text-lg">Loading artists...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zap-yellow">

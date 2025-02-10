@@ -5,7 +5,7 @@ export interface Artist {
   specialty: string;
   image: string;
   bio: string;
-  location: string;
+  location?: string;
   techniques?: string[];
   styles?: string[];
   social_platforms?: string[];
