@@ -47,15 +47,26 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="max-w-md w-full p-6 space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-zap-yellow relative">
+      {/* Halftone overlay */}
+      <div 
+        className="absolute inset-0 opacity-10"
+        style={{
+          backgroundImage: `url('/lovable-uploads/6a59e93b-733b-49fa-952f-03f5d26f3eec.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+      {/* Content */}
+      <div className="max-w-md w-full p-6 space-y-8 relative">
         <div className="text-center">
           <img 
             src="/lovable-uploads/0b791040-b335-4a57-9c66-81d02cb12615.png" 
             alt="ZAP!" 
             className="w-48 mx-auto mb-4"
           />
-          <p className="text-gray-400">Enter password to continue</p>
+          <p className="text-gray-600">Enter password to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
