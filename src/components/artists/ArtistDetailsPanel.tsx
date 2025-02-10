@@ -135,3 +135,4 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
+
