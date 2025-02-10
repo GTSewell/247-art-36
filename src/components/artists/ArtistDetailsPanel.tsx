@@ -15,7 +15,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   artist, 
   onSelect,
   onFavoriteToggle,
-  isFavorite
+  isFavorite = false
 }) => {
   const socialIcons = {
     Facebook: <Facebook className="h-5 w-5" />,
@@ -56,7 +56,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
                 <span>{`${artist.city}, ${artist.country}`}</span>
               </div>
               
-              {/* Social Media Icons moved under location */}
               {artist.social_platforms && artist.social_platforms.length > 0 && (
                 <div className="flex gap-3 pl-6">
                   {artist.social_platforms.map((platform) => (
@@ -127,7 +126,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             className={`shrink-0 ${
               isFavorite 
                 ? 'bg-[#f7cf1e] hover:bg-[#f7cf1e]/90 text-black' 
-                : 'text-gray-500 hover:text-gray-700'
+                : 'hover:bg-gray-100 text-gray-500 hover:text-gray-700'
             }`}
           >
             <Zap className="h-5 w-5" />
@@ -139,3 +138,4 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
+
