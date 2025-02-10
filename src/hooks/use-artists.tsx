@@ -13,22 +13,37 @@ export const useArtists = () => {
   const loadArtists = async () => {
     try {
       setIsLoading(true);
+      console.log('Fetching artists from Supabase...');
+      
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
         .order('id');
 
       if (error) {
-        toast.error('Failed to load artists');
         console.error('Error loading artists:', error);
+        toast.error('Failed to load artists');
         return;
       }
 
       if (artists) {
+        console.log('Artists loaded:', artists.length);
+        const transformedArtists = artists.map(artist => ({
+          id: artist.id,
+          name: artist.name,
+          specialty: artist.specialty,
+          image: artist.image,
+          bio: artist.bio,
+          location: artist.location,
+          techniques: artist.techniques,
+          styles: artist.styles,
+          social_platforms: artist.social_platforms
+        }));
+
         // First 3 artists are featured
-        setFeaturedArtists(artists.slice(0, 3));
+        setFeaturedArtists(transformedArtists.slice(0, 3));
         // Rest are additional artists
-        setAdditionalArtists(artists.slice(3));
+        setAdditionalArtists(transformedArtists.slice(3));
       }
     } catch (error) {
       console.error('Error in loadArtists:', error);
