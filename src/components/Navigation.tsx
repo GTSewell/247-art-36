@@ -1,11 +1,16 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
 
   const navItems = [
     { name: "Artists", path: "/artists" },
@@ -13,8 +18,33 @@ const Navigation = () => {
     { name: "Services", path: "/services" },
   ];
 
+  useEffect(() => {
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      navigate("/");
+      toast.success("Logged out successfully");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
-    <nav className="fixed w-full top-0 z-50">
+    <nav className="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-lg shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -38,6 +68,21 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
+            {user ? (
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="ml-4"
+              >
+                Log Out
+              </Button>
+            ) : (
+              <Link to="/auth">
+                <Button className="ml-4 bg-zap-red hover:bg-zap-blue">
+                  Sign In
+                </Button>
+              </Link>
+            )}
             <img
               src={isHovered ? "/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" : "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"}
               alt="Connect"
@@ -73,6 +118,24 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
+            {user ? (
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                className="w-full mt-2"
+              >
+                Log Out
+              </Button>
+            ) : (
+              <Link to="/auth" className="block">
+                <Button 
+                  className="w-full mt-2 bg-zap-red hover:bg-zap-blue"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Sign In
+                </Button>
+              </Link>
+            )}
             <div className="px-3 py-2">
               <img
                 src={isHovered ? "/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" : "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"}
