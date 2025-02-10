@@ -55,8 +55,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
           backgroundImage: `url('/lovable-uploads/6a59e93b-733b-49fa-952f-03f5d26f3eec.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.1,
+          backgroundRepeat: 'no-repeat'
         }}
       />
       {/* Content */}
