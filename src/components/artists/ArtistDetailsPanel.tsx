@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -123,7 +122,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             className={`${
               isFavorite 
                 ? 'bg-[#f7cf1e] text-black hover:bg-[#f7cf1e]/90' 
-                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+                : 'bg-black/20 hover:bg-[#f7cf1e] hover:text-black backdrop-blur-sm text-white'
             }`}
           >
             <Zap size={20} />
@@ -135,4 +134,3 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
-
