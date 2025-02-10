@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { 
   Carousel, 
@@ -8,7 +8,7 @@ import {
   CarouselNext, 
   CarouselPrevious 
 } from '@/components/ui/carousel';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
 
@@ -27,10 +27,44 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   onFavoriteToggle,
   favoriteArtists,
 }) => {
+  const [showControls, setShowControls] = useState(true);
+  const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    // Set initial timeout to hide controls
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, []);
+
+  const handleInteraction = () => {
+    setShowControls(true);
+    
+    // Clear any existing timeout
+    if (interactionTimeout) {
+      clearTimeout(interactionTimeout);
+    }
+
+    // Set new timeout to hide controls
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+
+    setInteractionTimeout(timeout);
+  };
+
   if (artists.length === 0) return null;
 
   return (
-    <div className="mb-12 relative">
+    <div 
+      className="mb-12 relative" 
+      onTouchStart={handleInteraction}
+      onMouseMove={handleInteraction}
+    >
       <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true }}>
         <CarouselContent>
           {artists.map((artist) => (
@@ -54,8 +88,28 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
+        <AnimatePresence>
+          {showControls && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </Carousel>
     </div>
   );
