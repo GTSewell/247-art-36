@@ -26,7 +26,11 @@ serve(async (req) => {
     const attireStyles = ['street wear', 'casual', 'smart', 'formal', 'stylish', 'modern', 'messy'];
     const randomAttire = attireStyles[Math.floor(Math.random() * attireStyles.length)];
 
-    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look artistic, with clear facial features and expressions, wearing ${randomAttire} clothing for their gender and specialty`;
+    // Array of possible hair styles
+    const hairStyles = ['short', 'long', 'messy', 'curly', 'straight', 'wavy', 'spiky', 'mohawk', 'ponytail', 'bun'];
+    const randomHair = hairStyles[Math.floor(Math.random() * hairStyles.length)];
+
+    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look artistic, with clear facial features and expressions, with ${randomHair} hair, wearing ${randomAttire} clothing for their gender and specialty`;
 
     console.log('Generated prompt:', prompt);
 
