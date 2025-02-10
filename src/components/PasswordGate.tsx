@@ -22,9 +22,19 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       const { data, error } = await supabase
         .from('site_settings')
         .select('site_password')
-        .single();
+        .limit(1)
+        .maybeSingle();
 
       if (error) throw error;
+      
+      if (!data) {
+        toast({
+          variant: "destructive",
+          title: "Configuration Error",
+          description: "Site password not configured.",
+        });
+        return;
+      }
 
       if (data.site_password === password) {
         onAuthenticated();
@@ -36,6 +46,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         });
       }
     } catch (error) {
+      console.error('Password check error:', error);
       toast({
         variant: "destructive",
         title: "Error",
