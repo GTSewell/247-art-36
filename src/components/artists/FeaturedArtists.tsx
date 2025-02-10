@@ -31,7 +31,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 
   return (
     <div className="mb-12 relative">
-      <Carousel className="w-full max-w-5xl mx-auto">
+      <Carousel className="w-full max-w-full mx-auto">
         <CarouselContent>
           {artists.map((artist) => (
             <CarouselItem key={artist.id}>
