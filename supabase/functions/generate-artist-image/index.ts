@@ -16,17 +16,41 @@ serve(async (req) => {
   }
 
   try {
-    const { name, specialty, styles = [] } = await req.json();
+    const { name, specialty, bio } = await req.json();
 
     if (!RUNWARE_API_KEY) {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    // Create a more detailed prompt using the artist's details - removed techniques
+    // Define a list of diverse art styles
+    const artStyles = [
+      'hyperrealism',
+      'abstract expressionism',
+      'surrealism',
+      'impressionism',
+      'pop art',
+      'minimalism',
+      'digital art',
+      'contemporary',
+      'cubism',
+      'art nouveau',
+      'street art',
+      'fantasy art',
+      'photorealism',
+      'baroque',
+      'neo-expressionism'
+    ];
+
+    // Function to get a random style from the array
+    const getRandomStyle = () => {
+      return artStyles[Math.floor(Math.random() * artStyles.length)];
+    };
+
+    // Create a more personalized prompt using the artist's details and bio
     const createArtworkPrompt = (index: number) => {
-      const style = styles[index % styles.length] || styles[0] || 'contemporary';
+      const randomStyle = getRandomStyle();
       
-      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${style} style. The piece should be highly detailed and professional, demonstrating mastery of the medium. Make it visually striking and gallery-worthy, with rich colors and compelling composition. The artwork should be complete and polished, suitable for a professional artist's portfolio.`;
+      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. Incorporate elements that reflect their artistic vision: ${bio}. The piece should be highly detailed and professional, demonstrating mastery of the medium. Make it visually striking and gallery-worthy, with rich colors and compelling composition. The artwork should be complete and polished, suitable for a professional artist's portfolio.`;
     };
 
     const ws = new WebSocket(API_ENDPOINT);
@@ -104,4 +128,3 @@ serve(async (req) => {
     );
   }
 });
-
