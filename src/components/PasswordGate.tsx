@@ -48,8 +48,8 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center">
-      {/* Base blue background */}
-      <div className="absolute inset-0 bg-zap-blue z-0" />
+      {/* Base yellow background */}
+      <div className="absolute inset-0 bg-zap-yellow z-0" />
       
       {/* Halftone overlay */}
       <div 
