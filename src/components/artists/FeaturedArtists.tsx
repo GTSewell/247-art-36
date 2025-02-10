@@ -122,11 +122,12 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute -left-4 md:-left-12 lg:-left-16 bg-white hover:bg-gray-100" />
-        <CarouselNext className="absolute -right-4 md:-right-12 lg:-right-16 bg-white hover:bg-gray-100" />
+        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
+        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
       </Carousel>
     </div>
   );
 };
 
 export default FeaturedArtists;
+
