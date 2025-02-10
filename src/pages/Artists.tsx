@@ -66,6 +66,11 @@ const Artists = () => {
         if (updateError) throw updateError;
 
         toast.success("Artworks regenerated successfully!");
+        
+        // Update the selected artist with new artworks
+        setSelectedArtist(prev => prev ? {...prev, artworks: data.artworkUrls} : null);
+        
+        // Refresh the main artists list
         refreshArtists();
       }
     } catch (error) {
@@ -185,3 +190,4 @@ const Artists = () => {
 };
 
 export default Artists;
+

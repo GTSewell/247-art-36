@@ -11,7 +11,7 @@ interface ArtistDetailsProps {
   artist: Artist | null;
   isOpen: boolean;
   onClose: () => void;
-  onRegenerateArtworks?: (artist: Artist) => void;
+  onRegenerateArtworks?: (artist: Artist) => Promise<void>;
 }
 
 const socialIcons = {
@@ -22,7 +22,20 @@ const socialIcons = {
 };
 
 const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: ArtistDetailsProps) => {
+  const [isGenerating, setIsGenerating] = React.useState(false);
+
   if (!artist) return null;
+
+  const handleRegenerateArtworks = async () => {
+    if (!onRegenerateArtworks || isGenerating) return;
+    
+    setIsGenerating(true);
+    try {
+      await onRegenerateArtworks(artist);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -60,11 +73,12 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onRegenerateArtworks?.(artist)}
+                  onClick={handleRegenerateArtworks}
+                  disabled={isGenerating}
                   className="flex items-center gap-2"
                 >
-                  <RefreshCw className="h-4 w-4" />
-                  Generate Artworks
+                  <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+                  {isGenerating ? 'Generating...' : 'Generate Artworks'}
                 </Button>
               </div>
               {artist.artworks && artist.artworks.length > 0 ? (
@@ -144,3 +158,4 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
 };
 
 export default ArtistDetails;
+
