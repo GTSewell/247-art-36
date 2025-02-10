@@ -10,6 +10,23 @@ export const useArtists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
+  const loadFavorites = async () => {
+    const { data: session } = await supabase.auth.getSession();
+    if (!session?.session?.user) return;
+
+    const { data: favorites, error } = await supabase
+      .from('favorite_artists')
+      .select('artist_id')
+      .eq('user_id', session.session.user.id);
+
+    if (error) {
+      console.error('Error loading favorites:', error);
+      return;
+    }
+
+    setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
+  };
+
   const loadArtists = async () => {
     try {
       setIsLoading(true);
@@ -59,20 +76,58 @@ export const useArtists = () => {
 
   useEffect(() => {
     loadArtists();
+    loadFavorites();
+
+    // Subscribe to auth changes to reload favorites
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      loadFavorites();
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const handleFavoriteToggle = (artistId: number, isFavorite: boolean) => {
-    setFavoriteArtists(prev => {
-      const newFavorites = new Set(prev);
+  const handleFavoriteToggle = async (artistId: number, isFavorite: boolean) => {
+    const { data: session } = await supabase.auth.getSession();
+    if (!session?.session?.user) {
+      toast.error('Please log in to favorite artists');
+      return;
+    }
+
+    try {
       if (isFavorite) {
-        newFavorites.add(artistId);
+        const { error } = await supabase
+          .from('favorite_artists')
+          .insert({ 
+            user_id: session.session.user.id,
+            artist_id: artistId 
+          });
+
+        if (error) throw error;
+
+        setFavoriteArtists(prev => new Set([...prev, artistId]));
         toast.success('Added to favorites');
       } else {
-        newFavorites.delete(artistId);
+        const { error } = await supabase
+          .from('favorite_artists')
+          .delete()
+          .eq('user_id', session.session.user.id)
+          .eq('artist_id', artistId);
+
+        if (error) throw error;
+
+        setFavoriteArtists(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(artistId);
+          return newSet;
+        });
         toast.success('Removed from favorites');
       }
-      return newFavorites;
-    });
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      toast.error('Failed to update favorites');
+    }
   };
 
   return {

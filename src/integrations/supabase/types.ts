@@ -81,6 +81,35 @@ export type Database = {
         }
         Relationships: []
       }
+      favorite_artists: {
+        Row: {
+          artist_id: number
+          created_at: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          artist_id: number
+          created_at?: string
+          id?: number
+          user_id: string
+        }
+        Update: {
+          artist_id?: number
+          created_at?: string
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorite_artists_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           created_at: string
