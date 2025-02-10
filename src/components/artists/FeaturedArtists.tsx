@@ -62,11 +62,11 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
     >
-      <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true }}>
+      <Carousel className="w-full max-w-full mx-auto">
         <CarouselContent>
           {artists.map((artist) => (
-            <CarouselItem key={artist.id} className="p-8">
-              <div className="max-w-7xl mx-auto px-4">
+            <CarouselItem key={artist.id}>
+              <div className="container mx-auto px-4 py-8">
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
