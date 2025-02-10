@@ -33,7 +33,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(229,222,255,0.2)]">
       <div className="space-y-2">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
@@ -66,7 +66,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
         <p className="text-gray-700 leading-relaxed line-clamp-2">{artist.bio}</p>
 
-        {/* Techniques and Styles under bio */}
         <div className="space-y-1 text-sm">
           {artist.techniques && artist.techniques.length > 0 && (
             <div className="text-gray-600">
@@ -84,7 +83,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       </div>
 
       <div className="space-y-3">
-        {/* Artwork Thumbnails */}
         {artist.artworks && artist.artworks.length > 0 && (
           <div className="grid grid-cols-4 gap-2">
             {artist.artworks.map((artwork, index) => (
@@ -135,3 +133,4 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
+
