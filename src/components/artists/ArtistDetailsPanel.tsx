@@ -124,13 +124,13 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             onClick={handleFavoriteClick}
             className={`${
               isFavorite 
-                ? 'bg-[#f7cf1e] hover:bg-[#f7cf1e]/90 text-black'
-                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-            } transition-colors duration-200`}
+                ? 'bg-[#f7cf1e] hover:bg-[#f7cf1e]/90'
+                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm'
+            }`}
           >
             <Zap 
+              className={isFavorite ? 'fill-black' : 'fill-white'}
               size={20}
-              className={isFavorite ? 'fill-black' : ''}
             />
           </Button>
         </div>
