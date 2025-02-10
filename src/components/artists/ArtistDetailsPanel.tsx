@@ -17,6 +17,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
     LinkedIn: <Linkedin className="h-5 w-5" />,
   };
 
+  // Remove spaces from artist name for domain
+  const domainName = artist.name.replace(/\s+/g, '');
+
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="space-y-2">
@@ -92,7 +95,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
           onClick={onSelect}
           className="w-full bg-[#00baef] hover:bg-[#00baef]/90"
         >
-          {artist.name}.247.art
+          {domainName}.247.art
         </Button>
       </div>
     </div>
