@@ -53,12 +53,13 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       
       {/* Halftone overlay */}
       <div 
-        className="absolute inset-0 z-10 mix-blend-multiply"
+        className="absolute inset-0 z-10 opacity-50"
         style={{
-          backgroundImage: `url('/lovable-uploads/6a59e93b-733b-49fa-952f-03f5d26f3eec.png')`,
-          backgroundSize: 'cover',
+          backgroundImage: `url('/lovable-uploads/d63a9da4-dc51-49db-9618-bbabf1580087.png')`,
+          backgroundSize: '100% 100%',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          mixBlendMode: 'multiply',
         }}
       />
       
@@ -95,3 +96,4 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 };
 
 export default PasswordGate;
+
