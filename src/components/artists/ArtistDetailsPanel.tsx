@@ -124,13 +124,13 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             onClick={handleFavoriteClick}
             className={`${
               isFavorite 
-                ? 'bg-zap-yellow hover:bg-zap-yellow/90 text-black'
-                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+                ? 'bg-[#f7cf1e] hover:bg-[#f7cf1e]/90'
+                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm'
             } transition-colors duration-200`}
           >
             <Zap 
-              size={20} 
-              className={`transition-colors duration-200 ${isFavorite ? 'fill-current' : ''}`}
+              size={20}
+              className={`${isFavorite ? 'fill-[#000000]' : 'fill-white'} transition-colors duration-200`}
             />
           </Button>
         </div>
