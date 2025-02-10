@@ -1,7 +1,6 @@
 
-import React, { useState } from 'react';
-import { Zap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react';
+import { MousePointerClick } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,9 +16,21 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   isFavorite 
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [showClickIndicator, setShowClickIndicator] = useState(true);
+
+  useEffect(() => {
+    const hasFlipped = localStorage.getItem(`flipped-${artist.id}`);
+    if (hasFlipped) {
+      setShowClickIndicator(false);
+    }
+  }, [artist.id]);
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
+    if (showClickIndicator) {
+      setShowClickIndicator(false);
+      localStorage.setItem(`flipped-${artist.id}`, 'true');
+    }
   };
 
   return (
@@ -29,6 +40,24 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         style={{ perspective: '1000px' }}
         onClick={handleFlip}
       >
+        <AnimatePresence>
+          {showClickIndicator && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "reverse"
+              }}
+              className="absolute inset-0 flex items-center justify-center bg-black/30 z-10"
+            >
+              <MousePointerClick className="w-12 h-12 text-white" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <AnimatePresence initial={false} mode="wait">
           {!isFlipped ? (
             <motion.div
@@ -81,3 +110,4 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
 };
 
 export default ArtistImagePanel;
+
