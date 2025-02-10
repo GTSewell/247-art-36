@@ -9,6 +9,8 @@ interface ArtistCardProps {
   name: string;
   specialty: string;
   image: string;
+  city?: string;
+  country?: string;
   onSelect: (id: number) => void;
   onRegenerateImage: () => void;
   onFavoriteToggle: (isFavorite: boolean) => void;
@@ -20,7 +22,9 @@ const ArtistCard = ({
   id, 
   name, 
   specialty, 
-  image, 
+  image,
+  city,
+  country,
   onSelect, 
   onRegenerateImage,
   onFavoriteToggle,
@@ -28,6 +32,7 @@ const ArtistCard = ({
   isFeatured = false 
 }: ArtistCardProps) => {
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
+  const location = [city, country].filter(Boolean).join(", ");
 
   return (
     <div className="relative">
@@ -47,12 +52,15 @@ const ArtistCard = ({
             <div>
               <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
               <p className="text-white/80 text-sm mb-1">{specialty}</p>
+              {location && (
+                <p className="text-white/70 text-sm mb-1">{location}</p>
+              )}
               <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
             </div>
           </div>
         </div>
 
-        {/* Favorite Button - Always visible, now at bottom right */}
+        {/* Favorite Button - Always visible at bottom right */}
         <Button
           variant="ghost"
           size="icon"

@@ -30,6 +30,8 @@ export type Database = {
       artists: {
         Row: {
           bio: string
+          city: string | null
+          country: string | null
           id: number
           image: string
           location: string | null
@@ -43,6 +45,8 @@ export type Database = {
         }
         Insert: {
           bio: string
+          city?: string | null
+          country?: string | null
           id?: number
           image: string
           location?: string | null
@@ -56,6 +60,8 @@ export type Database = {
         }
         Update: {
           bio?: string
+          city?: string | null
+          country?: string | null
           id?: number
           image?: string
           location?: string | null

@@ -35,6 +35,8 @@ export const useArtists = () => {
           image: artist.image,
           bio: artist.bio,
           location: artist.location,
+          city: artist.city,
+          country: artist.country,
           techniques: artist.techniques,
           styles: artist.styles,
           social_platforms: artist.social_platforms

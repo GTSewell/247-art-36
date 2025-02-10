@@ -6,6 +6,8 @@ export interface Artist {
   image: string;
   bio: string;
   location?: string;
+  city?: string;
+  country?: string;
   techniques?: string[];
   styles?: string[];
   social_platforms?: string[];
