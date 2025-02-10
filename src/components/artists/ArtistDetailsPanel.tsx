@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -29,13 +30,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     e.preventDefault();
     e.stopPropagation();
     window.open(`https://${domainName}.247.art`, '_blank');
-  };
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (onFavoriteToggle) {
-      onFavoriteToggle(artist.id, !isFavorite);
-    }
   };
 
   return (
@@ -120,7 +114,12 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <Button
             variant="ghost"
             size="icon"
-            onClick={handleFavoriteClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onFavoriteToggle) {
+                onFavoriteToggle(!isFavorite);
+              }
+            }}
             className={`${
               isFavorite 
                 ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
