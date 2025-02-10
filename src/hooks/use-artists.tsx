@@ -39,7 +39,9 @@ export const useArtists = () => {
           country: artist.country,
           techniques: artist.techniques,
           styles: artist.styles,
-          social_platforms: artist.social_platforms
+          social_platforms: artist.social_platforms,
+          artworks: artist.artworks,
+          locked_artworks: artist.locked_artworks
         }));
 
         // First 3 artists are featured
