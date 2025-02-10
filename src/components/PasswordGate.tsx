@@ -50,7 +50,11 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
     <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="max-w-md w-full p-6 space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">ZAP!</h1>
+          <img 
+            src="/lovable-uploads/0b791040-b335-4a57-9c66-81d02cb12615.png" 
+            alt="ZAP!" 
+            className="w-48 mx-auto mb-4"
+          />
           <p className="text-gray-400">Enter password to continue</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
