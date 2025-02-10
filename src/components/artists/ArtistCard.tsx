@@ -57,6 +57,9 @@ const ArtistCard = ({
     }
   };
 
+  // Generate the subdomain from the artist's name
+  const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
+
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
       <div className="aspect-square overflow-hidden">
@@ -69,7 +72,8 @@ const ArtistCard = ({
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'}`}>
           <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
-          <p className="text-white/80 text-sm mb-3">{specialty}</p>
+          <p className="text-white/80 text-sm mb-1">{specialty}</p>
+          <p className="text-white/60 text-xs mb-3 font-mono">{subdomain}</p>
           <div className="flex gap-2">
             <Button
               onClick={() => onSelect(id)}
@@ -105,3 +109,4 @@ const ArtistCard = ({
 };
 
 export default ArtistCard;
+
