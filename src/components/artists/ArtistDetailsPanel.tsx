@@ -33,7 +33,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(229,222,255,0.2)]">
+    <div className="flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(229,222,255,0.5)]">
       <div className="space-y-2">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
