@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -82,23 +83,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       </div>
 
       <div className="space-y-3">
-        {artist.artworks && artist.artworks.length > 0 && (
-          <div className="grid grid-cols-4 gap-2">
-            {artist.artworks.map((artwork, index) => (
-              <div 
-                key={index} 
-                className="aspect-square rounded-md overflow-hidden border border-gray-200"
-              >
-                <img
-                  src={artwork}
-                  alt={`Artwork ${index + 1} by ${artist.name}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-        
         <div className="flex items-center gap-2">
           <Button
             onClick={handleDomainClick}
