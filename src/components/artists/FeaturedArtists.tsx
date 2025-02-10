@@ -4,13 +4,13 @@ import { Artist } from '@/data/types/artist';
 import { 
   Carousel, 
   CarouselContent, 
-  CarouselItem,
+  CarouselItem, 
+  CarouselNext, 
+  CarouselPrevious 
 } from '@/components/ui/carousel';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
-import useEmblaCarousel from 'embla-carousel-react';
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -29,7 +29,6 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 }) => {
   const [showControls, setShowControls] = useState(true);
   const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   useEffect(() => {
     // Set initial timeout to hide controls
@@ -58,14 +57,6 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
     setInteractionTimeout(timeout);
   };
 
-  const scrollPrev = () => {
-    if (emblaApi) emblaApi.scrollPrev();
-  };
-
-  const scrollNext = () => {
-    if (emblaApi) emblaApi.scrollNext();
-  };
-
   if (artists.length === 0) return null;
 
   return (
@@ -74,7 +65,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
     >
-      <Carousel className="w-full max-w-full mx-auto" ref={emblaRef}>
+      <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true }}>
         <CarouselContent>
           {artists.map((artist) => (
             <CarouselItem key={artist.id}>
@@ -100,26 +91,22 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
         <AnimatePresence>
           {showControls && (
             <>
-              <motion.button
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                onClick={scrollPrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
               >
-                <ChevronLeft className="h-6 w-6" />
-              </motion.button>
-              <motion.button
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+              </motion.div>
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                onClick={scrollNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
               >
-                <ChevronRight className="h-6 w-6" />
-              </motion.button>
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+              </motion.div>
             </>
           )}
         </AnimatePresence>
@@ -129,3 +116,4 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 };
 
 export default FeaturedArtists;
+
