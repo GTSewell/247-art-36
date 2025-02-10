@@ -69,6 +69,20 @@ const ArtistCard = ({
 
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
+      {/* Favorite Button - Always visible */}
+      <div className="absolute top-4 right-4 z-10">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`bg-black/20 hover:bg-black/30 backdrop-blur-sm ${
+            isFavorite ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' : 'text-white'
+          }`}
+          onClick={toggleFavorite}
+        >
+          <Zap size={isFeatured ? 24 : 20} />
+        </Button>
+      </div>
+
       <div className="aspect-square overflow-hidden">
         <img
           src={image}
@@ -76,8 +90,10 @@ const ArtistCard = ({
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
       </div>
+      
+      {/* Artist Information - Visible on hover */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'} flex justify-between items-end`}>
+        <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'}`}>
           <div>
             <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
             <p className="text-white/80 text-sm mb-1">{specialty}</p>
@@ -101,19 +117,6 @@ const ArtistCard = ({
               </div>
             )}
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`hover:bg-transparent ${isFavorite ? 'bg-zap-yellow/20 rounded-full' : ''}`}
-            onClick={toggleFavorite}
-          >
-            <Zap
-              size={isFeatured ? 24 : 20}
-              className={`transition-colors ${
-                isFavorite ? 'text-zap-yellow' : 'text-white/60'
-              }`}
-            />
-          </Button>
         </div>
       </div>
     </div>
