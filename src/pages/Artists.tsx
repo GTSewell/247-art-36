@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
@@ -211,15 +212,16 @@ const Artists = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <h2 className="text-3xl font-bold text-foreground">All Artists</h2>
             <div className="flex items-center gap-4">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 bg-background/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-md border border-border">
                 <Checkbox
                   id="showFavorites"
                   checked={showFavorites}
                   onCheckedChange={(checked) => setShowFavorites(checked as boolean)}
+                  className="data-[state=checked]:bg-zap-yellow data-[state=checked]:text-black"
                 />
                 <label
                   htmlFor="showFavorites"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none cursor-pointer select-none"
                 >
                   View Favorite Artists
                 </label>
