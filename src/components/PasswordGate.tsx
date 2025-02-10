@@ -47,19 +47,21 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center">
+    <div className="min-h-screen relative flex items-center justify-center overflow-hidden">
       {/* Base yellow background */}
       <div className="absolute inset-0 bg-zap-yellow z-0" />
       
       {/* Halftone overlay */}
       <div 
-        className="absolute inset-0 z-10 opacity-50"
+        className="absolute inset-0 z-10"
         style={{
           backgroundImage: `url('/lovable-uploads/d63a9da4-dc51-49db-9618-bbabf1580087.png')`,
-          backgroundSize: '100% 100%',
+          backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          opacity: 0.5,
           mixBlendMode: 'multiply',
+          pointerEvents: 'none',
         }}
       />
       
@@ -96,4 +98,3 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 };
 
 export default PasswordGate;
-
