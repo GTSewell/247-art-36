@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
 import { SlidersHorizontal, Sun, Moon } from "lucide-react";
-import { featuredArtists as initialFeaturedArtists, additionalArtists } from "@/data/artists";
+import { featuredArtists as initialFeaturedArtists, additionalArtists as initialAdditionalArtists } from "@/data/artists";
 import ArtistCard from "@/components/artists/ArtistCard";
 import AtlasFilter from "@/components/artists/AtlasFilter";
 import { useTheme } from "next-themes";
@@ -22,6 +22,7 @@ const Artists = () => {
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
   const [featuredArtists, setFeaturedArtists] = useState(initialFeaturedArtists);
+  const [additionalArtists, setAdditionalArtists] = useState(initialAdditionalArtists);
 
   const { theme, setTheme } = useTheme();
   const { generateImage, isLoading } = useGenerateArtistImage();
@@ -39,10 +40,16 @@ const Artists = () => {
     });
 
     if (imageUrl) {
-      // Update the artist's image in the state
       if (artist.id <= 3) {
         // Featured artists
         setFeaturedArtists(prevArtists =>
+          prevArtists.map(a =>
+            a.id === artist.id ? { ...a, image: imageUrl } : a
+          )
+        );
+      } else {
+        // Additional artists
+        setAdditionalArtists(prevArtists =>
           prevArtists.map(a =>
             a.id === artist.id ? { ...a, image: imageUrl } : a
           )
