@@ -103,36 +103,26 @@ const CarouselView: React.FC<CarouselViewProps> = ({
         <AnimatePresence>
           {showControls && (
             <>
-              <motion.div
+              <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                onClick={scrollPrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
               >
-                <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                  <button 
-                    onClick={scrollPrev}
-                    className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
-                  >
-                    <ChevronLeft className="h-6 w-6" />
-                  </button>
-                </div>
-              </motion.div>
-              <motion.div
+                <ChevronLeft className="h-6 w-6" />
+              </motion.button>
+              <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                onClick={scrollNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
               >
-                <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <button 
-                    onClick={scrollNext}
-                    className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
-                  >
-                    <ChevronRight className="h-6 w-6" />
-                  </button>
-                </div>
-              </motion.div>
+                <ChevronRight className="h-6 w-6" />
+              </motion.button>
             </>
           )}
         </AnimatePresence>
