@@ -122,7 +122,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             }}
             className={`${
               isFavorite 
-                ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
+                ? 'bg-[#f7cf1e] text-black hover:bg-[#f7cf1e]/90' 
                 : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
             }`}
           >
@@ -135,3 +135,4 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
+
