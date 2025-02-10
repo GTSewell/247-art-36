@@ -1,13 +1,13 @@
-
 import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
-import { SlidersHorizontal, Sun, Moon } from "lucide-react";
+import { SlidersHorizontal, Sun, Moon, Search } from "lucide-react";
 import { featuredArtists as initialFeaturedArtists, additionalArtists as initialAdditionalArtists } from "@/data/artists";
 import ArtistCard from "@/components/artists/ArtistCard";
 import AtlasFilter from "@/components/artists/AtlasFilter";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
 import { toast } from "sonner";
 import { Artist } from "@/data/types/artist";
@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<number | null>(null);
   const [artistSearch, setArtistSearch] = useState("");
+  const [allArtistsSearch, setAllArtistsSearch] = useState("");
   const [locationSearch, setLocationSearch] = useState("");
   const [techniqueSearch, setTechniqueSearch] = useState("");
   const [styleSearch, setStyleSearch] = useState("");
@@ -27,6 +28,12 @@ const Artists = () => {
 
   const { theme, setTheme } = useTheme();
   const { generateImage, isLoading } = useGenerateArtistImage();
+
+  // Filter additional artists based on search
+  const filteredAdditionalArtists = additionalArtists.filter(artist =>
+    artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase()) ||
+    artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase())
+  );
 
   // Load fixed images on component mount
   useEffect(() => {
@@ -168,11 +175,23 @@ const Artists = () => {
           ))}
         </div>
 
-        {/* Additional Artists Grid */}
+        {/* All Artists Section with Search */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground mb-6">All Artists</h2>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <h2 className="text-3xl font-bold text-foreground">All Artists</h2>
+            <div className="relative w-full sm:w-72">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search artists..."
+                value={allArtistsSearch}
+                onChange={(e) => setAllArtistsSearch(e.target.value)}
+                className="pl-8"
+              />
+            </div>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {additionalArtists.map((artist) => (
+            {filteredAdditionalArtists.map((artist) => (
               <ArtistCard
                 key={artist.id}
                 {...artist}
