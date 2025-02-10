@@ -71,8 +71,10 @@ const Artists = () => {
       const newFavorites = new Set(prev);
       if (isFavorite) {
         newFavorites.add(artistId);
+        toast.success('Added to favorites');
       } else {
         newFavorites.delete(artistId);
+        toast.success('Removed from favorites');
       }
       return newFavorites;
     });
@@ -236,3 +238,4 @@ const Artists = () => {
 };
 
 export default Artists;
+
