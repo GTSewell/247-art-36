@@ -36,6 +36,7 @@ export type Database = {
           id: number
           image: string
           location: string | null
+          locked_artworks: boolean | null
           name: string
           social_platforms:
             | Database["public"]["Enums"]["social_platform"][]
@@ -52,6 +53,7 @@ export type Database = {
           id?: number
           image: string
           location?: string | null
+          locked_artworks?: boolean | null
           name: string
           social_platforms?:
             | Database["public"]["Enums"]["social_platform"][]
@@ -68,6 +70,7 @@ export type Database = {
           id?: number
           image?: string
           location?: string | null
+          locked_artworks?: boolean | null
           name?: string
           social_platforms?:
             | Database["public"]["Enums"]["social_platform"][]

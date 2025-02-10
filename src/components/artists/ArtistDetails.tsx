@@ -3,9 +3,11 @@ import React from "react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Artist } from "@/data/types/artist";
 import { Badge } from "@/components/ui/badge";
-import { Facebook, Instagram, Linkedin, Twitter, RefreshCw } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, RefreshCw, SaveAll } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface ArtistDetailsProps {
   artist: Artist | null;
@@ -23,6 +25,7 @@ const socialIcons = {
 
 const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: ArtistDetailsProps) => {
   const [isGenerating, setIsGenerating] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
 
   if (!artist) return null;
 
@@ -34,6 +37,32 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
       await onRegenerateArtworks(artist);
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleSaveArtworks = async () => {
+    if (!artist.artworks || artist.artworks.length === 0) {
+      toast.error("No artworks to save!");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('artists')
+        .update({ 
+          locked_artworks: true
+        })
+        .eq('id', artist.id);
+
+      if (error) throw error;
+      
+      toast.success("Artworks saved successfully!");
+    } catch (error) {
+      console.error('Error saving artworks:', error);
+      toast.error("Failed to save artworks");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -70,16 +99,28 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Artworks</h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRegenerateArtworks}
-                  disabled={isGenerating}
-                  className="flex items-center gap-2"
-                >
-                  <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
-                  {isGenerating ? 'Generating...' : 'Generate Artworks'}
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSaveArtworks}
+                    disabled={isSaving || !artist.artworks?.length}
+                    className="flex items-center gap-2"
+                  >
+                    <SaveAll className="h-4 w-4" />
+                    {isSaving ? 'Saving...' : 'Save All'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRegenerateArtworks}
+                    disabled={isGenerating}
+                    className="flex items-center gap-2"
+                  >
+                    <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+                    {isGenerating ? 'Generating...' : 'Generate Artworks'}
+                  </Button>
+                </div>
               </div>
               {artist.artworks && artist.artworks.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
