@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
-  onSelect: (artist: Artist) => void;
+  onSelect: (e: React.MouseEvent) => void;
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelect }) => {
@@ -89,7 +89,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
         )}
         
         <Button
-          onClick={() => onSelect(artist)}
+          onClick={onSelect}
           className="w-full"
         >
           View Profile

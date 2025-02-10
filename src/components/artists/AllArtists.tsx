@@ -41,11 +41,17 @@ const AllArtists: React.FC<AllArtistsProps> = ({
 }) => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
 
-  const handleArtistClick = (index: number) => {
+  const handleArtistClick = (index: number, e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default behavior
+    e.stopPropagation(); // Stop event propagation
     setSelectedArtistIndex(index);
   };
 
-  const closeCarousel = () => {
+  const closeCarousel = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setSelectedArtistIndex(null);
   };
 
@@ -106,7 +112,11 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                     />
                     <ArtistDetailsPanel 
                       artist={artist}
-                      onSelect={onSelect}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onSelect(artist);
+                      }}
                     />
                   </motion.div>
                 </CarouselItem>
@@ -119,12 +129,26 @@ const AllArtists: React.FC<AllArtistsProps> = ({
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {artists.map((artist, index) => (
-            <div key={artist.id} onClick={() => handleArtistClick(index)}>
+            <div 
+              key={artist.id} 
+              onClick={(e) => handleArtistClick(index, e)}
+              className="cursor-pointer"
+            >
               <ArtistCard
                 {...artist}
-                onSelect={() => onSelect(artist)}
-                onRegenerateImage={() => onRegenerateImage(artist)}
-                onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
+                onSelect={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onSelect(artist);
+                }}
+                onRegenerateImage={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onRegenerateImage(artist);
+                }}
+                onFavoriteToggle={(isFavorite) => {
+                  onFavoriteToggle(artist.id, isFavorite);
+                }}
                 isFavorite={favoriteArtists.has(artist.id)}
               />
             </div>
