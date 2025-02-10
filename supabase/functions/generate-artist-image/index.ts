@@ -22,7 +22,11 @@ serve(async (req) => {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look artistic, with clear facial features and expressions, wearing appropriate attire for their gender and specialty, either a suit, hoodie, t-shirt, dress etc.`;
+    // Array of possible attire styles
+    const attireStyles = ['street wear', 'casual', 'smart', 'formal', 'stylish', 'modern', 'messy'];
+    const randomAttire = attireStyles[Math.floor(Math.random() * attireStyles.length)];
+
+    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look artistic, with clear facial features and expressions, wearing ${randomAttire} clothing for their gender and specialty`;
 
     console.log('Generated prompt:', prompt);
 
