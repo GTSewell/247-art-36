@@ -56,3 +56,4 @@ export const filterArtists = ({
            matchesStyles && matchesSocials && matchesFavorites;
   });
 };
+
