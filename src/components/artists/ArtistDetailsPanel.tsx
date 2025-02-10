@@ -1,17 +1,21 @@
 
 import React from 'react';
-import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink } from 'lucide-react';
+import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
   onSelect: (e: React.MouseEvent) => void;
+  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
+  isFavorite?: boolean;
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ 
   artist, 
   onSelect,
+  onFavoriteToggle,
+  isFavorite
 }) => {
   const socialIcons = {
     Facebook: <Facebook className="h-5 w-5" />,
@@ -27,6 +31,13 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     e.preventDefault();
     e.stopPropagation();
     window.open(`https://${domainName}.247.art`, '_blank');
+  };
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onFavoriteToggle) {
+      onFavoriteToggle(artist.id, !isFavorite);
+    }
   };
 
   return (
@@ -100,13 +111,24 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           </div>
         )}
         
-        <Button
-          onClick={handleDomainClick}
-          className="w-full bg-[#00baef] hover:bg-[#00baef]/90"
-        >
-          {domainName}.247.art
-          <ExternalLink className="ml-1" size={16} />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleDomainClick}
+            className="flex-1 bg-[#00baef] hover:bg-[#00baef]/90"
+          >
+            {domainName}.247.art
+            <ExternalLink className="ml-1" size={16} />
+          </Button>
+
+          <Button
+            onClick={handleFavoriteClick}
+            variant="ghost"
+            size="icon"
+            className={`shrink-0 ${isFavorite ? 'text-yellow-500' : 'text-gray-500'}`}
+          >
+            <Zap className="h-5 w-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );
