@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
 const API_ENDPOINT = "wss://ws-api.runware.ai/v1";
-const RUNWARE_API_KEY = Deno.env.get('RUNWARE_API_KEY');
+const RUNWARE_API_KEY = Deno.env.get('RUNWAYML_API_KEY'); // Updated to match the secret name
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,7 +19,7 @@ serve(async (req) => {
     const { name, specialty } = await req.json();
 
     if (!RUNWARE_API_KEY) {
-      throw new Error('RUNWARE_API_KEY is not set');
+      throw new Error('RUNWAYML_API_KEY is not set');
     }
 
     const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look professional and artistic, wearing appropriate attire for their specialty.`;
