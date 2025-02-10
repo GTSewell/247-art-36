@@ -71,8 +71,8 @@ const ArtistCard = ({
 
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
-      {/* Favorite Button - Always visible */}
-      <div className="absolute bottom-4 right-4 z-10">
+      {/* Favorite Button - Always visible at the top right */}
+      <div className="absolute top-4 right-4 z-10">
         <Button
           variant="ghost"
           size="icon"
