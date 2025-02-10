@@ -27,6 +27,48 @@ export type Database = {
         }
         Relationships: []
       }
+      artists: {
+        Row: {
+          bio: string
+          id: number
+          image: string
+          location: string | null
+          name: string
+          social_platforms:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty: string
+          styles: Database["public"]["Enums"]["art_style"][] | null
+          techniques: Database["public"]["Enums"]["art_technique"][] | null
+        }
+        Insert: {
+          bio: string
+          id?: number
+          image: string
+          location?: string | null
+          name: string
+          social_platforms?:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty: string
+          styles?: Database["public"]["Enums"]["art_style"][] | null
+          techniques?: Database["public"]["Enums"]["art_technique"][] | null
+        }
+        Update: {
+          bio?: string
+          id?: number
+          image?: string
+          location?: string | null
+          name?: string
+          social_platforms?:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty?: string
+          styles?: Database["public"]["Enums"]["art_style"][] | null
+          techniques?: Database["public"]["Enums"]["art_technique"][] | null
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           created_at: string
@@ -53,7 +95,59 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      art_style:
+        | "Abstract"
+        | "Realism"
+        | "Impressionism"
+        | "Surrealism"
+        | "Pop Art"
+        | "Minimalism"
+        | "Contemporary"
+        | "Modern"
+        | "Traditional"
+        | "Folk Art"
+        | "Gothic"
+        | "Renaissance"
+        | "Baroque"
+        | "Art Nouveau"
+        | "Art Deco"
+        | "Expressionism"
+        | "Cubism"
+        | "Digital"
+        | "Urban"
+        | "Conceptual"
+      art_technique:
+        | "Oil Painting"
+        | "Watercolor"
+        | "Acrylic"
+        | "Digital Art"
+        | "Photography"
+        | "Sculpture"
+        | "Printmaking"
+        | "Drawing"
+        | "Mixed Media"
+        | "Collage"
+        | "Ceramics"
+        | "Textile Art"
+        | "Street Art"
+        | "Installation"
+        | "Performance"
+        | "Video Art"
+        | "Glasswork"
+        | "Metalwork"
+        | "Wood Carving"
+        | "Lithography"
+      social_platform:
+        | "Instagram"
+        | "Twitter"
+        | "Facebook"
+        | "YouTube"
+        | "TikTok"
+        | "DeviantArt"
+        | "ArtStation"
+        | "Behance"
+        | "LinkedIn"
+        | "Pinterest"
     }
     CompositeTypes: {
       [_ in never]: never

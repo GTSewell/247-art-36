@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
 import { SlidersHorizontal, Sun, Moon, Search } from "lucide-react";
-import { featuredArtists as initialFeaturedArtists, additionalArtists as initialAdditionalArtists } from "@/data/artists";
 import ArtistCard from "@/components/artists/ArtistCard";
 import AtlasFilter from "@/components/artists/AtlasFilter";
 import { useTheme } from "next-themes";
@@ -25,32 +24,75 @@ const Artists = () => {
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
-  const [featuredArtists, setFeaturedArtists] = useState(initialFeaturedArtists);
-  const [additionalArtists, setAdditionalArtists] = useState(initialAdditionalArtists);
+  const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
+  const [additionalArtists, setAdditionalArtists] = useState<Artist[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
   const { theme, setTheme } = useTheme();
   const { generateImage, isLoading } = useGenerateArtistImage();
 
-  // Filter additional artists based on search and favorites
-  const filteredAdditionalArtists = additionalArtists.filter(artist => {
-    const matchesSearch = artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase()) ||
-      artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase());
-    
-    if (showFavorites) {
-      return matchesSearch && favoriteArtists.has(artist.id);
-    }
-    return matchesSearch;
-  });
+  // Load artists from Supabase
+  useEffect(() => {
+    const loadArtists = async () => {
+      const { data: artists, error } = await supabase
+        .from('artists')
+        .select('*')
+        .order('id');
 
-  // Filter featured artists based on favorites
-  const filteredFeaturedArtists = featuredArtists.filter(artist => {
-    if (showFavorites) {
-      return favoriteArtists.has(artist.id);
-    }
-    return true;
-  });
+      if (error) {
+        toast.error('Failed to load artists');
+        return;
+      }
+
+      if (artists) {
+        // First 3 artists are featured
+        setFeaturedArtists(artists.slice(0, 3));
+        setAdditionalArtists(artists.slice(3));
+      }
+    };
+
+    loadArtists();
+  }, []);
+
+  // Filter artists based on search and filters
+  const filterArtists = (artists: Artist[]) => {
+    return artists.filter(artist => {
+      // Text search filters
+      const matchesSearch = artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase()) ||
+        artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase());
+      
+      const matchesLocation = !locationSearch || 
+        (artist.location && artist.location.toLowerCase().includes(locationSearch.toLowerCase()));
+
+      // Technique filter
+      const matchesTechniques = selectedTechniques.length === 0 || 
+        selectedTechniques.every(technique => 
+          artist.techniques?.includes(technique as any)
+        );
+
+      // Style filter
+      const matchesStyles = selectedStyles.length === 0 || 
+        selectedStyles.every(style => 
+          artist.styles?.includes(style as any)
+        );
+
+      // Social platform filter
+      const matchesSocials = selectedSocials.length === 0 || 
+        selectedSocials.every(social => 
+          artist.social_platforms?.includes(social as any)
+        );
+
+      // Favorites filter
+      const matchesFavorites = !showFavorites || favoriteArtists.has(artist.id);
+
+      return matchesSearch && matchesLocation && matchesTechniques && 
+             matchesStyles && matchesSocials && matchesFavorites;
+    });
+  };
+
+  const filteredFeaturedArtists = filterArtists(featuredArtists);
+  const filteredAdditionalArtists = filterArtists(additionalArtists);
 
   // Handle favorite toggle from ArtistCard
   const handleFavoriteToggle = (artistId: number, isFavorite: boolean) => {
@@ -65,34 +107,20 @@ const Artists = () => {
     });
   };
 
-  // Load fixed images on component mount
-  useEffect(() => {
-    const loadFixedImages = async () => {
-      const { data: fixedImages } = await supabase
-        .from('artist_images')
-        .select('artist_id, image_url');
+  const handleUpdateSelection = () => {
+    toast.success('Filters applied successfully');
+  };
 
-      if (fixedImages) {
-        const fixedImagesMap = new Map(fixedImages.map(img => [img.artist_id, img.image_url]));
-
-        setFeaturedArtists(prevArtists =>
-          prevArtists.map(artist => ({
-            ...artist,
-            image: fixedImagesMap.get(artist.id) || artist.image
-          }))
-        );
-
-        setAdditionalArtists(prevArtists =>
-          prevArtists.map(artist => ({
-            ...artist,
-            image: fixedImagesMap.get(artist.id) || artist.image
-          }))
-        );
-      }
-    };
-
-    loadFixedImages();
-  }, []);
+  const handleClearFilters = () => {
+    setArtistSearch("");
+    setLocationSearch("");
+    setTechniqueSearch("");
+    setStyleSearch("");
+    setSelectedTechniques([]);
+    setSelectedStyles([]);
+    setSelectedSocials([]);
+    toast.success('Filters cleared');
+  };
 
   const handleRegenerateImage = async (artist: Artist) => {
     if (isLoading) {
@@ -107,43 +135,27 @@ const Artists = () => {
     });
 
     if (imageUrl) {
-      if (artist.id <= 3) {
-        // Featured artists
-        setFeaturedArtists(prevArtists =>
-          prevArtists.map(a =>
-            a.id === artist.id ? { ...a, image: imageUrl } : a
-          )
-        );
-      } else {
-        // Additional artists
-        setAdditionalArtists(prevArtists =>
-          prevArtists.map(a =>
-            a.id === artist.id ? { ...a, image: imageUrl } : a
-          )
-        );
+      const { error } = await supabase
+        .from('artists')
+        .update({ image: imageUrl })
+        .eq('id', artist.id);
+
+      if (error) {
+        toast.error('Failed to update artist image');
+        return;
       }
+
+      // Update local state
+      const updateArtists = (prevArtists: Artist[]) =>
+        prevArtists.map(a =>
+          a.id === artist.id ? { ...a, image: imageUrl } : a
+        );
+
+      setFeaturedArtists(updateArtists);
+      setAdditionalArtists(updateArtists);
+      
       toast.success(`New profile image generated for ${artist.name}!`);
     }
-  };
-
-  const handleUpdateSelection = () => {
-    console.log('Updating selection with current filters:', {
-      artistSearch,
-      locationSearch,
-      selectedTechniques,
-      selectedStyles,
-      selectedSocials
-    });
-  };
-
-  const handleClearFilters = () => {
-    setArtistSearch("");
-    setLocationSearch("");
-    setTechniqueSearch("");
-    setStyleSearch("");
-    setSelectedTechniques([]);
-    setSelectedStyles([]);
-    setSelectedSocials([]);
   };
 
   return (
