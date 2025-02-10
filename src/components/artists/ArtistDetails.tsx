@@ -26,7 +26,7 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:w-[540px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <SheetContent className="w-full sm:max-w-[800px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <ScrollArea className="h-full w-full rounded-md p-6">
           <SheetHeader className="mb-6">
             <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
@@ -38,7 +38,7 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
             </div>
           </SheetHeader>
 
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
               <h2 className="text-2xl font-bold tracking-tight">{artist.name}</h2>
               <p className="text-muted-foreground">{artist.specialty}</p>
@@ -50,43 +50,43 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
             </div>
 
             <div>
-              <h3 className="font-semibold mb-2">About</h3>
+              <h3 className="text-lg font-semibold mb-2">About</h3>
               <p className="text-muted-foreground">{artist.bio}</p>
             </div>
 
-            {artist.artworks && artist.artworks.length > 0 && (
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-semibold">Artworks</h3>
-                  {onRegenerateArtworks && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => onRegenerateArtworks(artist)}
-                      className="flex items-center gap-2"
-                    >
-                      <RefreshCw className="h-4 w-4" />
-                      Regenerate Artworks
-                    </Button>
-                  )}
-                </div>
-                <div className="grid grid-cols-2 gap-2">
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Artworks</h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onRegenerateArtworks?.(artist)}
+                  className="flex items-center gap-2"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Generate Artworks
+                </Button>
+              </div>
+              {artist.artworks && artist.artworks.length > 0 ? (
+                <div className="grid grid-cols-2 gap-4">
                   {artist.artworks.map((artwork, index) => (
-                    <div key={index} className="aspect-square rounded-md overflow-hidden">
+                    <div key={index} className="aspect-square rounded-lg overflow-hidden border border-border/40">
                       <img
                         src={artwork}
                         alt={`Artwork ${index + 1} by ${artist.name}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <p className="text-muted-foreground text-sm italic">No artworks generated yet. Click the button above to generate some!</p>
+              )}
+            </div>
 
             {artist.techniques && artist.techniques.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-2">Techniques</h3>
+                <h3 className="text-lg font-semibold mb-2">Techniques</h3>
                 <div className="flex flex-wrap gap-2">
                   {artist.techniques.map((technique) => (
                     <Badge
@@ -103,7 +103,7 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
 
             {artist.styles && artist.styles.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-2">Styles</h3>
+                <h3 className="text-lg font-semibold mb-2">Styles</h3>
                 <div className="flex flex-wrap gap-2">
                   {artist.styles.map((style) => (
                     <Badge
@@ -120,7 +120,7 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
 
             {artist.social_platforms && artist.social_platforms.length > 0 && (
               <div>
-                <h3 className="font-semibold mb-2">Social Media</h3>
+                <h3 className="text-lg font-semibold mb-2">Social Media</h3>
                 <div className="flex gap-4">
                   {artist.social_platforms.map((platform) => (
                     <button

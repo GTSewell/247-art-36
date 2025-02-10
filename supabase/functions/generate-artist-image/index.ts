@@ -16,26 +16,23 @@ serve(async (req) => {
   }
 
   try {
-    const { name, specialty } = await req.json();
+    const { name, specialty, techniques = [], styles = [] } = await req.json();
 
     if (!RUNWARE_API_KEY) {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    // Array of possible attire styles
-    const attireStyles = ['street wear', 'casual', 'smart', 'formal', 'stylish', 'modern', 'messy'];
-    const randomAttire = attireStyles[Math.floor(Math.random() * attireStyles.length)];
-
-    // Array of possible hair styles
-    const hairStyles = ['short', 'long', 'messy', 'curly', 'straight', 'wavy', 'spiky', 'mohawk', 'ponytail', 'bun'];
-    const randomHair = hairStyles[Math.floor(Math.random() * hairStyles.length)];
-
-    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look artistic, with clear facial features and expressions, with ${randomHair} hair, wearing ${randomAttire} clothing for their gender and specialty`;
-
-    console.log('Generated prompt:', prompt);
+    // Create a more detailed prompt using the artist's details
+    const createArtworkPrompt = (index: number) => {
+      const technique = techniques[index % techniques.length] || techniques[0] || specialty;
+      const style = styles[index % styles.length] || styles[0] || 'contemporary';
+      
+      return `Create an artwork that showcases ${name}'s expertise in ${specialty}, specifically using ${technique} technique in a ${style} style. The piece should be highly detailed and professional, demonstrating mastery of the medium. Make it visually striking and gallery-worthy, with rich colors and compelling composition. The artwork should be complete and polished, suitable for a professional artist's portfolio.`;
+    };
 
     const ws = new WebSocket(API_ENDPOINT);
-    let result = null;
+    const results: any[] = [];
+    let authenticated = false;
 
     await new Promise((resolve, reject) => {
       ws.onopen = () => {
@@ -46,44 +43,44 @@ serve(async (req) => {
         ws.send(JSON.stringify(authMessage));
       };
 
-      ws.onmessage = (event) => {
+      ws.onmessage = async (event) => {
         const response = JSON.parse(event.data);
         if (response.error || response.errors) {
-          const errorMessage = response.errorMessage || response.errors[0].message;
-          // Check for insufficient credits error
-          if (errorMessage.includes('Insufficient credits')) {
-            reject(new Error('Insufficient Runware credits. Please add credits to your account at https://my.runware.ai/wallet'));
-          } else {
-            reject(new Error(errorMessage));
-          }
+          reject(new Error(response.errorMessage || response.errors[0].message));
           return;
         }
 
         if (response.data) {
-          response.data.forEach((item: any) => {
+          for (const item of response.data) {
             if (item.taskType === "authentication") {
-              const taskUUID = crypto.randomUUID();
-              const message = [{
-                taskType: "imageInference",
-                taskUUID,
-                model: "runware:100@1",
-                positivePrompt: prompt,
-                width: 1024,
-                height: 1024,
-                numberResults: 1,
-                outputFormat: "WEBP",
-                steps: 4,
-                CFGScale: 1,
-                scheduler: "FlowMatchEulerDiscreteScheduler",
-                strength: 0.8,
-              }];
-              ws.send(JSON.stringify(message));
-            } else if (item.taskType === "imageInference") {
-              result = item;
-              ws.close();
-              resolve(null);
+              authenticated = true;
+              // Generate 4 artworks
+              for (let i = 0; i < 4; i++) {
+                const taskUUID = crypto.randomUUID();
+                const message = [{
+                  taskType: "imageInference",
+                  taskUUID,
+                  model: "runware:100@1",
+                  positivePrompt: createArtworkPrompt(i),
+                  width: 1024,
+                  height: 1024,
+                  numberResults: 1,
+                  outputFormat: "WEBP",
+                  steps: 4,
+                  CFGScale: 1,
+                  scheduler: "FlowMatchEulerDiscreteScheduler",
+                  strength: 0.8,
+                }];
+                ws.send(JSON.stringify(message));
+              }
+            } else if (item.taskType === "imageInference" && item.imageURL) {
+              results.push(item);
+              if (results.length === 4) {
+                ws.close();
+                resolve(null);
+              }
             }
-          });
+          }
         }
       };
 
@@ -92,13 +89,14 @@ serve(async (req) => {
       };
     });
 
-    if (!result) {
-      throw new Error('Failed to generate image');
-    }
+    const artworkUrls = results.map(result => result.imageURL);
 
-    return new Response(JSON.stringify(result), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({ artworkUrls }),
+      {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      }
+    );
   } catch (error) {
     console.error('Error:', error);
     return new Response(
