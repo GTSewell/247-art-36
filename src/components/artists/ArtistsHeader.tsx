@@ -1,7 +1,13 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { FilterX } from 'lucide-react';
+import { FilterX, Filter } from 'lucide-react';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import AtlasFilter from './AtlasFilter';
 
 interface ArtistsHeaderProps {
   artistSearch: string;
@@ -23,23 +29,66 @@ interface ArtistsHeaderProps {
 }
 
 const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
+  artistSearch,
+  setArtistSearch,
+  locationSearch,
+  setLocationSearch,
+  techniqueSearch,
+  setTechniqueSearch,
+  styleSearch,
+  setStyleSearch,
+  selectedTechniques,
+  setSelectedTechniques,
+  selectedStyles,
+  setSelectedStyles,
+  selectedSocials,
+  setSelectedSocials,
   onUpdateSelection,
   onClearFilters,
 }) => {
   return (
     <div className="flex justify-between items-center mb-8">
       <h1 className="text-4xl font-bold text-foreground">Featured Artists</h1>
-      <Button 
-        onClick={onClearFilters}
-        variant="destructive"
-        className="flex items-center gap-2"
-      >
-        <FilterX size={20} />
-        Clear Filters
-      </Button>
+      <div className="flex items-center gap-3">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="default" className="flex items-center gap-2">
+              <Filter size={20} />
+              ATLAS Filter
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <AtlasFilter
+              artistSearch={artistSearch}
+              setArtistSearch={setArtistSearch}
+              locationSearch={locationSearch}
+              setLocationSearch={setLocationSearch}
+              techniqueSearch={techniqueSearch}
+              setTechniqueSearch={setTechniqueSearch}
+              styleSearch={styleSearch}
+              setStyleSearch={setStyleSearch}
+              selectedTechniques={selectedTechniques}
+              setSelectedTechniques={setSelectedTechniques}
+              selectedStyles={selectedStyles}
+              setSelectedStyles={setSelectedStyles}
+              selectedSocials={selectedSocials}
+              setSelectedSocials={setSelectedSocials}
+              onUpdateSelection={onUpdateSelection}
+              onClearFilters={onClearFilters}
+            />
+          </SheetContent>
+        </Sheet>
+        <Button 
+          onClick={onClearFilters}
+          variant="destructive"
+          className="flex items-center gap-2"
+        >
+          <FilterX size={20} />
+          Clear Filters
+        </Button>
+      </div>
     </div>
   );
 };
 
 export default ArtistsHeader;
-
