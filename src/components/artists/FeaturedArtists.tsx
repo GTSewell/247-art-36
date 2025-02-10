@@ -102,19 +102,12 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                     )}
                   </div>
 
-                  <div className="flex gap-4 mt-6">
+                  <div className="mt-6">
                     <Button
                       onClick={() => onSelect(artist)}
-                      className="flex-1"
+                      className="w-full"
                     >
                       View Profile
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => onRegenerateImage(artist)}
-                      className="flex-1"
-                    >
-                      Regenerate Image
                     </Button>
                   </div>
                 </div>
@@ -130,4 +123,3 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 };
 
 export default FeaturedArtists;
-
