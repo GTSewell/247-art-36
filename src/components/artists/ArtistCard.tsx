@@ -69,6 +69,20 @@ const ArtistCard = ({
 
   return (
     <div className="relative">
+      {/* Favorite Button - Always visible and interactive */}
+      <Button
+        variant="ghost"
+        size="icon"
+        className={`absolute top-4 right-4 z-[100] ${
+          isFavorite 
+            ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
+            : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+        }`}
+        onClick={toggleFavorite}
+      >
+        <Zap size={isFeatured ? 24 : 20} />
+      </Button>
+
       <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
         <div className="aspect-square overflow-hidden">
           <img
@@ -77,20 +91,6 @@ const ArtistCard = ({
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
         </div>
-        
-        {/* Favorite Button - Always visible, positioned outside hover effects */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className={`absolute top-4 right-4 z-50 ${
-            isFavorite 
-              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
-              : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-          }`}
-          onClick={toggleFavorite}
-        >
-          <Zap size={isFeatured ? 24 : 20} />
-        </Button>
         
         {/* Artist Information - Visible on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
