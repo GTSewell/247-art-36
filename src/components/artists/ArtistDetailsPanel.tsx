@@ -1,21 +1,16 @@
-
 import React from 'react';
-import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
+import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
   onSelect: (e: React.MouseEvent) => void;
-  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
-  isFavorite?: boolean;
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ 
   artist, 
   onSelect,
-  onFavoriteToggle,
-  isFavorite
 }) => {
   const socialIcons = {
     Facebook: <Facebook className="h-5 w-5" />,
@@ -106,37 +101,16 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           </div>
         )}
         
-        <div className="flex gap-2 items-center">
-          <Button
-            onClick={handleDomainClick}
-            className="flex-1 bg-[#00baef] hover:bg-[#00baef]/90"
-          >
-            {domainName}.247.art
-            <ExternalLink className="ml-1" size={16} />
-          </Button>
-          
-          {onFavoriteToggle && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className={`${
-                isFavorite
-                  ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
-                  : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-              }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onFavoriteToggle(artist.id, !isFavorite);
-              }}
-            >
-              <Zap size={24} />
-            </Button>
-          )}
-        </div>
+        <Button
+          onClick={handleDomainClick}
+          className="w-full bg-[#00baef] hover:bg-[#00baef]/90"
+        >
+          {domainName}.247.art
+          <ExternalLink className="ml-1" size={16} />
+        </Button>
       </div>
     </div>
   );
 };
 
 export default ArtistDetailsPanel;
-

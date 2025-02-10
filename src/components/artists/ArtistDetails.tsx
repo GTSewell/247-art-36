@@ -3,7 +3,7 @@ import React from "react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Artist } from "@/data/types/artist";
 import { Badge } from "@/components/ui/badge";
-import { Facebook, Instagram, Linkedin, Twitter, RefreshCw, SaveAll } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, RefreshCw, SaveAll, Zap } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +14,8 @@ interface ArtistDetailsProps {
   isOpen: boolean;
   onClose: () => void;
   onRegenerateArtworks?: (artist: Artist) => Promise<void>;
+  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
+  isFavorite?: boolean;
 }
 
 const socialIcons = {
@@ -23,7 +25,14 @@ const socialIcons = {
   LinkedIn: <Linkedin className="h-5 w-5" />,
 };
 
-const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: ArtistDetailsProps) => {
+const ArtistDetails = ({ 
+  artist, 
+  isOpen, 
+  onClose, 
+  onRegenerateArtworks,
+  onFavoriteToggle,
+  isFavorite 
+}: ArtistDetailsProps) => {
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
 
@@ -52,14 +61,14 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
         .from('artists')
         .update({ 
           locked_artworks: true,
-          artworks: artist.artworks // Save the actual artworks array
+          artworks: artist.artworks
         })
         .eq('id', artist.id);
 
       if (error) throw error;
       
       toast.success("Artworks saved successfully!");
-      window.location.reload(); // Refresh to show updated state
+      window.location.reload();
     } catch (error) {
       console.error('Error saving artworks:', error);
       toast.error("Failed to save artworks");
@@ -73,12 +82,31 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
       <SheetContent className="w-full sm:max-w-[800px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <ScrollArea className="h-full w-full rounded-md p-6">
           <SheetHeader className="mb-6">
-            <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
-              <img
-                src={artist.image}
-                alt={artist.name}
-                className="h-full w-full object-cover"
-              />
+            <div className="relative">
+              <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
+                <img
+                  src={artist.image}
+                  alt={artist.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              {onFavoriteToggle && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`absolute top-4 right-4 z-10 ${
+                    isFavorite
+                      ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
+                      : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFavoriteToggle(artist.id, !isFavorite);
+                  }}
+                >
+                  <Zap size={24} />
+                </Button>
+              )}
             </div>
           </SheetHeader>
 
@@ -203,4 +231,3 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
 };
 
 export default ArtistDetails;
-
