@@ -16,7 +16,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   isFavorite 
 }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="relative aspect-square rounded-lg overflow-hidden">
         <img
           src={artist.image}
@@ -39,24 +39,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
           <Zap size={24} />
         </Button>
       </div>
-      
-      {/* Artwork Thumbnails */}
-      {artist.artworks && artist.artworks.length > 0 && (
-        <div className="grid grid-cols-4 gap-2">
-          {artist.artworks.map((artwork, index) => (
-            <div 
-              key={index} 
-              className="aspect-square rounded-md overflow-hidden border border-gray-200"
-            >
-              <img
-                src={artwork}
-                alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

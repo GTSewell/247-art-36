@@ -18,77 +18,58 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
   };
 
   return (
-    <div className="flex flex-col justify-between">
-      <div className="space-y-4">
+    <div className="flex flex-col justify-between h-full">
+      <div className="space-y-3">
         <div>
-          <h2 className="text-3xl font-bold mb-2">{artist.name}</h2>
-          <div className="flex items-center gap-2 text-gray-600 mb-2">
-            <Palette size={20} />
+          <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
+          <div className="flex items-center gap-2 text-gray-600 mb-1">
+            <Palette size={18} />
             <span>{artist.specialty}</span>
           </div>
           {artist.city && artist.country && (
             <div className="flex items-center gap-2 text-gray-600">
-              <MapPin size={20} />
+              <MapPin size={18} />
               <span>{`${artist.city}, ${artist.country}`}</span>
             </div>
           )}
         </div>
 
-        <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+        <p className="text-gray-700 leading-relaxed line-clamp-2">{artist.bio}</p>
 
         {/* Social Media Icons */}
         {artist.social_platforms && artist.social_platforms.length > 0 && (
-          <div>
-            <h3 className="font-semibold mb-2">Connect</h3>
-            <div className="flex gap-4">
-              {artist.social_platforms.map((platform) => (
-                <button
-                  key={platform}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  {socialIcons[platform as keyof typeof socialIcons]}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Techniques */}
-        {artist.techniques && artist.techniques.length > 0 && (
-          <div>
-            <h3 className="font-semibold mb-2">Techniques</h3>
-            <div className="flex flex-wrap gap-2">
-              {artist.techniques.map((technique) => (
-                <span
-                  key={technique}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm"
-                >
-                  {technique}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Styles */}
-        {artist.styles && artist.styles.length > 0 && (
-          <div>
-            <h3 className="font-semibold mb-2">Styles</h3>
-            <div className="flex flex-wrap gap-2">
-              {artist.styles.map((style) => (
-                <span
-                  key={style}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm"
-                >
-                  {style}
-                </span>
-              ))}
-            </div>
+          <div className="flex gap-3">
+            {artist.social_platforms.map((platform) => (
+              <button
+                key={platform}
+                className="text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                {socialIcons[platform as keyof typeof socialIcons]}
+              </button>
+            ))}
           </div>
         )}
       </div>
 
-      <div className="mt-6">
+      <div className="space-y-3">
+        {/* Artwork Thumbnails */}
+        {artist.artworks && artist.artworks.length > 0 && (
+          <div className="grid grid-cols-4 gap-2">
+            {artist.artworks.map((artwork, index) => (
+              <div 
+                key={index} 
+                className="aspect-square rounded-md overflow-hidden border border-gray-200"
+              >
+                <img
+                  src={artwork}
+                  alt={`Artwork ${index + 1} by ${artist.name}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+        
         <Button
           onClick={() => onSelect(artist)}
           className="w-full"
