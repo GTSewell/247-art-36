@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
@@ -12,6 +12,7 @@ import {
   CarouselPrevious 
 } from '@/components/ui/carousel';
 import { motion } from 'framer-motion';
+import ArtistCard from './ArtistCard';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
 
@@ -38,6 +39,16 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   onFavoriteToggle,
   favoriteArtists,
 }) => {
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
+
+  const handleArtistClick = (index: number) => {
+    setSelectedArtistIndex(index);
+  };
+
+  const closeCarousel = () => {
+    setSelectedArtistIndex(null);
+  };
+
   return (
     <div className="mb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -70,34 +81,56 @@ const AllArtists: React.FC<AllArtistsProps> = ({
         </div>
       </div>
 
-      <div className="relative">
-        <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true }}>
-          <CarouselContent>
-            {artists.map((artist) => (
-              <CarouselItem key={artist.id}>
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-lg"
-                >
-                  <ArtistImagePanel 
-                    artist={artist}
-                    onFavoriteToggle={onFavoriteToggle}
-                    isFavorite={favoriteArtists.has(artist.id)}
-                  />
-                  <ArtistDetailsPanel 
-                    artist={artist}
-                    onSelect={onSelect}
-                  />
-                </motion.div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
-          <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
-        </Carousel>
-      </div>
+      {selectedArtistIndex !== null ? (
+        <div className="relative">
+          <button 
+            onClick={closeCarousel}
+            className="absolute right-6 top-6 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true, startIndex: selectedArtistIndex }}>
+            <CarouselContent>
+              {artists.map((artist) => (
+                <CarouselItem key={artist.id}>
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-lg"
+                  >
+                    <ArtistImagePanel 
+                      artist={artist}
+                      onFavoriteToggle={onFavoriteToggle}
+                      isFavorite={favoriteArtists.has(artist.id)}
+                    />
+                    <ArtistDetailsPanel 
+                      artist={artist}
+                      onSelect={onSelect}
+                    />
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
+            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
+          </Carousel>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {artists.map((artist, index) => (
+            <div key={artist.id} onClick={() => handleArtistClick(index)}>
+              <ArtistCard
+                {...artist}
+                onSelect={() => onSelect(artist)}
+                onRegenerateImage={() => onRegenerateImage(artist)}
+                onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
+                isFavorite={favoriteArtists.has(artist.id)}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
