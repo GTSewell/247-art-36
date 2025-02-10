@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
@@ -9,6 +8,7 @@ import AtlasFilter from "@/components/artists/AtlasFilter";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
 import { toast } from "sonner";
 import { Artist } from "@/data/types/artist";
@@ -26,15 +26,43 @@ const Artists = () => {
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
   const [featuredArtists, setFeaturedArtists] = useState(initialFeaturedArtists);
   const [additionalArtists, setAdditionalArtists] = useState(initialAdditionalArtists);
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
   const { theme, setTheme } = useTheme();
   const { generateImage, isLoading } = useGenerateArtistImage();
 
-  // Filter additional artists based on search
-  const filteredAdditionalArtists = additionalArtists.filter(artist =>
-    artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase()) ||
-    artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase())
-  );
+  // Filter additional artists based on search and favorites
+  const filteredAdditionalArtists = additionalArtists.filter(artist => {
+    const matchesSearch = artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase()) ||
+      artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase());
+    
+    if (showFavorites) {
+      return matchesSearch && favoriteArtists.has(artist.id);
+    }
+    return matchesSearch;
+  });
+
+  // Filter featured artists based on favorites
+  const filteredFeaturedArtists = featuredArtists.filter(artist => {
+    if (showFavorites) {
+      return favoriteArtists.has(artist.id);
+    }
+    return true;
+  });
+
+  // Handle favorite toggle from ArtistCard
+  const handleFavoriteToggle = (artistId: number, isFavorite: boolean) => {
+    setFavoriteArtists(prev => {
+      const newFavorites = new Set(prev);
+      if (isFavorite) {
+        newFavorites.add(artistId);
+      } else {
+        newFavorites.delete(artistId);
+      }
+      return newFavorites;
+    });
+  };
 
   // Load fixed images on component mount
   useEffect(() => {
@@ -165,13 +193,15 @@ const Artists = () => {
 
         {/* Featured Artists Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {featuredArtists.map((artist) => (
+          {filteredFeaturedArtists.map((artist) => (
             <ArtistCard
               key={artist.id}
               {...artist}
               onSelect={setSelectedArtist}
               onRegenerateImage={() => handleRegenerateImage(artist)}
               isFeatured={true}
+              onFavoriteToggle={(isFavorite) => handleFavoriteToggle(artist.id, isFavorite)}
+              isFavorite={favoriteArtists.has(artist.id)}
             />
           ))}
         </div>
@@ -180,15 +210,30 @@ const Artists = () => {
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <h2 className="text-3xl font-bold text-foreground">All Artists</h2>
-            <div className="relative w-full sm:w-72">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search artists..."
-                value={allArtistsSearch}
-                onChange={(e) => setAllArtistsSearch(e.target.value)}
-                className="pl-8"
-              />
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="showFavorites"
+                  checked={showFavorites}
+                  onCheckedChange={(checked) => setShowFavorites(checked as boolean)}
+                />
+                <label
+                  htmlFor="showFavorites"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  View Favorite Artists
+                </label>
+              </div>
+              <div className="relative w-full sm:w-72">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search artists..."
+                  value={allArtistsSearch}
+                  onChange={(e) => setAllArtistsSearch(e.target.value)}
+                  className="pl-8"
+                />
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -198,6 +243,8 @@ const Artists = () => {
                 {...artist}
                 onSelect={setSelectedArtist}
                 onRegenerateImage={() => handleRegenerateImage(artist)}
+                onFavoriteToggle={(isFavorite) => handleFavoriteToggle(artist.id, isFavorite)}
+                isFavorite={favoriteArtists.has(artist.id)}
               />
             ))}
           </div>

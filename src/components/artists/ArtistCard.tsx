@@ -12,6 +12,8 @@ interface ArtistCardProps {
   image: string;
   onSelect: (id: number) => void;
   onRegenerateImage: () => void;
+  onFavoriteToggle: (isFavorite: boolean) => void;
+  isFavorite: boolean;
   isFeatured?: boolean;
 }
 
@@ -22,10 +24,11 @@ const ArtistCard = ({
   image, 
   onSelect, 
   onRegenerateImage,
+  onFavoriteToggle,
+  isFavorite,
   isFeatured = false 
 }: ArtistCardProps) => {
   const [isImageFixed, setIsImageFixed] = React.useState(false);
-  const [isFavorite, setIsFavorite] = React.useState(false);
 
   // Check if image is fixed on component mount
   React.useEffect(() => {
@@ -62,8 +65,7 @@ const ArtistCard = ({
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    // Note: In a real app, we would persist this to a database
+    onFavoriteToggle(!isFavorite);
     toast.success(isFavorite ? 'Removed from favorites' : 'Added to favorites');
   };
 
