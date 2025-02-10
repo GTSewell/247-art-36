@@ -1,11 +1,14 @@
-
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, Sun, Moon } from "lucide-react";
 import { featuredArtists, additionalArtists } from "@/data/artists";
 import ArtistCard from "@/components/artists/ArtistCard";
 import AtlasFilter from "@/components/artists/AtlasFilter";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
+import { toast } from "sonner";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<number | null>(null);
@@ -16,6 +19,28 @@ const Artists = () => {
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
+
+  const { theme, setTheme } = useTheme();
+  const { generateImage, isLoading } = useGenerateArtistImage();
+
+  const handleRegenerateImage = async (artist: typeof featuredArtists[0]) => {
+    if (isLoading) {
+      toast.error("Please wait for the current generation to complete");
+      return;
+    }
+
+    toast.info("Generating new profile image...");
+    const imageUrl = await generateImage({
+      name: artist.name,
+      specialty: artist.specialty
+    });
+
+    if (imageUrl) {
+      toast.success("New profile image generated!");
+      // Note: In a real application, you would update the artist's image in the database
+      // For now, we'll just show a success message
+    }
+  };
 
   const handleUpdateSelection = () => {
     console.log('Updating selection with current filters:', {
@@ -44,34 +69,43 @@ const Artists = () => {
       <div className="container mx-auto pt-20 px-4">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold text-foreground">Featured Artists</h1>
-          <Sheet>
-            <SheetTrigger asChild>
-              <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
-                <SlidersHorizontal size={20} />
-                <span>ATLAS</span>
-              </button>
-            </SheetTrigger>
-            <SheetContent className="w-full sm:max-w-xl">
-              <AtlasFilter 
-                artistSearch={artistSearch}
-                setArtistSearch={setArtistSearch}
-                locationSearch={locationSearch}
-                setLocationSearch={setLocationSearch}
-                techniqueSearch={techniqueSearch}
-                setTechniqueSearch={setTechniqueSearch}
-                styleSearch={styleSearch}
-                setStyleSearch={setStyleSearch}
-                selectedTechniques={selectedTechniques}
-                setSelectedTechniques={setSelectedTechniques}
-                selectedStyles={selectedStyles}
-                setSelectedStyles={setSelectedStyles}
-                selectedSocials={selectedSocials}
-                setSelectedSocials={setSelectedSocials}
-                onUpdateSelection={handleUpdateSelection}
-                onClearFilters={handleClearFilters}
-              />
-            </SheetContent>
-          </Sheet>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
+            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="flex items-center gap-2">
+                  <SlidersHorizontal size={20} />
+                  <span>ATLAS</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="w-full sm:max-w-xl">
+                <AtlasFilter 
+                  artistSearch={artistSearch}
+                  setArtistSearch={setArtistSearch}
+                  locationSearch={locationSearch}
+                  setLocationSearch={setLocationSearch}
+                  techniqueSearch={techniqueSearch}
+                  setTechniqueSearch={setTechniqueSearch}
+                  styleSearch={styleSearch}
+                  setStyleSearch={setStyleSearch}
+                  selectedTechniques={selectedTechniques}
+                  setSelectedTechniques={setSelectedTechniques}
+                  selectedStyles={selectedStyles}
+                  setSelectedStyles={setSelectedStyles}
+                  selectedSocials={selectedSocials}
+                  setSelectedSocials={setSelectedSocials}
+                  onUpdateSelection={handleUpdateSelection}
+                  onClearFilters={handleClearFilters}
+                />
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
 
         {/* Featured Artists Grid */}
@@ -81,6 +115,7 @@ const Artists = () => {
               key={artist.id}
               {...artist}
               onSelect={setSelectedArtist}
+              onRegenerateImage={() => handleRegenerateImage(artist)}
               isFeatured={true}
             />
           ))}
@@ -95,6 +130,7 @@ const Artists = () => {
                 key={artist.id}
                 {...artist}
                 onSelect={setSelectedArtist}
+                onRegenerateImage={() => handleRegenerateImage(artist)}
               />
             ))}
           </div>

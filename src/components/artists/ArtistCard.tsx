@@ -1,6 +1,7 @@
 
 import React from "react";
-import { Eye } from "lucide-react";
+import { Eye, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ArtistCardProps {
   id: number;
@@ -8,10 +9,19 @@ interface ArtistCardProps {
   specialty: string;
   image: string;
   onSelect: (id: number) => void;
+  onRegenerateImage: () => void;
   isFeatured?: boolean;
 }
 
-const ArtistCard = ({ id, name, specialty, image, onSelect, isFeatured = false }: ArtistCardProps) => {
+const ArtistCard = ({ 
+  id, 
+  name, 
+  specialty, 
+  image, 
+  onSelect, 
+  onRegenerateImage,
+  isFeatured = false 
+}: ArtistCardProps) => {
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
       <div className="aspect-square overflow-hidden">
@@ -25,13 +35,23 @@ const ArtistCard = ({ id, name, specialty, image, onSelect, isFeatured = false }
         <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'}`}>
           <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
           <p className="text-white/80 text-sm mb-3">{specialty}</p>
-          <button 
-            onClick={() => onSelect(id)}
-            className={`flex items-center gap-2 px-${isFeatured ? '4' : '3'} py-${isFeatured ? '2' : '1.5'} ${!isFeatured && 'text-sm'} rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors`}
-          >
-            <Eye size={isFeatured ? 20 : 16} />
-            <span>View Profile</span>
-          </button>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => onSelect(id)}
+              className="flex items-center gap-2"
+              size={isFeatured ? "default" : "sm"}
+            >
+              <Eye size={isFeatured ? 20 : 16} />
+              <span>View Profile</span>
+            </Button>
+            <Button
+              variant="secondary"
+              size={isFeatured ? "default" : "sm"}
+              onClick={onRegenerateImage}
+            >
+              <RefreshCw size={isFeatured ? 20 : 16} />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
