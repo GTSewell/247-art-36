@@ -3,6 +3,7 @@ import React from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Artist } from "@/data/types/artist";
 
 interface ArtistCardProps {
   id: number;
@@ -11,11 +12,15 @@ interface ArtistCardProps {
   image: string;
   city?: string;
   country?: string;
-  onSelect: (id: number) => void;
+  onSelect: (artist: Artist) => void;
   onRegenerateImage: () => void;
   onFavoriteToggle: (isFavorite: boolean) => void;
   isFavorite: boolean;
   isFeatured?: boolean;
+  bio: string;
+  techniques?: string[];
+  styles?: string[];
+  social_platforms?: string[];
 }
 
 const ArtistCard = ({ 
@@ -29,14 +34,36 @@ const ArtistCard = ({
   onRegenerateImage,
   onFavoriteToggle,
   isFavorite,
-  isFeatured = false 
+  isFeatured = false,
+  bio,
+  techniques,
+  styles,
+  social_platforms
 }: ArtistCardProps) => {
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
 
+  const handleCardClick = () => {
+    onSelect({
+      id,
+      name,
+      specialty,
+      image,
+      bio,
+      city,
+      country,
+      techniques,
+      styles,
+      social_platforms
+    });
+  };
+
   return (
     <div className="relative">
-      <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
+      <div 
+        className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer"
+        onClick={handleCardClick}
+      >
         {/* Artist Image */}
         <div className="aspect-square overflow-hidden">
           <img
@@ -69,7 +96,10 @@ const ArtistCard = ({
               ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
               : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
           }`}
-          onClick={() => onFavoriteToggle(!isFavorite)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onFavoriteToggle(!isFavorite);
+          }}
         >
           <Zap size={isFeatured ? 24 : 20} />
         </Button>

@@ -5,13 +5,14 @@ import { filterArtists } from "@/components/artists/ArtistsFilter";
 import FeaturedArtists from "@/components/artists/FeaturedArtists";
 import AllArtists from "@/components/artists/AllArtists";
 import ArtistsHeader from "@/components/artists/ArtistsHeader";
+import ArtistDetails from "@/components/artists/ArtistDetails";
 import { useArtists } from "@/hooks/use-artists";
 import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 
 const Artists = () => {
-  const [selectedArtist, setSelectedArtist] = useState<number | null>(null);
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [artistSearch, setArtistSearch] = useState("");
   const [allArtistsSearch, setAllArtistsSearch] = useState("");
   const [locationSearch, setLocationSearch] = useState("");
@@ -53,6 +54,10 @@ const Artists = () => {
     setSelectedStyles([]);
     setSelectedSocials([]);
     toast.success('Filters cleared');
+  };
+
+  const handleArtistSelect = (artist: Artist) => {
+    setSelectedArtist(artist);
   };
 
   // Filter artists based on selected criteria
@@ -117,7 +122,7 @@ const Artists = () => {
 
         <FeaturedArtists
           artists={filteredFeaturedArtists}
-          onSelect={setSelectedArtist}
+          onSelect={handleArtistSelect}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
@@ -129,10 +134,16 @@ const Artists = () => {
           setAllArtistsSearch={setAllArtistsSearch}
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
-          onSelect={setSelectedArtist}
+          onSelect={handleArtistSelect}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
+        />
+
+        <ArtistDetails
+          artist={selectedArtist}
+          isOpen={!!selectedArtist}
+          onClose={() => setSelectedArtist(null)}
         />
       </div>
     </div>
