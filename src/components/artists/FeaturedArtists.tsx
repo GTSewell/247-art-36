@@ -41,28 +41,48 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 transition={{ duration: 0.5 }}
                 className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 bg-white rounded-xl shadow-lg"
               >
-                {/* Left side - Image */}
-                <div className="relative aspect-square rounded-lg overflow-hidden">
-                  <img
-                    src={artist.image}
-                    alt={artist.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className={`absolute bottom-4 right-4 z-10 ${
-                      favoriteArtists.has(artist.id)
-                        ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
-                        : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onFavoriteToggle(artist.id, !favoriteArtists.has(artist.id));
-                    }}
-                  >
-                    <Zap size={24} />
-                  </Button>
+                {/* Left side - Main Image */}
+                <div className="space-y-4">
+                  <div className="relative aspect-square rounded-lg overflow-hidden">
+                    <img
+                      src={artist.image}
+                      alt={artist.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={`absolute bottom-4 right-4 z-10 ${
+                        favoriteArtists.has(artist.id)
+                          ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
+                          : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onFavoriteToggle(artist.id, !favoriteArtists.has(artist.id));
+                      }}
+                    >
+                      <Zap size={24} />
+                    </Button>
+                  </div>
+                  
+                  {/* Artwork Thumbnails */}
+                  {artist.artworks && artist.artworks.length > 0 && (
+                    <div className="grid grid-cols-4 gap-2">
+                      {artist.artworks.map((artwork, index) => (
+                        <div 
+                          key={index} 
+                          className="aspect-square rounded-md overflow-hidden border border-gray-200"
+                        >
+                          <img
+                            src={artwork}
+                            alt={`Artwork ${index + 1} by ${artist.name}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Right side - Artist Info */}
