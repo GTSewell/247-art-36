@@ -50,12 +50,13 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
     <div className="min-h-screen flex items-center justify-center bg-zap-yellow relative">
       {/* Halftone overlay */}
       <div 
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0"
         style={{
           backgroundImage: `url('/lovable-uploads/6a59e93b-733b-49fa-952f-03f5d26f3eec.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
+          opacity: 0.1,
         }}
       />
       {/* Content */}
