@@ -32,6 +32,20 @@ const ArtistCard = ({
   return (
     <div className="relative">
       <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
+        {/* Favorite Button - Always visible */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`absolute top-4 right-4 z-[100] ${
+            isFavorite 
+              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
+              : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+          }`}
+          onClick={() => onFavoriteToggle(!isFavorite)}
+        >
+          <Zap size={isFeatured ? 24 : 20} />
+        </Button>
+
         {/* Artist Image */}
         <div className="aspect-square overflow-hidden">
           <img
@@ -41,28 +55,13 @@ const ArtistCard = ({
           />
         </div>
         
-        {/* Artist Information and Favorite Button - Visible on hover */}
+        {/* Artist Information - Visible on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'}`}>
-            <div className="flex justify-between items-end">
-              <div>
-                <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
-                <p className="text-white/80 text-sm mb-1">{specialty}</p>
-                <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
-              </div>
-              {/* Favorite Button - Moved to bottom right */}
-              <Button
-                variant="ghost"
-                size="icon"
-                className={`${
-                  isFavorite 
-                    ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
-                    : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-                }`}
-                onClick={() => onFavoriteToggle(!isFavorite)}
-              >
-                <Zap size={isFeatured ? 24 : 20} />
-              </Button>
+            <div>
+              <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
+              <p className="text-white/80 text-sm mb-1">{specialty}</p>
+              <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
             </div>
           </div>
         </div>
