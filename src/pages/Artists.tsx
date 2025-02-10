@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
@@ -6,6 +5,7 @@ import { Eye, FilterX, Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { featuredArtists, additionalArtists } from "@/data/artists";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 // Common art techniques
 const artTechniques = [
@@ -38,6 +38,16 @@ const Artists = () => {
   const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
+
+  const handleUpdateSelection = () => {
+    console.log('Updating selection with current filters:', {
+      artistSearch,
+      locationSearch,
+      selectedTechniques,
+      selectedStyles,
+      selectedSocials
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted">
@@ -183,8 +193,15 @@ const Artists = () => {
                     </div>
                   </div>
                 </ScrollArea>
-                <div className="pt-4 border-t">
-                  <button 
+                <div className="pt-4 border-t space-y-2">
+                  <Button 
+                    onClick={handleUpdateSelection}
+                    className="w-full"
+                    variant="default"
+                  >
+                    Update Selection
+                  </Button>
+                  <Button 
                     onClick={() => {
                       setArtistSearch("");
                       setLocationSearch("");
@@ -194,11 +211,12 @@ const Artists = () => {
                       setSelectedStyles([]);
                       setSelectedSocials([]);
                     }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors"
+                    className="w-full"
+                    variant="destructive"
                   >
-                    <FilterX size={20} />
-                    <span>Clear Filters</span>
-                  </button>
+                    <FilterX size={20} className="mr-2" />
+                    Clear Filters
+                  </Button>
                 </div>
               </div>
             </SheetContent>
@@ -275,4 +293,3 @@ const Artists = () => {
 };
 
 export default Artists;
-
