@@ -104,6 +104,23 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 
                     <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
 
+                    {/* Techniques */}
+                    {artist.techniques && artist.techniques.length > 0 && (
+                      <div>
+                        <h3 className="font-semibold mb-2">Techniques</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {artist.techniques.map((technique) => (
+                            <span
+                              key={technique}
+                              className="px-3 py-1 bg-gray-100 rounded-full text-sm"
+                            >
+                              {technique}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Styles */}
                     {artist.styles && artist.styles.length > 0 && (
                       <div>
@@ -143,3 +160,4 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 };
 
 export default FeaturedArtists;
+
