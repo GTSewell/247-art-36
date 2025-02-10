@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";

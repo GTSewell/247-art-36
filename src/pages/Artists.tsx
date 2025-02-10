@@ -36,7 +36,6 @@ const Artists = () => {
   const handleArtistImageRegeneration = async (artist: Artist) => {
     const newImageUrl = await handleRegenerateImage(artist);
     if (newImageUrl) {
-      // Refresh the artists list to show the new image
       refreshArtists();
     }
   };
@@ -141,4 +140,3 @@ const Artists = () => {
 };
 
 export default Artists;
-
