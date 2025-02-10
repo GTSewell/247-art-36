@@ -62,28 +62,24 @@ const ArtistCard = ({
 
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
 
-  const toggleFavorite = () => {
-    onFavoriteToggle(!isFavorite);
-    toast.success(isFavorite ? 'Removed from favorites' : 'Added to favorites');
-  };
-
   return (
     <div className="relative">
-      {/* Favorite Button - Always visible and interactive */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className={`absolute top-4 right-4 z-[100] ${
-          isFavorite 
-            ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
-            : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-        }`}
-        onClick={toggleFavorite}
-      >
-        <Zap size={isFeatured ? 24 : 20} />
-      </Button>
-
       <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
+        {/* Favorite Button - Always visible */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`absolute top-4 right-4 z-[100] ${
+            isFavorite 
+              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
+              : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+          }`}
+          onClick={() => onFavoriteToggle(!isFavorite)}
+        >
+          <Zap size={isFeatured ? 24 : 20} />
+        </Button>
+
+        {/* Artist Image */}
         <div className="aspect-square overflow-hidden">
           <img
             src={image}
