@@ -47,7 +47,13 @@ serve(async (req) => {
       ws.onmessage = (event) => {
         const response = JSON.parse(event.data);
         if (response.error || response.errors) {
-          reject(new Error(response.errorMessage || response.errors[0].message));
+          const errorMessage = response.errorMessage || response.errors[0].message;
+          // Check for insufficient credits error
+          if (errorMessage.includes('Insufficient credits')) {
+            reject(new Error('Insufficient Runware credits. Please add credits to your account at https://my.runware.ai/wallet'));
+          } else {
+            reject(new Error(errorMessage));
+          }
           return;
         }
 

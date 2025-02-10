@@ -20,7 +20,13 @@ export const useGenerateArtistImage = () => {
         body: { name, specialty }
       });
 
-      if (error) throw error;
+      if (error) {
+        // Check if it's an insufficient credits error
+        if (error.message?.includes('Insufficient') || error.message?.includes('credits')) {
+          throw new Error('Unable to generate image: Insufficient Runware credits. Please add credits to continue generating images.');
+        }
+        throw error;
+      }
       
       // Return the generated image URL
       return data.imageURL || data[0]?.imageURL;
