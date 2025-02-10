@@ -12,4 +12,6 @@ export interface Artist {
   styles?: string[];
   social_platforms?: string[];
   artworks?: string[];
+  locked_artworks?: boolean;
 }
+
