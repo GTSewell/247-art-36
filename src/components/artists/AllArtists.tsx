@@ -42,8 +42,8 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
 
   const handleArtistClick = (index: number, e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default behavior
-    e.stopPropagation(); // Stop event propagation
+    e.preventDefault();
+    e.stopPropagation();
     setSelectedArtistIndex(index);
   };
 

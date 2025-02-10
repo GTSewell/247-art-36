@@ -48,7 +48,11 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 />
                 <ArtistDetailsPanel 
                   artist={artist}
-                  onSelect={onSelect}
+                  onSelect={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onSelect(artist);
+                  }}
                 />
               </motion.div>
             </CarouselItem>

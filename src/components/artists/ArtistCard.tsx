@@ -11,8 +11,8 @@ interface ArtistCardProps {
   image: string;
   city?: string;
   country?: string;
-  onSelect: (artist: Artist) => void;
-  onRegenerateImage: () => void;
+  onSelect: (e: React.MouseEvent) => void;
+  onRegenerateImage: (e: React.MouseEvent) => void;
   onFavoriteToggle: (isFavorite: boolean) => void;
   isFavorite: boolean;
   isFeatured?: boolean;
@@ -42,26 +42,11 @@ const ArtistCard = ({
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
 
-  const handleCardClick = () => {
-    onSelect({
-      id,
-      name,
-      specialty,
-      image,
-      bio,
-      city,
-      country,
-      techniques,
-      styles,
-      social_platforms
-    });
-  };
-
   return (
     <div className="relative">
       <div 
         className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer"
-        onClick={handleCardClick}
+        onClick={onSelect}
       >
         {/* Artist Image */}
         <div className="aspect-square overflow-hidden">
