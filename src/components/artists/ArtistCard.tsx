@@ -104,7 +104,7 @@ const ArtistCard = ({
           <Button
             variant="ghost"
             size="icon"
-            className={`hover:bg-transparent ${isFavorite ? 'bg-zap-yellow/20 rounded-full' : ''}`}
+            className={`hover:bg-transparent ${isFavorite ? 'bg-zap-yellow rounded-full' : ''}`}
             onClick={toggleFavorite}
           >
             <Zap
