@@ -30,8 +30,8 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   if (artists.length === 0) return null;
 
   return (
-    <div className="mb-12">
-      <Carousel className="w-full">
+    <div className="mb-12 relative">
+      <Carousel className="w-full max-w-5xl mx-auto">
         <CarouselContent>
           {artists.map((artist) => (
             <CarouselItem key={artist.id}>
@@ -122,8 +122,8 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="absolute -left-4 md:-left-12 lg:-left-16 bg-white hover:bg-gray-100" />
+        <CarouselNext className="absolute -right-4 md:-right-12 lg:-right-16 bg-white hover:bg-gray-100" />
       </Carousel>
     </div>
   );
