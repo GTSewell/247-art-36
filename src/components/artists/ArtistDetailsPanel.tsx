@@ -120,20 +120,16 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           </Button>
 
           <Button
-            onClick={handleFavoriteClick}
-            variant={isFavorite ? "default" : "ghost"}
+            variant="ghost"
             size="icon"
             className={`${
               isFavorite 
-                ? 'bg-[#f7cf1e] hover:bg-[#f7cf1e]/90 text-black border-none' 
-                : 'bg-transparent hover:bg-gray-100 text-gray-500 hover:text-gray-700'
+                ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
+                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
             }`}
+            onClick={handleFavoriteClick}
           >
-            <Zap 
-              className={`h-5 w-5 ${
-                isFavorite ? 'fill-current' : 'fill-none'
-              }`}
-            />
+            <Zap size={20} className={isFavorite ? 'fill-current' : ''} />
           </Button>
         </div>
       </div>
