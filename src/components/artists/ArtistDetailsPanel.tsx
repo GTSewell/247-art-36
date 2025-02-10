@@ -122,9 +122,13 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
           <Button
             onClick={handleFavoriteClick}
-            variant="ghost"
+            variant={isFavorite ? "default" : "ghost"}
             size="icon"
-            className={`shrink-0 ${isFavorite ? 'text-yellow-500' : 'text-gray-500'}`}
+            className={`shrink-0 ${
+              isFavorite 
+                ? 'bg-[#f7cf1e] hover:bg-[#f7cf1e]/90 text-black' 
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
           >
             <Zap className="h-5 w-5" />
           </Button>
@@ -135,4 +139,3 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
-
