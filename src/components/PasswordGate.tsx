@@ -47,19 +47,23 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zap-yellow relative">
+    <div className="min-h-screen relative">
+      {/* Base yellow background */}
+      <div className="absolute inset-0 bg-zap-yellow z-0" />
+      
       {/* Halftone overlay */}
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 z-10"
         style={{
           backgroundImage: `url('/lovable-uploads/6a59e93b-733b-49fa-952f-03f5d26f3eec.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
         }}
       />
+      
       {/* Content */}
-      <div className="max-w-md w-full p-6 space-y-8 relative">
+      <div className="max-w-md w-full p-6 space-y-8 relative z-20 mx-auto pt-32">
         <div className="text-center">
           <img 
             src="/lovable-uploads/0b791040-b335-4a57-9c66-81d02cb12615.png" 
