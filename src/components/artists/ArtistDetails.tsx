@@ -30,7 +30,7 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
   if (!artist) return null;
 
   const handleRegenerateArtworks = async () => {
-    if (!onRegenerateArtworks || isGenerating) return;
+    if (!onRegenerateArtworks || isGenerating || artist.locked_artworks) return;
     
     setIsGenerating(true);
     try {
@@ -51,13 +51,15 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
       const { error } = await supabase
         .from('artists')
         .update({ 
-          locked_artworks: true
+          locked_artworks: true,
+          artworks: artist.artworks // Save the actual artworks array
         })
         .eq('id', artist.id);
 
       if (error) throw error;
       
       toast.success("Artworks saved successfully!");
+      window.location.reload(); // Refresh to show updated state
     } catch (error) {
       console.error('Error saving artworks:', error);
       toast.error("Failed to save artworks");
@@ -99,28 +101,30 @@ const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: Artist
             <div>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Artworks</h3>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSaveArtworks}
-                    disabled={isSaving || !artist.artworks?.length}
-                    className="flex items-center gap-2"
-                  >
-                    <SaveAll className="h-4 w-4" />
-                    {isSaving ? 'Saving...' : 'Save All'}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleRegenerateArtworks}
-                    disabled={isGenerating}
-                    className="flex items-center gap-2"
-                  >
-                    <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
-                    {isGenerating ? 'Generating...' : 'Generate Artworks'}
-                  </Button>
-                </div>
+                {!artist.locked_artworks && (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleSaveArtworks}
+                      disabled={isSaving || !artist.artworks?.length}
+                      className="flex items-center gap-2"
+                    >
+                      <SaveAll className="h-4 w-4" />
+                      {isSaving ? 'Saving...' : 'Save All'}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleRegenerateArtworks}
+                      disabled={isGenerating}
+                      className="flex items-center gap-2"
+                    >
+                      <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+                      {isGenerating ? 'Generating...' : 'Generate Artworks'}
+                    </Button>
+                  </div>
+                )}
               </div>
               {artist.artworks && artist.artworks.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
