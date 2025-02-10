@@ -24,7 +24,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     LinkedIn: <Linkedin className="h-5 w-5" />,
   };
 
-  // Remove spaces from artist name for domain
   const domainName = artist.name.replace(/\s+/g, '');
 
   const handleDomainClick = (e: React.MouseEvent) => {
@@ -122,13 +121,17 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <Button
             variant="ghost"
             size="icon"
-            className={isFavorite 
-              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
-              : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-            }
             onClick={handleFavoriteClick}
+            className={`${
+              isFavorite 
+                ? 'bg-zap-yellow hover:bg-zap-yellow/90 text-black'
+                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+            } transition-colors duration-200`}
           >
-            <Zap size={20} className={isFavorite ? 'fill-current' : ''} />
+            <Zap 
+              size={20} 
+              className={`transition-colors duration-200 ${isFavorite ? 'fill-current' : ''}`}
+            />
           </Button>
         </div>
       </div>
