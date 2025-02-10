@@ -16,6 +16,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   isFavorite 
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [showClickIndicator, setShowClickIndicator] = useState(true);
 
   useEffect(() => {
@@ -39,9 +40,11 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
         style={{ perspective: '1000px' }}
         onClick={handleFlip}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <AnimatePresence>
-          {showClickIndicator && (
+          {showClickIndicator && isHovered && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.4, 0.8, 0.4] }}
@@ -110,4 +113,3 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
 };
 
 export default ArtistImagePanel;
-
