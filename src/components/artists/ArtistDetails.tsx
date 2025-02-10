@@ -24,7 +24,7 @@ const ArtistDetails = ({ artist, isOpen, onClose }: ArtistDetailsProps) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:w-[540px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <SheetContent className="w-full sm:w-[540px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
         <ScrollArea className="h-full w-full rounded-md p-6">
           <SheetHeader className="mb-6">
             <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
@@ -95,7 +95,6 @@ const ArtistDetails = ({ artist, isOpen, onClose }: ArtistDetailsProps) => {
                       key={platform}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                       onClick={() => {
-                        // This would typically open the social media profile
                         console.log(`Opening ${platform} profile`);
                       }}
                     >

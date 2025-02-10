@@ -2,7 +2,6 @@
 import React from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { Artist } from "@/data/types/artist";
 
 interface ArtistCardProps {
@@ -91,7 +90,7 @@ const ArtistCard = ({
         <Button
           variant="ghost"
           size="icon"
-          className={`absolute bottom-4 right-4 z-[100] ${
+          className={`absolute bottom-4 right-4 z-10 ${
             isFavorite 
               ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
               : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
