@@ -59,7 +59,6 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          opacity: 0.5,
           mixBlendMode: 'multiply',
           pointerEvents: 'none',
         }}
