@@ -10,6 +10,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface CarouselViewProps {
   artists: Artist[];
@@ -30,6 +31,7 @@ const CarouselView: React.FC<CarouselViewProps> = ({
 }) => {
   const [showControls, setShowControls] = useState(true);
   const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: selectedArtistIndex });
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -55,6 +57,14 @@ const CarouselView: React.FC<CarouselViewProps> = ({
     setInteractionTimeout(timeout);
   };
 
+  const scrollPrev = () => {
+    if (emblaApi) emblaApi.scrollPrev();
+  };
+
+  const scrollNext = () => {
+    if (emblaApi) emblaApi.scrollNext();
+  };
+
   return (
     <div 
       className="relative"
@@ -67,7 +77,7 @@ const CarouselView: React.FC<CarouselViewProps> = ({
       >
         <X className="h-4 w-4" />
       </button>
-      <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true, startIndex: selectedArtistIndex }}>
+      <Carousel className="w-full max-w-full mx-auto" ref={emblaRef}>
         <CarouselContent>
           {artists.map((artist) => (
             <CarouselItem key={artist.id}>
@@ -100,7 +110,10 @@ const CarouselView: React.FC<CarouselViewProps> = ({
                 transition={{ duration: 0.2 }}
               >
                 <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                  <button className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                  <button 
+                    onClick={scrollPrev}
+                    className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
+                  >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
                 </div>
@@ -112,7 +125,10 @@ const CarouselView: React.FC<CarouselViewProps> = ({
                 transition={{ duration: 0.2 }}
               >
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <button className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                  <button 
+                    onClick={scrollNext}
+                    className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70"
+                  >
                     <ChevronRight className="h-6 w-6" />
                   </button>
                 </div>
