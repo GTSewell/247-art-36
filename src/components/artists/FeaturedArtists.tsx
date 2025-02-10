@@ -9,7 +9,7 @@ import {
   CarouselPrevious 
 } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
-import { Heart, MapPin, Palette, Zap } from 'lucide-react';
+import { MapPin, Palette, Zap, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface FeaturedArtistsProps {
@@ -27,6 +27,13 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   onFavoriteToggle,
   favoriteArtists,
 }) => {
+  const socialIcons = {
+    Facebook: <Facebook className="h-5 w-5" />,
+    Instagram: <Instagram className="h-5 w-5" />,
+    Twitter: <Twitter className="h-5 w-5" />,
+    LinkedIn: <Linkedin className="h-5 w-5" />,
+  };
+
   if (artists.length === 0) return null;
 
   return (
@@ -103,6 +110,23 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                     </div>
 
                     <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+
+                    {/* Social Media Icons */}
+                    {artist.social_platforms && artist.social_platforms.length > 0 && (
+                      <div>
+                        <h3 className="font-semibold mb-2">Connect</h3>
+                        <div className="flex gap-4">
+                          {artist.social_platforms.map((platform) => (
+                            <button
+                              key={platform}
+                              className="text-gray-600 hover:text-gray-900 transition-colors"
+                            >
+                              {socialIcons[platform as keyof typeof socialIcons]}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Techniques */}
                     {artist.techniques && artist.techniques.length > 0 && (
