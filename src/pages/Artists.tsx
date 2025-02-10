@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
@@ -117,7 +118,7 @@ const Artists = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted">
+    <div className="min-h-screen bg-zap-yellow">
       <Navigation />
       
       <div className="container mx-auto pt-20 px-4">
