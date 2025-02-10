@@ -26,15 +26,19 @@ const Artists = () => {
     additionalArtists,
     isLoading,
     favoriteArtists,
-    handleFavoriteToggle
+    handleFavoriteToggle,
+    refreshArtists
   } = useArtists();
 
-  const { handleRegenerateImage } = useArtistRegeneration((updateFn) => {
-    // Update both featured and additional artists
-    const newFeatured = updateFn(featuredArtists);
-    const newAdditional = updateFn(additionalArtists);
-    // The state updates will be handled by the useArtists hook
-  });
+  const { handleRegenerateImage, isGenerating } = useArtistRegeneration();
+
+  const handleArtistImageRegeneration = async (artist: Artist) => {
+    const newImageUrl = await handleRegenerateImage(artist);
+    if (newImageUrl) {
+      // Refresh the artists list to show the new image
+      refreshArtists();
+    }
+  };
 
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
@@ -114,7 +118,7 @@ const Artists = () => {
         <FeaturedArtists
           artists={filteredFeaturedArtists}
           onSelect={setSelectedArtist}
-          onRegenerateImage={handleRegenerateImage}
+          onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
         />
@@ -126,7 +130,7 @@ const Artists = () => {
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
           onSelect={setSelectedArtist}
-          onRegenerateImage={handleRegenerateImage}
+          onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
         />

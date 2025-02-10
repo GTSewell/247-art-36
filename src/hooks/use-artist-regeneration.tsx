@@ -5,9 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
 import { toast } from "sonner";
 
-export const useArtistRegeneration = (
-  onUpdate: (artists: Artist[]) => void
-) => {
+export const useArtistRegeneration = () => {
   const { generateImage, isLoading: isGenerating } = useGenerateArtistImage();
 
   const handleRegenerateImage = async (artist: Artist) => {
@@ -32,15 +30,9 @@ export const useArtistRegeneration = (
         toast.error('Failed to update artist image');
         return;
       }
-
-      // Update local state through callback
-      onUpdate(prevArtists =>
-        prevArtists.map(a =>
-          a.id === artist.id ? { ...a, image: imageUrl } : a
-        )
-      );
       
       toast.success(`New profile image generated for ${artist.name}!`);
+      return imageUrl;
     }
   };
 

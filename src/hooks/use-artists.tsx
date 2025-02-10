@@ -10,35 +10,35 @@ export const useArtists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    const loadArtists = async () => {
-      try {
-        setIsLoading(true);
-        const { data: artists, error } = await supabase
-          .from('artists')
-          .select('*')
-          .order('id');
+  const loadArtists = async () => {
+    try {
+      setIsLoading(true);
+      const { data: artists, error } = await supabase
+        .from('artists')
+        .select('*')
+        .order('id');
 
-        if (error) {
-          toast.error('Failed to load artists');
-          console.error('Error loading artists:', error);
-          return;
-        }
-
-        if (artists) {
-          // First 3 artists are featured
-          setFeaturedArtists(artists.slice(0, 3));
-          // Rest are additional artists
-          setAdditionalArtists(artists.slice(3));
-        }
-      } catch (error) {
-        console.error('Error in loadArtists:', error);
+      if (error) {
         toast.error('Failed to load artists');
-      } finally {
-        setIsLoading(false);
+        console.error('Error loading artists:', error);
+        return;
       }
-    };
 
+      if (artists) {
+        // First 3 artists are featured
+        setFeaturedArtists(artists.slice(0, 3));
+        // Rest are additional artists
+        setAdditionalArtists(artists.slice(3));
+      }
+    } catch (error) {
+      console.error('Error in loadArtists:', error);
+      toast.error('Failed to load artists');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadArtists();
   }, []);
 
@@ -61,6 +61,7 @@ export const useArtists = () => {
     additionalArtists,
     isLoading,
     favoriteArtists,
-    handleFavoriteToggle
+    handleFavoriteToggle,
+    refreshArtists: loadArtists
   };
 };
