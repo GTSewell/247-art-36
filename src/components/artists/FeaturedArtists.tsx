@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { 
@@ -64,7 +65,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
       <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true }}>
         <CarouselContent>
           {artists.map((artist) => (
-            <CarouselItem key={artist.id} className="p-4">
+            <CarouselItem key={artist.id} className="p-8">
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

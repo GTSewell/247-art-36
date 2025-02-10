@@ -97,7 +97,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true, startIndex: selectedArtistIndex }}>
             <CarouselContent>
               {artists.map((artist) => (
-                <CarouselItem key={artist.id} className="p-4">
+                <CarouselItem key={artist.id} className="p-8">
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
