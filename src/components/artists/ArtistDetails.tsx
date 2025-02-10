@@ -3,11 +3,10 @@ import React from "react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Artist } from "@/data/types/artist";
 import { Badge } from "@/components/ui/badge";
-import { Facebook, Instagram, Linkedin, Twitter, RefreshCw, SaveAll, Zap } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import ArtistDetailsHeader from "./ArtistDetailsHeader";
+import ArtistArtworksSection from "./ArtistArtworksSection";
+import ArtistSocialSection from "./ArtistSocialSection";
 
 interface ArtistDetailsProps {
   artist: Artist | null;
@@ -17,13 +16,6 @@ interface ArtistDetailsProps {
   onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
   isFavorite?: boolean;
 }
-
-const socialIcons = {
-  Facebook: <Facebook className="h-5 w-5" />,
-  Instagram: <Instagram className="h-5 w-5" />,
-  Twitter: <Twitter className="h-5 w-5" />,
-  LinkedIn: <Linkedin className="h-5 w-5" />,
-};
 
 const ArtistDetails = ({ 
   artist, 
@@ -38,7 +30,7 @@ const ArtistDetails = ({
 
   if (!artist) return null;
 
-  const handleRegenerateArtworks = async () => {
+  const handleRegenerateArtworks = async (artist: Artist) => {
     if (!onRegenerateArtworks || isGenerating || artist.locked_artworks) return;
     
     setIsGenerating(true);
@@ -49,65 +41,16 @@ const ArtistDetails = ({
     }
   };
 
-  const handleSaveArtworks = async () => {
-    if (!artist.artworks || artist.artworks.length === 0) {
-      toast.error("No artworks to save!");
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      const { error } = await supabase
-        .from('artists')
-        .update({ 
-          locked_artworks: true,
-          artworks: artist.artworks
-        })
-        .eq('id', artist.id);
-
-      if (error) throw error;
-      
-      toast.success("Artworks saved successfully!");
-      window.location.reload();
-    } catch (error) {
-      console.error('Error saving artworks:', error);
-      toast.error("Failed to save artworks");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-[800px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <ScrollArea className="h-full w-full rounded-md p-6">
           <SheetHeader className="mb-6">
-            <div className="relative">
-              <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
-                <img
-                  src={artist.image}
-                  alt={artist.name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              {onFavoriteToggle && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`absolute top-4 right-4 z-10 ${
-                    isFavorite
-                      ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
-                      : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-                  }`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onFavoriteToggle(artist.id, !isFavorite);
-                  }}
-                >
-                  <Zap size={24} />
-                </Button>
-              )}
-            </div>
+            <ArtistDetailsHeader 
+              artist={artist}
+              onFavoriteToggle={onFavoriteToggle}
+              isFavorite={isFavorite}
+            />
           </SheetHeader>
 
           <div className="space-y-8">
@@ -126,50 +69,13 @@ const ArtistDetails = ({
               <p className="text-muted-foreground">{artist.bio}</p>
             </div>
 
-            <div>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">Artworks</h3>
-                {!artist.locked_artworks && (
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleSaveArtworks}
-                      disabled={isSaving || !artist.artworks?.length}
-                      className="flex items-center gap-2"
-                    >
-                      <SaveAll className="h-4 w-4" />
-                      {isSaving ? 'Saving...' : 'Save All'}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleRegenerateArtworks}
-                      disabled={isGenerating}
-                      className="flex items-center gap-2"
-                    >
-                      <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
-                      {isGenerating ? 'Generating...' : 'Generate Artworks'}
-                    </Button>
-                  </div>
-                )}
-              </div>
-              {artist.artworks && artist.artworks.length > 0 ? (
-                <div className="grid grid-cols-2 gap-4">
-                  {artist.artworks.map((artwork, index) => (
-                    <div key={index} className="aspect-square rounded-lg overflow-hidden border border-border/40">
-                      <img
-                        src={artwork}
-                        alt={`Artwork ${index + 1} by ${artist.name}`}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-muted-foreground text-sm italic">No artworks generated yet. Click the button above to generate some!</p>
-              )}
-            </div>
+            <ArtistArtworksSection 
+              artist={artist}
+              onRegenerateArtworks={handleRegenerateArtworks}
+              isGenerating={isGenerating}
+              isSaving={isSaving}
+              setIsSaving={setIsSaving}
+            />
 
             {artist.techniques && artist.techniques.length > 0 && (
               <div>
@@ -205,24 +111,7 @@ const ArtistDetails = ({
               </div>
             )}
 
-            {artist.social_platforms && artist.social_platforms.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Social Media</h3>
-                <div className="flex gap-4">
-                  {artist.social_platforms.map((platform) => (
-                    <button
-                      key={platform}
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                      onClick={() => {
-                        console.log(`Opening ${platform} profile`);
-                      }}
-                    >
-                      {socialIcons[platform as keyof typeof socialIcons]}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            <ArtistSocialSection socialPlatforms={artist.social_platforms} />
           </div>
         </ScrollArea>
       </SheetContent>
