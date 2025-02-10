@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -122,7 +123,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             variant="ghost"
             size="icon"
             className={isFavorite 
-              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
+              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90 fill-current'
               : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
             }
             onClick={handleFavoriteClick}
