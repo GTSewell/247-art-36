@@ -11,4 +11,5 @@ export interface Artist {
   techniques?: string[];
   styles?: string[];
   social_platforms?: string[];
+  artworks?: string[];
 }

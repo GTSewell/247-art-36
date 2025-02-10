@@ -3,13 +3,15 @@ import React from "react";
 import { Sheet, SheetContent, SheetHeader } from "@/components/ui/sheet";
 import { Artist } from "@/data/types/artist";
 import { Badge } from "@/components/ui/badge";
-import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, RefreshCw } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 interface ArtistDetailsProps {
   artist: Artist | null;
   isOpen: boolean;
   onClose: () => void;
+  onRegenerateArtworks?: (artist: Artist) => void;
 }
 
 const socialIcons = {
@@ -19,12 +21,12 @@ const socialIcons = {
   LinkedIn: <Linkedin className="h-5 w-5" />,
 };
 
-const ArtistDetails = ({ artist, isOpen, onClose }: ArtistDetailsProps) => {
+const ArtistDetails = ({ artist, isOpen, onClose, onRegenerateArtworks }: ArtistDetailsProps) => {
   if (!artist) return null;
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:w-[540px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
+      <SheetContent className="w-full sm:w-[540px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <ScrollArea className="h-full w-full rounded-md p-6">
           <SheetHeader className="mb-6">
             <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
@@ -51,6 +53,36 @@ const ArtistDetails = ({ artist, isOpen, onClose }: ArtistDetailsProps) => {
               <h3 className="font-semibold mb-2">About</h3>
               <p className="text-muted-foreground">{artist.bio}</p>
             </div>
+
+            {artist.artworks && artist.artworks.length > 0 && (
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-semibold">Artworks</h3>
+                  {onRegenerateArtworks && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onRegenerateArtworks(artist)}
+                      className="flex items-center gap-2"
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                      Regenerate Artworks
+                    </Button>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {artist.artworks.map((artwork, index) => (
+                    <div key={index} className="aspect-square rounded-md overflow-hidden">
+                      <img
+                        src={artwork}
+                        alt={`Artwork ${index + 1} by ${artist.name}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {artist.techniques && artist.techniques.length > 0 && (
               <div>

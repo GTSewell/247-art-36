@@ -10,6 +10,7 @@ import { useArtists } from "@/hooks/use-artists";
 import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
@@ -38,6 +39,53 @@ const Artists = () => {
     const newImageUrl = await handleRegenerateImage(artist);
     if (newImageUrl) {
       refreshArtists();
+    }
+  };
+
+  const handleRegenerateArtworks = async (artist: Artist) => {
+    toast.info("Generating new artworks...");
+    
+    const generatePrompt = (technique: string) => {
+      return `Create artwork in the style of ${technique} that showcases ${artist.specialty}. The art should reflect ${artist.name}'s unique artistic vision.`;
+    };
+
+    try {
+      const newArtworks = [];
+      const techniques = artist.techniques || ['Mixed Media'];
+      
+      // Generate 4 artworks using different techniques
+      for (let i = 0; i < 4; i++) {
+        const technique = techniques[i % techniques.length];
+        const prompt = generatePrompt(technique);
+        
+        const { data, error: imageError } = await supabase.functions.invoke('generate-artist-image', {
+          body: { 
+            name: artist.name,
+            specialty: artist.specialty,
+            prompt: prompt
+          }
+        });
+
+        if (imageError) throw imageError;
+        if (data?.imageURL) {
+          newArtworks.push(data.imageURL);
+        }
+      }
+
+      if (newArtworks.length > 0) {
+        const { error: updateError } = await supabase
+          .from('artists')
+          .update({ artworks: newArtworks })
+          .eq('id', artist.id);
+
+        if (updateError) throw updateError;
+
+        toast.success("Artworks regenerated successfully!");
+        refreshArtists();
+      }
+    } catch (error) {
+      console.error('Error regenerating artworks:', error);
+      toast.error("Failed to regenerate artworks");
     }
   };
 
@@ -144,6 +192,7 @@ const Artists = () => {
           artist={selectedArtist}
           isOpen={!!selectedArtist}
           onClose={() => setSelectedArtist(null)}
+          onRegenerateArtworks={handleRegenerateArtworks}
         />
       </div>
     </div>

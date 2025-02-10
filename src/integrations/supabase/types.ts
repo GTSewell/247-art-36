@@ -29,6 +29,7 @@ export type Database = {
       }
       artists: {
         Row: {
+          artworks: string[] | null
           bio: string
           city: string | null
           country: string | null
@@ -44,6 +45,7 @@ export type Database = {
           techniques: Database["public"]["Enums"]["art_technique"][] | null
         }
         Insert: {
+          artworks?: string[] | null
           bio: string
           city?: string | null
           country?: string | null
@@ -59,6 +61,7 @@ export type Database = {
           techniques?: Database["public"]["Enums"]["art_technique"][] | null
         }
         Update: {
+          artworks?: string[] | null
           bio?: string
           city?: string | null
           country?: string | null
