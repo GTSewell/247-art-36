@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -33,7 +32,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(229,222,255,0.5)]">
+    <div className="flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_8px_30px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
       <div className="space-y-2">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
@@ -133,4 +132,3 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 };
 
 export default ArtistDetailsPanel;
-
