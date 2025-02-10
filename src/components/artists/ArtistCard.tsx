@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Eye, RefreshCw, Save } from "lucide-react";
+import { RefreshCw, Save, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ const ArtistCard = ({
   isFeatured = false 
 }: ArtistCardProps) => {
   const [isImageFixed, setIsImageFixed] = React.useState(false);
+  const [isFavorite, setIsFavorite] = React.useState(false);
 
   // Check if image is fixed on component mount
   React.useEffect(() => {
@@ -60,6 +61,12 @@ const ArtistCard = ({
   // Generate the subdomain from the artist's name
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
 
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    // Note: In a real app, we would persist this to a database
+    toast.success(isFavorite ? 'Removed from favorites' : 'Added to favorites');
+  };
+
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
       <div className="aspect-square overflow-hidden">
@@ -70,21 +77,13 @@ const ArtistCard = ({
         />
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'}`}>
-          <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
-          <p className="text-white/80 text-sm mb-1">{specialty}</p>
-          <p className="text-white/60 text-xs mb-3 font-mono">{subdomain}</p>
-          <div className="flex gap-2">
-            <Button
-              onClick={() => onSelect(id)}
-              className="flex items-center gap-2"
-              size={isFeatured ? "default" : "sm"}
-            >
-              <Eye size={isFeatured ? 20 : 16} />
-              <span>View Profile</span>
-            </Button>
-            {!isImageFixed ? (
-              <>
+        <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'} flex justify-between items-end`}>
+          <div>
+            <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
+            <p className="text-white/80 text-sm mb-1">{specialty}</p>
+            <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
+            {!isImageFixed && (
+              <div className="flex gap-2">
                 <Button
                   variant="secondary"
                   size={isFeatured ? "default" : "sm"}
@@ -99,9 +98,22 @@ const ArtistCard = ({
                 >
                   <Save size={isFeatured ? 20 : 16} />
                 </Button>
-              </>
-            ) : null}
+              </div>
+            )}
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-transparent"
+            onClick={toggleFavorite}
+          >
+            <Zap
+              size={isFeatured ? 24 : 20}
+              className={`transition-colors ${
+                isFavorite ? 'text-zap-yellow' : 'text-white/60'
+              }`}
+            />
+          </Button>
         </div>
       </div>
     </div>
