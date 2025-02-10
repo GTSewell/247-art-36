@@ -19,7 +19,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="space-y-3">
+      <div className="space-y-2">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
           <div className="flex items-center gap-2 text-gray-600 mb-1">
@@ -27,28 +27,46 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
             <span>{artist.specialty}</span>
           </div>
           {artist.city && artist.country && (
-            <div className="flex items-center gap-2 text-gray-600">
-              <MapPin size={18} />
-              <span>{`${artist.city}, ${artist.country}`}</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 text-gray-600">
+                <MapPin size={18} />
+                <span>{`${artist.city}, ${artist.country}`}</span>
+              </div>
+              
+              {/* Social Media Icons moved under location */}
+              {artist.social_platforms && artist.social_platforms.length > 0 && (
+                <div className="flex gap-3 pl-6">
+                  {artist.social_platforms.map((platform) => (
+                    <button
+                      key={platform}
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      {socialIcons[platform as keyof typeof socialIcons]}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
 
         <p className="text-gray-700 leading-relaxed line-clamp-2">{artist.bio}</p>
 
-        {/* Social Media Icons */}
-        {artist.social_platforms && artist.social_platforms.length > 0 && (
-          <div className="flex gap-3">
-            {artist.social_platforms.map((platform) => (
-              <button
-                key={platform}
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                {socialIcons[platform as keyof typeof socialIcons]}
-              </button>
-            ))}
-          </div>
-        )}
+        {/* Techniques and Styles under bio */}
+        <div className="space-y-1 text-sm">
+          {artist.techniques && artist.techniques.length > 0 && (
+            <div className="text-gray-600">
+              <span className="font-medium">Techniques:</span>{' '}
+              {artist.techniques.join(', ')}
+            </div>
+          )}
+          {artist.styles && artist.styles.length > 0 && (
+            <div className="text-gray-600">
+              <span className="font-medium">Styles:</span>{' '}
+              {artist.styles.join(', ')}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="space-y-3">
