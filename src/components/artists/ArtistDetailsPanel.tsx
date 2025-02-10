@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 
@@ -19,6 +19,14 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
 
   // Remove spaces from artist name for domain
   const domainName = artist.name.replace(/\s+/g, '');
+
+  const handleDomainClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.open(`https://${domainName}.247.art`, '_blank');
+    if (onSelect) {
+      onSelect(e);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -92,10 +100,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
         )}
         
         <Button
-          onClick={onSelect}
+          onClick={handleDomainClick}
           className="w-full bg-[#00baef] hover:bg-[#00baef]/90"
         >
           {domainName}.247.art
+          <ExternalLink className="ml-1" size={16} />
         </Button>
       </div>
     </div>
