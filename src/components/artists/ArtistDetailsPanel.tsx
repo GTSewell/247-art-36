@@ -123,7 +123,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             variant="ghost"
             size="icon"
             className={isFavorite 
-              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90 fill-current'
+              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90'
               : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
             }
             onClick={handleFavoriteClick}
