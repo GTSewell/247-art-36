@@ -22,7 +22,8 @@ export const useGenerateArtistImage = () => {
 
       if (error) throw error;
       
-      return data.imageURL;
+      // Return the generated image URL
+      return data.imageURL || data[0]?.imageURL;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate image');
       return null;

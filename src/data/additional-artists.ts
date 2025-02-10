@@ -5,7 +5,7 @@ export const additionalArtists: Artist[] = [
     id: 4,
     name: "Alex Turner",
     specialty: "Photography",
-    image: "https://images.unsplash.com/photo-1438565434616-3ef039228b15?w=800&q=80",
+    image: "https://im.runware.ai/image/ws/0.5/ii/alex_turner_photo.webp",
     bio: "Capturing unique moments through the lens.",
     location: "London, UK",
   },
