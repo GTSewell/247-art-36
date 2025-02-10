@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -24,10 +25,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     window.open(`https://${domainName}.247.art`, '_blank');
-    if (onSelect) {
-      onSelect(e);
-    }
   };
 
   return (
