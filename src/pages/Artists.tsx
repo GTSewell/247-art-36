@@ -7,6 +7,7 @@ import AllArtists from "@/components/artists/AllArtists";
 import ArtistsHeader from "@/components/artists/ArtistsHeader";
 import { useArtists } from "@/hooks/use-artists";
 import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
+import { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 
 const Artists = () => {
@@ -140,3 +141,4 @@ const Artists = () => {
 };
 
 export default Artists;
+
