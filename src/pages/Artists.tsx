@@ -5,7 +5,6 @@ import { filterArtists } from "@/components/artists/ArtistsFilter";
 import FeaturedArtists from "@/components/artists/FeaturedArtists";
 import AllArtists from "@/components/artists/AllArtists";
 import ArtistsHeader from "@/components/artists/ArtistsHeader";
-import ArtistDetails from "@/components/artists/ArtistDetails";
 import { useArtists } from "@/hooks/use-artists";
 import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
 import type { Artist } from "@/data/types/artist";
@@ -66,11 +65,6 @@ const Artists = () => {
         if (updateError) throw updateError;
 
         toast.success("Artworks regenerated successfully!");
-        
-        // Update the selected artist with new artworks
-        setSelectedArtist(prev => prev ? {...prev, artworks: data.artworkUrls} : null);
-        
-        // Refresh the main artists list
         refreshArtists();
       }
     } catch (error) {
@@ -92,10 +86,6 @@ const Artists = () => {
     setSelectedStyles([]);
     setSelectedSocials([]);
     toast.success('Filters cleared');
-  };
-
-  const handleArtistSelect = (artist: Artist) => {
-    setSelectedArtist(artist);
   };
 
   // Filter artists based on selected criteria
@@ -160,7 +150,7 @@ const Artists = () => {
 
         <FeaturedArtists
           artists={filteredFeaturedArtists}
-          onSelect={handleArtistSelect}
+          onSelect={handleRegenerateArtworks}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
@@ -172,17 +162,10 @@ const Artists = () => {
           setAllArtistsSearch={setAllArtistsSearch}
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
-          onSelect={handleArtistSelect}
+          onSelect={handleRegenerateArtworks}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
-        />
-
-        <ArtistDetails
-          artist={selectedArtist}
-          isOpen={!!selectedArtist}
-          onClose={() => setSelectedArtist(null)}
-          onRegenerateArtworks={handleRegenerateArtworks}
         />
       </div>
     </div>

@@ -1,10 +1,7 @@
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { SlidersHorizontal, Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
-import AtlasFilter from "@/components/artists/AtlasFilter";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { FilterX } from 'lucide-react';
 
 interface ArtistsHeaderProps {
   artistSearch: string;
@@ -26,67 +23,23 @@ interface ArtistsHeaderProps {
 }
 
 const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
-  artistSearch,
-  setArtistSearch,
-  locationSearch,
-  setLocationSearch,
-  techniqueSearch,
-  setTechniqueSearch,
-  styleSearch,
-  setStyleSearch,
-  selectedTechniques,
-  setSelectedTechniques,
-  selectedStyles,
-  setSelectedStyles,
-  selectedSocials,
-  setSelectedSocials,
   onUpdateSelection,
   onClearFilters,
 }) => {
-  const { theme, setTheme } = useTheme();
-
   return (
     <div className="flex justify-between items-center mb-8">
       <h1 className="text-4xl font-bold text-foreground">Featured Artists</h1>
-      <div className="flex items-center gap-4">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        >
-          {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-        </Button>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <SlidersHorizontal size={20} />
-              <span>ATLAS</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent className="w-full sm:max-w-xl">
-            <AtlasFilter 
-              artistSearch={artistSearch}
-              setArtistSearch={setArtistSearch}
-              locationSearch={locationSearch}
-              setLocationSearch={setLocationSearch}
-              techniqueSearch={techniqueSearch}
-              setTechniqueSearch={setTechniqueSearch}
-              styleSearch={styleSearch}
-              setStyleSearch={setStyleSearch}
-              selectedTechniques={selectedTechniques}
-              setSelectedTechniques={setSelectedTechniques}
-              selectedStyles={selectedStyles}
-              setSelectedStyles={setSelectedStyles}
-              selectedSocials={selectedSocials}
-              setSelectedSocials={setSelectedSocials}
-              onUpdateSelection={onUpdateSelection}
-              onClearFilters={onClearFilters}
-            />
-          </SheetContent>
-        </Sheet>
-      </div>
+      <Button 
+        onClick={onClearFilters}
+        variant="destructive"
+        className="flex items-center gap-2"
+      >
+        <FilterX size={20} />
+        Clear Filters
+      </Button>
     </div>
   );
 };
 
 export default ArtistsHeader;
+
