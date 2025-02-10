@@ -105,7 +105,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         <div className="flex items-center gap-2">
           <Button
             onClick={handleDomainClick}
-            className="flex-1 bg-[#00baef] hover:bg-[#00baef]/90"
+            className="flex-1 bg-[#00baef] hover:bg-[#f7cf1e] hover:text-black"
           >
             {domainName}.247.art
             <ExternalLink className="ml-1" size={16} />
