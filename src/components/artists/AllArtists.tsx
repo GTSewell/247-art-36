@@ -112,11 +112,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                     />
                     <ArtistDetailsPanel 
                       artist={artist}
-                      onSelect={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onSelect(artist);
-                      }}
+                      onSelect={() => onSelect(artist)}
                     />
                   </motion.div>
                 </CarouselItem>
@@ -139,7 +135,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                 onSelect={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  onSelect(artist);
+                  handleArtistClick(index, e);
                 }}
                 onRegenerateImage={(e) => {
                   e.preventDefault();
