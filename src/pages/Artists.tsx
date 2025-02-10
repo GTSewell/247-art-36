@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
 import { SlidersHorizontal, Sun, Moon } from "lucide-react";
@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
 import { toast } from "sonner";
 import { Artist } from "@/data/types/artist";
+import { supabase } from "@/integrations/supabase/client";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<number | null>(null);
@@ -26,6 +27,35 @@ const Artists = () => {
 
   const { theme, setTheme } = useTheme();
   const { generateImage, isLoading } = useGenerateArtistImage();
+
+  // Load fixed images on component mount
+  useEffect(() => {
+    const loadFixedImages = async () => {
+      const { data: fixedImages } = await supabase
+        .from('artist_images')
+        .select('artist_id, image_url');
+
+      if (fixedImages) {
+        const fixedImagesMap = new Map(fixedImages.map(img => [img.artist_id, img.image_url]));
+
+        setFeaturedArtists(prevArtists =>
+          prevArtists.map(artist => ({
+            ...artist,
+            image: fixedImagesMap.get(artist.id) || artist.image
+          }))
+        );
+
+        setAdditionalArtists(prevArtists =>
+          prevArtists.map(artist => ({
+            ...artist,
+            image: fixedImagesMap.get(artist.id) || artist.image
+          }))
+        );
+      }
+    };
+
+    loadFixedImages();
+  }, []);
 
   const handleRegenerateImage = async (artist: Artist) => {
     if (isLoading) {
@@ -158,4 +188,3 @@ const Artists = () => {
 };
 
 export default Artists;
-

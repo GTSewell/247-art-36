@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      artist_images: {
+        Row: {
+          artist_id: number
+          created_at: string
+          image_url: string
+        }
+        Insert: {
+          artist_id: number
+          created_at?: string
+          image_url: string
+        }
+        Update: {
+          artist_id?: number
+          created_at?: string
+          image_url?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           created_at: string

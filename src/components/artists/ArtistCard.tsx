@@ -1,7 +1,9 @@
 
 import React from "react";
-import { Eye, RefreshCw } from "lucide-react";
+import { Eye, RefreshCw, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface ArtistCardProps {
   id: number;
@@ -22,6 +24,39 @@ const ArtistCard = ({
   onRegenerateImage,
   isFeatured = false 
 }: ArtistCardProps) => {
+  const [isImageFixed, setIsImageFixed] = React.useState(false);
+
+  // Check if image is fixed on component mount
+  React.useEffect(() => {
+    const checkFixedImage = async () => {
+      const { data } = await supabase
+        .from('artist_images')
+        .select('image_url')
+        .eq('artist_id', id)
+        .single();
+      
+      setIsImageFixed(!!data);
+    };
+
+    checkFixedImage();
+  }, [id]);
+
+  const handleSaveImage = async () => {
+    try {
+      const { error } = await supabase
+        .from('artist_images')
+        .upsert({ artist_id: id, image_url: image });
+
+      if (error) throw error;
+
+      setIsImageFixed(true);
+      toast.success('Image saved successfully!');
+    } catch (error) {
+      console.error('Error saving image:', error);
+      toast.error('Failed to save image');
+    }
+  };
+
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
       <div className="aspect-square overflow-hidden">
@@ -44,13 +79,24 @@ const ArtistCard = ({
               <Eye size={isFeatured ? 20 : 16} />
               <span>View Profile</span>
             </Button>
-            <Button
-              variant="secondary"
-              size={isFeatured ? "default" : "sm"}
-              onClick={onRegenerateImage}
-            >
-              <RefreshCw size={isFeatured ? 20 : 16} />
-            </Button>
+            {!isImageFixed ? (
+              <>
+                <Button
+                  variant="secondary"
+                  size={isFeatured ? "default" : "sm"}
+                  onClick={onRegenerateImage}
+                >
+                  <RefreshCw size={isFeatured ? 20 : 16} />
+                </Button>
+                <Button
+                  variant="secondary"
+                  size={isFeatured ? "default" : "sm"}
+                  onClick={handleSaveImage}
+                >
+                  <Save size={isFeatured ? 20 : 16} />
+                </Button>
+              </>
+            ) : null}
           </div>
         </div>
       </div>

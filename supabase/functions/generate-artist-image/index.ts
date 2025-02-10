@@ -22,7 +22,11 @@ serve(async (req) => {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should NOT wear glasses (unless their specialty explicitly involves eyewear). The character should look professional and artistic, with clear facial features and expressions, wearing appropriate attire for their specialty.`;
+    // Randomly decide whether to include glasses
+    const includeGlasses = Math.random() > 0.7; // 30% chance of having glasses
+    const glassesPrompt = includeGlasses ? ", wearing stylish glasses" : ", not wearing glasses";
+
+    const prompt = `Create a pop art comic book style superhero portrait of an artist named ${name}, who specializes in ${specialty}${glassesPrompt}. The style should be vibrant and bold, with dramatic lighting and comic book aesthetics, similar to Roy Lichtenstein's work. Use strong black outlines, halftone dots pattern in the background, and dynamic composition. The character should look professional and artistic, with clear facial features and expressions, wearing appropriate attire for their specialty.`;
 
     const ws = new WebSocket(API_ENDPOINT);
     let result = null;
