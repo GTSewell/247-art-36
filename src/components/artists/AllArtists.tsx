@@ -12,7 +12,7 @@ interface AllArtistsProps {
   setAllArtistsSearch: (search: string) => void;
   showFavorites: boolean;
   setShowFavorites: (show: boolean) => void;
-  onSelect: (id: number | null) => void;
+  onSelect: (artist: Artist) => void;
   onRegenerateImage: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
@@ -65,7 +65,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           <ArtistCard
             key={artist.id}
             {...artist}
-            onSelect={onSelect}
+            onSelect={() => onSelect(artist)}
             onRegenerateImage={() => onRegenerateImage(artist)}
             onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}

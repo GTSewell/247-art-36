@@ -5,7 +5,7 @@ import ArtistCard from './ArtistCard';
 
 interface FeaturedArtistsProps {
   artists: Artist[];
-  onSelect: (id: number | null) => void;
+  onSelect: (artist: Artist) => void;
   onRegenerateImage: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
@@ -24,7 +24,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
         <ArtistCard
           key={artist.id}
           {...artist}
-          onSelect={onSelect}
+          onSelect={() => onSelect(artist)}
           onRegenerateImage={() => onRegenerateImage(artist)}
           isFeatured={true}
           onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
