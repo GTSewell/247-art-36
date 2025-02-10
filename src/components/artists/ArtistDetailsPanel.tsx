@@ -117,7 +117,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             onClick={(e) => {
               e.stopPropagation();
               if (onFavoriteToggle) {
-                onFavoriteToggle(!isFavorite);
+                onFavoriteToggle(artist.id, !isFavorite);
               }
             }}
             className={`${
