@@ -55,7 +55,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       <div 
         className="absolute inset-0 z-10"
         style={{
-          backgroundImage: `url('/lovable-uploads/d63a9da4-dc51-49db-9618-bbabf1580087.png')`,
+          backgroundImage: `url('/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
