@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
-import { Search, X } from 'lucide-react';
+import { Search, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
@@ -11,7 +11,7 @@ import {
   CarouselNext, 
   CarouselPrevious 
 } from '@/components/ui/carousel';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ArtistCard from './ArtistCard';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
@@ -40,6 +40,37 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   favoriteArtists,
 }) => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
+  const [showControls, setShowControls] = useState(true);
+  const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (selectedArtistIndex !== null) {
+      // Set initial timeout to hide controls
+      const timeout = setTimeout(() => {
+        setShowControls(false);
+      }, 2000);
+
+      return () => {
+        if (timeout) clearTimeout(timeout);
+      };
+    }
+  }, [selectedArtistIndex]);
+
+  const handleInteraction = () => {
+    setShowControls(true);
+    
+    // Clear any existing timeout
+    if (interactionTimeout) {
+      clearTimeout(interactionTimeout);
+    }
+
+    // Set new timeout to hide controls
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+
+    setInteractionTimeout(timeout);
+  };
 
   const handleArtistClick = (index: number, e: React.MouseEvent) => {
     e.preventDefault();
@@ -88,7 +119,11 @@ const AllArtists: React.FC<AllArtistsProps> = ({
       </div>
 
       {selectedArtistIndex !== null ? (
-        <div className="relative">
+        <div 
+          className="relative"
+          onTouchStart={handleInteraction}
+          onMouseMove={handleInteraction}
+        >
           <button 
             onClick={closeCarousel}
             className="absolute right-6 top-6 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
@@ -118,8 +153,32 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
-            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
+            <AnimatePresence>
+              {showControls && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                      <ChevronLeft className="h-4 w-4" />
+                    </CarouselPrevious>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                      <ChevronRight className="h-4 w-4" />
+                    </CarouselNext>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </Carousel>
         </div>
       ) : (
@@ -156,3 +215,4 @@ const AllArtists: React.FC<AllArtistsProps> = ({
 };
 
 export default AllArtists;
+

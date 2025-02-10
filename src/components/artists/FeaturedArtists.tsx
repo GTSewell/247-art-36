@@ -9,6 +9,7 @@ import {
   CarouselPrevious 
 } from '@/components/ui/carousel';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
 
@@ -97,7 +98,9 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                  <ChevronLeft className="h-4 w-4" />
+                </CarouselPrevious>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -105,7 +108,9 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                  <ChevronRight className="h-4 w-4" />
+                </CarouselNext>
               </motion.div>
             </>
           )}
