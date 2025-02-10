@@ -30,7 +30,6 @@ const ArtistCard = ({
 }: ArtistCardProps) => {
   const [isImageFixed, setIsImageFixed] = React.useState(false);
 
-  // Check if image is fixed on component mount
   React.useEffect(() => {
     const checkFixedImage = async () => {
       const { data } = await supabase
@@ -61,7 +60,6 @@ const ArtistCard = ({
     }
   };
 
-  // Generate the subdomain from the artist's name
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
 
   const toggleFavorite = () => {
@@ -71,13 +69,15 @@ const ArtistCard = ({
 
   return (
     <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl">
-      {/* Favorite Button - Always visible at the top right */}
+      {/* Favorite Button - Always visible and positioned on top */}
       <div className="absolute top-4 right-4 z-10">
         <Button
           variant="ghost"
           size="icon"
-          className={`bg-black/20 hover:bg-black/30 backdrop-blur-sm ${
-            isFavorite ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' : 'text-white'
+          className={`${
+            isFavorite 
+              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
+              : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
           }`}
           onClick={toggleFavorite}
         >
