@@ -25,7 +25,7 @@ const CallToAction = () => {
           whileTap={{ scale: 0.95 }}
           className="bg-zap-blue text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-opacity-90 transition-colors mb-16"
         >
-          Get Started with <img src="/lovable-uploads/1012b9a0-07f9-4f8d-9297-417bb4f99733.png" alt="ZAP!" className="inline-block h-10" />
+          Get Started with <img src="/lovable-uploads/1012b9a0-07f9-4f8d-9297-417bb4f99733.png" alt="ZAP!" className="inline-block h-8" />
         </motion.button>
 
         {/* Powered By Section */}
