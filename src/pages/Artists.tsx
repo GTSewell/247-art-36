@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navigation from "@/components/Navigation";
@@ -35,7 +34,6 @@ const Artists = () => {
   ];
 
   const additionalArtists = [
-    // Adding 48 more artists with unique images and details
     {
       id: 4,
       name: "Alex Turner",
