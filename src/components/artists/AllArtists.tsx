@@ -98,22 +98,24 @@ const AllArtists: React.FC<AllArtistsProps> = ({
             <CarouselContent>
               {artists.map((artist) => (
                 <CarouselItem key={artist.id} className="p-8">
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_8px_20px_-5px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]"
-                  >
-                    <ArtistImagePanel 
-                      artist={artist}
-                      onFavoriteToggle={onFavoriteToggle}
-                      isFavorite={favoriteArtists.has(artist.id)}
-                    />
-                    <ArtistDetailsPanel 
-                      artist={artist}
-                      onSelect={() => onSelect(artist)}
-                    />
-                  </motion.div>
+                  <div className="max-w-7xl mx-auto px-4">
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_8px_20px_-5px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]"
+                    >
+                      <ArtistImagePanel 
+                        artist={artist}
+                        onFavoriteToggle={onFavoriteToggle}
+                        isFavorite={favoriteArtists.has(artist.id)}
+                      />
+                      <ArtistDetailsPanel 
+                        artist={artist}
+                        onSelect={() => onSelect(artist)}
+                      />
+                    </motion.div>
+                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
