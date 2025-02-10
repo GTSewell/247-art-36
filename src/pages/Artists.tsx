@@ -96,10 +96,6 @@ const Artists = () => {
       <Navigation />
       
       <div className="container mx-auto pt-20 px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold">Artists</h1>
-        </div>
-
         <ArtistsHeader
           artistSearch={artistSearch}
           setArtistSearch={setArtistSearch}
