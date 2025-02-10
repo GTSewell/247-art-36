@@ -90,9 +90,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ artist, onSelec
         
         <Button
           onClick={onSelect}
-          className="w-full"
+          className="w-full bg-[#00baef] hover:bg-[#00baef]/90"
         >
-          View Profile
+          {artist.name}.247.art
         </Button>
       </div>
     </div>
