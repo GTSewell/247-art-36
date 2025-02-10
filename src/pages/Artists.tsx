@@ -7,11 +7,8 @@ import AllArtists from "@/components/artists/AllArtists";
 import ArtistsHeader from "@/components/artists/ArtistsHeader";
 import { useArtists } from "@/hooks/use-artists";
 import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
-import { useBulkArtistRegeneration } from "@/hooks/use-bulk-artist-regeneration";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Wand2 } from "lucide-react";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<number | null>(null);
@@ -35,7 +32,6 @@ const Artists = () => {
   } = useArtists();
 
   const { handleRegenerateImage, isGenerating } = useArtistRegeneration();
-  const { regenerateAllArtistImages, isRegenerating } = useBulkArtistRegeneration();
 
   const handleArtistImageRegeneration = async (artist: Artist) => {
     const newImageUrl = await handleRegenerateImage(artist);
@@ -57,13 +53,6 @@ const Artists = () => {
     setSelectedStyles([]);
     setSelectedSocials([]);
     toast.success('Filters cleared');
-  };
-
-  const handleBulkRegeneration = async () => {
-    const results = await regenerateAllArtistImages();
-    if (results) {
-      refreshArtists();
-    }
   };
 
   // Filter artists based on selected criteria
@@ -107,16 +96,8 @@ const Artists = () => {
       <Navigation />
       
       <div className="container mx-auto pt-20 px-4">
-        <div className="flex justify-between items-center mb-8">
+        <div className="mb-8">
           <h1 className="text-4xl font-bold">Artists</h1>
-          <Button
-            onClick={handleBulkRegeneration}
-            disabled={isRegenerating}
-            className="bg-black text-white hover:bg-black/90"
-          >
-            <Wand2 className="w-4 h-4 mr-2" />
-            {isRegenerating ? 'Regenerating...' : 'Regenerate All Images'}
-          </Button>
         </div>
 
         <ArtistsHeader

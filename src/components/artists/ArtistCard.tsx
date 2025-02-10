@@ -1,6 +1,6 @@
 
 import React from "react";
-import { RefreshCw, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -62,13 +62,6 @@ const ArtistCard = ({
               <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
               <p className="text-white/80 text-sm mb-1">{specialty}</p>
               <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
-              <Button
-                variant="secondary"
-                size={isFeatured ? "default" : "sm"}
-                onClick={onRegenerateImage}
-              >
-                <RefreshCw size={isFeatured ? 20 : 16} />
-              </Button>
             </div>
           </div>
         </div>
