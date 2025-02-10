@@ -98,9 +98,11 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
-                  <ChevronLeft className="h-4 w-4" />
-                </CarouselPrevious>
+                <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                  <button className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                </div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -108,9 +110,11 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
-                  <ChevronRight className="h-4 w-4" />
-                </CarouselNext>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                  <button className="p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70">
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                </div>
               </motion.div>
             </>
           )}
@@ -121,4 +125,3 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 };
 
 export default FeaturedArtists;
-
