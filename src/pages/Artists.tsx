@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import { Eye, FilterX, Search, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { featuredArtists, additionalArtists } from "@/data/artists";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Common art techniques
 const artTechniques = [
@@ -55,7 +56,7 @@ const Artists = () => {
             <SheetContent className="w-full sm:max-w-xl">
               <div className="h-full flex flex-col">
                 <h2 className="text-2xl font-semibold mb-4">ATLAS Filter</h2>
-                <div className="flex-1 overflow-auto">
+                <ScrollArea className="flex-1 pr-4">
                   <div className="space-y-6">
                     {/* Artist Search */}
                     <div className="space-y-2">
@@ -97,25 +98,27 @@ const Artists = () => {
                           className="pl-8"
                         />
                       </div>
-                      <div className="grid grid-cols-2 gap-2 mt-2 max-h-40 overflow-y-auto">
-                        {artTechniques.map((technique) => (
-                          <label key={technique} className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              checked={selectedTechniques.includes(technique)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectedTechniques([...selectedTechniques, technique]);
-                                } else {
-                                  setSelectedTechniques(selectedTechniques.filter(t => t !== technique));
-                                }
-                              }}
-                              className="form-checkbox"
-                            />
-                            <span className="text-sm">{technique}</span>
-                          </label>
-                        ))}
-                      </div>
+                      <ScrollArea className="h-40">
+                        <div className="grid grid-cols-2 gap-2">
+                          {artTechniques.map((technique) => (
+                            <label key={technique} className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                checked={selectedTechniques.includes(technique)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedTechniques([...selectedTechniques, technique]);
+                                  } else {
+                                    setSelectedTechniques(selectedTechniques.filter(t => t !== technique));
+                                  }
+                                }}
+                                className="form-checkbox"
+                              />
+                              <span className="text-sm">{technique}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     </div>
 
                     {/* Artwork Styles Search and Checkboxes */}
@@ -130,52 +133,56 @@ const Artists = () => {
                           className="pl-8"
                         />
                       </div>
-                      <div className="grid grid-cols-2 gap-2 mt-2 max-h-40 overflow-y-auto">
-                        {artworkStyles.map((style) => (
-                          <label key={style} className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              checked={selectedStyles.includes(style)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectedStyles([...selectedStyles, style]);
-                                } else {
-                                  setSelectedStyles(selectedStyles.filter(s => s !== style));
-                                }
-                              }}
-                              className="form-checkbox"
-                            />
-                            <span className="text-sm">{style}</span>
-                          </label>
-                        ))}
-                      </div>
+                      <ScrollArea className="h-40">
+                        <div className="grid grid-cols-2 gap-2">
+                          {artworkStyles.map((style) => (
+                            <label key={style} className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                checked={selectedStyles.includes(style)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedStyles([...selectedStyles, style]);
+                                  } else {
+                                    setSelectedStyles(selectedStyles.filter(s => s !== style));
+                                  }
+                                }}
+                                className="form-checkbox"
+                              />
+                              <span className="text-sm">{style}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     </div>
 
                     {/* Social Media Platforms */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Social Media Presence</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {socialPlatforms.map((platform) => (
-                          <label key={platform} className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              checked={selectedSocials.includes(platform)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectedSocials([...selectedSocials, platform]);
-                                } else {
-                                  setSelectedSocials(selectedSocials.filter(s => s !== platform));
-                                }
-                              }}
-                              className="form-checkbox"
-                            />
-                            <span className="text-sm">{platform}</span>
-                          </label>
-                        ))}
-                      </div>
+                      <ScrollArea className="h-40">
+                        <div className="grid grid-cols-2 gap-2">
+                          {socialPlatforms.map((platform) => (
+                            <label key={platform} className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                checked={selectedSocials.includes(platform)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedSocials([...selectedSocials, platform]);
+                                  } else {
+                                    setSelectedSocials(selectedSocials.filter(s => s !== platform));
+                                  }
+                                }}
+                                className="form-checkbox"
+                              />
+                              <span className="text-sm">{platform}</span>
+                            </label>
+                          ))}
+                        </div>
+                      </ScrollArea>
                     </div>
                   </div>
-                </div>
+                </ScrollArea>
                 <div className="pt-4 border-t">
                   <button 
                     onClick={() => {
@@ -268,3 +275,4 @@ const Artists = () => {
 };
 
 export default Artists;
+
