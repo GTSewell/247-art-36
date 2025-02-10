@@ -1,8 +1,7 @@
 
 import React from "react";
-import { RefreshCw, Save, Zap } from "lucide-react";
+import { RefreshCw, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface ArtistCardProps {
@@ -28,38 +27,6 @@ const ArtistCard = ({
   isFavorite,
   isFeatured = false 
 }: ArtistCardProps) => {
-  const [isImageFixed, setIsImageFixed] = React.useState(false);
-
-  React.useEffect(() => {
-    const checkFixedImage = async () => {
-      const { data } = await supabase
-        .from('artist_images')
-        .select('image_url')
-        .eq('artist_id', id)
-        .maybeSingle();
-      
-      setIsImageFixed(!!data);
-    };
-
-    checkFixedImage();
-  }, [id]);
-
-  const handleSaveImage = async () => {
-    try {
-      const { error } = await supabase
-        .from('artist_images')
-        .upsert({ artist_id: id, image_url: image });
-
-      if (error) throw error;
-
-      setIsImageFixed(true);
-      toast.success('Image saved successfully!');
-    } catch (error) {
-      console.error('Error saving image:', error);
-      toast.error('Failed to save image');
-    }
-  };
-
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
 
   return (
@@ -95,24 +62,13 @@ const ArtistCard = ({
               <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
               <p className="text-white/80 text-sm mb-1">{specialty}</p>
               <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
-              {!isImageFixed && (
-                <div className="flex gap-2">
-                  <Button
-                    variant="secondary"
-                    size={isFeatured ? "default" : "sm"}
-                    onClick={onRegenerateImage}
-                  >
-                    <RefreshCw size={isFeatured ? 20 : 16} />
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    size={isFeatured ? "default" : "sm"}
-                    onClick={handleSaveImage}
-                  >
-                    <Save size={isFeatured ? 20 : 16} />
-                  </Button>
-                </div>
-              )}
+              <Button
+                variant="secondary"
+                size={isFeatured ? "default" : "sm"}
+                onClick={onRegenerateImage}
+              >
+                <RefreshCw size={isFeatured ? 20 : 16} />
+              </Button>
             </div>
           </div>
         </div>
@@ -122,4 +78,3 @@ const ArtistCard = ({
 };
 
 export default ArtistCard;
-
