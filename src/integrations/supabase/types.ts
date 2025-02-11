@@ -110,6 +110,98 @@ export type Database = {
           },
         ]
       }
+      favorite_galleries: {
+        Row: {
+          created_at: string
+          gallery_id: number
+          id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          gallery_id: number
+          id?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          gallery_id?: number
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorite_galleries_gallery_id_fkey"
+            columns: ["gallery_id"]
+            isOneToOne: false
+            referencedRelation: "galleries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      galleries: {
+        Row: {
+          artworks: string[] | null
+          bio: string
+          city: string | null
+          country: string | null
+          established_year: number | null
+          gallery_types: Database["public"]["Enums"]["gallery_type"][] | null
+          id: number
+          image: string
+          location: string | null
+          locked_artworks: boolean | null
+          name: string
+          size_sqm: number | null
+          social_platforms:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty: string
+          styles: Database["public"]["Enums"]["gallery_style"][] | null
+          website: string | null
+        }
+        Insert: {
+          artworks?: string[] | null
+          bio: string
+          city?: string | null
+          country?: string | null
+          established_year?: number | null
+          gallery_types?: Database["public"]["Enums"]["gallery_type"][] | null
+          id?: number
+          image: string
+          location?: string | null
+          locked_artworks?: boolean | null
+          name: string
+          size_sqm?: number | null
+          social_platforms?:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty: string
+          styles?: Database["public"]["Enums"]["gallery_style"][] | null
+          website?: string | null
+        }
+        Update: {
+          artworks?: string[] | null
+          bio?: string
+          city?: string | null
+          country?: string | null
+          established_year?: number | null
+          gallery_types?: Database["public"]["Enums"]["gallery_type"][] | null
+          id?: number
+          image?: string
+          location?: string | null
+          locked_artworks?: boolean | null
+          name?: string
+          size_sqm?: number | null
+          social_platforms?:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty?: string
+          styles?: Database["public"]["Enums"]["gallery_style"][] | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -199,6 +291,28 @@ export type Database = {
         | "Metalwork"
         | "Wood Carving"
         | "Lithography"
+      gallery_style:
+        | "Contemporary"
+        | "Modern"
+        | "Classical"
+        | "Experimental"
+        | "Mixed Media"
+        | "Digital Art"
+        | "Photography"
+        | "Sculpture"
+        | "Installation"
+        | "Performance"
+      gallery_type:
+        | "Commercial"
+        | "Non-Profit"
+        | "Museum"
+        | "Artist-Run"
+        | "Pop-Up"
+        | "University"
+        | "Corporate"
+        | "Public"
+        | "Private"
+        | "Virtual"
       social_platform:
         | "Instagram"
         | "Twitter"

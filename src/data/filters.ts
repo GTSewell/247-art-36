@@ -15,6 +15,18 @@ export const artworkStyles = [
   "Expressionism", "Cubism", "Digital", "Urban", "Conceptual"
 ];
 
+// Gallery styles
+export const galleryStyles = [
+  "Contemporary", "Modern", "Classical", "Experimental", "Mixed Media",
+  "Digital Art", "Photography", "Sculpture", "Installation", "Performance"
+];
+
+// Gallery types
+export const galleryTypes = [
+  "Commercial", "Non-Profit", "Museum", "Artist-Run", "Pop-Up",
+  "University", "Corporate", "Public", "Private", "Virtual"
+];
+
 // Social media platforms
 export const socialPlatforms = [
   "Instagram", "Twitter", "Facebook", "YouTube", "TikTok",
