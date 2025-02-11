@@ -47,8 +47,8 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
   onClearFilters,
 }) => {
   return (
-    <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center mb-8">
-      <h1 className="text-4xl font-bold text-foreground mb-4 md:mb-0">Featured Artists</h1>
+    <div className="flex flex-col md:flex-row md:justify-between items-center md:items-center mb-8">
+      <h1 className="text-4xl font-bold text-foreground mb-4 md:mb-0 text-center md:text-left">Featured Artists</h1>
       <div className="flex items-center gap-2 self-center md:self-auto">
         <Sheet>
           <SheetTrigger asChild>

@@ -18,8 +18,8 @@ const AllArtistsHeader: React.FC<AllArtistsHeaderProps> = ({
   setShowFavorites,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-      <h2 className="text-3xl font-bold text-foreground">All Artists</h2>
+    <div className="flex flex-col sm:flex-row justify-between items-center sm:items-center gap-4 mb-6">
+      <h2 className="text-3xl font-bold text-foreground text-center sm:text-left">All Artists</h2>
       <div className="flex items-center gap-4">
         <div className="flex items-center space-x-2 bg-background/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-md border border-border">
           <Checkbox
