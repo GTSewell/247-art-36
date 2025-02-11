@@ -24,36 +24,41 @@ export const filterArtists = ({
   favoriteArtists,
 }: ArtistsFilterProps) => {
   return artists.filter(artist => {
+    // If showFavorites is true, only show favorited artists
+    if (showFavorites && !favoriteArtists.has(artist.id)) {
+      return false;
+    }
+
     // Text search filters
-    const matchesSearch = artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase()) ||
-      artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase());
+    const nameMatch = artist.name.toLowerCase().includes(allArtistsSearch.toLowerCase());
+    const specialtyMatch = artist.specialty.toLowerCase().includes(allArtistsSearch.toLowerCase());
+    const searchMatch = !allArtistsSearch || nameMatch || specialtyMatch;
     
-    const matchesLocation = !locationSearch || 
-      (artist.location && artist.location.toLowerCase().includes(locationSearch.toLowerCase()));
+    // Location filter
+    const locationMatch = !locationSearch || (
+      (artist.location && artist.location.toLowerCase().includes(locationSearch.toLowerCase())) ||
+      (artist.city && artist.city.toLowerCase().includes(locationSearch.toLowerCase())) ||
+      (artist.country && artist.country.toLowerCase().includes(locationSearch.toLowerCase()))
+    );
 
-    // Technique filter
-    const matchesTechniques = selectedTechniques.length === 0 || 
-      selectedTechniques.every(technique => 
-        artist.techniques?.includes(technique as any)
+    // Technique filter - only apply if techniques are selected
+    const techniqueMatch = selectedTechniques.length === 0 || 
+      selectedTechniques.some(technique => 
+        artist.techniques?.includes(technique)
       );
 
-    // Style filter
-    const matchesStyles = selectedStyles.length === 0 || 
-      selectedStyles.every(style => 
-        artist.styles?.includes(style as any)
+    // Style filter - only apply if styles are selected
+    const styleMatch = selectedStyles.length === 0 || 
+      selectedStyles.some(style => 
+        artist.styles?.includes(style)
       );
 
-    // Social platform filter
-    const matchesSocials = selectedSocials.length === 0 || 
-      selectedSocials.every(social => 
-        artist.social_platforms?.includes(social as any)
+    // Social platform filter - only apply if social platforms are selected
+    const socialMatch = selectedSocials.length === 0 || 
+      selectedSocials.some(social => 
+        artist.social_platforms?.includes(social)
       );
 
-    // Favorites filter
-    const matchesFavorites = !showFavorites || favoriteArtists.has(artist.id);
-
-    return matchesSearch && matchesLocation && matchesTechniques && 
-           matchesStyles && matchesSocials && matchesFavorites;
+    return searchMatch && locationMatch && techniqueMatch && styleMatch && socialMatch;
   });
 };
-
