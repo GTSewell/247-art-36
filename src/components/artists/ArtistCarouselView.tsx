@@ -132,8 +132,8 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute left-0 md:-left-4 ${
-                  isMobile ? 'top-[calc(50%-12px)]' : 'top-1/2 -translate-y-1/2'
+                className={`absolute ${
+                  isMobile ? 'left-0 top-[25%]' : 'left-0 md:-left-4 top-1/2 -translate-y-1/2'
                 }`}
               >
                 <button onClick={() => api?.scrollPrev()} className="p-2">
@@ -145,8 +145,8 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute right-0 md:-right-4 ${
-                  isMobile ? 'top-[calc(50%-12px)]' : 'top-1/2 -translate-y-1/2'
+                className={`absolute ${
+                  isMobile ? 'right-0 top-[25%]' : 'right-0 md:-right-4 top-1/2 -translate-y-1/2'
                 }`}
               >
                 <button onClick={() => api?.scrollNext()} className="p-2">
