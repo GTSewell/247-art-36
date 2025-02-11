@@ -72,14 +72,14 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
 
   return (
     <div 
-      className="mb-12 relative focus:outline-none z-10" 
+      className="relative focus:outline-none z-10" 
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       <Carousel 
-        className="w-full max-w-full mx-auto relative" 
+        className="w-full max-w-[1200px] mx-auto relative" 
         opts={{ 
           loop: true,
           duration: 50
@@ -119,7 +119,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className={`absolute z-20 ${
-                  isMobile ? '-left-7 top-1/2 -translate-y-1/2' : 'left-0 md:-left-4 top-1/2 -translate-y-1/2'
+                  isMobile ? '-left-7 top-1/2 -translate-y-1/2' : 'left-4 top-1/2 -translate-y-1/2'
                 }`}
               >
                 <button onClick={() => api?.scrollPrev()} className="p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors">
@@ -132,7 +132,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className={`absolute z-20 ${
-                  isMobile ? '-right-7 top-1/2 -translate-y-1/2' : 'right-0 md:-right-4 top-1/2 -translate-y-1/2'
+                  isMobile ? '-right-7 top-1/2 -translate-y-1/2' : 'right-4 top-1/2 -translate-y-1/2'
                 }`}
               >
                 <button onClick={() => api?.scrollNext()} className="p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors">

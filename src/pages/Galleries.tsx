@@ -12,7 +12,6 @@ const Galleries = () => {
   const { toast } = useToast();
 
   const handleGallerySelect = (gallery: Gallery) => {
-    // TODO: Implement gallery selection functionality
     toast({
       title: "Coming Soon",
       description: "Gallery details view will be implemented soon!",
@@ -39,19 +38,35 @@ const Galleries = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen">
+        <Navigation />
+        <div className="pt-16 text-center">Loading galleries...</div>
+      </div>
+    );
+  }
+
+  if (!galleries || galleries.length === 0) {
+    return (
+      <div className="min-h-screen">
+        <Navigation />
+        <div className="pt-16 text-center">No galleries found.</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
       <Navigation />
-      <div className="pt-16">
+      <div className="pt-16 relative z-0">
         <h1 className="text-3xl font-bold text-center mb-8">Featured Galleries</h1>
-        {!isLoading && (
-          <FeaturedGalleries
-            galleries={galleries}
-            onSelect={handleGallerySelect}
-            onFavoriteToggle={handleFavoriteToggle}
-            favoriteGalleries={favoriteGalleries}
-          />
-        )}
+        <FeaturedGalleries
+          galleries={galleries}
+          onSelect={handleGallerySelect}
+          onFavoriteToggle={handleFavoriteToggle}
+          favoriteGalleries={favoriteGalleries}
+        />
       </div>
     </div>
   );
