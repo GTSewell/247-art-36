@@ -54,14 +54,13 @@ export const useArtists = () => {
           location: artist.location,
           city: artist.city,
           country: artist.country,
-          techniques: artist.techniques || [],
-          styles: artist.styles || [],
-          social_platforms: artist.social_platforms || [],
-          artworks: artist.artworks || [],
-          locked_artworks: artist.locked_artworks || false
+          techniques: artist.techniques,
+          styles: artist.styles,
+          social_platforms: artist.social_platforms,
+          artworks: artist.artworks,
+          locked_artworks: artist.locked_artworks
         }));
 
-        console.log('Transformed Artists:', transformedArtists);
         // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
         // Rest are additional artists

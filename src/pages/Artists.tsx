@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
 import FeaturedArtists from "@/components/artists/FeaturedArtists";
@@ -33,19 +33,6 @@ const Artists = () => {
   } = useArtists();
 
   const { handleRegenerateImage, isGenerating } = useArtistRegeneration();
-
-  useEffect(() => {
-    console.log("Featured Artists:", featuredArtists);
-    console.log("Additional Artists:", additionalArtists);
-    console.log("Filter criteria:", {
-      allArtistsSearch,
-      locationSearch,
-      selectedTechniques,
-      selectedStyles,
-      selectedSocials,
-      showFavorites
-    });
-  }, [featuredArtists, additionalArtists, allArtistsSearch, locationSearch, selectedTechniques, selectedStyles, selectedSocials, showFavorites]);
 
   const handleArtistImageRegeneration = async (artist: Artist) => {
     const newImageUrl = await handleRegenerateImage(artist);
@@ -124,8 +111,6 @@ const Artists = () => {
     favoriteArtists
   });
 
-  console.log("Filtered additional artists:", filteredAdditionalArtists);
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-zap-yellow">
@@ -188,3 +173,4 @@ const Artists = () => {
 };
 
 export default Artists;
+
