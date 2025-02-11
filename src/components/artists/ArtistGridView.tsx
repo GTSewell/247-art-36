@@ -18,6 +18,16 @@ const ArtistGridView: React.FC<ArtistGridViewProps> = ({
   onFavoriteToggle,
   favoriteArtists,
 }) => {
+  console.log('ArtistGridView - Received artists:', artists); // Debug log
+
+  if (!artists || artists.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-8">
+        <p className="text-gray-500">No artists found</p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {artists.map((artist, index) => (

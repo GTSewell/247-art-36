@@ -29,6 +29,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   favoriteArtists,
 }) => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
+  console.log('AllArtists - Received artists:', artists); // Debug log
 
   const handleArtistClick = (index: number, e: React.MouseEvent) => {
     e.preventDefault();
