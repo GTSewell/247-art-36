@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
   Carousel, 
   CarouselContent, 
@@ -36,6 +37,8 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (!isMobile) return; // Only auto-hide on mobile
+    
     const timeout = setTimeout(() => {
       setShowControls(false);
     }, 2000);
@@ -43,9 +46,11 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, []);
+  }, [isMobile]);
 
   const handleInteraction = () => {
+    if (!isMobile) return; // Only handle interactions on mobile
+    
     setShowControls(true);
     
     if (interactionTimeout) {
@@ -82,7 +87,7 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
         opts={{ 
           loop: true, 
           startIndex: selectedIndex,
-          duration: 50 // Increased from default 20 for slower transition
+          duration: 50
         }}
         setApi={setApi}
       >
@@ -122,7 +127,7 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
           ))}
         </CarouselContent>
         <AnimatePresence>
-          {showControls && (
+          {(showControls || !isMobile) && (
             <>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -132,7 +137,9 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
               >
                 <CarouselPrevious className={`absolute left-0 md:-left-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
                   isMobile ? 'top-[calc(50%-52px)]' : 'top-1/2 -translate-y-1/2'
-                }`} />
+                }`}>
+                  <ChevronLeft className="h-4 w-4" />
+                </CarouselPrevious>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -142,7 +149,9 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
               >
                 <CarouselNext className={`absolute right-0 md:-right-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
                   isMobile ? 'top-[calc(50%-52px)]' : 'top-1/2 -translate-y-1/2'
-                }`} />
+                }`}>
+                  <ChevronRight className="h-4 w-4" />
+                </CarouselNext>
               </motion.div>
             </>
           )}
