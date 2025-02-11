@@ -43,13 +43,10 @@ const ArtistCard = ({
   const location = [city, country].filter(Boolean).join(", ");
 
   return (
-    <div className="relative [perspective:1000px] h-full">
-      <div 
-        className="relative w-full h-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"
-        onClick={onSelect}
-      >
+    <div className="group relative h-full">
+      <div className="relative w-full h-full transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
         {/* Front of card */}
-        <div className="absolute w-full h-full [backface-visibility:hidden]">
+        <div className="absolute inset-0 w-full h-full [backface-visibility:hidden]">
           <div className="relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer h-full">
             {/* Artist Image */}
             <div className="aspect-square overflow-hidden">
@@ -94,7 +91,10 @@ const ArtistCard = ({
         </div>
 
         {/* Back of card */}
-        <div className="absolute w-full h-full [transform:rotateY(180deg)] [backface-visibility:hidden]">
+        <div 
+          className="absolute inset-0 w-full h-full [transform:rotateY(180deg)] [backface-visibility:hidden]"
+          onClick={onSelect}
+        >
           <div className="h-full rounded-lg bg-card shadow-lg p-4 flex flex-col justify-between">
             <div>
               <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold mb-2`}>{name}</h3>
@@ -131,3 +131,4 @@ const ArtistCard = ({
 };
 
 export default ArtistCard;
+
