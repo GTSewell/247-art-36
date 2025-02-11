@@ -54,17 +54,20 @@ export const useArtists = () => {
           location: artist.location,
           city: artist.city,
           country: artist.country,
-          techniques: artist.techniques,
-          styles: artist.styles,
-          social_platforms: artist.social_platforms,
-          artworks: artist.artworks,
-          locked_artworks: artist.locked_artworks
+          techniques: artist.techniques || [],
+          styles: artist.styles || [],
+          social_platforms: artist.social_platforms || [],
+          artworks: artist.artworks || [],
+          locked_artworks: artist.locked_artworks || false
         }));
 
         // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
         // Rest are additional artists
         setAdditionalArtists(transformedArtists.slice(3));
+
+        console.log('Featured Artists:', transformedArtists.slice(0, 3));
+        console.log('Additional Artists:', transformedArtists.slice(3));
       }
     } catch (error) {
       console.error('Error in loadArtists:', error);

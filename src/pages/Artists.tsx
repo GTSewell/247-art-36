@@ -34,6 +34,10 @@ const Artists = () => {
 
   const { handleRegenerateImage, isGenerating } = useArtistRegeneration();
 
+  console.log("Featured Artists:", featuredArtists);
+  console.log("Additional Artists:", additionalArtists);
+  console.log("Favorite Artists:", favoriteArtists);
+
   const handleArtistImageRegeneration = async (artist: Artist) => {
     const newImageUrl = await handleRegenerateImage(artist);
     if (newImageUrl) {
@@ -173,4 +177,3 @@ const Artists = () => {
 };
 
 export default Artists;
-
