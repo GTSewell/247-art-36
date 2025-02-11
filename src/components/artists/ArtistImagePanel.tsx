@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { MousePointerClick } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ArtistImagePanelProps {
   artist: Artist;
@@ -18,6 +19,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showClickIndicator, setShowClickIndicator] = useState(true);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const hasFlipped = localStorage.getItem(`flipped-${artist.id}`);
@@ -34,17 +36,28 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
+  const handleInteraction = () => {
+    if (isMobile) {
+      setIsHovered(true);
+      // Auto-hide the indicator after 3 seconds on mobile
+      setTimeout(() => {
+        setIsHovered(false);
+      }, 3000);
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div 
         className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
         style={{ perspective: '1000px' }}
         onClick={handleFlip}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => !isMobile && setIsHovered(true)}
+        onMouseLeave={() => !isMobile && setIsHovered(false)}
+        onTouchStart={handleInteraction}
       >
         <AnimatePresence>
-          {showClickIndicator && isHovered && (
+          {showClickIndicator && (isHovered || isMobile) && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.4, 0.8, 0.4] }}
