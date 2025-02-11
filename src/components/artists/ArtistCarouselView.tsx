@@ -127,7 +127,7 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 transition={{ duration: 0.2 }}
               >
                 <CarouselPrevious className={`absolute left-2 md:left-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
-                  isMobile ? 'top-[30%]' : 'top-1/2 -translate-y-1/2'
+                  isMobile ? 'top-[45%]' : 'top-1/2 -translate-y-1/2'
                 }`} />
               </motion.div>
               <motion.div
@@ -137,7 +137,7 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 transition={{ duration: 0.2 }}
               >
                 <CarouselNext className={`absolute right-2 md:right-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
-                  isMobile ? 'top-[30%]' : 'top-1/2 -translate-y-1/2'
+                  isMobile ? 'top-[45%]' : 'top-1/2 -translate-y-1/2'
                 }`} />
               </motion.div>
             </>
