@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap } from 'lucide-react';
+import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap, X } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 
@@ -9,13 +9,15 @@ interface ArtistDetailsPanelProps {
   onSelect: (e: React.MouseEvent) => void;
   onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
   isFavorite?: boolean;
+  onClose?: (e: React.MouseEvent) => void;
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ 
   artist, 
   onSelect,
   onFavoriteToggle,
-  isFavorite = false
+  isFavorite = false,
+  onClose
 }) => {
   const socialIcons = {
     Facebook: <Facebook className="h-5 w-5" />,
@@ -33,7 +35,15 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
+    <div className="relative flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
+      {onClose && (
+        <button 
+          onClick={onClose}
+          className="absolute -right-3 -top-3 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
+        >
+          <X className="h-4 w-4 text-[#ea384c]" />
+        </button>
+      )}
       <div className="space-y-2">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>

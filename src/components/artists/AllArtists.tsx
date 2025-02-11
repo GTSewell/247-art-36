@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { Search, X } from 'lucide-react';
@@ -161,6 +160,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                       <ArtistDetailsPanel 
                         artist={artist}
                         onSelect={() => onSelect(artist)}
+                        onClose={closeCarousel}
                       />
                     </motion.div>
                   </div>
