@@ -49,12 +49,12 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
   return (
     <div className="flex justify-between items-center mb-8">
       <h1 className="text-4xl font-bold text-foreground">Featured Artists</h1>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="default" className="flex items-center gap-2">
-              <Filter size={20} />
-              ATLAS Filter
+            <Button variant="default" size="sm" className="flex items-center gap-1 px-2 sm:px-4 sm:gap-2">
+              <Filter size={16} className="sm:size-5" />
+              <span className="text-sm sm:text-base">ATLAS</span>
             </Button>
           </SheetTrigger>
           <SheetContent>
@@ -81,10 +81,11 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
         <Button 
           onClick={onClearFilters}
           variant="destructive"
-          className="flex items-center gap-2"
+          size="sm"
+          className="flex items-center gap-1 px-2 sm:px-4 sm:gap-2"
         >
-          <FilterX size={20} />
-          Clear Filters
+          <FilterX size={16} className="sm:size-5" />
+          <span className="text-sm sm:text-base">Clear</span>
         </Button>
       </div>
     </div>
