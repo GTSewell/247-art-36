@@ -61,13 +61,11 @@ export const useArtists = () => {
           locked_artworks: artist.locked_artworks || false
         }));
 
+        console.log('Transformed Artists:', transformedArtists);
         // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
         // Rest are additional artists
         setAdditionalArtists(transformedArtists.slice(3));
-
-        console.log('Featured Artists:', transformedArtists.slice(0, 3));
-        console.log('Additional Artists:', transformedArtists.slice(3));
       }
     } catch (error) {
       console.error('Error in loadArtists:', error);
