@@ -44,7 +44,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed w-full top-0 z-50 bg-[#f7cf1e]">
+    <nav className="fixed w-full top-0 z-50 bg-[#f7cf1e] opacity-0">
       <div className="flex justify-between items-center p-4">
         <Link to="/" className="flex items-center space-x-2">
           <img
@@ -101,7 +101,7 @@ const Navigation = () => {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="absolute top-full left-0 w-full bg-[#f7cf1e] md:hidden">
+          <div className="absolute top-full left-0 w-full bg-[#f7cf1e] opacity-0 md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               {navItems.map((item) => (
                 <Link
