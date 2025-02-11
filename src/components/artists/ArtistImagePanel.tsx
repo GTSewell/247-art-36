@@ -39,6 +39,11 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const handleInteraction = () => {
     if (isMobile) {
       setIsHovered(true);
+      // Store the click state in localStorage
+      if (showClickIndicator) {
+        setShowClickIndicator(false);
+        localStorage.setItem(`flipped-${artist.id}`, 'true');
+      }
       // Auto-hide the indicator after 3 seconds on mobile
       setTimeout(() => {
         setIsHovered(false);
