@@ -72,14 +72,14 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
 
   return (
     <div 
-      className="relative focus:outline-none z-10" 
+      className="relative focus:outline-none bg-white" 
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       <Carousel 
-        className="w-full max-w-[1200px] mx-auto relative" 
+        className="w-full max-w-[1200px] mx-auto" 
         opts={{ 
           loop: true,
           duration: 50
@@ -88,7 +88,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
       >
         <CarouselContent>
           {galleries.map((gallery) => (
-            <CarouselItem key={gallery.id} className="relative">
+            <CarouselItem key={gallery.id}>
               <div className="container mx-auto px-4 py-8">
                 <motion.div 
                   initial={{ opacity: 0 }}
@@ -113,32 +113,30 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
         <AnimatePresence>
           {(showControls || !isMobile) && (
             <>
-              <motion.div
+              <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute z-20 ${
+                className={`absolute z-50 ${
                   isMobile ? '-left-7 top-1/2 -translate-y-1/2' : 'left-4 top-1/2 -translate-y-1/2'
-                }`}
+                } p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors`}
+                onClick={() => api?.scrollPrev()}
               >
-                <button onClick={() => api?.scrollPrev()} className="p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors">
-                  <ChevronLeft className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
-                </button>
-              </motion.div>
-              <motion.div
+                <ChevronLeft className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
+              </motion.button>
+              <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute z-20 ${
+                className={`absolute z-50 ${
                   isMobile ? '-right-7 top-1/2 -translate-y-1/2' : 'right-4 top-1/2 -translate-y-1/2'
-                }`}
+                } p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors`}
+                onClick={() => api?.scrollNext()}
               >
-                <button onClick={() => api?.scrollNext()} className="p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors">
-                  <ChevronRight className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
-                </button>
-              </motion.div>
+                <ChevronRight className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
+              </motion.button>
             </>
           )}
         </AnimatePresence>

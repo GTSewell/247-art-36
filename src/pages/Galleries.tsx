@@ -40,7 +40,7 @@ const Galleries = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="pt-16 text-center">Loading galleries...</div>
       </div>
@@ -49,7 +49,7 @@ const Galleries = () => {
 
   if (!galleries || galleries.length === 0) {
     return (
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-white">
         <Navigation />
         <div className="pt-16 text-center">No galleries found.</div>
       </div>
@@ -57,16 +57,18 @@ const Galleries = () => {
   }
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen bg-white">
       <Navigation />
-      <div className="pt-16 relative z-0">
+      <div className="container mx-auto pt-16">
         <h1 className="text-3xl font-bold text-center mb-8">Featured Galleries</h1>
-        <FeaturedGalleries
-          galleries={galleries}
-          onSelect={handleGallerySelect}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteGalleries={favoriteGalleries}
-        />
+        <div className="relative">
+          <FeaturedGalleries
+            galleries={galleries}
+            onSelect={handleGallerySelect}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteGalleries={favoriteGalleries}
+          />
+        </div>
       </div>
     </div>
   );
