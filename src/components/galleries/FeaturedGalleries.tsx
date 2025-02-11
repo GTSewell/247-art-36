@@ -72,14 +72,14 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
 
   return (
     <div 
-      className="mb-12 relative focus:outline-none" 
+      className="mb-12 relative focus:outline-none z-10" 
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       <Carousel 
-        className="w-full max-w-full mx-auto" 
+        className="w-full max-w-full mx-auto relative" 
         opts={{ 
           loop: true,
           duration: 50
@@ -88,7 +88,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
       >
         <CarouselContent>
           {galleries.map((gallery) => (
-            <CarouselItem key={gallery.id}>
+            <CarouselItem key={gallery.id} className="relative">
               <div className="container mx-auto px-4 py-8">
                 <motion.div 
                   initial={{ opacity: 0 }}
@@ -118,11 +118,11 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute ${
+                className={`absolute z-20 ${
                   isMobile ? '-left-7 top-1/2 -translate-y-1/2' : 'left-0 md:-left-4 top-1/2 -translate-y-1/2'
                 }`}
               >
-                <button onClick={() => api?.scrollPrev()} className="p-2">
+                <button onClick={() => api?.scrollPrev()} className="p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors">
                   <ChevronLeft className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
                 </button>
               </motion.div>
@@ -131,11 +131,11 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className={`absolute ${
+                className={`absolute z-20 ${
                   isMobile ? '-right-7 top-1/2 -translate-y-1/2' : 'right-0 md:-right-4 top-1/2 -translate-y-1/2'
                 }`}
               >
-                <button onClick={() => api?.scrollNext()} className="p-2">
+                <button onClick={() => api?.scrollNext()} className="p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors">
                   <ChevronRight className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
                 </button>
               </motion.div>
