@@ -77,7 +77,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
 
   return (
     <div 
-      className="relative focus:outline-none bg-card w-full min-h-[400px]" 
+      className="relative focus:outline-none w-full" 
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
       onKeyDown={handleKeyDown}
@@ -99,7 +99,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-card rounded-xl shadow-lg"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
                 >
                   <GalleryImagePanel 
                     gallery={gallery}
@@ -123,7 +123,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute z-50 left-4 top-1/2 -translate-y-1/2 p-2 bg-background/80 rounded-full shadow-md hover:bg-background transition-colors"
+                className="absolute z-50 left-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors"
                 onClick={() => api?.scrollPrev()}
               >
                 <ChevronLeft className="h-6 w-6" />
@@ -133,7 +133,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="absolute z-50 right-4 top-1/2 -translate-y-1/2 p-2 bg-background/80 rounded-full shadow-md hover:bg-background transition-colors"
+                className="absolute z-50 right-4 top-1/2 -translate-y-1/2 p-2 bg-white/80 rounded-full shadow-md hover:bg-white transition-colors"
                 onClick={() => api?.scrollNext()}
               >
                 <ChevronRight className="h-6 w-6" />

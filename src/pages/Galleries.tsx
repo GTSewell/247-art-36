@@ -42,35 +42,41 @@ const Galleries = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-white">
         <Navigation />
-        <div className="pt-16 text-center">Loading galleries...</div>
+        <div className="container mx-auto pt-20 px-4">
+          <div className="flex justify-center items-center h-64">
+            <p className="text-lg">Loading galleries...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!galleries || galleries.length === 0) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-white">
         <Navigation />
-        <div className="pt-16 text-center">No galleries found.</div>
+        <div className="container mx-auto pt-20 px-4">
+          <div className="flex justify-center items-center h-64">
+            <p className="text-lg">No galleries found.</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-white">
       <Navigation />
-      <div className="container mx-auto px-4 pt-16">
+      <div className="container mx-auto pt-20 px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Featured Galleries</h1>
-        <div className="relative w-full">
-          <FeaturedGalleries
-            galleries={galleries}
-            onSelect={handleGallerySelect}
-            onFavoriteToggle={handleFavoriteToggle}
-            favoriteGalleries={favoriteGalleries}
-          />
-        </div>
+        <FeaturedGalleries
+          galleries={galleries}
+          onSelect={handleGallerySelect}
+          onFavoriteToggle={handleFavoriteToggle}
+          favoriteGalleries={favoriteGalleries}
+        />
       </div>
     </div>
   );
