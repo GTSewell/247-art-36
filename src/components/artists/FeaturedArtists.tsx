@@ -29,6 +29,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 }) => {
   const [showControls, setShowControls] = useState(true);
   const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [api, setApi] = useState<any>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -54,6 +55,16 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
     setInteractionTimeout(timeout);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      api?.scrollPrev();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      api?.scrollNext();
+    }
+  };
+
   if (artists.length === 0) return null;
 
   return (
@@ -61,11 +72,13 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
       className="mb-12 relative focus:outline-none" 
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
+      onKeyDown={handleKeyDown}
       tabIndex={0}
     >
       <Carousel 
         className="w-full max-w-full mx-auto" 
         opts={{ loop: true }}
+        setApi={setApi}
       >
         <CarouselContent>
           {artists.map((artist) => (

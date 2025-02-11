@@ -40,6 +40,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   favoriteArtists,
 }) => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
+  const [api, setApi] = useState<any>(null);
 
   const handleArtistClick = (index: number, e: React.MouseEvent) => {
     e.preventDefault();
@@ -53,6 +54,16 @@ const AllArtists: React.FC<AllArtistsProps> = ({
       e.stopPropagation();
     }
     setSelectedArtistIndex(null);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      api?.scrollPrev();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      api?.scrollNext();
+    }
   };
 
   return (
@@ -88,7 +99,11 @@ const AllArtists: React.FC<AllArtistsProps> = ({
       </div>
 
       {selectedArtistIndex !== null ? (
-        <div className="relative focus:outline-none" tabIndex={0}>
+        <div 
+          className="relative focus:outline-none" 
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
+        >
           <button 
             onClick={closeCarousel}
             className="absolute right-6 top-6 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
@@ -98,6 +113,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           <Carousel 
             className="w-full max-w-full mx-auto" 
             opts={{ loop: true, startIndex: selectedArtistIndex }}
+            setApi={setApi}
           >
             <CarouselContent>
               {artists.map((artist) => (
