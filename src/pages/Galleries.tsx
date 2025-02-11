@@ -11,6 +11,8 @@ const Galleries = () => {
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
   const { toast } = useToast();
 
+  console.log("Galleries data:", galleries); // Debug log
+
   const handleGallerySelect = (gallery: Gallery) => {
     toast({
       title: "Coming Soon",
@@ -40,7 +42,7 @@ const Galleries = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <div className="pt-16 text-center">Loading galleries...</div>
       </div>
@@ -49,7 +51,7 @@ const Galleries = () => {
 
   if (!galleries || galleries.length === 0) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-background">
         <Navigation />
         <div className="pt-16 text-center">No galleries found.</div>
       </div>
@@ -57,11 +59,11 @@ const Galleries = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navigation />
-      <div className="container mx-auto pt-16">
+      <div className="container mx-auto px-4 pt-16">
         <h1 className="text-3xl font-bold text-center mb-8">Featured Galleries</h1>
-        <div className="relative">
+        <div className="relative w-full">
           <FeaturedGalleries
             galleries={galleries}
             onSelect={handleGallerySelect}
