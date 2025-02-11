@@ -39,7 +39,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       {onClose && (
         <button 
           onClick={onClose}
-          className="absolute -right-3 -top-3 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
+          className="absolute -right-4 -top-4 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
         >
           <X className="h-4 w-4 text-[#ea384c]" />
         </button>
