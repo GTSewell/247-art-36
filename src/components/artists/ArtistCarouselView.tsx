@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -126,7 +125,7 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <CarouselPrevious className={`absolute left-0 md:left-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
+                <CarouselPrevious className={`absolute left-0 md:-left-6 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
                   isMobile ? 'top-[calc(50%-52px)]' : 'top-1/2 -translate-y-1/2'
                 }`} />
               </motion.div>
@@ -136,7 +135,7 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <CarouselNext className={`absolute right-0 md:right-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
+                <CarouselNext className={`absolute right-0 md:-right-6 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
                   isMobile ? 'top-[calc(50%-52px)]' : 'top-1/2 -translate-y-1/2'
                 }`} />
               </motion.div>
@@ -149,4 +148,3 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
 };
 
 export default ArtistCarouselView;
-
