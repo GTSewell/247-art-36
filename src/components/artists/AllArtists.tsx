@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
-import { Search, X } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { 
@@ -131,12 +132,6 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           onTouchStart={handleInteraction}
           onMouseMove={handleInteraction}
         >
-          <button 
-            onClick={closeCarousel}
-            className="absolute right-6 top-0 z-10 -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
-          >
-            <X className="h-4 w-4 text-[#ea384c]" />
-          </button>
           <Carousel 
             className="w-full max-w-full mx-auto" 
             opts={{ loop: true, startIndex: selectedArtistIndex }}
