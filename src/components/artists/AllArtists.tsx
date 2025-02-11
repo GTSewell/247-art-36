@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { Search, X } from 'lucide-react';
@@ -87,14 +88,17 @@ const AllArtists: React.FC<AllArtistsProps> = ({
       </div>
 
       {selectedArtistIndex !== null ? (
-        <div className="relative">
+        <div className="relative focus:outline-none" tabIndex={0}>
           <button 
             onClick={closeCarousel}
             className="absolute right-6 top-6 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
           >
             <X className="h-4 w-4" />
           </button>
-          <Carousel className="w-full max-w-full mx-auto" opts={{ loop: true, startIndex: selectedArtistIndex }}>
+          <Carousel 
+            className="w-full max-w-full mx-auto" 
+            opts={{ loop: true, startIndex: selectedArtistIndex }}
+          >
             <CarouselContent>
               {artists.map((artist) => (
                 <CarouselItem key={artist.id}>
