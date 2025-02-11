@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -11,7 +11,7 @@ import {
   CarouselNext, 
   CarouselPrevious 
 } from '@/components/ui/carousel';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ArtistCard from './ArtistCard';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
@@ -41,6 +41,32 @@ const AllArtists: React.FC<AllArtistsProps> = ({
 }) => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
   const [api, setApi] = useState<any>(null);
+  const [showControls, setShowControls] = useState(true);
+  const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, []);
+
+  const handleInteraction = () => {
+    setShowControls(true);
+    
+    if (interactionTimeout) {
+      clearTimeout(interactionTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 2000);
+
+    setInteractionTimeout(timeout);
+  };
 
   const handleArtistClick = (index: number, e: React.MouseEvent) => {
     e.preventDefault();
@@ -103,6 +129,8 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           className="relative focus:outline-none" 
           tabIndex={0}
           onKeyDown={handleKeyDown}
+          onTouchStart={handleInteraction}
+          onMouseMove={handleInteraction}
         >
           <button 
             onClick={closeCarousel}
@@ -123,7 +151,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.5 }}
-                      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_8px_20px_-5px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]"
+                      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
                     >
                       <ArtistImagePanel 
                         artist={artist}
@@ -139,8 +167,28 @@ const AllArtists: React.FC<AllArtistsProps> = ({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
-            <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm" />
+            <AnimatePresence>
+              {showControls && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70" />
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </Carousel>
         </div>
       ) : (
@@ -177,3 +225,4 @@ const AllArtists: React.FC<AllArtistsProps> = ({
 };
 
 export default AllArtists;
+
