@@ -79,7 +79,10 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
     >
       <Carousel 
         className="w-full max-w-full mx-auto" 
-        opts={{ loop: true }}
+        opts={{ 
+          loop: true,
+          duration: 50 // Increased from default 20 for slower transition
+        }}
         setApi={setApi}
       >
         <CarouselContent>

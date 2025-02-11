@@ -79,7 +79,11 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
     >
       <Carousel 
         className="w-full max-w-full mx-auto" 
-        opts={{ loop: true, startIndex: selectedIndex }}
+        opts={{ 
+          loop: true, 
+          startIndex: selectedIndex,
+          duration: 50 // Increased from default 20 for slower transition
+        }}
         setApi={setApi}
       >
         <CarouselContent>
