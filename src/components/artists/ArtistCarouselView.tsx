@@ -6,9 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { 
   Carousel, 
   CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
+  CarouselItem
 } from '@/components/ui/carousel';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
@@ -134,24 +132,26 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                className={`absolute left-0 md:-left-4 ${
+                  isMobile ? 'top-[calc(50%-12px)]' : 'top-1/2 -translate-y-1/2'
+                }`}
               >
-                <CarouselPrevious className={`absolute left-0 md:-left-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
-                  isMobile ? 'top-[calc(50%-52px)]' : 'top-1/2 -translate-y-1/2'
-                }`}>
-                  <ChevronLeft className="h-4 w-4" />
-                </CarouselPrevious>
+                <button onClick={() => api?.scrollPrev()} className="p-2">
+                  <ChevronLeft className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
+                </button>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                className={`absolute right-0 md:-right-4 ${
+                  isMobile ? 'top-[calc(50%-12px)]' : 'top-1/2 -translate-y-1/2'
+                }`}
               >
-                <CarouselNext className={`absolute right-0 md:-right-4 bg-white/80 hover:bg-white shadow-md backdrop-blur-sm md:opacity-100 opacity-70 ${
-                  isMobile ? 'top-[calc(50%-52px)]' : 'top-1/2 -translate-y-1/2'
-                }`}>
-                  <ChevronRight className="h-4 w-4" />
-                </CarouselNext>
+                <button onClick={() => api?.scrollNext()} className="p-2">
+                  <ChevronRight className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
+                </button>
               </motion.div>
             </>
           )}
