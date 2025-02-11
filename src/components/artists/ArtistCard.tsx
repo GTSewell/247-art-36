@@ -59,14 +59,14 @@ const ArtistCard = ({
         
         {/* Artist Information - Visible on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className={`absolute bottom-0 left-0 right-0 p-${isFeatured ? '6' : '4'}`}>
+          <div className="absolute bottom-4 left-0 right-0 px-4">
             <div>
               <h3 className={`${isFeatured ? 'text-xl' : 'text-lg'} font-bold text-white mb-1`}>{name}</h3>
               <p className="text-white/80 text-sm mb-1">{specialty}</p>
               {location && (
                 <p className="text-white/70 text-sm mb-1">{location}</p>
               )}
-              <p className="text-white/60 text-base mb-3 font-mono">{subdomain}</p>
+              <p className="text-white/60 text-base font-mono">{subdomain}</p>
             </div>
           </div>
         </div>
@@ -93,3 +93,4 @@ const ArtistCard = ({
 };
 
 export default ArtistCard;
+
