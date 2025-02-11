@@ -1,5 +1,5 @@
 
-import { GalleryStyle, GalleryType, SocialPlatform } from "@/integrations/supabase/types";
+import { Database } from "@/integrations/supabase/types";
 
 export interface Gallery {
   id: number;
@@ -7,9 +7,9 @@ export interface Gallery {
   bio: string;
   specialty: string;
   image: string;
-  styles: GalleryStyle[] | null;
-  gallery_types: GalleryType[] | null;
-  social_platforms: SocialPlatform[] | null;
+  styles: Database['public']['Enums']['gallery_style'][] | null;
+  gallery_types: Database['public']['Enums']['gallery_type'][] | null;
+  social_platforms: Database['public']['Enums']['social_platform'][] | null;
   location: string | null;
   city: string | null;
   country: string | null;
