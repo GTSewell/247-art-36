@@ -42,6 +42,11 @@ const ArtistCard = ({
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
 
+  const handleRegenerateClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card from being selected
+    onRegenerateImage(e);
+  };
+
   return (
     <div className="relative">
       <div 
@@ -71,26 +76,20 @@ const ArtistCard = ({
           </div>
         </div>
 
-        {/* Favorite Button - Always visible at bottom right */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className={`absolute bottom-4 right-4 z-10 ${
-            isFavorite 
-              ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
-              : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
-          }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onFavoriteToggle(!isFavorite);
-          }}
-        >
-          <Zap size={isFeatured ? 24 : 20} />
-        </Button>
+        {/* Favorite and Generate Buttons - Always visible at bottom */}
+        <div className="absolute bottom-4 right-4 flex gap-2 z-10">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleRegenerateClick}
+            className="bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white"
+          >
+            <Zap size={isFeatured ? 24 : 20} />
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ArtistCard;
-
