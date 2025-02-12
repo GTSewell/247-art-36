@@ -34,8 +34,9 @@ serve(async (req) => {
     const ws = new WebSocket(API_ENDPOINT);
     const results: any[] = [];
     let authenticated = false;
+    let generationComplete = false;
 
-    await new Promise((resolve, reject) => {
+    const artworkUrls = await new Promise<string[]>((resolve, reject) => {
       let timeoutId: number;
 
       // Set a timeout for the entire operation
@@ -92,9 +93,8 @@ serve(async (req) => {
               console.log(`Received artwork URL ${results.length + 1}:`, item.imageURL);
               results.push(item);
               if (results.length === numberResults) {
-                clearTimeout(timeoutId);
+                generationComplete = true;
                 ws.close();
-                resolve(null);
               }
             }
           }
@@ -110,20 +110,33 @@ serve(async (req) => {
       ws.onclose = () => {
         console.log("WebSocket connection closed");
         clearTimeout(timeoutId);
-        if (!authenticated || results.length < numberResults) {
-          reject(new Error("WebSocket connection closed before completion"));
+        
+        if (!authenticated) {
+          reject(new Error("Authentication failed"));
+          return;
         }
+        
+        if (!generationComplete) {
+          reject(new Error("Connection closed before all artworks were generated"));
+          return;
+        }
+
+        const urls = results.map(result => result.imageURL).filter(url => typeof url === 'string');
+        console.log("Generated artwork URLs:", urls);
+        
+        if (urls.length !== numberResults) {
+          reject(new Error(`Expected ${numberResults} artworks but got ${urls.length}`));
+          return;
+        }
+
+        resolve(urls);
       };
     });
 
-    const artworkUrls = results.map(result => result.imageURL).filter(url => typeof url === 'string');
-    console.log("Final artwork URLs:", artworkUrls);
+    console.log("Returning artwork URLs:", artworkUrls);
 
-    // Ensure we're sending back an array of strings
     return new Response(
-      JSON.stringify({ 
-        artworkUrls: artworkUrls
-      }),
+      JSON.stringify({ artworkUrls }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
