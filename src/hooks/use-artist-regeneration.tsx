@@ -50,7 +50,7 @@ export const useArtistRegeneration = () => {
 
       console.log("Got artwork URLs:", artworkUrls);
 
-      // First do the update with explicit array handling
+      // Convert URLs array to proper PostgreSQL array format
       const { error: updateError } = await supabase
         .from('artists')
         .update({
@@ -68,7 +68,7 @@ export const useArtistRegeneration = () => {
       // Then fetch the updated artist to verify the save
       const { data: updatedArtist, error: fetchError } = await supabase
         .from('artists')
-        .select('*')
+        .select()
         .eq('id', artist.id)
         .maybeSingle();
 
