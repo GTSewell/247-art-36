@@ -32,16 +32,9 @@ const Artists = () => {
     refreshArtists
   } = useArtists();
 
-  const { handleRegenerateImage, handleRegenerateArtworks, isGenerating } = useArtistRegeneration();
+  const { handleRegenerateArtworks, isGenerating } = useArtistRegeneration();
 
   const handleArtistImageRegeneration = async (artist: Artist) => {
-    const newImageUrl = await handleRegenerateImage(artist);
-    if (newImageUrl) {
-      refreshArtists();
-    }
-  };
-
-  const handleRegenerateArtworksClick = async (artist: Artist) => {
     const newArtworks = await handleRegenerateArtworks(artist);
     if (newArtworks) {
       refreshArtists();
@@ -125,7 +118,7 @@ const Artists = () => {
 
         <FeaturedArtists
           artists={filteredFeaturedArtists}
-          onSelect={handleRegenerateArtworksClick}
+          onSelect={handleRegenerateArtworks}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
@@ -137,7 +130,7 @@ const Artists = () => {
           setAllArtistsSearch={setAllArtistsSearch}
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
-          onSelect={handleRegenerateArtworksClick}
+          onSelect={handleRegenerateArtworks}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
