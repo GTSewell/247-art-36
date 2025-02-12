@@ -21,14 +21,14 @@ serve(async (req) => {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    const { name, specialty, techniques, styles } = await req.json();
+    const { name, specialty, techniques, styles, numberResults = 4 } = await req.json();
 
     // Create a more personalized prompt using the artist's details
     const createArtworkPrompt = (index: number) => {
       const randomStyle = styles && styles.length > 0 ? styles[Math.floor(Math.random() * styles.length)] : 'contemporary';
       const randomTechnique = techniques && techniques.length > 0 ? techniques[Math.floor(Math.random() * techniques.length)] : specialty;
       
-      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of 4.`;
+      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of ${numberResults}.`;
     };
 
     const ws = new WebSocket(API_ENDPOINT);
@@ -68,8 +68,8 @@ serve(async (req) => {
             if (item.taskType === "authentication") {
               console.log("Authentication successful");
               authenticated = true;
-              // Generate 4 artworks
-              for (let i = 0; i < 4; i++) {
+              // Generate artworks
+              for (let i = 0; i < numberResults; i++) {
                 const taskUUID = crypto.randomUUID();
                 const message = [{
                   taskType: "imageInference",
@@ -91,7 +91,7 @@ serve(async (req) => {
             } else if (item.taskType === "imageInference" && item.imageURL) {
               console.log(`Received artwork URL ${results.length + 1}:`, item.imageURL);
               results.push(item);
-              if (results.length === 4) {
+              if (results.length === numberResults) {
                 clearTimeout(timeoutId);
                 ws.close();
                 resolve(null);
@@ -110,19 +110,19 @@ serve(async (req) => {
       ws.onclose = () => {
         console.log("WebSocket connection closed");
         clearTimeout(timeoutId);
-        if (!authenticated || results.length < 4) {
+        if (!authenticated || results.length < numberResults) {
           reject(new Error("WebSocket connection closed before completion"));
         }
       };
     });
 
-    const artworkUrls = results.map(result => result.imageURL);
-    console.log("Returning artwork URLs:", artworkUrls);
+    const artworkUrls = results.map(result => result.imageURL).filter(url => typeof url === 'string');
+    console.log("Final artwork URLs:", artworkUrls);
 
     // Ensure we're sending back an array of strings
     return new Response(
       JSON.stringify({ 
-        artworkUrls: artworkUrls.filter(url => typeof url === 'string')
+        artworkUrls: artworkUrls
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
