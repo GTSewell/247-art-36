@@ -81,6 +81,63 @@ export type Database = {
         }
         Relationships: []
       }
+      artists2: {
+        Row: {
+          artworks: Json | null
+          bio: string | null
+          city: string | null
+          country: string | null
+          created_at: string | null
+          id: string | null
+          image: string | null
+          location: string | null
+          locked_artworks: boolean | null
+          name: string | null
+          social_platforms: Json | null
+          specialty: string | null
+          styles: Json | null
+          subdomain: string | null
+          techniques: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          artworks?: Json | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          id?: string | null
+          image?: string | null
+          location?: string | null
+          locked_artworks?: boolean | null
+          name?: string | null
+          social_platforms?: Json | null
+          specialty?: string | null
+          styles?: Json | null
+          subdomain?: string | null
+          techniques?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          artworks?: Json | null
+          bio?: string | null
+          city?: string | null
+          country?: string | null
+          created_at?: string | null
+          id?: string | null
+          image?: string | null
+          location?: string | null
+          locked_artworks?: boolean | null
+          name?: string | null
+          social_platforms?: Json | null
+          specialty?: string | null
+          styles?: Json | null
+          subdomain?: string | null
+          techniques?: Json | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       favorite_artists: {
         Row: {
           artist_id: number
