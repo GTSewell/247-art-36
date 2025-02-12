@@ -5,6 +5,7 @@ import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
 import { useGalleries } from "@/hooks/use-galleries";
 import { Gallery } from "@/data/types/gallery";
 import { useToast } from "@/components/ui/use-toast";
+import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
 
 const Galleries = () => {
   const { data: galleries = [], isLoading } = useGalleries();
@@ -77,6 +78,9 @@ const Galleries = () => {
           onFavoriteToggle={handleFavoriteToggle}
           favoriteGalleries={favoriteGalleries}
         />
+        <div className="mt-8">
+          <PartnerLogoBanner />
+        </div>
       </div>
     </div>
   );
