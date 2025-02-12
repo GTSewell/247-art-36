@@ -12,7 +12,7 @@ interface ArtistImagePanelProps {
   artist: Artist;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
-  onRegenerateArtworks?: (artist: Artist) => Promise<void>;
+  onRegenerateImage?: (artist: Artist) => Promise<void>;
   isGenerating?: boolean;
 }
 
@@ -20,7 +20,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   artist, 
   onFavoriteToggle, 
   isFavorite,
-  onRegenerateArtworks,
+  onRegenerateImage,
   isGenerating = false
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -57,7 +57,21 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  const handleSaveArtworks = async () => {
+  const handleGenerate = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card from flipping
+    if (onRegenerateImage) {
+      try {
+        await onRegenerateImage(artist);
+      } catch (error) {
+        console.error('Error generating artworks:', error);
+        toast.error('Failed to generate artworks');
+      }
+    }
+  };
+
+  const handleSaveArtworks = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card from flipping
+    
     if (!artist.artworks || artist.artworks.length === 0) {
       toast.error("No artworks to save!");
       return;
@@ -163,10 +177,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSaveArtworks();
-                      }}
+                      onClick={handleSaveArtworks}
                       disabled={isSaving || !artist.artworks?.length}
                       className="bg-white/80 backdrop-blur-sm"
                     >
@@ -176,12 +187,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (onRegenerateArtworks) {
-                          onRegenerateArtworks(artist);
-                        }
-                      }}
+                      onClick={handleGenerate}
                       disabled={isGenerating}
                       className="bg-white/80 backdrop-blur-sm"
                     >

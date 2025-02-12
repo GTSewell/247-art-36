@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { 
@@ -14,7 +15,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 interface FeaturedArtistsProps {
   artists: Artist[];
   onSelect: (artist: Artist) => void;
-  onRegenerateImage: (artist: Artist) => void;
+  onRegenerateImage: (artist: Artist) => Promise<void>;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
 }
@@ -32,7 +33,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!isMobile) return; // Only auto-hide on mobile
+    if (!isMobile) return;
     
     const timeout = setTimeout(() => {
       setShowControls(false);
@@ -44,7 +45,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   }, [isMobile]);
 
   const handleInteraction = () => {
-    if (!isMobile) return; // Only handle interactions on mobile
+    if (!isMobile) return;
     
     setShowControls(true);
     
@@ -101,6 +102,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                     artist={artist}
                     onFavoriteToggle={onFavoriteToggle}
                     isFavorite={favoriteArtists.has(artist.id)}
+                    onRegenerateImage={onRegenerateImage}
                   />
                   <ArtistDetailsPanel 
                     artist={artist}
