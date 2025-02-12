@@ -33,9 +33,7 @@ const ArtistGridView: React.FC<ArtistGridViewProps> = ({
               e.stopPropagation();
               onArtistClick(index, e);
             }}
-            onRegenerateImage={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
+            onRegenerateImage={() => {
               onRegenerateImage(artist);
             }}
             onFavoriteToggle={(isFavorite) => {
