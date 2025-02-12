@@ -16,41 +16,18 @@ serve(async (req) => {
   }
 
   try {
-    const { name, specialty, bio } = await req.json();
+    const { name, specialty, techniques, styles } = await req.json();
 
     if (!RUNWARE_API_KEY) {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    // Define a list of diverse art styles
-    const artStyles = [
-      'hyperrealism',
-      'abstract expressionism',
-      'surrealism',
-      'impressionism',
-      'pop art',
-      'minimalism',
-      'digital art',
-      'contemporary',
-      'cubism',
-      'art nouveau',
-      'street art',
-      'fantasy art',
-      'photorealism',
-      'baroque',
-      'neo-expressionism'
-    ];
-
-    // Function to get a random style from the array
-    const getRandomStyle = () => {
-      return artStyles[Math.floor(Math.random() * artStyles.length)];
-    };
-
-    // Create a more personalized prompt using the artist's details and bio
+    // Create a more personalized prompt using the artist's details
     const createArtworkPrompt = (index: number) => {
-      const randomStyle = getRandomStyle();
+      const randomStyle = styles && styles.length > 0 ? styles[Math.floor(Math.random() * styles.length)] : 'contemporary';
+      const randomTechnique = techniques && techniques.length > 0 ? techniques[Math.floor(Math.random() * techniques.length)] : specialty;
       
-      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. Incorporate elements that reflect their artistic vision: ${bio}. The piece should be highly detailed and professional, demonstrating mastery of the medium. Make it visually striking and gallery-worthy, with rich colors and compelling composition. The artwork should be complete and polished, suitable for a professional artist's portfolio.`;
+      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of 4.`;
     };
 
     const ws = new WebSocket(API_ENDPOINT);
@@ -59,6 +36,7 @@ serve(async (req) => {
 
     await new Promise((resolve, reject) => {
       ws.onopen = () => {
+        console.log("WebSocket connected, sending authentication...");
         const authMessage = [{
           taskType: "authentication",
           apiKey: RUNWARE_API_KEY,
@@ -68,7 +46,10 @@ serve(async (req) => {
 
       ws.onmessage = async (event) => {
         const response = JSON.parse(event.data);
+        console.log("Received response:", response);
+        
         if (response.error || response.errors) {
+          console.error("Error in response:", response.error || response.errors);
           reject(new Error(response.errorMessage || response.errors[0].message));
           return;
         }
@@ -76,6 +57,7 @@ serve(async (req) => {
         if (response.data) {
           for (const item of response.data) {
             if (item.taskType === "authentication") {
+              console.log("Authentication successful");
               authenticated = true;
               // Generate 4 artworks
               for (let i = 0; i < 4; i++) {
@@ -94,11 +76,14 @@ serve(async (req) => {
                   scheduler: "FlowMatchEulerDiscreteScheduler",
                   strength: 0.8,
                 }];
+                console.log(`Sending artwork generation request ${i + 1}:`, message);
                 ws.send(JSON.stringify(message));
               }
             } else if (item.taskType === "imageInference" && item.imageURL) {
+              console.log(`Received artwork URL ${results.length + 1}:`, item.imageURL);
               results.push(item);
               if (results.length === 4) {
+                console.log("All artworks generated successfully");
                 ws.close();
                 resolve(null);
               }
@@ -108,11 +93,20 @@ serve(async (req) => {
       };
 
       ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
         reject(error);
+      };
+
+      ws.onclose = () => {
+        console.log("WebSocket connection closed");
+        if (!authenticated || results.length < 4) {
+          reject(new Error("WebSocket connection closed before completion"));
+        }
       };
     });
 
     const artworkUrls = results.map(result => result.imageURL);
+    console.log("Returning artwork URLs:", artworkUrls);
 
     return new Response(
       JSON.stringify({ artworkUrls }),
