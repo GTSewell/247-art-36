@@ -23,12 +23,19 @@ export const useArtistRegeneration = () => {
     });
 
     if (artworkUrls) {
+      console.log("Got artwork URLs:", artworkUrls);
+      
+      // Update the artist in the database with new artworks
       const { error: updateError } = await supabase
         .from('artists')
-        .update({ artworks: artworkUrls })
+        .update({ 
+          artworks: artworkUrls,
+          locked_artworks: false // Reset locked status when generating new artworks
+        })
         .eq('id', artist.id);
 
       if (updateError) {
+        console.error("Error updating artist:", updateError);
         toast.error("Failed to save artworks");
         return null;
       }

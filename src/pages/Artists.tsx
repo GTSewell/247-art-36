@@ -9,7 +9,6 @@ import { useArtists } from "@/hooks/use-artists";
 import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
@@ -37,7 +36,7 @@ const Artists = () => {
   const handleArtistImageRegeneration = async (artist: Artist) => {
     const newArtworks = await handleRegenerateArtworks(artist);
     if (newArtworks) {
-      refreshArtists();
+      await refreshArtists(); // Make sure to await the refresh
     }
   };
 

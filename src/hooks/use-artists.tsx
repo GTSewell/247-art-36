@@ -57,7 +57,7 @@ export const useArtists = () => {
           techniques: artist.techniques,
           styles: artist.styles,
           social_platforms: artist.social_platforms,
-          artworks: artist.artworks,
+          artworks: artist.artworks || [],
           locked_artworks: artist.locked_artworks
         }));
 
@@ -83,8 +83,21 @@ export const useArtists = () => {
       loadFavorites();
     });
 
+    // Subscribe to database changes
+    const artistsSubscription = supabase
+      .channel('artists_changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'artists'
+      }, () => {
+        loadArtists();
+      })
+      .subscribe();
+
     return () => {
       subscription.unsubscribe();
+      artistsSubscription.unsubscribe();
     };
   }, []);
 
