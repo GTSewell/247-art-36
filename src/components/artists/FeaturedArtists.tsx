@@ -15,7 +15,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 interface FeaturedArtistsProps {
   artists: Artist[];
   onSelect: (artist: Artist) => void;
-  onRegenerateImage: (artist: Artist) => Promise<void>;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
 }
@@ -23,7 +22,6 @@ interface FeaturedArtistsProps {
 const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   artists,
   onSelect,
-  onRegenerateImage,
   onFavoriteToggle,
   favoriteArtists,
 }) => {
@@ -102,7 +100,6 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                     artist={artist}
                     onFavoriteToggle={onFavoriteToggle}
                     isFavorite={favoriteArtists.has(artist.id)}
-                    onRegenerateImage={onRegenerateImage}
                   />
                   <ArtistDetailsPanel 
                     artist={artist}

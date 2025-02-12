@@ -6,7 +6,6 @@ import ArtistCard from './ArtistCard';
 interface ArtistGridViewProps {
   artists: Artist[];
   onArtistClick: (index: number, e: React.MouseEvent) => void;
-  onRegenerateImage: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
 }
@@ -14,7 +13,6 @@ interface ArtistGridViewProps {
 const ArtistGridView: React.FC<ArtistGridViewProps> = ({
   artists,
   onArtistClick,
-  onRegenerateImage,
   onFavoriteToggle,
   favoriteArtists,
 }) => {
@@ -32,9 +30,6 @@ const ArtistGridView: React.FC<ArtistGridViewProps> = ({
               e.preventDefault();
               e.stopPropagation();
               onArtistClick(index, e);
-            }}
-            onRegenerateImage={() => {
-              onRegenerateImage(artist);
             }}
             onFavoriteToggle={(isFavorite) => {
               onFavoriteToggle(artist.id, isFavorite);
