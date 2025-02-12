@@ -119,7 +119,7 @@ const Artists = () => {
 
         <FeaturedArtists
           artists={filteredFeaturedArtists}
-          onSelect={handleRegenerateArtworks}
+          onSelect={setSelectedArtist}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
@@ -131,7 +131,7 @@ const Artists = () => {
           setAllArtistsSearch={setAllArtistsSearch}
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
-          onSelect={handleRegenerateArtworks}
+          onSelect={setSelectedArtist}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}

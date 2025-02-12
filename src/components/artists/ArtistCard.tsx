@@ -44,6 +44,7 @@ const ArtistCard = ({
 
   const handleRegenerateClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card selection
+    console.log("Regenerating artworks for:", name); // Add logging
     onRegenerateImage(e);
   };
 
