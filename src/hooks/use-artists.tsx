@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Database } from "@/integrations/supabase/types";
+
+type ArtistRow = Database['public']['Tables']['artists']['Row'];
 
 export const useArtists = () => {
   const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
@@ -27,6 +30,22 @@ export const useArtists = () => {
     setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
   };
 
+  const transformArtist = (artist: ArtistRow): Artist => ({
+    id: artist.id,
+    name: artist.name,
+    specialty: artist.specialty,
+    image: artist.image,
+    bio: artist.bio,
+    location: artist.location,
+    city: artist.city,
+    country: artist.country,
+    techniques: Array.isArray(artist.techniques) ? artist.techniques as string[] : [],
+    styles: Array.isArray(artist.styles) ? artist.styles as string[] : [],
+    social_platforms: Array.isArray(artist.social_platforms) ? artist.social_platforms as string[] : [],
+    artworks: Array.isArray(artist.artworks) ? artist.artworks as string[] : [],
+    locked_artworks: artist.locked_artworks || false
+  });
+
   const loadArtists = async () => {
     try {
       setIsLoading(true);
@@ -45,21 +64,7 @@ export const useArtists = () => {
 
       if (artists) {
         console.log('Artists loaded:', artists.length);
-        const transformedArtists = artists.map(artist => ({
-          id: artist.id,
-          name: artist.name,
-          specialty: artist.specialty,
-          image: artist.image,
-          bio: artist.bio,
-          location: artist.location,
-          city: artist.city,
-          country: artist.country,
-          techniques: artist.techniques,
-          styles: artist.styles,
-          social_platforms: artist.social_platforms,
-          artworks: artist.artworks || [],
-          locked_artworks: artist.locked_artworks
-        }));
+        const transformedArtists = artists.map(transformArtist);
 
         // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
