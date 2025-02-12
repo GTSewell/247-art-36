@@ -25,10 +25,11 @@ export const useGenerateArtistImage = () => {
 
       if (error) throw error;
       
-      if (!data?.artworkUrls) {
+      if (!data?.artworkUrls || !Array.isArray(data.artworkUrls)) {
         throw new Error('No artwork URLs returned');
       }
 
+      console.log('Generated artwork URLs:', data.artworkUrls);
       return data.artworkUrls;
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to generate artworks';

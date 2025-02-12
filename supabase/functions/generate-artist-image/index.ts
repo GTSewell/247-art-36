@@ -119,8 +119,11 @@ serve(async (req) => {
     const artworkUrls = results.map(result => result.imageURL);
     console.log("Returning artwork URLs:", artworkUrls);
 
+    // Ensure we're sending back an array of strings
     return new Response(
-      JSON.stringify({ artworkUrls }),
+      JSON.stringify({ 
+        artworkUrls: artworkUrls.filter(url => typeof url === 'string')
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       }
