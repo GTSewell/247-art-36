@@ -30,8 +30,6 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
   const [api, setApi] = useState<any>(null);
   const isMobile = useIsMobile();
 
-  console.log("FeaturedGalleries rendering with:", { galleries }); // Debug log
-
   useEffect(() => {
     if (!isMobile) return;
     
@@ -71,7 +69,6 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
   };
 
   if (galleries.length === 0) {
-    console.log("No galleries to display"); // Debug log
     return null;
   }
 
@@ -99,7 +96,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)] max-w-5xl mx-auto"
                 >
                   <GalleryImagePanel 
                     gallery={gallery}

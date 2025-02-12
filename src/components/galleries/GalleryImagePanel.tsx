@@ -15,14 +15,17 @@ const GalleryImagePanel: React.FC<GalleryImagePanelProps> = ({
   isFavorite,
 }) => {
   return (
-    <div className="relative h-full min-h-[300px] md:min-h-[400px] rounded-lg overflow-hidden">
+    <div className="relative aspect-square rounded-lg overflow-hidden">
       <img
         src={gallery.image}
         alt={gallery.name}
         className="w-full h-full object-cover"
       />
       <button
-        onClick={() => onFavoriteToggle(gallery.id, !isFavorite)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onFavoriteToggle(gallery.id, !isFavorite);
+        }}
         className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-md backdrop-blur-sm transition-colors"
       >
         <Heart

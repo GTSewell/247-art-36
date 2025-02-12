@@ -42,7 +42,7 @@ const Galleries = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-zap-yellow">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
           <div className="flex justify-center items-center h-64">
@@ -55,7 +55,7 @@ const Galleries = () => {
 
   if (!galleries || galleries.length === 0) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-zap-yellow">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
           <div className="flex justify-center items-center h-64">
@@ -67,7 +67,7 @@ const Galleries = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-zap-yellow">
       <Navigation />
       <div className="container mx-auto pt-20 px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Featured Galleries</h1>
