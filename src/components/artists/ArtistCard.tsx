@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Zap } from "lucide-react";
+import { Zap, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
 
@@ -12,7 +12,7 @@ interface ArtistCardProps {
   city?: string;
   country?: string;
   onSelect: (e: React.MouseEvent) => void;
-  onRegenerateImage: (artist: Artist) => void;  // Changed to accept Artist type
+  onRegenerateImage: (artist: Artist) => void;
   onFavoriteToggle: (isFavorite: boolean) => void;
   isFavorite: boolean;
   isFeatured?: boolean;
@@ -106,6 +106,7 @@ const ArtistCard = ({
               e.stopPropagation();
               onFavoriteToggle(!isFavorite);
             }}
+            title="Favorite"
           >
             <Zap size={isFeatured ? 24 : 20} />
           </Button>
@@ -114,8 +115,9 @@ const ArtistCard = ({
             size="icon"
             onClick={handleRegenerateClick}
             className="bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white"
+            title="Generate new artworks"
           >
-            <Zap size={isFeatured ? 24 : 20} />
+            <RefreshCw size={isFeatured ? 24 : 20} />
           </Button>
         </div>
       </div>
