@@ -12,7 +12,7 @@ interface ArtistCardProps {
   city?: string;
   country?: string;
   onSelect: (e: React.MouseEvent) => void;
-  onRegenerateImage: (e: React.MouseEvent) => void;
+  onRegenerateImage: (artist: Artist) => void;  // Changed to accept Artist type
   onFavoriteToggle: (isFavorite: boolean) => void;
   isFavorite: boolean;
   isFeatured?: boolean;
@@ -44,8 +44,23 @@ const ArtistCard = ({
 
   const handleRegenerateClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card selection
-    console.log("Regenerating artworks for:", name); // Add logging
-    onRegenerateImage(e);
+    console.log("Regenerating artworks for:", name);
+    
+    // Create artist object with all required properties
+    const artist: Artist = {
+      id,
+      name,
+      specialty,
+      image,
+      bio,
+      city,
+      country,
+      techniques,
+      styles,
+      social_platforms
+    };
+    
+    onRegenerateImage(artist);
   };
 
   return (
