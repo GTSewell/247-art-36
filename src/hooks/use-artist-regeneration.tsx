@@ -16,6 +16,25 @@ export const useArtistRegeneration = () => {
     toast.info(`Generating artworks for ${artist.name}...`);
     
     try {
+      // First verify the artist exists
+      const { data: existingArtist, error: checkError } = await supabase
+        .from('artists')
+        .select()
+        .eq('id', artist.id)
+        .maybeSingle();
+
+      if (checkError) {
+        console.error("Error checking artist:", checkError);
+        toast.error("Failed to verify artist");
+        return null;
+      }
+
+      if (!existingArtist) {
+        console.error("Artist not found in database:", artist.id);
+        toast.error("Artist not found in database");
+        return null;
+      }
+
       const artworkUrls = await generateImage({
         name: artist.name,
         specialty: artist.specialty,
@@ -30,7 +49,7 @@ export const useArtistRegeneration = () => {
 
       console.log("Got artwork URLs:", artworkUrls);
 
-      // First, update the artist with new artworks
+      // Now update the artist
       const { data: updatedArtist, error: updateError } = await supabase
         .from('artists')
         .update({
@@ -38,7 +57,7 @@ export const useArtistRegeneration = () => {
           locked_artworks: false
         })
         .eq('id', artist.id)
-        .select()
+        .select('*')
         .maybeSingle();
 
       if (updateError) {
@@ -48,12 +67,12 @@ export const useArtistRegeneration = () => {
       }
 
       if (!updatedArtist) {
-        console.error("Artist not found");
-        toast.error("Failed to save artworks - Artist not found");
+        console.error("Failed to update artist:", artist.id);
+        toast.error("Failed to save artworks - Update failed");
         return null;
       }
 
-      console.log("Updated artist:", updatedArtist);
+      console.log("Successfully updated artist:", updatedArtist);
       toast.success(`Artworks generated for ${artist.name}!`);
       
       return updatedArtist.artworks;
