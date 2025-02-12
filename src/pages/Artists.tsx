@@ -6,7 +6,6 @@ import FeaturedArtists from "@/components/artists/FeaturedArtists";
 import AllArtists from "@/components/artists/AllArtists";
 import ArtistsHeader from "@/components/artists/ArtistsHeader";
 import { useArtists } from "@/hooks/use-artists";
-import { useArtistRegeneration } from "@/hooks/use-artist-regeneration";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 
@@ -30,17 +29,6 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
-
-  const { handleRegenerateArtworks, isGenerating } = useArtistRegeneration();
-
-  const handleArtistImageRegeneration = async (artist: Artist) => {
-    console.log("Starting artwork regeneration for artist:", artist.name);
-    const newArtworks = await handleRegenerateArtworks(artist);
-    if (newArtworks) {
-      console.log("New artworks generated:", newArtworks);
-      await refreshArtists(); // Make sure to await the refresh
-    }
-  };
 
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
@@ -120,7 +108,6 @@ const Artists = () => {
         <FeaturedArtists
           artists={filteredFeaturedArtists}
           onSelect={setSelectedArtist}
-          onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
         />
@@ -132,7 +119,6 @@ const Artists = () => {
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
           onSelect={setSelectedArtist}
-          onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
         />

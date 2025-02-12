@@ -12,7 +12,6 @@ interface AllArtistsProps {
   showFavorites: boolean;
   setShowFavorites: (show: boolean) => void;
   onSelect: (artist: Artist) => void;
-  onRegenerateImage: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
 }
@@ -24,7 +23,6 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   showFavorites,
   setShowFavorites,
   onSelect,
-  onRegenerateImage,
   onFavoriteToggle,
   favoriteArtists,
 }) => {
@@ -66,7 +64,6 @@ const AllArtists: React.FC<AllArtistsProps> = ({
         <ArtistGridView
           artists={artists}
           onArtistClick={handleArtistClick}
-          onRegenerateImage={onRegenerateImage}
           onFavoriteToggle={onFavoriteToggle}
           favoriteArtists={favoriteArtists}
         />
