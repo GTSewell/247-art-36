@@ -29,15 +29,17 @@ export const useArtistRegeneration = () => {
       }
 
       console.log("Got artwork URLs:", artworkUrls);
-      
-      // Update the artist in the database with new artworks
-      const { error: updateError } = await supabase
+
+      // First, update the artist with new artworks
+      const { data: updatedArtist, error: updateError } = await supabase
         .from('artists')
-        .update({ 
+        .update({
           artworks: artworkUrls,
-          locked_artworks: false // Reset locked status when generating new artworks
+          locked_artworks: false
         })
-        .eq('id', artist.id);
+        .eq('id', artist.id)
+        .select()
+        .single();
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
@@ -45,21 +47,16 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // Fetch the updated artist data
-      const { data: updatedArtist, error: fetchError } = await supabase
-        .from('artists')
-        .select('*')
-        .eq('id', artist.id)
-        .single();
-
-      if (fetchError) {
-        console.error("Error fetching updated artist:", fetchError);
-        toast.error("Failed to retrieve updated artist data");
+      if (!updatedArtist) {
+        console.error("No artist data returned after update");
+        toast.error("Failed to save artworks");
         return null;
       }
 
+      console.log("Updated artist:", updatedArtist);
       toast.success(`Artworks generated for ${artist.name}!`);
-      return updatedArtist.artworks || null;
+      
+      return updatedArtist.artworks;
     } catch (error) {
       console.error("Error in handleRegenerateArtworks:", error);
       toast.error("Failed to generate or save artworks");
