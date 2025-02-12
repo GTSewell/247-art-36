@@ -1,24 +1,32 @@
 
 import React, { useState, useEffect } from 'react';
-import { MousePointerClick } from 'lucide-react';
+import { MousePointerClick, RefreshCw, SaveAll } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface ArtistImagePanelProps {
   artist: Artist;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
+  onRegenerateArtworks?: (artist: Artist) => Promise<void>;
+  isGenerating?: boolean;
 }
 
 const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({ 
   artist, 
   onFavoriteToggle, 
-  isFavorite 
+  isFavorite,
+  onRegenerateArtworks,
+  isGenerating = false
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showClickIndicator, setShowClickIndicator] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -39,15 +47,41 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const handleInteraction = () => {
     if (isMobile) {
       setIsHovered(true);
-      // Store the click state in localStorage
       if (showClickIndicator) {
         setShowClickIndicator(false);
         localStorage.setItem(`flipped-${artist.id}`, 'true');
       }
-      // Auto-hide the indicator after 3 seconds on mobile
       setTimeout(() => {
         setIsHovered(false);
       }, 3000);
+    }
+  };
+
+  const handleSaveArtworks = async () => {
+    if (!artist.artworks || artist.artworks.length === 0) {
+      toast.error("No artworks to save!");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('artists')
+        .update({ 
+          locked_artworks: true,
+          artworks: artist.artworks
+        })
+        .eq('id', artist.id);
+
+      if (error) throw error;
+      
+      toast.success("Artworks saved successfully!");
+      window.location.reload();
+    } catch (error) {
+      console.error('Error saving artworks:', error);
+      toast.error("Failed to save artworks");
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -106,19 +140,54 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
             >
-              <div className="grid grid-cols-2 gap-2 p-2 w-full h-full">
-                {artist.artworks?.slice(0, 4).map((artwork, index) => (
-                  <div key={index} className="relative aspect-square rounded overflow-hidden">
-                    <img
-                      src={artwork}
-                      alt={`Artwork ${index + 1} by ${artist.name}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
-                {(!artist.artworks || artist.artworks.length === 0) && (
-                  <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
-                    No artworks available
+              <div className="relative h-full">
+                <div className="grid grid-cols-2 gap-2 p-2 w-full h-full">
+                  {artist.artworks?.slice(0, 4).map((artwork, index) => (
+                    <div key={index} className="relative aspect-square rounded overflow-hidden">
+                      <img
+                        src={artwork}
+                        alt={`Artwork ${index + 1} by ${artist.name}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                  {(!artist.artworks || artist.artworks.length === 0) && (
+                    <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
+                      No artworks available
+                    </div>
+                  )}
+                </div>
+
+                {!artist.locked_artworks && (
+                  <div className="absolute bottom-2 right-2 flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSaveArtworks();
+                      }}
+                      disabled={isSaving || !artist.artworks?.length}
+                      className="bg-white/80 backdrop-blur-sm"
+                    >
+                      <SaveAll className="h-4 w-4 mr-1" />
+                      {isSaving ? 'Saving...' : 'Save'}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onRegenerateArtworks) {
+                          onRegenerateArtworks(artist);
+                        }
+                      }}
+                      disabled={isGenerating}
+                      className="bg-white/80 backdrop-blur-sm"
+                    >
+                      <RefreshCw className={`h-4 w-4 mr-1 ${isGenerating ? 'animate-spin' : ''}`} />
+                      {isGenerating ? 'Generating...' : 'Generate'}
+                    </Button>
                   </div>
                 )}
               </div>

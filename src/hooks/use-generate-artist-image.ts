@@ -1,37 +1,39 @@
 
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 interface GenerateImageParams {
   name: string;
   specialty: string;
+  techniques?: string[];
+  styles?: string[];
 }
 
 export const useGenerateArtistImage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const generateImage = async ({ name, specialty }: GenerateImageParams) => {
+  const generateImage = async (params: GenerateImageParams) => {
     setIsLoading(true);
     setError(null);
     
     try {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { name, specialty }
+        body: params
       });
 
-      if (error) {
-        // Check if it's an insufficient credits error
-        if (error.message?.includes('Insufficient') || error.message?.includes('credits')) {
-          throw new Error('Unable to generate image: Insufficient Runware credits. Please add credits to continue generating images.');
-        }
-        throw error;
-      }
+      if (error) throw error;
       
-      // Return the generated image URL
-      return data.imageURL || data[0]?.imageURL;
+      if (!data?.artworkUrls) {
+        throw new Error('No artwork URLs returned');
+      }
+
+      return data.artworkUrls;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate image');
+      const message = err instanceof Error ? err.message : 'Failed to generate artworks';
+      setError(message);
+      toast.error(message);
       return null;
     } finally {
       setIsLoading(false);
