@@ -40,7 +40,7 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // First update the artist
+      // First update the artist's artworks
       const { error: updateError } = await supabase
         .from('artists')
         .update({
@@ -55,22 +55,10 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // Then fetch the updated artist data
-      const { data: updatedArtist, error: fetchError } = await supabase
-        .from('artists')
-        .select('artworks')
-        .eq('id', artist.id)
-        .single();
-
-      if (fetchError) {
-        console.error("Error fetching updated artist:", fetchError);
-        toast.error("Failed to verify artwork update");
-        return artworkUrls;
-      }
-
-      console.log("Successfully updated artist:", updatedArtist);
+      console.log("Successfully updated artist with new artworks:", artworkUrls);
       toast.success(`Artworks generated for ${artist.name}!`);
-      return updatedArtist.artworks;
+      return artworkUrls;
+
     } catch (error) {
       console.error("Error in handleRegenerateArtworks:", error);
       toast.error("Failed to generate or save artworks");
