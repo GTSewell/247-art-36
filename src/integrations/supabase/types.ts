@@ -45,7 +45,7 @@ export type Database = {
           bio: string | null
           city: string | null
           country: string | null
-          id: number | null
+          id: number
           image: string | null
           location: string | null
           locked_artworks: boolean | null
@@ -60,7 +60,7 @@ export type Database = {
           bio?: string | null
           city?: string | null
           country?: string | null
-          id?: number | null
+          id: number
           image?: string | null
           location?: string | null
           locked_artworks?: boolean | null
@@ -75,7 +75,7 @@ export type Database = {
           bio?: string | null
           city?: string | null
           country?: string | null
-          id?: number | null
+          id?: number
           image?: string | null
           location?: string | null
           locked_artworks?: boolean | null
@@ -87,7 +87,93 @@ export type Database = {
         }
         Relationships: []
       }
-      "site settings": {
+      favorite_artists: {
+        Row: {
+          artist_id: number
+          created_at: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          artist_id: number
+          created_at?: string
+          id?: never
+          user_id: string
+        }
+        Update: {
+          artist_id?: number
+          created_at?: string
+          id?: never
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorite_artists_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      galleries: {
+        Row: {
+          bio: string | null
+          city: string | null
+          country: string | null
+          established_year: number | null
+          gallery_types: Database["public"]["Enums"]["gallery_type"][] | null
+          id: number
+          image: string | null
+          location: string | null
+          name: string
+          size_sqm: number | null
+          social_platforms:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty: string | null
+          styles: Database["public"]["Enums"]["gallery_style"][] | null
+          website: string | null
+        }
+        Insert: {
+          bio?: string | null
+          city?: string | null
+          country?: string | null
+          established_year?: number | null
+          gallery_types?: Database["public"]["Enums"]["gallery_type"][] | null
+          id?: never
+          image?: string | null
+          location?: string | null
+          name: string
+          size_sqm?: number | null
+          social_platforms?:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty?: string | null
+          styles?: Database["public"]["Enums"]["gallery_style"][] | null
+          website?: string | null
+        }
+        Update: {
+          bio?: string | null
+          city?: string | null
+          country?: string | null
+          established_year?: number | null
+          gallery_types?: Database["public"]["Enums"]["gallery_type"][] | null
+          id?: never
+          image?: string | null
+          location?: string | null
+          name?: string
+          size_sqm?: number | null
+          social_platforms?:
+            | Database["public"]["Enums"]["social_platform"][]
+            | null
+          specialty?: string | null
+          styles?: Database["public"]["Enums"]["gallery_style"][] | null
+          website?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
         Row: {
           created_at: string | null
           id: string | null
@@ -113,7 +199,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      gallery_style: "contemporary" | "modern" | "classical" | "experimental"
+      gallery_type: "commercial" | "non_profit" | "museum" | "artist_run"
+      social_platform: "instagram" | "facebook" | "twitter" | "linkedin"
     }
     CompositeTypes: {
       [_ in never]: never
