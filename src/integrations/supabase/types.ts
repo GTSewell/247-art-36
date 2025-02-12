@@ -100,15 +100,7 @@ export type Database = {
           id?: number
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "favorite_artists_artist_id_fkey"
-            columns: ["artist_id"]
-            isOneToOne: false
-            referencedRelation: "artists"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       favorite_galleries: {
         Row: {
