@@ -15,24 +15,31 @@ export const useArtistRegeneration = () => {
 
     toast.info(`Generating artworks for ${artist.name}...`);
     
-    const artworkUrls = await generateImage({
-      name: artist.name,
-      specialty: artist.specialty,
-      techniques: artist.techniques,
-      styles: artist.styles
-    });
+    try {
+      const artworkUrls = await generateImage({
+        name: artist.name,
+        specialty: artist.specialty,
+        techniques: artist.techniques,
+        styles: artist.styles
+      });
 
-    if (artworkUrls) {
+      if (!artworkUrls) {
+        toast.error("Failed to generate artworks");
+        return null;
+      }
+
       console.log("Got artwork URLs:", artworkUrls);
       
       // Update the artist in the database with new artworks
-      const { error: updateError } = await supabase
+      const { error: updateError, data: updatedArtist } = await supabase
         .from('artists')
         .update({ 
           artworks: artworkUrls,
           locked_artworks: false // Reset locked status when generating new artworks
         })
-        .eq('id', artist.id);
+        .eq('id', artist.id)
+        .select()
+        .single();
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
@@ -41,10 +48,12 @@ export const useArtistRegeneration = () => {
       }
 
       toast.success(`Artworks generated for ${artist.name}!`);
-      return artworkUrls;
+      return updatedArtist?.artworks || null;
+    } catch (error) {
+      console.error("Error in handleRegenerateArtworks:", error);
+      toast.error("Failed to generate or save artworks");
+      return null;
     }
-    
-    return null;
   };
 
   return {

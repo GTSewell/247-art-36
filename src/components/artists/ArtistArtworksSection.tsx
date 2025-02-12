@@ -78,9 +78,9 @@ const ArtistArtworksSection = ({
           </div>
         )}
       </div>
-      {artist.artworks && artist.artworks.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4">
-          {artist.artworks.map((artwork, index) => (
+      <div className="grid grid-cols-2 gap-4">
+        {artist.artworks && artist.artworks.length > 0 ? (
+          artist.artworks.map((artwork, index) => (
             <div key={index} className="aspect-square rounded-lg overflow-hidden border border-border/40">
               <img
                 src={artwork}
@@ -88,11 +88,13 @@ const ArtistArtworksSection = ({
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
               />
             </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-muted-foreground text-sm italic">No artworks generated yet. Click the button above to generate some!</p>
-      )}
+          ))
+        ) : (
+          <div className="col-span-2 flex items-center justify-center h-40 text-muted-foreground text-sm italic">
+            {isGenerating ? 'Generating artworks...' : 'No artworks generated yet'}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

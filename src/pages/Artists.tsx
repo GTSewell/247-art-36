@@ -34,8 +34,10 @@ const Artists = () => {
   const { handleRegenerateArtworks, isGenerating } = useArtistRegeneration();
 
   const handleArtistImageRegeneration = async (artist: Artist) => {
+    console.log("Starting artwork regeneration for artist:", artist.name);
     const newArtworks = await handleRegenerateArtworks(artist);
     if (newArtworks) {
+      console.log("New artworks generated:", newArtworks);
       await refreshArtists(); // Make sure to await the refresh
     }
   };
