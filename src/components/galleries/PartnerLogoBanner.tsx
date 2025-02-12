@@ -24,7 +24,7 @@ const partnerLogos = [
 
 const PartnerLogoBanner = () => {
   return (
-    <div className="w-full h-[50px] bg-white/50 backdrop-blur-sm overflow-hidden">
+    <div className="w-full h-[50px] backdrop-blur-sm overflow-hidden">
       <div className="relative flex items-center h-full">
         <motion.div
           className="flex gap-8 absolute whitespace-nowrap"
