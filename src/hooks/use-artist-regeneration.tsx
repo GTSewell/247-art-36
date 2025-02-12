@@ -39,43 +39,54 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // First, perform the update operation
-      const { error: updateError } = await supabase
+      // Log the exact data we're trying to update
+      const updateData = {
+        artworks: artworkUrls,
+        locked_artworks: false
+      };
+      console.log("Attempting to update artist with data:", updateData);
+
+      // Perform the update operation
+      const { data, error: updateError } = await supabase
         .from('artists')
-        .update({
-          artworks: artworkUrls,
-          locked_artworks: false
-        })
-        .eq('id', artist.id);
+        .update(updateData)
+        .eq('id', artist.id)
+        .select()
+        .maybeSingle();
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
-        toast.error("Failed to save artworks");
+        toast.error(`Failed to save artworks: ${updateError.message}`);
         return null;
       }
 
-      // Then, fetch the updated record
-      const { data: updatedArtist, error: fetchError } = await supabase
+      if (!data) {
+        console.error("No artist data returned after update");
+        toast.error("Failed to save artworks - No data returned");
+        return artworkUrls;
+      }
+
+      // Verify the update was successful
+      const { data: verifiedArtist, error: verifyError } = await supabase
         .from('artists')
         .select('id, name, artworks')
         .eq('id', artist.id)
         .maybeSingle();
 
-      if (fetchError) {
-        console.error("Error fetching updated artist:", fetchError);
+      if (verifyError) {
+        console.error("Error verifying artist update:", verifyError);
         toast.error("Failed to verify artwork update");
-        return null;
+        return artworkUrls;
       }
 
-      if (!updatedArtist) {
-        console.error("No artist found after update");
-        toast.error("Failed to save artworks - Artist not found");
-        return artworkUrls; // Return the generated URLs even if we can't fetch the updated record
+      if (!verifiedArtist?.artworks) {
+        console.error("Artworks not found in verified artist data");
+        return artworkUrls;
       }
 
-      console.log("Successfully updated artist:", updatedArtist);
+      console.log("Successfully updated artist:", verifiedArtist);
       toast.success(`Artworks generated for ${artist.name}!`);
-      return updatedArtist.artworks;
+      return verifiedArtist.artworks;
     } catch (error) {
       console.error("Error in handleRegenerateArtworks:", error);
       toast.error("Failed to generate or save artworks");
