@@ -11,16 +11,17 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const { name, specialty, techniques, styles } = await req.json();
-
     if (!RUNWARE_API_KEY) {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
+
+    const { name, specialty, techniques, styles } = await req.json();
 
     // Create a more personalized prompt using the artist's details
     const createArtworkPrompt = (index: number) => {
@@ -35,6 +36,14 @@ serve(async (req) => {
     let authenticated = false;
 
     await new Promise((resolve, reject) => {
+      let timeoutId: number;
+
+      // Set a timeout for the entire operation
+      timeoutId = setTimeout(() => {
+        ws.close();
+        reject(new Error('Operation timed out'));
+      }, 60000); // 60 second timeout
+
       ws.onopen = () => {
         console.log("WebSocket connected, sending authentication...");
         const authMessage = [{
@@ -83,7 +92,7 @@ serve(async (req) => {
               console.log(`Received artwork URL ${results.length + 1}:`, item.imageURL);
               results.push(item);
               if (results.length === 4) {
-                console.log("All artworks generated successfully");
+                clearTimeout(timeoutId);
                 ws.close();
                 resolve(null);
               }
@@ -94,11 +103,13 @@ serve(async (req) => {
 
       ws.onerror = (error) => {
         console.error("WebSocket error:", error);
+        clearTimeout(timeoutId);
         reject(error);
       };
 
       ws.onclose = () => {
         console.log("WebSocket connection closed");
+        clearTimeout(timeoutId);
         if (!authenticated || results.length < 4) {
           reject(new Error("WebSocket connection closed before completion"));
         }
@@ -117,8 +128,14 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
+        status: 500 
+      }
     );
   }
 });
