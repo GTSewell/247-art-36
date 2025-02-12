@@ -43,16 +43,17 @@ export function ArtistSubmissionForm() {
     try {
       const { error } = await supabase
         .from('artist_submissions')
-        .insert([
-          {
-            artist_name: values.artistName,
-            instagram_handle: values.instagramHandle || null,
-            email: values.email,
-            comments: values.comments || null,
-          }
-        ]);
+        .insert({
+          artist_name: values.artistName,
+          instagram_handle: values.instagramHandle || null,
+          email: values.email,
+          comments: values.comments || null,
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast.success("Submission received! Thank you for your interest.");
       form.reset();
