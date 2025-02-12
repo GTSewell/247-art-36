@@ -17,21 +17,6 @@ export const useArtistRegeneration = () => {
     toast.info(`Generating artworks for ${artist.name}...`);
     
     try {
-      // First verify the artist exists using a separate query
-      const { data: existingArtist, error: checkError } = await supabase
-        .from('artists')
-        .select('*')
-        .eq('id', artist.id)
-        .single();
-
-      if (checkError) {
-        console.error("Error checking artist:", checkError);
-        toast.error("Failed to verify artist");
-        return null;
-      }
-
-      console.log("Found existing artist:", existingArtist);
-
       const artworkUrls = await generateImage({
         name: artist.name,
         specialty: artist.specialty,
@@ -54,14 +39,16 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // Split the update and select into two separate operations
-      const { error: updateError } = await supabase
+      // Update the artist with the new artworks
+      const { data: updatedArtist, error: updateError } = await supabase
         .from('artists')
         .update({
           artworks: artworkUrls,
           locked_artworks: false
         })
-        .eq('id', artist.id);
+        .eq('id', artist.id)
+        .select('id, name, artworks')
+        .single();
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
@@ -69,27 +56,13 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // Fetch the updated record
-      const { data: updatedArtist, error: fetchError } = await supabase
-        .from('artists')
-        .select('id, name, artworks')
-        .eq('id', artist.id)
-        .single();
-
-      if (fetchError || !updatedArtist) {
-        console.error("Error fetching updated artist:", fetchError);
-        toast.error("Failed to verify artwork update");
+      if (!updatedArtist) {
+        console.error("No artist found after update");
+        toast.error("Failed to save artworks - Artist not found");
         return null;
       }
 
       console.log("Successfully updated artist:", updatedArtist);
-
-      if (!updatedArtist.artworks || updatedArtist.artworks.length === 0) {
-        console.error("Update successful but artworks array is empty:", updatedArtist);
-        toast.error("Failed to save artworks - Array is empty after save");
-        return null;
-      }
-
       toast.success(`Artworks generated for ${artist.name}!`);
       return updatedArtist.artworks;
     } catch (error) {
