@@ -9,227 +9,99 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      artist_images: {
+      artist_submissions: {
         Row: {
-          artist_id: number
+          artist_name: string
+          comments: string | null
           created_at: string
-          image_url: string
+          email: string
+          id: number
+          instagram_handle: string | null
+          status: string | null
         }
         Insert: {
-          artist_id: number
+          artist_name: string
+          comments?: string | null
           created_at?: string
-          image_url: string
+          email: string
+          id?: number
+          instagram_handle?: string | null
+          status?: string | null
         }
         Update: {
-          artist_id?: number
+          artist_name?: string
+          comments?: string | null
           created_at?: string
-          image_url?: string
+          email?: string
+          id?: number
+          instagram_handle?: string | null
+          status?: string | null
         }
         Relationships: []
       }
       artists: {
         Row: {
-          artworks: string[] | null
-          bio: string
+          artworks: Json | null
+          bio: string | null
           city: string | null
           country: string | null
-          id: number
-          image: string
+          id: number | null
+          image: string | null
           location: string | null
           locked_artworks: boolean | null
-          name: string
-          social_platforms:
-            | Database["public"]["Enums"]["social_platform"][]
-            | null
-          specialty: string
-          styles: Database["public"]["Enums"]["art_style"][] | null
-          techniques: Database["public"]["Enums"]["art_technique"][] | null
+          name: string | null
+          social_platforms: Json | null
+          specialty: string | null
+          styles: Json | null
+          techniques: Json | null
         }
         Insert: {
-          artworks?: string[] | null
-          bio: string
+          artworks?: Json | null
+          bio?: string | null
           city?: string | null
           country?: string | null
-          id?: number
-          image: string
+          id?: number | null
+          image?: string | null
           location?: string | null
           locked_artworks?: boolean | null
-          name: string
-          social_platforms?:
-            | Database["public"]["Enums"]["social_platform"][]
-            | null
-          specialty: string
-          styles?: Database["public"]["Enums"]["art_style"][] | null
-          techniques?: Database["public"]["Enums"]["art_technique"][] | null
+          name?: string | null
+          social_platforms?: Json | null
+          specialty?: string | null
+          styles?: Json | null
+          techniques?: Json | null
         }
         Update: {
-          artworks?: string[] | null
-          bio?: string
+          artworks?: Json | null
+          bio?: string | null
           city?: string | null
           country?: string | null
-          id?: number
-          image?: string
+          id?: number | null
+          image?: string | null
           location?: string | null
           locked_artworks?: boolean | null
-          name?: string
-          social_platforms?:
-            | Database["public"]["Enums"]["social_platform"][]
-            | null
-          specialty?: string
-          styles?: Database["public"]["Enums"]["art_style"][] | null
-          techniques?: Database["public"]["Enums"]["art_technique"][] | null
+          name?: string | null
+          social_platforms?: Json | null
+          specialty?: string | null
+          styles?: Json | null
+          techniques?: Json | null
         }
         Relationships: []
       }
-      favorite_artists: {
+      "site settings": {
         Row: {
-          artist_id: number
-          created_at: string
-          id: number
-          user_id: string
+          created_at: string | null
+          id: string | null
+          site_password: string | null
         }
         Insert: {
-          artist_id: number
-          created_at?: string
-          id?: number
-          user_id: string
+          created_at?: string | null
+          id?: string | null
+          site_password?: string | null
         }
         Update: {
-          artist_id?: number
-          created_at?: string
-          id?: number
-          user_id?: string
-        }
-        Relationships: []
-      }
-      favorite_galleries: {
-        Row: {
-          created_at: string
-          gallery_id: number
-          id: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          gallery_id: number
-          id?: number
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          gallery_id?: number
-          id?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "favorite_galleries_gallery_id_fkey"
-            columns: ["gallery_id"]
-            isOneToOne: false
-            referencedRelation: "galleries"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      galleries: {
-        Row: {
-          artworks: string[] | null
-          bio: string
-          city: string | null
-          country: string | null
-          established_year: number | null
-          gallery_types: Database["public"]["Enums"]["gallery_type"][] | null
-          id: number
-          image: string
-          location: string | null
-          locked_artworks: boolean | null
-          name: string
-          size_sqm: number | null
-          social_platforms:
-            | Database["public"]["Enums"]["social_platform"][]
-            | null
-          specialty: string
-          styles: Database["public"]["Enums"]["gallery_style"][] | null
-          website: string | null
-        }
-        Insert: {
-          artworks?: string[] | null
-          bio: string
-          city?: string | null
-          country?: string | null
-          established_year?: number | null
-          gallery_types?: Database["public"]["Enums"]["gallery_type"][] | null
-          id?: number
-          image: string
-          location?: string | null
-          locked_artworks?: boolean | null
-          name: string
-          size_sqm?: number | null
-          social_platforms?:
-            | Database["public"]["Enums"]["social_platform"][]
-            | null
-          specialty: string
-          styles?: Database["public"]["Enums"]["gallery_style"][] | null
-          website?: string | null
-        }
-        Update: {
-          artworks?: string[] | null
-          bio?: string
-          city?: string | null
-          country?: string | null
-          established_year?: number | null
-          gallery_types?: Database["public"]["Enums"]["gallery_type"][] | null
-          id?: number
-          image?: string
-          location?: string | null
-          locked_artworks?: boolean | null
-          name?: string
-          size_sqm?: number | null
-          social_platforms?:
-            | Database["public"]["Enums"]["social_platform"][]
-            | null
-          specialty?: string
-          styles?: Database["public"]["Enums"]["gallery_style"][] | null
-          website?: string | null
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          id: string
-          updated_at: string | null
-          username: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          id: string
-          updated_at?: string | null
-          username?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          id?: string
-          updated_at?: string | null
-          username?: string | null
-        }
-        Relationships: []
-      }
-      site_settings: {
-        Row: {
-          created_at: string
-          id: string
-          site_password: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          site_password: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          site_password?: string
+          created_at?: string | null
+          id?: string | null
+          site_password?: string | null
         }
         Relationships: []
       }
@@ -241,81 +113,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      art_style:
-        | "Abstract"
-        | "Realism"
-        | "Impressionism"
-        | "Surrealism"
-        | "Pop Art"
-        | "Minimalism"
-        | "Contemporary"
-        | "Modern"
-        | "Traditional"
-        | "Folk Art"
-        | "Gothic"
-        | "Renaissance"
-        | "Baroque"
-        | "Art Nouveau"
-        | "Art Deco"
-        | "Expressionism"
-        | "Cubism"
-        | "Digital"
-        | "Urban"
-        | "Conceptual"
-      art_technique:
-        | "Oil Painting"
-        | "Watercolor"
-        | "Acrylic"
-        | "Digital Art"
-        | "Photography"
-        | "Sculpture"
-        | "Printmaking"
-        | "Drawing"
-        | "Mixed Media"
-        | "Collage"
-        | "Ceramics"
-        | "Textile Art"
-        | "Street Art"
-        | "Installation"
-        | "Performance"
-        | "Video Art"
-        | "Glasswork"
-        | "Metalwork"
-        | "Wood Carving"
-        | "Lithography"
-      gallery_style:
-        | "Contemporary"
-        | "Modern"
-        | "Classical"
-        | "Experimental"
-        | "Mixed Media"
-        | "Digital Art"
-        | "Photography"
-        | "Sculpture"
-        | "Installation"
-        | "Performance"
-      gallery_type:
-        | "Commercial"
-        | "Non-Profit"
-        | "Museum"
-        | "Artist-Run"
-        | "Pop-Up"
-        | "University"
-        | "Corporate"
-        | "Public"
-        | "Private"
-        | "Virtual"
-      social_platform:
-        | "Instagram"
-        | "Twitter"
-        | "Facebook"
-        | "YouTube"
-        | "TikTok"
-        | "DeviantArt"
-        | "ArtStation"
-        | "Behance"
-        | "LinkedIn"
-        | "Pinterest"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
