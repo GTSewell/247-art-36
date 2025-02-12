@@ -1,11 +1,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Building2, Boxes, CircleDot, Cube, Diamond, Hexagon, Pentagon, Square, Triangle, Star, Circle, Gem, Crown, Shapes, Zap } from 'lucide-react';
+import { Building2, Boxes, CircleDot, Box, Diamond, Hexagon, Pentagon, Square, Triangle, Star, Circle, Gem, Crown, Shapes, Zap } from 'lucide-react';
 
 // Generate 15 unique company logos with icons and names
 const partnerLogos = [
-  { id: 1, name: 'TechCube', icon: Cube, color: '#ef3f36' },
+  { id: 1, name: 'TechCube', icon: Box, color: '#ef3f36' },
   { id: 2, name: 'StarNet', icon: Star, color: '#f7cf1e' },
   { id: 3, name: 'HexaCore', icon: Hexagon, color: '#00baef' },
   { id: 4, name: 'DiamondTech', icon: Diamond, color: '#34d399' },
