@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Zap, RefreshCw } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
 
@@ -12,7 +12,6 @@ interface ArtistCardProps {
   city?: string;
   country?: string;
   onSelect: (e: React.MouseEvent) => void;
-  onRegenerateImage: (artist: Artist) => void;
   onFavoriteToggle: (isFavorite: boolean) => void;
   isFavorite: boolean;
   isFeatured?: boolean;
@@ -30,7 +29,6 @@ const ArtistCard = ({
   city,
   country,
   onSelect, 
-  onRegenerateImage,
   onFavoriteToggle,
   isFavorite,
   isFeatured = false,
@@ -41,27 +39,6 @@ const ArtistCard = ({
 }: ArtistCardProps) => {
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
-
-  const handleRegenerateClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent card selection
-    console.log("Regenerating artworks for:", name);
-    
-    // Create artist object with all required properties
-    const artist: Artist = {
-      id,
-      name,
-      specialty,
-      image,
-      bio,
-      city,
-      country,
-      techniques,
-      styles,
-      social_platforms
-    };
-    
-    onRegenerateImage(artist);
-  };
 
   return (
     <div className="relative">
@@ -92,8 +69,8 @@ const ArtistCard = ({
           </div>
         </div>
 
-        {/* Favorite and Generate Buttons - Always visible at bottom */}
-        <div className="absolute bottom-4 right-4 flex gap-2 z-10">
+        {/* Favorite Button - Always visible at bottom */}
+        <div className="absolute bottom-4 right-4 z-10">
           <Button
             variant="ghost"
             size="icon"
@@ -109,15 +86,6 @@ const ArtistCard = ({
             title="Favorite"
           >
             <Zap size={isFeatured ? 24 : 20} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleRegenerateClick}
-            className="bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white"
-            title="Generate new artworks"
-          >
-            <RefreshCw size={isFeatured ? 24 : 20} />
           </Button>
         </div>
       </div>

@@ -1,32 +1,24 @@
 
 import React, { useState, useEffect } from 'react';
-import { MousePointerClick, RefreshCw, SaveAll } from 'lucide-react';
+import { MousePointerClick } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 
 interface ArtistImagePanelProps {
   artist: Artist;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
-  onRegenerateImage?: (artist: Artist) => Promise<void>;
-  isGenerating?: boolean;
 }
 
 const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({ 
   artist, 
   onFavoriteToggle, 
   isFavorite,
-  onRegenerateImage,
-  isGenerating = false
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showClickIndicator, setShowClickIndicator] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -54,48 +46,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       setTimeout(() => {
         setIsHovered(false);
       }, 3000);
-    }
-  };
-
-  const handleGenerate = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent card from flipping
-    if (onRegenerateImage) {
-      try {
-        await onRegenerateImage(artist);
-      } catch (error) {
-        console.error('Error generating artworks:', error);
-        toast.error('Failed to generate artworks');
-      }
-    }
-  };
-
-  const handleSaveArtworks = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent card from flipping
-    
-    if (!artist.artworks || artist.artworks.length === 0) {
-      toast.error("No artworks to save!");
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      const { error } = await supabase
-        .from('artists')
-        .update({ 
-          locked_artworks: true,
-          artworks: artist.artworks
-        })
-        .eq('id', artist.id);
-
-      if (error) throw error;
-      
-      toast.success("Artworks saved successfully!");
-      window.location.reload();
-    } catch (error) {
-      console.error('Error saving artworks:', error);
-      toast.error("Failed to save artworks");
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -171,31 +121,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                     </div>
                   )}
                 </div>
-
-                {!artist.locked_artworks && (
-                  <div className="absolute bottom-2 right-2 flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleSaveArtworks}
-                      disabled={isSaving || !artist.artworks?.length}
-                      className="bg-white/80 backdrop-blur-sm"
-                    >
-                      <SaveAll className="h-4 w-4 mr-1" />
-                      {isSaving ? 'Saving...' : 'Save'}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleGenerate}
-                      disabled={isGenerating}
-                      className="bg-white/80 backdrop-blur-sm"
-                    >
-                      <RefreshCw className={`h-4 w-4 mr-1 ${isGenerating ? 'animate-spin' : ''}`} />
-                      {isGenerating ? 'Generating...' : 'Generate'}
-                    </Button>
-                  </div>
-                )}
               </div>
             </motion.div>
           )}
