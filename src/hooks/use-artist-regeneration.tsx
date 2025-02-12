@@ -70,7 +70,7 @@ export const useArtistRegeneration = () => {
         .update(updateData)
         .eq('id', artist.id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
