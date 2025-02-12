@@ -72,9 +72,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                 repeat: Infinity,
                 repeatType: "reverse"
               }}
-              className="absolute bottom-4 right-4 flex items-center justify-center bg-black/50 p-2 rounded-full z-10"
+              className="absolute bottom-4 right-4 flex items-center justify-center bg-[#0EA5E9]/90 p-2 rounded-full z-10 shadow-lg"
             >
-              <MousePointerClick className="w-6 h-6 text-white" />
+              <MousePointerClick className="w-6 h-6 text-white animate-pulse" />
             </motion.div>
           )}
         </AnimatePresence>
