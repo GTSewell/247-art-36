@@ -1,9 +1,12 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
 const API_ENDPOINT = "wss://ws-api.runware.ai/v1";
 const RUNWARE_API_KEY = Deno.env.get('RUNWAYML_API_KEY');
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,8 +24,16 @@ serve(async (req) => {
       throw new Error('RUNWAYML_API_KEY is not set');
     }
 
-    const { name, specialty, techniques, styles, numberResults = 4 } = await req.json();
-    console.log("Received request for artist:", { name, specialty, techniques, styles, numberResults });
+    const { name, specialty, techniques, styles, numberResults = 4, artistId } = await req.json();
+    
+    if (!artistId) {
+      throw new Error('artistId is required');
+    }
+    
+    console.log("Received request for artist:", { name, specialty, techniques, styles, numberResults, artistId });
+
+    // Initialize Supabase client
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     // Create a more personalized prompt using the artist's details
     const createArtworkPrompt = (index: number) => {
@@ -140,7 +151,22 @@ serve(async (req) => {
       };
     });
 
-    console.log("Returning artwork URLs:", artworkUrls);
+    // Save artworks to Supabase
+    console.log("Saving artwork URLs to Supabase for artist:", artistId);
+    const { error: updateError } = await supabase
+      .from('artists')
+      .update({
+        artworks: artworkUrls,
+        locked_artworks: false
+      })
+      .eq('id', artistId);
+
+    if (updateError) {
+      console.error("Error saving artworks to Supabase:", updateError);
+      throw new Error(`Failed to save artworks: ${updateError.message}`);
+    }
+
+    console.log("Successfully saved artwork URLs to Supabase");
 
     return new Response(
       JSON.stringify({ artworkUrls }),
@@ -162,4 +188,3 @@ serve(async (req) => {
     );
   }
 });
-

@@ -9,6 +9,7 @@ interface GenerateImageParams {
   techniques?: string[];
   styles?: string[];
   numberResults?: number;
+  artistId: number; // Added artistId parameter
 }
 
 export const useGenerateArtistImage = () => {

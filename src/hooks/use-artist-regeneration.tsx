@@ -22,7 +22,8 @@ export const useArtistRegeneration = () => {
         specialty: artist.specialty,
         techniques: artist.techniques,
         styles: artist.styles,
-        numberResults: 4 // Request 4 unique images
+        numberResults: 4, // Request 4 unique images
+        artistId: artist.id // Pass the artist ID
       });
 
       if (!artworkUrls || !Array.isArray(artworkUrls)) {
@@ -32,30 +33,6 @@ export const useArtistRegeneration = () => {
       }
 
       console.log("Got artwork URLs:", artworkUrls);
-
-      // Ensure URLs array is a proper array and not empty
-      if (artworkUrls.length === 0) {
-        console.error("Generated artwork URLs array is empty");
-        toast.error("Failed to generate artworks - Empty array");
-        return null;
-      }
-
-      // First update the artist's artworks
-      const { error: updateError } = await supabase
-        .from('artists')
-        .update({
-          artworks: artworkUrls,
-          locked_artworks: false
-        })
-        .eq('id', artist.id);
-
-      if (updateError) {
-        console.error("Error updating artist:", updateError);
-        toast.error(`Failed to save artworks: ${updateError.message}`);
-        return null;
-      }
-
-      console.log("Successfully updated artist with new artworks:", artworkUrls);
       toast.success(`Artworks generated for ${artist.name}!`);
       return artworkUrls;
 
