@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Artists from "./pages/Artists";
+import ArtistSubmission from "./pages/ArtistSubmission";
 import Galleries from "./pages/Galleries";
 import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/artists" element={<Artists />} />
+          <Route path="/artist-submission" element={<ArtistSubmission />} />
           <Route path="/galleries" element={<Galleries />} />
           <Route path="/services" element={<Services />} />
           <Route path="*" element={<NotFound />} />
