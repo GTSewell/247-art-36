@@ -22,18 +22,22 @@ serve(async (req) => {
     }
 
     const { name, specialty, techniques, styles, numberResults = 4 } = await req.json();
+    console.log("Received request for artist:", { name, specialty, techniques, styles, numberResults });
 
     // Create a more personalized prompt using the artist's details
     const createArtworkPrompt = (index: number) => {
       const randomStyle = styles && styles.length > 0 ? styles[Math.floor(Math.random() * styles.length)] : 'contemporary';
       const randomTechnique = techniques && techniques.length > 0 ? techniques[Math.floor(Math.random() * techniques.length)] : specialty;
       
-      return `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of ${numberResults}.`;
+      const prompt = `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of ${numberResults}.`;
+      console.log(`Generated prompt ${index + 1}:`, prompt);
+      return prompt;
     };
 
     const ws = new WebSocket(API_ENDPOINT);
     const results: any[] = [];
     let authenticated = false;
+    let connectionClosed = false;
     let generationComplete = false;
 
     const artworkUrls = await new Promise<string[]>((resolve, reject) => {
@@ -41,8 +45,9 @@ serve(async (req) => {
 
       // Set a timeout for the entire operation
       timeoutId = setTimeout(() => {
+        console.error("Operation timed out");
         ws.close();
-        reject(new Error('Operation timed out'));
+        reject(new Error('Operation timed out after 60 seconds'));
       }, 60000); // 60 second timeout
 
       ws.onopen = () => {
@@ -94,6 +99,7 @@ serve(async (req) => {
               results.push(item);
               if (results.length === numberResults) {
                 generationComplete = true;
+                console.log("All artworks generated, closing connection");
                 ws.close();
               }
             }
@@ -109,6 +115,7 @@ serve(async (req) => {
 
       ws.onclose = () => {
         console.log("WebSocket connection closed");
+        connectionClosed = true;
         clearTimeout(timeoutId);
         
         if (!authenticated) {
@@ -122,7 +129,7 @@ serve(async (req) => {
         }
 
         const urls = results.map(result => result.imageURL).filter(url => typeof url === 'string');
-        console.log("Generated artwork URLs:", urls);
+        console.log("Final artwork URLs:", urls);
         
         if (urls.length !== numberResults) {
           reject(new Error(`Expected ${numberResults} artworks but got ${urls.length}`));
@@ -155,3 +162,4 @@ serve(async (req) => {
     );
   }
 });
+
