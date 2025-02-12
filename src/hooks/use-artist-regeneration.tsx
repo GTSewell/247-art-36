@@ -21,7 +21,8 @@ export const useArtistRegeneration = () => {
         name: artist.name,
         specialty: artist.specialty,
         techniques: artist.techniques,
-        styles: artist.styles
+        styles: artist.styles,
+        numberResults: 4 // Request 4 unique images
       });
 
       if (!artworkUrls || !Array.isArray(artworkUrls)) {

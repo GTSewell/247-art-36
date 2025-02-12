@@ -8,6 +8,7 @@ interface GenerateImageParams {
   specialty: string;
   techniques?: string[];
   styles?: string[];
+  numberResults?: number;
 }
 
 export const useGenerateArtistImage = () => {
@@ -20,7 +21,10 @@ export const useGenerateArtistImage = () => {
     
     try {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: params
+        body: {
+          ...params,
+          numberResults: params.numberResults || 4 // Default to 4 images if not specified
+        }
       });
 
       if (error) throw error;
