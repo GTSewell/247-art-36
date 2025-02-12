@@ -39,7 +39,7 @@ export const useArtistRegeneration = () => {
         })
         .eq('id', artist.id)
         .select()
-        .single();
+        .maybeSingle();
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
@@ -48,8 +48,8 @@ export const useArtistRegeneration = () => {
       }
 
       if (!updatedArtist) {
-        console.error("No artist data returned after update");
-        toast.error("Failed to save artworks");
+        console.error("Artist not found");
+        toast.error("Failed to save artworks - Artist not found");
         return null;
       }
 
