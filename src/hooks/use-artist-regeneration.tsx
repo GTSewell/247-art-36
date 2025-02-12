@@ -42,14 +42,15 @@ export const useArtistRegeneration = () => {
         styles: artist.styles
       });
 
-      if (!artworkUrls) {
+      if (!artworkUrls || !Array.isArray(artworkUrls)) {
+        console.error("Invalid artwork URLs format:", artworkUrls);
         toast.error("Failed to generate artworks");
         return null;
       }
 
       console.log("Got artwork URLs:", artworkUrls);
 
-      // First do the update
+      // First do the update with explicit array handling
       const { error: updateError } = await supabase
         .from('artists')
         .update({
@@ -64,7 +65,7 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
-      // Then fetch the updated artist
+      // Then fetch the updated artist to verify the save
       const { data: updatedArtist, error: fetchError } = await supabase
         .from('artists')
         .select('*')
@@ -80,6 +81,13 @@ export const useArtistRegeneration = () => {
       if (!updatedArtist) {
         console.error("Failed to fetch updated artist:", artist.id);
         toast.error("Failed to verify artwork save");
+        return null;
+      }
+
+      // Verify that artworks were actually saved
+      if (!updatedArtist.artworks || updatedArtist.artworks.length === 0) {
+        console.error("Artworks array is empty after save:", updatedArtist);
+        toast.error("Failed to save artworks - Array is empty");
         return null;
       }
 
