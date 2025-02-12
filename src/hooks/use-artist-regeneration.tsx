@@ -49,16 +49,14 @@ export const useArtistRegeneration = () => {
 
       console.log("Got artwork URLs:", artworkUrls);
 
-      // Now update the artist
-      const { data: updatedArtist, error: updateError } = await supabase
+      // First do the update
+      const { error: updateError } = await supabase
         .from('artists')
         .update({
           artworks: artworkUrls,
           locked_artworks: false
         })
-        .eq('id', artist.id)
-        .select('*')
-        .maybeSingle();
+        .eq('id', artist.id);
 
       if (updateError) {
         console.error("Error updating artist:", updateError);
@@ -66,9 +64,22 @@ export const useArtistRegeneration = () => {
         return null;
       }
 
+      // Then fetch the updated artist
+      const { data: updatedArtist, error: fetchError } = await supabase
+        .from('artists')
+        .select('*')
+        .eq('id', artist.id)
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error("Error fetching updated artist:", fetchError);
+        toast.error("Failed to verify artwork save");
+        return null;
+      }
+
       if (!updatedArtist) {
-        console.error("Failed to update artist:", artist.id);
-        toast.error("Failed to save artworks - Update failed");
+        console.error("Failed to fetch updated artist:", artist.id);
+        toast.error("Failed to verify artwork save");
         return null;
       }
 
