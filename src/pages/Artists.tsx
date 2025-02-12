@@ -32,7 +32,7 @@ const Artists = () => {
     refreshArtists
   } = useArtists();
 
-  const { handleRegenerateImage, isGenerating } = useArtistRegeneration();
+  const { handleRegenerateImage, handleRegenerateArtworks, isGenerating } = useArtistRegeneration();
 
   const handleArtistImageRegeneration = async (artist: Artist) => {
     const newImageUrl = await handleRegenerateImage(artist);
@@ -41,35 +41,10 @@ const Artists = () => {
     }
   };
 
-  const handleRegenerateArtworks = async (artist: Artist) => {
-    toast.info("Generating new artworks...");
-    
-    try {
-      const { data, error: imageError } = await supabase.functions.invoke('generate-artist-image', {
-        body: { 
-          name: artist.name,
-          specialty: artist.specialty,
-          techniques: artist.techniques,
-          styles: artist.styles
-        }
-      });
-
-      if (imageError) throw imageError;
-      
-      if (data?.artworkUrls) {
-        const { error: updateError } = await supabase
-          .from('artists')
-          .update({ artworks: data.artworkUrls })
-          .eq('id', artist.id);
-
-        if (updateError) throw updateError;
-
-        toast.success("Artworks regenerated successfully!");
-        refreshArtists();
-      }
-    } catch (error) {
-      console.error('Error regenerating artworks:', error);
-      toast.error("Failed to regenerate artworks");
+  const handleRegenerateArtworksClick = async (artist: Artist) => {
+    const newArtworks = await handleRegenerateArtworks(artist);
+    if (newArtworks) {
+      refreshArtists();
     }
   };
 
@@ -150,7 +125,7 @@ const Artists = () => {
 
         <FeaturedArtists
           artists={filteredFeaturedArtists}
-          onSelect={handleRegenerateArtworks}
+          onSelect={handleRegenerateArtworksClick}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
@@ -162,7 +137,7 @@ const Artists = () => {
           setAllArtistsSearch={setAllArtistsSearch}
           showFavorites={showFavorites}
           setShowFavorites={setShowFavorites}
-          onSelect={handleRegenerateArtworks}
+          onSelect={handleRegenerateArtworksClick}
           onRegenerateImage={handleArtistImageRegeneration}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
@@ -173,4 +148,3 @@ const Artists = () => {
 };
 
 export default Artists;
-
