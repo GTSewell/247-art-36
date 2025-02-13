@@ -11,13 +11,9 @@ const WhatIsZap = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: `repeating-linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.1) 0px,
-            rgba(255, 255, 255, 0.1) 2px,
-            transparent 2px,
-            transparent 4px
-          )`,
+          backgroundImage: `url('/lovable-uploads/d94612d9-3c88-4e6b-b904-0aba2c056349.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
           opacity: 0.5,
           zIndex: 1,
           mixBlendMode: 'normal'
