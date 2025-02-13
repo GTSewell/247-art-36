@@ -9,7 +9,7 @@ const WhatIsZap = () => {
     .getPublicUrl('247-art-Jane&GT-Halftone-Greyscale.png');
 
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
+    <section className="py-32 px-4 relative overflow-hidden"> {/* Increased padding-top and padding-bottom */}
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}
