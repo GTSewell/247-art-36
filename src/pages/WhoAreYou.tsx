@@ -115,15 +115,15 @@ const WhoAreYou = () => {
             </p>
             <p className="text-black text-xl font-bold">
               We've also helped build amazing creative activations around Australia, including{' '}
-              <a href="https://www.instagram.com/sandrewmelbs/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red/50 px-1 rounded hover:underline">
+              <a href="https://www.instagram.com/sandrewmelbs/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-yellow/50 px-1 rounded hover:underline">
                 Sandrew's
               </a>
               {' '}epic street art exhibition{' '}
-              <a href="https://www.instagram.com/theoutsidersmelbourne/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red/50 px-1 rounded hover:underline">
+              <a href="https://www.instagram.com/theoutsidersmelbourne/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-yellow/50 px-1 rounded hover:underline">
                 'The Outsiders Melbourne'
               </a>
               {' '}(A MUST SEE!), to Shepard Fairey's (OBEY){' '}
-              <a href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red/50 px-1 rounded hover:underline">
+              <a href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-yellow/50 px-1 rounded hover:underline">
                 Printed Matters
               </a>
               {' '}Gallery in Sydney.
