@@ -53,7 +53,7 @@ const WhoAreYou = () => {
     );
   }
 
-  const imageUrl = `${supabase.getStorageUrl('patterns')}/247-art-Jane&GT-Halftone-white.png`;
+  const imageUrl = `${supabase.storageUrl}/object/public/patterns/247-art-Jane&GT-Halftone-white.png`;
 
   return (
     <div className="min-h-screen bg-zap-yellow pb-[50px]">
