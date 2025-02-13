@@ -45,19 +45,6 @@ const CallToAction = () => {
                 className="h-12"
               />
             </motion.a>
-            <motion.a
-              href="https://www.stables.money"
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <img
-                src="/lovable-uploads/c1aa52df-209a-44c5-9706-d2209db8a011.png"
-                alt="Stables"
-                className="h-12"
-              />
-            </motion.a>
           </div>
         </div>
       </motion.div>
