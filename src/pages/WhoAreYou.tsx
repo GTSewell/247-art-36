@@ -13,6 +13,7 @@ const WhoAreYou = () => {
   const { data: galleries = [], isLoading } = useGalleries();
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
   const [isJaneHovered, setIsJaneHovered] = useState(false);
+  const [isGTHovered, setIsGTHovered] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
@@ -68,10 +69,15 @@ const WhoAreYou = () => {
         <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
           <div className="flex-1 flex items-start">
             <img 
-              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
+              src={isGTHovered
+                ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png"
+                : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
+              }
               alt="That's GT" 
+              onMouseEnter={() => setIsGTHovered(true)}
+              onMouseLeave={() => setIsGTHovered(false)}
               className={`
-                object-contain
+                object-contain transition-all duration-300
                 ${isMobile ? 'w-36 h-36 ml-[50px] mt-0' : 'w-72 h-72 ml-[350px] mt-[50px]'}
               `}
             />
