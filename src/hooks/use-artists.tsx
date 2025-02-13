@@ -3,9 +3,8 @@ import { useState, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Database } from "@/integrations/supabase/types";
-
-type ArtistRow = Database['public']['Tables']['artists']['Row'];
+import { transformArtist } from "@/utils/artist-transformer";
+import { logger } from "@/utils/logger";
 
 export const useArtists = () => {
   const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
@@ -23,63 +22,17 @@ export const useArtists = () => {
       .eq('user_id', session.session.user.id);
 
     if (error) {
-      console.error('Error loading favorites:', error);
+      logger.error('Error loading favorites:', error);
       return;
     }
 
     setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
   };
 
-  const transformArtist = (artist: ArtistRow): Artist => {
-    // Parse JSON fields from JSONB format
-    const techniques = typeof artist.techniques === 'string' 
-      ? JSON.parse(artist.techniques)
-      : Array.isArray(artist.techniques) 
-        ? artist.techniques 
-        : [];
-
-    const styles = typeof artist.styles === 'string'
-      ? JSON.parse(artist.styles)
-      : Array.isArray(artist.styles)
-        ? artist.styles
-        : [];
-
-    const social_platforms = typeof artist.social_platforms === 'string'
-      ? JSON.parse(artist.social_platforms)
-      : Array.isArray(artist.social_platforms)
-        ? artist.social_platforms
-        : [];
-
-    const artworks = typeof artist.artworks === 'string'
-      ? JSON.parse(artist.artworks)
-      : Array.isArray(artist.artworks)
-        ? artist.artworks
-        : [];
-
-    console.log('Raw artist data:', artist);
-    console.log('Parsed fields:', { techniques, styles, social_platforms, artworks });
-
-    return {
-      id: artist.id,
-      name: artist.name || '',
-      specialty: artist.specialty || '',
-      image: artist.image || '',
-      bio: artist.bio || '',
-      location: artist.location || '',
-      city: artist.city || '',
-      country: artist.country || '',
-      techniques: techniques as string[],
-      styles: styles as string[],
-      social_platforms: social_platforms as string[],
-      artworks: artworks as string[],
-      locked_artworks: artist.locked_artworks || false
-    };
-  };
-
   const loadArtists = async () => {
     try {
       setIsLoading(true);
-      console.log('Fetching artists from Supabase...');
+      logger.info('Fetching artists from Supabase...');
       
       const { data: artists, error } = await supabase
         .from('artists')
@@ -87,15 +40,15 @@ export const useArtists = () => {
         .order('id');
 
       if (error) {
-        console.error('Error loading artists:', error);
+        logger.error('Error loading artists:', error);
         toast.error('Failed to load artists');
         return;
       }
 
       if (artists) {
-        console.log('Raw artists data:', artists);
+        logger.info('Artists data received', { count: artists.length });
         const transformedArtists = artists.map(transformArtist);
-        console.log('Transformed artists:', transformedArtists);
+        logger.info('Artists transformed successfully', { count: transformedArtists.length });
 
         // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
@@ -103,7 +56,7 @@ export const useArtists = () => {
         setAdditionalArtists(transformedArtists.slice(3));
       }
     } catch (error) {
-      console.error('Error in loadArtists:', error);
+      logger.error('Error in loadArtists:', error);
       toast.error('Failed to load artists');
     } finally {
       setIsLoading(false);
@@ -174,7 +127,7 @@ export const useArtists = () => {
         toast.success('Removed from favorites');
       }
     } catch (error) {
-      console.error('Error toggling favorite:', error);
+      logger.error('Error toggling favorite:', error);
       toast.error('Failed to update favorites');
     }
   };
