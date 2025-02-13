@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -33,22 +34,22 @@ const WhatIsZap = () => {
       >
         <div>
           <h1 className="text-5xl font-bold text-white mb-6">Who the fk are you?</h1>
-          <p className="text-lg mb-4 text-black font-medium">
+          <p className="text-lg mb-4 text-white font-medium">
             We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
           </p>
-          <p className="text-lg mb-4 text-black font-medium">
+          <p className="text-lg mb-4 text-white font-medium">
             We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
           </p>
-          <p className="text-lg mb-4 text-black font-medium">
+          <p className="text-lg mb-4 text-white font-medium">
             Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
           </p>
-          <p className="text-lg mb-4 text-black font-medium">
+          <p className="text-lg mb-4 text-white font-medium">
             Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
           </p>
-          <p className="text-lg mb-4 text-black font-medium">
+          <p className="text-lg mb-4 text-white font-medium">
             In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
           </p>
-          <p className="text-lg mb-4 text-black font-medium">
+          <p className="text-lg mb-4 text-white font-medium">
             We've also helped build amazing creative activations around Australia, including{' '}
             <a 
               href="https://www.instagram.com/sandrewmelbs/" 
@@ -78,7 +79,7 @@ const WhatIsZap = () => {
             </a>
             {' '}Gallery in Sydney.
           </p>
-          <p className="text-lg text-black font-medium">
+          <p className="text-lg text-white font-medium">
             With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
           </p>
         </div>
