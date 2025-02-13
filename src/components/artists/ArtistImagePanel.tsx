@@ -49,6 +49,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
+  console.log('Artist artworks:', artist.artworks);
+
   return (
     <div className="space-y-3">
       <div 
@@ -106,16 +108,17 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
             >
               <div className="relative h-full">
                 <div className="grid grid-cols-2 gap-2 p-2 w-full h-full">
-                  {artist.artworks?.slice(0, 4).map((artwork, index) => (
-                    <div key={index} className="relative aspect-square rounded overflow-hidden">
-                      <img
-                        src={artwork}
-                        alt={`Artwork ${index + 1} by ${artist.name}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                  {(!artist.artworks || artist.artworks.length === 0) && (
+                  {Array.isArray(artist.artworks) && artist.artworks.length > 0 ? (
+                    artist.artworks.slice(0, 4).map((artwork, index) => (
+                      <div key={index} className="relative aspect-square rounded overflow-hidden">
+                        <img
+                          src={artwork}
+                          alt={`Artwork ${index + 1} by ${artist.name}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))
+                  ) : (
                     <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
                       No artworks available
                     </div>

@@ -21,10 +21,10 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   onClose
 }) => {
   const socialIcons = {
-    Facebook: <Facebook className="h-5 w-5" />,
-    Instagram: <Instagram className="h-5 w-5" />,
-    Twitter: <Twitter className="h-5 w-5" />,
-    LinkedIn: <Linkedin className="h-5 w-5" />,
+    facebook: <Facebook className="h-5 w-5" />,
+    instagram: <Instagram className="h-5 w-5" />,
+    twitter: <Twitter className="h-5 w-5" />,
+    linkedin: <Linkedin className="h-5 w-5" />,
   };
 
   const domainName = artist.name.replace(/\s+/g, '');
@@ -34,6 +34,12 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     e.stopPropagation();
     window.open(`https://${domainName}.247.art`, '_blank');
   };
+
+  console.log('Artist details:', {
+    techniques: artist.techniques,
+    styles: artist.styles,
+    social_platforms: artist.social_platforms
+  });
 
   return (
     <div className="relative flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
@@ -64,7 +70,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
         <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
 
-        {artist.techniques && artist.techniques.length > 0 && (
+        {Array.isArray(artist.techniques) && artist.techniques.length > 0 && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Techniques</h3>
             <div className="flex flex-wrap gap-2">
@@ -77,7 +83,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           </div>
         )}
 
-        {artist.styles && artist.styles.length > 0 && (
+        {Array.isArray(artist.styles) && artist.styles.length > 0 && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Styles</h3>
             <div className="flex flex-wrap gap-2">
@@ -90,18 +96,21 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           </div>
         )}
 
-        {artist.social_platforms && artist.social_platforms.length > 0 && (
+        {Array.isArray(artist.social_platforms) && artist.social_platforms.length > 0 && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Social Media</h3>
             <div className="flex gap-3">
-              {artist.social_platforms.map((platform) => (
-                <button
-                  key={platform}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  {socialIcons[platform as keyof typeof socialIcons]}
-                </button>
-              ))}
+              {artist.social_platforms.map((platform) => {
+                const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
+                return (
+                  <button
+                    key={platform}
+                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    {socialIcons[platformKey]}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
