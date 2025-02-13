@@ -107,7 +107,7 @@ const WhoAreYou = () => {
             <p className="text-black text-xl font-bold">
               Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
             </p>
-            <p className="text-black font-medium">
+            <p className="text-black text-xl font-bold">
               Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
             </p>
             <p className="text-black font-medium">
