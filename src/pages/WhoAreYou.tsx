@@ -58,7 +58,7 @@ const WhoAreYou = () => {
       <Navigation />
       <div className="pt-16">
         <img 
-          src="/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png"
+          src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white.png"
           alt="Jane & GT Halftone" 
           className="w-full h-auto"
         />
