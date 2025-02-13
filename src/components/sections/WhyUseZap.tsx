@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const WhyUseZap = () => {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-zap-blue to-transparent relative z-10">
+    <section className="py-40 px-4 bg-gradient-to-b from-zap-blue to-transparent relative z-10">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
