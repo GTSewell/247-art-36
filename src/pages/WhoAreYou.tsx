@@ -75,7 +75,7 @@ const WhoAreYou = () => {
         )}
         {isGTHovered && (
           <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png"
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2"
             alt="GT Solo Hover"
             className="absolute top-[62px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300"
           />
