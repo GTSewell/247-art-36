@@ -56,12 +56,24 @@ const WhoAreYou = () => {
   return (
     <div className="min-h-screen bg-zap-blue pb-[50px]">
       <Navigation />
-      <div className="pt-16">
+      <div className="pt-16 relative">
         <img 
           src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png"
           alt="Jane & GT Halftone" 
           className="w-full h-auto"
         />
+        <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
+          <img 
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
+            alt="That's GT" 
+            className="w-48 h-48 object-contain"
+          />
+          <img 
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane.png"
+            alt="That's Jane" 
+            className="w-48 h-48 object-contain"
+          />
+        </div>
       </div>
       <div className="container mx-auto px-4 pt-8">
         <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
