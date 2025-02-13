@@ -113,7 +113,7 @@ const WhoAreYou = () => {
             <p className="text-black text-xl font-bold">
               In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
             </p>
-            <p className="text-black font-medium">
+            <p className="text-black text-xl font-bold">
               We've also helped build amazing creative activations around Australia, including{' '}
               <a href="https://www.instagram.com/sandrewmelbs/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
                 Sandrew's
