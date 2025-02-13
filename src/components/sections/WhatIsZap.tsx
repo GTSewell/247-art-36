@@ -3,14 +3,18 @@ import { motion } from "framer-motion";
 
 const WhatIsZap = () => {
   return (
-    <section className="py-20 px-4 bg-zap-blue relative overflow-hidden">
+    <section className="py-20 px-4 relative overflow-hidden">
+      <div 
+        className="absolute inset-0 w-full h-full bg-zap-blue"
+        style={{ zIndex: 0 }}
+      />
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
           backgroundImage: "url('/lovable-uploads/0b1084ea-9e9d-49d2-bcf0-3d86f46b90c9.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 0.5,
+          opacity: 0.8,
           zIndex: 1
         }}
       />
