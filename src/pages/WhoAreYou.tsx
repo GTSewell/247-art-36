@@ -95,7 +95,7 @@ const WhoAreYou = () => {
       }} transition={{
         duration: 0.5
       }} className="container mx-auto px-4 pt-8 relative z-10">
-          <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
+          <h1 className="text-center mb-8 text-gray-50 font-extrabold text-7xl">Who the f#@k are you?</h1>
           
           <div className="max-w-4xl mx-auto space-y-4 text-lg">
             <p className="text-black text-xl font-bold">
