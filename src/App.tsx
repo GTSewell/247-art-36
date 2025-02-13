@@ -8,7 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Artists from "./pages/Artists";
 import ArtistSubmission from "./pages/ArtistSubmission";
-import Galleries from "./pages/Galleries";
+import WhoAreYou from "./pages/WhoAreYou";
 import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
 
@@ -23,7 +23,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/artists" element={<Artists />} />
           <Route path="/artist-submission" element={<ArtistSubmission />} />
-          <Route path="/galleries" element={<Galleries />} />
+          <Route path="/whoareyou" element={<WhoAreYou />} />
           <Route path="/services" element={<Services />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

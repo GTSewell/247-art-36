@@ -14,7 +14,7 @@ const Navigation = () => {
 
   const navItems = [
     { name: "Artists", path: "/artists" },
-    { name: "Galleries", path: "/galleries" },
+    { name: "Who the f#@k are you?", path: "/whoareyou" },
     { name: "Services", path: "/services" },
   ];
 
