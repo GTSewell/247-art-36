@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -47,7 +48,7 @@ const Navigation = () => {
       <div className="flex justify-between items-center p-4">
         <Link to="/" className="flex items-center space-x-2">
           <img
-            src="/lovable-uploads/35c806e4-6bf2-4984-9996-9c61c1d74879.png"
+            src="/lovable-uploads/d8aafbad-7e01-4cec-9fba-67f66a7e7952.png"
             alt="247/ART"
             className="h-8"
           />
