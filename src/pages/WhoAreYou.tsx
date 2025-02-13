@@ -101,7 +101,7 @@ const WhoAreYou = () => {
             <p className="text-black text-xl font-bold">
               We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
             </p>
-            <p className="text-black font-medium">
+            <p className="text-black text-xl font-bold">
               We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
             </p>
             <p className="text-black font-medium">
