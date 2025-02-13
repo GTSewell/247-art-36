@@ -34,7 +34,10 @@ const WhatIsZap = () => {
         <div>
           <h1 className="text-5xl font-bold text-white mb-6">Who the fk are you?</h1>
           <p className="text-lg mb-4 text-black font-medium">
-            We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!{"\n\n"}We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
+            We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
+          </p>
+          <p className="text-lg mb-4 text-black font-medium">
+            We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
           </p>
           <p className="text-lg mb-4 text-black font-medium">
             Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
