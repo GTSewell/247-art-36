@@ -52,7 +52,7 @@ const WhatIsZap = () => {
               href="https://www.instagram.com/sandrewmelbs/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-zap-yellow hover:underline"
+              className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
             >
               Sandrew's
             </a>
@@ -61,7 +61,7 @@ const WhatIsZap = () => {
               href="https://www.instagram.com/theoutsidersmelbourne/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-zap-yellow hover:underline"
+              className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
             >
               'The Outsiders Melbourne'
             </a>
@@ -70,7 +70,7 @@ const WhatIsZap = () => {
               href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-zap-yellow hover:underline"
+              className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
             >
               Printed Matters
             </a>
