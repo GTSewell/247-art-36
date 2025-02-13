@@ -2,9 +2,9 @@
 import { motion } from "framer-motion";
 import MatterportViewer from "@/components/MatterportViewer";
 
-const WhyUseZap = () => {
+const VirtualTourSection = () => {
   return (
-    <section id="why-use-zap" className="py-80 px-4 bg-gradient-to-b from-zap-blue to-transparent relative z-10">
+    <section id="virtual-tour" className="py-80 px-4 bg-gradient-to-b from-zap-blue to-transparent relative z-10">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -22,4 +22,4 @@ const WhyUseZap = () => {
   );
 };
 
-export default WhyUseZap;
+export default VirtualTourSection;

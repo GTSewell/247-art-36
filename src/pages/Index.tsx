@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import WhatIsZap from "@/components/sections/WhatIsZap";
-import WhyUseZap from "@/components/sections/WhyUseZap";
+import VirtualTourSection from "@/components/sections/VirtualTourSection";
 import WhoIsZapFor from "@/components/sections/WhoIsZapFor";
 import CallToAction from "@/components/sections/CallToAction";
 import PasswordGate from "@/components/PasswordGate";
@@ -33,7 +33,7 @@ const Index = () => {
       <Navigation />
       <Hero />
       <WhatIsZap />
-      <WhyUseZap />
+      <VirtualTourSection />
       <WhoIsZapFor />
       <CallToAction />
     </div>
