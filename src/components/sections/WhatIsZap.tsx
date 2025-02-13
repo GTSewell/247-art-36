@@ -18,9 +18,9 @@ const WhatIsZap = () => {
             transparent 2px,
             transparent 4px
           )`,
-          opacity: 0.3,
+          opacity: 0.5,
           zIndex: 1,
-          mixBlendMode: 'overlay'
+          mixBlendMode: 'normal'
         }}
       />
       <motion.div 
