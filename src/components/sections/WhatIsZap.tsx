@@ -17,7 +17,11 @@ const WhatIsZap = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: `url('${publicUrl}')`,
+          backgroundImage: `linear-gradient(to bottom, 
+            rgba(255,255,255,0) 0%,
+            rgba(255,255,255,0) 85%,
+            rgba(0,186,239,1) 100%
+          ), url('${publicUrl}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.75,
