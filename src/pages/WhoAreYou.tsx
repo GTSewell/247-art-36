@@ -57,6 +57,15 @@ const WhoAreYou = () => {
       <Navigation />
       <div className="container mx-auto pt-20 px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
+        
+        <div className="max-w-2xl mx-auto mb-12">
+          <img 
+            src="/247-art-Jane&GT-Halftone-white.png" 
+            alt="Jane & GT Halftone" 
+            className="w-full h-auto rounded-lg shadow-lg"
+          />
+        </div>
+
         <FeaturedGalleries
           galleries={galleries}
           onSelect={handleGallerySelect}
