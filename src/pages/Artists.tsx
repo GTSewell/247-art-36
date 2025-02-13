@@ -81,6 +81,9 @@ const Artists = () => {
     );
   }
 
+  console.log('Featured Artists:', filteredFeaturedArtists);
+  console.log('Additional Artists:', filteredAdditionalArtists);
+
   return (
     <div className="min-h-screen bg-zap-yellow">
       <Navigation />
