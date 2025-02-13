@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -7,11 +6,13 @@ import { Gallery } from "@/data/types/gallery";
 import { useToast } from "@/components/ui/use-toast";
 import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
 import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const WhoAreYou = () => {
   const { data: galleries = [], isLoading } = useGalleries();
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   console.log("Galleries data:", galleries); // Debug log
 
@@ -67,14 +68,20 @@ const WhoAreYou = () => {
             <img 
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
               alt="That's GT" 
-              className="w-72 h-72 object-contain ml-[350px] mt-[50px]"
+              className={`
+                object-contain mt-[50px]
+                ${isMobile ? 'w-36 h-36 ml-[100px]' : 'w-72 h-72 ml-[350px]'}
+              `}
             />
           </div>
           <div className="flex-1 flex items-start justify-end">
             <img 
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
               alt="That's Jane" 
-              className="w-48 h-48 object-contain mt-[50px] mr-[300px]"
+              className={`
+                object-contain mt-[50px]
+                ${isMobile ? 'w-24 h-24 mr-[50px]' : 'w-48 h-48 mr-[300px]'}
+              `}
             />
           </div>
         </div>
