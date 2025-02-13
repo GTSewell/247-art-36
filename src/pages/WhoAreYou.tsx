@@ -102,7 +102,11 @@ const WhoAreYou = () => {
               We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
             </p>
             <p className="text-black text-xl font-bold">
-              We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
+              We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like{' '}
+              <a href="https://everfreshstudio.com.au/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
+                Everfresh
+              </a>
+              {' '}or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
             </p>
             <p className="text-black text-xl font-bold">
               Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
