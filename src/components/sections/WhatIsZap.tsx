@@ -6,7 +6,7 @@ const WhatIsZap = () => {
   const { data: { publicUrl } } = supabase
     .storage
     .from('patterns')
-    .getPublicUrl('247-art-Jane&GT-Halftone-black.png');
+    .getPublicUrl('247-art-Jane&GT-Halftone-Greyscale.png');
 
   return (
     <section className="py-32 px-4 relative overflow-hidden">
