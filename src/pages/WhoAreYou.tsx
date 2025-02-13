@@ -128,7 +128,7 @@ const WhoAreYou = () => {
               </a>
               {' '}Gallery in Sydney.
             </p>
-            <p className="text-black font-medium">
+            <p className="text-black text-xl font-bold">
               With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
             </p>
           </div>
