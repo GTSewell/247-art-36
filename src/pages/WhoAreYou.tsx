@@ -6,6 +6,7 @@ import { useGalleries } from "@/hooks/use-galleries";
 import { Gallery } from "@/data/types/gallery";
 import { useToast } from "@/components/ui/use-toast";
 import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
+import { supabase } from "@/integrations/supabase/client";
 
 const WhoAreYou = () => {
   const { data: galleries = [], isLoading } = useGalleries();
@@ -52,6 +53,8 @@ const WhoAreYou = () => {
     );
   }
 
+  const imageUrl = `${supabase.getStorageUrl('patterns')}/247-art-Jane&GT-Halftone-white.png`;
+
   return (
     <div className="min-h-screen bg-zap-yellow pb-[50px]">
       <Navigation />
@@ -60,7 +63,7 @@ const WhoAreYou = () => {
         
         <div className="w-full -mx-4 mb-12">
           <img 
-            src="/lovable-uploads/eb0e5b8f-33d9-472f-957d-e4173c92a46f.png" 
+            src={imageUrl}
             alt="Jane & GT Halftone" 
             className="w-full h-auto shadow-lg"
           />
