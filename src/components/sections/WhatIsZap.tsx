@@ -7,7 +7,7 @@ const WhatIsZap = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: "url('/lovable-uploads/e9f17c8a-4357-443d-8ed2-18a80c973f1e.png')",
+          backgroundImage: "url('/lovable-uploads/7232380f-7e32-449f-a638-2ace609c9cb2.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 1
