@@ -46,7 +46,7 @@ const Hero = () => {
             className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold"
           >
             <p className="mb-2">You create. We create.</p>
-            <p>for artists, galleries, and creative services.</p>
+            <p>Together we hustle!</p>
           </motion.div>
           
           <motion.div
