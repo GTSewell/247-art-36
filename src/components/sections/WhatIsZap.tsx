@@ -47,7 +47,7 @@ const WhatIsZap = () => {
             In addition to our gallery work, our artist printing business has been a cornerstone of our efforts to empower artists. By providing high-quality printing services for fine art prints, merchandise, and more, we've helped countless artists generate supplementary income and expand their creative practices into new avenues. We've also helped build amazing creative activations around Australia, including the recent 'The Outsiders Melbourne' exhibition by Sandrew (A MUST SEE!), to Shephard Fairey's (OBEY) Printed Matters Gallery in Sydney creatively directed by the genius Eddie Zammit.
           </p>
           <p className="text-lg text-black font-medium">
-            With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways. Adhering to our life motto 'CultureB4Capital' and get to makin' cool shit happen! 💙
+            With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
           </p>
         </div>
       </motion.div>
