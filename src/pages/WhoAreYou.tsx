@@ -57,7 +57,7 @@ const WhoAreYou = () => {
     <div className="min-h-screen bg-zap-yellow pb-[50px]">
       <Navigation />
       <img 
-        src={`${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/patterns/247-art-Jane&GT-Halftone-white.png`}
+        src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/patterns/247-art-Jane&GT-Halftone-white.png`}
         alt="Jane & GT Halftone" 
         className="w-full h-auto"
       />
