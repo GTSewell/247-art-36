@@ -103,7 +103,7 @@ const WhoAreYou = () => {
             </p>
             <p className="text-black text-xl font-bold">
               We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like{' '}
-              <a href="https://everfreshstudio.com.au/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
+              <a href="https://www.instagram.com/everfreshstudio/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
                 Everfresh
               </a>
               {' '}or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
