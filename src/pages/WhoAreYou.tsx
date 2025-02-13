@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -56,7 +57,7 @@ const WhoAreYou = () => {
       </div>;
   }
 
-  return <div className="min-h-screen bg-zap-blue pb-[50px]">
+  return <div className="min-h-screen bg-zap-blue pb-[50px] relative">
       <Navigation />
       <div className="pt-16 relative">
         <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" />
@@ -147,6 +148,15 @@ const WhoAreYou = () => {
             />
           </div>
         </motion.div>
+      </div>
+
+      {/* Bottom banner image with 0.5 opacity */}
+      <div className="absolute bottom-0 left-0 w-full">
+        <img 
+          src="/lovable-uploads/ddc18b16-629a-42e8-a97e-af21acb3e67a.png" 
+          alt="Bottom Banner" 
+          className="w-full opacity-50"
+        />
       </div>
     </div>;
 };
