@@ -114,7 +114,11 @@ const WhoAreYou = () => {
               <a href="https://www.instagram.com/backwoods.gallery/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
                 Backwoods
               </a>
-              {' '}or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
+              {' '}or{' '}
+              <a href="https://www.instagram.com/bside.gallery/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
+                B-side
+              </a>
+              , or, maybe you're more along the lines of "Who TF are you!?" ... well,
             </p>
             <p className="text-black text-xl font-bold">
               Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
