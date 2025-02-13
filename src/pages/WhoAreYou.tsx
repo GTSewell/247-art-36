@@ -15,11 +15,9 @@ const WhoAreYou = () => {
     isLoading
   } = useGalleries();
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
-  const [isJaneHovered, setIsJaneHovered] = useState(false);
-  const [isGTHovered, setIsGTHovered] = useState(false);
-  const {
-    toast
-  } = useToast();
+  const [isJaneActive, setIsJaneActive] = useState(false);
+  const [isGTActive, setIsGTActive] = useState(false);
+  const { toast } = useToast();
   const isMobile = useIsMobile();
 
   const handleGallerySelect = (gallery: Gallery) => {
@@ -28,6 +26,7 @@ const WhoAreYou = () => {
       description: "Gallery details view will be implemented soon!"
     });
   };
+
   const handleFavoriteToggle = (galleryId: number, isFavorite: boolean) => {
     setFavoriteGalleries(prev => {
       const newFavorites = new Set(prev);
@@ -61,25 +60,49 @@ const WhoAreYou = () => {
       <Navigation />
       <div className="pt-16 relative">
         <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" />
-        {isJaneHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" />}
-        {isGTHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        {isJaneActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        {isGTActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
-            <a href="https://www.instagram.com/gtsewell/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
-            width: isMobile ? '9rem' : '18rem',
-            height: isMobile ? '9rem' : '18rem',
-            left: isMobile ? '50px' : '20%',
-            top: isMobile ? '2rem' : '50px'
-          }}>
-              <img src={isGTHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} alt="That's GT" onMouseEnter={() => setIsGTHovered(true)} onMouseLeave={() => setIsGTHovered(false)} className="w-full h-full" />
+            <a 
+              href="https://www.instagram.com/gtsewell/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="block absolute transition-all duration-300" 
+              style={{
+                width: isMobile ? '9rem' : '18rem',
+                height: isMobile ? '9rem' : '18rem',
+                left: isMobile ? '50px' : '20%',
+                top: isMobile ? '2rem' : '50px'
+              }}
+              onMouseEnter={() => setIsGTActive(true)}
+              onMouseLeave={() => setIsGTActive(false)}
+            >
+              <img 
+                src={isGTActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} 
+                alt="That's GT" 
+                className="w-full h-full" 
+              />
             </a>
-            <a href="https://www.instagram.com/jlartsphere/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
-            width: isMobile ? '6rem' : '12rem',
-            height: isMobile ? '6rem' : '12rem',
-            right: isMobile ? '35px' : '20%',
-            top: isMobile ? '15px' : '50px'
-          }}>
-              <img src={isJaneHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} alt="That's Jane" onMouseEnter={() => setIsJaneHovered(true)} onMouseLeave={() => setIsJaneHovered(false)} className="w-full h-full" />
+            <a 
+              href="https://www.instagram.com/jlartsphere/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="block absolute transition-all duration-300" 
+              style={{
+                width: isMobile ? '6rem' : '12rem',
+                height: isMobile ? '6rem' : '12rem',
+                right: isMobile ? '35px' : '20%',
+                top: isMobile ? '15px' : '50px'
+              }}
+              onMouseEnter={() => setIsJaneActive(true)}
+              onMouseLeave={() => setIsJaneActive(false)}
+            >
+              <img 
+                src={isJaneActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} 
+                alt="That's Jane" 
+                className="w-full h-full" 
+              />
             </a>
           </div>
         </div>
