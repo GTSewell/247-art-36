@@ -29,11 +29,11 @@ const WhatIsZap = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto relative flex justify-start w-full"
+        className="container mx-auto relative"
         style={{ zIndex: 2 }}
       >
-        <div className="flex flex-col md:flex-row items-start w-1/2">
-          <div className="flex-1">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
             <h1 className="text-5xl font-bold text-white mb-6">What is ZAP!?</h1>
             <p className="text-lg mb-4 text-black">
               We are GT Sewell and Jane Rolls, long-time advocates for Melbourne's vibrant arts community. You may have met us galivanting around at artist studios, like Everfresh or Blender, or, maybe at a kick-ass exhibition at Backwoods or B-side, or, maybe you're more along the lines of "Who TF are they!?"  ... well,
@@ -41,6 +41,8 @@ const WhatIsZap = () => {
             <p className="text-lg mb-4 text-black">
               Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
             </p>
+          </div>
+          <div>
             <p className="text-lg mb-4 text-black">
               Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
             </p>
