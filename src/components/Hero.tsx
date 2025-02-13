@@ -1,7 +1,10 @@
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 const Hero = () => {
+  const [isClicked, setIsClicked] = useState(false);
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Pattern */}
@@ -52,8 +55,11 @@ const Hero = () => {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <button className="bg-[#ea384c] text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105">
-              Get the app
+            <button 
+              onClick={() => setIsClicked(true)}
+              className={`${isClicked ? 'bg-zap-blue' : 'bg-[#ea384c]'} text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105`}
+            >
+              {isClicked ? 'Coming soon' : 'Get the app'}
             </button>
             <button className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200">
               Learn More
