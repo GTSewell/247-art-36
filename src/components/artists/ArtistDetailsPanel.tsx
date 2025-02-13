@@ -81,30 +81,26 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
     return (
       <Collapsible open={isTechniquesExpanded} onOpenChange={setIsTechniquesExpanded}>
-        <div className="space-y-2">
-          <div className="flex flex-wrap gap-2">
-            {artist.techniques?.slice(0, 2).map((technique, index) => (
-              <Badge key={index} variant="secondary" className="bg-gray-100">
-                {technique}
-              </Badge>
-            ))}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold text-gray-800">Techniques</h3>
+            <CollapsibleTrigger className="text-[#ea384c] hover:opacity-80">
+              {isTechniquesExpanded ? (
+                <ChevronUp className="h-5 w-5" />
+              ) : (
+                <ChevronDown className="h-5 w-5" />
+              )}
+            </CollapsibleTrigger>
           </div>
           <CollapsibleContent>
             <div className="flex flex-wrap gap-2">
-              {artist.techniques?.slice(2).map((technique, index) => (
+              {artist.techniques?.map((technique, index) => (
                 <Badge key={index} variant="secondary" className="bg-gray-100">
                   {technique}
                 </Badge>
               ))}
             </div>
           </CollapsibleContent>
-          <CollapsibleTrigger className="w-full flex items-center justify-center text-[#ea384c] hover:opacity-80">
-            {isTechniquesExpanded ? (
-              <ChevronUp className="h-5 w-5" />
-            ) : (
-              <ChevronDown className="h-5 w-5" />
-            )}
-          </CollapsibleTrigger>
         </div>
       </Collapsible>
     );
@@ -125,37 +121,33 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
     return (
       <Collapsible open={isStylesExpanded} onOpenChange={setIsStylesExpanded}>
-        <div className="space-y-2">
-          <div className="flex flex-wrap gap-2">
-            {artist.styles?.slice(0, 2).map((style, index) => (
-              <Badge key={index} variant="secondary" className="bg-gray-100">
-                {style}
-              </Badge>
-            ))}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold text-gray-800">Styles</h3>
+            <CollapsibleTrigger className="text-[#ea384c] hover:opacity-80">
+              {isStylesExpanded ? (
+                <ChevronUp className="h-5 w-5" />
+              ) : (
+                <ChevronDown className="h-5 w-5" />
+              )}
+            </CollapsibleTrigger>
           </div>
           <CollapsibleContent>
             <div className="flex flex-wrap gap-2">
-              {artist.styles?.slice(2).map((style, index) => (
+              {artist.styles?.map((style, index) => (
                 <Badge key={index} variant="secondary" className="bg-gray-100">
                   {style}
                 </Badge>
               ))}
             </div>
           </CollapsibleContent>
-          <CollapsibleTrigger className="w-full flex items-center justify-center text-[#ea384c] hover:opacity-80">
-            {isStylesExpanded ? (
-              <ChevronUp className="h-5 w-5" />
-            ) : (
-              <ChevronDown className="h-5 w-5" />
-            )}
-          </CollapsibleTrigger>
         </div>
       </Collapsible>
     );
   };
 
   return (
-    <div className="relative flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
+    <div className="relative flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 md:p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
       {onClose && (
         <button 
           onClick={onClose}
@@ -164,7 +156,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <X className="h-4 w-4 text-[#ea384c]" />
         </button>
       )}
-      <div className="space-y-4">
+      <div className={`space-y-${isMobile ? '2' : '4'}`}>
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
           <div className="flex items-center gap-2 text-gray-600 mb-1">
@@ -183,19 +175,10 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
         {renderBio()}
 
-        {Array.isArray(artist.techniques) && artist.techniques.length > 0 && (
-          <div className="space-y-2">
-            <h3 className="font-semibold text-gray-800">Techniques</h3>
-            {renderTechniques()}
-          </div>
-        )}
-
-        {Array.isArray(artist.styles) && artist.styles.length > 0 && (
-          <div className="space-y-2">
-            <h3 className="font-semibold text-gray-800">Styles</h3>
-            {renderStyles()}
-          </div>
-        )}
+        <div className={`space-y-${isMobile ? '1' : '4'}`}>
+          {Array.isArray(artist.techniques) && artist.techniques.length > 0 && renderTechniques()}
+          {Array.isArray(artist.styles) && artist.styles.length > 0 && renderStyles()}
+        </div>
 
         {Array.isArray(artist.social_platforms) && artist.social_platforms.length > 0 && (
           <div className="space-y-2">
