@@ -63,12 +63,12 @@ const WhoAreYou = () => {
         <img 
           src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" 
           alt="Jane & GT Halftone" 
-          className="w-full h-auto" 
+          className="w-full h-auto relative z-10" 
         />
 
-        {/* GT Solo Hover Image */}
+        {/* GT Solo Hover Image Area */}
         <div 
-          className="absolute top-[62px] -left-[1px] w-full cursor-pointer"
+          className="absolute top-[62px] -left-[1px] w-full h-[80%] cursor-pointer z-20"
           onMouseEnter={() => setIsGTActive(true)}
           onMouseLeave={() => setIsGTActive(false)}
         >
@@ -79,9 +79,9 @@ const WhoAreYou = () => {
           />
         </div>
 
-        {/* Jane Solo Hover Image */}
+        {/* Jane Solo Hover Image Area */}
         <div 
-          className="absolute top-[55px] -left-[3px] w-full cursor-pointer"
+          className="absolute top-[55px] -left-[3px] w-full h-[80%] cursor-pointer z-20"
           onMouseEnter={() => setIsJaneActive(true)}
           onMouseLeave={() => setIsJaneActive(false)}
         >
@@ -93,7 +93,7 @@ const WhoAreYou = () => {
         </div>
 
         {/* Name Badges Container */}
-        <div className="absolute top-0 left-0 w-full h-full">
+        <div className="absolute top-0 left-0 w-full h-full z-30">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
             {/* GT Badge */}
             <a 
