@@ -4,17 +4,11 @@ import { motion } from "framer-motion";
 const WhatIsZap = () => {
   return (
     <section className="py-20 px-4 bg-zap-blue relative z-10">
-      <div 
-        className="absolute inset-0 opacity-10 bg-contain bg-no-repeat bg-center"
-        style={{
-          backgroundImage: "url('/lovable-uploads/dfa8a9b8-8c10-42d1-a4f2-013e866746d1.png')"
-        }}
-      />
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto relative"
+        className="container mx-auto"
       >
         <div className="flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1">
@@ -28,6 +22,13 @@ const WhatIsZap = () => {
             <p className="text-lg">
               ZAP! is designed to be fun, easy-to-use, and completely artist-first, that makes handling finances as exciting as making art.
             </p>
+          </div>
+          <div className="flex-1">
+            <img
+              src="/lovable-uploads/e87b6304-c331-43ea-8732-079538ff941a.png"
+              alt="ZAP Platform"
+              className="animate-float w-1/2 mx-auto"
+            />
           </div>
         </div>
       </motion.div>
