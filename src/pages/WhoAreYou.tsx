@@ -82,21 +82,29 @@ const WhoAreYou = () => {
         )}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
-            <img 
-              src={isGTHovered
-                ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png"
-                : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
-              }
-              alt="That's GT" 
-              onMouseEnter={() => setIsGTHovered(true)}
-              onMouseLeave={() => setIsGTHovered(false)}
-              className={`
-                absolute transition-all duration-300
-                ${isMobile 
-                  ? 'w-36 h-36 left-[50px] top-8' 
-                  : 'w-72 h-72 left-[20%] top-[50px]'}
-              `}
-            />
+            <a 
+              href="https://www.instagram.com/gtsewell/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block absolute transition-all duration-300"
+              style={{
+                width: isMobile ? '9rem' : '18rem',
+                height: isMobile ? '9rem' : '18rem',
+                left: isMobile ? '50px' : '20%',
+                top: isMobile ? '2rem' : '50px'
+              }}
+            >
+              <img 
+                src={isGTHovered
+                  ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png"
+                  : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
+                }
+                alt="That's GT" 
+                onMouseEnter={() => setIsGTHovered(true)}
+                onMouseLeave={() => setIsGTHovered(false)}
+                className="w-full h-full"
+              />
+            </a>
             <img 
               src={isJaneHovered 
                 ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png"
