@@ -32,27 +32,23 @@ const WhatIsZap = () => {
         className="container mx-auto relative"
         style={{ zIndex: 2 }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h1 className="text-5xl font-bold text-white mb-6">What is ZAP!?</h1>
-            <p className="text-lg mb-4 text-black">
-              We are GT Sewell and Jane Rolls, long-time advocates for Melbourne's vibrant arts community. You may have met us galivanting around at artist studios, like Everfresh or Blender, or, maybe at a kick-ass exhibition at Backwoods or B-side, or, maybe you're more along the lines of "Who TF are they!?"  ... well,
-            </p>
-            <p className="text-lg mb-4 text-black">
-              Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
-            </p>
-          </div>
-          <div>
-            <p className="text-lg mb-4 text-black">
-              Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
-            </p>
-            <p className="text-lg mb-4 text-black">
-              In addition to our gallery work, our artist printing business has been a cornerstone of our efforts to empower artists. By providing high-quality printing services for fine art prints, merchandise, and more, we've helped countless artists generate supplementary income and expand their creative practices into new avenues. We've also helped build amazing creative activations around Australia, including the recent 'The Outsiders Melbourne' exhibition by Sandrew (A MUST SEE!), to Shephard Fairey's (OBEY) Printed Matters Gallery in Sydney creatively directed by the genius Eddie Zammit.
-            </p>
-            <p className="text-lg text-black">
-              With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways. Adhering to our life motto 'CultureB4Capital' and get to makin' cool shit happen! 💙
-            </p>
-          </div>
+        <div>
+          <h1 className="text-5xl font-bold text-white mb-6">What is ZAP!?</h1>
+          <p className="text-lg mb-4 text-black">
+            We are GT Sewell and Jane Rolls, long-time advocates for Melbourne's vibrant arts community. You may have met us galivanting around at artist studios, like Everfresh or Blender, or, maybe at a kick-ass exhibition at Backwoods or B-side, or, maybe you're more along the lines of "Who TF are they!?"  ... well,
+          </p>
+          <p className="text-lg mb-4 text-black">
+            Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
+          </p>
+          <p className="text-lg mb-4 text-black">
+            Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
+          </p>
+          <p className="text-lg mb-4 text-black">
+            In addition to our gallery work, our artist printing business has been a cornerstone of our efforts to empower artists. By providing high-quality printing services for fine art prints, merchandise, and more, we've helped countless artists generate supplementary income and expand their creative practices into new avenues. We've also helped build amazing creative activations around Australia, including the recent 'The Outsiders Melbourne' exhibition by Sandrew (A MUST SEE!), to Shephard Fairey's (OBEY) Printed Matters Gallery in Sydney creatively directed by the genius Eddie Zammit.
+          </p>
+          <p className="text-lg text-black">
+            With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways. Adhering to our life motto 'CultureB4Capital' and get to makin' cool shit happen! 💙
+          </p>
         </div>
       </motion.div>
     </section>
