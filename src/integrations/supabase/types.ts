@@ -173,23 +173,47 @@ export type Database = {
         }
         Relationships: []
       }
+      password_access_logs: {
+        Row: {
+          created_at: string
+          id: number
+          ip_address: string
+          site_password: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          ip_address: string
+          site_password: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          ip_address?: string
+          site_password?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           created_at: string | null
           id: string | null
           site_password: string | null
+          unique_ip_count: number | null
           usage_count: number | null
         }
         Insert: {
           created_at?: string | null
           id?: string | null
           site_password?: string | null
+          unique_ip_count?: number | null
           usage_count?: number | null
         }
         Update: {
           created_at?: string | null
           id?: string | null
           site_password?: string | null
+          unique_ip_count?: number | null
           usage_count?: number | null
         }
         Relationships: []
