@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -8,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { motion } from "framer-motion";
 
 const WhoAreYou = () => {
   const { data: galleries = [], isLoading } = useGalleries();
@@ -131,16 +131,75 @@ const WhoAreYou = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 pt-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
 
-        <FeaturedGalleries
-          galleries={galleries}
-          onSelect={handleGallerySelect}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteGalleries={favoriteGalleries}
-        />
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container mx-auto px-4 pt-8"
+      >
+        <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
+        
+        <div className="max-w-4xl mx-auto space-y-4 text-lg">
+          <p className="text-black font-medium">
+            We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
+          </p>
+          <p className="text-black font-medium">
+            We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
+          </p>
+          <p className="text-black font-medium">
+            Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
+          </p>
+          <p className="text-black font-medium">
+            Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
+          </p>
+          <p className="text-black font-medium">
+            In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
+          </p>
+          <p className="text-black font-medium">
+            We've also helped build amazing creative activations around Australia, including{' '}
+            <a 
+              href="https://www.instagram.com/sandrewmelbs/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
+            >
+              Sandrew's
+            </a>
+            {' '}epic street art exhibition{' '}
+            <a 
+              href="https://www.instagram.com/theoutsidersmelbourne/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
+            >
+              'The Outsiders Melbourne'
+            </a>
+            {' '}(A MUST SEE!), to Shepard Fairey's (OBEY){' '}
+            <a 
+              href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
+            >
+              Printed Matters
+            </a>
+            {' '}Gallery in Sydney.
+          </p>
+          <p className="text-black font-medium">
+            With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
+          </p>
+        </div>
+
+        <div className="mt-12">
+          <FeaturedGalleries
+            galleries={galleries}
+            onSelect={handleGallerySelect}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteGalleries={favoriteGalleries}
+          />
+        </div>
+      </motion.div>
       <PartnerLogoBanner />
     </div>
   );
