@@ -11,7 +11,7 @@ const WhatIsZap = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: `url('/lovable-uploads/d94612d9-3c88-4e6b-b904-0aba2c056349.png')`,
+          backgroundImage: `url('/assets/halftone-pattern.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.5,
