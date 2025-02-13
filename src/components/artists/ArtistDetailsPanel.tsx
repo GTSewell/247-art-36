@@ -23,6 +23,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   onClose
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isTechniquesExpanded, setIsTechniquesExpanded] = useState(false);
+  const [isStylesExpanded, setIsStylesExpanded] = useState(false);
   const isMobile = useIsMobile();
 
   const socialIcons = {
@@ -52,8 +54,96 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <CollapsibleContent>
             <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
           </CollapsibleContent>
-          <CollapsibleTrigger className="w-full flex items-center justify-center text-gray-500 hover:text-gray-700">
+          <CollapsibleTrigger className="w-full flex items-center justify-center text-[#ea384c] hover:opacity-80">
             {isExpanded ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </CollapsibleTrigger>
+        </div>
+      </Collapsible>
+    );
+  };
+
+  const renderTechniques = () => {
+    if (!isMobile) {
+      return (
+        <div className="flex flex-wrap gap-2">
+          {artist.techniques?.map((technique, index) => (
+            <Badge key={index} variant="secondary" className="bg-gray-100">
+              {technique}
+            </Badge>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <Collapsible open={isTechniquesExpanded} onOpenChange={setIsTechniquesExpanded}>
+        <div className="space-y-2">
+          <div className="flex flex-wrap gap-2">
+            {artist.techniques?.slice(0, 2).map((technique, index) => (
+              <Badge key={index} variant="secondary" className="bg-gray-100">
+                {technique}
+              </Badge>
+            ))}
+          </div>
+          <CollapsibleContent>
+            <div className="flex flex-wrap gap-2">
+              {artist.techniques?.slice(2).map((technique, index) => (
+                <Badge key={index} variant="secondary" className="bg-gray-100">
+                  {technique}
+                </Badge>
+              ))}
+            </div>
+          </CollapsibleContent>
+          <CollapsibleTrigger className="w-full flex items-center justify-center text-[#ea384c] hover:opacity-80">
+            {isTechniquesExpanded ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </CollapsibleTrigger>
+        </div>
+      </Collapsible>
+    );
+  };
+
+  const renderStyles = () => {
+    if (!isMobile) {
+      return (
+        <div className="flex flex-wrap gap-2">
+          {artist.styles?.map((style, index) => (
+            <Badge key={index} variant="secondary" className="bg-gray-100">
+              {style}
+            </Badge>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <Collapsible open={isStylesExpanded} onOpenChange={setIsStylesExpanded}>
+        <div className="space-y-2">
+          <div className="flex flex-wrap gap-2">
+            {artist.styles?.slice(0, 2).map((style, index) => (
+              <Badge key={index} variant="secondary" className="bg-gray-100">
+                {style}
+              </Badge>
+            ))}
+          </div>
+          <CollapsibleContent>
+            <div className="flex flex-wrap gap-2">
+              {artist.styles?.slice(2).map((style, index) => (
+                <Badge key={index} variant="secondary" className="bg-gray-100">
+                  {style}
+                </Badge>
+              ))}
+            </div>
+          </CollapsibleContent>
+          <CollapsibleTrigger className="w-full flex items-center justify-center text-[#ea384c] hover:opacity-80">
+            {isStylesExpanded ? (
               <ChevronUp className="h-5 w-5" />
             ) : (
               <ChevronDown className="h-5 w-5" />
@@ -96,26 +186,14 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         {Array.isArray(artist.techniques) && artist.techniques.length > 0 && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Techniques</h3>
-            <div className="flex flex-wrap gap-2">
-              {artist.techniques.map((technique, index) => (
-                <Badge key={index} variant="secondary" className="bg-gray-100">
-                  {technique}
-                </Badge>
-              ))}
-            </div>
+            {renderTechniques()}
           </div>
         )}
 
         {Array.isArray(artist.styles) && artist.styles.length > 0 && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Styles</h3>
-            <div className="flex flex-wrap gap-2">
-              {artist.styles.map((style, index) => (
-                <Badge key={index} variant="secondary" className="bg-gray-100">
-                  {style}
-                </Badge>
-              ))}
-            </div>
+            {renderStyles()}
           </div>
         )}
 
