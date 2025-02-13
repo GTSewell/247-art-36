@@ -110,7 +110,7 @@ const WhoAreYou = () => {
             <p className="text-black text-xl font-bold">
               Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
             </p>
-            <p className="text-black font-medium">
+            <p className="text-black text-xl font-bold">
               In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
             </p>
             <p className="text-black font-medium">
