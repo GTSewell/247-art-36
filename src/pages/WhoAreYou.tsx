@@ -71,7 +71,7 @@ const WhoAreYou = () => {
               alt="That's GT" 
               className={`
                 object-contain
-                ${isMobile ? 'w-36 h-36 ml-[100px] mt-0' : 'w-72 h-72 ml-[350px] mt-[50px]'}
+                ${isMobile ? 'w-36 h-36 ml-[50px] mt-0' : 'w-72 h-72 ml-[350px] mt-[50px]'}
               `}
             />
           </div>
