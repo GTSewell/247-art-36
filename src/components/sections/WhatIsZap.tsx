@@ -46,7 +46,34 @@ const WhatIsZap = () => {
             In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
           </p>
           <p className="text-lg mb-4 text-black font-medium">
-            We've also helped build amazing creative activations around Australia, including Sandrew's epic street art exhibition 'The Outsiders Melbourne' (A MUST SEE!), to Shepard Fairey's (OBEY) Printed Matters Gallery in Sydney.
+            We've also helped build amazing creative activations around Australia, including{' '}
+            <a 
+              href="https://www.instagram.com/sandrewmelbs/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-zap-yellow hover:underline"
+            >
+              Sandrew's
+            </a>
+            {' '}epic street art exhibition{' '}
+            <a 
+              href="https://www.instagram.com/theoutsidersmelbourne/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-zap-yellow hover:underline"
+            >
+              'The Outsiders Melbourne'
+            </a>
+            {' '}(A MUST SEE!), to Shepard Fairey's (OBEY){' '}
+            <a 
+              href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hover:text-zap-yellow hover:underline"
+            >
+              Printed Matters
+            </a>
+            {' '}Gallery in Sydney.
           </p>
           <p className="text-lg text-black font-medium">
             With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
