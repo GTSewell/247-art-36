@@ -9,7 +9,7 @@ const WhatIsZap = () => {
     .getPublicUrl('247-art-Jane&GT-Halftone-white-soft edge.png');
 
   return (
-    <section className="py-32 px-4 relative overflow-hidden"> {/* Increased padding-top and padding-bottom */}
+    <section className="py-32 px-4 relative overflow-hidden">
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}
@@ -35,7 +35,7 @@ const WhatIsZap = () => {
         <div className="flex flex-col md:flex-row items-start">
           <div className="flex-1 max-w-2xl">
             <h1 className="text-5xl font-bold text-white mb-6">What is ZAP!?</h1>
-            <p className="text-lg mb-4 text-white">
+            <p className="text-lg mb-4 text-black">
               ZAP! is the <span className="font-bold">next-generation payments platform</span> built for <span className="font-bold">artists, galleries, and creative businesses</span>. We make payments <span className="font-bold">instant, automated, and transparent</span>, removing the delays, friction, and invoicing headaches that creatives face every day.
             </p>
             <p className="text-lg mb-4 text-white">
