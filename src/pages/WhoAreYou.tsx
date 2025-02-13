@@ -53,21 +53,16 @@ const WhoAreYou = () => {
     );
   }
 
-  const imageUrl = `${supabase.storageUrl}/object/public/patterns/247-art-Jane&GT-Halftone-white.png`;
-
   return (
     <div className="min-h-screen bg-zap-yellow pb-[50px]">
       <Navigation />
-      <div className="container mx-auto pt-20 px-4">
+      <img 
+        src={`${process.env.VITE_SUPABASE_URL}/storage/v1/object/public/patterns/247-art-Jane&GT-Halftone-white.png`}
+        alt="Jane & GT Halftone" 
+        className="w-full h-auto"
+      />
+      <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
-        
-        <div className="w-full -mx-4 mb-12">
-          <img 
-            src={imageUrl}
-            alt="Jane & GT Halftone" 
-            className="w-full h-auto shadow-lg"
-          />
-        </div>
 
         <FeaturedGalleries
           galleries={galleries}
