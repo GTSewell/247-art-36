@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -51,7 +52,7 @@ const WhatIsZap = () => {
               href="https://www.instagram.com/sandrewmelbs/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-zap-yellow hover:underline"
+              className="text-zap-yellow hover:underline"
             >
               Sandrew's
             </a>
@@ -60,7 +61,7 @@ const WhatIsZap = () => {
               href="https://www.instagram.com/theoutsidersmelbourne/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-zap-yellow hover:underline"
+              className="text-zap-yellow hover:underline"
             >
               'The Outsiders Melbourne'
             </a>
@@ -69,7 +70,7 @@ const WhatIsZap = () => {
               href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="hover:text-zap-yellow hover:underline"
+              className="text-zap-yellow hover:underline"
             >
               Printed Matters
             </a>
