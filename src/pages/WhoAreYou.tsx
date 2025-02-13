@@ -44,7 +44,7 @@ const WhoAreYou = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-zap-yellow">
+      <div className="min-h-screen bg-zap-blue">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
           <p className="text-lg">Loading galleries...</p>
@@ -54,7 +54,7 @@ const WhoAreYou = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zap-yellow pb-[50px]">
+    <div className="min-h-screen bg-zap-blue pb-[50px]">
       <Navigation />
       <div className="pt-16">
         <img 
