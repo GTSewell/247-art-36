@@ -56,7 +56,7 @@ const Hero = () => {
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
           >
             <button 
-              onClick={() => setIsClicked(true)}
+              onClick={() => setIsClicked(!isClicked)}
               className={`${isClicked ? 'bg-zap-blue' : 'bg-[#ea384c]'} text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105`}
             >
               {isClicked ? 'Coming soon' : 'Get the app'}
