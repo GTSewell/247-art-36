@@ -3,6 +3,7 @@ import React from 'react';
 import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap, X } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -44,55 +45,69 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <X className="h-4 w-4 text-[#ea384c]" />
         </button>
       )}
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
           <div className="flex items-center gap-2 text-gray-600 mb-1">
             <Palette size={18} />
             <span>{artist.specialty}</span>
           </div>
-          {artist.city && artist.country && (
+          {(artist.city || artist.country) && (
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-gray-600">
                 <MapPin size={18} />
-                <span>{`${artist.city}, ${artist.country}`}</span>
+                <span>{[artist.city, artist.country].filter(Boolean).join(", ")}</span>
               </div>
-              
-              {artist.social_platforms && artist.social_platforms.length > 0 && (
-                <div className="flex gap-3 pl-6">
-                  {artist.social_platforms.map((platform) => (
-                    <button
-                      key={platform}
-                      className="text-gray-600 hover:text-gray-900 transition-colors"
-                    >
-                      {socialIcons[platform as keyof typeof socialIcons]}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           )}
         </div>
 
-        <p className="text-gray-700 leading-relaxed line-clamp-2">{artist.bio}</p>
+        <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
 
-        <div className="space-y-1 text-sm">
-          {artist.techniques && artist.techniques.length > 0 && (
-            <div className="text-gray-600">
-              <span className="font-medium">Techniques:</span>{' '}
-              {artist.techniques.join(', ')}
+        {artist.techniques && artist.techniques.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-800">Techniques</h3>
+            <div className="flex flex-wrap gap-2">
+              {artist.techniques.map((technique, index) => (
+                <Badge key={index} variant="secondary" className="bg-gray-100">
+                  {technique}
+                </Badge>
+              ))}
             </div>
-          )}
-          {artist.styles && artist.styles.length > 0 && (
-            <div className="text-gray-600">
-              <span className="font-medium">Styles:</span>{' '}
-              {artist.styles.join(', ')}
+          </div>
+        )}
+
+        {artist.styles && artist.styles.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-800">Styles</h3>
+            <div className="flex flex-wrap gap-2">
+              {artist.styles.map((style, index) => (
+                <Badge key={index} variant="secondary" className="bg-gray-100">
+                  {style}
+                </Badge>
+              ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {artist.social_platforms && artist.social_platforms.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="font-semibold text-gray-800">Social Media</h3>
+            <div className="flex gap-3">
+              {artist.social_platforms.map((platform) => (
+                <button
+                  key={platform}
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  {socialIcons[platform as keyof typeof socialIcons]}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 pt-4">
         <div className="flex items-center gap-2">
           <Button
             onClick={handleDomainClick}
