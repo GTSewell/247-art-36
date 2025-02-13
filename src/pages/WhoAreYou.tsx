@@ -4,7 +4,6 @@ import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
 import { useGalleries } from "@/hooks/use-galleries";
 import { Gallery } from "@/data/types/gallery";
 import { useToast } from "@/components/ui/use-toast";
-import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
@@ -21,7 +20,6 @@ const WhoAreYou = () => {
     toast
   } = useToast();
   const isMobile = useIsMobile();
-  console.log("Galleries data:", galleries); // Debug log
 
   const handleGallerySelect = (gallery: Gallery) => {
     toast({
@@ -48,6 +46,7 @@ const WhoAreYou = () => {
       return newFavorites;
     });
   };
+
   if (isLoading) {
     return <div className="min-h-screen bg-zap-blue">
         <Navigation />
@@ -56,6 +55,7 @@ const WhoAreYou = () => {
         </div>
       </div>;
   }
+
   return <div className="min-h-screen bg-zap-blue pb-[50px]">
       <Navigation />
       <div className="pt-16 relative">
@@ -148,7 +148,6 @@ const WhoAreYou = () => {
           </div>
         </motion.div>
       </div>
-      <PartnerLogoBanner />
     </div>;
 };
 
