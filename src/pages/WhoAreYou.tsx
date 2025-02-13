@@ -66,7 +66,7 @@ const WhoAreYou = () => {
           <img 
             src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
             alt="That's GT" 
-            className="w-48 h-48 object-contain ml-[300px] mt-[50px]"
+            className="w-48 h-48 object-contain ml-[350px] mt-[50px]"
           />
           <img 
             src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane.png"
