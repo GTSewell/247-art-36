@@ -60,22 +60,34 @@ const WhoAreYou = () => {
         <img 
           src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png"
           alt="Jane & GT Halftone" 
-          className="w-full h-auto"
+          className="w-full h-auto object-cover"
         />
-        <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
-          <div className="flex-1 flex items-start">
-            <img 
-              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
-              alt="That's GT" 
-              className="w-72 h-72 object-contain ml-[300px] mt-[50px]"
-            />
-          </div>
-          <div className="flex-1 flex items-start justify-end">
-            <img 
-              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
-              alt="That's Jane" 
-              className="w-48 h-48 object-contain mt-[50px] mr-[250px]"
-            />
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="relative w-full h-full flex justify-between">
+            <div className="flex-1">
+              <img 
+                src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
+                alt="That's GT" 
+                className="absolute w-48 md:w-72 h-48 md:h-72 object-contain"
+                style={{
+                  left: '50%',
+                  top: '50px',
+                  transform: 'translateX(-85%)'
+                }}
+              />
+            </div>
+            <div className="flex-1">
+              <img 
+                src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
+                alt="That's Jane" 
+                className="absolute w-32 md:w-48 h-32 md:h-48 object-contain"
+                style={{
+                  right: '50%',
+                  top: '50px',
+                  transform: 'translateX(85%)'
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
