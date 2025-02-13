@@ -68,9 +68,9 @@ const WhoAreYou = () => {
         />
         {isJaneHovered && (
           <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover.png"
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-1.png"
             alt="Jane Solo Hover"
-            className="absolute top-0 left-0 w-[90%] mx-auto right-0 h-auto opacity-100 transition-opacity duration-300"
+            className="absolute top-0 left-0 w-full h-auto opacity-100 transition-opacity duration-300"
           />
         )}
         <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
