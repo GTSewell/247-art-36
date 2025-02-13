@@ -5,9 +5,9 @@ const WhatIsZap = () => {
   return (
     <section className="py-20 px-4 bg-zap-blue relative">
       <div 
-        className="absolute inset-0 w-full h-full z-0"
+        className="absolute inset-0 w-full h-full z-1"
         style={{
-          backgroundImage: "url('/lovable-uploads/7232380f-7e32-449f-a638-2ace609c9cb2.png')",
+          backgroundImage: "url('/lovable-uploads/542a2b05-168e-4aa9-b035-6c41bedfcecb.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           opacity: 1
