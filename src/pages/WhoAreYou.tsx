@@ -62,7 +62,7 @@ const WhoAreYou = () => {
           alt="Jane & GT Halftone" 
           className="w-full h-auto"
         />
-        <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
+        <div className="absolute top-0 left-0 w-full h-full flex px-4 pt-8">
           <img 
             src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
             alt="That's GT" 
@@ -71,7 +71,7 @@ const WhoAreYou = () => {
           <img 
             src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane.png"
             alt="That's Jane" 
-            className="w-48 h-48 object-contain -ml-[1200px] mt-[100px]"
+            className="w-48 h-48 object-contain ml-[400px] mt-[100px]"
           />
         </div>
       </div>
