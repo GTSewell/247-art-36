@@ -46,9 +46,7 @@ const WhoAreYou = () => {
       <div className="min-h-screen bg-zap-yellow">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
-          <div className="flex justify-center items-center h-64">
-            <p className="text-lg">Loading galleries...</p>
-          </div>
+          <p className="text-lg">Loading galleries...</p>
         </div>
       </div>
     );
@@ -59,9 +57,7 @@ const WhoAreYou = () => {
       <div className="min-h-screen bg-zap-yellow">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
-          <div className="flex justify-center items-center h-64">
-            <p className="text-lg">No galleries found.</p>
-          </div>
+          <p className="text-lg">No galleries found.</p>
         </div>
       </div>
     );
