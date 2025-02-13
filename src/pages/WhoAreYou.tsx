@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const WhoAreYou = () => {
   const { data: galleries = [], isLoading } = useGalleries();
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
+  const [isJaneHovered, setIsJaneHovered] = useState(false);
   const { toast } = useToast();
   const isMobile = useIsMobile();
 
@@ -77,10 +78,15 @@ const WhoAreYou = () => {
           </div>
           <div className="flex-1 flex items-start justify-end">
             <img 
-              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
+              src={isJaneHovered 
+                ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png"
+                : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
+              }
               alt="That's Jane" 
+              onMouseEnter={() => setIsJaneHovered(true)}
+              onMouseLeave={() => setIsJaneHovered(false)}
               className={`
-                object-contain
+                object-contain transition-all duration-300
                 ${isMobile ? 'w-24 h-24 mr-[35px] mt-[15px]' : 'w-48 h-48 mr-[300px] mt-[50px]'}
               `}
             />
