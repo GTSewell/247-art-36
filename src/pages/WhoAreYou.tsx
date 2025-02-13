@@ -8,24 +8,26 @@ import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
-
 const WhoAreYou = () => {
-  const { data: galleries = [], isLoading } = useGalleries();
+  const {
+    data: galleries = [],
+    isLoading
+  } = useGalleries();
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
   const [isJaneHovered, setIsJaneHovered] = useState(false);
   const [isGTHovered, setIsGTHovered] = useState(false);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const isMobile = useIsMobile();
-
   console.log("Galleries data:", galleries); // Debug log
 
   const handleGallerySelect = (gallery: Gallery) => {
     toast({
       title: "Coming Soon",
-      description: "Gallery details view will be implemented soon!",
+      description: "Gallery details view will be implemented soon!"
     });
   };
-
   const handleFavoriteToggle = (galleryId: number, isFavorite: boolean) => {
     setFavoriteGalleries(prev => {
       const newFavorites = new Set(prev);
@@ -33,122 +35,70 @@ const WhoAreYou = () => {
         newFavorites.add(galleryId);
         toast({
           title: "Added to Favorites",
-          description: "Gallery has been added to your favorites.",
+          description: "Gallery has been added to your favorites."
         });
       } else {
         newFavorites.delete(galleryId);
         toast({
           title: "Removed from Favorites",
-          description: "Gallery has been removed from your favorites.",
+          description: "Gallery has been removed from your favorites."
         });
       }
       return newFavorites;
     });
   };
-
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-zap-blue">
+    return <div className="min-h-screen bg-zap-blue">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
           <p className="text-lg">Loading galleries...</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-zap-blue pb-[50px]">
+  return <div className="min-h-screen bg-zap-blue pb-[50px]">
       <Navigation />
       <div className="pt-16 relative">
-        <img 
-          src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png"
-          alt="Jane & GT Halftone" 
-          className="w-full h-auto"
-        />
-        {isJaneHovered && (
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png"
-            alt="Jane Solo Hover"
-            className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300"
-          />
-        )}
-        {isGTHovered && (
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2"
-            alt="GT Solo Hover"
-            className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300"
-          />
-        )}
+        <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" />
+        {isJaneHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        {isGTHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
-            <a 
-              href="https://www.instagram.com/gtsewell/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block absolute transition-all duration-300"
-              style={{
-                width: isMobile ? '9rem' : '18rem',
-                height: isMobile ? '9rem' : '18rem',
-                left: isMobile ? '50px' : '20%',
-                top: isMobile ? '2rem' : '50px'
-              }}
-            >
-              <img 
-                src={isGTHovered
-                  ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png"
-                  : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
-                }
-                alt="That's GT" 
-                onMouseEnter={() => setIsGTHovered(true)}
-                onMouseLeave={() => setIsGTHovered(false)}
-                className="w-full h-full"
-              />
+            <a href="https://www.instagram.com/gtsewell/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '9rem' : '18rem',
+            height: isMobile ? '9rem' : '18rem',
+            left: isMobile ? '50px' : '20%',
+            top: isMobile ? '2rem' : '50px'
+          }}>
+              <img src={isGTHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} alt="That's GT" onMouseEnter={() => setIsGTHovered(true)} onMouseLeave={() => setIsGTHovered(false)} className="w-full h-full" />
             </a>
-            <a 
-              href="https://www.instagram.com/jlartsphere/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block absolute transition-all duration-300"
-              style={{
-                width: isMobile ? '6rem' : '12rem',
-                height: isMobile ? '6rem' : '12rem',
-                right: isMobile ? '35px' : '20%',
-                top: isMobile ? '15px' : '50px'
-              }}
-            >
-              <img 
-                src={isJaneHovered 
-                  ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png"
-                  : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
-                }
-                alt="That's Jane" 
-                onMouseEnter={() => setIsJaneHovered(true)}
-                onMouseLeave={() => setIsJaneHovered(false)}
-                className="w-full h-full"
-              />
+            <a href="https://www.instagram.com/jlartsphere/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '6rem' : '12rem',
+            height: isMobile ? '6rem' : '12rem',
+            right: isMobile ? '35px' : '20%',
+            top: isMobile ? '15px' : '50px'
+          }}>
+              <img src={isJaneHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} alt="That's Jane" onMouseEnter={() => setIsJaneHovered(true)} onMouseLeave={() => setIsJaneHovered(false)} className="w-full h-full" />
             </a>
           </div>
         </div>
       </div>
 
       <div className="relative">
-        <img 
-          src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png"
-          alt="Background Pattern"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" alt="Background Pattern" className="absolute inset-0 w-full h-full object-cover" />
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="container mx-auto px-4 pt-8 relative z-10"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="container mx-auto px-4 pt-8 relative z-10">
           <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
           
           <div className="max-w-4xl mx-auto space-y-4 text-lg">
-            <p className="text-black font-medium">
+            <p className="text-black text-xl font-bold">
               We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
             </p>
             <p className="text-black font-medium">
@@ -165,30 +115,15 @@ const WhoAreYou = () => {
             </p>
             <p className="text-black font-medium">
               We've also helped build amazing creative activations around Australia, including{' '}
-              <a 
-                href="https://www.instagram.com/sandrewmelbs/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
-              >
+              <a href="https://www.instagram.com/sandrewmelbs/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
                 Sandrew's
               </a>
               {' '}epic street art exhibition{' '}
-              <a 
-                href="https://www.instagram.com/theoutsidersmelbourne/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
-              >
+              <a href="https://www.instagram.com/theoutsidersmelbourne/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
                 'The Outsiders Melbourne'
               </a>
               {' '}(A MUST SEE!), to Shepard Fairey's (OBEY){' '}
-              <a 
-                href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-zap-yellow bg-zap-red px-1 rounded hover:underline"
-              >
+              <a href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
                 Printed Matters
               </a>
               {' '}Gallery in Sydney.
@@ -199,18 +134,11 @@ const WhoAreYou = () => {
           </div>
 
           <div className="mt-12">
-            <FeaturedGalleries
-              galleries={galleries}
-              onSelect={handleGallerySelect}
-              onFavoriteToggle={handleFavoriteToggle}
-              favoriteGalleries={favoriteGalleries}
-            />
+            <FeaturedGalleries galleries={galleries} onSelect={handleGallerySelect} onFavoriteToggle={handleFavoriteToggle} favoriteGalleries={favoriteGalleries} />
           </div>
         </motion.div>
       </div>
       <PartnerLogoBanner />
-    </div>
-  );
+    </div>;
 };
-
 export default WhoAreYou;
