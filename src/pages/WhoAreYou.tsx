@@ -67,14 +67,14 @@ const WhoAreYou = () => {
             <img 
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
               alt="That's GT" 
-              className="w-72 h-72 object-contain ml-[300px] mt-[50px]"
+              className="w-72 h-72 object-contain ml-[250px] mt-[50px]"
             />
           </div>
           <div className="flex-1 flex items-start justify-end">
             <img 
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
               alt="That's Jane" 
-              className="w-48 h-48 object-contain mt-[50px] mr-[250px]"
+              className="w-48 h-48 object-contain mt-[50px] mr-[200px]"
             />
           </div>
         </div>
