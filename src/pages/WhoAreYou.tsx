@@ -59,16 +59,48 @@ const WhoAreYou = () => {
   return <div className="min-h-screen bg-zap-blue pb-[50px] relative">
       <Navigation />
       <div className="pt-16 relative">
-        <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" />
-        {isJaneActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" />}
-        {isGTActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        {/* Base Image */}
+        <img 
+          src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" 
+          alt="Jane & GT Halftone" 
+          className="w-full h-auto" 
+        />
+
+        {/* GT Solo Hover Image */}
+        <div 
+          className="absolute top-[62px] -left-[1px] w-full cursor-pointer"
+          onMouseEnter={() => setIsGTActive(true)}
+          onMouseLeave={() => setIsGTActive(false)}
+        >
+          <img 
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" 
+            alt="GT Solo Hover" 
+            className={`w-full h-auto transition-opacity duration-300 ${isGTActive ? 'opacity-100' : 'opacity-0'}`}
+          />
+        </div>
+
+        {/* Jane Solo Hover Image */}
+        <div 
+          className="absolute top-[55px] -left-[3px] w-full cursor-pointer"
+          onMouseEnter={() => setIsJaneActive(true)}
+          onMouseLeave={() => setIsJaneActive(false)}
+        >
+          <img 
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" 
+            alt="Jane Solo Hover" 
+            className={`w-full h-auto transition-opacity duration-300 ${isJaneActive ? 'opacity-100' : 'opacity-0'}`}
+          />
+        </div>
+
+        {/* Name Badges Container */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
+            {/* GT Badge */}
             <a 
               href="https://www.instagram.com/gtsewell/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="block absolute transition-all duration-300" 
+              className="block absolute transition-all duration-300 cursor-pointer" 
               style={{
                 width: isMobile ? '9rem' : '18rem',
                 height: isMobile ? '9rem' : '18rem',
@@ -84,11 +116,13 @@ const WhoAreYou = () => {
                 className="w-full h-full" 
               />
             </a>
+
+            {/* Jane Badge */}
             <a 
               href="https://www.instagram.com/jlartsphere/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="block absolute transition-all duration-300" 
+              className="block absolute transition-all duration-300 cursor-pointer" 
               style={{
                 width: isMobile ? '6rem' : '12rem',
                 height: isMobile ? '6rem' : '12rem',
