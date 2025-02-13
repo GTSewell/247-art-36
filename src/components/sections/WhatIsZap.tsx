@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 
 const WhatIsZap = () => {
   return (
-    <section className="py-20 px-4 bg-zap-blue relative z-10">
+    <section className="py-20 px-4 bg-zap-blue relative">
       <div 
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full z-0"
         style={{
           backgroundImage: "url('/lovable-uploads/7232380f-7e32-449f-a638-2ace609c9cb2.png')",
           backgroundSize: "cover",
@@ -17,7 +17,7 @@ const WhatIsZap = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto relative"
+        className="container mx-auto relative z-10"
       >
         <div className="flex flex-col md:flex-row items-start">
           <div className="flex-1 max-w-2xl">
