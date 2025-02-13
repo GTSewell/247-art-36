@@ -5,6 +5,13 @@ import { useState } from "react";
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
 
+  const scrollToWhyUseZap = () => {
+    const whyUseZapSection = document.getElementById('why-use-zap');
+    if (whyUseZapSection) {
+      whyUseZapSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Pattern */}
@@ -62,7 +69,10 @@ const Hero = () => {
             >
               {isClicked ? 'Coming soon' : 'Get the app'}
             </button>
-            <button className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200">
+            <button 
+              onClick={scrollToWhyUseZap}
+              className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200"
+            >
               Learn More
             </button>
           </motion.div>
