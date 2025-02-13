@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -11,6 +11,8 @@ const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isWhoAreYou = location.pathname === '/whoareyou';
 
   const navItems = [
     { name: "Artists", path: "/artists" },
@@ -60,7 +62,9 @@ const Navigation = () => {
             <Link
               key={item.name}
               to={item.path}
-              className="text-gray-700 hover:text-zap-blue transition-colors duration-200 font-medium"
+              className={`text-gray-700 transition-colors duration-200 font-medium ${
+                isWhoAreYou ? 'hover:text-zap-yellow' : 'hover:text-zap-blue'
+              }`}
             >
               {item.name}
             </Link>
@@ -69,13 +73,19 @@ const Navigation = () => {
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="ml-4"
+              className={`ml-4 ${
+                isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : ''
+              }`}
             >
               Log Out
             </Button>
           ) : (
             <Link to="/auth">
-              <Button className="ml-4 bg-zap-red hover:bg-zap-blue">
+              <Button 
+                className={`ml-4 bg-zap-red ${
+                  isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : 'hover:bg-zap-blue'
+                }`}
+              >
                 Sign In
               </Button>
             </Link>
@@ -93,7 +103,9 @@ const Navigation = () => {
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-700 hover:text-zap-blue"
+            className={`text-gray-700 ${
+              isWhoAreYou ? 'hover:text-zap-yellow' : 'hover:text-zap-blue'
+            }`}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -107,7 +119,9 @@ const Navigation = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className="block px-3 py-2 text-gray-700 hover:text-zap-blue"
+                  className={`block px-3 py-2 text-gray-700 ${
+                    isWhoAreYou ? 'hover:text-zap-yellow' : 'hover:text-zap-blue'
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
@@ -117,14 +131,18 @@ const Navigation = () => {
                 <Button
                   onClick={handleLogout}
                   variant="outline"
-                  className="w-full mt-2"
+                  className={`w-full mt-2 ${
+                    isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : ''
+                  }`}
                 >
                   Log Out
                 </Button>
               ) : (
                 <Link to="/auth" className="block">
                   <Button 
-                    className="w-full mt-2 bg-zap-red hover:bg-zap-blue"
+                    className={`w-full mt-2 bg-zap-red ${
+                      isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : 'hover:bg-zap-blue'
+                    }`}
                     onClick={() => setIsOpen(false)}
                   >
                     Sign In
