@@ -66,34 +66,35 @@ const WhoAreYou = () => {
           className="w-full h-auto relative z-10" 
         />
 
-        {/* GT Solo Hover Image Area */}
-        <div 
-          className="absolute top-[62px] -left-[1px] w-full h-[80%] cursor-pointer z-20"
-          onMouseEnter={() => setIsGTActive(true)}
-          onMouseLeave={() => setIsGTActive(false)}
-        >
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" 
-            alt="GT Solo Hover" 
-            className={`w-full h-auto transition-opacity duration-300 ${isGTActive ? 'opacity-100' : 'opacity-0'}`}
-          />
-        </div>
-
-        {/* Jane Solo Hover Image Area */}
-        <div 
-          className="absolute top-[55px] -left-[3px] w-full h-[80%] cursor-pointer z-20"
-          onMouseEnter={() => setIsJaneActive(true)}
-          onMouseLeave={() => setIsJaneActive(false)}
-        >
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" 
-            alt="Jane Solo Hover" 
-            className={`w-full h-auto transition-opacity duration-300 ${isJaneActive ? 'opacity-100' : 'opacity-0'}`}
-          />
-        </div>
-
-        {/* Name Badges Container */}
+        {/* Interactive Elements Container - all on same z-index */}
         <div className="absolute top-0 left-0 w-full h-full z-30">
+          {/* GT Solo Hover Image Area */}
+          <div 
+            className="absolute top-[62px] -left-[1px] w-full h-[80%] cursor-pointer"
+            onMouseEnter={() => setIsGTActive(true)}
+            onMouseLeave={() => setIsGTActive(false)}
+          >
+            <img 
+              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" 
+              alt="GT Solo Hover" 
+              className={`w-full h-auto transition-opacity duration-300 ${isGTActive ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </div>
+
+          {/* Jane Solo Hover Image Area */}
+          <div 
+            className="absolute top-[55px] -left-[3px] w-full h-[80%] cursor-pointer"
+            onMouseEnter={() => setIsJaneActive(true)}
+            onMouseLeave={() => setIsJaneActive(false)}
+          >
+            <img 
+              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" 
+              alt="Jane Solo Hover" 
+              className={`w-full h-auto transition-opacity duration-300 ${isJaneActive ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </div>
+
+          {/* Name Badges Container */}
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
             {/* GT Badge */}
             <a 
