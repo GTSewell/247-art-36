@@ -31,20 +31,33 @@ export const useArtists = () => {
   };
 
   const transformArtist = (artist: ArtistRow): Artist => {
-    // Parse JSON fields, ensuring they're arrays even if null/undefined
-    const techniques = Array.isArray(artist.techniques) ? artist.techniques : [];
-    const styles = Array.isArray(artist.styles) ? artist.styles : [];
-    const social_platforms = Array.isArray(artist.social_platforms) ? artist.social_platforms : [];
-    const artworks = Array.isArray(artist.artworks) ? artist.artworks : [];
+    // Parse JSON fields from JSONB format
+    const techniques = typeof artist.techniques === 'string' 
+      ? JSON.parse(artist.techniques)
+      : Array.isArray(artist.techniques) 
+        ? artist.techniques 
+        : [];
 
-    console.log('Transforming artist:', {
-      id: artist.id,
-      name: artist.name,
-      techniques,
-      styles,
-      social_platforms,
-      artworks
-    });
+    const styles = typeof artist.styles === 'string'
+      ? JSON.parse(artist.styles)
+      : Array.isArray(artist.styles)
+        ? artist.styles
+        : [];
+
+    const social_platforms = typeof artist.social_platforms === 'string'
+      ? JSON.parse(artist.social_platforms)
+      : Array.isArray(artist.social_platforms)
+        ? artist.social_platforms
+        : [];
+
+    const artworks = typeof artist.artworks === 'string'
+      ? JSON.parse(artist.artworks)
+      : Array.isArray(artist.artworks)
+        ? artist.artworks
+        : [];
+
+    console.log('Raw artist data:', artist);
+    console.log('Parsed fields:', { techniques, styles, social_platforms, artworks });
 
     return {
       id: artist.id,
@@ -80,7 +93,7 @@ export const useArtists = () => {
       }
 
       if (artists) {
-        console.log('Artists loaded:', artists.length);
+        console.log('Raw artists data:', artists);
         const transformedArtists = artists.map(transformArtist);
         console.log('Transformed artists:', transformedArtists);
 
