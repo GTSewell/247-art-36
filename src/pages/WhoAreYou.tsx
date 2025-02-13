@@ -8,6 +8,7 @@ import PartnerLogoBanner from "@/components/galleries/PartnerLogoBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
+
 const WhoAreYou = () => {
   const {
     data: galleries = [],
@@ -84,7 +85,11 @@ const WhoAreYou = () => {
       </div>
 
       <div className="relative">
-        <img src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" alt="Background Pattern" className="absolute inset-0 w-full h-full object-cover" />
+        <img 
+          src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" 
+          alt="Background Pattern" 
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
         
         <motion.div initial={{
         opacity: 0,
@@ -134,11 +139,17 @@ const WhoAreYou = () => {
           </div>
 
           <div className="mt-12">
-            <FeaturedGalleries galleries={galleries} onSelect={handleGallerySelect} onFavoriteToggle={handleFavoriteToggle} favoriteGalleries={favoriteGalleries} />
+            <FeaturedGalleries
+              galleries={galleries}
+              onSelect={handleGallerySelect}
+              onFavoriteToggle={handleFavoriteToggle}
+              favoriteGalleries={favoriteGalleries}
+            />
           </div>
         </motion.div>
       </div>
       <PartnerLogoBanner />
     </div>;
 };
+
 export default WhoAreYou;
