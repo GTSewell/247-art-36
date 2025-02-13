@@ -14,7 +14,7 @@ const benefits = [
 
 const WhatIsZap = () => {
   return (
-    <section className="py-32 px-4 relative overflow-hidden">
+    <section id="what-is-zap" className="py-32 px-4 relative overflow-hidden">
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}

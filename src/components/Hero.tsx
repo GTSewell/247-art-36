@@ -5,10 +5,10 @@ import { useState } from "react";
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
 
-  const scrollToWhyUseZap = () => {
-    const whyUseZapSection = document.getElementById('why-use-zap');
-    if (whyUseZapSection) {
-      whyUseZapSection.scrollIntoView({ behavior: 'smooth' });
+  const scrollToWhatIsZap = () => {
+    const whatIsZapSection = document.getElementById('what-is-zap');
+    if (whatIsZapSection) {
+      whatIsZapSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -70,7 +70,7 @@ const Hero = () => {
               {isClicked ? 'Coming soon' : 'Get the app'}
             </button>
             <button 
-              onClick={scrollToWhyUseZap}
+              onClick={scrollToWhatIsZap}
               className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200"
             >
               Learn More
