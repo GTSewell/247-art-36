@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -57,91 +56,50 @@ const WhoAreYou = () => {
       </div>;
   }
 
-  return (
-    <div className="min-h-screen bg-zap-blue overflow-hidden">
+  return <div className="min-h-screen bg-zap-blue pb-[50px]">
       <Navigation />
-      
-      {/* First section with halftone image */}
-      <div className="relative w-full pt-16" style={{ height: isMobile ? '350px' : '450px' }}>
-        <img 
-          src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" 
-          alt="Jane & GT Halftone" 
-          className="absolute top-16 left-0 w-full h-[calc(100%-4rem)] object-cover" 
-        />
-        {isJaneHovered && (
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" 
-            alt="Jane Solo Hover" 
-            className="absolute top-16 left-0 w-full h-[calc(100%-4rem)] object-cover opacity-100 transition-opacity duration-300" 
-          />
-        )}
-        {isGTHovered && (
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" 
-            alt="GT Solo Hover" 
-            className="absolute top-16 left-0 w-full h-[calc(100%-4rem)] object-cover opacity-100 transition-opacity duration-300" 
-          />
-        )}
-        <div className="absolute top-16 left-0 w-full h-[calc(100%-4rem)]">
+      <div className="pt-16 relative">
+        <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" />
+        {isJaneHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        {isGTHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        <div className="absolute top-0 left-0 w-full h-full">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
-            <a 
-              href="https://www.instagram.com/gtsewell/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="block absolute transition-all duration-300" 
-              style={{
-                width: isMobile ? '9rem' : '18rem',
-                height: isMobile ? '9rem' : '18rem',
-                left: isMobile ? '50px' : '20%',
-                top: isMobile ? '2rem' : '50px'
-              }}
-            >
-              <img 
-                src={isGTHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} 
-                alt="That's GT" 
-                onMouseEnter={() => setIsGTHovered(true)} 
-                onMouseLeave={() => setIsGTHovered(false)} 
-                className="w-full h-full" 
-              />
+            <a href="https://www.instagram.com/gtsewell/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '9rem' : '18rem',
+            height: isMobile ? '9rem' : '18rem',
+            left: isMobile ? '50px' : '20%',
+            top: isMobile ? '2rem' : '50px'
+          }}>
+              <img src={isGTHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} alt="That's GT" onMouseEnter={() => setIsGTHovered(true)} onMouseLeave={() => setIsGTHovered(false)} className="w-full h-full" />
             </a>
-            <a 
-              href="https://www.instagram.com/jlartsphere/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="block absolute transition-all duration-300" 
-              style={{
-                width: isMobile ? '6rem' : '12rem',
-                height: isMobile ? '6rem' : '12rem',
-                right: isMobile ? '35px' : '20%',
-                top: isMobile ? '15px' : '50px'
-              }}
-            >
-              <img 
-                src={isJaneHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} 
-                alt="That's Jane" 
-                onMouseEnter={() => setIsJaneHovered(true)} 
-                onMouseLeave={() => setIsJaneHovered(false)} 
-                className="w-full h-full" 
-              />
+            <a href="https://www.instagram.com/jlartsphere/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '6rem' : '12rem',
+            height: isMobile ? '6rem' : '12rem',
+            right: isMobile ? '35px' : '20%',
+            top: isMobile ? '15px' : '50px'
+          }}>
+              <img src={isJaneHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} alt="That's Jane" onMouseEnter={() => setIsJaneHovered(true)} onMouseLeave={() => setIsJaneHovered(false)} className="w-full h-full" />
             </a>
           </div>
         </div>
       </div>
 
-      {/* Content section */}
-      <div className="relative bg-zap-blue">
+      <div className="relative">
         <img 
           src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" 
           alt="Background Pattern" 
           className="absolute inset-0 w-full h-full object-cover opacity-50"
         />
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="container mx-auto px-4 pt-8 pb-20 relative z-10"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="container mx-auto px-4 pt-8 relative z-10">
           <h1 className="text-center mb-8 text-gray-50 font-extrabold text-8xl">Who the f#@k are we?</h1>
           
           <div className="max-w-4xl mx-auto space-y-4 text-lg">
@@ -190,8 +148,7 @@ const WhoAreYou = () => {
           </div>
         </motion.div>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default WhoAreYou;
