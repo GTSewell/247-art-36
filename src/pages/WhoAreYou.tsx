@@ -53,7 +53,7 @@ const WhoAreYou = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zap-yellow">
+    <div className="min-h-screen bg-zap-yellow pb-[50px]">
       <Navigation />
       <div className="container mx-auto pt-20 px-4">
         <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
@@ -63,10 +63,8 @@ const WhoAreYou = () => {
           onFavoriteToggle={handleFavoriteToggle}
           favoriteGalleries={favoriteGalleries}
         />
-        <div className="mt-8">
-          <PartnerLogoBanner />
-        </div>
       </div>
+      <PartnerLogoBanner />
     </div>
   );
 };
