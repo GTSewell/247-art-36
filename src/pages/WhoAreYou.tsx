@@ -62,17 +62,21 @@ const WhoAreYou = () => {
           alt="Jane & GT Halftone" 
           className="w-full h-auto"
         />
-        <div className="absolute top-0 left-0 w-full h-full flex px-4 pt-8">
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
-            alt="That's GT" 
-            className="w-48 h-48 object-contain ml-[350px] mt-[50px]"
-          />
-          <img 
-            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
-            alt="That's Jane" 
-            className="w-48 h-48 object-contain ml-[600] mt-[100px]"
-          />
+        <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
+          <div className="flex-1 flex items-start">
+            <img 
+              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
+              alt="That's GT" 
+              className="w-48 h-48 object-contain ml-[350px] mt-[50px]"
+            />
+          </div>
+          <div className="flex-1 flex items-start justify-end">
+            <img 
+              src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
+              alt="That's Jane" 
+              className="w-48 h-48 object-contain mt-[100px] mr-[100px]"
+            />
+          </div>
         </div>
       </div>
       <div className="container mx-auto px-4 pt-8">
