@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -8,20 +9,23 @@ const WhatIsZap = () => {
     .getPublicUrl('247-art-Jane&GT-Halftone-white-soft edge.png');
 
   return (
-    <section className="py-32 px-4 relative overflow-hidden">
+    <section className="py-32 px-4 relative">
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}
       />
       <div 
-        className="absolute inset-0 w-full h-full"
+        className="absolute w-full"
         style={{
           backgroundImage: `url('${publicUrl}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.75,
           zIndex: 1,
-          mixBlendMode: 'normal'
+          mixBlendMode: 'normal',
+          top: '-50%', // Extend upwards
+          bottom: '-50%', // Extend downwards
+          height: '200%' // Make it twice as tall
         }}
       />
       <motion.div 
