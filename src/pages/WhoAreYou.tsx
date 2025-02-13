@@ -67,7 +67,7 @@ const WhoAreYou = () => {
             <img 
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
               alt="That's GT" 
-              className="w-48 h-48 object-contain ml-[350px] mt-[50px]"
+              className="w-72 h-72 object-contain ml-[350px] mt-[50px]"
             />
           </div>
           <div className="flex-1 flex items-start justify-end">
