@@ -1,7 +1,13 @@
 
 import { motion } from "framer-motion";
+import { supabase } from "@/integrations/supabase/client";
 
 const WhatIsZap = () => {
+  const { data: { publicUrl } } = supabase
+    .storage
+    .from('patterns')
+    .getPublicUrl('247-art-Jane&GT-Halftone-Greyscale.png');
+
   return (
     <section className="py-20 px-4 relative overflow-hidden">
       <div 
@@ -11,7 +17,7 @@ const WhatIsZap = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: `url('/assets/halftone-pattern.png')`,
+          backgroundImage: `url('${publicUrl}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           opacity: 0.5,
