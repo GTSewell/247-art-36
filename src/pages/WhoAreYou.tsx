@@ -81,7 +81,7 @@ const WhoAreYou = () => {
               alt="That's Jane" 
               className={`
                 object-contain
-                ${isMobile ? 'w-24 h-24 mr-[50px] mt-0' : 'w-48 h-48 mr-[300px] mt-[50px]'}
+                ${isMobile ? 'w-24 h-24 mr-[35px] mt-[15px]' : 'w-48 h-48 mr-[300px] mt-[50px]'}
               `}
             />
           </div>
