@@ -20,7 +20,7 @@ const WhatIsZap = () => {
           backgroundImage: `url('${publicUrl}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          opacity: 1,
+          opacity: 0.75,
           zIndex: 1,
           mixBlendMode: 'normal'
         }}
