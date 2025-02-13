@@ -80,8 +80,8 @@ const WhoAreYou = () => {
             className="absolute top-[62px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300"
           />
         )}
-        <div className="absolute top-0 left-0 w-full h-full flex justify-between px-4 pt-8">
-          <div className="flex-1 flex items-start">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="relative w-full h-full max-w-[1920px] mx-auto">
             <img 
               src={isGTHovered
                 ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png"
@@ -91,12 +91,12 @@ const WhoAreYou = () => {
               onMouseEnter={() => setIsGTHovered(true)}
               onMouseLeave={() => setIsGTHovered(false)}
               className={`
-                object-contain transition-all duration-300
-                ${isMobile ? 'w-36 h-36 ml-[50px] mt-0' : 'w-72 h-72 ml-[350px] mt-[50px]'}
+                absolute transition-all duration-300
+                ${isMobile 
+                  ? 'w-36 h-36 left-[50px] top-8' 
+                  : 'w-72 h-72 left-[20%] top-[50px]'}
               `}
             />
-          </div>
-          <div className="flex-1 flex items-start justify-end">
             <img 
               src={isJaneHovered 
                 ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png"
@@ -106,8 +106,10 @@ const WhoAreYou = () => {
               onMouseEnter={() => setIsJaneHovered(true)}
               onMouseLeave={() => setIsJaneHovered(false)}
               className={`
-                object-contain transition-all duration-300
-                ${isMobile ? 'w-24 h-24 mr-[35px] mt-[15px]' : 'w-48 h-48 mr-[300px] mt-[50px]'}
+                absolute transition-all duration-300
+                ${isMobile 
+                  ? 'w-24 h-24 right-[35px] top-[15px]' 
+                  : 'w-48 h-48 right-[20%] top-[50px]'}
               `}
             />
           </div>
