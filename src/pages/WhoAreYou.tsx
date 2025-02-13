@@ -105,21 +105,29 @@ const WhoAreYou = () => {
                 className="w-full h-full"
               />
             </a>
-            <img 
-              src={isJaneHovered 
-                ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png"
-                : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
-              }
-              alt="That's Jane" 
-              onMouseEnter={() => setIsJaneHovered(true)}
-              onMouseLeave={() => setIsJaneHovered(false)}
-              className={`
-                absolute transition-all duration-300
-                ${isMobile 
-                  ? 'w-24 h-24 right-[35px] top-[15px]' 
-                  : 'w-48 h-48 right-[20%] top-[50px]'}
-              `}
-            />
+            <a 
+              href="https://www.instagram.com/jlartsphere/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block absolute transition-all duration-300"
+              style={{
+                width: isMobile ? '6rem' : '12rem',
+                height: isMobile ? '6rem' : '12rem',
+                right: isMobile ? '35px' : '20%',
+                top: isMobile ? '15px' : '50px'
+              }}
+            >
+              <img 
+                src={isJaneHovered 
+                  ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png"
+                  : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
+                }
+                alt="That's Jane" 
+                onMouseEnter={() => setIsJaneHovered(true)}
+                onMouseLeave={() => setIsJaneHovered(false)}
+                className="w-full h-full"
+              />
+            </a>
           </div>
         </div>
       </div>
