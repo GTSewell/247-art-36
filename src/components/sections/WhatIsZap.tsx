@@ -2,20 +2,8 @@
 import { motion } from "framer-motion";
 
 const WhatIsZap = () => {
-  // Add a console log to check if the image loads
-  console.log("Loading halftone image:", '/lovable-uploads/0b1084ea-9e9d-49d2-bcf0-3d86f46b90c9.png');
-
   return (
     <section className="py-20 px-4 relative overflow-hidden">
-      {/* Test the image in a visible element first */}
-      <img 
-        src="/lovable-uploads/0b1084ea-9e9d-49d2-bcf0-3d86f46b90c9.png" 
-        alt="test"
-        className="hidden"
-        onError={(e) => console.error('Image failed to load:', e)}
-        onLoad={() => console.log('Image loaded successfully')}
-      />
-      
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}
@@ -23,12 +11,16 @@ const WhatIsZap = () => {
       <div 
         className="absolute inset-0 w-full h-full"
         style={{
-          backgroundImage: "url('/lovable-uploads/0b1084ea-9e9d-49d2-bcf0-3d86f46b90c9.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.8,
+          backgroundImage: `repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.1) 0px,
+            rgba(255, 255, 255, 0.1) 2px,
+            transparent 2px,
+            transparent 4px
+          )`,
+          opacity: 0.3,
           zIndex: 1,
-          mixBlendMode: 'multiply' // Adding blend mode to make pattern more visible
+          mixBlendMode: 'overlay'
         }}
       />
       <motion.div 
