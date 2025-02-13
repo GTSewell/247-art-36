@@ -52,17 +52,6 @@ const WhoAreYou = () => {
     );
   }
 
-  if (!galleries || galleries.length === 0) {
-    return (
-      <div className="min-h-screen bg-zap-yellow">
-        <Navigation />
-        <div className="container mx-auto pt-20 px-4">
-          <p className="text-lg">No galleries found.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-zap-yellow">
       <Navigation />
