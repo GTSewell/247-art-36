@@ -1,9 +1,11 @@
 
-import React from 'react';
-import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -20,6 +22,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   isFavorite = false,
   onClose
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isMobile = useIsMobile();
+
   const socialIcons = {
     facebook: <Facebook className="h-5 w-5" />,
     instagram: <Instagram className="h-5 w-5" />,
@@ -35,11 +40,29 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     window.open(`https://${domainName}.247.art`, '_blank');
   };
 
-  console.log('Artist details:', {
-    techniques: artist.techniques,
-    styles: artist.styles,
-    social_platforms: artist.social_platforms
-  });
+  const renderBio = () => {
+    if (!isMobile) {
+      return <p className="text-gray-700 leading-relaxed">{artist.bio}</p>;
+    }
+
+    return (
+      <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
+        <div className="space-y-2">
+          <p className="text-gray-700 leading-relaxed line-clamp-2">{artist.bio}</p>
+          <CollapsibleContent>
+            <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+          </CollapsibleContent>
+          <CollapsibleTrigger className="w-full flex items-center justify-center text-gray-500 hover:text-gray-700">
+            {isExpanded ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </CollapsibleTrigger>
+        </div>
+      </Collapsible>
+    );
+  };
 
   return (
     <div className="relative flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
@@ -68,7 +91,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           )}
         </div>
 
-        <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+        {renderBio()}
 
         {Array.isArray(artist.techniques) && artist.techniques.length > 0 && (
           <div className="space-y-2">
