@@ -30,21 +30,38 @@ export const useArtists = () => {
     setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
   };
 
-  const transformArtist = (artist: ArtistRow): Artist => ({
-    id: artist.id,
-    name: artist.name,
-    specialty: artist.specialty,
-    image: artist.image,
-    bio: artist.bio,
-    location: artist.location,
-    city: artist.city,
-    country: artist.country,
-    techniques: Array.isArray(artist.techniques) ? artist.techniques as string[] : [],
-    styles: Array.isArray(artist.styles) ? artist.styles as string[] : [],
-    social_platforms: Array.isArray(artist.social_platforms) ? artist.social_platforms as string[] : [],
-    artworks: Array.isArray(artist.artworks) ? artist.artworks as string[] : [],
-    locked_artworks: artist.locked_artworks || false
-  });
+  const transformArtist = (artist: ArtistRow): Artist => {
+    // Parse JSON fields, ensuring they're arrays even if null/undefined
+    const techniques = Array.isArray(artist.techniques) ? artist.techniques : [];
+    const styles = Array.isArray(artist.styles) ? artist.styles : [];
+    const social_platforms = Array.isArray(artist.social_platforms) ? artist.social_platforms : [];
+    const artworks = Array.isArray(artist.artworks) ? artist.artworks : [];
+
+    console.log('Transforming artist:', {
+      id: artist.id,
+      name: artist.name,
+      techniques,
+      styles,
+      social_platforms,
+      artworks
+    });
+
+    return {
+      id: artist.id,
+      name: artist.name || '',
+      specialty: artist.specialty || '',
+      image: artist.image || '',
+      bio: artist.bio || '',
+      location: artist.location || '',
+      city: artist.city || '',
+      country: artist.country || '',
+      techniques: techniques as string[],
+      styles: styles as string[],
+      social_platforms: social_platforms as string[],
+      artworks: artworks as string[],
+      locked_artworks: artist.locked_artworks || false
+    };
+  };
 
   const loadArtists = async () => {
     try {
@@ -65,6 +82,7 @@ export const useArtists = () => {
       if (artists) {
         console.log('Artists loaded:', artists.length);
         const transformedArtists = artists.map(transformArtist);
+        console.log('Transformed artists:', transformedArtists);
 
         // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
