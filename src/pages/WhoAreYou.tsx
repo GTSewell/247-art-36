@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -57,81 +56,99 @@ const WhoAreYou = () => {
       </div>;
   }
 
-  return <div className="min-h-screen bg-zap-blue relative">
+  return <div className="min-h-screen bg-zap-blue pb-[50px]">
       <Navigation />
-      <div className="pt-16">
-        <div className="relative">
-          <img 
-            src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" 
-            alt="Background Pattern" 
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
-          />
-          
-          <motion.div initial={{
-          opacity: 0,
-          y: 20
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.5
-        }} className="container mx-auto px-4 pt-8 relative z-10">
-            <h1 className="text-center mb-8 text-gray-50 font-extrabold text-8xl">Who the f#@k are we?</h1>
-            
-            <div className="max-w-4xl mx-auto space-y-4 text-lg">
-              <p className="text-black text-xl font-bold">
-                We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
-              </p>
-              <p className="text-black text-xl font-bold">
-                We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
-              </p>
-              <p className="text-black text-xl font-bold">
-                Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
-              </p>
-              <p className="text-black text-xl font-bold">
-                Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
-              </p>
-              <p className="text-black text-xl font-bold">
-                In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
-              </p>
-              <p className="text-black text-xl font-bold">
-                We've also helped build amazing creative activations around Australia, including{' '}
-                <a href="https://www.instagram.com/sandrewmelbs/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
-                  Sandrew's
-                </a>
-                {' '}epic street art exhibition{' '}
-                <a href="https://www.instagram.com/theoutsidersmelbourne/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
-                  'The Outsiders Melbourne'
-                </a>
-                {' '}(A MUST SEE!), to Shepard Fairey's (OBEY){' '}
-                <a href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
-                  Printed Matters
-                </a>
-                {' '}Gallery in Sydney.
-              </p>
-              <p className="text-black text-xl font-bold">
-                With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
-              </p>
-            </div>
-
-            <div className="mt-12 mb-32">
-              <FeaturedGalleries
-                galleries={galleries}
-                onSelect={handleGallerySelect}
-                onFavoriteToggle={handleFavoriteToggle}
-                favoriteGalleries={favoriteGalleries}
-              />
-            </div>
-          </motion.div>
+      <div className="pt-16 relative">
+        <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" />
+        {isJaneHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        {isGTHovered && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="relative w-full h-full max-w-[1920px] mx-auto">
+            <a href="https://www.instagram.com/gtsewell/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '9rem' : '18rem',
+            height: isMobile ? '9rem' : '18rem',
+            left: isMobile ? '50px' : '20%',
+            top: isMobile ? '2rem' : '50px'
+          }}>
+              <img src={isGTHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} alt="That's GT" onMouseEnter={() => setIsGTHovered(true)} onMouseLeave={() => setIsGTHovered(false)} className="w-full h-full" />
+            </a>
+            <a href="https://www.instagram.com/jlartsphere/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '6rem' : '12rem',
+            height: isMobile ? '6rem' : '12rem',
+            right: isMobile ? '35px' : '20%',
+            top: isMobile ? '15px' : '50px'
+          }}>
+              <img src={isJaneHovered ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} alt="That's Jane" onMouseEnter={() => setIsJaneHovered(true)} onMouseLeave={() => setIsJaneHovered(false)} className="w-full h-full" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Halftone background at bottom */}
-      <div className="absolute bottom-0 left-0 w-full h-[400px] bg-center bg-no-repeat bg-cover" style={{
-        backgroundImage: `url('https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png')`
-      }}></div>
+      <div className="relative">
+        <img 
+          src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" 
+          alt="Background Pattern" 
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
+        
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} whileInView={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="container mx-auto px-4 pt-8 relative z-10">
+          <h1 className="text-center mb-8 text-gray-50 font-extrabold text-8xl">Who the f#@k are we?</h1>
+          
+          <div className="max-w-4xl mx-auto space-y-4 text-lg">
+            <p className="text-black text-xl font-bold">
+              We are Jane Rolls & GT Sewell, we are artists, we are creatives, but let's be real, we're better at supporting other artists than being artists ourselves. Facts!
+            </p>
+            <p className="text-black text-xl font-bold">
+              We've been long-time advocates for Melbourne & Australia's vibrant arts community. You may have met us galivanting around artist studios, like Everfresh or Blender, or, even at a kick-ass exhibition at the likes of Backwoods or B-side, or, maybe you're more along the lines of "Who TF are you!?" ... well,
+            </p>
+            <p className="text-black text-xl font-bold">
+              Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
+            </p>
+            <p className="text-black text-xl font-bold">
+              Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
+            </p>
+            <p className="text-black text-xl font-bold">
+              In addition to our gallery work, our artist printing services have been a cornerstone of our efforts to empower artists. By providing high-quality printing in fine art (Giclée), apparel, merchandise, and more, we've helped countless artists generate passive income and expand their creative practices into new avenues.
+            </p>
+            <p className="text-black text-xl font-bold">
+              We've also helped build amazing creative activations around Australia, including{' '}
+              <a href="https://www.instagram.com/sandrewmelbs/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
+                Sandrew's
+              </a>
+              {' '}epic street art exhibition{' '}
+              <a href="https://www.instagram.com/theoutsidersmelbourne/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
+                'The Outsiders Melbourne'
+              </a>
+              {' '}(A MUST SEE!), to Shepard Fairey's (OBEY){' '}
+              <a href="https://lifewithoutandy.com/featured/party-bullshit/obey-printed-matters-shepard-fairey-ambush-pop-up-gallery-sydney/" target="_blank" rel="noopener noreferrer" className="text-zap-yellow bg-zap-red px-1 rounded hover:underline">
+                Printed Matters
+              </a>
+              {' '}Gallery in Sydney.
+            </p>
+            <p className="text-black text-xl font-bold">
+              With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
+            </p>
+          </div>
+
+          <div className="mt-12">
+            <FeaturedGalleries
+              galleries={galleries}
+              onSelect={handleGallerySelect}
+              onFavoriteToggle={handleFavoriteToggle}
+              favoriteGalleries={favoriteGalleries}
+            />
+          </div>
+        </motion.div>
+      </div>
     </div>;
 };
 
 export default WhoAreYou;
-
