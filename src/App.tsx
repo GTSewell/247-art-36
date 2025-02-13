@@ -11,6 +11,7 @@ import ArtistSubmission from "./pages/ArtistSubmission";
 import WhoAreYou from "./pages/WhoAreYou";
 import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
+import VirtualTour from "./pages/VirtualTour";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/artist-submission" element={<ArtistSubmission />} />
           <Route path="/whoareyou" element={<WhoAreYou />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/virtual-tour" element={<VirtualTour />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
