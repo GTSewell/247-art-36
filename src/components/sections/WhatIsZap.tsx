@@ -38,7 +38,7 @@ const WhatIsZap = () => {
             <p className="text-lg mb-4 text-black">
               ZAP! is the <span className="font-bold">next-generation payments platform</span> built for <span className="font-bold">artists, galleries, and creative businesses</span>. We make payments <span className="font-bold">instant, automated, and transparent</span>, removing the delays, friction, and invoicing headaches that creatives face every day.
             </p>
-            <p className="text-lg mb-4 text-white">
+            <p className="text-lg mb-4 text-black">
               Powered by <span className="font-bold">smart contracts and Web3 technology</span>, ZAP! ensures that everyone involved in a sale—whether it's an artist, curator, gallery, or service provider—<span className="font-bold">gets paid instantly, automatically, and fairly.</span>
             </p>
             <p className="text-lg text-white">
