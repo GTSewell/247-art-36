@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -85,13 +84,7 @@ const WhoAreYou = () => {
         </div>
       </div>
 
-      <div className="relative">
-        <img 
-          src="/lovable-uploads/02b008a6-1342-42bc-b0a4-c68d4b7bab92.png" 
-          alt="Background Pattern" 
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
-        />
-        
+      <div>
         <motion.div initial={{
         opacity: 0,
         y: 20
