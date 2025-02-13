@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -33,7 +32,7 @@ const WhatIsZap = () => {
         style={{ zIndex: 2 }}
       >
         <div>
-          <h1 className="text-5xl font-bold text-white mb-6">What is ZAP!?</h1>
+          <h1 className="text-5xl font-bold text-white mb-6">Who the fk are you?</h1>
           <p className="text-lg mb-4 text-black font-medium">
             We are GT Sewell and Jane Rolls, long-time advocates for Melbourne's vibrant arts community. You may have met us galivanting around at artist studios, like Everfresh or Blender, or, maybe at a kick-ass exhibition at Backwoods or B-side, or, maybe you're more along the lines of "Who TF are they!?"  ... well,
           </p>
