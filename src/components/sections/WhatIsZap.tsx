@@ -41,7 +41,7 @@ const WhatIsZap = () => {
             <p className="text-lg mb-4 text-black">
               Powered by <span className="font-bold">smart contracts and Web3 technology</span>, ZAP! ensures that everyone involved in a sale—whether it's an artist, curator, gallery, or service provider—<span className="font-bold">gets paid instantly, automatically, and fairly.</span>
             </p>
-            <p className="text-lg text-white">
+            <p className="text-lg text-black">
               ZAP! is designed to be fun, easy-to-use, and completely artist-first, that makes handling finances as exciting as making art.
             </p>
           </div>
