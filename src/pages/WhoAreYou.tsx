@@ -56,12 +56,14 @@ const WhoAreYou = () => {
   return (
     <div className="min-h-screen bg-zap-yellow pb-[50px]">
       <Navigation />
-      <img 
-        src={`${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/patterns/247-art-Jane&GT-Halftone-white.png`}
-        alt="Jane & GT Halftone" 
-        className="w-full h-auto"
-      />
-      <div className="container mx-auto px-4">
+      <div className="pt-16">
+        <img 
+          src="/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png"
+          alt="Jane & GT Halftone" 
+          className="w-full h-auto"
+        />
+      </div>
+      <div className="container mx-auto px-4 pt-8">
         <h1 className="text-3xl font-bold text-center mb-8">Who the f#@k are you?</h1>
 
         <FeaturedGalleries
