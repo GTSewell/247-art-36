@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -69,8 +70,8 @@ const WhoAreYou = () => {
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"
               alt="That's GT" 
               className={`
-                object-contain mt-[50px]
-                ${isMobile ? 'w-36 h-36 ml-[100px]' : 'w-72 h-72 ml-[350px]'}
+                object-contain
+                ${isMobile ? 'w-36 h-36 ml-[100px] mt-0' : 'w-72 h-72 ml-[350px] mt-[50px]'}
               `}
             />
           </div>
@@ -79,8 +80,8 @@ const WhoAreYou = () => {
               src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"
               alt="That's Jane" 
               className={`
-                object-contain mt-[50px]
-                ${isMobile ? 'w-24 h-24 mr-[50px]' : 'w-48 h-48 mr-[300px]'}
+                object-contain
+                ${isMobile ? 'w-24 h-24 mr-[50px] mt-0' : 'w-48 h-48 mr-[300px] mt-[50px]'}
               `}
             />
           </div>
