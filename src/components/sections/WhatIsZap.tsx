@@ -15,7 +15,7 @@ const WhatIsZap = () => {
         style={{ zIndex: 0 }}
       />
       <div 
-        className="absolute w-full"
+        className="absolute w-screen left-0 right-0"
         style={{
           backgroundImage: `url('${publicUrl}')`,
           backgroundSize: 'cover',
@@ -23,9 +23,9 @@ const WhatIsZap = () => {
           opacity: 0.75,
           zIndex: 1,
           mixBlendMode: 'normal',
-          top: '-50%', // Extend upwards
-          bottom: '-50%', // Extend downwards
-          height: '200%' // Make it twice as tall
+          top: '-50%',
+          bottom: '-50%',
+          height: '200%'
         }}
       />
       <motion.div 
