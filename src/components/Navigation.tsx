@@ -17,7 +17,7 @@ const Navigation = () => {
   const isWhoAreYou = location.pathname === '/whoareyou';
 
   const navItems = [
-    { name: "Artists", path: "/artists" },
+    { name: "The Superheroes of Art", path: "/artists" },
     { name: "Who the f#@k are you?", path: "/whoareyou" },
     { name: "General Store", path: "/store" },
   ];
