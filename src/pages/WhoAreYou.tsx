@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navigation from "@/components/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
@@ -8,7 +7,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
-
 const WhoAreYou = () => {
   const {
     data: galleries = [],
@@ -17,16 +15,16 @@ const WhoAreYou = () => {
   const [favoriteGalleries, setFavoriteGalleries] = useState<Set<number>>(new Set());
   const [isJaneActive, setIsJaneActive] = useState(false);
   const [isGTActive, setIsGTActive] = useState(false);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const isMobile = useIsMobile();
-
   const handleGallerySelect = (gallery: Gallery) => {
     toast({
       title: "Coming Soon",
       description: "Gallery details view will be implemented soon!"
     });
   };
-
   const handleFavoriteToggle = (galleryId: number, isFavorite: boolean) => {
     setFavoriteGalleries(prev => {
       const newFavorites = new Set(prev);
@@ -46,7 +44,6 @@ const WhoAreYou = () => {
       return newFavorites;
     });
   };
-
   if (isLoading) {
     return <div className="min-h-screen bg-zap-blue">
         <Navigation />
@@ -55,7 +52,6 @@ const WhoAreYou = () => {
         </div>
       </div>;
   }
-
   return <div className="min-h-screen bg-zap-blue pb-[50px] relative">
       <Navigation />
       <div className="pt-16 relative">
@@ -64,45 +60,21 @@ const WhoAreYou = () => {
         {isGTActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" />}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="relative w-full h-full max-w-[1920px] mx-auto">
-            <a 
-              href="https://www.instagram.com/gtsewell/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="block absolute transition-all duration-300" 
-              style={{
-                width: isMobile ? '9rem' : '18rem',
-                height: isMobile ? '9rem' : '18rem',
-                left: isMobile ? '50px' : '20%',
-                top: isMobile ? '2rem' : '50px'
-              }}
-              onMouseEnter={() => setIsGTActive(true)}
-              onMouseLeave={() => setIsGTActive(false)}
-            >
-              <img 
-                src={isGTActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} 
-                alt="That's GT" 
-                className="w-full h-full" 
-              />
+            <a href="https://www.instagram.com/gtsewell/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '9rem' : '18rem',
+            height: isMobile ? '9rem' : '18rem',
+            left: isMobile ? '50px' : '20%',
+            top: isMobile ? '2rem' : '50px'
+          }} onMouseEnter={() => setIsGTActive(true)} onMouseLeave={() => setIsGTActive(false)}>
+              <img src={isGTActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} alt="That's GT" className="w-full h-full" />
             </a>
-            <a 
-              href="https://www.instagram.com/jlartsphere/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="block absolute transition-all duration-300" 
-              style={{
-                width: isMobile ? '6rem' : '12rem',
-                height: isMobile ? '6rem' : '12rem',
-                right: isMobile ? '35px' : '20%',
-                top: isMobile ? '15px' : '50px'
-              }}
-              onMouseEnter={() => setIsJaneActive(true)}
-              onMouseLeave={() => setIsJaneActive(false)}
-            >
-              <img 
-                src={isJaneActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} 
-                alt="That's Jane" 
-                className="w-full h-full" 
-              />
+            <a href="https://www.instagram.com/jlartsphere/" target="_blank" rel="noopener noreferrer" className="block absolute transition-all duration-300" style={{
+            width: isMobile ? '6rem' : '12rem',
+            height: isMobile ? '6rem' : '12rem',
+            right: isMobile ? '35px' : '20%',
+            top: isMobile ? '15px' : '50px'
+          }} onMouseEnter={() => setIsJaneActive(true)} onMouseLeave={() => setIsJaneActive(false)}>
+              <img src={isJaneActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} alt="That's Jane" className="w-full h-full" />
             </a>
           </div>
         </div>
@@ -143,9 +115,7 @@ const WhoAreYou = () => {
               </a>
               , or, maybe you're more along the lines of "Who TF are you!?" ... well,
             </p>
-            <p className="text-black text-xl font-bold">
-              Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we built like Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location on the always vibing Smith St, Collingwood.
-            </p>
+            <p className="text-black text-xl font-bold">Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we've built such as Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location, and, future home of 247, on the always vibing Smith St, Collingwood.</p>
             <p className="text-black text-xl font-bold">
               Each of these spaces has been a labor of love, designed to foster connections between artists, collectors, and the wider community.
             </p>
@@ -167,31 +137,21 @@ const WhoAreYou = () => {
               </a>
               {' '}Gallery in Sydney.
             </p>
-            <p className="text-black text-xl font-bold">
-              With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital', we make cool shit happen! 💙
-            </p>
+            <p className="text-black text-xl font-bold mx-0">With the relaunch of our new space, we're excited to continue our mission in fresh and innovative ways merging, Art, Technology & Culture whilst adhering to our life motto, 'CultureB4Capital'. We're serious about art and we're serious about having fun along the way.
+
+                                                    Let's make cool shit happen! 💙</p>
           </div>
 
           <div className="mt-12">
-            <FeaturedGalleries
-              galleries={galleries}
-              onSelect={handleGallerySelect}
-              onFavoriteToggle={handleFavoriteToggle}
-              favoriteGalleries={favoriteGalleries}
-            />
+            <FeaturedGalleries galleries={galleries} onSelect={handleGallerySelect} onFavoriteToggle={handleFavoriteToggle} favoriteGalleries={favoriteGalleries} />
           </div>
         </motion.div>
       </div>
 
       {/* Bottom banner image with 0.5 opacity */}
       <div className="absolute bottom-0 left-0 w-full">
-        <img 
-          src="/lovable-uploads/ddc18b16-629a-42e8-a97e-af21acb3e67a.png" 
-          alt="Bottom Banner" 
-          className="w-full opacity-50"
-        />
+        <img src="/lovable-uploads/ddc18b16-629a-42e8-a97e-af21acb3e67a.png" alt="Bottom Banner" className="w-full opacity-50" />
       </div>
     </div>;
 };
-
 export default WhoAreYou;
