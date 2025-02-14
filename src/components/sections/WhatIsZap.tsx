@@ -32,7 +32,7 @@ const WhatIsZap = () => {
   };
 
   return (
-    <section id="what-is-zap" className="py-32 px-4 relative overflow-hidden">
+    <section id="what-is-zap" className="py-40 px-4 relative overflow-hidden">
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}
@@ -53,7 +53,7 @@ const WhatIsZap = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto relative"
+        className="container mx-auto relative min-h-[600px]"
         style={{ zIndex: 2 }}
       >
         <h1 className="text-5xl font-bold text-white mb-6 text-center">So whats this all about?</h1>
