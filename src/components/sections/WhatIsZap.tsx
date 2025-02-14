@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
@@ -78,9 +79,9 @@ const WhatIsZap = () => {
         className="container mx-auto relative min-h-[650px]"
         style={{ zIndex: 2 }}
       >
-        <h1 className="text-5xl font-bold text-white mb-6 text-center">So what'cha, what'cha, what'cha want?</h1>
-        <h3 className="text-white mb-12 text-center max-w-3xl mx-auto opacity-90 text-2xl font-semibold">We know what we want, and that's to revolutionize the way artists, creators, and the public connect, create, and prosper together .... Here's a sneak peak of what it looks like:</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 text-center">So what'cha, what'cha, what'cha want?</h1>
+        <h3 className="text-xl md:text-2xl text-white mb-12 text-center max-w-3xl mx-auto opacity-90 font-semibold">We know what we want, and that's to revolutionize the way artists, creators, and the public connect, create, and prosper together .... Here's a sneak peak of what it looks like:</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {benefits.map((benefit, index) => {
             const CardIcon = cardStyles[index]?.icon || Zap;
             return (
@@ -100,17 +101,17 @@ const WhatIsZap = () => {
                       <textarea
                         value={benefit}
                         onChange={(e) => handleBenefitChange(index, e.target.value)}
-                        rows={3}
+                        rows={4}
                         style={{
                           height: 'auto',
-                          minHeight: '72px'
+                          minHeight: '120px'
                         }}
                         onInput={(e) => {
                           const target = e.target as HTMLTextAreaElement;
                           target.style.height = 'auto';
                           target.style.height = target.scrollHeight + 'px';
                         }}
-                        className="w-full outline-none focus:ring-1 focus:ring-white px-2 resize-none overflow-hidden my-0 bg-transparent text-white placeholder-white hover:bg-opacity-10 rounded-md mx-0 py-[6px]"
+                        className="w-full text-base md:text-lg outline-none focus:ring-1 focus:ring-white px-2 resize-none overflow-hidden my-0 bg-transparent text-white placeholder-white hover:bg-opacity-10 rounded-md mx-0 py-[6px]"
                       />
                     </CardTitle>
                   </CardHeader>
