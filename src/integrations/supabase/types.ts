@@ -111,6 +111,13 @@ export type Database = {
             foreignKeyName: "favorite_artists_artist_id_fkey"
             columns: ["artist_id"]
             isOneToOne: false
+            referencedRelation: "artist_stp_packs"
+            referencedColumns: ["artist_id"]
+          },
+          {
+            foreignKeyName: "favorite_artists_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
             referencedRelation: "artists"
             referencedColumns: ["id"]
           },
@@ -194,6 +201,63 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          artist_id: number | null
+          available_quantity: number | null
+          category: Database["public"]["Enums"]["product_category"]
+          created_at: string
+          description: string | null
+          id: number
+          image_url: string | null
+          is_featured: boolean | null
+          is_limited_edition: boolean | null
+          name: string
+          price: number
+        }
+        Insert: {
+          artist_id?: number | null
+          available_quantity?: number | null
+          category: Database["public"]["Enums"]["product_category"]
+          created_at?: string
+          description?: string | null
+          id?: number
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_limited_edition?: boolean | null
+          name: string
+          price: number
+        }
+        Update: {
+          artist_id?: number | null
+          available_quantity?: number | null
+          category?: Database["public"]["Enums"]["product_category"]
+          created_at?: string
+          description?: string | null
+          id?: number
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_limited_edition?: boolean | null
+          name?: string
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artist_stp_packs"
+            referencedColumns: ["artist_id"]
+          },
+          {
+            foreignKeyName: "products_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           created_at: string | null
@@ -218,9 +282,38 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: number
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          role: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      artist_stp_packs: {
+        Row: {
+          artist_id: number | null
+          artist_image: string | null
+          artist_name: string | null
+          products: Json | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
@@ -228,6 +321,7 @@ export type Database = {
     Enums: {
       gallery_style: "contemporary" | "modern" | "classical" | "experimental"
       gallery_type: "commercial" | "non_profit" | "museum" | "artist_run"
+      product_category: "print" | "merch" | "sticker"
       social_platform: "instagram" | "facebook" | "twitter" | "linkedin"
     }
     CompositeTypes: {
