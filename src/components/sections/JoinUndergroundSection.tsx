@@ -33,16 +33,26 @@ const JoinUndergroundSection = () => {
           <Textarea
             value={heading}
             onChange={(e) => setHeading(e.target.value)}
-            className="w-full text-4xl font-bold text-white bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors"
+            className="w-full text-4xl font-bold text-white bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors overflow-hidden"
             style={{ minHeight: '60px' }}
+            onInput={(e) => {
+              const target = e.target as HTMLTextAreaElement;
+              target.style.height = 'auto';
+              target.style.height = target.scrollHeight + 'px';
+            }}
           />
 
           {/* Intro */}
           <Textarea
             value={intro}
             onChange={(e) => setIntro(e.target.value)}
-            className="w-full text-xl text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors"
+            className="w-full text-xl text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors overflow-hidden whitespace-pre-wrap"
             style={{ minHeight: '120px' }}
+            onInput={(e) => {
+              const target = e.target as HTMLTextAreaElement;
+              target.style.height = 'auto';
+              target.style.height = target.scrollHeight + 'px';
+            }}
           />
 
           {/* Benefits */}
@@ -66,8 +76,13 @@ const JoinUndergroundSection = () => {
             <Textarea
               value={outro1}
               onChange={(e) => setOutro1(e.target.value)}
-              className="w-full text-xl font-semibold text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors"
+              className="w-full text-xl font-semibold text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors overflow-hidden whitespace-pre-wrap"
               style={{ minHeight: '100px' }}
+              onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = 'auto';
+                target.style.height = target.scrollHeight + 'px';
+              }}
             />
           </div>
 
@@ -76,8 +91,13 @@ const JoinUndergroundSection = () => {
             <Textarea
               value={outro2}
               onChange={(e) => setOutro2(e.target.value)}
-              className="w-full text-lg text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors"
+              className="w-full text-lg text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors overflow-hidden whitespace-pre-wrap"
               style={{ minHeight: '120px' }}
+              onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = 'auto';
+                target.style.height = target.scrollHeight + 'px';
+              }}
             />
           </div>
         </div>
