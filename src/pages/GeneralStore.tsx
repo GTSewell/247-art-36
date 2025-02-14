@@ -35,7 +35,7 @@ const GeneralStore = () => {
   });
 
   const featuredProducts = products?.filter(p => p.is_featured) || [];
-  const filteredProducts = products?.filter(p => p.category === selectedCategory) || [];
+  const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -115,7 +115,7 @@ const GeneralStore = () => {
         {/* Products Grid */}
         <section>
           <ScrollArea className="h-[800px] rounded-md border p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="group">
                   <div className="relative aspect-square overflow-hidden rounded-lg mb-2">
