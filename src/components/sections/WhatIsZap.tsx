@@ -32,7 +32,7 @@ const WhatIsZap = () => {
   };
 
   return (
-    <section id="what-is-zap" className="py-32 px-4 relative overflow-hidden">
+    <section id="what-is-zap" className="py-40 px-4 relative overflow-hidden">
       <div 
         className="absolute inset-0 w-full h-full bg-zap-blue"
         style={{ zIndex: 0 }}
@@ -53,10 +53,13 @@ const WhatIsZap = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto relative"
+        className="container mx-auto relative min-h-[650px]"
         style={{ zIndex: 2 }}
       >
-        <h1 className="text-5xl font-bold text-white mb-12 text-center">So whats this all about?</h1>
+        <h1 className="text-5xl font-bold text-white mb-6 text-center">So whats this all about?</h1>
+        <h3 className="text-xl text-white mb-12 text-center max-w-3xl mx-auto opacity-90">
+          We're here to revolutionize the way artists and galleries connect, create, and prosper together. Here's what makes us different:
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {benefits.map((benefit, index) => {
             const CardIcon = cardStyles[index]?.icon || Zap;
