@@ -66,11 +66,12 @@ const WhatIsZap = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group"
               >
-                <Card className={`h-full hover:shadow-xl hover:border-opacity-75 transition-all duration-300 ${cardStyles[index]?.bgColor || 'bg-white'} border-2 ${cardStyles[index]?.border || 'border-white'}`}>
+                <Card className={`h-full transform transition-all duration-300 hover:scale-105 group-hover:shadow-xl group-hover:border-opacity-75 ${cardStyles[index]?.bgColor || 'bg-white'} border-2 ${cardStyles[index]?.border || 'border-white'}`}>
                   <CardHeader>
-                    <div className={`w-12 h-12 ${cardStyles[index]?.iconBg || 'bg-white'} rounded-full flex items-center justify-center mb-4`}>
-                      <CardIcon className="w-6 h-6 text-black" />
+                    <div className={`w-12 h-12 ${cardStyles[index]?.iconBg || 'bg-white'} rounded-full flex items-center justify-center mb-4 transform transition-transform duration-300 group-hover:scale-110`}>
+                      <CardIcon className="w-6 h-6 text-black transition-transform duration-300 group-hover:rotate-12" />
                     </div>
                     <CardTitle>
                       <textarea
