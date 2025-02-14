@@ -38,7 +38,7 @@ const GeneralStore = () => {
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-zap-red">
       <Navigation />
       <main className="container mx-auto px-4 pt-24 pb-12">
         {/* Featured Products Carousel */}
