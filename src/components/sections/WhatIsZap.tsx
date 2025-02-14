@@ -14,10 +14,10 @@ const initialBenefits = [
 ];
 
 const cardStyles = [
-  { icon: Coins, bgColor: "bg-zap-yellow", iconBg: "bg-white", border: "border-black" },
+  { icon: Coins, bgColor: "bg-zap-yellow", iconBg: "bg-white", border: "border-white" },
   { icon: CreditCard, bgColor: "bg-zap-blue", iconBg: "bg-white", border: "border-white" },
   { icon: Palette, bgColor: "bg-zap-red", iconBg: "bg-white", border: "border-white" },
-  { icon: Gift, bgColor: "bg-zap-yellow", iconBg: "bg-white", border: "border-black" },
+  { icon: Gift, bgColor: "bg-zap-yellow", iconBg: "bg-white", border: "border-white" },
   { icon: Trophy, bgColor: "bg-zap-blue", iconBg: "bg-white", border: "border-white" },
   { icon: Brush, bgColor: "bg-zap-red", iconBg: "bg-white", border: "border-white" }
 ];
@@ -67,7 +67,7 @@ const WhatIsZap = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className={`h-full hover:shadow-lg transition-shadow ${cardStyles[index]?.bgColor || 'bg-white'} border-2 ${cardStyles[index]?.border || 'border-white'}`}>
+                <Card className={`h-full hover:shadow-xl hover:border-opacity-75 transition-all duration-300 ${cardStyles[index]?.bgColor || 'bg-white'} border-2 ${cardStyles[index]?.border || 'border-white'}`}>
                   <CardHeader>
                     <div className={`w-12 h-12 ${cardStyles[index]?.iconBg || 'bg-white'} rounded-full flex items-center justify-center mb-4`}>
                       <CardIcon className="w-6 h-6 text-black" />
