@@ -47,8 +47,14 @@ const CountdownTimer = () => {
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
   return (
-    <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1 font-mono" style={{ fontFamily: "'Press Start 2P', monospace" }}>
-      <span className="text-sm">
+    <div className="bg-black border-2 border-red-500 text-red-500 px-4 py-2 rounded-md flex items-center gap-1 font-mono shadow-lg" 
+         style={{ 
+           fontFamily: "'VT323', monospace",
+           textShadow: '0 0 10px rgba(239, 68, 68, 0.7)',
+           fontSize: '1.5rem',
+           letterSpacing: '2px'
+         }}>
+      <span>
         {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
       </span>
     </div>
