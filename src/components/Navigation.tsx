@@ -19,7 +19,7 @@ const Navigation = () => {
   const navItems = [
     { name: "The Superheroes of Art", path: "/artists" },
     { name: "Who the f#@k are you?", path: "/whoareyou" },
-    { name: "General Store", path: "/store" },
+    { name: "The General Store", path: "/store" },
   ];
 
   useEffect(() => {
