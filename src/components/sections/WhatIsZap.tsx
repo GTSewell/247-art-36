@@ -104,14 +104,14 @@ const WhatIsZap = () => {
                         rows={4}
                         style={{
                           height: 'auto',
-                          minHeight: '120px'
+                          minHeight: '140px'
                         }}
                         onInput={(e) => {
                           const target = e.target as HTMLTextAreaElement;
                           target.style.height = 'auto';
                           target.style.height = target.scrollHeight + 'px';
                         }}
-                        className="w-full text-base md:text-lg outline-none focus:ring-1 focus:ring-white px-2 resize-none overflow-hidden my-0 bg-transparent text-white placeholder-white hover:bg-opacity-10 rounded-md mx-0 py-[6px]"
+                        className="w-full text-base md:text-lg font-bold leading-tight outline-none focus:ring-1 focus:ring-white px-3 py-2 resize-none overflow-hidden my-0 bg-transparent text-white placeholder-white hover:bg-opacity-10 rounded-md mx-0"
                       />
                     </CardTitle>
                   </CardHeader>
