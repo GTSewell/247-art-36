@@ -2,10 +2,10 @@
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const initialBenefits = [
-  "Receive payments instantly upon sale—no more waiting or chasing invoices.",
+  "0% Commission",
   "Automate split payments between artists, galleries, curators, and service providers.",
   "Sell artwork online, in retail spaces, and at live events with seamless integrations.",
   "Use crypto or fiat—choose how you want to get paid.",
@@ -62,14 +62,25 @@ const WhatIsZap = () => {
                     <Zap className="w-6 h-6 text-black" />
                   </div>
                   <CardTitle>
-                    <p
+                    <div
                       contentEditable
                       suppressContentEditableWarning
-                      onInput={(e) => handleBenefitChange(index, e.currentTarget.textContent || '')}
+                      onInput={(e) => {
+                        const selection = window.getSelection();
+                        const range = selection?.getRangeAt(0);
+                        const offset = range?.startOffset || 0;
+                        handleBenefitChange(index, e.currentTarget.textContent || '');
+                        if (selection && range) {
+                          selection.removeAllRanges();
+                          range.setStart(e.currentTarget.firstChild || e.currentTarget, offset);
+                          range.setEnd(e.currentTarget.firstChild || e.currentTarget, offset);
+                          selection.addRange(range);
+                        }
+                      }}
                       className="outline-none focus:ring-1 focus:ring-zap-yellow rounded px-2 py-1"
                     >
                       {benefit}
-                    </p>
+                    </div>
                   </CardTitle>
                 </CardHeader>
               </Card>
