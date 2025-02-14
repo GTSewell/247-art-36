@@ -47,7 +47,7 @@ const JoinUndergroundSection = () => {
             value={intro}
             onChange={(e) => setIntro(e.target.value)}
             className="w-full text-xl text-white/90 bg-transparent border-none resize-none focus:ring-0 hover:bg-white/5 transition-colors overflow-hidden whitespace-pre-wrap"
-            style={{ minHeight: '120px' }}
+            style={{ minHeight: '200px' }}
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
               target.style.height = 'auto';
