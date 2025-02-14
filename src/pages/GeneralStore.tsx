@@ -49,7 +49,7 @@ const CountdownTimer = () => {
   return (
     <div className="bg-black border-2 border-red-500 text-red-500 px-4 py-2 rounded-md flex items-center gap-1 font-mono shadow-lg" 
          style={{ 
-           fontFamily: "'VT323', monospace",
+           fontFamily: "'Press Start 2P', monospace",
            textShadow: '0 0 10px rgba(239, 68, 68, 0.7)',
            fontSize: '1.5rem',
            letterSpacing: '2px'
