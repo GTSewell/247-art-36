@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+
 const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<'print' | 'merch' | 'sticker'>('print');
   const {
@@ -28,6 +30,7 @@ const GeneralStore = () => {
       return data;
     }
   });
+
   const featuredProducts = products?.filter(p => p.is_featured) || [];
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
 
@@ -35,6 +38,7 @@ const GeneralStore = () => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
+
   return <div className="min-h-screen bg-zap-red">
       <Navigation />
       <main className="container mx-auto px-4 pt-24 pb-12">
@@ -42,7 +46,7 @@ const GeneralStore = () => {
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
             <Sparkles className="text-zap-yellow" />
-            Limited Edition Drops
+            Timed Edition Drops
           </h2>
           <Carousel className="relative">
             <CarouselContent>
@@ -125,4 +129,5 @@ const GeneralStore = () => {
       </main>
     </div>;
 };
+
 export default GeneralStore;
