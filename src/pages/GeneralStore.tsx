@@ -52,14 +52,13 @@ const GeneralStore = () => {
               {featuredProducts.map((product) => (
                 <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="relative group overflow-hidden rounded-lg">
-                    {product.is_limited_edition && (
-                      <div className="absolute top-4 right-4 z-10">
-                        <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1">
-                          <Zap size={16} />
-                          <span className="text-sm font-medium">Limited Edition</span>
-                        </div>
+                    {/* Always show Limited Edition badge for featured products */}
+                    <div className="absolute top-4 right-4 z-10">
+                      <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1">
+                        <Zap size={16} />
+                        <span className="text-sm font-medium">Limited Edition</span>
                       </div>
-                    )}
+                    </div>
                     <div className="aspect-square overflow-hidden">
                       <img
                         src={product.image_url || '/placeholder.svg'}
