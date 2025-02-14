@@ -20,6 +20,7 @@ const Navigation = () => {
     { name: "Artists", path: "/artists" },
     { name: "Who the f#@k are you?", path: "/whoareyou" },
     { name: "Services", path: "/services" },
+    { name: "General Store", path: "/store" },
   ];
 
   useEffect(() => {
