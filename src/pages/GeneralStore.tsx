@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Zap, Sparkles, Star } from "lucide-react";
+import { Zap, Sparkles } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -55,7 +55,7 @@ const GeneralStore = () => {
                     {product.is_limited_edition && (
                       <div className="absolute top-4 right-4 z-10">
                         <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1">
-                          <Star size={16} />
+                          <Zap size={16} />
                           <span className="text-sm font-medium">Limited Edition</span>
                         </div>
                       </div>
@@ -127,7 +127,7 @@ const GeneralStore = () => {
                     {product.is_limited_edition && (
                       <div className="absolute top-2 right-2">
                         <div className="bg-zap-yellow text-black px-2 py-1 rounded-full flex items-center gap-1">
-                          <Star size={14} />
+                          <Zap size={14} />
                           <span className="text-xs font-medium">Limited</span>
                         </div>
                       </div>
