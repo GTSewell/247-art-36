@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Zap, Sparkles } from "lucide-react";
+import { Zap, Hourglass } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -45,7 +44,7 @@ const GeneralStore = () => {
         {/* Featured Products Carousel */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
-            <Sparkles className="text-zap-yellow" />
+            <Hourglass className="text-zap-yellow" />
             Timed Edition Drops
           </h2>
           <Carousel className="relative">
