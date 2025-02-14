@@ -118,7 +118,7 @@ const GeneralStore = () => {
 
         {/* Products Grid */}
         <section>
-          <ScrollArea className="h-[800px] rounded-md border p-4 bg-zap-yellow">
+          <ScrollArea className="h-[800px] rounded-md border-4 border-black p-4 bg-zap-yellow">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="group">
