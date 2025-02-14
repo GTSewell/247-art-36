@@ -62,12 +62,14 @@ const WhatIsZap = () => {
                     <Zap className="w-6 h-6 text-black" />
                   </div>
                   <div className="text-lg font-semibold">
-                    <textarea
-                      value={benefit}
-                      onChange={(e) => handleBenefitChange(index, e.target.value)}
-                      className="w-full text-lg font-semibold"
-                      rows={3}
-                    />
+                    <p
+                      contentEditable
+                      suppressContentEditableWarning
+                      onInput={(e) => handleBenefitChange(index, e.currentTarget.textContent || '')}
+                      className="w-full text-lg font-semibold outline-none"
+                    >
+                      {benefit}
+                    </p>
                   </div>
                 </CardHeader>
               </Card>
