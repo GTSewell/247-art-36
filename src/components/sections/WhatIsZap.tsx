@@ -14,12 +14,12 @@ const initialBenefits = [
 ];
 
 const cardStyles = [
-  { icon: Coins, bgColor: "bg-[#F97316]", iconBg: "bg-[#FEC6A1]" },
-  { icon: CreditCard, bgColor: "bg-[#8B5CF6]", iconBg: "bg-[#E5DEFF]" },
-  { icon: Palette, bgColor: "bg-[#D946EF]", iconBg: "bg-[#FFDEE2]" },
-  { icon: Gift, bgColor: "bg-[#0EA5E9]", iconBg: "bg-[#D3E4FD]" },
-  { icon: Trophy, bgColor: "bg-[#F2FCE2]", iconBg: "bg-[#8E9196]" },
-  { icon: Brush, bgColor: "bg-[#FEF7CD]", iconBg: "bg-[#FDE1D3]" }
+  { icon: Coins, bgColor: "bg-zap-yellow", iconBg: "bg-white", border: "border-black" },
+  { icon: CreditCard, bgColor: "bg-zap-blue", iconBg: "bg-white", border: "border-white" },
+  { icon: Palette, bgColor: "bg-zap-red", iconBg: "bg-white", border: "border-white" },
+  { icon: Gift, bgColor: "bg-zap-yellow", iconBg: "bg-white", border: "border-black" },
+  { icon: Trophy, bgColor: "bg-zap-blue", iconBg: "bg-white", border: "border-white" },
+  { icon: Brush, bgColor: "bg-zap-red", iconBg: "bg-white", border: "border-white" }
 ];
 
 const WhatIsZap = () => {
@@ -67,9 +67,9 @@ const WhatIsZap = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className={`h-full hover:shadow-lg transition-shadow ${cardStyles[index]?.bgColor || 'bg-white'}`}>
+                <Card className={`h-full hover:shadow-lg transition-shadow ${cardStyles[index]?.bgColor || 'bg-white'} border-2 ${cardStyles[index]?.border || 'border-white'}`}>
                   <CardHeader>
-                    <div className={`w-12 h-12 ${cardStyles[index]?.iconBg || 'bg-zap-yellow'} rounded-full flex items-center justify-center mb-4`}>
+                    <div className={`w-12 h-12 ${cardStyles[index]?.iconBg || 'bg-white'} rounded-full flex items-center justify-center mb-4`}>
                       <CardIcon className="w-6 h-6 text-black" />
                     </div>
                     <CardTitle>
