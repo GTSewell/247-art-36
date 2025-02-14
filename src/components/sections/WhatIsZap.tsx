@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 
 const initialBenefits = [
-  "3 Month Exhibition",
+  "0% Commission",
   "Automate split payments between artists, galleries, curators, and service providers.",
   "Sell artwork online, in retail spaces, and at live events with seamless integrations.",
   "Use crypto or fiat—choose how you want to get paid.",
