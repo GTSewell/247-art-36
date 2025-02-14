@@ -37,6 +37,11 @@ const GeneralStore = () => {
   const featuredProducts = products?.filter(p => p.is_featured) || [];
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
 
+  // Function to handle image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder.svg';
+  };
+
   return (
     <div className="min-h-screen bg-zap-red">
       <Navigation />
@@ -52,7 +57,6 @@ const GeneralStore = () => {
               {featuredProducts.map((product) => (
                 <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="relative group overflow-hidden rounded-lg">
-                    {/* Always show Limited Edition badge for featured products */}
                     <div className="absolute top-4 right-4 z-10">
                       <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1">
                         <Zap size={16} />
@@ -64,6 +68,7 @@ const GeneralStore = () => {
                         src={product.image_url || '/placeholder.svg'}
                         alt={product.name}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        onError={handleImageError}
                       />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -113,7 +118,7 @@ const GeneralStore = () => {
 
         {/* Products Grid */}
         <section>
-          <ScrollArea className="h-[800px] rounded-md border p-4">
+          <ScrollArea className="h-[800px] rounded-md border p-4 bg-zap-yellow">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="group">
@@ -122,6 +127,7 @@ const GeneralStore = () => {
                       src={product.image_url || '/placeholder.svg'}
                       alt={product.name}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      onError={handleImageError}
                     />
                     {product.is_limited_edition && (
                       <div className="absolute top-2 right-2">
