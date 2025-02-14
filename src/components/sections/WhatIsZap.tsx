@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 const initialBenefits = [
   "0% Commission",
@@ -65,18 +65,7 @@ const WhatIsZap = () => {
                     <div
                       contentEditable
                       suppressContentEditableWarning
-                      onInput={(e) => {
-                        const selection = window.getSelection();
-                        const range = selection?.getRangeAt(0);
-                        const offset = range?.startOffset || 0;
-                        handleBenefitChange(index, e.currentTarget.textContent || '');
-                        if (selection && range) {
-                          selection.removeAllRanges();
-                          range.setStart(e.currentTarget.firstChild || e.currentTarget, offset);
-                          range.setEnd(e.currentTarget.firstChild || e.currentTarget, offset);
-                          selection.addRange(range);
-                        }
-                      }}
+                      onInput={(e) => handleBenefitChange(index, e.currentTarget.textContent || '')}
                       className="outline-none focus:ring-1 focus:ring-zap-yellow rounded px-2 py-1"
                     >
                       {benefit}
