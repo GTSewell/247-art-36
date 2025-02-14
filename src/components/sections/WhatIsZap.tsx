@@ -65,16 +65,8 @@ const WhatIsZap = () => {
                     <textarea
                       value={benefit}
                       onChange={(e) => handleBenefitChange(index, e.target.value)}
-                      className="w-full resize-none bg-transparent focus:outline-none focus:ring-1 focus:ring-zap-yellow rounded p-1 cursor-text"
+                      className="w-full text-lg font-semibold"
                       rows={3}
-                      style={{
-                        minHeight: '80px',
-                        border: 'none',
-                        overflow: 'hidden',
-                        lineHeight: '1.5'
-                      }}
-                      spellCheck="false"
-                      onClick={(e) => e.currentTarget.focus()}
                     />
                   </div>
                 </CardHeader>
