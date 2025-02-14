@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -48,7 +49,7 @@ const CountdownTimer = () => {
   return (
     <div className="bg-black border-2 border-red-500 text-red-500 px-4 py-2 rounded-md flex items-center gap-1 font-digital shadow-lg" 
          style={{ 
-           textShadow: '0 0 10px rgba(239, 68, 68, 0.7)',
+           textShadow: '0 0 2px rgba(239, 68, 68, 0.3), 0 0 4px rgba(239, 68, 68, 0.2), 0 0 6px rgba(239, 68, 68, 0.1)',
            fontSize: '1.5rem',
            letterSpacing: '2px'
          }}>
