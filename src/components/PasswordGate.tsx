@@ -79,8 +79,8 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       <div className="max-w-md w-full p-6 space-y-8 relative z-20">
         <div className="text-center">
           <img 
-            src="/lovable-uploads/0b791040-b335-4a57-9c66-81d02cb12615.png" 
-            alt="ZAP!" 
+            src="/lovable-uploads/a6580086-e06f-4c81-a4f2-f866f6726959.png" 
+            alt="247.art" 
             className="w-48 mx-auto mb-4"
           />
           <p className="text-gray-600">Enter password to continue</p>
