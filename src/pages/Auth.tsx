@@ -101,7 +101,7 @@ const Auth = () => {
       <div className="w-full max-w-md space-y-8 bg-white p-6 rounded-xl shadow-lg">
         <div className="text-center">
           <img alt="ZAP!" src="/lovable-uploads/a6580086-e06f-4c81-a4f2-f866f6726959.png" className="h-12 mx-auto mb-4 rounded-none" />
-          <h2 className="text-2xl font-bold">Welcome to ZAP!</h2>
+          <h2 className="text-2xl font-bold">Welcome!</h2>
           <p className="text-gray-600">Sign in or create an account</p>
         </div>
 
