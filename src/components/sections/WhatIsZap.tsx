@@ -56,7 +56,10 @@ const WhatIsZap = () => {
         className="container mx-auto relative"
         style={{ zIndex: 2 }}
       >
-        <h1 className="text-5xl font-bold text-white mb-12 text-center">So whats this all about?</h1>
+        <h1 className="text-5xl font-bold text-white mb-6 text-center">So whats this all about?</h1>
+        <h3 className="text-xl text-white mb-12 text-center max-w-3xl mx-auto opacity-90">
+          We're here to revolutionize the way artists and galleries connect, create, and prosper together. Here's what makes us different:
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {benefits.map((benefit, index) => {
             const CardIcon = cardStyles[index]?.icon || Zap;
