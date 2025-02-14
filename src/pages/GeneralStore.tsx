@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Zap, Hourglass } from "lucide-react";
@@ -7,6 +8,52 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+
+const CountdownTimer = () => {
+  const [timeLeft, setTimeLeft] = useState({ hours: 24, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
+          clearInterval(timer);
+          return prev;
+        }
+        
+        let newSeconds = prev.seconds - 1;
+        let newMinutes = prev.minutes;
+        let newHours = prev.hours;
+
+        if (newSeconds < 0) {
+          newSeconds = 59;
+          newMinutes -= 1;
+        }
+        if (newMinutes < 0) {
+          newMinutes = 59;
+          newHours -= 1;
+        }
+
+        return {
+          hours: newHours,
+          minutes: newMinutes,
+          seconds: newSeconds
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatNumber = (num: number) => num.toString().padStart(2, '0');
+
+  return (
+    <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1 font-mono" style={{ fontFamily: "'Press Start 2P', monospace" }}>
+      <span className="text-sm">
+        {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
+      </span>
+    </div>
+  );
+};
 
 const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<'print' | 'merch' | 'sticker'>('print');
@@ -33,7 +80,6 @@ const GeneralStore = () => {
   const featuredProducts = products?.filter(p => p.is_featured) || [];
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
 
-  // Function to handle image loading errors
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
@@ -52,10 +98,7 @@ const GeneralStore = () => {
               {featuredProducts.map(product => <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="relative group overflow-hidden rounded-lg">
                     <div className="absolute top-4 right-4 z-10">
-                      <div className="bg-zap-yellow text-black px-3 py-1 rounded-full flex items-center gap-1">
-                        <Zap size={16} />
-                        <span className="text-sm font-medium">Limited Edition</span>
-                      </div>
+                      <CountdownTimer />
                     </div>
                     <div className="aspect-square overflow-hidden">
                       <img src={product.image_url || '/placeholder.svg'} alt={product.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" onError={handleImageError} />
