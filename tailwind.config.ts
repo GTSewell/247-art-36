@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,9 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        'digital': ['Digital Clock', 'monospace'],
+      },
       colors: {
         zap: {
           yellow: "#f7cf1e",
