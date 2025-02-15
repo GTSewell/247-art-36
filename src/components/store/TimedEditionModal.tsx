@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -15,14 +16,24 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   initialSeconds = 0 
 }) => {
   const [time, setTime] = useState({
-    hours: initialHours || 0,
-    minutes: initialMinutes || 0,
-    seconds: initialSeconds || 0
+    hours: initialHours,
+    minutes: initialMinutes,
+    seconds: initialSeconds
   });
   const [isExpired, setIsExpired] = useState(false);
 
+  useEffect(() => {
+    // Reset state when props change
+    setTime({
+      hours: initialHours,
+      minutes: initialMinutes,
+      seconds: initialSeconds
+    });
+    setIsExpired(false);
+  }, [initialHours, initialMinutes, initialSeconds]);
+
   const getColorScheme = () => {
-    const totalMinutes = (time?.hours || 0) * 60 + (time?.minutes || 0);
+    const totalMinutes = time.hours * 60 + time.minutes;
     
     if (isExpired) {
       return {
@@ -60,14 +71,17 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(prev => {
-        if (!prev || (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0)) {
+        // Only expire if we actually reach zero
+        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
           clearInterval(timer);
           setIsExpired(true);
-          return { hours: 0, minutes: 0, seconds: 0 };
+          return prev;
         }
+
         let newSeconds = prev.seconds - 1;
         let newMinutes = prev.minutes;
         let newHours = prev.hours;
+
         if (newSeconds < 0) {
           newSeconds = 59;
           newMinutes -= 1;
@@ -76,6 +90,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
           newMinutes = 59;
           newHours -= 1;
         }
+
         return {
           hours: newHours,
           minutes: newMinutes,
@@ -83,6 +98,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         };
       });
     }, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
