@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,18 +9,63 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 
-const CountdownTimer = () => {
+interface CountdownTimerProps {
+  initialHours: number;
+  initialMinutes: number;
+  initialSeconds: number;
+}
+
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialHours, initialMinutes, initialSeconds }) => {
   const [timeLeft, setTimeLeft] = useState({
-    hours: 24,
-    minutes: 0,
-    seconds: 0
+    hours: initialHours,
+    minutes: initialMinutes,
+    seconds: initialSeconds
   });
+
+  const [isExpired, setIsExpired] = useState(false);
+
+  const getColorScheme = () => {
+    const totalMinutes = timeLeft.hours * 60 + timeLeft.minutes;
+    
+    if (isExpired) {
+      return {
+        text: "text-red-500",
+        border: "border-red-500",
+        shadow: "rgba(239, 63, 54, 0.8)",
+        animation: "red-pulse"
+      };
+    }
+    
+    if (totalMinutes >= 720) { // 12 hours or more
+      return {
+        text: "text-zap-blue",
+        border: "border-zap-blue",
+        shadow: "rgba(0, 122, 255, 0.8)",
+        animation: "blue-pulse"
+      };
+    } else if (totalMinutes >= 360) { // 6 hours or more
+      return {
+        text: "text-zap-yellow",
+        border: "border-zap-yellow",
+        shadow: "rgba(255, 204, 0, 0.8)",
+        animation: "yellow-pulse"
+      };
+    } else { // Less than 6 hours
+      return {
+        text: "text-red-500",
+        border: "border-red-500",
+        shadow: "rgba(239, 63, 54, 0.8)",
+        animation: "red-pulse"
+      };
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
           clearInterval(timer);
+          setIsExpired(true);
           return prev;
         }
         let newSeconds = prev.seconds - 1;
@@ -44,35 +90,43 @@ const CountdownTimer = () => {
   }, []);
 
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
+  const colorScheme = getColorScheme();
 
-  return <div 
-    style={{
-      textShadow: '0 0 7px rgba(239, 63, 54, 0.8), 0 0 10px rgba(239, 63, 54, 0.6), 0 0 21px rgba(239, 63, 54, 0.4)',
-      fontSize: '1.5rem',
-      letterSpacing: '2px',
-      animation: 'border-pulse 2s infinite'
-    }} 
-    className="bg-black border-2 border-red-500 text-red-500 flex items-center gap-1 font-digital rounded-none px-0 py-0"
-  >
-    <style>
-      {`
-        @keyframes border-pulse {
-          0% {
-            border-color: rgba(239, 63, 54, 0.3);
+  return (
+    <div 
+      style={{
+        textShadow: `0 0 7px ${colorScheme.shadow}, 0 0 10px ${colorScheme.shadow}, 0 0 21px ${colorScheme.shadow}`,
+        fontSize: '1.5rem',
+        letterSpacing: '2px',
+        animation: `${colorScheme.animation} 2s infinite`,
+        width: '140px',
+      }} 
+      className={`bg-black border-2 ${colorScheme.border} ${colorScheme.text} flex items-center justify-center gap-1 font-digital rounded-none px-2 py-1`}
+    >
+      <style>
+        {`
+          @keyframes blue-pulse {
+            0% { border-color: rgba(0, 122, 255, 0.3); }
+            50% { border-color: rgba(0, 122, 255, 1); }
+            100% { border-color: rgba(0, 122, 255, 0.3); }
           }
-          50% {
-            border-color: rgba(239, 63, 54, 1);
+          @keyframes yellow-pulse {
+            0% { border-color: rgba(255, 204, 0, 0.3); }
+            50% { border-color: rgba(255, 204, 0, 1); }
+            100% { border-color: rgba(255, 204, 0, 0.3); }
           }
-          100% {
-            border-color: rgba(239, 63, 54, 0.3);
+          @keyframes red-pulse {
+            0% { border-color: rgba(239, 63, 54, 0.3); }
+            50% { border-color: rgba(239, 63, 54, 1); }
+            100% { border-color: rgba(239, 63, 54, 0.3); }
           }
-        }
-      `}
-    </style>
-    <span className="px-[6px]">
-      {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
-    </span>
-  </div>;
+        `}
+      </style>
+      <span className="w-full text-center">
+        {isExpired ? "CLOSED" : `${formatNumber(timeLeft.hours)}:${formatNumber(timeLeft.minutes)}:${formatNumber(timeLeft.seconds)}`}
+      </span>
+    </div>
+  );
 };
 
 const GeneralStore = () => {
@@ -96,11 +150,27 @@ const GeneralStore = () => {
       return data;
     }
   });
+
   const featuredProducts = products?.filter(p => p.is_featured) || [];
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
+
+  const getInitialTime = (index: number) => {
+    switch (index) {
+      case 0:
+        return { hours: 5, minutes: 25, seconds: 25 };
+      case 1:
+        return { hours: 7, minutes: 30, seconds: 25 };
+      case 2:
+        return { hours: 12, minutes: 0, seconds: 5 };
+      default:
+        return { hours: Math.floor(Math.random() * 24), minutes: Math.floor(Math.random() * 60), seconds: Math.floor(Math.random() * 60) };
+    }
+  };
+
   return <div className="min-h-screen bg-zap-red">
       <Navigation />
       <main className="container mx-auto px-4 pt-24 pb-12">
@@ -111,13 +181,21 @@ const GeneralStore = () => {
           </h2>
           <Carousel className="relative">
             <CarouselContent>
-              {featuredProducts.map(product => <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
+              {featuredProducts.map((product, index) => (
+                <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="relative group overflow-hidden rounded-lg">
                     <div className="absolute top-4 right-4 z-10">
-                      <CountdownTimer />
+                      <CountdownTimer 
+                        {...getInitialTime(index)}
+                      />
                     </div>
                     <div className="aspect-square overflow-hidden">
-                      <img src={product.image_url || '/placeholder.svg'} alt={product.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" onError={handleImageError} />
+                      <img 
+                        src={product.image_url || '/placeholder.svg'} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
+                        onError={handleImageError} 
+                      />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4">
@@ -129,7 +207,8 @@ const GeneralStore = () => {
                       </div>
                     </div>
                   </div>
-                </CarouselItem>)}
+                </CarouselItem>
+              ))}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />
