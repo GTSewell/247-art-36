@@ -161,11 +161,11 @@ const GeneralStore = () => {
   const getInitialTime = (index: number) => {
     switch (index) {
       case 0:
-        return { initialHours: 5, initialMinutes: 25, initialSeconds: 25 };
+        return { initialHours: 0, initialMinutes: 0, initialSeconds: 33 };
       case 1:
-        return { initialHours: 7, initialMinutes: 30, initialSeconds: 25 };
+        return { initialHours: 6, initialMinutes: 0, initialSeconds: 20 };
       case 2:
-        return { initialHours: 12, initialMinutes: 0, initialSeconds: 5 };
+        return { initialHours: 12, initialMinutes: 1, initialSeconds: 10 };
       default:
         return { 
           initialHours: Math.floor(Math.random() * 24), 
