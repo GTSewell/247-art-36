@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -50,21 +51,21 @@ const CountdownTimer = () => {
       textShadow: '0 0 7px rgba(239, 63, 54, 0.8), 0 0 10px rgba(239, 63, 54, 0.6), 0 0 21px rgba(239, 63, 54, 0.4)',
       fontSize: '1.5rem',
       letterSpacing: '2px',
-      animation: 'pulse 2s infinite'
+      animation: 'border-pulse 2s infinite'
     }} 
-    className="bg-black border-2 border-red-500 text-red-500 flex items-center gap-1 font-digital shadow-lg px-[12px] py-px rounded-none"
+    className="bg-black border-2 border-red-500 text-red-500 flex items-center gap-1 font-digital px-[12px] py-px rounded-none"
   >
     <style>
       {`
-        @keyframes pulse {
+        @keyframes border-pulse {
           0% {
-            box-shadow: 0 0 0 0 rgba(239, 63, 54, 0.7);
+            border-color: rgba(239, 63, 54, 0.3);
           }
-          70% {
-            box-shadow: 0 0 0 10px rgba(239, 63, 54, 0);
+          50% {
+            border-color: rgba(239, 63, 54, 1);
           }
           100% {
-            box-shadow: 0 0 0 0 rgba(239, 63, 54, 0);
+            border-color: rgba(239, 63, 54, 0.3);
           }
         }
       `}
