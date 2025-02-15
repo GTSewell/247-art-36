@@ -125,11 +125,11 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="h-12 w-12 rounded-full hover:bg-transparent"
+                className="h-14 w-14 rounded-full hover:bg-transparent"
               >
                 <SquareChevronLeft 
-                  size={40} 
-                  strokeWidth={5} 
+                  size={50} 
+                  strokeWidth={2.5} 
                   className="text-white animate-pulse" 
                 />
               </Button>
@@ -139,11 +139,11 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="h-12 w-12 rounded-full hover:bg-transparent"
+                className="h-14 w-14 rounded-full hover:bg-transparent"
               >
                 <SquareChevronRight 
-                  size={40} 
-                  strokeWidth={5} 
+                  size={50} 
+                  strokeWidth={2.5} 
                   className="text-white animate-pulse" 
                 />
               </Button>
