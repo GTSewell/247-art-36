@@ -123,7 +123,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialHours, initialMi
         `}
       </style>
       <span className="w-full text-center">
-        {isExpired ? "CLOSED" : `${formatNumber(timeLeft.hours)}:${formatNumber(timeLeft.minutes)}:${formatNumber(timeLeft.seconds)}`}
+        {isExpired ? "SOLD OUT" : `${formatNumber(timeLeft.hours)}:${formatNumber(timeLeft.minutes)}:${formatNumber(timeLeft.seconds)}`}
       </span>
     </div>
   );
