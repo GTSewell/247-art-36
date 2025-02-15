@@ -128,9 +128,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 className="h-12 w-12 rounded-full hover:bg-transparent"
               >
                 <SquareChevronLeft 
-                  size={20} 
-                  strokeWidth={2.5} 
-                  className="text-zap-yellow animate-pulse" 
+                  size={40} 
+                  strokeWidth={5} 
+                  className="text-white animate-pulse" 
                 />
               </Button>
             </div>
@@ -142,9 +142,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 className="h-12 w-12 rounded-full hover:bg-transparent"
               >
                 <SquareChevronRight 
-                  size={20} 
-                  strokeWidth={2.5} 
-                  className="text-zap-yellow animate-pulse" 
+                  size={40} 
+                  strokeWidth={5} 
+                  className="text-white animate-pulse" 
                 />
               </Button>
             </div>
