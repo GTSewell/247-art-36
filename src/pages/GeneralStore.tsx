@@ -51,9 +51,10 @@ const CountdownTimer = () => {
       textShadow: '0 0 7px rgba(239, 63, 54, 0.8), 0 0 10px rgba(239, 63, 54, 0.6), 0 0 21px rgba(239, 63, 54, 0.4)',
       fontSize: '1.5rem',
       letterSpacing: '2px',
-      animation: 'border-pulse 2s infinite'
+      animation: 'border-pulse 2s infinite',
+      width: '140px'
     }} 
-    className="bg-black border-2 border-red-500 text-red-500 flex items-center gap-1 font-digital px-[12px] py-px rounded-none"
+    className="bg-black border-2 border-red-500 text-red-500 flex items-center justify-center gap-1 font-digital px-[12px] py-px rounded-none"
   >
     <style>
       {`
@@ -70,7 +71,7 @@ const CountdownTimer = () => {
         }
       `}
     </style>
-    <span>
+    <span className="w-full text-center">
       {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
     </span>
   </div>;
