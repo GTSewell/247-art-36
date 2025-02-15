@@ -11,19 +11,19 @@ interface CountdownTimerProps {
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ 
-  initialHours, 
-  initialMinutes, 
-  initialSeconds 
+  initialHours = 0, 
+  initialMinutes = 0, 
+  initialSeconds = 0 
 }) => {
   const [time, setTime] = useState({
-    hours: initialHours,
-    minutes: initialMinutes,
-    seconds: initialSeconds
+    hours: initialHours || 0,
+    minutes: initialMinutes || 0,
+    seconds: initialSeconds || 0
   });
   const [isExpired, setIsExpired] = useState(false);
 
   const getColorScheme = () => {
-    const totalMinutes = time.hours * 60 + time.minutes;
+    const totalMinutes = (time?.hours || 0) * 60 + (time?.minutes || 0);
     
     if (isExpired) {
       return {
@@ -61,14 +61,14 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setTime(prev => {
-        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
+        if (!prev || (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0)) {
           clearInterval(timer);
           setIsExpired(true);
-          return prev;
+          return prev || { hours: 0, minutes: 0, seconds: 0 };
         }
-        let newSeconds = prev.seconds - 1;
-        let newMinutes = prev.minutes;
-        let newHours = prev.hours;
+        let newSeconds = (prev.seconds || 0) - 1;
+        let newMinutes = prev.minutes || 0;
+        let newHours = prev.hours || 0;
         if (newSeconds < 0) {
           newSeconds = 59;
           newMinutes -= 1;
@@ -87,7 +87,11 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     return () => clearInterval(timer);
   }, []);
 
-  const formatNumber = (num: number) => num.toString().padStart(2, '0');
+  const formatNumber = (num: number | undefined) => {
+    if (typeof num === 'undefined') return '00';
+    return num.toString().padStart(2, '0');
+  };
+  
   const colorScheme = getColorScheme();
 
   return (
@@ -121,7 +125,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         `}
       </style>
       <span className="w-full text-center">
-        {isExpired ? "CLOSED" : `${formatNumber(time.hours)}:${formatNumber(time.minutes)}:${formatNumber(time.seconds)}`}
+        {isExpired ? "CLOSED" : `${formatNumber(time?.hours)}:${formatNumber(time?.minutes)}:${formatNumber(time?.seconds)}`}
       </span>
     </div>
   );
