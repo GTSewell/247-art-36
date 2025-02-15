@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -91,6 +90,8 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     return String(num).padStart(2, '0');
   };
 
+  const colorScheme = getColorScheme();
+
   return (
     <div 
       style={{
@@ -151,7 +152,6 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="flex flex-col md:flex-row max-h-[90vh]">
-          {/* Left side - Image Grid */}
           <div className="w-full md:w-1/2 p-6">
             <div className="grid grid-cols-2 gap-2 h-full">
               {variations.map((image, index) => (
@@ -165,11 +165,8 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
               ))}
             </div>
           </div>
-
-          {/* Right side - Details */}
           <div className="w-full md:w-1/2 border-l border-border/40 p-6 overflow-y-auto">
             <div className="space-y-6">
-              {/* Header with Timer */}
               <div className="flex items-start justify-between">
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight">{product?.name}</h2>
@@ -183,16 +180,12 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   />
                 )}
               </div>
-
-              {/* Description */}
               <div>
                 <h3 className="text-lg font-semibold mb-2">Details</h3>
                 <p className="text-muted-foreground">
                   {product?.description || "Discover this exclusive limited edition print, meticulously crafted to capture the essence of contemporary artistry. Each piece is individually numbered and personally signed by the artist, making it a unique addition to any collection. This stunning artwork showcases the perfect blend of traditional craftsmanship and modern artistic vision, printed on museum-quality cotton rag paper to ensure unparalleled depth and longevity."}
                 </p>
               </div>
-
-              {/* Specifications */}
               <div>
                 <h3 className="text-lg font-semibold mb-2">Specifications</h3>
                 <ul className="space-y-2 text-sm text-muted-foreground">
@@ -203,8 +196,6 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   <li>• NFC chipped</li>
                 </ul>
               </div>
-
-              {/* Important Notes */}
               <div className="bg-yellow-50 p-4 rounded-lg">
                 <div className="flex items-start gap-3">
                   <Info className="h-5 w-5 text-yellow-600 mt-0.5" />
