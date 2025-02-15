@@ -2,7 +2,8 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Zap } from "lucide-react";
+import { Zap, ShoppingCart } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FilteredProductsProps {
   products: any[];
@@ -15,6 +16,8 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   selectedCategory,
   onCategoryChange,
 }) => {
+  const isMobile = useIsMobile();
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
@@ -22,25 +25,25 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   return (
     <>
       <section className="mb-8">
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-2 md:gap-4 justify-center">
           <Button 
             variant={selectedCategory === 'print' ? 'default' : 'outline'} 
             onClick={() => onCategoryChange('print')} 
-            className="min-w-[120px]"
+            className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
           >
             Prints
           </Button>
           <Button 
             variant={selectedCategory === 'merch' ? 'default' : 'outline'} 
             onClick={() => onCategoryChange('merch')} 
-            className="min-w-[120px]"
+            className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
           >
             Merch
           </Button>
           <Button 
             variant={selectedCategory === 'sticker' ? 'default' : 'outline'} 
             onClick={() => onCategoryChange('sticker')} 
-            className="min-w-[120px]"
+            className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
           >
             Stickers
           </Button>
@@ -68,12 +71,21 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                     </div>
                   )}
                 </div>
-                <h3 className="font-medium mb-1">{product.name}</h3>
+                <h3 className="font-medium mb-1 text-sm md:text-base">{product.name}</h3>
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-600">${product.price}</p>
-                  <Button size="sm" className="bg-zap-red hover:bg-zap-blue">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Add to Cart
+                  <p className="text-gray-600 text-sm md:text-base">${product.price}</p>
+                  <Button 
+                    size={isMobile ? "icon" : "sm"} 
+                    className="bg-zap-red hover:bg-zap-blue h-8 w-8 md:w-auto md:h-9"
+                  >
+                    {isMobile ? (
+                      <ShoppingCart className="h-4 w-4" />
+                    ) : (
+                      <>
+                        <Zap className="mr-2 h-4 w-4" />
+                        Add to Cart
+                      </>
+                    )}
                   </Button>
                 </div>
                 {product.artists && (
