@@ -6,9 +6,9 @@ import { Hourglass } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 
 interface TimerState {
-  initialHours: number;
-  initialMinutes: number;
-  initialSeconds: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
 interface FeaturedProductsProps {
@@ -19,16 +19,16 @@ interface FeaturedProductsProps {
 const getInitialTime = (index: number): TimerState => {
   switch (index) {
     case 0:
-      return { initialHours: 0, initialMinutes: 0, initialSeconds: 33 };
+      return { hours: 0, minutes: 0, seconds: 33 };
     case 1:
-      return { initialHours: 6, initialMinutes: 0, initialSeconds: 20 };
+      return { hours: 6, minutes: 0, seconds: 20 };
     case 2:
-      return { initialHours: 12, initialMinutes: 1, initialSeconds: 10 };
+      return { hours: 12, minutes: 1, seconds: 10 };
     default:
       return { 
-        initialHours: Math.floor(Math.random() * 24), 
-        initialMinutes: Math.floor(Math.random() * 60), 
-        initialSeconds: Math.floor(Math.random() * 60) 
+        hours: Math.floor(Math.random() * 24), 
+        minutes: Math.floor(Math.random() * 60), 
+        seconds: Math.floor(Math.random() * 60) 
       };
   }
 };
@@ -56,9 +56,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 >
                   <div className="absolute top-4 right-4 z-10">
                     <CountdownTimer
-                      initialHours={initialTime.initialHours}
-                      initialMinutes={initialTime.initialMinutes}
-                      initialSeconds={initialTime.initialSeconds}
+                      initialHours={initialTime.hours}
+                      initialMinutes={initialTime.minutes}
+                      initialSeconds={initialTime.seconds}
                     />
                   </div>
                   <div className="aspect-square overflow-hidden">

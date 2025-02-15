@@ -8,10 +8,16 @@ import TimedEditionModal from "@/components/store/TimedEditionModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import FilteredProducts from "@/components/store/FilteredProducts";
 
+interface TimerState {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
 const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<'print' | 'merch' | 'sticker'>('print');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [selectedTimerState, setSelectedTimerState] = useState<any>(null);
+  const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
   
   const {
     data: products,
@@ -36,7 +42,7 @@ const GeneralStore = () => {
   const featuredProducts = products?.filter(p => p.is_featured) || [];
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
 
-  const handleProductSelect = (product: any, timerState: any) => {
+  const handleProductSelect = (product: any, timerState: TimerState) => {
     setSelectedProduct(product);
     setSelectedTimerState(timerState);
   };
@@ -57,7 +63,7 @@ const GeneralStore = () => {
             setSelectedTimerState(null);
           }}
           product={selectedProduct}
-          timeLeft={selectedTimerState}
+          timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
         />
 
         <FilteredProducts
