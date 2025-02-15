@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
@@ -124,7 +125,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="h-20 w-20 rounded-full hover:bg-transparent flex items-center justify-center p-0"
+                className="h-32 w-32 rounded-full hover:bg-transparent flex items-center justify-center p-0"
               >
                 <SquareChevronLeft 
                   className="w-full h-full text-white animate-pulse" 
@@ -137,7 +138,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="h-20 w-20 rounded-full hover:bg-transparent flex items-center justify-center p-0"
+                className="h-32 w-32 rounded-full hover:bg-transparent flex items-center justify-center p-0"
               >
                 <SquareChevronRight 
                   className="w-full h-full text-white animate-pulse" 
