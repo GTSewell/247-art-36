@@ -127,7 +127,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 onClick={() => api?.scrollPrev()} 
                 className="h-12 w-12 rounded-full hover:bg-transparent"
               >
-                <ChevronLeft className="h-8 w-8 text-zap-yellow animate-pulse" />
+                <ChevronLeft className="h-8 w-8 text-zap-yellow animate-pulse [&>path]:stroke-[3]" />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -137,7 +137,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 onClick={() => api?.scrollNext()} 
                 className="h-12 w-12 rounded-full hover:bg-transparent"
               >
-                <ChevronRight className="h-8 w-8 text-zap-yellow animate-pulse" />
+                <ChevronRight className="h-8 w-8 text-zap-yellow animate-pulse [&>path]:stroke-[3]" />
               </Button>
             </div>
           </div>
