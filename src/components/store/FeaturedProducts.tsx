@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Hourglass } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TimerState {
   hours: number;
@@ -34,6 +35,35 @@ const getInitialTime = (index: number): TimerState => {
 };
 
 const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProductSelect }) => {
+  const [showControls, setShowControls] = useState(true);
+  const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [api, setApi] = useState<any>(null);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, []);
+
+  const handleInteraction = () => {
+    setShowControls(true);
+    
+    if (interactionTimeout) {
+      clearTimeout(interactionTimeout);
+    }
+
+    const timeout = setTimeout(() => {
+      setShowControls(false);
+    }, 3000);
+
+    setInteractionTimeout(timeout);
+  };
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
@@ -44,49 +74,75 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
         <Hourglass className="text-zap-yellow" />
         Timed Edition Drops
       </h2>
-      <Carousel className="relative">
-        <CarouselContent>
-          {products.map((product, index) => {
-            const initialTime = getInitialTime(index);
-            return (
-              <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
-                <div 
-                  className="relative group overflow-hidden rounded-lg cursor-pointer"
-                  onClick={() => onProductSelect(product, initialTime)}
-                >
-                  <div className="absolute top-4 right-4 z-10">
-                    <CountdownTimer
-                      initialHours={initialTime.hours}
-                      initialMinutes={initialTime.minutes}
-                      initialSeconds={initialTime.seconds}
-                      productId={product.id}
-                    />
-                  </div>
-                  <div className="aspect-square overflow-hidden">
-                    <img 
-                      src={product.image_url || '/placeholder.svg'} 
-                      alt={product.name} 
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
-                      onError={handleImageError} 
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h3 className="text-white text-lg font-bold mb-1">{product.name}</h3>
-                      <p className="text-white/90">${product.price}</p>
-                      <Button className="w-full mt-2 bg-zap-red hover:bg-zap-blue">
-                        Add to Cart
-                      </Button>
+      <div 
+        className="relative" 
+        onTouchStart={handleInteraction}
+        onMouseMove={handleInteraction}
+      >
+        <Carousel className="w-full" setApi={setApi}>
+          <CarouselContent>
+            {products.map((product, index) => {
+              const initialTime = getInitialTime(index);
+              return (
+                <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
+                  <div 
+                    className="relative group overflow-hidden rounded-lg cursor-pointer"
+                    onClick={() => onProductSelect(product, initialTime)}
+                  >
+                    <div className="absolute top-4 right-4 z-10">
+                      <CountdownTimer
+                        initialHours={initialTime.hours}
+                        initialMinutes={initialTime.minutes}
+                        initialSeconds={initialTime.seconds}
+                        productId={product.id}
+                      />
+                    </div>
+                    <div className="aspect-square overflow-hidden">
+                      <img 
+                        src={product.image_url || '/placeholder.svg'} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
+                        onError={handleImageError} 
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-white text-lg font-bold mb-1">{product.name}</h3>
+                        <p className="text-white/90">${product.price}</p>
+                        <Button className="w-full mt-2 bg-zap-red hover:bg-zap-blue">
+                          Add to Cart
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+                </CarouselItem>
+              );
+            })}
+          </CarouselContent>
+          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none">
+            <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => api?.scrollPrev()} 
+                className="h-8 w-8 rounded-full bg-white/80 hover:bg-white"
+              >
+                <ChevronLeft className="h-4 w-4 text-black" />
+              </Button>
+            </div>
+            <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => api?.scrollNext()} 
+                className="h-8 w-8 rounded-full bg-white/80 hover:bg-white"
+              >
+                <ChevronRight className="h-4 w-4 text-black" />
+              </Button>
+            </div>
+          </div>
+        </Carousel>
+      </div>
     </section>
   );
 };
