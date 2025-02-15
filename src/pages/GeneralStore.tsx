@@ -188,38 +188,45 @@ const GeneralStore = () => {
           </h2>
           <Carousel className="relative">
             <CarouselContent>
-              {featuredProducts.map((product, index) => (
-                <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
-                  <div 
-                    className="relative group overflow-hidden rounded-lg cursor-pointer"
-                    onClick={() => {
-                      setSelectedProduct(product);
-                      setSelectedTimerState(getInitialTime(index));
-                    }}
-                  >
-                    <div className="absolute top-4 right-4 z-10">
-                      <CountdownTimer {...getInitialTime(index)} />
-                    </div>
-                    <div className="aspect-square overflow-hidden">
-                      <img 
-                        src={product.image_url || '/placeholder.svg'} 
-                        alt={product.name} 
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
-                        onError={handleImageError} 
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-white text-lg font-bold mb-1">{product.name}</h3>
-                        <p className="text-white/90">${product.price}</p>
-                        <Button className="w-full mt-2 bg-zap-red hover:bg-zap-blue">
-                          Add to Cart
-                        </Button>
+              {featuredProducts.map((product, index) => {
+                const initialTime = getInitialTime(index);
+                return (
+                  <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
+                    <div 
+                      className="relative group overflow-hidden rounded-lg cursor-pointer"
+                      onClick={() => {
+                        setSelectedProduct(product);
+                        setSelectedTimerState(initialTime);
+                      }}
+                    >
+                      <div className="absolute top-4 right-4 z-10">
+                        <CountdownTimer
+                          initialHours={initialTime.hours}
+                          initialMinutes={initialTime.minutes}
+                          initialSeconds={initialTime.seconds}
+                        />
+                      </div>
+                      <div className="aspect-square overflow-hidden">
+                        <img 
+                          src={product.image_url || '/placeholder.svg'} 
+                          alt={product.name} 
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
+                          onError={handleImageError} 
+                        />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <h3 className="text-white text-lg font-bold mb-1">{product.name}</h3>
+                          <p className="text-white/90">${product.price}</p>
+                          <Button className="w-full mt-2 bg-zap-red hover:bg-zap-blue">
+                            Add to Cart
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CarouselItem>
-              ))}
+                  </CarouselItem>
+                );
+              })}
             </CarouselContent>
             <CarouselPrevious />
             <CarouselNext />

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -11,9 +10,9 @@ interface CountdownTimerProps {
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ 
-  initialHours = 0, 
-  initialMinutes = 0, 
-  initialSeconds = 0 
+  initialHours, 
+  initialMinutes, 
+  initialSeconds
 }) => {
   const [time, setTime] = useState({
     hours: initialHours,
@@ -23,13 +22,45 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   const [isExpired, setIsExpired] = useState(false);
 
   useEffect(() => {
-    // Reset state when props change
     setTime({
       hours: initialHours,
       minutes: initialMinutes,
       seconds: initialSeconds
     });
     setIsExpired(false);
+  }, [initialHours, initialMinutes, initialSeconds]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(prev => {
+        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
+          clearInterval(timer);
+          setIsExpired(true);
+          return prev;
+        }
+
+        let newSeconds = prev.seconds - 1;
+        let newMinutes = prev.minutes;
+        let newHours = prev.hours;
+
+        if (newSeconds < 0) {
+          newSeconds = 59;
+          newMinutes -= 1;
+        }
+        if (newMinutes < 0) {
+          newMinutes = 59;
+          newHours -= 1;
+        }
+
+        return {
+          hours: newHours,
+          minutes: newMinutes,
+          seconds: newSeconds
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, [initialHours, initialMinutes, initialSeconds]);
 
   const getColorScheme = () => {
@@ -67,40 +98,6 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
       };
     }
   };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTime(prev => {
-        // Only expire if we actually reach zero
-        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
-          clearInterval(timer);
-          setIsExpired(true);
-          return prev;
-        }
-
-        let newSeconds = prev.seconds - 1;
-        let newMinutes = prev.minutes;
-        let newHours = prev.hours;
-
-        if (newSeconds < 0) {
-          newSeconds = 59;
-          newMinutes -= 1;
-        }
-        if (newMinutes < 0) {
-          newMinutes = 59;
-          newHours -= 1;
-        }
-
-        return {
-          hours: newHours,
-          minutes: newMinutes,
-          seconds: newSeconds
-        };
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const formatNumber = (num: number) => {
     return String(num).padStart(2, '0');
