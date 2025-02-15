@@ -43,7 +43,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowControls(false);
-    }, 3000);
+    }, 5000); // Extended to 5 seconds
 
     return () => {
       if (timeout) clearTimeout(timeout);
@@ -59,7 +59,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
 
     const timeout = setTimeout(() => {
       setShowControls(false);
-    }, 3000);
+    }, 5000); // Extended to 5 seconds
 
     setInteractionTimeout(timeout);
   };
@@ -119,15 +119,15 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
               );
             })}
           </CarouselContent>
-          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none">
+          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-2">
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="h-8 w-8 rounded-full bg-white/80 hover:bg-white"
+                className="h-12 w-12 rounded-full hover:bg-transparent"
               >
-                <ChevronLeft className="h-4 w-4 text-black" />
+                <ChevronLeft className="h-8 w-8 text-zap-yellow animate-pulse" />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -135,9 +135,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="h-8 w-8 rounded-full bg-white/80 hover:bg-white"
+                className="h-12 w-12 rounded-full hover:bg-transparent"
               >
-                <ChevronRight className="h-4 w-4 text-black" />
+                <ChevronRight className="h-8 w-8 text-zap-yellow animate-pulse" />
               </Button>
             </div>
           </div>
