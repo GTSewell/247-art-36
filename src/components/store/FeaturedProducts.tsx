@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Hourglass } from "lucide-react";
+import { Hourglass, ChevronLeft, ChevronRight } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
 
