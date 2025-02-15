@@ -1,70 +1,84 @@
 
 import React, { useState, useEffect } from 'react';
+import { useTimer } from '@/contexts/TimerContext';
 
 interface CountdownTimerProps {
   initialHours: number;
   initialMinutes: number;
   initialSeconds: number;
+  productId: string;
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ 
   initialHours, 
   initialMinutes, 
-  initialSeconds 
+  initialSeconds,
+  productId
 }) => {
-  const [time, setTime] = useState({
-    hours: initialHours,
-    minutes: initialMinutes,
-    seconds: initialSeconds
-  });
-  const [isExpired, setIsExpired] = useState(false);
+  const { timerStates, updateTimerState } = useTimer();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    setTime({
-      hours: initialHours,
-      minutes: initialMinutes,
-      seconds: initialSeconds
-    });
-    setIsExpired(false);
-  }, [initialHours, initialMinutes, initialSeconds]);
+    if (!isInitialized && !timerStates[productId]) {
+      updateTimerState(productId, {
+        hours: initialHours,
+        minutes: initialMinutes,
+        seconds: initialSeconds,
+        isExpired: false
+      });
+      setIsInitialized(true);
+    }
+  }, [initialHours, initialMinutes, initialSeconds, productId, isInitialized]);
 
   useEffect(() => {
+    if (!timerStates[productId]) return;
+
     const timer = setInterval(() => {
-      setTime(prev => {
-        if (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0) {
-          clearInterval(timer);
-          setIsExpired(true);
-          return prev;
-        }
+      const currentState = timerStates[productId];
+      if (currentState.isExpired) {
+        clearInterval(timer);
+        return;
+      }
 
-        let newSeconds = prev.seconds - 1;
-        let newMinutes = prev.minutes;
-        let newHours = prev.hours;
+      let newHours = currentState.hours;
+      let newMinutes = currentState.minutes;
+      let newSeconds = currentState.seconds - 1;
 
-        if (newSeconds < 0) {
-          newSeconds = 59;
-          newMinutes -= 1;
-        }
-        if (newMinutes < 0) {
-          newMinutes = 59;
-          newHours -= 1;
-        }
+      if (newSeconds < 0) {
+        newSeconds = 59;
+        newMinutes -= 1;
+      }
+      if (newMinutes < 0) {
+        newMinutes = 59;
+        newHours -= 1;
+      }
 
-        return {
+      if (newHours === 0 && newMinutes === 0 && newSeconds === 0) {
+        updateTimerState(productId, {
+          ...currentState,
+          isExpired: true
+        });
+        clearInterval(timer);
+      } else {
+        updateTimerState(productId, {
           hours: newHours,
           minutes: newMinutes,
-          seconds: newSeconds
-        };
-      });
+          seconds: newSeconds,
+          isExpired: false
+        });
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [initialHours, initialMinutes, initialSeconds]);
+  }, [productId, timerStates[productId]]);
+
+  const currentState = timerStates[productId];
+  if (!currentState) return null;
 
   const getColorScheme = () => {
-    const totalMinutes = time.hours * 60 + time.minutes;
+    const totalMinutes = currentState.hours * 60 + currentState.minutes;
     
-    if (isExpired) {
+    if (currentState.isExpired) {
       return {
         text: "text-red-500",
         border: "border-red-500",
@@ -134,7 +148,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         `}
       </style>
       <span className="w-full text-center">
-        {isExpired ? "CLOSED" : `${formatNumber(time.hours)}:${formatNumber(time.minutes)}:${formatNumber(time.seconds)}`}
+        {currentState.isExpired ? "CLOSED" : `${formatNumber(currentState.hours)}:${formatNumber(currentState.minutes)}:${formatNumber(currentState.seconds)}`}
       </span>
     </div>
   );

@@ -51,11 +51,12 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   <h2 className="text-2xl font-bold tracking-tight">{product?.name}</h2>
                   <p className="text-muted-foreground">By {product?.artists?.name}</p>
                 </div>
-                {timeLeft && (
+                {timeLeft && product && (
                   <CountdownTimer 
                     initialHours={timeLeft.hours}
                     initialMinutes={timeLeft.minutes}
                     initialSeconds={timeLeft.seconds}
+                    productId={product.id}
                   />
                 )}
               </div>

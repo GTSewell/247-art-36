@@ -59,6 +59,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                       initialHours={initialTime.hours}
                       initialMinutes={initialTime.minutes}
                       initialSeconds={initialTime.seconds}
+                      productId={product.id}
                     />
                   </div>
                   <div className="aspect-square overflow-hidden">

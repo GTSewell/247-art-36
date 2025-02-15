@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import FilteredProducts from "@/components/store/FilteredProducts";
+import { TimerProvider } from "@/contexts/TimerContext";
 
 interface TimerState {
   hours: number;
@@ -48,37 +49,39 @@ const GeneralStore = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zap-red">
-      <Navigation />
-      <main className="container mx-auto px-4 pt-24 pb-12">
-        <FeaturedProducts 
-          products={featuredProducts}
-          onProductSelect={handleProductSelect}
-        />
+    <TimerProvider>
+      <div className="min-h-screen bg-zap-red">
+        <Navigation />
+        <main className="container mx-auto px-4 pt-24 pb-12">
+          <FeaturedProducts 
+            products={featuredProducts}
+            onProductSelect={handleProductSelect}
+          />
 
-        <TimedEditionModal
-          isOpen={!!selectedProduct}
-          onClose={() => {
-            setSelectedProduct(null);
-            setSelectedTimerState(null);
-          }}
-          product={selectedProduct}
-          timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
-        />
+          <TimedEditionModal
+            isOpen={!!selectedProduct}
+            onClose={() => {
+              setSelectedProduct(null);
+              setSelectedTimerState(null);
+            }}
+            product={selectedProduct}
+            timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
+          />
 
-        <FilteredProducts
-          products={filteredProducts}
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-        />
+          <FilteredProducts
+            products={filteredProducts}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+          />
 
-        {isLoading && (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-pulse text-zap-blue">Loading products...</div>
-          </div>
-        )}
-      </main>
-    </div>
+          {isLoading && (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-pulse text-zap-blue">Loading products...</div>
+            </div>
+          )}
+        </main>
+      </div>
+    </TimerProvider>
   );
 };
 
