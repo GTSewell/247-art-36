@@ -64,11 +64,11 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         if (!prev || (prev.hours === 0 && prev.minutes === 0 && prev.seconds === 0)) {
           clearInterval(timer);
           setIsExpired(true);
-          return prev || { hours: 0, minutes: 0, seconds: 0 };
+          return { hours: 0, minutes: 0, seconds: 0 };
         }
-        let newSeconds = (prev.seconds || 0) - 1;
-        let newMinutes = prev.minutes || 0;
-        let newHours = prev.hours || 0;
+        let newSeconds = prev.seconds - 1;
+        let newMinutes = prev.minutes;
+        let newHours = prev.hours;
         if (newSeconds < 0) {
           newSeconds = 59;
           newMinutes -= 1;
@@ -87,12 +87,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     return () => clearInterval(timer);
   }, []);
 
-  const formatNumber = (num: number | undefined) => {
-    if (typeof num === 'undefined') return '00';
-    return num.toString().padStart(2, '0');
+  const formatNumber = (num: number) => {
+    return String(num).padStart(2, '0');
   };
-  
-  const colorScheme = getColorScheme();
 
   return (
     <div 
@@ -125,7 +122,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         `}
       </style>
       <span className="w-full text-center">
-        {isExpired ? "CLOSED" : `${formatNumber(time?.hours)}:${formatNumber(time?.minutes)}:${formatNumber(time?.seconds)}`}
+        {isExpired ? "CLOSED" : `${formatNumber(time.hours)}:${formatNumber(time.minutes)}:${formatNumber(time.seconds)}`}
       </span>
     </div>
   );
@@ -148,7 +145,6 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
   product,
   timeLeft
 }) => {
-  // Generate variation images based on the main image
   const variations = Array(4).fill(product?.image_url);
 
   return (
