@@ -2,7 +2,8 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Zap } from "lucide-react";
+import { Zap, ShoppingCart } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FilteredProductsProps {
   products: any[];
@@ -15,6 +16,8 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   selectedCategory,
   onCategoryChange,
 }) => {
+  const isMobile = useIsMobile();
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
@@ -71,9 +74,15 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                 <h3 className="font-medium mb-1">{product.name}</h3>
                 <div className="flex items-center justify-between">
                   <p className="text-gray-600">${product.price}</p>
-                  <Button size="sm" className="bg-zap-red hover:bg-zap-blue">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Add to Cart
+                  <Button size={isMobile ? "icon" : "sm"} className="bg-zap-red hover:bg-zap-blue">
+                    {isMobile ? (
+                      <ShoppingCart className="h-4 w-4" />
+                    ) : (
+                      <>
+                        <Zap className="mr-2 h-4 w-4" />
+                        Add to Cart
+                      </>
+                    )}
                   </Button>
                 </div>
                 {product.artists && (
