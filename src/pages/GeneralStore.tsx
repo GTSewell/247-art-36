@@ -161,13 +161,17 @@ const GeneralStore = () => {
   const getInitialTime = (index: number) => {
     switch (index) {
       case 0:
-        return { hours: 5, minutes: 25, seconds: 25 };
+        return { initialHours: 5, initialMinutes: 25, initialSeconds: 25 };
       case 1:
-        return { hours: 7, minutes: 30, seconds: 25 };
+        return { initialHours: 7, initialMinutes: 30, initialSeconds: 25 };
       case 2:
-        return { hours: 12, minutes: 0, seconds: 5 };
+        return { initialHours: 12, initialMinutes: 0, initialSeconds: 5 };
       default:
-        return { hours: Math.floor(Math.random() * 24), minutes: Math.floor(Math.random() * 60), seconds: Math.floor(Math.random() * 60) };
+        return { 
+          initialHours: Math.floor(Math.random() * 24), 
+          initialMinutes: Math.floor(Math.random() * 60), 
+          initialSeconds: Math.floor(Math.random() * 60) 
+        };
     }
   };
 
@@ -185,9 +189,7 @@ const GeneralStore = () => {
                 <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="relative group overflow-hidden rounded-lg">
                     <div className="absolute top-4 right-4 z-10">
-                      <CountdownTimer 
-                        {...getInitialTime(index)}
-                      />
+                      <CountdownTimer {...getInitialTime(index)} />
                     </div>
                     <div className="aspect-square overflow-hidden">
                       <img 
