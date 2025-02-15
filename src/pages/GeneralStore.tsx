@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState({
     hours: 24,
     minutes: 0,
     seconds: 0
   });
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -40,17 +42,39 @@ const CountdownTimer = () => {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
   const formatNumber = (num: number) => num.toString().padStart(2, '0');
-  return <div style={{
-    textShadow: '0 0 7px rgba(239, 63, 54, 0.8), 0 0 10px rgba(239, 63, 54, 0.6), 0 0 21px rgba(239, 63, 54, 0.4)',
-    fontSize: '1.5rem',
-    letterSpacing: '2px'
-  }} className="bg-black border-2 border-red-500 text-red-500 flex items-center gap-1 font-digital shadow-lg px-[12px] py-px rounded-none">
-      <span>
-        {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
-      </span>
-    </div>;
+
+  return <div 
+    style={{
+      textShadow: '0 0 7px rgba(239, 63, 54, 0.8), 0 0 10px rgba(239, 63, 54, 0.6), 0 0 21px rgba(239, 63, 54, 0.4)',
+      fontSize: '1.5rem',
+      letterSpacing: '2px',
+      animation: 'pulse 2s infinite'
+    }} 
+    className="bg-black border-2 border-red-500 text-red-500 flex items-center gap-1 font-digital shadow-lg px-[12px] py-px rounded-none"
+  >
+    <style>
+      {`
+        @keyframes pulse {
+          0% {
+            box-shadow: 0 0 0 0 rgba(239, 63, 54, 0.7);
+          }
+          70% {
+            box-shadow: 0 0 0 10px rgba(239, 63, 54, 0);
+          }
+          100% {
+            box-shadow: 0 0 0 0 rgba(239, 63, 54, 0);
+          }
+        }
+      `}
+    </style>
+    <span>
+      {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}
+    </span>
+  </div>;
 };
+
 const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<'print' | 'merch' | 'sticker'>('print');
   const {
@@ -80,7 +104,6 @@ const GeneralStore = () => {
   return <div className="min-h-screen bg-zap-red">
       <Navigation />
       <main className="container mx-auto px-4 pt-24 pb-12">
-        {/* Featured Products Carousel */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
             <Hourglass className="text-zap-yellow" />
@@ -113,7 +136,6 @@ const GeneralStore = () => {
           </Carousel>
         </section>
 
-        {/* Category Selection */}
         <section className="mb-8">
           <div className="flex gap-4 justify-center">
             <Button variant={selectedCategory === 'print' ? 'default' : 'outline'} onClick={() => setSelectedCategory('print')} className="min-w-[120px]">
@@ -128,7 +150,6 @@ const GeneralStore = () => {
           </div>
         </section>
 
-        {/* Products Grid */}
         <section>
           <ScrollArea className="h-[800px] rounded-md border-4 border-black p-4 bg-zap-yellow py-[32px] px-[32px]">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -164,4 +185,5 @@ const GeneralStore = () => {
       </main>
     </div>;
 };
+
 export default GeneralStore;
