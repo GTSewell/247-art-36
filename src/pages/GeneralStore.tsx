@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+import TimedEditionModal from "@/components/store/TimedEditionModal";
 
 interface CountdownTimerProps {
   initialHours: number;
@@ -131,6 +131,9 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialHours, initialMi
 
 const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<'print' | 'merch' | 'sticker'>('print');
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [selectedTimerState, setSelectedTimerState] = useState<any>(null);
+  
   const {
     data: products,
     isLoading
@@ -187,7 +190,13 @@ const GeneralStore = () => {
             <CarouselContent>
               {featuredProducts.map((product, index) => (
                 <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="relative group overflow-hidden rounded-lg">
+                  <div 
+                    className="relative group overflow-hidden rounded-lg cursor-pointer"
+                    onClick={() => {
+                      setSelectedProduct(product);
+                      setSelectedTimerState(getInitialTime(index));
+                    }}
+                  >
                     <div className="absolute top-4 right-4 z-10">
                       <CountdownTimer {...getInitialTime(index)} />
                     </div>
@@ -216,6 +225,16 @@ const GeneralStore = () => {
             <CarouselNext />
           </Carousel>
         </section>
+
+        <TimedEditionModal
+          isOpen={!!selectedProduct}
+          onClose={() => {
+            setSelectedProduct(null);
+            setSelectedTimerState(null);
+          }}
+          product={selectedProduct}
+          timeLeft={selectedTimerState}
+        />
 
         <section className="mb-8">
           <div className="flex gap-4 justify-center">
