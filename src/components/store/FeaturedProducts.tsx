@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Hourglass, ChevronLeft, ChevronRight } from "lucide-react";
+import { Hourglass, SquareChevronLeft, SquareChevronRight } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -127,7 +127,11 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 onClick={() => api?.scrollPrev()} 
                 className="h-12 w-12 rounded-full hover:bg-transparent"
               >
-                <ChevronLeft className="h-8 w-8 text-zap-yellow animate-pulse [&>path]:stroke-[3]" />
+                <SquareChevronLeft 
+                  size={20} 
+                  strokeWidth={2.5} 
+                  className="text-zap-yellow animate-pulse" 
+                />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -137,7 +141,11 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 onClick={() => api?.scrollNext()} 
                 className="h-12 w-12 rounded-full hover:bg-transparent"
               >
-                <ChevronRight className="h-8 w-8 text-zap-yellow animate-pulse [&>path]:stroke-[3]" />
+                <SquareChevronRight 
+                  size={20} 
+                  strokeWidth={2.5} 
+                  className="text-zap-yellow animate-pulse" 
+                />
               </Button>
             </div>
           </div>
