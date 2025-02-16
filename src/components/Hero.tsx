@@ -1,7 +1,10 @@
+
 import { motion } from "framer-motion";
 import { useState } from "react";
+
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
+
   const scrollToWhatIsZap = () => {
     const whatIsZapSection = document.getElementById('what-is-zap');
     if (whatIsZapSection) {
@@ -10,6 +13,7 @@ const Hero = () => {
       });
     }
   };
+
   return <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -50,7 +54,8 @@ const Hero = () => {
         }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold">
             <p className="mb-2">It's time for a revolution in the art world,</p>
             <p className="mb-6">and we're not going to do it alone.</p>
-            <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
+            <p className="font-extrabold">YOU CREATE. WE CREATE.</p>
+            <p className="font-extrabold">TOGETHER WE KICK ASS!</p>
           </motion.div>
           
           <motion.div initial={{
@@ -74,4 +79,5 @@ const Hero = () => {
       </div>
     </div>;
 };
+
 export default Hero;
