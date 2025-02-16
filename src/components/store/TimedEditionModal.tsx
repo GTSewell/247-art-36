@@ -4,6 +4,9 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Info } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
+import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { toast } from "sonner";
 
 interface TimerState {
   hours: number;
@@ -25,6 +28,12 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
   timeLeft
 }) => {
   const variations = Array(4).fill(product?.image_url);
+
+  const handleAddToCart = () => {
+    toast.success("Added to cart!", {
+      description: "This item has been added to your cart."
+    });
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -76,20 +85,35 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   <li>• NFC chipped</li>
                 </ul>
               </div>
-              <div className="bg-yellow-50 p-4 rounded-lg">
-                <div className="flex items-start gap-3">
-                  <Info className="h-5 w-5 text-yellow-600 mt-0.5" />
-                  <div className="space-y-2">
-                    <p className="text-sm text-yellow-800">
-                      Final edition count is determined on the conclusion of the countdown.
-                    </p>
-                    <p className="text-sm text-yellow-700">
-                      As we need to run production and organize artist/s to sign. Expect arrival of your artwork up to 8 weeks. 
-                      (Though, we'll do our best to make that happen waaay quicker!)
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="production-shipping">
+                  <AccordionTrigger className="text-lg font-semibold">
+                    Production & Shipping
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="bg-yellow-50 p-4 rounded-lg">
+                      <div className="flex items-start gap-3">
+                        <Info className="h-5 w-5 text-yellow-600 mt-0.5" />
+                        <div className="space-y-2">
+                          <p className="text-sm text-yellow-800">
+                            Final edition count is determined on the conclusion of the countdown.
+                          </p>
+                          <p className="text-sm text-yellow-700">
+                            As we need to run production and organize artist/s to sign. Expect arrival of your artwork up to 8 weeks. 
+                            (Though, we'll do our best to make that happen waaay quicker!)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+              <Button 
+                className="w-full bg-zap-red hover:bg-zap-blue text-white"
+                onClick={handleAddToCart}
+              >
+                Add to Cart
+              </Button>
             </div>
           </div>
         </div>
