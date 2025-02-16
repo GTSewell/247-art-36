@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
@@ -124,9 +125,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="h-16 w-16 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <ArrowBigLeft className="w-10 h-10 text-white" />
+                <div className="absolute inset-0 rounded-full bg-zap-blue/50 animate-ping" />
+                <ArrowBigLeft className="w-6 h-6 text-white relative z-10" />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -134,9 +136,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="h-16 w-16 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <ArrowBigRight className="w-10 h-10 text-white" />
+                <div className="absolute inset-0 rounded-full bg-zap-blue/50 animate-ping" />
+                <ArrowBigRight className="w-6 h-6 text-white relative z-10" />
               </Button>
             </div>
           </div>
