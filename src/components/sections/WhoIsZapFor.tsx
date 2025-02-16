@@ -12,7 +12,9 @@ const WhoIsZapFor = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto relative z-20"
       >
-        <h1 className="text-5xl font-bold text-white mb-12 text-center">Who is ZAP! for?</h1>
+        <h1 className="text-5xl font-bold text-white mb-12 text-center flex items-center justify-center gap-2">
+          Who is <img src="/lovable-uploads/d8aafbad-7e01-4cec-9fba-67f66a7e7952.png" alt="247/ART" className="h-12" /> for?
+        </h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
