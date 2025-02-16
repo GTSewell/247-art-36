@@ -11,7 +11,7 @@ const JoinUndergroundSection = () => {
   const [benefits] = useState([
     <span key="exhibition"><strong className="font-bold">A MASSIVE 3-MONTH EXHIBITION</strong> in the heart of Melbourne's arts precinct on the world famous <strong className="font-bold">Smith St, Collingwood</strong>. You know it was voted 'Coolest Street' in the world by <a href="https://www.timeout.com/melbourne/news/smith-street-has-been-named-the-coolest-street-in-the-world-060921" target="_blank" rel="noopener noreferrer" className="text-zap-yellow hover:underline">Timeout</a> in 2021? Ok. It was a different time then. We believe it's time for us all to shine again, and bring back the vibe we lost after that bat sneezed on a human in 2020!</span>,
     <span key="commission">How does a <strong className="font-bold">10% COMMISSION</strong> not 50% sound? Our aim is to put as much as possible back into your pockets. Artists need to make money now, and not when you're dead!</span>,
-    "Your art on prints, tees & stickers—sold in-store.",
+    <span key="retail"><strong className="font-bold">Your very own retail print shop</strong> stocked with everything from your own custom stickers, T-shirts & Posters designs as affordable art for new collectors, to Limited & Timed Edition Museum grade archival Fine Art Prints (Giclee). We'll take care of all the boring shit that's a hassle, <strong className="font-bold">YOU just focus on your art!</strong></span>,
     "Exclusive artist printing discounts (for life).",
     "Workshops, events, and a creative community that actually moves the needle."
   ]);
