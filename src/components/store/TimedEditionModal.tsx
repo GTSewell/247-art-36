@@ -40,8 +40,8 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
       <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         <div className="flex flex-col md:flex-row max-h-[90vh]">
-          <div className="w-full md:w-1/2 p-6">
-            <div className="grid grid-cols-2 gap-2 h-full">
+          <div className="w-full md:w-1/2 p-8">
+            <div className="grid grid-cols-2 gap-4 aspect-square">
               {variations.map((image, index) => (
                 <div key={index} className="relative aspect-square rounded overflow-hidden">
                   <img
@@ -75,17 +75,21 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   {product?.description || "Discover this exclusive limited edition print, meticulously crafted to capture the essence of contemporary artistry. Each piece is individually numbered and personally signed by the artist, making it a unique addition to any collection."}
                 </p>
               </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Specifications</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li>• Signed and numbered by the artist</li>
-                  <li>• 310gsm 100% cotton-rag</li>
-                  <li>• 200yr archival inks</li>
-                  <li>• Embossed</li>
-                  <li>• NFC chipped</li>
-                </ul>
-              </div>
               <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="specifications">
+                  <AccordionTrigger className="text-lg font-semibold">
+                    Specifications
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li>• Signed and numbered by the artist</li>
+                      <li>• 310gsm 100% cotton-rag</li>
+                      <li>• 200yr archival inks</li>
+                      <li>• Embossed</li>
+                      <li>• NFC chipped</li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
                 <AccordionItem value="production-shipping">
                   <AccordionTrigger className="text-lg font-semibold">
                     Production & Shipping
