@@ -10,7 +10,7 @@ const JoinUndergroundSection = () => {
   
   const [benefits] = useState([
     "3-month Smith St exhibition → $750 total ($250/month)",
-    "5% commission, not 50%.",
+    "10% commission, not 50%.",
     "Your art on prints, tees & stickers—sold in-store.",
     "Exclusive artist printing discounts (for life).",
     "Workshops, events, and a creative community that actually moves the needle."
