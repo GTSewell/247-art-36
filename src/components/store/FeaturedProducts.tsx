@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Hourglass, SquareChevronLeft, SquareChevronRight } from "lucide-react";
+import { Hourglass, ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -119,18 +118,15 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
               );
             })}
           </CarouselContent>
-          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-2">
+          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-4">
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="h-32 w-32 rounded-full hover:bg-transparent flex items-center justify-center p-0"
+                className="h-16 w-16 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <SquareChevronLeft 
-                  className="w-full h-full text-white animate-pulse" 
-                  strokeWidth={2.5} 
-                />
+                <ArrowBigLeft className="w-10 h-10 text-white" />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -138,12 +134,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="h-32 w-32 rounded-full hover:bg-transparent flex items-center justify-center p-0"
+                className="h-16 w-16 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <SquareChevronRight 
-                  className="w-full h-full text-white animate-pulse" 
-                  strokeWidth={2.5} 
-                />
+                <ArrowBigRight className="w-10 h-10 text-white" />
               </Button>
             </div>
           </div>
