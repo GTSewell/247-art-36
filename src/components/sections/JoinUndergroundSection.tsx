@@ -10,7 +10,7 @@ const JoinUndergroundSection = () => {
   
   const [benefits] = useState([
     <span key="exhibition">A MASSIVE 3-month exhibition in the heart of Melbourne's arts precinct on the world famous Smith St, Collingwood (You know it was voted 'Coolest Street' in the world by <a href="https://www.timeout.com/melbourne/news/smith-street-has-been-named-the-coolest-street-in-the-world-060921" target="_blank" rel="noopener noreferrer" className="text-zap-yellow hover:underline">Timeout</a> in 2021? Ok. It was a differnet time then, but it's time for us all to shine again!</span>,
-    "10% commission, not 50%.",
+    <span key="commission">How does a <strong className="font-bold">10% COMMISSION</strong> not 50% sound? Our aim is to put as much as possible back into your pockets. Artists need to make money now, and not when you're dead!</span>,
     "Your art on prints, tees & stickers—sold in-store.",
     "Exclusive artist printing discounts (for life).",
     "Workshops, events, and a creative community that actually moves the needle."
