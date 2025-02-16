@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Info } from "lucide-react";
@@ -7,6 +7,7 @@ import CountdownTimer from "./CountdownTimer";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TimerState {
   hours: number;
@@ -28,11 +29,20 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
   timeLeft
 }) => {
   const variations = Array(4).fill(product?.image_url);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
   const handleAddToCart = () => {
     toast.success("Added to cart!", {
       description: "This item has been added to your cart."
     });
+  };
+
+  const handleImageClick = (index: number) => {
+    if (selectedImage === index) {
+      setSelectedImage(null);
+    } else {
+      setSelectedImage(index);
+    }
   };
 
   return (
@@ -41,16 +51,43 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         <div className="flex flex-col md:flex-row max-h-[90vh]">
           <div className="w-full md:w-1/2 p-8">
-            <div className="grid grid-cols-2 gap-4 aspect-square">
-              {variations.map((image, index) => (
-                <div key={index} className="relative aspect-square rounded overflow-hidden">
-                  <img
-                    src={image}
-                    alt={`Variation ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-4 aspect-square relative">
+              <AnimatePresence>
+                {selectedImage !== null ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 z-10"
+                    onClick={() => handleImageClick(selectedImage)}
+                  >
+                    <div className="relative aspect-square rounded overflow-hidden cursor-pointer">
+                      <img
+                        src={variations[selectedImage]}
+                        alt={`Enlarged variation ${selectedImage + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </motion.div>
+                ) : (
+                  variations.map((image, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="relative aspect-square rounded overflow-hidden cursor-pointer"
+                      onClick={() => handleImageClick(index)}
+                    >
+                      <img
+                        src={image}
+                        alt={`Variation ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </motion.div>
+                  ))
+                )}
+              </AnimatePresence>
             </div>
           </div>
           <div className="w-full md:w-1/2 border-l border-border/40 p-6 overflow-y-auto">
