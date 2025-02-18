@@ -27,25 +27,25 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
       <section className="mb-8">
         <div className="flex gap-2 md:gap-4 justify-center">
           <Button 
-            variant={selectedCategory === 'print' ? 'default' : 'outline'} 
-            onClick={() => onCategoryChange('print')} 
+            variant={selectedCategory === 'sticker' ? 'default' : 'outline'} 
+            onClick={() => onCategoryChange('sticker')} 
             className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
           >
-            Prints
+            Stickers
           </Button>
           <Button 
             variant={selectedCategory === 'merch' ? 'default' : 'outline'} 
             onClick={() => onCategoryChange('merch')} 
             className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
           >
-            Merch
+            T-shirts
           </Button>
           <Button 
-            variant={selectedCategory === 'sticker' ? 'default' : 'outline'} 
-            onClick={() => onCategoryChange('sticker')} 
+            variant={selectedCategory === 'print' ? 'default' : 'outline'} 
+            onClick={() => onCategoryChange('print')} 
             className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
           >
-            Stickers
+            Prints
           </Button>
         </div>
       </section>
