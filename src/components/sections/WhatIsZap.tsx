@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const initialBenefits = [
   "3 Month Exhibition\non always vibing\nSmith St, Collingwood",
-  "10% Commission.\nYep.\nThat is not a typo!",
+  "0% or 25% Commission.\nYou choose.\nThat is not a typo!",
   "Exclusive Printing\ndiscounts ... For Ever!",
   "Your art on Stickers,\nTees & Prints stocked in\nour space",
   "Your very own custom\nkick ass online profile.",
