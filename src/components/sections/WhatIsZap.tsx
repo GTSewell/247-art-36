@@ -2,9 +2,8 @@
 import { motion } from "framer-motion";
 import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { useState } from "react";
 
-const initialBenefits = [
+const benefits = [
   "3 Month Exhibition\non always vibing\nSmith St, Collingwood",
   "0% - 25% Commission.\nYou choose.\nThat is not a typo!",
   "Exclusive Printing\ndiscounts ... For Ever!",
@@ -46,14 +45,6 @@ const cardStyles = [{
 }];
 
 const WhatIsZap = () => {
-  const [benefits, setBenefits] = useState(initialBenefits);
-
-  const handleBenefitChange = (index: number, value: string) => {
-    const newBenefits = [...benefits];
-    newBenefits[index] = value;
-    setBenefits(newBenefits);
-  };
-
   return (
     <section id="what-is-zap" className="py-40 px-4 relative overflow-hidden">
       <div 
@@ -98,21 +89,9 @@ const WhatIsZap = () => {
                       <CardIcon className="w-6 h-6 text-black transition-transform duration-300 group-hover:rotate-12" />
                     </div>
                     <CardTitle>
-                      <textarea
-                        value={benefit}
-                        onChange={(e) => handleBenefitChange(index, e.target.value)}
-                        rows={3}
-                        style={{
-                          height: 'auto',
-                          minHeight: '72px'
-                        }}
-                        onInput={(e) => {
-                          const target = e.target as HTMLTextAreaElement;
-                          target.style.height = 'auto';
-                          target.style.height = target.scrollHeight + 'px';
-                        }}
-                        className="w-full outline-none focus:ring-1 focus:ring-white px-2 resize-none overflow-hidden my-0 bg-transparent text-white placeholder-white hover:bg-opacity-10 rounded-md mx-0 py-[6px]"
-                      />
+                      <p className="w-full text-white whitespace-pre-line px-2 py-[6px]">
+                        {benefit}
+                      </p>
                     </CardTitle>
                   </CardHeader>
                 </Card>
