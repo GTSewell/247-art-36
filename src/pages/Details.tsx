@@ -21,6 +21,20 @@ const Details = () => {
           </p>
         </motion.div>
 
+        {/* Rocket Icon for Mobile */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="md:hidden flex justify-center items-center mb-8"
+        >
+          <img 
+            src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
+            alt="Rocket Icon"
+            className="w-full max-w-[250px] animate-float"
+          />
+        </motion.div>
+
         {/* Images and tiers section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {/* Launchpad Section */}
@@ -47,12 +61,12 @@ const Details = () => {
             </div>
           </motion.div>
 
-          {/* Center Rocket Icon */}
+          {/* Center Rocket Icon for Desktop */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="flex justify-center items-center"
+            className="hidden md:flex justify-center items-center"
           >
             <img 
               src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
