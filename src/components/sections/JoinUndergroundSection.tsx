@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const JoinUndergroundSection = () => {
   // Convert state variables to constants since they won't be editable
-  const heading = "Join the Underground Before It Blows Up.";
+  const heading = "This is not just a gallery, a print shop, or a retail space ...\nTHIS IS A MOVEMENT!";
   const intro = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up. No fees yet, no commitment—just a chance to be part of something big from day one.";
   
   const benefits = [
@@ -29,7 +29,7 @@ const JoinUndergroundSection = () => {
       >
         <div className="space-y-8">
           {/* Heading */}
-          <h1 className="text-4xl font-bold text-white">{heading}</h1>
+          <h1 className="text-4xl font-bold text-white whitespace-pre-line">{heading}</h1>
 
           {/* Intro */}
           <p className="text-xl text-white/90 whitespace-pre-wrap">{intro}</p>
