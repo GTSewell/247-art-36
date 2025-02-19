@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 const Details = () => {
   return (
-    <main className="min-h-screen bg-zap-red">
+    <main className="min-h-screen bg-[#9ec0d2]">
       <Navigation />
       
       <div className="container mx-auto px-4 pt-24 pb-12">
@@ -15,8 +15,8 @@ const Details = () => {
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-          <h1 className="text-4xl font-bold mb-6 text-white">Choose Your Launch Path</h1>
-          <p className="text-lg text-white">
+          <h1 className="text-4xl font-bold mb-6 text-gray-800">Choose Your Launch Path</h1>
+          <p className="text-lg text-gray-800">
             Whether you're ready to take off or just starting your journey, we have the perfect package for you. Select between our Launchpad and Rocket options to begin your artistic ascent.
           </p>
         </motion.div>
