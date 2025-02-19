@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
+
 const WhoAreYou = () => {
   const {
     data: galleries = [],
@@ -19,12 +20,14 @@ const WhoAreYou = () => {
     toast
   } = useToast();
   const isMobile = useIsMobile();
+
   const handleGallerySelect = (gallery: Gallery) => {
     toast({
       title: "Coming Soon",
       description: "Gallery details view will be implemented soon!"
     });
   };
+
   const handleFavoriteToggle = (galleryId: number, isFavorite: boolean) => {
     setFavoriteGalleries(prev => {
       const newFavorites = new Set(prev);
@@ -44,6 +47,7 @@ const WhoAreYou = () => {
       return newFavorites;
     });
   };
+
   if (isLoading) {
     return <div className="min-h-screen bg-zap-blue">
         <Navigation />
@@ -52,6 +56,7 @@ const WhoAreYou = () => {
         </div>
       </div>;
   }
+
   return <div className="min-h-screen bg-zap-blue pb-[50px] relative">
       <Navigation />
       <div className="pt-16 relative">
@@ -101,11 +106,15 @@ const WhoAreYou = () => {
               <a href="https://www.instagram.com/everfreshstudio/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
                 Everfresh
               </a>
+              {', '}
+              <a href="https://www.instagram.com/theartshole/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
+                The Artshole
+              </a>
               {' '}or{' '}
               <a href="https://www.instagram.com/blenderstudios/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
                 Blender
               </a>
-              , or, even at a kick-ass exhibition at the likes of{' '}
+              , or even at a kick-ass exhibition at the likes of{' '}
               <a href="https://www.instagram.com/backwoods.gallery/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
                 Backwoods
               </a>
@@ -113,7 +122,7 @@ const WhoAreYou = () => {
               <a href="https://www.instagram.com/bside.gallery/" target="_blank" rel="noopener noreferrer" className="text-black bg-zap-yellow/50 px-1 rounded hover:underline">
                 B-side
               </a>
-              , or, maybe you're more along the lines of "Who TF are you!?" ... well,
+              , or maybe you're along the lines of "Who TF are you!?" ... well,
             </p>
             <p className="text-black text-xl font-bold">Over the past decade, we've proudly dedicated ourselves to supporting artists and their creative journeys through our work at galleries and studios we've built such as Lanes End, VS. Gallery (with the inimitable Ben Frost & Nixi Killick), Milkbar, and most recently, OSHI our current location, and, future home of 247, on the always vibing Smith St, Collingwood.</p>
             <p className="text-black text-xl font-bold">
@@ -154,4 +163,5 @@ const WhoAreYou = () => {
       </div>
     </div>;
 };
+
 export default WhoAreYou;
