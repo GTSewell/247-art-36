@@ -31,7 +31,7 @@ const Details = () => {
             className="space-y-6"
           >
             <img 
-              src="/lovable-uploads/c7f799f3-cf1b-4b9f-8c6c-a680bb4f0add.png"
+              src="/lovable-uploads/fbba846a-cd1a-49f7-9772-3d4da9f82b33.png"
               alt="Launchpad"
               className="w-full max-w-[300px] mx-auto"
             />
@@ -69,7 +69,7 @@ const Details = () => {
             className="space-y-6"
           >
             <img 
-              src="/lovable-uploads/6f6633d6-2ef6-4fa8-b39d-7bccae362a06.png"
+              src="/lovable-uploads/1bf5c788-4ce4-4e1c-a643-dcef88e9b0ff.png"
               alt="Rocket"
               className="w-full max-w-[300px] mx-auto"
             />
