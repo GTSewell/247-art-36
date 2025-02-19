@@ -55,9 +55,9 @@ const Details = () => {
             className="flex justify-center items-center"
           >
             <img 
-              src="/lovable-uploads/5329932b-8518-4f59-82db-4062cd39f9f1.png"
+              src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
               alt="Rocket Icon"
-              className="w-full max-w-[200px] animate-float"
+              className="w-full max-w-[400px] animate-float"
             />
           </motion.div>
 
