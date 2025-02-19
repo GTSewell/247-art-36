@@ -6,7 +6,7 @@ const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
 
   const scrollToWhatIsZap = () => {
-    const whatIsZapSection = document.getElementById('what-is-zap');
+    const whatIsZapSection = document.getElementById('247-details');
     if (whatIsZapSection) {
       whatIsZapSection.scrollIntoView({
         behavior: 'smooth'
