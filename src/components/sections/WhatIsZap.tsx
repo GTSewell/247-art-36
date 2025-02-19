@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
@@ -70,8 +69,8 @@ const WhatIsZap = () => {
         className="container mx-auto relative min-h-[650px]"
         style={{ zIndex: 2 }}
       >
-        <h1 className="text-5xl font-bold text-white mb-6 text-center">247 Details</h1>
-        <h3 className="text-white mb-12 text-center max-w-3xl mx-auto opacity-90 text-2xl font-semibold">We know what we want, and that's to revolutionize the way artists, creators, and the public connect, create, and prosper together .... Here's a sneak peak of what it looks like:</h3>
+        <h1 className="text-5xl font-bold text-white mb-6 text-center">So what'cha, what'cha, what'cha want?</h1>
+        <h3 className="text-white mb-12 text-center max-w-3xl mx-auto opacity-90 text-2xl font-semibold">We know what we want, and that's to revolutionize the way artists, creators, and the public connect, create, and prosper together .... Here's a sneak peek of what it looks like:</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {benefits.map((benefit, index) => {
             const CardIcon = cardStyles[index]?.icon || Zap;
