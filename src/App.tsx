@@ -13,6 +13,7 @@ import Services from "./pages/Services";
 import NotFound from "./pages/NotFound";
 import VirtualTour from "./pages/VirtualTour";
 import GeneralStore from "./pages/GeneralStore";
+import Details from "./pages/Details";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/virtual-tour" element={<VirtualTour />} />
           <Route path="/store" element={<GeneralStore />} />
+          <Route path="/details" element={<Details />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Toaster />
