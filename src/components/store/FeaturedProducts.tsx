@@ -71,7 +71,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   return (
     <section className="mb-16">
       <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
-        <span className="material-symbols-outlined text-zap-yellow">bomb</span>
+        <span className="text-2xl">🧨</span>
         Timed Edition Drops
       </h2>
       <div 
