@@ -80,7 +80,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
         <img 
           src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png" 
           alt="Dynamite"
-          className="w-16 h-16 object-contain"
+          className="w-16 h-16 object-contain scale-x-[-1]"
         />
       </h2>
       <div 
