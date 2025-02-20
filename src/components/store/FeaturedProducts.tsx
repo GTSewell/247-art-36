@@ -70,17 +70,21 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
 
   return (
     <section className="mb-16">
-      <h2 className="text-3xl font-bold mb-6 flex items-center justify-center gap-2">
+      <h2 className="text-3xl font-bold mb-6 flex items-center justify-center gap-2 flex-nowrap min-w-0">
         <img 
           src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png" 
           alt="Dynamite"
-          className="w-16 h-16 object-contain"
+          className="w-16 h-16 object-contain flex-shrink-0"
         />
-        Timed Edition Drops
+        <img 
+          src="/lovable-uploads/1ad216c5-788d-45eb-898a-f6600cee2e79.png" 
+          alt="Timed Edition Drops"
+          className="h-16 w-auto object-contain"
+        />
         <img 
           src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png" 
           alt="Dynamite"
-          className="w-16 h-16 object-contain scale-x-[-1]"
+          className="w-16 h-16 object-contain flex-shrink-0 scale-x-[-1]"
         />
       </h2>
       <div 
