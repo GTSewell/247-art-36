@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Hourglass, ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { Bomb, ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -71,7 +71,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   return (
     <section className="mb-16">
       <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
-        <Hourglass className="text-zap-yellow" />
+        <Bomb className="text-zap-yellow" />
         Timed Edition Drops
       </h2>
       <div 
