@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { Bomb, ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -43,7 +43,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShowControls(false);
-    }, 5000); // Extended to 5 seconds
+    }, 5000);
 
     return () => {
       if (timeout) clearTimeout(timeout);
@@ -59,7 +59,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
 
     const timeout = setTimeout(() => {
       setShowControls(false);
-    }, 5000); // Extended to 5 seconds
+    }, 5000);
 
     setInteractionTimeout(timeout);
   };
@@ -71,7 +71,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   return (
     <section className="mb-16">
       <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
-        <Bomb className="text-zap-yellow" />
+        <span className="material-symbols-outlined text-zap-yellow">bomb</span>
         Timed Edition Drops
       </h2>
       <div 
