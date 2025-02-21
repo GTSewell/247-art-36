@@ -38,9 +38,8 @@ const PricingPackage = ({
         className="w-full max-w-[300px] mx-auto"
       />
       <div className="bg-white/90 backdrop-blur rounded-lg p-6 shadow-lg">
-        <h2 className="text-2xl font-bold text-black mb-4 flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-black mb-4">
           {title}
-          <span className={`text-xl font-bold text-${priceColor}`}>{price}</span>
         </h2>
         <ul className="space-y-3 text-gray-800">
           {features.map((feature, index) => (
