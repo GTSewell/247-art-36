@@ -25,11 +25,13 @@ const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true
   }
 
   if (isBoldUrl) {
-    const [prefix, url] = text.split('[yournamehere]');
     return (
       <li className="flex items-start gap-2">
         <Check className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0`} />
-        <span>{prefix}<span className="font-bold">[yournamehere]{url}</span></span>
+        <span>
+          Custom 247 Artist Profile{" "}
+          <span className="font-bold">[yournamehere].247.art</span>
+        </span>
       </li>
     );
   }
