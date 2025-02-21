@@ -61,12 +61,12 @@ const Details = () => {
                   <span>100 Days Exhibition (3 months+)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0 pr-1">25%</span>
-                  <span>Gallery Commission on Original Artwork</span>
+                  <div className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0 pr-1 font-semibold text-right">25%</div>
+                  <span className="pl-2">Gallery Commission on Original Artwork</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0 pr-1">30%</span>
-                  <span>Artist Commission of RRP on Retail Sales</span>
+                  <div className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0 pr-1 font-semibold text-right">30%</div>
+                  <span className="pl-2">Artist Commission of RRP on Retail Sales</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
@@ -137,12 +137,12 @@ const Details = () => {
                   <span>100 Days Exhibition (3 months+)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0 pr-1">0%</span>
-                  <span>Gallery Commission on Original Artwork</span>
+                  <div className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0 pr-1 font-semibold text-right">0%</div>
+                  <span className="pl-2">Gallery Commission on Original Artwork</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0 pr-1">40%</span>
-                  <span>Artist Commission of RRP on Retail Sales</span>
+                  <div className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0 pr-1 font-semibold text-right">40%</div>
+                  <span className="pl-2">Artist Commission of RRP on Retail Sales</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
