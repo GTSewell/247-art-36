@@ -30,7 +30,7 @@ const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true
         <Check className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0`} />
         <span>
           Custom 247 Artist Profile{" "}
-          <span className="font-bold">[yournamehere].247.art</span>
+          <span className="font-extrabold">[yournamehere].247.art</span>
         </span>
       </li>
     );
