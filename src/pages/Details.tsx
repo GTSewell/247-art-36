@@ -57,39 +57,39 @@ const Details = () => {
               </h2>
               <ul className="space-y-3 text-gray-800">
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>100 Days Exhibition (3 months+)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0">25%</span>
+                  <span className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0 pr-1">25%</span>
                   <span>Gallery Commission on Original Artwork</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0">30%</span>
+                  <span className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0 pr-1">30%</span>
                   <span>Artist Commission of RRP on Retail Sales</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>1 sqm Artwork Space</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>1 Artwork Change Per Month</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>1 Artwork per sqm</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>Video Wall Profile (1 rotation every 3)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>24hr Timed Edition Drops Available</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-yellow flex-shrink-0" />
                   <span>Black or White T-shirt Options</span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -133,67 +133,67 @@ const Details = () => {
               </h2>
               <ul className="space-y-3 text-gray-800">
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>100 Days Exhibition (3 months+)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0">0%</span>
+                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0 pr-1">0%</span>
                   <span>Gallery Commission on Original Artwork</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0">40%</span>
+                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0 pr-1">40%</span>
                   <span>Artist Commission of RRP on Retail Sales</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>1 sqm Artwork Space</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Priority Art Hanging</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Unlimited Artwork Changes (within reason)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Up to 4 Artworks per sqm</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Video Wall Profile (2 rotations every 3)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Sculpture Display (40cm x 40cm plinth)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>24hr Timed Edition Drops Available</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Retail 'STP' Merch Pack (Choose any artist)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>247 Artist ATLAS Book + 3 Card Packs</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Shop-front Feature Display</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Custom Embosser for Prints</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Specialty Sticker Options (Metallics, Holographic)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
                   <span>Full Color Range T-shirt Options</span>
                 </li>
               </ul>
