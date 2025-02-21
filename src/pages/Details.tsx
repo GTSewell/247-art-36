@@ -1,6 +1,7 @@
 
 import Navigation from "@/components/Navigation";
 import { motion } from "framer-motion";
+import { Check, X } from "lucide-react";
 
 const Details = () => {
   return (
@@ -36,7 +37,7 @@ const Details = () => {
         </motion.div>
 
         {/* Images and tiers section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {/* Launchpad Section */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
@@ -50,13 +51,51 @@ const Details = () => {
               className="w-full max-w-[300px] mx-auto"
             />
             <div className="bg-white/90 backdrop-blur rounded-lg p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-black mb-4">Launchpad Package</h2>
+              <h2 className="text-2xl font-bold text-black mb-4 flex items-center justify-between">
+                Launchpad Package
+                <span className="text-xl font-bold text-zap-blue">$995</span>
+              </h2>
               <ul className="space-y-3 text-gray-800">
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  Your bullet points will go here
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>100 Days Exhibition (3 months+)</span>
                 </li>
-                {/* Add more bullet points as needed */}
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0">25%</span>
+                  <span>Gallery Commission on Original Artwork</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0">30%</span>
+                  <span>Artist Commission of RRP on Retail Sales</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>1 sqm Artwork Space</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>1 Artwork Change Per Month</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>1 Artwork per sqm</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>Video Wall Profile (1 rotation every 3)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>24hr Timed Edition Drops Available</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-blue flex-shrink-0" />
+                  <span>Black or White T-shirt Options</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <X className="w-5 h-5 mt-0.5 text-red-500 flex-shrink-0" />
+                  <span>No Priority Art Hanging</span>
+                </li>
               </ul>
             </div>
           </motion.div>
@@ -88,13 +127,75 @@ const Details = () => {
               className="w-full max-w-[300px] mx-auto"
             />
             <div className="bg-white/90 backdrop-blur rounded-lg p-6 shadow-lg">
-              <h2 className="text-2xl font-bold text-black mb-4">Rocket Package</h2>
+              <h2 className="text-2xl font-bold text-black mb-4 flex items-center justify-between">
+                Rocket Package
+                <span className="text-xl font-bold text-zap-red">$1,495</span>
+              </h2>
               <ul className="space-y-3 text-gray-800">
-                <li className="flex items-start">
-                  <span className="mr-2">•</span>
-                  Your bullet points will go here
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>100 Days Exhibition (3 months+)</span>
                 </li>
-                {/* Add more bullet points as needed */}
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0">0%</span>
+                  <span>Gallery Commission on Original Artwork</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0">40%</span>
+                  <span>Artist Commission of RRP on Retail Sales</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>1 sqm Artwork Space</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Priority Art Hanging</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Unlimited Artwork Changes (within reason)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Up to 4 Artworks per sqm</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Video Wall Profile (2 rotations every 3)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Sculpture Display (40cm x 40cm plinth)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>24hr Timed Edition Drops Available</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Retail 'STP' Merch Pack (Choose any artist)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>247 Artist ATLAS Book + 3 Card Packs</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Shop-front Feature Display</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Custom Embosser for Prints</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Specialty Sticker Options (Metallics, Holographic)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Check className="w-5 h-5 mt-0.5 text-zap-red flex-shrink-0" />
+                  <span>Full Color Range T-shirt Options</span>
+                </li>
               </ul>
             </div>
           </motion.div>
