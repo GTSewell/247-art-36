@@ -54,7 +54,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center p-4">
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
+              src="/lovable-uploads/d8aafbad-7e01-4cec-9fba-67f66a7e7952.png"
               alt="247/ART"
               className="h-8"
             />
