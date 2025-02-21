@@ -1,5 +1,5 @@
 
-import { Check, X, LucideIcon } from "lucide-react";
+import { Check, LucideIcon } from "lucide-react";
 
 interface PricingFeatureProps {
   icon?: LucideIcon;
@@ -10,6 +10,10 @@ interface PricingFeatureProps {
 }
 
 const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true }: PricingFeatureProps) => {
+  if (!isIncluded) {
+    return null;
+  }
+
   if (percentage) {
     return (
       <li className="flex items-start gap-2">
@@ -21,11 +25,7 @@ const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true
 
   return (
     <li className="flex items-start gap-2">
-      {isIncluded ? (
-        <Check className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0`} />
-      ) : (
-        <X className="w-5 h-5 mt-0.5 text-red-500 flex-shrink-0" />
-      )}
+      <Check className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0`} />
       <span>{text}</span>
     </li>
   );
