@@ -1,4 +1,3 @@
-
 import Navigation from "@/components/Navigation";
 import { motion } from "framer-motion";
 import PricingPackage from "@/components/details/PricingPackage";
@@ -13,8 +12,7 @@ const launchpadFeatures = [
   { text: "Video Wall Profile (1 rotation every 3)" },
   { text: "24hr Timed Edition Drops Available" },
   { text: "Black or White T-shirt Options" },
-  { text: "Custom 247 Artist Profile " },
-  { text: "([yournamehere].247.art)", isIncluded: true },
+  { text: "Custom 247 Artist Profile [yournamehere].247.art" },
   { text: "No Priority Art Hanging", isIncluded: false },
 ];
 
@@ -29,8 +27,7 @@ const rocketFeatures = [
   { text: "Video Wall Profile (2 rotations every 3)" },
   { text: "Sculpture Display (40cm x 40cm plinth)" },
   { text: "24hr Timed Edition Drops Available" },
-  { text: "Custom 247 Artist Profile " },
-  { text: "([yournamehere].247.art)", isIncluded: true },
+  { text: "Custom 247 Artist Profile [yournamehere].247.art" },
   { text: "Retail 'STP' Merch Pack (Choose any artist)" },
   { text: "247 Artist ATLAS Book + 3 Card Packs" },
   { text: "Shop-front Feature Display" },
