@@ -26,7 +26,7 @@ const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true
   return (
     <li className="flex items-start gap-2">
       <Check className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0`} />
-      <span className={text.includes("[yournamehere]") ? "font-bold" : ""}>{text}</span>
+      <span>{text}</span>
     </li>
   );
 };
