@@ -7,9 +7,10 @@ interface PricingFeatureProps {
   percentage?: string;
   color: string;
   isIncluded?: boolean;
+  isBoldUrl?: boolean;
 }
 
-const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true }: PricingFeatureProps) => {
+const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true, isBoldUrl = false }: PricingFeatureProps) => {
   if (!isIncluded) {
     return null;
   }
@@ -19,6 +20,16 @@ const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true
       <li className="flex items-start gap-2">
         <div className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0 pr-1 font-semibold text-right`}>{percentage}</div>
         <span className="pl-2">{text}</span>
+      </li>
+    );
+  }
+
+  if (isBoldUrl) {
+    const [prefix, url] = text.split('[yournamehere]');
+    return (
+      <li className="flex items-start gap-2">
+        <Check className={`w-5 h-5 mt-0.5 text-${color} flex-shrink-0`} />
+        <span>{prefix}<span className="font-bold">[yournamehere]{url}</span></span>
       </li>
     );
   }
