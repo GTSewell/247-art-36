@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,30 +15,46 @@ import NotFound from "./pages/NotFound";
 import VirtualTour from "./pages/VirtualTour";
 import GeneralStore from "./pages/GeneralStore";
 import Details from "./pages/Details";
+import PasswordGate from "./components/PasswordGate";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/artists" element={<Artists />} />
-          <Route path="/artist-submission" element={<ArtistSubmission />} />
-          <Route path="/whoareyou" element={<WhoAreYou />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/virtual-tour" element={<VirtualTour />} />
-          <Route path="/store" element={<GeneralStore />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Toaster />
-        <Sonner />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return sessionStorage.getItem("site-authenticated") === "true";
+  });
+
+  const handleAuthentication = () => {
+    sessionStorage.setItem("site-authenticated", "true");
+    setIsAuthenticated(true);
+  };
+
+  if (!isAuthenticated) {
+    return <PasswordGate onAuthenticated={handleAuthentication} />;
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/artists" element={<Artists />} />
+            <Route path="/artist-submission" element={<ArtistSubmission />} />
+            <Route path="/whoareyou" element={<WhoAreYou />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/virtual-tour" element={<VirtualTour />} />
+            <Route path="/store" element={<GeneralStore />} />
+            <Route path="/details" element={<Details />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+          <Sonner />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
