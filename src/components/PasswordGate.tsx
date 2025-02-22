@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 
 interface PasswordGateProps {
   onAuthenticated: () => void;
@@ -20,7 +21,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 
     try {
       const lowerPassword = password.toLowerCase().trim();
-      console.log('Attempting login with password:', lowerPassword);
+      logger.info('Attempting login with password:', lowerPassword);
 
       // First check if password exists
       const { data: passwordData, error: passwordError } = await supabase
@@ -29,37 +30,40 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         .eq('site_password', lowerPassword)
         .maybeSingle();
 
-      console.log('Password check result:', { passwordData, passwordError });
+      logger.info('Password check result:', { passwordData });
 
       if (passwordError) {
-        console.error('Password check error:', passwordError);
+        logger.error('Password check error:', passwordError);
         throw passwordError;
       }
       
       if (passwordData) {
-        console.log('Valid password found, updating usage count');
+        logger.info('Valid password found, proceeding with authentication');
         
-        // If password matches, perform a separate update operation
-        const { data: updateData, error: updateError } = await supabase
+        // For debugging, log the full password data
+        logger.info('Password data:', passwordData);
+        
+        // If password matches, just authenticate without updating
+        // We'll let the trigger handle the usage count
+        onAuthenticated();
+        
+        // After authentication, perform the update in the background
+        const updatePromise = supabase
           .from('site_settings')
           .update({
-            usage_count: (passwordData.usage_count || 0) + 1,
             created_at: new Date().toISOString()
           })
-          .eq('site_password', lowerPassword) // Changed back to using site_password
-          .select()
-          .single();
-
-        console.log('Update result:', { updateData, updateError });
-
-        if (updateError) {
-          console.error('Update error:', updateError);
-          throw updateError;
-        }
+          .eq('site_password', lowerPassword);
+          
+        // Don't await this, let it happen in the background
+        updatePromise.then(({ error }) => {
+          if (error) {
+            logger.error('Background update error:', error);
+          }
+        });
         
-        onAuthenticated();
       } else {
-        console.log('Invalid password attempt');
+        logger.info('Invalid password attempt');
         toast({
           variant: "destructive",
           title: "Incorrect password",
@@ -67,7 +71,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         });
       }
     } catch (error) {
-      console.error('Password check error:', error);
+      logger.error('Password check error:', error);
       toast({
         variant: "destructive",
         title: "Error",
