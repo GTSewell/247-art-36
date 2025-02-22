@@ -102,6 +102,16 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             {isLoading ? "Checking..." : "Enter"}
           </Button>
         </form>
+
+        {/* New information section */}
+        <div className="mt-8 space-y-4 text-sm text-gray-600">
+          <p>
+            This site is currently under development. Please consider anything and everything you see and read as confidential and purely placeholder information as we beta test, and refine our offering.
+          </p>
+          <p>
+            We are currently seeking input from professional artists, designers, & businesses within the local arts industry to get the best possible outcome for us all.
+          </p>
+        </div>
       </div>
     </div>
   );
