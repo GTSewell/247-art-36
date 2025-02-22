@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, Users, Palette, Gift, Coins, Trophy, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -28,8 +27,7 @@ const JoinUndergroundSection = () => {
         <div className="space-y-8">
           {/* Heading */}
           <h1 className="text-4xl font-bold text-white">
-            <span className="block mb-2">This is not just a gallery, a print shop, or a retail space ...</span>
-            <span className="block">THIS IS A MOVEMENT!</span>
+            This is not just a gallery, a print shop, or a retail space ... THIS IS A MOVEMENT!
           </h1>
 
           {/* Intro */}
