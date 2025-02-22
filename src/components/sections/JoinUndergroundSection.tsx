@@ -4,7 +4,7 @@ import { Zap, Users, Palette, Gift, Coins, Trophy, ArrowLeft, ArrowRight } from 
 import { useState } from "react";
 
 const JoinUndergroundSection = () => {
-  const heading = "This is not just a gallery, a print shop, or a retail space. THIS IS A MOVEMENT!";
+  const heading = "This is not just a gallery, a print shop, or a retail space.\nTHIS IS A MOVEMENT!";
   const intro = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up. No fees yet, no commitment—just a chance to be part of something big from day one.";
   
   const benefits = [
