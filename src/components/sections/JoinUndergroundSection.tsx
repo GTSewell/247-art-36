@@ -29,7 +29,7 @@ const JoinUndergroundSection = () => {
       >
         <div className="space-y-8">
           {/* Heading */}
-          <h1 className="text-4xl font-bold text-white whitespace-pre-line">{heading}</h1>
+          <h1 className="text-4xl font-bold text-white whitespace-pre-line leading-tight">{heading}</h1>
 
           {/* Intro */}
           <p className="text-xl text-white/90 whitespace-pre-wrap">{intro}</p>
