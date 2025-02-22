@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 
 interface PasswordGateProps {
@@ -13,7 +12,6 @@ interface PasswordGateProps {
 const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [understood, setUnderstood] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -99,7 +97,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
           <Button 
             type="submit" 
             className="w-full bg-zap-red hover:bg-zap-blue active:bg-zap-blue transition-colors"
-            disabled={isLoading || !understood}
+            disabled={isLoading}
           >
             {isLoading ? "Checking..." : "Enter"}
           </Button>
@@ -109,27 +107,15 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="space-y-4 font-bold text-[#ea384c]">
             <p>
-              This site is currently under development. Please consider anything and everything you see and read as confidential and purely placeholder information as we beta test, and refine our offering.
+              This site is currently under research & development.
             </p>
             <p>
-              We are currently seeking input from professional artists, designers, & businesses within the local arts industry to get the best possible outcome for us all.
+              We are seeking input from professional artists, designers, & businesses within the local arts industry to get the best possible outcome for us all.
+            </p>
+            <p>
+              Please consider anything and everything you see and read as confidential and purely placeholder information as we beta test, and refine our offering.
             </p>
           </div>
-        </div>
-
-        {/* Checkbox */}
-        <div className="flex items-center space-x-2">
-          <Checkbox 
-            id="understand" 
-            checked={understood}
-            onCheckedChange={(checked) => setUnderstood(checked as boolean)}
-          />
-          <label
-            htmlFor="understand"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-600"
-          >
-            I understand
-          </label>
         </div>
       </div>
     </div>
