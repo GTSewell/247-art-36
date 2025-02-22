@@ -19,25 +19,34 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
     setIsLoading(true);
 
     try {
-      // First check if password exists and get current record
+      const lowerPassword = password.toLowerCase();
+      console.log('Checking password:', lowerPassword);
+
+      // First check if password exists
       const { data: passwordData, error: passwordError } = await supabase
         .from('site_settings')
         .select('*')
-        .eq('site_password', password.toLowerCase())
+        .eq('site_password', lowerPassword)
         .maybeSingle();
+
+      console.log('Password check result:', { passwordData, passwordError });
 
       if (passwordError) throw passwordError;
       
       if (passwordData) {
-        // If password matches, trigger an update
-        const { error: updateError } = await supabase
+        // If password matches, perform a separate update operation
+        const { data: updateData, error: updateError } = await supabase
           .from('site_settings')
-          .update({ 
-            usage_count: (passwordData.usage_count || 0) + 1,
-            // Add a timestamp to force trigger update even if count hasn't changed
+          .update({
+            // Force an update by including both count and timestamp
+            usage_count: passwordData.usage_count + 1,
             created_at: new Date().toISOString()
           })
-          .eq('site_password', password.toLowerCase());
+          .eq('id', passwordData.id)
+          .select()
+          .single();
+
+        console.log('Update result:', { updateData, updateError });
 
         if (updateError) {
           console.error('Update error:', updateError);
