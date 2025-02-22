@@ -105,14 +105,15 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 
         {/* Site info in white box with red text */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="space-y-4 font-bold text-[#ea384c]">
-            <p>
-              This site is currently under research & development.
+          <div className="space-y-4 text-[#ea384c]">
+            <h3 className="font-bold text-center mb-6">READ ME</h3>
+            <p className="font-bold">
+              This site is currently under development.
             </p>
-            <p>
+            <p className="font-bold">
               We are seeking input from professional artists, designers, & businesses within the local arts industry to get the best possible outcome for us all.
             </p>
-            <p>
+            <p className="font-bold">
               Please consider anything and everything you see and read as confidential and purely placeholder information as we beta test, and refine our offering.
             </p>
           </div>
