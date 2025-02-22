@@ -22,19 +22,18 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       // First check if password exists
       const { data: passwordData, error: passwordError } = await supabase
         .from('site_settings')
-        .select('site_password')
+        .select('site_password, usage_count')
         .eq('site_password', password.toLowerCase())
         .maybeSingle();
 
       if (passwordError) throw passwordError;
       
       if (passwordData) {
-        // If password matches, update the record to trigger usage counting
+        // If password matches, update the record with an incremented usage count
         const { error: updateError } = await supabase
           .from('site_settings')
           .update({ 
-            // Update with same value to trigger the counter
-            site_password: passwordData.site_password 
+            usage_count: (passwordData.usage_count || 0) + 1
           })
           .eq('site_password', passwordData.site_password);
 
