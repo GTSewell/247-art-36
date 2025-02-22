@@ -19,8 +19,8 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
     setIsLoading(true);
 
     try {
-      const lowerPassword = password.toLowerCase();
-      console.log('Checking password:', lowerPassword);
+      const lowerPassword = password.toLowerCase().trim();
+      console.log('Attempting login with password:', lowerPassword);
 
       // First check if password exists
       const { data: passwordData, error: passwordError } = await supabase
@@ -31,18 +31,22 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 
       console.log('Password check result:', { passwordData, passwordError });
 
-      if (passwordError) throw passwordError;
+      if (passwordError) {
+        console.error('Password check error:', passwordError);
+        throw passwordError;
+      }
       
       if (passwordData) {
+        console.log('Valid password found, updating usage count');
+        
         // If password matches, perform a separate update operation
         const { data: updateData, error: updateError } = await supabase
           .from('site_settings')
           .update({
-            // Force an update by including both count and timestamp
-            usage_count: passwordData.usage_count + 1,
+            usage_count: (passwordData.usage_count || 0) + 1,
             created_at: new Date().toISOString()
           })
-          .eq('id', passwordData.id)
+          .eq('site_password', lowerPassword) // Changed back to using site_password
           .select()
           .single();
 
@@ -55,6 +59,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         
         onAuthenticated();
       } else {
+        console.log('Invalid password attempt');
         toast({
           variant: "destructive",
           title: "Incorrect password",
