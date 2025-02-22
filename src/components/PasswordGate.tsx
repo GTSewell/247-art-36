@@ -19,25 +19,30 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
     setIsLoading(true);
 
     try {
-      // First check if password exists
+      // First check if password exists and get current record
       const { data: passwordData, error: passwordError } = await supabase
         .from('site_settings')
-        .select('site_password, usage_count')
+        .select('*')
         .eq('site_password', password.toLowerCase())
         .maybeSingle();
 
       if (passwordError) throw passwordError;
       
       if (passwordData) {
-        // If password matches, update the record with an incremented usage count
+        // If password matches, trigger an update
         const { error: updateError } = await supabase
           .from('site_settings')
           .update({ 
-            usage_count: (passwordData.usage_count || 0) + 1
+            usage_count: (passwordData.usage_count || 0) + 1,
+            // Add a timestamp to force trigger update even if count hasn't changed
+            created_at: new Date().toISOString()
           })
-          .eq('site_password', passwordData.site_password);
+          .eq('site_password', password.toLowerCase());
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.error('Update error:', updateError);
+          throw updateError;
+        }
         
         onAuthenticated();
       } else {
