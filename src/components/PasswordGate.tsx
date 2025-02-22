@@ -23,20 +23,12 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         .from('site_settings')
         .select('site_password')
         .limit(1)
+        .eq('site_password', password.toLowerCase())
         .maybeSingle();
 
       if (error) throw error;
       
-      if (!data) {
-        toast({
-          variant: "destructive",
-          title: "Configuration Error",
-          description: "Site password not configured.",
-        });
-        return;
-      }
-
-      if (data.site_password === password) {
+      if (data) {
         onAuthenticated();
       } else {
         toast({
