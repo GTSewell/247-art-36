@@ -22,31 +22,38 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
     e.currentTarget.src = '/placeholder.svg';
   };
 
+  const categories = [
+    { id: 'original', label: 'ORIGINAL ARTWORK', color: 'bg-zap-yellow' },
+    { id: 'signed', label: 'SIGNED & NUMBERED', color: 'bg-zap-blue' },
+    { id: 'sticker', label: 'STICKERS & FUN STUFF', color: 'bg-zap-red' },
+    { id: 'merch', label: 'T-SHIRTS & APPAREL', color: 'bg-zap-yellow' },
+    { id: 'print', label: 'ART PRINTS & POSTERS', color: 'bg-zap-blue' },
+    { id: 'collection', label: 'THE 247 COLLECTION', color: 'bg-zap-red' },
+  ];
+
   return (
     <>
       <section className="mb-8">
-        <div className="flex gap-2 md:gap-4 justify-center">
-          <Button 
-            variant={selectedCategory === 'sticker' ? 'default' : 'outline'} 
-            onClick={() => onCategoryChange('sticker')} 
-            className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
-          >
-            Stickers
-          </Button>
-          <Button 
-            variant={selectedCategory === 'merch' ? 'default' : 'outline'} 
-            onClick={() => onCategoryChange('merch')} 
-            className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
-          >
-            T-shirts
-          </Button>
-          <Button 
-            variant={selectedCategory === 'print' ? 'default' : 'outline'} 
-            onClick={() => onCategoryChange('print')} 
-            className="text-sm md:text-base px-3 md:px-4 min-w-[90px] md:min-w-[120px]"
-          >
-            Prints
-          </Button>
+        <div className="grid grid-cols-6 gap-4">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => category.id === 'sticker' || category.id === 'merch' || category.id === 'print' 
+                ? onCategoryChange(category.id as any) 
+                : undefined}
+              className={`
+                aspect-square p-4 rounded-lg border-2 border-white
+                ${category.color}
+                ${(category.id === selectedCategory) ? 'ring-4 ring-white' : ''}
+                transition-all duration-200 hover:scale-105
+                flex items-center justify-center text-center
+              `}
+            >
+              <span className="font-nove text-white text-sm leading-tight">
+                {category.label}
+              </span>
+            </button>
+          ))}
         </div>
       </section>
 
@@ -71,7 +78,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                     </div>
                   )}
                 </div>
-                <h3 className="font-medium mb-1 text-sm md:text-base">{product.name}</h3>
+                <h3 className="font-medium mb-1 text-sm md:text-base font-nove">{product.name}</h3>
                 <div className="flex items-center justify-between">
                   <p className="text-gray-600 text-sm md:text-base">${product.price}</p>
                   <Button 
@@ -89,7 +96,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                   </Button>
                 </div>
                 {product.artists && (
-                  <p className="text-sm text-gray-500 mt-2">
+                  <p className="text-sm text-gray-500 mt-2 font-nove">
                     By {product.artists.name}
                   </p>
                 )}
