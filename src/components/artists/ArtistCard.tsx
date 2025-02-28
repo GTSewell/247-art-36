@@ -39,6 +39,10 @@ const ArtistCard = ({
 }: ArtistCardProps) => {
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
+  
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder.svg';
+  };
 
   return (
     <div className="relative">
@@ -52,6 +56,7 @@ const ArtistCard = ({
             src={image}
             alt={name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            onError={handleImageError}
           />
         </div>
         

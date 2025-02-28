@@ -49,7 +49,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  console.log('Artist artworks:', artist.artworks);
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder.svg';
+  };
 
   return (
     <div className="space-y-3">
@@ -94,6 +96,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                 src={artist.image}
                 alt={artist.name}
                 className="w-full h-full object-cover"
+                onError={handleImageError}
               />
             </motion.div>
           ) : (
@@ -115,6 +118,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                           src={artwork}
                           alt={`Artwork ${index + 1} by ${artist.name}`}
                           className="w-full h-full object-cover"
+                          onError={handleImageError}
                         />
                       </div>
                     ))

@@ -14,12 +14,17 @@ const GalleryImagePanel: React.FC<GalleryImagePanelProps> = ({
   onFavoriteToggle,
   isFavorite,
 }) => {
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder.svg';
+  };
+
   return (
     <div className="relative aspect-square rounded-lg overflow-hidden">
       <img
         src={gallery.image}
         alt={gallery.name}
         className="w-full h-full object-cover"
+        onError={handleImageError}
       />
       <button
         onClick={(e) => {
