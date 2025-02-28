@@ -19,6 +19,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showClickIndicator, setShowClickIndicator] = useState(true);
+  const [mainImageError, setMainImageError] = useState(false);
+  const [artworkErrors, setArtworkErrors] = useState<Record<number, boolean>>({});
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -49,7 +51,15 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleMainImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.log("Main image failed to load:", artist.image);
+    setMainImageError(true);
+    e.currentTarget.src = '/placeholder.svg';
+  };
+
+  const handleArtworkImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
+    console.log(`Artwork image ${index} failed to load:`, artist.artworks?.[index]);
+    setArtworkErrors(prev => ({ ...prev, [index]: true }));
     e.currentTarget.src = '/placeholder.svg';
   };
 
@@ -93,10 +103,10 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               className="absolute w-full h-full"
             >
               <img
-                src={artist.image}
+                src={mainImageError ? '/placeholder.svg' : artist.image}
                 alt={artist.name}
                 className="w-full h-full object-cover"
-                onError={handleImageError}
+                onError={handleMainImageError}
               />
             </motion.div>
           ) : (
@@ -115,10 +125,10 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                     artist.artworks.slice(0, 4).map((artwork, index) => (
                       <div key={index} className="relative aspect-square rounded overflow-hidden">
                         <img
-                          src={artwork}
+                          src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                           alt={`Artwork ${index + 1} by ${artist.name}`}
                           className="w-full h-full object-cover"
-                          onError={handleImageError}
+                          onError={(e) => handleArtworkImageError(e, index)}
                         />
                       </div>
                     ))

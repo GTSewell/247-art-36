@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
@@ -39,8 +39,11 @@ const ArtistCard = ({
 }: ArtistCardProps) => {
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
+  const [imageError, setImageError] = useState(false);
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.log("Artist card image failed to load:", image);
+    setImageError(true);
     e.currentTarget.src = '/placeholder.svg';
   };
 
@@ -53,7 +56,7 @@ const ArtistCard = ({
         {/* Artist Image */}
         <div className="aspect-square overflow-hidden">
           <img
-            src={image}
+            src={imageError ? '/placeholder.svg' : image}
             alt={name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             onError={handleImageError}

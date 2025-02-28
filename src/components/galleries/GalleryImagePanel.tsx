@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Gallery } from '@/data/types/gallery';
 import { Heart } from 'lucide-react';
 
@@ -14,14 +14,18 @@ const GalleryImagePanel: React.FC<GalleryImagePanelProps> = ({
   onFavoriteToggle,
   isFavorite,
 }) => {
+  const [imageError, setImageError] = useState(false);
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.log("Image failed to load:", gallery.image);
+    setImageError(true);
     e.currentTarget.src = '/placeholder.svg';
   };
 
   return (
     <div className="relative aspect-square rounded-lg overflow-hidden">
       <img
-        src={gallery.image}
+        src={imageError ? '/placeholder.svg' : gallery.image}
         alt={gallery.name}
         className="w-full h-full object-cover"
         onError={handleImageError}
