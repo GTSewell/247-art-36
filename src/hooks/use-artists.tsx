@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -29,7 +29,7 @@ export const useArtists = () => {
     setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
   };
 
-  const loadArtists = async () => {
+  const loadArtists = useCallback(async () => {
     try {
       setIsLoading(true);
       logger.info('Fetching artists from Supabase...');
@@ -61,7 +61,7 @@ export const useArtists = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadArtists();
@@ -71,6 +71,13 @@ export const useArtists = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
       loadFavorites();
     });
+
+    // Listen for the custom refresh event
+    const handleRefreshArtists = () => {
+      logger.info('Refresh artists event received');
+      loadArtists();
+    };
+    window.addEventListener('refreshArtists', handleRefreshArtists);
 
     // Subscribe to database changes
     const artistsSubscription = supabase
@@ -87,8 +94,9 @@ export const useArtists = () => {
     return () => {
       subscription.unsubscribe();
       artistsSubscription.unsubscribe();
+      window.removeEventListener('refreshArtists', handleRefreshArtists);
     };
-  }, []);
+  }, [loadArtists]);
 
   const handleFavoriteToggle = async (artistId: number, isFavorite: boolean) => {
     const { data: session } = await supabase.auth.getSession();

@@ -41,7 +41,7 @@ export const useDownloadArtistImages = () => {
       logger.info('Starting artist image download process');
       
       try {
-        // Use the supabase URL directly from the imported client config
+        // Use the hardcoded Supabase URL since getUrl() is not available
         const supabaseUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co";
         
         logger.info(`Using Supabase URL: ${supabaseUrl}`);
@@ -73,10 +73,10 @@ export const useDownloadArtistImages = () => {
 
         logger.info('Image processing completed successfully', responseData);
         setResult(responseData.results);
-        toast.success(`Image processing complete. ${responseData.success} successful, ${responseData.failed} failed, ${responseData.skipped} skipped.`);
+        toast.success(`Image processing complete. ${responseData.results.success.length} successful, ${responseData.results.failed.length} failed, ${responseData.results.skipped.length} skipped.`);
         
-        // Trigger a refresh of the artists data
-        window.location.reload();
+        // Trigger a refresh of the artists data without reloading the page
+        window.dispatchEvent(new CustomEvent('refreshArtists'));
       } catch (fetchError: any) {
         const errorMessage = fetchError.message || 'Failed to download artist images';
         setErrorDetails(errorMessage);
