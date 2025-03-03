@@ -22,7 +22,10 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   handleArtworkImageError
 }) => {
   const handleGenerateArtworks = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
+    console.log("Generate artworks button clicked");
+    
     setIsGeneratingArtworks(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
@@ -50,7 +53,10 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   return (
     <div className="relative h-full">
       {/* Generate Artworks button */}
-      <div className="absolute top-2 left-2 right-2 z-20 flex justify-center">
+      <div 
+        className="absolute top-2 left-2 right-2 z-20 flex justify-center" 
+        onClick={e => e.stopPropagation()}
+      >
         <Button
           size="sm"
           variant="outline"

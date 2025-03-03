@@ -22,7 +22,10 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   setIsSavingImage
 }) => {
   const handleGenerateArtistImage = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
+    console.log("Generate artist image button clicked");
+    
     setIsGeneratingImage(true);
     try {
       const prompt = `Professional portrait photograph of a ${artist.specialty} artist named ${artist.name} from ${artist.city || ''} ${artist.country || ''}. ${artist.bio || ''}`;
@@ -49,7 +52,10 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   };
 
   const handleSaveArtistImage = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
+    console.log("Save artist image button clicked");
+    
     setIsSavingImage(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
@@ -74,7 +80,7 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   };
 
   return (
-    <div className="absolute top-2 left-2 right-2 z-20 flex gap-2 justify-between">
+    <div className="absolute top-2 left-2 right-2 z-20 flex gap-2 justify-between" onClick={e => e.stopPropagation()}>
       <Button
         size="sm"
         variant="outline"

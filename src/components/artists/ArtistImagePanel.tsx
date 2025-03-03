@@ -36,10 +36,13 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   }, [artist.id]);
 
   const handleFlip = () => {
-    setIsFlipped(!isFlipped);
-    if (showClickIndicator) {
-      setShowClickIndicator(false);
-      localStorage.setItem(`flipped-${artist.id}`, 'true');
+    // Only flip if we're not currently generating or saving
+    if (!isGeneratingImage && !isSavingImage && !isGeneratingArtworks) {
+      setIsFlipped(!isFlipped);
+      if (showClickIndicator) {
+        setShowClickIndicator(false);
+        localStorage.setItem(`flipped-${artist.id}`, 'true');
+      }
     }
   };
 
