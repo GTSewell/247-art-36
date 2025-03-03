@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { MousePointerClick, Wand, Save } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { ArtistImageButtons } from './ArtistImageButtons';
+import { ArtistArtworksView } from './ArtistArtworksView';
+import { ClickIndicator } from './ClickIndicator';
 
 interface ArtistImagePanelProps {
   artist: Artist;
@@ -69,84 +68,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     e.currentTarget.src = '/placeholder.svg';
   };
 
-  const handleGenerateArtistImage = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the card from flipping
-    setIsGeneratingImage(true);
-    try {
-      const prompt = `Professional portrait photograph of a ${artist.specialty} artist named ${artist.name} from ${artist.city || ''} ${artist.country || ''}. ${artist.bio || ''}`;
-      
-      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { 
-          artist_id: artist.id, 
-          prompt,
-          download_image: true
-        }
-      });
-      
-      if (error) throw error;
-      
-      toast.success('Artist image generated successfully!');
-      // Force reload to show the new temp image
-      window.location.reload();
-    } catch (error) {
-      console.error('Error generating artist image:', error);
-      toast.error('Failed to generate artist image');
-    } finally {
-      setIsGeneratingImage(false);
-    }
-  };
-
-  const handleSaveArtistImage = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the card from flipping
-    setIsSavingImage(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { 
-          artist_id: artist.id, 
-          save: true,
-          download_image: true // Flag to indicate we want to download and store the image
-        }
-      });
-      
-      if (error) throw error;
-      
-      toast.success('Artist image saved to Supabase storage!');
-      // Force reload to show the saved image
-      window.location.reload();
-    } catch (error) {
-      console.error('Error saving artist image:', error);
-      toast.error('Failed to save artist image');
-    } finally {
-      setIsSavingImage(false);
-    }
-  };
-
-  const handleGenerateArtworks = async (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent the card from flipping
-    setIsGeneratingArtworks(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { 
-          artist_id: artist.id, 
-          generate_artworks: true,
-          count: 4,
-          download_images: true // Flag to indicate we want to download and store the artworks
-        }
-      });
-      
-      if (error) throw error;
-      
-      toast.success('Artworks generated and saved to storage!');
-      // Force reload to show the new artworks
-      window.location.reload();
-    } catch (error) {
-      console.error('Error generating artworks:', error);
-      toast.error('Failed to generate artworks');
-    } finally {
-      setIsGeneratingArtworks(false);
-    }
-  };
-
   return (
     <div className="space-y-3">
       <div 
@@ -158,45 +79,20 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         onTouchStart={handleInteraction}
       >
         {/* Generate & Save buttons */}
-        <div className="absolute top-2 left-2 right-2 z-20 flex gap-2 justify-between">
-          <Button
-            size="sm"
-            variant="outline"
-            className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
-            onClick={handleGenerateArtistImage}
-            disabled={isGeneratingImage}
-          >
-            <Wand className={`h-4 w-4 ${isGeneratingImage ? 'animate-spin' : ''}`} />
-            {isGeneratingImage ? 'Generating...' : 'Generate'}
-          </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
-            onClick={handleSaveArtistImage}
-            disabled={isSavingImage}
-          >
-            <Save className="h-4 w-4" />
-            {isSavingImage ? 'Saving...' : 'Save'}
-          </Button>
-        </div>
+        <ArtistImageButtons 
+          artist={artist}
+          isGeneratingImage={isGeneratingImage}
+          isSavingImage={isSavingImage}
+          setIsGeneratingImage={setIsGeneratingImage}
+          setIsSavingImage={setIsSavingImage}
+        />
 
         <AnimatePresence>
-          {showClickIndicator && (isHovered || isMobile) && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.4, 0.8, 0.4] }}
-              exit={{ opacity: 0 }}
-              transition={{ 
-                duration: 2,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
-              className="absolute bottom-4 right-4 flex items-center justify-center bg-[#0EA5E9]/90 p-2 rounded-full z-10 shadow-lg"
-            >
-              <MousePointerClick className="w-6 h-6 text-white animate-pulse" />
-            </motion.div>
-          )}
+          <ClickIndicator 
+            showClickIndicator={showClickIndicator}
+            isHovered={isHovered}
+            isMobile={isMobile}
+          />
         </AnimatePresence>
 
         <AnimatePresence initial={false} mode="wait">
@@ -227,40 +123,13 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
             >
-              <div className="relative h-full">
-                {/* Generate Artworks button */}
-                <div className="absolute top-2 left-2 right-2 z-20 flex justify-center">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
-                    onClick={handleGenerateArtworks}
-                    disabled={isGeneratingArtworks}
-                  >
-                    <Wand className={`h-4 w-4 ${isGeneratingArtworks ? 'animate-spin' : ''}`} />
-                    {isGeneratingArtworks ? 'Generating...' : 'Generate Artworks'}
-                  </Button>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-2 p-2 w-full h-full">
-                  {Array.isArray(artist.artworks) && artist.artworks.length > 0 ? (
-                    artist.artworks.slice(0, 4).map((artwork, index) => (
-                      <div key={index} className="relative aspect-square rounded overflow-hidden">
-                        <img
-                          src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                          alt={`Artwork ${index + 1} by ${artist.name}`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => handleArtworkImageError(e, index)}
-                        />
-                      </div>
-                    ))
-                  ) : (
-                    <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
-                      No artworks available
-                    </div>
-                  )}
-                </div>
-              </div>
+              <ArtistArtworksView 
+                artist={artist}
+                isGeneratingArtworks={isGeneratingArtworks}
+                setIsGeneratingArtworks={setIsGeneratingArtworks}
+                artworkErrors={artworkErrors}
+                handleArtworkImageError={handleArtworkImageError}
+              />
             </motion.div>
           )}
         </AnimatePresence>
