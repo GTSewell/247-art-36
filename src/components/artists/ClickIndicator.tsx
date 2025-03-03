@@ -2,6 +2,7 @@
 import React from 'react';
 import { MousePointerClick } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { logger } from '@/utils/logger';
 
 interface ClickIndicatorProps {
   showClickIndicator: boolean;
@@ -21,6 +22,7 @@ export const ClickIndicator: React.FC<ClickIndicatorProps> = ({
   const stopPropagation = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    logger.info('Click indicator clicked - stopping propagation');
   };
 
   return (

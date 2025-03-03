@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { logger } from "@/utils/logger";
 
 interface ArtistCardProps {
   id: number;
@@ -45,16 +46,20 @@ const ArtistCard = ({
   const [isGenerating, setIsGenerating] = useState(false);
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log("Artist card image failed to load:", image);
+    logger.error("Artist card image failed to load:", image);
     setImageError(true);
     e.currentTarget.src = '/placeholder.svg';
   };
 
   const handleGenerateArtistImage = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    logger.info("Generate artist image button clicked from card for artist:", { id, name });
     setIsGenerating(true);
+    
     try {
       const prompt = `Professional portrait photograph of a ${specialty} artist named ${name} from ${city || ''} ${country || ''}. ${bio || ''}`;
+      
+      logger.info("Calling generate-artist-image edge function with prompt:", { artistId: id, promptPreview: prompt.substring(0, 50) + "..." });
       
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
@@ -64,17 +69,31 @@ const ArtistCard = ({
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        logger.error('Edge function error details:', error);
+        throw error;
+      }
       
+      if (!data || data.error) {
+        logger.error('API response error:', data?.error || 'No data returned');
+        throw new Error(data?.details || 'Failed to generate artist image');
+      }
+      
+      logger.info('Artist image generated successfully from card view:', data);
       toast.success('Artist image generated and saved to storage!');
       // Force reload to show the new image
       window.location.reload();
-    } catch (error) {
-      console.error('Error generating artist image:', error);
-      toast.error('Failed to generate artist image');
+    } catch (error: any) {
+      logger.error('Error generating artist image from card:', error);
+      toast.error(`Failed to generate artist image: ${error.message || 'Unknown error'}`);
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  // Helper function to stop event propagation
+  const stopPropagation = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   return (
@@ -93,7 +112,7 @@ const ArtistCard = ({
           />
           
           {/* Generate Image Button */}
-          <div className="absolute top-2 left-2 z-10">
+          <div className="absolute top-2 left-2 z-10" onClick={stopPropagation}>
             <Button
               variant="ghost"
               size="icon"
@@ -122,7 +141,7 @@ const ArtistCard = ({
         </div>
 
         {/* Favorite Button - Always visible at bottom */}
-        <div className="absolute bottom-4 right-4 z-10">
+        <div className="absolute bottom-4 right-4 z-10" onClick={stopPropagation}>
           <Button
             variant="ghost"
             size="icon"

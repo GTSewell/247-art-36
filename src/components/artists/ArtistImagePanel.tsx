@@ -6,6 +6,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { ArtistImageButtons } from './ArtistImageButtons';
 import { ArtistArtworksView } from './ArtistArtworksView';
 import { ClickIndicator } from './ClickIndicator';
+import { logger } from '@/utils/logger';
 
 interface ArtistImagePanelProps {
   artist: Artist;
@@ -36,16 +37,28 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   }, [artist.id]);
 
   const handleFlip = (e: React.MouseEvent) => {
+    logger.info(`Flip attempt for artist ${artist.id}`, {
+      isGeneratingImage,
+      isSavingImage,
+      isGeneratingArtworks,
+      targetIsButton: e.target instanceof HTMLButtonElement
+    });
+    
     // Don't flip if the click came from a button or during generation processes
     if (
       e.target instanceof HTMLButtonElement || 
       isGeneratingImage || 
       isSavingImage || 
-      isGeneratingArtworks
+      isGeneratingArtworks ||
+      // Also check for clicking within button container divs
+      (e.target instanceof HTMLElement && 
+       (e.target.closest('button') || e.target.closest('[role="button"]')))
     ) {
+      logger.info('Flip prevented - clicked on button or in processing state');
       return;
     }
 
+    logger.info(`Flipping card for artist ${artist.id} from ${isFlipped ? 'back' : 'front'} to ${isFlipped ? 'front' : 'back'}`);
     setIsFlipped(!isFlipped);
     if (showClickIndicator) {
       setShowClickIndicator(false);
@@ -67,13 +80,13 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   };
 
   const handleMainImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log("Main image failed to load:", artist.image);
+    logger.error("Main image failed to load:", artist.image);
     setMainImageError(true);
     e.currentTarget.src = '/placeholder.svg';
   };
 
   const handleArtworkImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
-    console.log(`Artwork image ${index} failed to load:`, artist.artworks?.[index]);
+    logger.error(`Artwork image ${index} failed to load:`, artist.artworks?.[index]);
     setArtworkErrors(prev => ({ ...prev, [index]: true }));
     e.currentTarget.src = '/placeholder.svg';
   };

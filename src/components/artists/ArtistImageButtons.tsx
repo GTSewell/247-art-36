@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Artist } from '@/data/types/artist';
+import { logger } from '@/utils/logger';
 
 interface ArtistImageButtonsProps {
   artist: Artist;
@@ -24,11 +25,13 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   const handleGenerateArtistImage = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
-    console.log("Generate artist image button clicked");
+    logger.info("Generate artist image button clicked for artist:", { id: artist.id, name: artist.name });
     
     setIsGeneratingImage(true);
     try {
       const prompt = `Professional portrait photograph of a ${artist.specialty} artist named ${artist.name} from ${artist.city || ''} ${artist.country || ''}. ${artist.bio || ''}`;
+      
+      logger.info("Calling generate-artist-image edge function with prompt:", { artistId: artist.id, promptPreview: prompt.substring(0, 50) + "..." });
       
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
@@ -39,16 +42,22 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       });
       
       if (error) {
-        console.error('Error details:', error);
+        logger.error('Edge function error details:', error);
         throw error;
       }
       
+      if (!data || data.error) {
+        logger.error('API response error:', data?.error || 'No data returned');
+        throw new Error(data?.details || 'Failed to generate artist image');
+      }
+      
+      logger.info('Artist image generation successful:', data);
       toast.success('Artist image generated successfully!');
       // Force reload to show the new temp image
       window.location.reload();
-    } catch (error) {
-      console.error('Error generating artist image:', error);
-      toast.error('Failed to generate artist image. Please try again later.');
+    } catch (error: any) {
+      logger.error('Error generating artist image:', error);
+      toast.error(`Failed to generate artist image: ${error.message || 'Unknown error'}`);
     } finally {
       setIsGeneratingImage(false);
     }
@@ -57,10 +66,12 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   const handleSaveArtistImage = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
-    console.log("Save artist image button clicked");
+    logger.info("Save artist image button clicked for artist:", { id: artist.id, name: artist.name });
     
     setIsSavingImage(true);
     try {
+      logger.info("Calling generate-artist-image edge function with save flag");
+      
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
           artist_id: artist.id, 
@@ -70,16 +81,22 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       });
       
       if (error) {
-        console.error('Error details:', error);
+        logger.error('Edge function error details:', error);
         throw error;
       }
       
+      if (!data || data.error) {
+        logger.error('API response error:', data?.error || 'No data returned');
+        throw new Error(data?.details || 'Failed to save artist image');
+      }
+      
+      logger.info('Artist image saved successfully:', data);
       toast.success('Artist image saved to Supabase storage!');
       // Force reload to show the saved image
       window.location.reload();
-    } catch (error) {
-      console.error('Error saving artist image:', error);
-      toast.error('Failed to save artist image. Please try again later.');
+    } catch (error: any) {
+      logger.error('Error saving artist image:', error);
+      toast.error(`Failed to save artist image: ${error.message || 'Unknown error'}`);
     } finally {
       setIsSavingImage(false);
     }

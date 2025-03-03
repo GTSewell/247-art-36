@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Artist } from '@/data/types/artist';
+import { logger } from '@/utils/logger';
 
 interface ArtistArtworksViewProps {
   artist: Artist;
@@ -24,10 +25,12 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const handleGenerateArtworks = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
-    console.log("Generate artworks button clicked");
+    logger.info("Generate artworks button clicked for artist:", { id: artist.id, name: artist.name });
     
     setIsGeneratingArtworks(true);
     try {
+      logger.info("Calling generate-artist-image edge function for artworks");
+      
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
           artist_id: artist.id, 
@@ -38,16 +41,22 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       });
       
       if (error) {
-        console.error('Error details:', error);
+        logger.error('Edge function error details:', error);
         throw error;
       }
       
+      if (!data || data.error) {
+        logger.error('API response error:', data?.error || 'No data returned');
+        throw new Error(data?.details || 'Failed to generate artworks');
+      }
+      
+      logger.info('Artworks generated successfully:', data);
       toast.success('Artworks generated and saved to storage!');
       // Force reload to show the new artworks
       window.location.reload();
-    } catch (error) {
-      console.error('Error generating artworks:', error);
-      toast.error('Failed to generate artworks. Please try again later.');
+    } catch (error: any) {
+      logger.error('Error generating artworks:', error);
+      toast.error(`Failed to generate artworks: ${error.message || 'Unknown error'}`);
     } finally {
       setIsGeneratingArtworks(false);
     }
