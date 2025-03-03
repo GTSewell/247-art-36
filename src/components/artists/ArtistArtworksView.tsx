@@ -79,11 +79,11 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         <Button
           size="sm"
           variant="outline"
-          className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
+          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all"
           onClick={handleGenerateArtworks}
           disabled={isGeneratingArtworks}
         >
-          <Wand className={`h-4 w-4 ${isGeneratingArtworks ? 'animate-spin' : ''}`} />
+          <Wand className={`h-4 w-4 mr-1 ${isGeneratingArtworks ? 'animate-spin' : ''}`} />
           {isGeneratingArtworks ? 'Generating...' : 'Generate Artworks'}
         </Button>
       </div>
