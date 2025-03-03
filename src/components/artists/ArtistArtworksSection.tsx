@@ -9,17 +9,17 @@ import { supabase } from "@/integrations/supabase/client";
 interface ArtistArtworksSectionProps {
   artist: Artist;
   onRegenerateArtworks?: (artist: Artist) => Promise<void>;
-  isGenerating?: boolean;
-  isSaving?: boolean;
-  setIsSaving?: (value: boolean) => void;
+  isGenerating: boolean;
+  isSaving: boolean;
+  setIsSaving: (value: boolean) => void;
 }
 
 const ArtistArtworksSection = ({ 
   artist, 
   onRegenerateArtworks,
-  isGenerating = false,
-  isSaving = false,
-  setIsSaving = () => {}
+  isGenerating,
+  isSaving,
+  setIsSaving
 }: ArtistArtworksSectionProps) => {
   const handleSaveArtworks = async () => {
     if (!artist.artworks || artist.artworks.length === 0) {
@@ -65,18 +65,16 @@ const ArtistArtworksSection = ({
               <SaveAll className="h-4 w-4" />
               {isSaving ? 'Saving...' : 'Save All'}
             </Button>
-            {onRegenerateArtworks && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onRegenerateArtworks(artist)}
-                disabled={isGenerating}
-                className="flex items-center gap-2"
-              >
-                <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
-                {isGenerating ? 'Generating...' : 'Generate Artworks'}
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onRegenerateArtworks?.(artist)}
+              disabled={isGenerating}
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+              {isGenerating ? 'Generating...' : 'Generate Artworks'}
+            </Button>
           </div>
         )}
       </div>
