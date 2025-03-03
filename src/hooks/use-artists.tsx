@@ -1,9 +1,8 @@
 
-import { useState, useEffect, useCallback } from "react";
-import { Artist } from "@/data/types/artist";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { transformArtist } from "@/utils/artist-transformer";
+import { Artist } from "@/data/types/artist";
 import { logger } from "@/utils/logger";
 
 export const useArtists = () => {
@@ -12,132 +11,111 @@ export const useArtists = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
-  const loadFavorites = async () => {
-    const { data: session } = await supabase.auth.getSession();
-    if (!session?.session?.user) return;
-
-    const { data: favorites, error } = await supabase
-      .from('favorite_artists')
-      .select('artist_id')
-      .eq('user_id', session.session.user.id);
-
-    if (error) {
-      logger.error('Error loading favorites:', error);
-      return;
-    }
-
-    setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
-  };
-
-  const loadArtists = useCallback(async () => {
+  const fetchArtists = async () => {
     try {
       setIsLoading(true);
-      logger.info('Fetching artists from Supabase...');
-      
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
-        .order('id');
+        .order('id', { ascending: true });
 
       if (error) {
-        logger.error('Error loading artists:', error);
-        toast.error('Failed to load artists');
-        return;
+        throw error;
       }
 
       if (artists) {
-        logger.info('Artists data received', { count: artists.length });
-        const transformedArtists = artists.map(transformArtist);
-        logger.info('Artists transformed successfully', { count: transformedArtists.length });
-
-        // First 3 artists are featured
-        setFeaturedArtists(transformedArtists.slice(0, 3));
-        // Rest are additional artists
-        setAdditionalArtists(transformedArtists.slice(3));
+        // Filter or process artists as needed
+        const featured = artists.slice(0, 6); // First 6 as featured
+        const additional = artists.slice(6); // Rest as additional
+        
+        setFeaturedArtists(featured as Artist[]);
+        setAdditionalArtists(additional as Artist[]);
       }
-    } catch (error) {
-      logger.error('Error in loadArtists:', error);
-      toast.error('Failed to load artists');
+    } catch (error: any) {
+      logger.error('Error fetching artists:', error);
+      toast.error(`Failed to load artists: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  };
+
+  const fetchFavorites = async () => {
+    try {
+      const user = (await supabase.auth.getUser()).data.user;
+      
+      if (!user) return;
+      
+      const { data, error } = await supabase
+        .from('favorite_artists')
+        .select('artist_id')
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      
+      if (data) {
+        const favoriteIds = new Set(data.map(fav => fav.artist_id));
+        setFavoriteArtists(favoriteIds);
+      }
+    } catch (error: any) {
+      logger.error('Error fetching favorites:', error);
+    }
+  };
 
   useEffect(() => {
-    loadArtists();
-    loadFavorites();
-
-    // Subscribe to auth changes to reload favorites
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
-      loadFavorites();
-    });
-
-    // Listen for the custom refresh event
-    const handleRefreshArtists = () => {
-      logger.info('Refresh artists event received');
-      loadArtists();
-    };
-    window.addEventListener('refreshArtists', handleRefreshArtists);
-
-    // Subscribe to database changes
-    const artistsSubscription = supabase
-      .channel('artists_changes')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'artists'
-      }, () => {
-        loadArtists();
-      })
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-      artistsSubscription.unsubscribe();
-      window.removeEventListener('refreshArtists', handleRefreshArtists);
-    };
-  }, [loadArtists]);
+    fetchArtists();
+    fetchFavorites();
+  }, []);
 
   const handleFavoriteToggle = async (artistId: number, isFavorite: boolean) => {
-    const { data: session } = await supabase.auth.getSession();
-    if (!session?.session?.user) {
-      toast.error('Please log in to favorite artists');
-      return;
-    }
-
     try {
+      const user = (await supabase.auth.getUser()).data.user;
+      
+      if (!user) {
+        toast.error('You must be logged in to favorite artists');
+        return;
+      }
+      
       if (isFavorite) {
-        const { error } = await supabase
-          .from('favorite_artists')
-          .insert({ 
-            user_id: session.session.user.id,
-            artist_id: artistId 
-          });
-
-        if (error) throw error;
-
-        setFavoriteArtists(prev => new Set([...prev, artistId]));
-        toast.success('Added to favorites');
-      } else {
+        // Remove from favorites
         const { error } = await supabase
           .from('favorite_artists')
           .delete()
-          .eq('user_id', session.session.user.id)
+          .eq('user_id', user.id)
           .eq('artist_id', artistId);
-
+        
         if (error) throw error;
-
+        
         setFavoriteArtists(prev => {
           const newSet = new Set(prev);
           newSet.delete(artistId);
           return newSet;
         });
+        
         toast.success('Removed from favorites');
+      } else {
+        // Add to favorites
+        const { error } = await supabase
+          .from('favorite_artists')
+          .insert({ user_id: user.id, artist_id: artistId });
+        
+        if (error) throw error;
+        
+        setFavoriteArtists(prev => {
+          const newSet = new Set(prev);
+          newSet.add(artistId);
+          return newSet;
+        });
+        
+        toast.success('Added to favorites');
       }
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error toggling favorite:', error);
-      toast.error('Failed to update favorites');
+      toast.error(`Failed to update favorites: ${error.message}`);
     }
+  };
+
+  const refreshArtists = async () => {
+    await fetchArtists();
   };
 
   return {
@@ -146,6 +124,6 @@ export const useArtists = () => {
     isLoading,
     favoriteArtists,
     handleFavoriteToggle,
-    refreshArtists: loadArtists
+    refreshArtists
   };
 };

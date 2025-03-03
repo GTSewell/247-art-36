@@ -13,6 +13,7 @@ interface ArtistImageButtonsProps {
   isSavingImage: boolean;
   setIsGeneratingImage: (value: boolean) => void;
   setIsSavingImage: (value: boolean) => void;
+  refreshArtist?: () => void;
 }
 
 export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
@@ -20,7 +21,8 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   isGeneratingImage,
   isSavingImage,
   setIsGeneratingImage,
-  setIsSavingImage
+  setIsSavingImage,
+  refreshArtist
 }) => {
   const handleGenerateArtistImage = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default behavior
@@ -54,8 +56,14 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       
       logger.info('Artist image generation successful:', data);
       toast.success('Artist image generated successfully!');
-      // Force reload to show the new temp image
-      window.location.reload();
+
+      // If we have a refresh function, use it instead of page reload
+      if (refreshArtist) {
+        refreshArtist();
+      } else {
+        // Force reload to show the new temp image only if no refresh function
+        window.location.reload();
+      }
     } catch (error: any) {
       logger.error('Error generating artist image:', error);
       toast.error(`Failed to generate artist image: ${error.message || 'Unknown error'}`);
@@ -94,8 +102,14 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       
       logger.info('Artist image saved successfully:', data);
       toast.success('Artist image saved to Supabase storage!');
-      // Force reload to show the saved image
-      window.location.reload();
+
+      // If we have a refresh function, use it instead of page reload
+      if (refreshArtist) {
+        refreshArtist();
+      } else {
+        // Force reload to show the saved image only if no refresh function
+        window.location.reload();
+      }
     } catch (error: any) {
       logger.error('Error saving artist image:', error);
       toast.error(`Failed to save artist image: ${error.message || 'Unknown error'}`);

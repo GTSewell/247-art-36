@@ -7,17 +7,20 @@ import { ArtistImageButtons } from './ArtistImageButtons';
 import { ArtistArtworksView } from './ArtistArtworksView';
 import { ClickIndicator } from './ClickIndicator';
 import { logger } from '@/utils/logger';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ArtistImagePanelProps {
   artist: Artist;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
+  refreshArtists?: () => void;
 }
 
 const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({ 
   artist, 
   onFavoriteToggle, 
   isFavorite,
+  refreshArtists
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -27,7 +30,12 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [isSavingImage, setIsSavingImage] = useState(false);
   const [isGeneratingArtworks, setIsGeneratingArtworks] = useState(false);
+  const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    setCurrentArtist(artist);
+  }, [artist]);
 
   useEffect(() => {
     const hasFlipped = localStorage.getItem(`flipped-${artist.id}`);
@@ -91,6 +99,29 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     e.currentTarget.src = '/placeholder.svg';
   };
 
+  const refreshArtist = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('artists')
+        .select('*')
+        .eq('id', artist.id)
+        .single();
+      
+      if (error) throw error;
+      
+      if (data) {
+        setCurrentArtist(data as Artist);
+        
+        // If parent component has a refresh function, call it too
+        if (refreshArtists) {
+          refreshArtists();
+        }
+      }
+    } catch (error) {
+      logger.error('Error refreshing artist data:', error);
+    }
+  };
+
   return (
     <div className="space-y-3">
       <div 
@@ -103,11 +134,12 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       >
         {/* Generate & Save buttons */}
         <ArtistImageButtons 
-          artist={artist}
+          artist={currentArtist}
           isGeneratingImage={isGeneratingImage}
           isSavingImage={isSavingImage}
           setIsGeneratingImage={setIsGeneratingImage}
           setIsSavingImage={setIsSavingImage}
+          refreshArtist={refreshArtist}
         />
 
         <AnimatePresence>
@@ -130,8 +162,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               className="absolute w-full h-full"
             >
               <img
-                src={mainImageError ? '/placeholder.svg' : artist.image}
-                alt={artist.name}
+                src={mainImageError ? '/placeholder.svg' : currentArtist.image}
+                alt={currentArtist.name}
                 className="w-full h-full object-cover"
                 onError={handleMainImageError}
               />
@@ -147,11 +179,12 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               className="absolute w-full h-full bg-white"
             >
               <ArtistArtworksView 
-                artist={artist}
+                artist={currentArtist}
                 isGeneratingArtworks={isGeneratingArtworks}
                 setIsGeneratingArtworks={setIsGeneratingArtworks}
                 artworkErrors={artworkErrors}
                 handleArtworkImageError={handleArtworkImageError}
+                refreshArtworks={refreshArtist}
               />
             </motion.div>
           )}

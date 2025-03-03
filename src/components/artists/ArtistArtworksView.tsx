@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Wand } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,6 +13,7 @@ interface ArtistArtworksViewProps {
   setIsGeneratingArtworks: (value: boolean) => void;
   artworkErrors: Record<number, boolean>;
   handleArtworkImageError: (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => void;
+  refreshArtworks?: () => void; // Optional prop to refresh artworks without page reload
 }
 
 export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
@@ -20,8 +21,11 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   isGeneratingArtworks,
   setIsGeneratingArtworks,
   artworkErrors,
-  handleArtworkImageError
+  handleArtworkImageError,
+  refreshArtworks
 }) => {
+  const [generatedArtworks, setGeneratedArtworks] = useState<string[]>([]);
+
   const handleGenerateArtworks = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent default behavior
     e.stopPropagation(); // Prevent the card from flipping
@@ -50,11 +54,28 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         logger.error('API response error:', { error: data?.error || 'No data returned', details: errorDetails });
         throw new Error(`${data?.error || 'Failed to generate artworks'}: ${errorDetails}`);
       }
-      
+
       logger.info('Artworks generated successfully:', data);
-      toast.success('Artworks generated and saved to storage!');
-      // Force reload to show the new artworks
-      window.location.reload();
+      
+      // Update artwork images locally if available in response
+      if (data.artworkUrls && Array.isArray(data.artworkUrls)) {
+        setGeneratedArtworks(data.artworkUrls);
+        
+        // If we have a refresh callback, use it instead of page reload
+        if (refreshArtworks) {
+          refreshArtworks();
+        } else {
+          toast.success('Artworks generated and saved to storage!');
+          // Only reload if no refresh callback provided
+          window.location.reload();
+        }
+      } else {
+        toast.success('Artworks generated and saved to storage!');
+        // Only reload if no artwork URLs or refresh callback provided
+        if (!refreshArtworks) {
+          window.location.reload();
+        }
+      }
     } catch (error: any) {
       logger.error('Error generating artworks:', error);
       toast.error(`Failed to generate artworks: ${error.message || 'Unknown error'}`);
@@ -68,6 +89,11 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     e.preventDefault();
     e.stopPropagation();
   };
+
+  // Determine which artworks to display
+  const displayArtworks = generatedArtworks.length > 0 
+    ? generatedArtworks 
+    : (Array.isArray(artist.artworks) ? artist.artworks : []);
 
   return (
     <div className="relative h-full">
@@ -89,8 +115,8 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       </div>
       
       <div className="grid grid-cols-2 gap-2 p-2 w-full h-full">
-        {Array.isArray(artist.artworks) && artist.artworks.length > 0 ? (
-          artist.artworks.slice(0, 4).map((artwork, index) => (
+        {displayArtworks.length > 0 ? (
+          displayArtworks.slice(0, 4).map((artwork, index) => (
             <div key={index} className="relative aspect-square rounded overflow-hidden">
               <img
                 src={artworkErrors[index] ? '/placeholder.svg' : artwork}

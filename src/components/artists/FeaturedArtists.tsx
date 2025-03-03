@@ -17,6 +17,7 @@ interface FeaturedArtistsProps {
   onSelect: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
+  refreshArtists?: () => void;
 }
 
 const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
@@ -24,6 +25,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   onSelect,
   onFavoriteToggle,
   favoriteArtists,
+  refreshArtists
 }) => {
   const [showControls, setShowControls] = useState(true);
   const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -100,6 +102,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                     artist={artist}
                     onFavoriteToggle={onFavoriteToggle}
                     isFavorite={favoriteArtists.has(artist.id)}
+                    refreshArtists={refreshArtists}
                   />
                   <ArtistDetailsPanel 
                     artist={artist}

@@ -116,6 +116,7 @@ const Artists = () => {
           onSelect={setSelectedArtist}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
+          refreshArtists={refreshArtists}
         />
 
         <AllArtists
