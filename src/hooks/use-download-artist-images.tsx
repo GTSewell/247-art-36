@@ -41,10 +41,10 @@ export const useDownloadArtistImages = () => {
       logger.info('Starting artist image download process');
       
       try {
-        // Using the full URL with the project ID
-        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        // Get the Supabase URL from the config we're already using
+        const supabaseUrl = supabase.supabaseUrl;
         if (!supabaseUrl) {
-          throw new Error('VITE_SUPABASE_URL environment variable is not defined');
+          throw new Error('Could not determine the Supabase URL');
         }
         
         const response = await fetch(
