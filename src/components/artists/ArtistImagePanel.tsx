@@ -75,7 +75,11 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       const prompt = `Professional portrait photograph of a ${artist.specialty} artist named ${artist.name} from ${artist.city || ''} ${artist.country || ''}. ${artist.bio || ''}`;
       
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { artist_id: artist.id, prompt }
+        body: { 
+          artist_id: artist.id, 
+          prompt,
+          download_image: true
+        }
       });
       
       if (error) throw error;
@@ -98,7 +102,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         body: { 
           artist_id: artist.id, 
           save: true,
-          download_image: true // New flag to indicate we want to download and store the image
+          download_image: true // Flag to indicate we want to download and store the image
         }
       });
       
@@ -123,7 +127,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
           artist_id: artist.id, 
           generate_artworks: true,
           count: 4,
-          download_images: true // New flag to indicate we want to download and store the artworks
+          download_images: true // Flag to indicate we want to download and store the artworks
         }
       });
       
