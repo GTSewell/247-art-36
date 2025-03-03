@@ -94,13 +94,17 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const handleSaveArtistImage = async () => {
     setIsSavingImage(true);
     try {
-      const { error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { artist_id: artist.id, save: true }
+      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
+        body: { 
+          artist_id: artist.id, 
+          save: true,
+          download_image: true // New flag to indicate we want to download and store the image
+        }
       });
       
       if (error) throw error;
       
-      toast.success('Artist image saved successfully!');
+      toast.success('Artist image saved to Supabase storage!');
       // Force reload to show the saved image
       window.location.reload();
     } catch (error) {
@@ -118,13 +122,14 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         body: { 
           artist_id: artist.id, 
           generate_artworks: true,
-          count: 4
+          count: 4,
+          download_images: true // New flag to indicate we want to download and store the artworks
         }
       });
       
       if (error) throw error;
       
-      toast.success('Artworks generated successfully!');
+      toast.success('Artworks generated and saved to storage!');
       // Force reload to show the new artworks
       window.location.reload();
     } catch (error) {

@@ -9,7 +9,8 @@ interface GenerateImageParams {
   techniques?: string[];
   styles?: string[];
   numberResults?: number;
-  artistId: number; // Added artistId parameter
+  artistId: number;
+  downloadImage?: boolean; // New parameter
 }
 
 export const useGenerateArtistImage = () => {
@@ -24,7 +25,8 @@ export const useGenerateArtistImage = () => {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: {
           ...params,
-          numberResults: params.numberResults || 4 // Default to 4 images if not specified
+          numberResults: params.numberResults || 4, // Default to 4 images if not specified
+          download_image: params.downloadImage || true // Default to true - download and store images
         }
       });
 

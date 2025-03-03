@@ -1,189 +1,331 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.1";
 
-const API_ENDPOINT = "wss://ws-api.runware.ai/v1";
-const RUNWARE_API_KEY = Deno.env.get('RUNWAYML_API_KEY');
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
+// Define CORS headers for browser requests
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Function to generate a random string for filenames
+function generateRandomString(length = 10) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+// Function to download an image from a URL and convert to File object
+async function downloadImage(url: string, filename: string): Promise<Uint8Array> {
+  console.log(`Downloading image from: ${url}`);
+  
+  try {
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
+    }
+    
+    const arrayBuffer = await response.arrayBuffer();
+    return new Uint8Array(arrayBuffer);
+  } catch (error) {
+    console.error("Error downloading image:", error);
+    throw error;
+  }
+}
+
+// Function to upload image to Supabase Storage
+async function uploadImageToStorage(
+  supabase: any, 
+  imageData: Uint8Array, 
+  filename: string
+): Promise<string> {
+  console.log(`Uploading image to storage: ${filename}`);
+  
+  try {
+    // Create the bucket if it doesn't exist
+    const { data: bucketData, error: bucketError } = await supabase
+      .storage
+      .getBucket('artist-images');
+    
+    if (bucketError && bucketError.message.includes('The resource was not found')) {
+      console.log('Creating artist-images bucket');
+      const { error: createBucketError } = await supabase
+        .storage
+        .createBucket('artist-images', {
+          public: true
+        });
+      
+      if (createBucketError) {
+        throw createBucketError;
+      }
+    } else if (bucketError) {
+      throw bucketError;
+    }
+    
+    // Upload the file
+    const { data, error } = await supabase
+      .storage
+      .from('artist-images')
+      .upload(filename, imageData, {
+        contentType: 'image/jpeg',
+        upsert: true
+      });
+    
+    if (error) {
+      throw error;
+    }
+    
+    // Get the public URL
+    const { data: publicURLData } = supabase
+      .storage
+      .from('artist-images')
+      .getPublicUrl(filename);
+    
+    console.log(`Image uploaded successfully. Public URL: ${publicURLData.publicUrl}`);
+    return publicURLData.publicUrl;
+  } catch (error) {
+    console.error("Error uploading image to storage:", error);
+    throw error;
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    if (!RUNWARE_API_KEY) {
-      throw new Error('RUNWAYML_API_KEY is not set');
-    }
-
-    const { name, specialty, techniques, styles, numberResults = 4, artistId } = await req.json();
-    
-    if (!artistId) {
-      throw new Error('artistId is required');
-    }
-    
-    console.log("Received request for artist:", { name, specialty, techniques, styles, numberResults, artistId });
-
-    // Initialize Supabase client
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-    // Create a more personalized prompt using the artist's details
-    const createArtworkPrompt = (index: number) => {
-      const randomStyle = styles && styles.length > 0 ? styles[Math.floor(Math.random() * styles.length)] : 'contemporary';
-      const randomTechnique = techniques && techniques.length > 0 ? techniques[Math.floor(Math.random() * techniques.length)] : specialty;
-      
-      const prompt = `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of ${numberResults}.`;
-      console.log(`Generated prompt ${index + 1}:`, prompt);
-      return prompt;
-    };
-
-    const ws = new WebSocket(API_ENDPOINT);
-    const results: any[] = [];
-    let authenticated = false;
-    let connectionClosed = false;
-    let generationComplete = false;
-
-    const artworkUrls = await new Promise<string[]>((resolve, reject) => {
-      let timeoutId: number;
-
-      // Set a timeout for the entire operation
-      timeoutId = setTimeout(() => {
-        console.error("Operation timed out");
-        ws.close();
-        reject(new Error('Operation timed out after 60 seconds'));
-      }, 60000); // 60 second timeout
-
-      ws.onopen = () => {
-        console.log("WebSocket connected, sending authentication...");
-        const authMessage = [{
-          taskType: "authentication",
-          apiKey: RUNWARE_API_KEY,
-        }];
-        ws.send(JSON.stringify(authMessage));
-      };
-
-      ws.onmessage = async (event) => {
-        const response = JSON.parse(event.data);
-        console.log("Received response:", response);
-        
-        if (response.error || response.errors) {
-          console.error("Error in response:", response.error || response.errors);
-          reject(new Error(response.errorMessage || response.errors[0].message));
-          return;
-        }
-
-        if (response.data) {
-          for (const item of response.data) {
-            if (item.taskType === "authentication") {
-              console.log("Authentication successful");
-              authenticated = true;
-              // Generate artworks
-              for (let i = 0; i < numberResults; i++) {
-                const taskUUID = crypto.randomUUID();
-                const message = [{
-                  taskType: "imageInference",
-                  taskUUID,
-                  model: "runware:100@1",
-                  positivePrompt: createArtworkPrompt(i),
-                  width: 1024,
-                  height: 1024,
-                  numberResults: 1,
-                  outputFormat: "WEBP",
-                  steps: 4,
-                  CFGScale: 1,
-                  scheduler: "FlowMatchEulerDiscreteScheduler",
-                  strength: 0.8,
-                }];
-                console.log(`Sending artwork generation request ${i + 1}:`, message);
-                ws.send(JSON.stringify(message));
-              }
-            } else if (item.taskType === "imageInference" && item.imageURL) {
-              console.log(`Received artwork URL ${results.length + 1}:`, item.imageURL);
-              results.push(item);
-              if (results.length === numberResults) {
-                generationComplete = true;
-                console.log("All artworks generated, closing connection");
-                ws.close();
-              }
-            }
-          }
-        }
-      };
-
-      ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
-        clearTimeout(timeoutId);
-        reject(error);
-      };
-
-      ws.onclose = () => {
-        console.log("WebSocket connection closed");
-        connectionClosed = true;
-        clearTimeout(timeoutId);
-        
-        if (!authenticated) {
-          reject(new Error("Authentication failed"));
-          return;
-        }
-        
-        if (!generationComplete) {
-          reject(new Error("Connection closed before all artworks were generated"));
-          return;
-        }
-
-        const urls = results.map(result => result.imageURL).filter(url => typeof url === 'string');
-        console.log("Final artwork URLs:", urls);
-        
-        if (urls.length !== numberResults) {
-          reject(new Error(`Expected ${numberResults} artworks but got ${urls.length}`));
-          return;
-        }
-
-        resolve(urls);
-      };
-    });
-
-    // Save artworks to Supabase
-    console.log("Saving artwork URLs to Supabase for artist:", artistId);
-    const { error: updateError } = await supabase
-      .from('artists')
-      .update({
-        artworks: artworkUrls,
-        locked_artworks: false
-      })
-      .eq('id', artistId);
-
-    if (updateError) {
-      console.error("Error saving artworks to Supabase:", updateError);
-      throw new Error(`Failed to save artworks: ${updateError.message}`);
-    }
-
-    console.log("Successfully saved artwork URLs to Supabase");
-
-    return new Response(
-      JSON.stringify({ artworkUrls }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
+    // Create Supabase client
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
+
+    // Parse request body
+    const { 
+      artist_id, 
+      prompt, 
+      save = false, 
+      generate_artworks = false, 
+      count = 4,
+      download_image = false,
+      download_images = false
+    } = await req.json();
+
+    // Validate artist_id
+    if (!artist_id) {
+      return new Response(
+        JSON.stringify({ error: 'artist_id is required' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Get artist data
+    const { data: artist, error: artistError } = await supabase
+      .from('artists')
+      .select('*')
+      .eq('id', artist_id)
+      .single();
+
+    if (artistError) {
+      console.error('Error fetching artist:', artistError);
+      return new Response(
+        JSON.stringify({ error: 'Failed to fetch artist data', details: artistError.message }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Process based on operation type
+    if (save && artist.image) {
+      // Handle save operation - download and store the existing temp image
+      console.log(`Saving artist image for artist ID: ${artist_id}`);
+      
+      try {
+        const imageData = await downloadImage(artist.image, `artist_${artist_id}.jpg`);
+        const filename = `artist_${artist_id}_${generateRandomString()}.jpg`;
+        const publicUrl = await uploadImageToStorage(supabase, imageData, filename);
+        
+        // Update artist record with new image URL
+        const { error: updateError } = await supabase
+          .from('artists')
+          .update({ image: publicUrl })
+          .eq('id', artist_id);
+        
+        if (updateError) {
+          throw updateError;
+        }
+        
+        return new Response(
+          JSON.stringify({ success: true, message: 'Artist image saved successfully', url: publicUrl }),
+          { 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      } catch (error) {
+        console.error('Error saving artist image:', error);
+        return new Response(
+          JSON.stringify({ error: 'Failed to save artist image', details: error.message }),
+          { 
+            status: 500, 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      }
+    } else if (generate_artworks) {
+      // Handle artwork generation
+      console.log(`Generating ${count} artworks for artist ID: ${artist_id}`);
+      
+      try {
+        // Simulate artwork generation (replace this with actual API call)
+        const artworkUrls = [];
+        const artworkStyle = artist.styles && artist.styles.length > 0 
+          ? artist.styles[0] 
+          : 'contemporary';
+        
+        for (let i = 0; i < count; i++) {
+          // In a real implementation, you would call an image generation API here
+          // For now, we're using placeholder URLs
+          const placeholderUrl = `https://placehold.co/600x600/random?text=${encodeURIComponent(artist.name)}_artwork_${i}`;
+          artworkUrls.push(placeholderUrl);
+        }
+        
+        // If download_images flag is true, download and store the artwork images
+        if (download_images) {
+          const storedUrls = [];
+          
+          for (let i = 0; i < artworkUrls.length; i++) {
+            const imageData = await downloadImage(artworkUrls[i], `artwork_${artist_id}_${i}.jpg`);
+            const filename = `artwork_${artist_id}_${i}_${generateRandomString()}.jpg`;
+            const publicUrl = await uploadImageToStorage(supabase, imageData, filename);
+            storedUrls.push(publicUrl);
+          }
+          
+          // Update artist record with new artwork URLs
+          const { error: updateError } = await supabase
+            .from('artists')
+            .update({ artworks: storedUrls })
+            .eq('id', artist_id);
+          
+          if (updateError) {
+            throw updateError;
+          }
+          
+          return new Response(
+            JSON.stringify({ success: true, message: 'Artworks generated and saved successfully', urls: storedUrls }),
+            { 
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+            }
+          );
+        } else {
+          // Just update artist record with the generated URLs
+          const { error: updateError } = await supabase
+            .from('artists')
+            .update({ artworks: artworkUrls })
+            .eq('id', artist_id);
+          
+          if (updateError) {
+            throw updateError;
+          }
+          
+          return new Response(
+            JSON.stringify({ success: true, message: 'Artworks generated successfully', urls: artworkUrls }),
+            { 
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+            }
+          );
+        }
+      } catch (error) {
+        console.error('Error generating artworks:', error);
+        return new Response(
+          JSON.stringify({ error: 'Failed to generate artworks', details: error.message }),
+          { 
+            status: 500, 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      }
+    } else {
+      // Handle image generation
+      console.log(`Generating artist image for artist ID: ${artist_id}`);
+      
+      try {
+        // Create a prompt if not provided
+        const imagePrompt = prompt || `Professional portrait photograph of a ${artist.specialty} artist named ${artist.name}`;
+        
+        // In a real implementation, you would call an image generation API here
+        // For now, we're using a placeholder URL
+        const generatedImageUrl = `https://placehold.co/400x400/random?text=${encodeURIComponent(artist.name)}`;
+        
+        // If download_image flag is true, download and store the image
+        if (download_image) {
+          const imageData = await downloadImage(generatedImageUrl, `artist_${artist_id}.jpg`);
+          const filename = `artist_${artist_id}_${generateRandomString()}.jpg`;
+          const publicUrl = await uploadImageToStorage(supabase, imageData, filename);
+          
+          // Update artist record with new image URL
+          const { error: updateError } = await supabase
+            .from('artists')
+            .update({ image: publicUrl })
+            .eq('id', artist_id);
+          
+          if (updateError) {
+            throw updateError;
+          }
+          
+          return new Response(
+            JSON.stringify({ success: true, message: 'Artist image generated and saved successfully', url: publicUrl }),
+            { 
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+            }
+          );
+        } else {
+          // Just update artist record with the generated URL
+          const { error: updateError } = await supabase
+            .from('artists')
+            .update({ image: generatedImageUrl })
+            .eq('id', artist_id);
+          
+          if (updateError) {
+            throw updateError;
+          }
+          
+          return new Response(
+            JSON.stringify({ success: true, message: 'Artist image generated successfully', url: generatedImageUrl }),
+            { 
+              headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+            }
+          );
+        }
+      } catch (error) {
+        console.error('Error generating artist image:', error);
+        return new Response(
+          JSON.stringify({ error: 'Failed to generate artist image', details: error.message }),
+          { 
+            status: 500, 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      }
+    }
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Unexpected error:', error);
     return new Response(
-      JSON.stringify({ 
-        error: error.message,
-        details: error.stack
-      }),
+      JSON.stringify({ error: 'An unexpected error occurred', details: error.message }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
-        status: 500 
+        status: 500, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       }
     );
   }

@@ -57,12 +57,16 @@ const ArtistCard = ({
       const prompt = `Professional portrait photograph of a ${specialty} artist named ${name} from ${city || ''} ${country || ''}. ${bio || ''}`;
       
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { artist_id: id, prompt }
+        body: { 
+          artist_id: id, 
+          prompt,
+          download_image: true // Add this flag to download and store the image
+        }
       });
       
       if (error) throw error;
       
-      toast.success('Artist image generated successfully!');
+      toast.success('Artist image generated and saved to storage!');
       // Force reload to show the new image
       window.location.reload();
     } catch (error) {
