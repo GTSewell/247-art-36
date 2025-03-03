@@ -57,7 +57,7 @@ const ArtistCard = ({
   ];
 
   useEffect(() => {
-    // Reset state when image prop changes
+    // Force reset the state when image prop changes to ensure fresh loading
     setImageError(false);
     setDisplayImage(image);
     setRetryCount(0);
@@ -86,9 +86,11 @@ const ArtistCard = ({
       
       // If it's not a runware URL but still failed, try with cache busting
       if (!displayImage.includes('unsplash.com')) {
+        // Add a cache-busting query parameter
+        const timestamp = new Date().getTime();
         const newUrl = displayImage.includes('?') 
-          ? `${displayImage}&retry=${retryCount}` 
-          : `${displayImage}?retry=${retryCount}`;
+          ? `${displayImage}&t=${timestamp}` 
+          : `${displayImage}?t=${timestamp}`;
         setDisplayImage(newUrl);
       } else {
         // If it's unsplash and still failed, use a different fallback

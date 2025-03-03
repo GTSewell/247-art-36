@@ -1,190 +1,183 @@
 
+// supabase/functions/generate-artist-image/index.ts
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1';
 
-const API_ENDPOINT = "wss://ws-api.runware.ai/v1";
-const RUNWARE_API_KEY = Deno.env.get('RUNWAYML_API_KEY');
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-
+// Define CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
+  // Handle CORS preflight request
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    if (!RUNWARE_API_KEY) {
-      throw new Error('RUNWAYML_API_KEY is not set');
+    // Parse request body
+    const requestData = await req.json();
+    console.log("Received request:", JSON.stringify(requestData));
+
+    // Extract data from the request
+    const { prompt, artistId, preview, imageUrl } = requestData;
+
+    // Create Supabase client
+    const supabaseUrl = Deno.env.get('SUPABASE_URL') || '';
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Get Runware API key from environment
+    const runwareApiKey = Deno.env.get('RUNWARE_API_KEY');
+    if (!runwareApiKey) {
+      console.error("Runware API key not found in environment variables");
+      return new Response(
+        JSON.stringify({ error: "Runware API key configuration missing" }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
     }
 
-    const { name, specialty, techniques, styles, numberResults = 4, artistId } = await req.json();
-    
-    if (!artistId) {
-      throw new Error('artistId is required');
-    }
-    
-    console.log("Received request for artist:", { name, specialty, techniques, styles, numberResults, artistId });
-
-    // Initialize Supabase client
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
-    // Create a more personalized prompt using the artist's details
-    const createArtworkPrompt = (index: number) => {
-      const randomStyle = styles && styles.length > 0 ? styles[Math.floor(Math.random() * styles.length)] : 'contemporary';
-      const randomTechnique = techniques && techniques.length > 0 ? techniques[Math.floor(Math.random() * techniques.length)] : specialty;
+    // Check if we're saving an existing image or generating a new one
+    if (!preview && imageUrl) {
+      console.log(`Saving existing image URL for artist ${artistId}: ${imageUrl}`);
       
-      const prompt = `Create an artwork that showcases ${name}'s expertise in ${specialty} in a ${randomStyle} style. The piece should demonstrate mastery of ${randomTechnique}. Make it a professional, gallery-worthy piece with rich colors and compelling composition. Artwork ${index + 1} of ${numberResults}.`;
-      console.log(`Generated prompt ${index + 1}:`, prompt);
-      return prompt;
-    };
+      // Update the artist record with the new image URL
+      const { error: updateError } = await supabase
+        .from('artists')
+        .update({ image: imageUrl })
+        .eq('id', artistId);
+      
+      if (updateError) {
+        console.error("Error updating artist record:", updateError);
+        return new Response(
+          JSON.stringify({ error: "Failed to update artist with new image", details: updateError }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        );
+      }
+      
+      return new Response(
+        JSON.stringify({ success: true, message: "Artist image updated successfully" }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
-    const ws = new WebSocket(API_ENDPOINT);
-    const results: any[] = [];
-    let authenticated = false;
-    let connectionClosed = false;
-    let generationComplete = false;
+    // If we're generating a new image
+    if (!prompt) {
+      return new Response(
+        JSON.stringify({ error: "Missing prompt for image generation" }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
+    }
 
-    const artworkUrls = await new Promise<string[]>((resolve, reject) => {
-      let timeoutId: number;
+    // Check if artist exists
+    const { data: artistData, error: artistError } = await supabase
+      .from('artists')
+      .select('*')
+      .eq('id', artistId)
+      .single();
+    
+    if (artistError || !artistData) {
+      console.error("Error fetching artist:", artistError);
+      return new Response(
+        JSON.stringify({ error: "Artist not found", details: artistError }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 404 }
+      );
+    }
 
-      // Set a timeout for the entire operation
-      timeoutId = setTimeout(() => {
-        console.error("Operation timed out");
-        ws.close();
-        reject(new Error('Operation timed out after 60 seconds'));
-      }, 60000); // 60 second timeout
+    console.log(`Generating image for artist ${artistId} with prompt: ${prompt}`);
 
-      ws.onopen = () => {
-        console.log("WebSocket connected, sending authentication...");
-        const authMessage = [{
+    // Make request to Runware API
+    const runwareResponse = await fetch('https://api.runware.ai/v1', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify([
+        {
           taskType: "authentication",
-          apiKey: RUNWARE_API_KEY,
-        }];
-        ws.send(JSON.stringify(authMessage));
-      };
-
-      ws.onmessage = async (event) => {
-        const response = JSON.parse(event.data);
-        console.log("Received response:", response);
-        
-        if (response.error || response.errors) {
-          console.error("Error in response:", response.error || response.errors);
-          reject(new Error(response.errorMessage || response.errors[0].message));
-          return;
+          apiKey: runwareApiKey
+        },
+        {
+          taskType: "imageInference",
+          taskUUID: crypto.randomUUID(),
+          positivePrompt: prompt,
+          width: 1024,
+          height: 1024,
+          model: "runware:100@1",
+          numberResults: 1,
+          outputFormat: "WEBP",
+          CFGScale: 1,
+          scheduler: "FlowMatchEulerDiscreteScheduler",
+          strength: 0.8
         }
-
-        if (response.data) {
-          for (const item of response.data) {
-            if (item.taskType === "authentication") {
-              console.log("Authentication successful");
-              authenticated = true;
-              // Generate artworks
-              for (let i = 0; i < numberResults; i++) {
-                const taskUUID = crypto.randomUUID();
-                const message = [{
-                  taskType: "imageInference",
-                  taskUUID,
-                  model: "runware:100@1",
-                  positivePrompt: createArtworkPrompt(i),
-                  width: 1024,
-                  height: 1024,
-                  numberResults: 1,
-                  outputFormat: "WEBP",
-                  steps: 4,
-                  CFGScale: 1,
-                  scheduler: "FlowMatchEulerDiscreteScheduler",
-                  strength: 0.8,
-                }];
-                console.log(`Sending artwork generation request ${i + 1}:`, message);
-                ws.send(JSON.stringify(message));
-              }
-            } else if (item.taskType === "imageInference" && item.imageURL) {
-              console.log(`Received artwork URL ${results.length + 1}:`, item.imageURL);
-              results.push(item);
-              if (results.length === numberResults) {
-                generationComplete = true;
-                console.log("All artworks generated, closing connection");
-                ws.close();
-              }
-            }
-          }
-        }
-      };
-
-      ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
-        clearTimeout(timeoutId);
-        reject(error);
-      };
-
-      ws.onclose = () => {
-        console.log("WebSocket connection closed");
-        connectionClosed = true;
-        clearTimeout(timeoutId);
-        
-        if (!authenticated) {
-          reject(new Error("Authentication failed"));
-          return;
-        }
-        
-        if (!generationComplete) {
-          reject(new Error("Connection closed before all artworks were generated"));
-          return;
-        }
-
-        const urls = results.map(result => result.imageURL).filter(url => typeof url === 'string');
-        console.log("Final artwork URLs:", urls);
-        
-        if (urls.length !== numberResults) {
-          reject(new Error(`Expected ${numberResults} artworks but got ${urls.length}`));
-          return;
-        }
-
-        resolve(urls);
-      };
+      ])
     });
 
-    // Save artworks to Supabase
-    console.log("Saving artwork URLs to Supabase for artist:", artistId);
-    const { error: updateError } = await supabase
-      .from('artists')
-      .update({
-        artworks: artworkUrls,
-        locked_artworks: false
-      })
-      .eq('id', artistId);
-
-    if (updateError) {
-      console.error("Error saving artworks to Supabase:", updateError);
-      throw new Error(`Failed to save artworks: ${updateError.message}`);
+    if (!runwareResponse.ok) {
+      const errorText = await runwareResponse.text();
+      console.error(`Runware API error (${runwareResponse.status}):`, errorText);
+      return new Response(
+        JSON.stringify({ error: `Runware API error: ${errorText}` }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
     }
 
-    console.log("Successfully saved artwork URLs to Supabase");
+    const runwareData = await runwareResponse.json();
+    console.log("Runware API response:", JSON.stringify(runwareData));
 
-    return new Response(
-      JSON.stringify({ artworkUrls }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    if (!runwareData.data || !runwareData.data.length) {
+      return new Response(
+        JSON.stringify({ error: "No image data returned from Runware" }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
+    }
+
+    // Extract image URL from response
+    const imageData = runwareData.data.find((item: any) => item.taskType === "imageInference");
+    if (!imageData || !imageData.imageURL) {
+      return new Response(
+        JSON.stringify({ error: "No image URL found in Runware response" }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      );
+    }
+
+    const generatedImageUrl = imageData.imageURL;
+    console.log(`Generated image URL: ${generatedImageUrl}`);
+
+    // If this is not a preview, update the artist record with the new image
+    if (!preview) {
+      console.log(`Updating artist ${artistId} with new image URL`);
+      
+      const { error: updateError } = await supabase
+        .from('artists')
+        .update({ image: generatedImageUrl })
+        .eq('id', artistId);
+      
+      if (updateError) {
+        console.error("Error updating artist record:", updateError);
+        return new Response(
+          JSON.stringify({ error: "Failed to update artist with new image", details: updateError }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+        );
       }
-    );
-  } catch (error) {
-    console.error('Error:', error);
+    }
+
+    // Return the image URL
     return new Response(
       JSON.stringify({ 
-        error: error.message,
-        details: error.stack
+        success: true, 
+        imageUrl: generatedImageUrl,
+        preview: preview
       }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }, 
-        status: 500 
-      }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return new Response(
+      JSON.stringify({ error: "An unexpected error occurred", details: error.message }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     );
   }
 });
