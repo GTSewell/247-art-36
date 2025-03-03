@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -10,11 +10,22 @@ import GenerateArtistImage from './GenerateArtistImage';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
-  onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
-  isFavorite: boolean;
+  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
+  isFavorite?: boolean;
+  onSelect?: (artist: Artist) => void;
+  onClose?: (e?: React.MouseEvent) => void;
 }
 
-const ArtistDetailsPanel = ({ artist, onFavoriteToggle, isFavorite }: ArtistDetailsPanelProps) => {
+const ArtistDetailsPanel = ({ 
+  artist, 
+  onFavoriteToggle, 
+  isFavorite = false,
+  onSelect,
+  onClose
+}: ArtistDetailsPanelProps) => {
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
   const location = artist.city && artist.country 
     ? `${artist.city}, ${artist.country}` 
     : artist.city || artist.country || '';
@@ -65,17 +76,42 @@ const ArtistDetailsPanel = ({ artist, onFavoriteToggle, isFavorite }: ArtistDeta
           )}
         </CardContent>
         <CardFooter className="flex justify-between">
-          {/* Additional content could go here */}
+          {onSelect && (
+            <button 
+              onClick={() => onSelect(artist)}
+              className="text-sm text-primary hover:underline"
+            >
+              View Full Profile
+            </button>
+          )}
+          {onClose && (
+            <button 
+              onClick={onClose}
+              className="text-sm text-muted-foreground hover:text-primary"
+            >
+              Close
+            </button>
+          )}
         </CardFooter>
       </Card>
       
       <Separator />
       
       {/* Social Media Presence */}
-      <ArtistSocialSection artist={artist} />
+      <ArtistSocialSection socialPlatforms={artist.social_platforms} />
       
       {/* Artworks Section */}
-      <ArtistArtworksSection artist={artist} />
+      <ArtistArtworksSection 
+        artist={artist} 
+        isGenerating={isGenerating}
+        isSaving={isSaving}
+        setIsSaving={setIsSaving}
+        onRegenerateArtworks={async () => {
+          setIsGenerating(true);
+          // Normally would have implementation here
+          setTimeout(() => setIsGenerating(false), 2000);
+        }}
+      />
     </div>
   );
 };
