@@ -43,13 +43,17 @@ const ArtistCard = ({
   const [displayImage, setDisplayImage] = useState(image);
   const [retryCount, setRetryCount] = useState(0);
   
-  // Predefined reliable backup images
+  // Expanded fallback images list for more diversity
   const fallbackImages = [
     '/placeholder.svg',
     'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
     'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b',
     'https://images.unsplash.com/photo-1485827404703-89b55fcc595e',
-    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5'
+    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5',
+    'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd',
+    'https://images.unsplash.com/photo-1561948955-570b270e7c36',
+    'https://images.unsplash.com/photo-1518895949257-7621c3c786d7',
+    'https://images.unsplash.com/photo-1583512603805-3cc6b41f3edb'
   ];
 
   useEffect(() => {
@@ -69,8 +73,8 @@ const ArtistCard = ({
     console.log("Artist card image failed to load:", displayImage);
     
     // If we've tried the original image and it failed, try a fallback
-    if (retryCount === 0 && displayImage === image) {
-      setRetryCount(1);
+    if (retryCount < 2) {
+      setRetryCount(prevCount => prevCount + 1);
       
       // If the image URL contains runware.ai (which seems to be failing consistently)
       // immediately use a fallback image instead of retrying
@@ -80,13 +84,19 @@ const ArtistCard = ({
         return;
       }
       
-      // Try the same URL again with a cache-busting parameter (might help with temporary network issues)
-      const newUrl = displayImage.includes('?') 
-        ? `${displayImage}&retry=1` 
-        : `${displayImage}?retry=1`;
-      setDisplayImage(newUrl);
+      // If it's not a runware URL but still failed, try with cache busting
+      if (!displayImage.includes('unsplash.com')) {
+        const newUrl = displayImage.includes('?') 
+          ? `${displayImage}&retry=${retryCount}` 
+          : `${displayImage}?retry=${retryCount}`;
+        setDisplayImage(newUrl);
+      } else {
+        // If it's unsplash and still failed, use a different fallback
+        setImageError(true);
+        setDisplayImage(getNextFallbackImage());
+      }
     } else {
-      // If we've already retried or the retry failed, use fallback image
+      // If we've already retried twice, use fallback image
       setImageError(true);
       setDisplayImage(getNextFallbackImage());
     }
