@@ -41,12 +41,8 @@ export const useDownloadArtistImages = () => {
       logger.info('Starting artist image download process');
       
       try {
-        // Get the Supabase URL directly from the imported client
-        const supabaseUrl = supabase.getUrl();
-        
-        if (!supabaseUrl) {
-          throw new Error('Could not determine the Supabase URL');
-        }
+        // Use the supabase URL directly from the imported client config
+        const supabaseUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co";
         
         logger.info(`Using Supabase URL: ${supabaseUrl}`);
         
