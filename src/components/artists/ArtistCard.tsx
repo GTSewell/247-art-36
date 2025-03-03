@@ -61,7 +61,7 @@ const ArtistCard = ({
       
       logger.info("Calling generate-artist-image edge function with prompt:", { artistId: id, promptPreview: prompt.substring(0, 50) + "..." });
       
-      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
+      const { data, error, status } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
           artist_id: id, 
           prompt,
@@ -69,14 +69,22 @@ const ArtistCard = ({
         }
       });
       
+      logger.info('Edge function response status:', status);
+      
       if (error) {
         logger.error('Edge function error details:', error);
-        throw error;
+        throw new Error(`Edge Function error: ${error.message || 'Unknown error'} (Status: ${status})`);
+      }
+      
+      if (status !== 200) {
+        logger.error('Edge function returned non-200 status code:', status);
+        throw new Error(`Edge Function returned a non-2xx status code: ${status}`);
       }
       
       if (!data || data.error) {
-        logger.error('API response error:', data?.error || 'No data returned');
-        throw new Error(data?.details || 'Failed to generate artist image');
+        const errorDetails = data?.details || 'No details provided';
+        logger.error('API response error:', data?.error || 'No data returned', errorDetails);
+        throw new Error(`${data?.error || 'Failed to generate artist image'}: ${errorDetails}`);
       }
       
       logger.info('Artist image generated successfully from card view:', data);
