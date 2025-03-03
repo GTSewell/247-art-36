@@ -1,8 +1,10 @@
 
 import React, { useState } from "react";
-import { Zap } from "lucide-react";
+import { Zap, Wand } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface ArtistCardProps {
   id: number;
@@ -40,11 +42,35 @@ const ArtistCard = ({
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
   const [imageError, setImageError] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     console.log("Artist card image failed to load:", image);
     setImageError(true);
     e.currentTarget.src = '/placeholder.svg';
+  };
+
+  const handleGenerateArtistImage = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsGenerating(true);
+    try {
+      const prompt = `Professional portrait photograph of a ${specialty} artist named ${name} from ${city || ''} ${country || ''}. ${bio || ''}`;
+      
+      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
+        body: { artist_id: id, prompt }
+      });
+      
+      if (error) throw error;
+      
+      toast.success('Artist image generated successfully!');
+      // Force reload to show the new image
+      window.location.reload();
+    } catch (error) {
+      console.error('Error generating artist image:', error);
+      toast.error('Failed to generate artist image');
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -54,13 +80,27 @@ const ArtistCard = ({
         onClick={onSelect}
       >
         {/* Artist Image */}
-        <div className="aspect-square overflow-hidden">
+        <div className="aspect-square overflow-hidden relative">
           <img
             src={imageError ? '/placeholder.svg' : image}
             alt={name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             onError={handleImageError}
           />
+          
+          {/* Generate Image Button */}
+          <div className="absolute top-2 left-2 z-10">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white"
+              onClick={handleGenerateArtistImage}
+              title="Generate Image"
+              disabled={isGenerating}
+            >
+              <Wand size={isFeatured ? 24 : 20} className={isGenerating ? 'animate-spin' : ''} />
+            </Button>
+          </div>
         </div>
         
         {/* Artist Information - Visible on hover */}

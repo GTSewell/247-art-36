@@ -1,6 +1,6 @@
 
 import React from "react";
-import { RefreshCw, SaveAll } from "lucide-react";
+import { RefreshCw, SaveAll, Wand } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
@@ -49,6 +49,33 @@ const ArtistArtworksSection = ({
     }
   };
 
+  const handleGenerateArtworks = async () => {
+    if (onRegenerateArtworks) {
+      await onRegenerateArtworks(artist);
+      return;
+    }
+    
+    // Direct generation through the edge function
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
+        body: { 
+          artist_id: artist.id, 
+          generate_artworks: true,
+          count: 4
+        }
+      });
+      
+      if (error) throw error;
+      
+      toast.success('Artworks generated successfully!');
+      // Force reload to show the new artworks
+      window.location.reload();
+    } catch (error) {
+      console.error('Error generating artworks:', error);
+      toast.error('Failed to generate artworks');
+    }
+  };
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -68,11 +95,11 @@ const ArtistArtworksSection = ({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onRegenerateArtworks?.(artist)}
+              onClick={handleGenerateArtworks}
               disabled={isGenerating}
               className="flex items-center gap-2"
             >
-              <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+              <Wand className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
               {isGenerating ? 'Generating...' : 'Generate Artworks'}
             </Button>
           </div>
