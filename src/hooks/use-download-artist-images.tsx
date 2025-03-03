@@ -41,8 +41,14 @@ export const useDownloadArtistImages = () => {
       logger.info('Starting artist image download process');
       
       try {
+        // Using the full URL with the project ID
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+        if (!supabaseUrl) {
+          throw new Error('VITE_SUPABASE_URL environment variable is not defined');
+        }
+        
         const response = await fetch(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/download-artist-images`,
+          `${supabaseUrl}/functions/v1/download-artist-images`,
           {
             method: 'POST',
             headers: {
@@ -70,12 +76,14 @@ export const useDownloadArtistImages = () => {
         // Trigger a refresh of the artists data
         window.location.reload();
       } catch (fetchError: any) {
-        setErrorDetails(fetchError.message || 'Failed to download artist images');
+        const errorMessage = fetchError.message || 'Failed to download artist images';
+        setErrorDetails(errorMessage);
         logger.error('Fetch error in downloadImages:', fetchError);
-        toast.error(`Failed to download artist images: ${fetchError.message}`);
+        toast.error(`Failed to download artist images: ${errorMessage}`);
       }
     } catch (error: any) {
-      setErrorDetails(error.message || 'An unexpected error occurred');
+      const errorMessage = error.message || 'An unexpected error occurred';
+      setErrorDetails(errorMessage);
       logger.error('Unexpected error in downloadImages:', error);
       toast.error('An unexpected error occurred');
     } finally {
