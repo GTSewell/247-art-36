@@ -32,7 +32,8 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
         options: {
           data: {
             username
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       });
       if (error) throw error;

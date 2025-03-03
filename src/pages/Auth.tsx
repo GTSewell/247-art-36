@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -6,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+
 const Auth = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({
@@ -36,6 +37,7 @@ const Auth = () => {
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
+
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (username.length < 2) {
@@ -52,7 +54,8 @@ const Auth = () => {
         options: {
           data: {
             username
-          }
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`
         }
       });
       if (error) throw error;
@@ -63,6 +66,7 @@ const Auth = () => {
       setLoading(false);
     }
   };
+
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -80,6 +84,7 @@ const Auth = () => {
       setLoading(false);
     }
   };
+
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
@@ -98,7 +103,9 @@ const Auth = () => {
       setLoading(false);
     }
   };
-  return <div className="min-h-screen flex items-center justify-center bg-zap-yellow p-4">
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-zap-yellow p-4">
       <div className="w-full max-w-md space-y-8 bg-white p-6 rounded-xl shadow-lg">
         <div className="text-center">
           <img alt="ZAP!" src="/lovable-uploads/a6580086-e06f-4c81-a4f2-f866f6726959.png" className="h-12 mx-auto mb-4 rounded-none" />
@@ -153,6 +160,8 @@ const Auth = () => {
           Continue with Google
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Auth;
