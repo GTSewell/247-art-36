@@ -69,7 +69,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     e.currentTarget.src = '/placeholder.svg';
   };
 
-  const handleGenerateArtistImage = async () => {
+  const handleGenerateArtistImage = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the card from flipping
     setIsGeneratingImage(true);
     try {
       const prompt = `Professional portrait photograph of a ${artist.specialty} artist named ${artist.name} from ${artist.city || ''} ${artist.country || ''}. ${artist.bio || ''}`;
@@ -95,7 +96,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  const handleSaveArtistImage = async () => {
+  const handleSaveArtistImage = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the card from flipping
     setIsSavingImage(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
@@ -119,7 +121,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  const handleGenerateArtworks = async () => {
+  const handleGenerateArtworks = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent the card from flipping
     setIsGeneratingArtworks(true);
     try {
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
@@ -160,10 +163,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
             size="sm"
             variant="outline"
             className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleGenerateArtistImage();
-            }}
+            onClick={handleGenerateArtistImage}
             disabled={isGeneratingImage}
           >
             <Wand className={`h-4 w-4 ${isGeneratingImage ? 'animate-spin' : ''}`} />
@@ -173,10 +173,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
             size="sm"
             variant="outline"
             className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
-            onClick={(e) => {
-              e.stopPropagation();
-              handleSaveArtistImage();
-            }}
+            onClick={handleSaveArtistImage}
             disabled={isSavingImage}
           >
             <Save className="h-4 w-4" />
@@ -237,10 +234,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                     size="sm"
                     variant="outline"
                     className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleGenerateArtworks();
-                    }}
+                    onClick={handleGenerateArtworks}
                     disabled={isGeneratingArtworks}
                   >
                     <Wand className={`h-4 w-4 ${isGeneratingArtworks ? 'animate-spin' : ''}`} />
