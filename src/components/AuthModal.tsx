@@ -20,8 +20,8 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username.length < 3) {
-      toast.error("Username must be at least 3 characters long");
+    if (username.length < 2) {
+      toast.error("Username must be at least 2 characters long");
       return;
     }
     try {
@@ -108,7 +108,7 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
             <form onSubmit={handleEmailSignUp} className="space-y-4">
               <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
               <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
-              <Input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required minLength={3} />
+              <Input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} required minLength={2} />
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing up..." : "Sign Up"}
               </Button>
