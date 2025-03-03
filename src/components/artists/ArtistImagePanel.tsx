@@ -35,14 +35,21 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   }, [artist.id]);
 
-  const handleFlip = () => {
-    // Only flip if we're not currently generating or saving
-    if (!isGeneratingImage && !isSavingImage && !isGeneratingArtworks) {
-      setIsFlipped(!isFlipped);
-      if (showClickIndicator) {
-        setShowClickIndicator(false);
-        localStorage.setItem(`flipped-${artist.id}`, 'true');
-      }
+  const handleFlip = (e: React.MouseEvent) => {
+    // Don't flip if the click came from a button or during generation processes
+    if (
+      e.target instanceof HTMLButtonElement || 
+      isGeneratingImage || 
+      isSavingImage || 
+      isGeneratingArtworks
+    ) {
+      return;
+    }
+
+    setIsFlipped(!isFlipped);
+    if (showClickIndicator) {
+      setShowClickIndicator(false);
+      localStorage.setItem(`flipped-${artist.id}`, 'true');
     }
   };
 

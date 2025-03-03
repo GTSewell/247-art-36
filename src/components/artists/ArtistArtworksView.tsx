@@ -37,17 +37,26 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         }
       });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error details:', error);
+        throw error;
+      }
       
       toast.success('Artworks generated and saved to storage!');
       // Force reload to show the new artworks
       window.location.reload();
     } catch (error) {
       console.error('Error generating artworks:', error);
-      toast.error('Failed to generate artworks');
+      toast.error('Failed to generate artworks. Please try again later.');
     } finally {
       setIsGeneratingArtworks(false);
     }
+  };
+
+  // Helper function to directly stop event propagation
+  const stopPropagation = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   return (
@@ -55,7 +64,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       {/* Generate Artworks button */}
       <div 
         className="absolute top-2 left-2 right-2 z-20 flex justify-center" 
-        onClick={e => e.stopPropagation()}
+        onClick={stopPropagation}
       >
         <Button
           size="sm"

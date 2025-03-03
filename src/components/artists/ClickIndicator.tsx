@@ -18,6 +18,11 @@ export const ClickIndicator: React.FC<ClickIndicatorProps> = ({
     return null;
   }
 
+  const stopPropagation = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -29,7 +34,7 @@ export const ClickIndicator: React.FC<ClickIndicatorProps> = ({
         repeatType: "reverse"
       }}
       className="absolute bottom-4 right-4 flex items-center justify-center bg-[#0EA5E9]/90 p-2 rounded-full z-10 shadow-lg"
-      onClick={e => e.stopPropagation()}
+      onClick={stopPropagation}
     >
       <MousePointerClick className="w-6 h-6 text-white animate-pulse" />
     </motion.div>
