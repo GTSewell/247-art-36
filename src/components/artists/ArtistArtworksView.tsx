@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Wand } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -31,7 +30,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     try {
       logger.info("Calling generate-artist-image edge function for artworks");
       
-      const { data, error, status } = await supabase.functions.invoke('generate-artist-image', {
+      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
           artist_id: artist.id, 
           generate_artworks: true,
@@ -40,21 +39,14 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         }
       });
       
-      logger.info('Edge function response status:', status);
-      
       if (error) {
         logger.error('Edge function error details:', error);
-        throw new Error(`Edge Function error: ${error.message || 'Unknown error'} (Status: ${status})`);
-      }
-      
-      if (status !== 200) {
-        logger.error('Edge function returned non-200 status code:', status);
-        throw new Error(`Edge Function returned a non-2xx status code: ${status}`);
+        throw new Error(`Edge Function error: ${error.message || 'Unknown error'}`);
       }
       
       if (!data || data.error) {
         const errorDetails = data?.details || 'No details provided';
-        logger.error('API response error:', data?.error || 'No data returned', errorDetails);
+        logger.error('API response error:', { error: data?.error || 'No data returned', details: errorDetails });
         throw new Error(`${data?.error || 'Failed to generate artworks'}: ${errorDetails}`);
       }
       
