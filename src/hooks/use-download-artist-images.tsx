@@ -41,10 +41,8 @@ export const useDownloadArtistImages = () => {
       logger.info('Starting artist image download process');
       
       try {
-        // Extract just the base URL without the path
-        const fullUrl = supabase.supabaseClient.getUrl();
-        const urlParts = fullUrl.split('/');
-        const supabaseUrl = `${urlParts[0]}//${urlParts[2]}`;
+        // Get the Supabase URL directly from the imported client
+        const supabaseUrl = supabase.getUrl();
         
         if (!supabaseUrl) {
           throw new Error('Could not determine the Supabase URL');
