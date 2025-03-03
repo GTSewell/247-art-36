@@ -41,11 +41,16 @@ export const useDownloadArtistImages = () => {
       logger.info('Starting artist image download process');
       
       try {
-        // Get the Supabase URL from the config we're already using
-        const supabaseUrl = supabase.supabaseUrl;
+        // Extract just the base URL without the path
+        const fullUrl = supabase.supabaseClient.getUrl();
+        const urlParts = fullUrl.split('/');
+        const supabaseUrl = `${urlParts[0]}//${urlParts[2]}`;
+        
         if (!supabaseUrl) {
           throw new Error('Could not determine the Supabase URL');
         }
+        
+        logger.info(`Using Supabase URL: ${supabaseUrl}`);
         
         const response = await fetch(
           `${supabaseUrl}/functions/v1/download-artist-images`,
@@ -55,6 +60,9 @@ export const useDownloadArtistImages = () => {
               Authorization: `Bearer ${session.session.access_token}`,
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify({
+              regenerateAll: true, // Tell the function to regenerate all images
+            }),
           }
         );
         
