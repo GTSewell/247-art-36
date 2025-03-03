@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDownloadArtistImages } from '@/hooks/use-download-artist-images';
 import { Button } from '@/components/ui/button';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, AlertTriangle } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 
 const DownloadArtistImages: React.FC = () => {
-  const { downloadImages, isDownloading, result } = useDownloadArtistImages();
+  const { downloadImages, isDownloading, result, errorDetails } = useDownloadArtistImages();
 
   return (
     <Dialog>
@@ -40,6 +40,17 @@ const DownloadArtistImages: React.FC = () => {
               </p>
               <p className="text-xs text-muted-foreground">
                 This may take several minutes depending on the number of images.
+              </p>
+            </div>
+          ) : errorDetails ? (
+            <div className="flex flex-col items-center justify-center gap-3 py-4 text-center">
+              <AlertTriangle className="h-8 w-8 text-red-500" />
+              <p className="font-medium text-red-600">Error Occurred</p>
+              <div className="p-3 bg-red-50 text-red-800 rounded-md text-sm overflow-auto max-h-[200px] w-full">
+                {errorDetails}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Please check the console logs for more details or try again later.
               </p>
             </div>
           ) : result ? (
@@ -110,11 +121,12 @@ const DownloadArtistImages: React.FC = () => {
             onClick={() => window.location.reload()}
             disabled={isDownloading}
           >
-            {result ? 'Refresh Page' : 'Cancel'}
+            {result || errorDetails ? 'Refresh Page' : 'Cancel'}
           </Button>
           <Button 
             onClick={downloadImages} 
             disabled={isDownloading || !!result}
+            className={errorDetails ? "bg-amber-600 hover:bg-amber-700" : ""}
           >
             {isDownloading ? (
               <>
@@ -123,6 +135,8 @@ const DownloadArtistImages: React.FC = () => {
               </>
             ) : result ? (
               'Complete'
+            ) : errorDetails ? (
+              'Try Again'
             ) : (
               'Start Download'
             )}
