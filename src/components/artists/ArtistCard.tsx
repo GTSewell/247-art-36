@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
@@ -40,11 +40,56 @@ const ArtistCard = ({
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
   const [imageError, setImageError] = useState(false);
+  const [displayImage, setDisplayImage] = useState(image);
+  const [retryCount, setRetryCount] = useState(0);
+  
+  // Predefined reliable backup images
+  const fallbackImages = [
+    '/placeholder.svg',
+    'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+    'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b',
+    'https://images.unsplash.com/photo-1485827404703-89b55fcc595e',
+    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5'
+  ];
+
+  useEffect(() => {
+    // Reset state when image prop changes
+    setImageError(false);
+    setDisplayImage(image);
+    setRetryCount(0);
+  }, [image]);
+  
+  const getNextFallbackImage = (): string => {
+    // Create a deterministic but varied selection based on artist id
+    const index = (id + retryCount) % fallbackImages.length;
+    return fallbackImages[index];
+  };
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log("Artist card image failed to load:", image);
-    setImageError(true);
-    e.currentTarget.src = '/placeholder.svg';
+    console.log("Artist card image failed to load:", displayImage);
+    
+    // If we've tried the original image and it failed, try a fallback
+    if (retryCount === 0 && displayImage === image) {
+      setRetryCount(1);
+      
+      // If the image URL contains runware.ai (which seems to be failing consistently)
+      // immediately use a fallback image instead of retrying
+      if (displayImage.includes('runware.ai') || displayImage.includes('im.runware')) {
+        setImageError(true);
+        setDisplayImage(getNextFallbackImage());
+        return;
+      }
+      
+      // Try the same URL again with a cache-busting parameter (might help with temporary network issues)
+      const newUrl = displayImage.includes('?') 
+        ? `${displayImage}&retry=1` 
+        : `${displayImage}?retry=1`;
+      setDisplayImage(newUrl);
+    } else {
+      // If we've already retried or the retry failed, use fallback image
+      setImageError(true);
+      setDisplayImage(getNextFallbackImage());
+    }
   };
 
   return (
@@ -56,7 +101,7 @@ const ArtistCard = ({
         {/* Artist Image */}
         <div className="aspect-square overflow-hidden">
           <img
-            src={imageError ? '/placeholder.svg' : image}
+            src={displayImage}
             alt={name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             onError={handleImageError}

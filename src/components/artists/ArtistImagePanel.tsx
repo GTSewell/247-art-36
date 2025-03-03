@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MousePointerClick } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
@@ -22,6 +21,15 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [mainImageError, setMainImageError] = useState(false);
   const [artworkErrors, setArtworkErrors] = useState<Record<number, boolean>>({});
   const isMobile = useIsMobile();
+  const [imageRetries, setImageRetries] = useState<Record<string, number>>({});
+
+  const fallbackImages = [
+    '/placeholder.svg',
+    'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+    'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b',
+    'https://images.unsplash.com/photo-1485827404703-89b55fcc595e',
+    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5'
+  ];
 
   useEffect(() => {
     const hasFlipped = localStorage.getItem(`flipped-${artist.id}`);
@@ -51,16 +59,56 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
+  const getNextFallbackImage = (currentImage: string, index: number = 0): string => {
+    const fallbackIndex = fallbackImages.indexOf(currentImage);
+    if (fallbackIndex >= 0) {
+      const nextIndex = (fallbackIndex + 1) % fallbackImages.length;
+      return fallbackImages[nextIndex];
+    }
+    
+    return fallbackImages[index % fallbackImages.length];
+  };
+
   const handleMainImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    console.log("Main image failed to load:", artist.image);
-    setMainImageError(true);
-    e.currentTarget.src = '/placeholder.svg';
+    const imgElement = e.currentTarget;
+    const currentSrc = imgElement.src;
+    
+    console.log("Main image failed to load:", currentSrc);
+    
+    const retryCount = (imageRetries[currentSrc] || 0) + 1;
+    setImageRetries(prev => ({ ...prev, [currentSrc]: retryCount }));
+    
+    if (retryCount >= 2) {
+      setMainImageError(true);
+      imgElement.src = getNextFallbackImage(currentSrc);
+    } else {
+      setTimeout(() => {
+        imgElement.src = currentSrc.includes('?') 
+          ? `${currentSrc}&retry=${retryCount}` 
+          : `${currentSrc}?retry=${retryCount}`;
+      }, 1000);
+    }
   };
 
   const handleArtworkImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
-    console.log(`Artwork image ${index} failed to load:`, artist.artworks?.[index]);
-    setArtworkErrors(prev => ({ ...prev, [index]: true }));
-    e.currentTarget.src = '/placeholder.svg';
+    const imgElement = e.currentTarget;
+    const currentSrc = imgElement.src;
+    
+    console.log(`Artwork image ${index} failed to load:`, currentSrc);
+    
+    const retryCount = (imageRetries[currentSrc] || 0) + 1;
+    setImageRetries(prev => ({ ...prev, [currentSrc]: retryCount }));
+    
+    if (retryCount >= 2) {
+      setArtworkErrors(prev => ({ ...prev, [index]: true }));
+      imgElement.src = getNextFallbackImage(currentSrc, index);
+    } else {
+      setTimeout(() => {
+        imgElement.src = currentSrc.includes('?') 
+          ? `${currentSrc}&retry=${retryCount}` 
+          : `${currentSrc}?retry=${retryCount}`;
+      }, 1000);
+    }
   };
 
   return (
@@ -103,7 +151,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               className="absolute w-full h-full"
             >
               <img
-                src={mainImageError ? '/placeholder.svg' : artist.image}
+                src={mainImageError ? getNextFallbackImage(artist.image, artist.id % fallbackImages.length) : artist.image}
                 alt={artist.name}
                 className="w-full h-full object-cover"
                 onError={handleMainImageError}
@@ -125,7 +173,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                     artist.artworks.slice(0, 4).map((artwork, index) => (
                       <div key={index} className="relative aspect-square rounded overflow-hidden">
                         <img
-                          src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                          src={artworkErrors[index] 
+                            ? getNextFallbackImage(artwork, (artist.id + index) % fallbackImages.length) 
+                            : artwork}
                           alt={`Artwork ${index + 1} by ${artist.name}`}
                           className="w-full h-full object-cover"
                           onError={(e) => handleArtworkImageError(e, index)}

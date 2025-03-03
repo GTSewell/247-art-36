@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
@@ -29,6 +28,50 @@ export const useArtists = () => {
     setFavoriteArtists(new Set(favorites.map(f => f.artist_id)));
   };
 
+  const processImageUrl = (imageUrl: string | null): string => {
+    if (!imageUrl || imageUrl.trim() === '') {
+      return '/placeholder.svg';
+    }
+    
+    if (imageUrl.startsWith('/') || imageUrl.includes('placeholder')) {
+      return imageUrl;
+    }
+    
+    if (imageUrl.includes('runware.ai') || imageUrl.includes('im.runware')) {
+      return 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e';
+    }
+    
+    return imageUrl;
+  };
+  
+  const processArtworkUrls = (artworks: string[] | null): string[] => {
+    if (!artworks || !Array.isArray(artworks) || artworks.length === 0) {
+      return ['/placeholder.svg'];
+    }
+    
+    return artworks.map(artwork => {
+      if (!artwork || artwork.trim() === '') {
+        return '/placeholder.svg';
+      }
+      
+      if (artwork.startsWith('/') || artwork.includes('placeholder')) {
+        return artwork;
+      }
+      
+      if (artwork.includes('runware.ai') || artwork.includes('im.runware')) {
+        const placeholders = [
+          'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+          'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b',
+          'https://images.unsplash.com/photo-1485827404703-89b55fcc595e',
+          'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5'
+        ];
+        return placeholders[Math.floor(Math.random() * placeholders.length)];
+      }
+      
+      return artwork;
+    });
+  };
+
   const loadArtists = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -47,12 +90,17 @@ export const useArtists = () => {
 
       if (artists) {
         logger.info('Artists data received', { count: artists.length });
-        const transformedArtists = artists.map(transformArtist);
-        logger.info('Artists transformed successfully', { count: transformedArtists.length });
+        let transformedArtists = artists.map(transformArtist);
+        
+        transformedArtists = transformedArtists.map(artist => ({
+          ...artist,
+          image: processImageUrl(artist.image),
+          artworks: processArtworkUrls(artist.artworks),
+        }));
+        
+        logger.info('Artists transformed successfully with fixed images', { count: transformedArtists.length });
 
-        // First 3 artists are featured
         setFeaturedArtists(transformedArtists.slice(0, 3));
-        // Rest are additional artists
         setAdditionalArtists(transformedArtists.slice(3));
       }
     } catch (error) {
@@ -67,19 +115,16 @@ export const useArtists = () => {
     loadArtists();
     loadFavorites();
 
-    // Subscribe to auth changes to reload favorites
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
       loadFavorites();
     });
 
-    // Listen for the custom refresh event
     const handleRefreshArtists = () => {
       logger.info('Refresh artists event received');
       loadArtists();
     };
     window.addEventListener('refreshArtists', handleRefreshArtists);
 
-    // Subscribe to database changes
     const artistsSubscription = supabase
       .channel('artists_changes')
       .on('postgres_changes', {
