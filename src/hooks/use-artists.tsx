@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -23,9 +24,19 @@ export const useArtists = () => {
       }
 
       if (artists) {
-        // Filter or process artists as needed
-        const featured = artists.filter((a, index) => index < 6); // First 6 as featured
-        const additional = artists.filter((a, index) => index >= 6); // Rest as additional
+        // Filter specific artists that should always be in the additional section
+        const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
+        
+        // Create the featured and additional artist arrays based on our rules
+        const featured = artists.filter(artist => 
+          !additionalArtistNames.includes(artist.name) && 
+          featuredArtists.length < 6
+        ).slice(0, 6); // Limit to 6 featured artists
+        
+        const additional = artists.filter(artist => 
+          additionalArtistNames.includes(artist.name) || 
+          !featured.includes(artist)
+        );
         
         setFeaturedArtists(featured as Artist[]);
         setAdditionalArtists(additional as Artist[]);
