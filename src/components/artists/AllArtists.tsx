@@ -50,7 +50,7 @@ const AllArtists = ({
         setAllArtistsSearch={setAllArtistsSearch}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
-        artistCount={artists.length}
+        artistsCount={artists.length}
       />
 
       <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -100,10 +100,6 @@ const AllArtists = ({
                   onFavoriteToggle(selectedArtist.id, isFavorite)
                 }
                 isFavorite={favoriteArtists.has(selectedArtist.id)}
-                refreshArtist={async () => {
-                  await refreshArtist(selectedArtist.id);
-                  refreshArtists();
-                }}
               />
             )}
           </ScrollArea>

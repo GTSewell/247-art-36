@@ -159,9 +159,14 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               transition={{ duration: 0.4 }}
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
-              data-no-flip="true"
+              onClick={(e) => {
+                // Add click handler to artwork side to flip back to the front
+                e.stopPropagation(); // Prevent any potential double-handling
+                setIsFlipped(false);
+                logger.info(`Flipping card back to front for artist ${artist.id}`);
+              }}
             >
-              <div className="pointer-events-auto" data-no-flip="true">
+              <div className="pointer-events-auto">
                 <ArtistArtworksView 
                   artist={currentArtist}
                   isGeneratingArtworks={isGeneratingArtworks}

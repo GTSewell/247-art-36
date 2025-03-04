@@ -24,12 +24,6 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 }) => {
   const [generatedArtworks, setGeneratedArtworks] = useState<string[]>([]);
 
-  // Helper function to directly stop event propagation
-  const stopPropagation = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
   // Helper function to parse artworks if they're stored as a string
   const getArtworks = (): string[] => {
     if (!artist.artworks) return [];
@@ -55,7 +49,11 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       <div className="grid grid-cols-2 gap-2 p-2 w-full h-full pt-2">
         {displayArtworks.length > 0 ? (
           displayArtworks.slice(0, 4).map((artwork, index) => (
-            <div key={index} className="relative aspect-square rounded overflow-hidden">
+            <div 
+              key={index} 
+              className="relative aspect-square rounded overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
               <img
                 src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
