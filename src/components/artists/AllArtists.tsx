@@ -50,7 +50,7 @@ const AllArtists = ({
         setAllArtistsSearch={setAllArtistsSearch}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
-        artistsCount={artists.length}
+        artistsCount={artists.length} // Changed from artistCount to artistsCount
       />
 
       <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -96,10 +96,11 @@ const AllArtists = ({
               <ArtistDetails
                 artist={selectedArtist}
                 onClose={handleDialogClose}
-                onFavoriteToggle={(isFavorite) =>
-                  onFavoriteToggle(selectedArtist.id, isFavorite)
+                onFavoriteToggle={(artistId, isFavorite) => // Fixed parameter types
+                  onFavoriteToggle(artistId, isFavorite)
                 }
                 isFavorite={favoriteArtists.has(selectedArtist.id)}
+                // Removed refreshArtist prop since it's not in ArtistDetailsProps
               />
             )}
           </ScrollArea>

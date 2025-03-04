@@ -9,6 +9,7 @@ interface AllArtistsHeaderProps {
   setAllArtistsSearch: (search: string) => void;
   showFavorites: boolean;
   setShowFavorites: (show: boolean) => void;
+  artistsCount: number; // Changed from artistCount to artistsCount
 }
 
 const AllArtistsHeader: React.FC<AllArtistsHeaderProps> = ({
@@ -16,6 +17,7 @@ const AllArtistsHeader: React.FC<AllArtistsHeaderProps> = ({
   setAllArtistsSearch,
   showFavorites,
   setShowFavorites,
+  artistsCount, // Changed from artistCount to artistsCount
 }) => {
   return (
     <div className="flex flex-col sm:flex-row justify-between items-center sm:items-center gap-4 mb-6">

@@ -10,16 +10,16 @@ import ArtistSocialSection from "./ArtistSocialSection";
 
 interface ArtistDetailsProps {
   artist: Artist | null;
-  isOpen: boolean;
+  isOpen?: boolean; // Changed to optional
   onClose: () => void;
   onRegenerateArtworks?: (artist: Artist) => Promise<void>;
-  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
+  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void; // Fixed parameter type
   isFavorite?: boolean;
 }
 
 const ArtistDetails = ({ 
   artist, 
-  isOpen, 
+  isOpen = true, // Add default value
   onClose, 
   onRegenerateArtworks,
   onFavoriteToggle,
