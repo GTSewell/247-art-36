@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Zap, Wand } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,7 @@ interface ArtistCardProps {
   techniques?: string[];
   styles?: string[];
   social_platforms?: string[];
-  refreshArtist?: () => void;
+  refreshArtist?: (artistId: number) => Promise<Artist | void>;
 }
 
 const ArtistCard = ({ 
@@ -87,7 +86,7 @@ const ArtistCard = ({
       
       // If we have a refresh function, use it instead of page reload
       if (refreshArtist) {
-        refreshArtist();
+        await refreshArtist(id);
       }
     } catch (error: any) {
       logger.error('Error generating artist image from card:', error);
@@ -97,7 +96,6 @@ const ArtistCard = ({
     }
   };
 
-  // Helper function to stop event propagation
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -108,7 +106,6 @@ const ArtistCard = ({
         className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer"
         onClick={onSelect}
       >
-        {/* Artist Image */}
         <div className="aspect-square overflow-hidden relative">
           <img
             src={imageError ? '/placeholder.svg' : image}
@@ -117,7 +114,6 @@ const ArtistCard = ({
             onError={handleImageError}
           />
           
-          {/* Generate Image Button */}
           <div className="absolute top-2 left-2 z-10" onClick={stopPropagation}>
             <Button
               variant="ghost"
@@ -132,7 +128,6 @@ const ArtistCard = ({
           </div>
         </div>
         
-        {/* Artist Information - Visible on hover */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <div className="absolute bottom-4 left-0 right-0 px-4">
             <div>
@@ -146,7 +141,6 @@ const ArtistCard = ({
           </div>
         </div>
 
-        {/* Favorite Button - Always visible at bottom */}
         <div className="absolute bottom-4 right-4 z-10" onClick={stopPropagation}>
           <Button
             variant="ghost"

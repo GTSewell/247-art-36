@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import ArtistCard from './ArtistCard';

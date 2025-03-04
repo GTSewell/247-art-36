@@ -47,7 +47,7 @@ const Artists = () => {
   };
 
   // Refresh a specific artist if needed
-  const refreshArtist = async (artistId: number) => {
+  const refreshArtist = async (artistId: number): Promise<void> => {
     await refreshArtists(artistId);
   };
 

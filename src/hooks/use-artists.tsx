@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -115,7 +114,7 @@ export const useArtists = () => {
   };
 
   // Improved refreshArtists function that refreshes a single artist if specified
-  const refreshArtists = async (artistId?: number) => {
+  const refreshArtists = async (artistId?: number): Promise<void> => {
     if (artistId) {
       try {
         // Fetch the specific artist data
@@ -136,8 +135,6 @@ export const useArtists = () => {
           setAdditionalArtists(prev => 
             prev.map(artist => artist.id === artistId ? data as Artist : artist)
           );
-          
-          return data as Artist;
         }
       } catch (error: any) {
         logger.error('Error refreshing specific artist:', error);
