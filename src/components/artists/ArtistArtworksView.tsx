@@ -128,13 +128,13 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     <div className="relative h-full">
       {/* Generate Artworks button */}
       <div 
-        className="absolute top-2 left-2 right-2 z-20 flex justify-center" 
+        className="absolute top-2 left-2 right-2 z-30 flex justify-center" 
         onClick={stopPropagation}
       >
         <Button
           size="sm"
           variant="outline"
-          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all"
+          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all pointer-events-auto"
           onClick={handleGenerateArtworks}
           disabled={isGeneratingArtworks}
         >

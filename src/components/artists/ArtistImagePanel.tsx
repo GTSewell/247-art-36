@@ -45,24 +45,16 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   }, [artist.id]);
 
   const handleFlip = (e: React.MouseEvent) => {
-    logger.info(`Flip attempt for artist ${artist.id}`, {
-      isGeneratingImage,
-      isSavingImage,
-      isGeneratingArtworks,
-      targetIsButton: e.target instanceof HTMLButtonElement
-    });
+    // Check if the target is a button or if we're in the middle of generating content
+    const isButton = e.target instanceof HTMLButtonElement || 
+                    (e.target instanceof HTMLElement && e.target.closest('button'));
+    const isButtonContainer = e.target instanceof HTMLElement && (
+                              e.target.closest('[data-button-container="true"]') || 
+                              e.target.getAttribute('data-button-container') === 'true');
     
-    // Don't flip if the click came from a button or during generation processes
-    if (
-      e.target instanceof HTMLButtonElement || 
-      isGeneratingImage || 
-      isSavingImage || 
-      isGeneratingArtworks ||
-      // Also check for clicking within button container divs
-      (e.target instanceof HTMLElement && 
-       (e.target.closest('button') || e.target.closest('[role="button"]')))
-    ) {
+    if (isButton || isButtonContainer || isGeneratingImage || isSavingImage || isGeneratingArtworks) {
       logger.info('Flip prevented - clicked on button or in processing state');
+      e.stopPropagation();
       return;
     }
 
@@ -133,14 +125,16 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         onTouchStart={handleInteraction}
       >
         {/* Generate & Save buttons */}
-        <ArtistImageButtons 
-          artist={currentArtist}
-          isGeneratingImage={isGeneratingImage}
-          isSavingImage={isSavingImage}
-          setIsGeneratingImage={setIsGeneratingImage}
-          setIsSavingImage={setIsSavingImage}
-          refreshArtist={refreshArtist}
-        />
+        <div data-button-container="true">
+          <ArtistImageButtons 
+            artist={currentArtist}
+            isGeneratingImage={isGeneratingImage}
+            isSavingImage={isSavingImage}
+            setIsGeneratingImage={setIsGeneratingImage}
+            setIsSavingImage={setIsSavingImage}
+            refreshArtist={refreshArtist}
+          />
+        </div>
 
         <AnimatePresence>
           <ClickIndicator 
@@ -177,6 +171,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               transition={{ duration: 0.4 }}
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
+              data-flipped-side="true"
             >
               <ArtistArtworksView 
                 artist={currentArtist}

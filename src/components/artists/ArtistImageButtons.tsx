@@ -114,7 +114,10 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
   return (
     <div 
       className="absolute top-2 left-2 right-2 z-20 flex gap-2 justify-between" 
-      onClick={e => e.stopPropagation()}
+      onClick={e => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     >
       <Button
         size="sm"
