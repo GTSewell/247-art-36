@@ -46,19 +46,21 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
 
   // This function determines if a click should flip the card or not
   const handleFlip = (e: React.MouseEvent) => {
-    // Check if the target is a button or if we're in the middle of generating content
-    const isButton = e.target instanceof HTMLButtonElement || 
-                    (e.target instanceof HTMLElement && e.target.closest('button'));
-    const isButtonContainer = e.target instanceof HTMLElement && (
-                              e.target.closest('[data-button-container="true"]') || 
-                              e.target.getAttribute('data-button-container') === 'true');
+    // Check if click originated from a button or interactive element
+    const target = e.target as HTMLElement;
+    const isInteractiveElement = 
+      target.tagName === 'BUTTON' || 
+      target.closest('button') ||
+      target.closest('[data-button-container="true"]') ||
+      target.getAttribute('data-button-container') === 'true' ||
+      target.closest('[data-no-flip="true"]') ||
+      target.getAttribute('data-no-flip') === 'true';
     
-    if (isButton || isButtonContainer || isGeneratingImage || isSavingImage || isGeneratingArtworks) {
-      logger.info('Flip prevented - clicked on button or in processing state');
-      e.stopPropagation();
+    // Don't flip if clicking on a button or if we're in the middle of an operation
+    if (isInteractiveElement || isGeneratingImage || isSavingImage || isGeneratingArtworks) {
       return;
     }
-
+    
     logger.info(`Flipping card for artist ${artist.id} from ${isFlipped ? 'back' : 'front'} to ${isFlipped ? 'front' : 'back'}`);
     setIsFlipped(!isFlipped);
     if (showClickIndicator) {
@@ -125,17 +127,19 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         onMouseLeave={() => !isMobile && setIsHovered(false)}
         onTouchStart={handleInteraction}
       >
-        {/* Generate & Save buttons */}
-        <div data-button-container="true">
-          <ArtistImageButtons 
-            artist={currentArtist}
-            isGeneratingImage={isGeneratingImage}
-            isSavingImage={isSavingImage}
-            setIsGeneratingImage={setIsGeneratingImage}
-            setIsSavingImage={setIsSavingImage}
-            refreshArtist={refreshArtist}
-          />
-        </div>
+        {/* Generate & Save buttons - front side */}
+        {!isFlipped && (
+          <div className="absolute top-2 left-2 right-2 z-50 flex justify-center" data-button-container="true">
+            <ArtistImageButtons 
+              artist={currentArtist}
+              isGeneratingImage={isGeneratingImage}
+              isSavingImage={isSavingImage}
+              setIsGeneratingImage={setIsGeneratingImage}
+              setIsSavingImage={setIsSavingImage}
+              refreshArtist={refreshArtist}
+            />
+          </div>
+        )}
 
         <AnimatePresence>
           <ClickIndicator 
@@ -172,17 +176,18 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               transition={{ duration: 0.4 }}
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
-              data-flipped-side="true"
-              onClick={(e) => e.stopPropagation()} // Don't flip back when clicking on content
+              data-no-flip="true"
             >
-              <ArtistArtworksView 
-                artist={currentArtist}
-                isGeneratingArtworks={isGeneratingArtworks}
-                setIsGeneratingArtworks={setIsGeneratingArtworks}
-                artworkErrors={artworkErrors}
-                handleArtworkImageError={handleArtworkImageError}
-                refreshArtworks={refreshArtist}
-              />
+              <div className="pointer-events-auto" data-no-flip="true">
+                <ArtistArtworksView 
+                  artist={currentArtist}
+                  isGeneratingArtworks={isGeneratingArtworks}
+                  setIsGeneratingArtworks={setIsGeneratingArtworks}
+                  artworkErrors={artworkErrors}
+                  handleArtworkImageError={handleArtworkImageError}
+                  refreshArtworks={refreshArtist}
+                />
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

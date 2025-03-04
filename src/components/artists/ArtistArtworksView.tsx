@@ -126,16 +126,15 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="relative h-full">
-      {/* Generate Artworks button - with higher z-index and explicit positioning */}
+      {/* Generate Artworks button */}
       <div 
-        className="absolute top-2 left-2 right-2 z-50 flex justify-center" 
+        className="absolute top-2 left-2 right-2 z-50 flex justify-center pointer-events-auto" 
         onClick={stopPropagation}
-        data-button-container="true"
       >
         <Button
           size="sm"
           variant="outline"
-          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all pointer-events-auto relative"
+          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all"
           onClick={handleGenerateArtworks}
           disabled={isGeneratingArtworks}
         >
@@ -144,7 +143,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         </Button>
       </div>
       
-      <div className="grid grid-cols-2 gap-2 p-2 w-full h-full pointer-events-none">
+      <div className="grid grid-cols-2 gap-2 p-2 w-full h-full pointer-events-none pt-14">
         {displayArtworks.length > 0 ? (
           displayArtworks.slice(0, 4).map((artwork, index) => (
             <div key={index} className="relative aspect-square rounded overflow-hidden pointer-events-none">
