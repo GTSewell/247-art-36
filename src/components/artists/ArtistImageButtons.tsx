@@ -82,7 +82,6 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
         body: { 
           artist_id: artist.id, 
           save: true,
-          download_image: true // Flag to indicate we want to download and store the image
         }
       });
       
@@ -98,7 +97,7 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       }
       
       logger.info('Artist image saved successfully:', data);
-      toast.success('Artist image saved to Supabase storage!');
+      toast.success('Artist image saved!');
 
       // If we have a refresh function, use it instead of page reload
       if (refreshArtist) {

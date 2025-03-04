@@ -74,8 +74,7 @@ serve(async (req) => {
     // If save is true, we're just updating the DB to mark the temp image as permanent
     if (save) {
       console.log('Saving existing artist image as permanent');
-      // Logic for saving existing image goes here
-      // For now, just return a success message
+      // Just return a success message for now
       return new Response(
         JSON.stringify({ message: 'Artist image saved as permanent' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -107,7 +106,37 @@ serve(async (req) => {
       // Generate multiple artworks
       console.log(`Generating ${count} artworks for artist ${artist_id}`);
       
-      const artworkPrompt = `Professional artwork by ${artistData.name}, a ${artistData.specialty} artist. ${artistData.bio || ''}`;
+      // Build a prompt based on artist's data
+      let artworkPrompt = `Professional artwork by ${artistData.name}, a ${artistData.specialty} artist.`;
+      
+      // Add bio if available
+      if (artistData.bio) {
+        artworkPrompt += ` ${artistData.bio}`;
+      }
+      
+      // Add techniques if available
+      if (artistData.techniques) {
+        const techniques = Array.isArray(artistData.techniques) 
+          ? artistData.techniques 
+          : JSON.parse(artistData.techniques as string);
+        
+        if (techniques && techniques.length > 0) {
+          artworkPrompt += ` Using techniques: ${techniques.join(', ')}.`;
+        }
+      }
+      
+      // Add styles if available
+      if (artistData.styles) {
+        const styles = Array.isArray(artistData.styles)
+          ? artistData.styles
+          : JSON.parse(artistData.styles as string);
+        
+        if (styles && styles.length > 0) {
+          artworkPrompt += ` Style: ${styles.join(', ')}.`;
+        }
+      }
+      
+      console.log(`Artwork prompt: ${artworkPrompt}`);
       
       // Call Runware API to generate artworks
       const artworksPayload = [
@@ -129,6 +158,7 @@ serve(async (req) => {
       ];
 
       try {
+        console.log('Sending artwork generation request to Runware API');
         const artworksResponse = await fetch('https://api.runware.ai/v1', {
           method: 'POST',
           headers: {
@@ -138,13 +168,16 @@ serve(async (req) => {
         });
 
         if (!artworksResponse.ok) {
-          throw new Error(`Runware API returned ${artworksResponse.status}: ${await artworksResponse.text()}`);
+          const errorText = await artworksResponse.text();
+          console.error(`Runware API error status: ${artworksResponse.status}, response: ${errorText}`);
+          throw new Error(`Runware API returned ${artworksResponse.status}: ${errorText}`);
         }
 
         const artworksResult = await artworksResponse.json();
-        console.log('Artworks generation response:', artworksResult);
+        console.log('Artworks generation response received');
 
         if (!artworksResult.data) {
+          console.error('No data in Runware API response:', artworksResult);
           throw new Error('No data returned from Runware API');
         }
 
@@ -153,9 +186,10 @@ serve(async (req) => {
           .filter((item: any) => item.taskType === 'imageInference' && item.imageURL)
           .map((item: any) => item.imageURL);
 
-        console.log(`Generated ${imageUrls.length} artwork URLs:`, imageUrls);
+        console.log(`Generated ${imageUrls.length} artwork URLs`);
 
         if (imageUrls.length === 0) {
+          console.error('No image URLs in response:', artworksResult);
           throw new Error('No image URLs returned from Runware API');
         }
       } catch (error) {
@@ -172,10 +206,22 @@ serve(async (req) => {
         );
       }
 
-      // If requested, download and store the artwork images
+      // If requested, store the artwork images
       if (download_images && imageUrls.length > 0) {
         try {
-          // Prepare artworks array for database update
+          console.log('Updating artist record with new artworks');
+          
+          // Format artworks array based on how it's stored
+          // Convert string arrays to actual arrays if needed
+          let existingArtworks = [];
+          if (artistData.artworks) {
+            if (typeof artistData.artworks === 'string') {
+              existingArtworks = JSON.parse(artistData.artworks);
+            } else {
+              existingArtworks = artistData.artworks;
+            }
+          }
+          
           const artworksArray = [...imageUrls];
           
           // Update artist record with new artworks
@@ -192,9 +238,9 @@ serve(async (req) => {
             throw new Error(`Failed to update artist record: ${updateError.message}`);
           }
           
-          console.log('Artist artworks updated successfully', artworksArray);
+          console.log('Artist artworks updated successfully');
         } catch (error) {
-          console.error('Error downloading or storing artworks:', error);
+          console.error('Error storing artworks:', error);
           // Continue with returning the URLs even if storage fails
         }
       }
@@ -212,6 +258,8 @@ serve(async (req) => {
       
       // If no prompt provided, build one from artist data
       const userPrompt = prompt || `Professional portrait photograph of a ${artistData.specialty} artist named ${artistData.name} from ${artistData.city || ''} ${artistData.country || ''}. ${artistData.bio || ''}`;
+      
+      console.log(`Portrait prompt: ${userPrompt}`);
       
       // Call Runware API to generate portrait
       const portraitPayload = [
@@ -233,6 +281,7 @@ serve(async (req) => {
       ];
 
       try {
+        console.log('Sending portrait generation request to Runware API');
         const portraitResponse = await fetch('https://api.runware.ai/v1', {
           method: 'POST',
           headers: {
@@ -242,13 +291,16 @@ serve(async (req) => {
         });
 
         if (!portraitResponse.ok) {
-          throw new Error(`Runware API returned ${portraitResponse.status}: ${await portraitResponse.text()}`);
+          const errorText = await portraitResponse.text();
+          console.error(`Runware API error status: ${portraitResponse.status}, response: ${errorText}`);
+          throw new Error(`Runware API returned ${portraitResponse.status}: ${errorText}`);
         }
 
         const portraitResult = await portraitResponse.json();
-        console.log('Portrait generation response:', portraitResult);
+        console.log('Portrait generation response received');
 
         if (!portraitResult.data) {
+          console.error('No data in Runware API response:', portraitResult);
           throw new Error('No data returned from Runware API');
         }
 
@@ -258,16 +310,17 @@ serve(async (req) => {
         );
 
         if (!imageResult || !imageResult.imageURL) {
+          console.error('No image URL in response:', portraitResult);
           throw new Error('No image URL returned from Runware API');
         }
 
         const imageUrl = imageResult.imageURL;
         console.log('Generated portrait URL:', imageUrl);
 
-        // If requested, download and store the portrait image
+        // If requested, store the portrait image
         if (download_image) {
           try {
-            // Update artist record with new image
+            console.log('Updating artist record with new image URL');
             const { error: updateError } = await supabaseAdmin
               .from('artists')
               .update({ image: imageUrl })
@@ -278,7 +331,7 @@ serve(async (req) => {
               throw new Error(`Failed to update artist record: ${updateError.message}`);
             }
             
-            console.log('Artist image updated successfully to:', imageUrl);
+            console.log('Artist image updated successfully');
           } catch (error) {
             console.error('Error storing portrait:', error);
             // Continue with returning the URL even if storage fails
@@ -310,7 +363,7 @@ serve(async (req) => {
     console.error('Unexpected error in generate-artist-image function:', error);
     return new Response(
       JSON.stringify({ 
-        error: 'Failed to generate artist image', 
+        error: 'Failed to process request', 
         details: error.message 
       }),
       { 

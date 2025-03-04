@@ -35,14 +35,34 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     try {
       logger.info("Calling generate-artist-image edge function for artworks");
       
+      // Parse techniques and styles if they're strings
+      let techniques = artist.techniques;
+      let styles = artist.styles;
+      
+      if (typeof techniques === 'string') {
+        try {
+          techniques = JSON.parse(techniques);
+        } catch {
+          techniques = [];
+        }
+      }
+      
+      if (typeof styles === 'string') {
+        try {
+          styles = JSON.parse(styles);
+        } catch {
+          styles = [];
+        }
+      }
+      
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
           artist_id: artist.id,
           generate_artworks: true,
           count: 4,
           download_images: true, // Flag to indicate we want to download and store the artworks
-          techniques: artist.techniques,
-          styles: artist.styles,
+          techniques,
+          styles,
           specialty: artist.specialty
         }
       });
@@ -84,10 +104,25 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     e.stopPropagation();
   };
 
+  // Helper function to parse artworks if they're stored as a string
+  const getArtworks = (): string[] => {
+    if (!artist.artworks) return [];
+    
+    if (typeof artist.artworks === 'string') {
+      try {
+        return JSON.parse(artist.artworks);
+      } catch {
+        return [];
+      }
+    }
+    
+    return Array.isArray(artist.artworks) ? artist.artworks : [];
+  };
+
   // Determine which artworks to display
   const displayArtworks = generatedArtworks.length > 0 
     ? generatedArtworks 
-    : (Array.isArray(artist.artworks) ? artist.artworks : []);
+    : getArtworks();
 
   return (
     <div className="relative h-full">
