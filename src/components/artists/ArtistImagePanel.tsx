@@ -44,6 +44,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   }, [artist.id]);
 
+  // This function determines if a click should flip the card or not
   const handleFlip = (e: React.MouseEvent) => {
     // Check if the target is a button or if we're in the middle of generating content
     const isButton = e.target instanceof HTMLButtonElement || 
@@ -172,6 +173,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
               data-flipped-side="true"
+              onClick={(e) => e.stopPropagation()} // Don't flip back when clicking on content
             >
               <ArtistArtworksView 
                 artist={currentArtist}

@@ -126,15 +126,16 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="relative h-full">
-      {/* Generate Artworks button */}
+      {/* Generate Artworks button - with higher z-index and explicit positioning */}
       <div 
-        className="absolute top-2 left-2 right-2 z-30 flex justify-center" 
+        className="absolute top-2 left-2 right-2 z-50 flex justify-center" 
         onClick={stopPropagation}
+        data-button-container="true"
       >
         <Button
           size="sm"
           variant="outline"
-          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all pointer-events-auto"
+          className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white border-white/20 hover:border-white/40 transition-all pointer-events-auto relative"
           onClick={handleGenerateArtworks}
           disabled={isGeneratingArtworks}
         >
@@ -143,10 +144,10 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         </Button>
       </div>
       
-      <div className="grid grid-cols-2 gap-2 p-2 w-full h-full">
+      <div className="grid grid-cols-2 gap-2 p-2 w-full h-full pointer-events-none">
         {displayArtworks.length > 0 ? (
           displayArtworks.slice(0, 4).map((artwork, index) => (
-            <div key={index} className="relative aspect-square rounded overflow-hidden">
+            <div key={index} className="relative aspect-square rounded overflow-hidden pointer-events-none">
               <img
                 src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
@@ -156,7 +157,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
             </div>
           ))
         ) : (
-          <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
+          <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic pointer-events-none">
             No artworks available
           </div>
         )}
