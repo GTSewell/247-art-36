@@ -18,6 +18,8 @@ interface ArtistCarouselViewProps {
   onSelect: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
+  refreshArtists?: () => Promise<void>;
+  refreshArtist?: (artistId: number) => Promise<Artist | void>;
 }
 
 const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
@@ -27,6 +29,8 @@ const ArtistCarouselView: React.FC<ArtistCarouselViewProps> = ({
   onSelect,
   onFavoriteToggle,
   favoriteArtists,
+  refreshArtists,
+  refreshArtist,
 }) => {
   const [api, setApi] = useState<any>(null);
   const [showControls, setShowControls] = useState(true);

@@ -14,6 +14,8 @@ interface AllArtistsProps {
   onSelect: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
+  refreshArtists?: () => Promise<void>;
+  refreshArtist?: (artistId: number) => Promise<Artist | void>;
 }
 
 const AllArtists: React.FC<AllArtistsProps> = ({
@@ -25,6 +27,8 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   onSelect,
   onFavoriteToggle,
   favoriteArtists,
+  refreshArtists,
+  refreshArtist
 }) => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
 
@@ -59,6 +63,8 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           onSelect={onSelect}
           onFavoriteToggle={onFavoriteToggle}
           favoriteArtists={favoriteArtists}
+          refreshArtists={refreshArtists}
+          refreshArtist={refreshArtist}
         />
       ) : (
         <ArtistGridView
@@ -66,6 +72,7 @@ const AllArtists: React.FC<AllArtistsProps> = ({
           onArtistClick={handleArtistClick}
           onFavoriteToggle={onFavoriteToggle}
           favoriteArtists={favoriteArtists}
+          refreshArtist={refreshArtist}
         />
       )}
     </div>
