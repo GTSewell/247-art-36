@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import { Zap, Wand } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
@@ -44,56 +45,11 @@ const ArtistCard = ({
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
   const [imageError, setImageError] = useState(false);
-  const [isGenerating, setIsGenerating] = useState(false);
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     logger.error("Artist card image failed to load:", image);
     setImageError(true);
     e.currentTarget.src = '/placeholder.svg';
-  };
-
-  const handleGenerateArtistImage = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    logger.info("Generate artist image button clicked from card for artist:", { id, name });
-    setIsGenerating(true);
-    
-    try {
-      const prompt = `Professional portrait photograph of a ${specialty} artist named ${name} from ${city || ''} ${country || ''}. ${bio || ''}`;
-      
-      logger.info("Calling generate-artist-image edge function with prompt:", { artistId: id, promptPreview: prompt.substring(0, 50) + "..." });
-      
-      const { data, error } = await supabase.functions.invoke('generate-artist-image', {
-        body: { 
-          artist_id: id, 
-          prompt,
-          download_image: true // Add this flag to download and store the image
-        }
-      });
-      
-      if (error) {
-        logger.error('Edge function error details:', error);
-        throw new Error(`Edge Function error: ${error.message || 'Unknown error'}`);
-      }
-      
-      if (!data || data.error) {
-        const errorDetails = data?.details || 'No details provided';
-        logger.error('API response error:', { error: data?.error || 'No data returned', details: errorDetails });
-        throw new Error(`${data?.error || 'Failed to generate artist image'}: ${errorDetails}`);
-      }
-      
-      logger.info('Artist image generated successfully from card view:', data);
-      toast.success('Artist image generated successfully!');
-      
-      // If we have a refresh function, use it instead of page reload
-      if (refreshArtist) {
-        await refreshArtist(id);
-      }
-    } catch (error: any) {
-      logger.error('Error generating artist image from card:', error);
-      toast.error(`Failed to generate artist image: ${error.message || 'Unknown error'}`);
-    } finally {
-      setIsGenerating(false);
-    }
   };
 
   const stopPropagation = (e: React.MouseEvent) => {
@@ -113,19 +69,6 @@ const ArtistCard = ({
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             onError={handleImageError}
           />
-          
-          <div className="absolute top-2 left-2 z-10" onClick={stopPropagation}>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white border border-white/10 hover:border-white/30"
-              onClick={handleGenerateArtistImage}
-              title="Generate Image"
-              disabled={isGenerating}
-            >
-              <Wand size={isFeatured ? 24 : 20} className={isGenerating ? 'animate-spin' : ''} />
-            </Button>
-          </div>
         </div>
         
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { ArtistImageButtons } from './ArtistImageButtons';
 import { ArtistArtworksView } from './ArtistArtworksView';
 import { ClickIndicator } from './ClickIndicator';
 import { logger } from '@/utils/logger';
@@ -27,8 +26,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [showClickIndicator, setShowClickIndicator] = useState(true);
   const [mainImageError, setMainImageError] = useState(false);
   const [artworkErrors, setArtworkErrors] = useState<Record<number, boolean>>({});
-  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-  const [isSavingImage, setIsSavingImage] = useState(false);
   const [isGeneratingArtworks, setIsGeneratingArtworks] = useState(false);
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
   const isMobile = useIsMobile();
@@ -57,7 +54,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       target.getAttribute('data-no-flip') === 'true';
     
     // Don't flip if clicking on a button or if we're in the middle of an operation
-    if (isInteractiveElement || isGeneratingImage || isSavingImage || isGeneratingArtworks) {
+    if (isInteractiveElement || isGeneratingArtworks) {
       return;
     }
     
@@ -127,20 +124,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
         onMouseLeave={() => !isMobile && setIsHovered(false)}
         onTouchStart={handleInteraction}
       >
-        {/* Generate & Save buttons - front side */}
-        {!isFlipped && (
-          <div className="absolute top-2 left-2 right-2 z-50 flex justify-center" data-button-container="true">
-            <ArtistImageButtons 
-              artist={currentArtist}
-              isGeneratingImage={isGeneratingImage}
-              isSavingImage={isSavingImage}
-              setIsGeneratingImage={setIsGeneratingImage}
-              setIsSavingImage={setIsSavingImage}
-              refreshArtist={refreshArtist}
-            />
-          </div>
-        )}
-
         <AnimatePresence>
           <ClickIndicator 
             showClickIndicator={showClickIndicator}

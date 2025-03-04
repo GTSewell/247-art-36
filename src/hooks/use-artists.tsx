@@ -24,7 +24,7 @@ export const useArtists = () => {
       }
 
       if (artists) {
-        // Filter specific artists that should always be in the additional section
+        // Filter specific artists that should always go to the additional section
         const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
         
         // First, separate the artists that must go to additional section
@@ -32,7 +32,7 @@ export const useArtists = () => {
           additionalArtistNames.includes(artist.name)
         );
         
-        // Then get eligible artists for featured section
+        // Get eligible artists for featured section (all artists not in mustBeAdditional)
         const eligibleForFeatured = artists.filter(artist => 
           !additionalArtistNames.includes(artist.name)
         );
@@ -40,7 +40,7 @@ export const useArtists = () => {
         // Take the first 3 eligible artists for featured section
         const featured = eligibleForFeatured.slice(0, 3);
         
-        // Put the rest of eligible artists into additional along with the must-be-additional ones
+        // Put the rest of eligible artists along with mustBeAdditional into additional
         const additional = [
           ...mustBeAdditional,
           ...eligibleForFeatured.slice(3)

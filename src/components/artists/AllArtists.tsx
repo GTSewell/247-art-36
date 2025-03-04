@@ -1,24 +1,26 @@
 
-import React, { useState } from 'react';
-import { Artist } from '@/data/types/artist';
-import AllArtistsHeader from './AllArtistsHeader';
-import ArtistCarouselView from './ArtistCarouselView';
-import ArtistGridView from './ArtistGridView';
+import React, { useState } from "react";
+import { Artist } from "@/data/types/artist";
+import ArtistCard from "./ArtistCard";
+import AllArtistsHeader from "./AllArtistsHeader";
+import ArtistDetails from "./ArtistDetails";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface AllArtistsProps {
   artists: Artist[];
   allArtistsSearch: string;
-  setAllArtistsSearch: (search: string) => void;
+  setAllArtistsSearch: (value: string) => void;
   showFavorites: boolean;
-  setShowFavorites: (show: boolean) => void;
+  setShowFavorites: (value: boolean) => void;
   onSelect: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
-  refreshArtists?: () => Promise<void>;
-  refreshArtist?: (artistId: number) => Promise<Artist | void>;
+  refreshArtists: () => void;
+  refreshArtist: (artistId: number) => Promise<void>;
 }
 
-const AllArtists: React.FC<AllArtistsProps> = ({
+const AllArtists = ({
   artists,
   allArtistsSearch,
   setAllArtistsSearch,
@@ -29,52 +31,84 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   favoriteArtists,
   refreshArtists,
   refreshArtist
-}) => {
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState<number | null>(null);
+}: AllArtistsProps) => {
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
-  const handleArtistClick = (index: number, e: React.MouseEvent) => {
+  const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
-    e.stopPropagation();
-    setSelectedArtistIndex(index);
+    setSelectedArtist(artist);
   };
 
-  const closeCarousel = (e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    setSelectedArtistIndex(null);
+  const handleDialogClose = () => {
+    setSelectedArtist(null);
   };
 
   return (
-    <div className="mb-8">
+    <div className="mt-8">
       <AllArtistsHeader
         allArtistsSearch={allArtistsSearch}
         setAllArtistsSearch={setAllArtistsSearch}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
+        artistCount={artists.length}
       />
 
-      {selectedArtistIndex !== null ? (
-        <ArtistCarouselView
-          artists={artists}
-          selectedIndex={selectedArtistIndex}
-          onClose={closeCarousel}
-          onSelect={onSelect}
-          onFavoriteToggle={onFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={refreshArtists}
-          refreshArtist={refreshArtist}
-        />
-      ) : (
-        <ArtistGridView
-          artists={artists}
-          onArtistClick={handleArtistClick}
-          onFavoriteToggle={onFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtist={refreshArtist}
-        />
-      )}
+      <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {artists.length > 0 ? (
+          artists.map((artist) => (
+            <ArtistCard
+              key={artist.id}
+              id={artist.id}
+              name={artist.name}
+              specialty={artist.specialty}
+              image={artist.image}
+              city={artist.city}
+              country={artist.country}
+              bio={artist.bio || ""}
+              techniques={typeof artist.techniques === 'string' 
+                ? JSON.parse(artist.techniques) 
+                : artist.techniques}
+              styles={typeof artist.styles === 'string'
+                ? JSON.parse(artist.styles)
+                : artist.styles}
+              social_platforms={typeof artist.social_platforms === 'string'
+                ? JSON.parse(artist.social_platforms)
+                : artist.social_platforms}
+              onSelect={(e) => handleArtistClick(e, artist)}
+              onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
+              isFavorite={favoriteArtists.has(artist.id)}
+              refreshArtist={refreshArtist}
+            />
+          ))
+        ) : (
+          <div className="col-span-4 py-8 text-center text-gray-500">
+            {showFavorites
+              ? "You haven't favorited any artists yet."
+              : "No artists match your search criteria."}
+          </div>
+        )}
+      </div>
+
+      <Dialog open={!!selectedArtist} onOpenChange={handleDialogClose}>
+        <DialogContent className="max-w-3xl h-[90vh] p-0">
+          <ScrollArea className="h-full max-h-full">
+            {selectedArtist && (
+              <ArtistDetails
+                artist={selectedArtist}
+                onClose={handleDialogClose}
+                onFavoriteToggle={(isFavorite) =>
+                  onFavoriteToggle(selectedArtist.id, isFavorite)
+                }
+                isFavorite={favoriteArtists.has(selectedArtist.id)}
+                refreshArtist={async () => {
+                  await refreshArtist(selectedArtist.id);
+                  refreshArtists();
+                }}
+              />
+            )}
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
