@@ -33,13 +33,16 @@ const AllArtists = ({
   refreshArtist
 }: AllArtistsProps) => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
     setSelectedArtist(artist);
+    setDialogOpen(true);
   };
 
   const handleDialogClose = () => {
+    setDialogOpen(false);
     setSelectedArtist(null);
   };
 
@@ -50,7 +53,7 @@ const AllArtists = ({
         setAllArtistsSearch={setAllArtistsSearch}
         showFavorites={showFavorites}
         setShowFavorites={setShowFavorites}
-        artistsCount={artists.length} // Changed from artistCount to artistsCount
+        artistsCount={artists.length}
       />
 
       <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -89,18 +92,17 @@ const AllArtists = ({
         )}
       </div>
 
-      <Dialog open={!!selectedArtist} onOpenChange={handleDialogClose}>
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-3xl h-[90vh] p-0">
           <ScrollArea className="h-full max-h-full">
             {selectedArtist && (
               <ArtistDetails
                 artist={selectedArtist}
                 onClose={handleDialogClose}
-                onFavoriteToggle={(artistId, isFavorite) => // Fixed parameter types
+                onFavoriteToggle={(artistId, isFavorite) => 
                   onFavoriteToggle(artistId, isFavorite)
                 }
                 isFavorite={favoriteArtists.has(selectedArtist.id)}
-                // Removed refreshArtist prop since it's not in ArtistDetailsProps
               />
             )}
           </ScrollArea>

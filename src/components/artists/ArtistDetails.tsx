@@ -10,16 +10,16 @@ import ArtistSocialSection from "./ArtistSocialSection";
 
 interface ArtistDetailsProps {
   artist: Artist | null;
-  isOpen?: boolean; // Changed to optional
+  isOpen?: boolean;
   onClose: () => void;
   onRegenerateArtworks?: (artist: Artist) => Promise<void>;
-  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void; // Fixed parameter type
+  onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
   isFavorite?: boolean;
 }
 
 const ArtistDetails = ({ 
   artist, 
-  isOpen = true, // Add default value
+  isOpen = true,
   onClose, 
   onRegenerateArtworks,
   onFavoriteToggle,
@@ -29,6 +29,25 @@ const ArtistDetails = ({
   const [isSaving, setIsSaving] = React.useState(false);
 
   if (!artist) return null;
+
+  // Parse techniques, styles, and social_platforms if they're strings
+  const techniques = Array.isArray(artist.techniques) 
+    ? artist.techniques 
+    : typeof artist.techniques === 'string' && artist.techniques
+      ? JSON.parse(artist.techniques)
+      : [];
+  
+  const styles = Array.isArray(artist.styles) 
+    ? artist.styles 
+    : typeof artist.styles === 'string' && artist.styles
+      ? JSON.parse(artist.styles)
+      : [];
+  
+  const socialPlatforms = Array.isArray(artist.social_platforms) 
+    ? artist.social_platforms 
+    : typeof artist.social_platforms === 'string' && artist.social_platforms
+      ? JSON.parse(artist.social_platforms)
+      : [];
 
   const handleRegenerateArtworks = async (artist: Artist) => {
     if (!onRegenerateArtworks || isGenerating || artist.locked_artworks) return;
@@ -77,11 +96,11 @@ const ArtistDetails = ({
               setIsSaving={setIsSaving}
             />
 
-            {artist.techniques && artist.techniques.length > 0 && (
+            {techniques && techniques.length > 0 && (
               <div>
                 <h3 className="text-lg font-semibold mb-2">Techniques</h3>
                 <div className="flex flex-wrap gap-2">
-                  {artist.techniques.map((technique) => (
+                  {techniques.map((technique: string) => (
                     <Badge
                       key={technique}
                       variant="secondary"
@@ -94,11 +113,11 @@ const ArtistDetails = ({
               </div>
             )}
 
-            {artist.styles && artist.styles.length > 0 && (
+            {styles && styles.length > 0 && (
               <div>
                 <h3 className="text-lg font-semibold mb-2">Styles</h3>
                 <div className="flex flex-wrap gap-2">
-                  {artist.styles.map((style) => (
+                  {styles.map((style: string) => (
                     <Badge
                       key={style}
                       variant="outline"
@@ -111,7 +130,7 @@ const ArtistDetails = ({
               </div>
             )}
 
-            <ArtistSocialSection socialPlatforms={artist.social_platforms} />
+            <ArtistSocialSection socialPlatforms={socialPlatforms} />
           </div>
         </ScrollArea>
       </SheetContent>
