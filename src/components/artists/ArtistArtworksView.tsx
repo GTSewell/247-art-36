@@ -37,10 +37,13 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       
       const { data, error } = await supabase.functions.invoke('generate-artist-image', {
         body: { 
-          artist_id: artist.id, 
+          artist_id: artist.id,
           generate_artworks: true,
           count: 4,
-          download_images: true // Flag to indicate we want to download and store the artworks
+          download_images: true, // Flag to indicate we want to download and store the artworks
+          techniques: artist.techniques,
+          styles: artist.styles,
+          specialty: artist.specialty
         }
       });
       
@@ -60,21 +63,12 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       // Update artwork images locally if available in response
       if (data.artworkUrls && Array.isArray(data.artworkUrls)) {
         setGeneratedArtworks(data.artworkUrls);
-        
-        // If we have a refresh callback, use it instead of page reload
-        if (refreshArtworks) {
-          refreshArtworks();
-        } else {
-          toast.success('Artworks generated and saved to storage!');
-          // Only reload if no refresh callback provided
-          window.location.reload();
-        }
-      } else {
-        toast.success('Artworks generated and saved to storage!');
-        // Only reload if no artwork URLs or refresh callback provided
-        if (!refreshArtworks) {
-          window.location.reload();
-        }
+        toast.success('Artworks generated successfully!');
+      }
+      
+      // If we have a refresh callback, use it
+      if (refreshArtworks) {
+        refreshArtworks();
       }
     } catch (error: any) {
       logger.error('Error generating artworks:', error);

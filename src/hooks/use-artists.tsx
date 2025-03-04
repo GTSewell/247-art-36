@@ -25,8 +25,8 @@ export const useArtists = () => {
 
       if (artists) {
         // Filter or process artists as needed
-        const featured = artists.slice(0, 6); // First 6 as featured
-        const additional = artists.slice(6); // Rest as additional
+        const featured = artists.filter((a, index) => index < 6); // First 6 as featured
+        const additional = artists.filter((a, index) => index >= 6); // Rest as additional
         
         setFeaturedArtists(featured as Artist[]);
         setAdditionalArtists(additional as Artist[]);
@@ -114,8 +114,39 @@ export const useArtists = () => {
     }
   };
 
-  const refreshArtists = async () => {
-    await fetchArtists();
+  // Improved refreshArtists function that refreshes a single artist if specified
+  const refreshArtists = async (artistId?: number) => {
+    if (artistId) {
+      try {
+        // Fetch the specific artist data
+        const { data, error } = await supabase
+          .from('artists')
+          .select('*')
+          .eq('id', artistId)
+          .single();
+          
+        if (error) throw error;
+        
+        if (data) {
+          // Update the artist in the featured/additional artists arrays
+          setFeaturedArtists(prev => 
+            prev.map(artist => artist.id === artistId ? data as Artist : artist)
+          );
+          
+          setAdditionalArtists(prev => 
+            prev.map(artist => artist.id === artistId ? data as Artist : artist)
+          );
+          
+          return data as Artist;
+        }
+      } catch (error: any) {
+        logger.error('Error refreshing specific artist:', error);
+        toast.error(`Failed to refresh artist: ${error.message}`);
+      }
+    } else {
+      // Refresh all artists
+      await fetchArtists();
+    }
   };
 
   return {

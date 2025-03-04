@@ -22,6 +22,7 @@ interface ArtistCardProps {
   techniques?: string[];
   styles?: string[];
   social_platforms?: string[];
+  refreshArtist?: () => void;
 }
 
 const ArtistCard = ({ 
@@ -38,7 +39,8 @@ const ArtistCard = ({
   bio,
   techniques,
   styles,
-  social_platforms
+  social_platforms,
+  refreshArtist
 }: ArtistCardProps) => {
   const subdomain = `${name.toLowerCase().replace(/\s+/g, '')}.247.art`;
   const location = [city, country].filter(Boolean).join(", ");
@@ -81,9 +83,12 @@ const ArtistCard = ({
       }
       
       logger.info('Artist image generated successfully from card view:', data);
-      toast.success('Artist image generated and saved to storage!');
-      // Force reload to show the new image
-      window.location.reload();
+      toast.success('Artist image generated successfully!');
+      
+      // If we have a refresh function, use it instead of page reload
+      if (refreshArtist) {
+        refreshArtist();
+      }
     } catch (error: any) {
       logger.error('Error generating artist image from card:', error);
       toast.error(`Failed to generate artist image: ${error.message || 'Unknown error'}`);
@@ -117,7 +122,7 @@ const ArtistCard = ({
             <Button
               variant="ghost"
               size="icon"
-              className="bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white"
+              className="bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white border border-white/10 hover:border-white/30"
               onClick={handleGenerateArtistImage}
               title="Generate Image"
               disabled={isGenerating}
@@ -149,7 +154,7 @@ const ArtistCard = ({
             className={`${
               isFavorite 
                 ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
-                : 'bg-black/20 hover:bg-black/30 backdrop-blur-sm text-white'
+                : 'bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white border border-white/10 hover:border-white/30'
             }`}
             onClick={(e) => {
               e.stopPropagation();

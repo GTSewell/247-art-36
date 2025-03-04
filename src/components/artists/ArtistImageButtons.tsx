@@ -60,9 +60,6 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       // If we have a refresh function, use it instead of page reload
       if (refreshArtist) {
         refreshArtist();
-      } else {
-        // Force reload to show the new temp image only if no refresh function
-        window.location.reload();
       }
     } catch (error: any) {
       logger.error('Error generating artist image:', error);
@@ -106,9 +103,6 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       // If we have a refresh function, use it instead of page reload
       if (refreshArtist) {
         refreshArtist();
-      } else {
-        // Force reload to show the saved image only if no refresh function
-        window.location.reload();
       }
     } catch (error: any) {
       logger.error('Error saving artist image:', error);
@@ -126,7 +120,7 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       <Button
         size="sm"
         variant="outline"
-        className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
+        className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 border border-white/20 hover:border-white/40"
         onClick={handleGenerateArtistImage}
         disabled={isGeneratingImage}
       >
@@ -136,7 +130,7 @@ export const ArtistImageButtons: React.FC<ArtistImageButtonsProps> = ({
       <Button
         size="sm"
         variant="outline"
-        className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/60"
+        className="bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 border border-white/20 hover:border-white/40"
         onClick={handleSaveArtistImage}
         disabled={isSavingImage}
       >

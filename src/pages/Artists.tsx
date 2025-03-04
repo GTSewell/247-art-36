@@ -46,6 +46,11 @@ const Artists = () => {
     toast.success('Filters cleared');
   };
 
+  // Refresh a specific artist if needed
+  const refreshArtist = async (artistId: number) => {
+    await refreshArtists(artistId);
+  };
+
   // Filter artists based on selected criteria
   const filteredFeaturedArtists = filterArtists({
     artists: featuredArtists,
@@ -116,7 +121,8 @@ const Artists = () => {
           onSelect={setSelectedArtist}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
-          refreshArtists={refreshArtists}
+          refreshArtists={() => refreshArtists()}
+          refreshArtist={refreshArtist}
         />
 
         <AllArtists
@@ -128,6 +134,8 @@ const Artists = () => {
           onSelect={setSelectedArtist}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
+          refreshArtists={() => refreshArtists()}
+          refreshArtist={refreshArtist}
         />
       </div>
     </div>
