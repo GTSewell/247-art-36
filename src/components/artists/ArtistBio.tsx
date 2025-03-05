@@ -17,6 +17,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile }) => {
     return null;
   }
 
+  // Create a bio preview for mobile view
   const bioPreview = bio.length > 120 
     ? `${bio.substring(0, 120)}...` 
     : bio;
@@ -26,7 +27,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile }) => {
       <AccordionItem value="bio" className="border-b-0">
         <AccordionTrigger className="py-2 hover:no-underline">
           <span className="text-left font-normal">
-            {isMobile ? bioPreview : bio}
+            {isMobile ? "Bio" : bioPreview}
           </span>
         </AccordionTrigger>
         <AccordionContent>
