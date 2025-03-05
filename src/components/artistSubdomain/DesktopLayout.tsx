@@ -41,7 +41,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
     >
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-4rem)]">
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
+          <div className="rounded-lg overflow-hidden shadow-lg h-full">
             <ArtistProfileLeftPanel 
               artist={artist} 
               techniques={techniques}
@@ -52,7 +52,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
             />
           </div>
           
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
+          <div className="rounded-lg overflow-hidden shadow-lg h-full">
             <ArtistProfileCenterPanel 
               artist={artist}
               socialPlatforms={socialPlatforms}
@@ -63,7 +63,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
             />
           </div>
           
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
+          <div className="rounded-lg overflow-hidden shadow-lg h-full">
             <ArtistProfileRightPanel 
               artist={artist}
               artworks={artworks}

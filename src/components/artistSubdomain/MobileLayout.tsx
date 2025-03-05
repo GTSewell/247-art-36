@@ -51,7 +51,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           
           <div className="flex-grow overflow-hidden">
             <TabsContent value="about" className="mt-0 h-full">
-              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
+              <div className="rounded-lg overflow-hidden shadow-lg h-full">
                 <ArtistProfileLeftPanel 
                   artist={artist} 
                   techniques={techniques}
@@ -64,7 +64,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             </TabsContent>
             
             <TabsContent value="links" className="mt-0 h-full">
-              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
+              <div className="rounded-lg overflow-hidden shadow-lg h-full">
                 <ArtistProfileCenterPanel 
                   artist={artist}
                   socialPlatforms={socialPlatforms}
@@ -77,7 +77,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             </TabsContent>
             
             <TabsContent value="artwork" className="mt-0 h-full">
-              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
+              <div className="rounded-lg overflow-hidden shadow-lg h-full">
                 <ArtistProfileRightPanel 
                   artist={artist}
                   artworks={artworks}

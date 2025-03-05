@@ -110,7 +110,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
                 href={link.url === '#' ? undefined : link.url}
                 className={`block p-3 rounded-md transition-all duration-200 hover:scale-105 ${links.length === 0 ? 'cursor-default' : 'cursor-pointer'}`}
                 style={{ 
-                  backgroundColor: `${accentColor}22`,
+                  backgroundColor: `${accentColor}15`,
                   color: accentColor,
                   border: `1px solid ${accentColor}33`
                 }}

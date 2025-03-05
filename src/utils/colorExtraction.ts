@@ -79,8 +79,12 @@ export const getArtistColorPalette = (artist: Artist): { background: string; pan
   // Generate background color (pastel version of the main color)
   const background = `hsl(${h}, ${s}%, ${l}%)`;
   
-  // Panel color (white or light neutral)
-  const panel = '#ffffff';
+  // Panel color (white or very light tint of the background)
+  // Very light tint of the background color
+  const panelH = h;
+  const panelS = 10 + (nameHash % 5); // Very low saturation (10-15%)
+  const panelL = 98; // Very high lightness for readability
+  const panel = `hsl(${panelH}, ${panelS}%, ${panelL}%)`;
   
   // Text color (black or dark shade)
   const text = '#000000';
