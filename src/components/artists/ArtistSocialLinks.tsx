@@ -28,7 +28,7 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({ socialPlatforms }
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="social-media" className="border-b-0">
         <AccordionTrigger className="py-1 hover:no-underline">
-          <span className="text-left font-semibold">Social Media</span>
+          <span className="text-left font-bold text-base">Social Media</span>
         </AccordionTrigger>
         <AccordionContent>
           <div className="flex gap-3 pb-1">

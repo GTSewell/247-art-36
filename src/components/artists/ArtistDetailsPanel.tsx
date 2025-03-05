@@ -66,8 +66,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       </div>
 
-      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-12">
-        <div className="space-y-1">
+      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-10">
+        <div className="space-y-0">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 

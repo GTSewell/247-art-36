@@ -26,7 +26,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile }) => {
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="bio" className="border-b-0">
         <AccordionTrigger className="py-1 hover:no-underline">
-          <span className="text-left font-semibold">
+          <span className="text-left font-bold text-base">
             {isMobile ? "Bio" : bioPreview}
           </span>
         </AccordionTrigger>
