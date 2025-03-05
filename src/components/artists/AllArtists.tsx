@@ -9,6 +9,7 @@ import ArtistImagePanel from "./ArtistImagePanel";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import type { EmblaCarouselType } from "embla-carousel-react";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -118,9 +119,9 @@ const AllArtists = ({
                 containScroll: false,
                 startIndex: selectedArtistIndex
               }}
-              onSelect={(currentApi) => {
-                if (currentApi && typeof currentApi.selectedScrollSnap === 'function') {
-                  const currentIndex = currentApi.selectedScrollSnap();
+              onSelect={(api: EmblaCarouselType) => {
+                if (api && typeof api.selectedScrollSnap === 'function') {
+                  const currentIndex = api.selectedScrollSnap();
                   handleArtistChange(currentIndex);
                 }
               }}

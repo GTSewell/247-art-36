@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { MapPin, Palette, Instagram, Twitter, Linkedin, ExternalLink, Zap, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
@@ -77,7 +77,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <X className="h-4 w-4 text-gray-500" />
         </button>
       )}
-      <div className="space-y-4 md:space-y-6 pb-20 md:pb-16">
+      <div className="space-y-2 md:space-y-4 pb-20 md:pb-16">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
           <div className="flex items-center gap-2 text-gray-600 mb-1">
@@ -92,6 +92,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           )}
         </div>
 
+        {/* Bio section with accordion */}
         {artist.bio && (
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="bio" className="border-b-0">
@@ -107,47 +108,48 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           </Accordion>
         )}
 
-        {techniques && techniques.length > 0 && (
+        {/* Combined Techniques and Styles in one accordion */}
+        {((techniques && techniques.length > 0) || (styles && styles.length > 0)) && (
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="techniques" className="border-b-0">
+            <AccordionItem value="techniques-styles" className="border-b-0">
               <AccordionTrigger className="py-2 hover:no-underline">
-                <span className="text-left font-semibold">Techniques</span>
+                <span className="text-left font-semibold">Techniques & Styles</span>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-wrap gap-2">
-                  {techniques.map((technique: string, index: number) => (
-                    <Badge key={index} variant="secondary" className="bg-gray-100">
-                      {technique}
-                    </Badge>
-                  ))}
-                </div>
+                {techniques && techniques.length > 0 && (
+                  <div className="mb-3">
+                    <h4 className="text-sm font-medium mb-2">Techniques</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {techniques.map((technique: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="bg-gray-100">
+                          {technique}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {styles && styles.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-medium mb-2">Styles</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {styles.map((style: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="bg-gray-100">
+                          {style}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
         )}
 
-        {styles && styles.length > 0 && (
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="styles" className="border-b-0">
-              <AccordionTrigger className="py-2 hover:no-underline">
-                <span className="text-left font-semibold">Styles</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-wrap gap-2">
-                  {styles.map((style: string, index: number) => (
-                    <Badge key={index} variant="secondary" className="bg-gray-100">
-                      {style}
-                    </Badge>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
-
+        {/* Social Media section with reduced bottom padding */}
         {socialPlatforms && socialPlatforms.length > 0 && (
-          <div className="space-y-2">
-            <h3 className="font-semibold text-gray-800">Social Media</h3>
+          <div className="space-y-1 mb-1">
+            <h3 className="font-semibold text-gray-800 text-sm">Social Media</h3>
             <div className="flex gap-3">
               {socialPlatforms.map((platform: string) => {
                 const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
@@ -165,7 +167,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         )}
       </div>
 
-      <div className="space-y-3 absolute bottom-5 left-5 right-5 pt-4">
+      {/* Fixed position button at the bottom with increased bottom padding for mobile */}
+      <div className="space-y-3 absolute bottom-5 md:bottom-5 left-5 right-5 pt-2">
         <div className="flex items-center gap-2">
           <Button
             onClick={handleDomainClick}
