@@ -1,25 +1,21 @@
 
 import React from 'react';
 import { Instagram, Twitter, Linkedin } from 'lucide-react';
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
 
 interface ArtistSocialLinksProps {
   socialPlatforms: string[];
   buttonColor?: string;
   buttonTextColor?: string;
   buttonHoverColor?: string;
+  useAccordion?: boolean;
 }
 
 const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({ 
   socialPlatforms,
   buttonColor,
   buttonTextColor,
-  buttonHoverColor
+  buttonHoverColor,
+  useAccordion = false
 }) => {
   const socialIcons = {
     facebook: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>,
@@ -37,47 +33,34 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
     color: buttonTextColor || 'currentColor',
   } : {};
 
-  const getHoverStyle = (hoverEnabled: boolean) => {
-    if (!hoverEnabled || !buttonHoverColor) return {};
-    return {
-      backgroundColor: buttonHoverColor,
-    };
-  };
-
   return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="social-media" className="border-b-0">
-        <AccordionTrigger className="py-1 hover:no-underline">
-          <span className="text-left font-bold text-base">Social Media</span>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="flex gap-3 pb-1">
-            {socialPlatforms.map((platform: string) => {
-              const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
-              return (
-                <button
-                  key={platform}
-                  className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full"
-                  style={buttonStyle}
-                  onMouseOver={(e) => {
-                    if (buttonHoverColor) {
-                      e.currentTarget.style.backgroundColor = buttonHoverColor;
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (buttonColor) {
-                      e.currentTarget.style.backgroundColor = buttonColor;
-                    }
-                  }}
-                >
-                  {socialIcons[platformKey] || <span>{platform}</span>}
-                </button>
-              );
-            })}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="mb-4">
+      <h3 className="font-bold text-base mb-2">Social Media</h3>
+      <div className="flex gap-3">
+        {socialPlatforms.map((platform: string) => {
+          const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
+          return (
+            <button
+              key={platform}
+              className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full"
+              style={buttonStyle}
+              onMouseOver={(e) => {
+                if (buttonHoverColor) {
+                  e.currentTarget.style.backgroundColor = buttonHoverColor;
+                }
+              }}
+              onMouseOut={(e) => {
+                if (buttonColor) {
+                  e.currentTarget.style.backgroundColor = buttonColor;
+                }
+              }}
+            >
+              {socialIcons[platformKey] || <span>{platform}</span>}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

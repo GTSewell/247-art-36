@@ -1,18 +1,12 @@
-
 import React from 'react';
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
 
 interface ArtistBioProps {
   bio: string;
   isMobile: boolean;
+  useAccordion?: boolean;
 }
 
-const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile }) => {
+const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = false }) => {
   if (!bio) {
     return null;
   }
@@ -22,19 +16,26 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile }) => {
     ? `${bio.substring(0, 120)}...` 
     : bio;
 
+  // If not using accordion, just return the bio text directly
+  if (!useAccordion) {
+    return (
+      <div className="mb-4">
+        <h3 className="font-bold text-base mb-2">Bio</h3>
+        <div className="text-gray-700 leading-relaxed">{bio}</div>
+      </div>
+    );
+  }
+
+  // Otherwise use the accordion (for space-constrained views)
   return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="bio" className="border-b-0">
-        <AccordionTrigger className="py-1 hover:no-underline">
-          <span className="text-left font-bold text-base">
-            {isMobile ? "Bio" : bioPreview}
-          </span>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className="text-gray-700 leading-relaxed pb-1">{bio}</div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <div className="w-full mb-4">
+      <div className="border-b pb-1 mb-2">
+        <div className="flex justify-between items-center">
+          <span className="font-bold text-base">{isMobile ? "Bio" : bioPreview}</span>
+        </div>
+      </div>
+      <div className="text-gray-700 leading-relaxed">{bio}</div>
+    </div>
   );
 };
 

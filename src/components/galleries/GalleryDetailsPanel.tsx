@@ -3,12 +3,6 @@ import React from 'react';
 import { Gallery } from '@/data/types/gallery';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface GalleryDetailsPanelProps {
@@ -24,11 +18,6 @@ const GalleryDetailsPanel: React.FC<GalleryDetailsPanelProps> = ({
 }) => {
   const isMobile = useIsMobile();
   
-  // Create a bio preview for mobile devices
-  const bioPreview = gallery.bio && gallery.bio.length > 120 
-    ? `${gallery.bio.substring(0, 120)}...` 
-    : gallery.bio;
-
   return (
     <div className="p-6 flex flex-col justify-between h-full">
       <div>
@@ -49,20 +38,12 @@ const GalleryDetailsPanel: React.FC<GalleryDetailsPanelProps> = ({
           )}
         </div>
         
-        {/* Bio section with accordion */}
+        {/* Bio section */}
         {gallery.bio && (
-          <Accordion type="single" collapsible className="w-full mb-4">
-            <AccordionItem value="bio" className="border-b-0">
-              <AccordionTrigger className="py-2 hover:no-underline">
-                <span className="text-left font-normal">
-                  {isMobile ? bioPreview : gallery.bio}
-                </span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <p className="text-gray-700 leading-relaxed">{gallery.bio}</p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <div className="mb-4">
+            <h3 className="font-bold text-base mb-2">About</h3>
+            <p className="text-gray-700 leading-relaxed">{gallery.bio}</p>
+          </div>
         )}
         
         <div className="space-y-2 mb-4">
@@ -81,15 +62,18 @@ const GalleryDetailsPanel: React.FC<GalleryDetailsPanelProps> = ({
           )}
         </div>
         {gallery.styles && gallery.styles.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {gallery.styles.map((style) => (
-              <span
-                key={style}
-                className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700"
-              >
-                {style}
-              </span>
-            ))}
+          <div className="mb-4">
+            <h3 className="font-semibold text-base mb-2">Styles</h3>
+            <div className="flex flex-wrap gap-2">
+              {gallery.styles.map((style) => (
+                <span
+                  key={style}
+                  className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700"
+                >
+                  {style}
+                </span>
+              ))}
+            </div>
           </div>
         )}
       </div>

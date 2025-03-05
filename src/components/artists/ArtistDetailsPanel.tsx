@@ -131,17 +131,19 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       )}
 
       {/* Improved ScrollArea with proper height calculations */}
-      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-6" style={{ height: isMobile ? 'calc(60vh - 180px)' : 'calc(80vh - 220px)' }}>
-        <div className="space-y-4 pb-4">
+      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-6" style={{ height: isMobile ? 'calc(60vh - 170px)' : 'calc(80vh - 180px)' }}>
+        <div className="space-y-0 pb-4">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
+            useAccordion={false}
           />
 
           <ArtistTechniquesStyles 
             techniques={techniques} 
             styles={styles} 
             badgeBgColor={colorTheme?.badgeBg}
+            useAccordion={false}
           />
 
           <ArtistSocialLinks 
@@ -149,6 +151,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             buttonColor={colorTheme?.button}
             buttonTextColor={colorTheme?.buttonText}
             buttonHoverColor={colorTheme?.buttonHover}
+            useAccordion={false}
           />
         </div>
       </ScrollArea>
