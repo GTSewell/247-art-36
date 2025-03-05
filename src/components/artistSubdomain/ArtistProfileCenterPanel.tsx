@@ -3,6 +3,7 @@ import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ArtistProfileCenterPanelProps {
   artist: Artist;
@@ -93,31 +94,33 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       
       {/* Links Section */}
       <div className="flex-grow">
-        {links.length > 0 ? (
-          <div className="space-y-4">
-            {Object.entries(groupedLinks).map(([type, typeLinks]) => (
-              <div key={type} className="space-y-2">
-                <h3 className="text-sm font-bold capitalize">{type}</h3>
-                {typeLinks.map((link, index) => (
-                  <a 
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex items-center justify-between w-full p-3 rounded-md ${getLinkColor(type)} transition-colors duration-200`}
-                  >
-                    <span className="font-medium">{link.title}</span>
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                ))}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex items-center justify-center h-32">
-            <p className="text-gray-500">No links available</p>
-          </div>
-        )}
+        <ScrollArea className="h-[calc(100%-40px)]">
+          {links.length > 0 ? (
+            <div className="space-y-4 pr-4">
+              {Object.entries(groupedLinks).map(([type, typeLinks]) => (
+                <div key={type} className="space-y-2">
+                  <h3 className="text-sm font-bold capitalize">{type}</h3>
+                  {typeLinks.map((link, index) => (
+                    <a 
+                      key={index}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center justify-between w-full p-3 rounded-md ${getLinkColor(type)} transition-colors duration-200`}
+                    >
+                      <span className="font-medium">{link.title}</span>
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-32">
+              <p className="text-gray-500">No links available</p>
+            </div>
+          )}
+        </ScrollArea>
       </div>
     </div>
   );

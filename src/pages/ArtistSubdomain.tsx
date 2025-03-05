@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
@@ -23,7 +22,6 @@ const ArtistSubdomain = () => {
       try {
         setLoading(true);
         
-        // First find the artist by name
         const formattedName = artistName?.replace(/([A-Z])/g, ' $1').trim();
         const { data: artistData, error: artistError } = await supabase
           .from('artists')
@@ -34,7 +32,6 @@ const ArtistSubdomain = () => {
         if (artistError) throw artistError;
         
         if (artistData) {
-          // Convert JSON fields to proper arrays if they're strings
           const processedArtist: Artist = {
             ...artistData,
             techniques: typeof artistData.techniques === 'string' 
@@ -53,8 +50,6 @@ const ArtistSubdomain = () => {
           
           setArtist(processedArtist);
           
-          // Check if artist_profiles table exists in the database
-          // For now, use the first artwork as the background image
           const artworkBackground = processedArtist.artworks && 
             Array.isArray(processedArtist.artworks) && 
             processedArtist.artworks.length > 0 
@@ -71,32 +66,6 @@ const ArtistSubdomain = () => {
           };
           
           setProfile(defaultProfile);
-          
-          // Note: Once the artist_profiles table is created in the database,
-          // uncomment the following code to fetch the profile
-          
-          /* 
-          try {
-            const { data: profileData, error: profileError } = await supabase
-              .from('artist_profiles')
-              .select('*')
-              .eq('artist_id', processedArtist.id)
-              .single();
-            
-            if (profileError && profileError.code !== 'PGRST116') {
-              throw profileError;
-            }
-            
-            if (profileData) {
-              setProfile(profileData);
-            } else {
-              setProfile(defaultProfile);
-            }
-          } catch (profileError: any) {
-            console.error('Error fetching artist profile:', profileError);
-            setProfile(defaultProfile);
-          }
-          */
         }
       } catch (error: any) {
         console.error('Error fetching artist data:', error);
@@ -127,7 +96,6 @@ const ArtistSubdomain = () => {
     );
   }
 
-  // Parse JSON data if needed
   const techniques = Array.isArray(artist.techniques) 
     ? artist.techniques 
     : typeof artist.techniques === 'string' && artist.techniques
@@ -152,62 +120,66 @@ const ArtistSubdomain = () => {
       ? JSON.parse(artist.artworks)
       : [];
 
-  // Render different layouts based on device
   if (isMobile) {
     return (
       <div 
-        className="min-h-screen p-4 pb-16"
+        className="flex items-center justify-center overflow-hidden"
         style={{ 
           backgroundColor: profile?.background_color || '#f7cf1e',
           backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          height: '100vh',
+          width: '100%'
         }}
       >
-        <Tabs defaultValue="about" className="w-full">
-          <TabsList className="w-full grid grid-cols-3 mb-4">
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="links">Links</TabsTrigger>
-            <TabsTrigger value="artwork">Artwork</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="about" className="mt-0">
-            <div className="rounded-lg overflow-hidden shadow-lg" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
-              <ArtistProfileLeftPanel 
-                artist={artist} 
-                techniques={techniques}
-                styles={styles}
-                panelColor={profile?.panel_color || '#ffffff'}
-              />
+        <div className="w-full h-[calc(100vh-2rem)] mx-4">
+          <Tabs defaultValue="about" className="w-full h-full flex flex-col">
+            <TabsList className="w-full grid grid-cols-3 mb-4">
+              <TabsTrigger value="about">About</TabsTrigger>
+              <TabsTrigger value="links">Links</TabsTrigger>
+              <TabsTrigger value="artwork">Artwork</TabsTrigger>
+            </TabsList>
+            
+            <div className="flex-grow overflow-hidden">
+              <TabsContent value="about" className="mt-0 h-full">
+                <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+                  <ArtistProfileLeftPanel 
+                    artist={artist} 
+                    techniques={techniques}
+                    styles={styles}
+                    panelColor={profile?.panel_color || '#ffffff'}
+                  />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="links" className="mt-0 h-full">
+                <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+                  <ArtistProfileCenterPanel 
+                    artist={artist}
+                    socialPlatforms={socialPlatforms}
+                    links={profile?.links || []}
+                    panelColor={profile?.panel_color || '#ffffff'}
+                  />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="artwork" className="mt-0 h-full">
+                <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+                  <ArtistProfileRightPanel 
+                    artist={artist}
+                    artworks={artworks}
+                    panelColor={profile?.panel_color || '#ffffff'}
+                  />
+                </div>
+              </TabsContent>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="links" className="mt-0">
-            <div className="rounded-lg overflow-hidden shadow-lg" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
-              <ArtistProfileCenterPanel 
-                artist={artist}
-                socialPlatforms={socialPlatforms}
-                links={profile?.links || []}
-                panelColor={profile?.panel_color || '#ffffff'}
-              />
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="artwork" className="mt-0">
-            <div className="rounded-lg overflow-hidden shadow-lg" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
-              <ArtistProfileRightPanel 
-                artist={artist}
-                artworks={artworks}
-                panelColor={profile?.panel_color || '#ffffff'}
-              />
-            </div>
-          </TabsContent>
-        </Tabs>
+          </Tabs>
+        </div>
       </div>
     );
   }
 
-  // Desktop layout - Fixed height panels with internal scrolling
   return (
     <div 
       className="min-h-screen flex items-center justify-center py-8 px-8 overflow-hidden"

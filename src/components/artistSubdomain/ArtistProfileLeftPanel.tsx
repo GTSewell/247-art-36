@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ArtistProfileLeftPanelProps {
   artist: Artist;
@@ -37,52 +38,56 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
       </div>
 
       <div className="flex-grow">
-        {/* Bio Section - Expanded by default */}
-        <div className="mb-6">
-          <h3 className="text-left font-bold text-base mb-3">Bio</h3>
-          <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
-        </div>
+        <ScrollArea className="h-[calc(100%-40px)]">
+          <div className="pr-4">
+            {/* Bio Section - Expanded by default */}
+            <div className="mb-6">
+              <h3 className="text-left font-bold text-base mb-3">Bio</h3>
+              <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+            </div>
 
-        {/* Techniques & Styles Section - Expanded by default */}
-        {(techniques.length > 0 || styles.length > 0) && (
-          <div>
-            <h3 className="text-left font-bold text-base mb-3">
-              Techniques & Styles
-            </h3>
-            
-            {techniques.length > 0 && (
-              <div className="mb-3">
-                <h4 className="text-sm font-semibold mb-1">Techniques</h4>
-                <div className="flex flex-wrap gap-1">
-                  {techniques.map((technique, index) => (
-                    <span 
-                      key={index} 
-                      className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                    >
-                      {technique}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {styles.length > 0 && (
+            {/* Techniques & Styles Section - Expanded by default */}
+            {(techniques.length > 0 || styles.length > 0) && (
               <div>
-                <h4 className="text-sm font-semibold mb-1">Styles</h4>
-                <div className="flex flex-wrap gap-1">
-                  {styles.map((style, index) => (
-                    <span 
-                      key={index} 
-                      className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                    >
-                      {style}
-                    </span>
-                  ))}
-                </div>
+                <h3 className="text-left font-bold text-base mb-3">
+                  Techniques & Styles
+                </h3>
+                
+                {techniques.length > 0 && (
+                  <div className="mb-3">
+                    <h4 className="text-sm font-semibold mb-1">Techniques</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {techniques.map((technique, index) => (
+                        <span 
+                          key={index} 
+                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                        >
+                          {technique}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {styles.length > 0 && (
+                  <div>
+                    <h4 className="text-sm font-semibold mb-1">Styles</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {styles.map((style, index) => (
+                        <span 
+                          key={index} 
+                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                        >
+                          {style}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        )}
+        </ScrollArea>
       </div>
     </div>
   );
