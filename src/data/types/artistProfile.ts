@@ -1,7 +1,7 @@
 
 export interface ArtistProfile {
   id: string;
-  artist_id: number;
+  artist_id: string; // Changed from number to string
   background_image: string | null;
   background_color: string;
   panel_color: string;

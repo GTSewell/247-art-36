@@ -14,6 +14,15 @@ interface MobileLayoutProps {
   styles: string[];
   socialPlatforms: string[];
   artworks: string[];
+  colorTheme: {
+    background: string;
+    panel: string;
+    button: string;
+    buttonText: string;
+    buttonHover: string;
+    buttonBorder: string;
+    badgeBg: string;
+  };
 }
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({
@@ -22,13 +31,14 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   techniques,
   styles,
   socialPlatforms,
-  artworks
+  artworks,
+  colorTheme
 }) => {
   return (
     <div 
       className="flex items-center justify-center overflow-hidden"
       style={{ 
-        backgroundColor: profile?.background_color || '#f7cf1e',
+        backgroundColor: colorTheme.background,
         backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -46,33 +56,38 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           
           <div className="flex-grow overflow-hidden">
             <TabsContent value="about" className="mt-0 h-full">
-              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                 <ArtistProfileLeftPanel 
                   artist={artist} 
                   techniques={techniques}
                   styles={styles}
-                  panelColor={profile?.panel_color || '#ffffff'}
+                  panelColor={colorTheme.panel}
+                  badgeBgColor={colorTheme.badgeBg}
                 />
               </div>
             </TabsContent>
             
             <TabsContent value="links" className="mt-0 h-full">
-              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                 <ArtistProfileCenterPanel 
                   artist={artist}
                   socialPlatforms={socialPlatforms}
                   links={profile?.links || []}
-                  panelColor={profile?.panel_color || '#ffffff'}
+                  panelColor={colorTheme.panel}
+                  buttonColor={colorTheme.button}
+                  buttonTextColor={colorTheme.buttonText}
+                  buttonHoverColor={colorTheme.buttonHover}
+                  buttonBorderColor={colorTheme.buttonBorder}
                 />
               </div>
             </TabsContent>
             
             <TabsContent value="artwork" className="mt-0 h-full">
-              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+              <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                 <ArtistProfileRightPanel 
                   artist={artist}
                   artworks={artworks}
-                  panelColor={profile?.panel_color || '#ffffff'}
+                  panelColor={colorTheme.panel}
                 />
               </div>
             </TabsContent>

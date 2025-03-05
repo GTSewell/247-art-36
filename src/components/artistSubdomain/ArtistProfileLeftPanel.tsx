@@ -8,13 +8,15 @@ interface ArtistProfileLeftPanelProps {
   techniques: string[];
   styles: string[];
   panelColor: string;
+  badgeBgColor?: string;
 }
 
 const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
   artist,
   techniques,
   styles,
-  panelColor
+  panelColor,
+  badgeBgColor = '#f5f5f5'
 }) => {
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
@@ -62,7 +64,8 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
                     {techniques.map((technique, index) => (
                       <span 
                         key={index} 
-                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                        className="inline-block px-2 py-1 text-gray-700 text-xs rounded-md"
+                        style={{ backgroundColor: badgeBgColor }}
                       >
                         {technique}
                       </span>
@@ -78,7 +81,8 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
                     {styles.map((style, index) => (
                       <span 
                         key={index} 
-                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                        className="inline-block px-2 py-1 text-gray-700 text-xs rounded-md"
+                        style={{ backgroundColor: badgeBgColor }}
                       >
                         {style}
                       </span>

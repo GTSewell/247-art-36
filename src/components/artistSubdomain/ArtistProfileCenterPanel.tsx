@@ -15,13 +15,21 @@ interface ArtistProfileCenterPanelProps {
     url: string;
   }[];
   panelColor: string;
+  buttonColor?: string;
+  buttonTextColor?: string;
+  buttonHoverColor?: string;
+  buttonBorderColor?: string;
 }
 
 const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
   artist,
   socialPlatforms,
   links,
-  panelColor
+  panelColor,
+  buttonColor = '#f7cf1e',
+  buttonTextColor = '#000000',
+  buttonHoverColor = '#e6bf1a',
+  buttonBorderColor = '#000000'
 }) => {
   const isMobile = useIsMobile();
   
@@ -61,23 +69,20 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       return groups;
     }, {});
 
-  const getLinkColor = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'gallery': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'exhibition': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'marketplace': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'nft': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'metaverse': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'voxels': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'team': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'shop': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'website': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'public art': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'contact': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'video': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      case 'award': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-      default: return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
-    }
+  // Dynamic CSS for buttons with custom colors
+  const socialButtonStyle = {
+    borderColor: buttonBorderColor,
+    color: buttonBorderColor
+  };
+
+  const linkButtonStyle = {
+    backgroundColor: buttonColor,
+    color: buttonTextColor,
+    borderColor: buttonBorderColor
+  };
+
+  const getHoverStyle = () => {
+    return `hover:bg-[${buttonHoverColor}]`;
   };
   
   return (
@@ -116,7 +121,8 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
                   key={index}
                   variant="outline"
                   size="icon"
-                  className="rounded-full h-10 w-10 border-2 border-gray-800 text-gray-800 hover:bg-gray-100"
+                  className="rounded-full h-10 w-10 border-2 hover:bg-gray-100"
+                  style={socialButtonStyle}
                 >
                   {socialIcons[platformKey] || <Link className="h-5 w-5" />}
                 </Button>
@@ -139,7 +145,8 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex items-center justify-between w-full py-3 px-4 rounded-full ${getLinkColor(type)} transition-colors duration-200 border-2 border-gray-800 text-center`}
+                    className="flex items-center justify-between w-full py-3 px-4 rounded-full transition-colors duration-200 border-2 text-center"
+                    style={linkButtonStyle}
                   >
                     <div className="flex items-center">
                       {link.icon && <span className="mr-2">{link.icon}</span>}

@@ -7,6 +7,7 @@ import LoadingState from '@/components/artistSubdomain/LoadingState';
 import NotFoundState from '@/components/artistSubdomain/NotFoundState';
 import DesktopLayout from '@/components/artistSubdomain/DesktopLayout';
 import MobileLayout from '@/components/artistSubdomain/MobileLayout';
+import { generateColorTheme } from '@/utils/colorExtraction';
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
@@ -22,6 +23,9 @@ const ArtistSubdomain = () => {
   }
 
   const { techniques, styles, socialPlatforms, artworks } = getArtistData();
+  
+  // Generate color theme based on artist and artworks
+  const colorTheme = generateColorTheme(artist, profile, artworks);
 
   return isMobile ? (
     <MobileLayout
@@ -31,6 +35,7 @@ const ArtistSubdomain = () => {
       styles={styles}
       socialPlatforms={socialPlatforms}
       artworks={artworks}
+      colorTheme={colorTheme}
     />
   ) : (
     <DesktopLayout
@@ -40,6 +45,7 @@ const ArtistSubdomain = () => {
       styles={styles}
       socialPlatforms={socialPlatforms}
       artworks={artworks}
+      colorTheme={colorTheme}
     />
   );
 };
