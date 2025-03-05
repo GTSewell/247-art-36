@@ -45,20 +45,21 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     : getArtworks();
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full" data-no-flip="true">
       <div className="grid grid-cols-2 gap-2 p-2 w-full h-full pt-2">
         {displayArtworks.length > 0 ? (
           displayArtworks.slice(0, 4).map((artwork, index) => (
             <div 
               key={index} 
               className="relative aspect-square rounded overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
+              data-no-flip="true"
             >
               <img
                 src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
                 className="w-full h-full object-cover"
                 onError={(e) => handleArtworkImageError(e, index)}
+                data-no-flip="true"
               />
             </div>
           ))
