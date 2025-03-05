@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistCard from "./ArtistCard";
@@ -9,7 +8,7 @@ import ArtistImagePanel from "./ArtistImagePanel";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import type { EmblaCarouselType } from "embla-carousel-react";
+import type { UseEmblaCarouselType } from "embla-carousel-react";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -119,7 +118,7 @@ const AllArtists = ({
                 containScroll: false,
                 startIndex: selectedArtistIndex
               }}
-              onSelect={(api: EmblaCarouselType) => {
+              onSelect={(api: UseEmblaCarouselType) => {
                 if (api && typeof api.selectedScrollSnap === 'function') {
                   const currentIndex = api.selectedScrollSnap();
                   handleArtistChange(currentIndex);
