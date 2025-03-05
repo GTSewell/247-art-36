@@ -2,6 +2,7 @@
 import React from 'react';
 import { ExternalLink, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface ArtistActionsProps {
   domainName: string;
@@ -18,11 +19,19 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   onFavoriteToggle,
   handleDomainClick
 }) => {
+  const navigate = useNavigate();
+  
+  const handleSubdomainClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/artist/${domainName}`);
+  };
+  
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <Button
-          onClick={handleDomainClick}
+          onClick={handleSubdomainClick}
           className="flex-1 bg-[#00baef] hover:bg-[#00a6d6] text-white"
         >
           {domainName}.247.art
