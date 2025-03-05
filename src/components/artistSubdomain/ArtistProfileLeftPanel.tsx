@@ -37,20 +37,20 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
         </div>
       </div>
 
-      <div className="flex-grow flex flex-col justify-between">
-        <ScrollArea className="flex-1 h-full flex flex-col">
-          {/* Bio Section - At the top */}
+      <div className="flex flex-col h-full">
+        <ScrollArea className="flex-1">
+          {/* Bio Section */}
           <div className="mb-6">
             <h3 className="text-left font-bold text-base mb-3">Bio</h3>
             <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
           </div>
           
-          {/* Spacer div that will push the techniques & styles to the bottom */}
-          <div className="flex-grow" />
+          {/* This empty div will push the techniques & styles to the bottom */}
+          <div className="flex-grow min-h-[200px]"></div>
           
-          {/* Techniques & Styles Section - Fixed at the bottom */}
+          {/* Techniques & Styles Section - Now positioned at the bottom */}
           {(techniques.length > 0 || styles.length > 0) && (
-            <div className="w-full mt-auto pt-4">
+            <div className="w-full mt-auto mb-2">
               <h3 className="text-left font-bold text-base mb-3">
                 Techniques & Styles
               </h3>
