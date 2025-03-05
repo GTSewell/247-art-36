@@ -2,12 +2,15 @@
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeftCircle } from 'lucide-react';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
 import ArtistBio from './ArtistBio';
 import ArtistTechniquesStyles from './ArtistTechniquesStyles';
 import ArtistSocialLinks from './ArtistSocialLinks';
 import ArtistActions from './ArtistActions';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -24,6 +27,7 @@ interface ArtistDetailsPanelProps {
     buttonBorder: string;
     badgeBg: string;
   };
+  showReturnButton?: boolean;
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ 
@@ -32,9 +36,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   onFavoriteToggle,
   isFavorite = false,
   onClose,
-  colorTheme
+  colorTheme,
+  showReturnButton = false
 }) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   // Parse techniques, styles, and social_platforms if they're strings
   const techniques = Array.isArray(artist.techniques) 
@@ -55,17 +61,32 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       ? JSON.parse(artist.social_platforms)
       : [];
 
-  const domainName = artist.name.replace(/\s+/g, '');
-
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    window.open(`https://${domainName}.247.art`, '_blank');
+    navigate(`/artist/${artist.name.replace(/\s+/g, '')}`);
+  };
+
+  const handleReturnToArtists = () => {
+    navigate('/artists');
   };
 
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8">
-      {/* Removed the close button since it's already included in the Dialog component */}
+      {showReturnButton && (
+        <div className="absolute top-3 right-3 z-10">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleReturnToArtists}
+            className="bg-white/80 hover:bg-white backdrop-blur-sm"
+            style={{ borderColor: colorTheme?.buttonBorder }}
+          >
+            <ArrowLeftCircle size={18} />
+            <span className="sr-only">Return to Artists</span>
+          </Button>
+        </div>
+      )}
       
       <div className="flex-none mb-2">
         <ArtistHeaderInfo 
@@ -100,7 +121,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
       <div className="flex-none absolute bottom-3 left-5 right-5">
         <ArtistActions 
-          domainName={domainName}
+          domainName={artist.name.replace(/\s+/g, '')}
           artistId={artist.id}
           isFavorite={isFavorite}
           onFavoriteToggle={onFavoriteToggle}
@@ -109,6 +130,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           buttonTextColor={colorTheme?.buttonText}
           buttonHoverColor={colorTheme?.buttonHover}
           buttonBorderColor={colorTheme?.buttonBorder}
+          useSubPath={true}
         />
       </div>
     </div>

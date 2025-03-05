@@ -2,6 +2,9 @@
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
+import { ArrowLeftCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from './ArtistProfileRightPanel';
@@ -33,6 +36,12 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   artworks,
   colorTheme
 }) => {
+  const navigate = useNavigate();
+
+  const handleReturnToArtists = () => {
+    navigate('/artists');
+  };
+
   return (
     <div 
       className="min-h-screen flex items-center justify-center py-8 px-8 overflow-hidden"
@@ -45,6 +54,18 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
       }}
     >
       <div className="container mx-auto">
+        <div className="absolute top-4 right-4 z-50">
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={handleReturnToArtists}
+            className="bg-white/80 hover:bg-white backdrop-blur-sm"
+          >
+            <ArrowLeftCircle size={20} />
+            <span className="sr-only">Return to Artists</span>
+          </Button>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-4rem)]">
           <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
             <ArtistProfileLeftPanel 

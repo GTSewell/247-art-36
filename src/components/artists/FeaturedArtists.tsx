@@ -136,6 +136,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                       onFavoriteToggle={(artistId, isFav) => onFavoriteToggle(artistId, isFav)}
                       isFavorite={favoriteArtists.has(artist.id)}
                       colorTheme={colorTheme}
+                      showReturnButton={false}
                     />
                   </motion.div>
                 </div>

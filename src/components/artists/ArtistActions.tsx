@@ -13,6 +13,7 @@ interface ArtistActionsProps {
   buttonTextColor?: string;
   buttonHoverColor?: string;
   buttonBorderColor?: string;
+  useSubPath?: boolean;
 }
 
 const ArtistActions: React.FC<ArtistActionsProps> = ({
@@ -24,7 +25,8 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   buttonColor,
   buttonTextColor,
   buttonHoverColor,
-  buttonBorderColor
+  buttonBorderColor,
+  useSubPath = false
 }) => {
   const favoriteButtonStyles = buttonColor ? {
     backgroundColor: isFavorite ? '#f7cf1e' : buttonColor,
@@ -105,7 +107,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           }
         }}
       >
-        Visit {domainName}.247.art
+        {useSubPath ? `Visit 247.art/${domainName}` : `Visit ${domainName}.247.art`}
       </Button>
     </div>
   );

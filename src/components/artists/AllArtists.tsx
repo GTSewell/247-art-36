@@ -187,6 +187,7 @@ const AllArtists = ({
                               handleDialogClose();
                             }}
                             colorTheme={colorTheme}
+                            showReturnButton={false}
                           />
                         </div>
                       </div>
