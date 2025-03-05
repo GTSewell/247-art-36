@@ -60,81 +60,86 @@ const ArtistDetails = ({
     }
   };
 
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-[800px] p-0 border-l border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <ScrollArea className="h-full w-full rounded-md p-6">
-          <SheetHeader className="mb-6">
-            <ArtistDetailsHeader 
-              artist={artist}
-              onFavoriteToggle={onFavoriteToggle}
-              isFavorite={isFavorite}
-            />
-          </SheetHeader>
+  // In Dialog mode (like in AllArtists), we should just render the content directly
+  // We can detect if we're in a dialog by checking if isOpen is undefined
+  const ArtistContent = () => (
+    <>
+      <SheetHeader className="mb-6">
+        <ArtistDetailsHeader 
+          artist={artist}
+          onFavoriteToggle={onFavoriteToggle}
+          isFavorite={isFavorite}
+        />
+      </SheetHeader>
 
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight">{artist.name}</h2>
-              <p className="text-muted-foreground">{artist.specialty}</p>
-              {(artist.city || artist.country) && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  {[artist.city, artist.country].filter(Boolean).join(", ")}
-                </p>
-              )}
+      <div className="space-y-8">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">{artist.name}</h2>
+          <p className="text-muted-foreground">{artist.specialty}</p>
+          {(artist.city || artist.country) && (
+            <p className="text-sm text-muted-foreground mt-1">
+              {[artist.city, artist.country].filter(Boolean).join(", ")}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">About</h3>
+          <p className="text-muted-foreground">{artist.bio}</p>
+        </div>
+
+        <ArtistArtworksSection 
+          artist={artist}
+          onRegenerateArtworks={handleRegenerateArtworks}
+          isGenerating={isGenerating}
+          isSaving={isSaving}
+          setIsSaving={setIsSaving}
+        />
+
+        {techniques && techniques.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Techniques</h3>
+            <div className="flex flex-wrap gap-2">
+              {techniques.map((technique: string) => (
+                <Badge
+                  key={technique}
+                  variant="secondary"
+                  className="rounded-full"
+                >
+                  {technique}
+                </Badge>
+              ))}
             </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-2">About</h3>
-              <p className="text-muted-foreground">{artist.bio}</p>
-            </div>
-
-            <ArtistArtworksSection 
-              artist={artist}
-              onRegenerateArtworks={handleRegenerateArtworks}
-              isGenerating={isGenerating}
-              isSaving={isSaving}
-              setIsSaving={setIsSaving}
-            />
-
-            {techniques && techniques.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Techniques</h3>
-                <div className="flex flex-wrap gap-2">
-                  {techniques.map((technique: string) => (
-                    <Badge
-                      key={technique}
-                      variant="secondary"
-                      className="rounded-full"
-                    >
-                      {technique}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {styles && styles.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Styles</h3>
-                <div className="flex flex-wrap gap-2">
-                  {styles.map((style: string) => (
-                    <Badge
-                      key={style}
-                      variant="outline"
-                      className="rounded-full"
-                    >
-                      {style}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <ArtistSocialSection socialPlatforms={socialPlatforms} />
           </div>
-        </ScrollArea>
-      </SheetContent>
-    </Sheet>
+        )}
+
+        {styles && styles.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Styles</h3>
+            <div className="flex flex-wrap gap-2">
+              {styles.map((style: string) => (
+                <Badge
+                  key={style}
+                  variant="outline"
+                  className="rounded-full"
+                >
+                  {style}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <ArtistSocialSection socialPlatforms={socialPlatforms} />
+      </div>
+    </>
+  );
+
+  // In Sheet mode, wrap the content in a Sheet component
+  return (
+    <div className="w-full h-full p-6">
+      <ArtistContent />
+    </div>
   );
 };
 
