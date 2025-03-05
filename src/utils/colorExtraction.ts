@@ -33,7 +33,7 @@ export const defaultColorThemes = {
     buttonText: '#ffffff', // White
     buttonHover: '#4a7358', // Darker green
     buttonBorder: '#4a7358', // Darker green
-    badgeBg: '#e6f2e6'     // Very light green
+    badgeBg: '#e6f2e6'     // Very light blue
   },
   // Urban theme
   urban: {
