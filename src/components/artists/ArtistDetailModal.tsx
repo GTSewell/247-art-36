@@ -63,7 +63,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]">
         <DialogTitle className="sr-only">Artist Details</DialogTitle>
         {selectedArtist && (
           <Carousel 
@@ -109,7 +109,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                           refreshArtists={refreshArtists}
                         />
                       </div>
-                      <div className="aspect-square md:aspect-auto md:h-auto">
+                      <div className="aspect-auto md:h-auto">
                         <ArtistDetailsPanel 
                           artist={artist}
                           onSelect={() => onSelect(artist)}
@@ -133,7 +133,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
               <CarouselNext className="right-1 md:right-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none" />
             </div>
             {isMobile && (
-              <div className="absolute bottom-16 left-0 right-0 flex justify-center space-x-2 py-2 z-10">
+              <div className="absolute bottom-3 left-0 right-0 flex justify-center space-x-2 py-2 z-10">
                 <div className="flex gap-1 items-center bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full">
                   <ChevronLeft size={16} className="text-gray-500" />
                   <span className="text-xs text-gray-600">Swipe</span>

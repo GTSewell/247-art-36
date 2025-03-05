@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -97,8 +96,25 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       </div>
 
-      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-10">
-        <div className="space-y-0">
+      {isMobile && (
+        <div className="flex-none mb-4 mt-2">
+          <ArtistActions 
+            domainName={artist.name.replace(/\s+/g, '')}
+            artistId={artist.id}
+            isFavorite={isFavorite}
+            onFavoriteToggle={onFavoriteToggle}
+            handleDomainClick={handleDomainClick}
+            buttonColor={colorTheme?.button}
+            buttonTextColor={colorTheme?.buttonText}
+            buttonHoverColor={colorTheme?.buttonHover}
+            buttonBorderColor={colorTheme?.buttonBorder}
+            useSubPath={true}
+          />
+        </div>
+      )}
+
+      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-6">
+        <div className="space-y-4">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
@@ -119,20 +135,22 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </div>
       </ScrollArea>
 
-      <div className="flex-none absolute bottom-3 left-5 right-5">
-        <ArtistActions 
-          domainName={artist.name.replace(/\s+/g, '')}
-          artistId={artist.id}
-          isFavorite={isFavorite}
-          onFavoriteToggle={onFavoriteToggle}
-          handleDomainClick={handleDomainClick}
-          buttonColor={colorTheme?.button}
-          buttonTextColor={colorTheme?.buttonText}
-          buttonHoverColor={colorTheme?.buttonHover}
-          buttonBorderColor={colorTheme?.buttonBorder}
-          useSubPath={true}
-        />
-      </div>
+      {!isMobile && (
+        <div className="flex-none absolute bottom-3 left-5 right-5">
+          <ArtistActions 
+            domainName={artist.name.replace(/\s+/g, '')}
+            artistId={artist.id}
+            isFavorite={isFavorite}
+            onFavoriteToggle={onFavoriteToggle}
+            handleDomainClick={handleDomainClick}
+            buttonColor={colorTheme?.button}
+            buttonTextColor={colorTheme?.buttonText}
+            buttonHoverColor={colorTheme?.buttonHover}
+            buttonBorderColor={colorTheme?.buttonBorder}
+            useSubPath={true}
+          />
+        </div>
+      )}
     </div>
   );
 };
