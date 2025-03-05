@@ -2,6 +2,7 @@
 // This utility extracts color themes from artwork images
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { Artist } from '@/data/types/artist';
+import { logger } from '@/utils/logger';
 
 // Default color themes that can be used as fallbacks
 export const defaultColorThemes = {
@@ -54,6 +55,61 @@ export const defaultColorThemes = {
     buttonHover: '#e6bf1a', // Darker yellow
     buttonBorder: '#000000', // Black
     badgeBg: '#f5f5f5'     // Light gray
+  },
+  // Additional varied themes
+  purple: {
+    background: '#9b87f5', // Medium purple
+    panel: '#f8f7fe',     // Light purple-tinted white
+    button: '#7E69AB',    // Darker purple
+    buttonText: '#ffffff', // White
+    buttonHover: '#6E59A5', // Even darker purple
+    buttonBorder: '#6E59A5', // Even darker purple
+    badgeBg: '#e9e5fd'     // Very light purple
+  },
+  pink: {
+    background: '#f39bc7', // Medium pink
+    panel: '#fef8fb',     // Light pink-tinted white
+    button: '#e37bb2',    // Darker pink
+    buttonText: '#ffffff', // White
+    buttonHover: '#d4619e', // Even darker pink
+    buttonBorder: '#d4619e', // Even darker pink
+    badgeBg: '#fde8f4'     // Very light pink
+  },
+  teal: {
+    background: '#5bd9c7', // Medium teal
+    panel: '#f6fcfc',     // Light teal-tinted white
+    button: '#39bcab',    // Darker teal
+    buttonText: '#ffffff', // White
+    buttonHover: '#2aa396', // Even darker teal
+    buttonBorder: '#2aa396', // Even darker teal
+    badgeBg: '#e8f9f7'     // Very light teal
+  },
+  red: {
+    background: '#f87171', // Medium red
+    panel: '#fdf7f7',     // Light red-tinted white
+    button: '#ef4444',    // Darker red
+    buttonText: '#ffffff', // White
+    buttonHover: '#dc2626', // Even darker red
+    buttonBorder: '#dc2626', // Even darker red
+    badgeBg: '#feebeb'     // Very light red
+  },
+  orange: {
+    background: '#fb923c', // Medium orange
+    panel: '#fefaf6',     // Light orange-tinted white
+    button: '#f97316',    // Darker orange
+    buttonText: '#ffffff', // White
+    buttonHover: '#ea580c', // Even darker orange
+    buttonBorder: '#ea580c', // Even darker orange
+    badgeBg: '#fef2e7'     // Very light orange
+  },
+  blue: {
+    background: '#60a5fa', // Medium blue
+    panel: '#f8faff',     // Light blue-tinted white
+    button: '#3b82f6',    // Darker blue
+    buttonText: '#ffffff', // White
+    buttonHover: '#2563eb', // Even darker blue
+    buttonBorder: '#2563eb', // Even darker blue
+    badgeBg: '#e9f2ff'     // Very light blue
   }
 };
 
@@ -84,6 +140,9 @@ export function generateColorTheme(artist: Artist, profile: ArtistProfile | null
     };
   }
 
+  // Use hash of artist id and name to create a more unique theme
+  const idHash = hashCode(String(artist.id) + artist.name);
+  
   // Select a theme based on artist specialty or name
   const specialty = artist.specialty?.toLowerCase() || '';
   const name = artist.name?.toLowerCase() || '';
@@ -92,7 +151,7 @@ export function generateColorTheme(artist: Artist, profile: ArtistProfile | null
   if (name.includes('ahmad') && name.includes('hassan')) {
     return defaultColorThemes.desert;
   }
-  
+
   // Choose theme based on specialty keywords
   if (
     specialty.includes('desert') || 
@@ -122,10 +181,81 @@ export function generateColorTheme(artist: Artist, profile: ArtistProfile | null
     specialty.includes('modern')
   ) {
     return defaultColorThemes.urban;
+  } else if (
+    specialty.includes('purple') ||
+    specialty.includes('violet') ||
+    specialty.includes('lavender')
+  ) {
+    return defaultColorThemes.purple;
+  } else if (
+    specialty.includes('pink') || 
+    specialty.includes('rose') || 
+    specialty.includes('magenta')
+  ) {
+    return defaultColorThemes.pink;
+  } else if (
+    specialty.includes('teal') || 
+    specialty.includes('turquoise') || 
+    specialty.includes('cyan')
+  ) {
+    return defaultColorThemes.teal;
+  } else if (
+    specialty.includes('red') || 
+    specialty.includes('crimson') || 
+    specialty.includes('scarlet')
+  ) {
+    return defaultColorThemes.red;
   }
 
-  // Default to yellow theme if no matches
-  return defaultColorThemes.yellow;
+  // Use arithmetic on the hash to select a theme from our available themes
+  const allThemes = Object.values(defaultColorThemes);
+  const themeIndex = Math.abs(idHash) % allThemes.length;
+  
+  // Generate a custom color based on artist id if none of the specific themes match
+  const selectedTheme = allThemes[themeIndex];
+  
+  // Adjust the colors slightly to make them more unique per artist
+  return {
+    background: adjustColorSlightly(selectedTheme.background, idHash),
+    panel: selectedTheme.panel,
+    button: adjustColorSlightly(selectedTheme.button, idHash),
+    buttonText: selectedTheme.buttonText,
+    buttonHover: adjustColorSlightly(selectedTheme.buttonHover, idHash),
+    buttonBorder: selectedTheme.buttonBorder,
+    badgeBg: selectedTheme.badgeBg
+  };
+}
+
+// Simple hash function for strings
+function hashCode(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+// Adjusts a color slightly based on a hash value
+function adjustColorSlightly(color: string, hash: number): string {
+  try {
+    // Parse the hex color
+    const hex = color.replace('#', '');
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    
+    // Use the hash to slightly adjust each component
+    const adjustR = Math.max(0, Math.min(255, r + (hash % 31) - 15));
+    const adjustG = Math.max(0, Math.min(255, g + (hash % 23) - 11));
+    const adjustB = Math.max(0, Math.min(255, b + (hash % 17) - 8));
+    
+    return `#${Math.round(adjustR).toString(16).padStart(2, '0')}${Math.round(adjustG).toString(16).padStart(2, '0')}${Math.round(adjustB).toString(16).padStart(2, '0')}`;
+  } catch (error) {
+    logger.error("Error adjusting color:", error);
+    return color; // Return original color if there's an error
+  }
 }
 
 // Helper function to determine if a color is light or dark
