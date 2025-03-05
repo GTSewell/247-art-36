@@ -1,9 +1,10 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
-import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink, Calendar, Globe, Book, MapPin, Tag, ShoppingCart } from 'lucide-react';
+import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink, Calendar, Globe, Book, MapPin, Tag, ShoppingCart, Palette, Mail, Video, Award, Camera, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ArtistProfileCenterPanelProps {
   artist: Artist;
@@ -22,6 +23,8 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
   links,
   panelColor
 }) => {
+  const isMobile = useIsMobile();
+  
   const socialIcons = {
     facebook: <Facebook className="h-5 w-5" />,
     instagram: <Instagram className="h-5 w-5" />,
@@ -31,14 +34,14 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
 
   // Sample links to show when no links are available
   const sampleLinks = [
-    { type: 'gallery', title: 'OSHI GALLERY | EVENT SPACE', url: '#', icon: <Globe className="h-4 w-4" /> },
-    { type: 'exhibition', title: 'OSHI GALLERY | BOOK EVENT', url: '#', icon: <Calendar className="h-4 w-4" /> },
-    { type: 'marketplace', title: 'OSHI ON NIFTYGATE', url: '#', icon: <ShoppingCart className="h-4 w-4" /> },
-    { type: 'shop', title: 'OSHI | SHOP', url: '#', icon: <Tag className="h-4 w-4" /> },
-    { type: 'metaverse', title: 'OSHI | METAVERSE', url: '#', icon: <Globe className="h-4 w-4" /> },
-    { type: 'voxels', title: 'OSHI | VOXELS', url: '#', icon: <MapPin className="h-4 w-4" /> },
-    { type: 'voxels', title: 'OSHI | VOXELS', url: '#', icon: <MapPin className="h-4 w-4" /> },
-    { type: 'team', title: 'OSHI | TEAM', url: '#', icon: <Book className="h-4 w-4" /> }
+    { type: 'website', title: 'Portfolio Website', url: '#', icon: <Globe className="h-4 w-4" /> },
+    { type: 'exhibition', title: 'Next Exhibition', url: '#', icon: <Calendar className="h-4 w-4" /> },
+    { type: 'public art', title: 'Public Art Installation', url: '#', icon: <MapPin className="h-4 w-4" /> },
+    { type: 'shop', title: 'Online Art Shop', url: '#', icon: <ShoppingCart className="h-4 w-4" /> },
+    { type: 'gallery', title: 'Gallery Representation', url: '#', icon: <Palette className="h-4 w-4" /> },
+    { type: 'contact', title: 'Contact for Commissions', url: '#', icon: <Mail className="h-4 w-4" /> },
+    { type: 'video', title: 'Studio Tour Video', url: '#', icon: <Video className="h-4 w-4" /> },
+    { type: 'award', title: 'Recent Awards', url: '#', icon: <Award className="h-4 w-4" /> }
   ];
 
   // Group links by type
@@ -68,30 +71,38 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       case 'voxels': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
       case 'team': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
       case 'shop': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'website': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'public art': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'contact': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'video': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'award': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
       default: return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
     }
   };
   
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
-      <div className="flex items-start mb-4">
-        <div className="mr-4">
-          <div className="w-16 h-16 rounded-md overflow-hidden">
-            <img 
-              src={artist.image || '/placeholder.svg'} 
-              alt={artist.name || 'Artist'} 
-              className="w-full h-full object-cover"
-            />
+      {/* Only show the header section on mobile */}
+      {isMobile && (
+        <div className="flex items-start mb-4">
+          <div className="mr-4">
+            <div className="w-16 h-16 rounded-md overflow-hidden">
+              <img 
+                src={artist.image || '/placeholder.svg'} 
+                alt={artist.name || 'Artist'} 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div>
+            <h2 className="text-lg font-bold">{artist.name}</h2>
+            <p className="text-sm text-gray-600">{artist.specialty}</p>
+            <p className="text-xs text-gray-500">
+              {artist.city}{artist.city && artist.country ? ', ' : ''}{artist.country}
+            </p>
           </div>
         </div>
-        <div>
-          <h2 className="text-lg font-bold">{artist.name}</h2>
-          <p className="text-sm text-gray-600">{artist.specialty}</p>
-          <p className="text-xs text-gray-500">
-            {artist.city}{artist.city && artist.country ? ', ' : ''}{artist.country}
-          </p>
-        </div>
-      </div>
+      )}
       
       {/* Social Media Section */}
       {socialPlatforms.length > 0 && (
