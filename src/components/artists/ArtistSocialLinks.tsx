@@ -1,6 +1,12 @@
 
 import React from 'react';
 import { Instagram, Twitter, Linkedin } from 'lucide-react';
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
 
 interface ArtistSocialLinksProps {
   socialPlatforms: string[];
@@ -19,22 +25,28 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({ socialPlatforms }
   }
 
   return (
-    <div className="space-y-1 mb-1">
-      <h3 className="font-semibold text-gray-800 text-sm">Social Media</h3>
-      <div className="flex gap-3">
-        {socialPlatforms.map((platform: string) => {
-          const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
-          return (
-            <button
-              key={platform}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {socialIcons[platformKey] || <span>{platform}</span>}
-            </button>
-          );
-        })}
-      </div>
-    </div>
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="social-media" className="border-b-0">
+        <AccordionTrigger className="py-1 hover:no-underline">
+          <span className="text-left font-semibold">Social Media</span>
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="flex gap-3 pb-1">
+            {socialPlatforms.map((platform: string) => {
+              const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
+              return (
+                <button
+                  key={platform}
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  {socialIcons[platformKey] || <span>{platform}</span>}
+                </button>
+              );
+            })}
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 };
 

@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { X } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
@@ -56,14 +55,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8">
-      {onClose && (
-        <button 
-          onClick={onClose}
-          className="absolute right-2 top-2 z-10 p-2 rounded-full hover:bg-gray-100"
-        >
-          <X className="h-4 w-4 text-gray-500" />
-        </button>
-      )}
+      {/* Removed the close button since it's already included in the Dialog component */}
       
       <div className="flex-none mb-2">
         <ArtistHeaderInfo 
