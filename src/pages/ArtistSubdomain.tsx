@@ -3,22 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from '@/data/types/artist';
+import { ArtistProfile } from '@/data/types/artistProfile';
 import { toast } from 'sonner';
 import ArtistProfileLeftPanel from '@/components/artistSubdomain/ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from '@/components/artistSubdomain/ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from '@/components/artistSubdomain/ArtistProfileRightPanel';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-interface ArtistProfile {
-  id: string;
-  artist_id: number;
-  background_image: string | null;
-  background_color: string;
-  panel_color: string;
-  links: any[];
-}
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
@@ -43,32 +34,63 @@ const ArtistSubdomain = () => {
         if (artistError) throw artistError;
         
         if (artistData) {
-          setArtist(artistData);
+          // Convert JSON fields to proper arrays if they're strings
+          const processedArtist: Artist = {
+            ...artistData,
+            techniques: typeof artistData.techniques === 'string' 
+              ? JSON.parse(artistData.techniques) 
+              : Array.isArray(artistData.techniques) ? artistData.techniques : [],
+            styles: typeof artistData.styles === 'string' 
+              ? JSON.parse(artistData.styles) 
+              : Array.isArray(artistData.styles) ? artistData.styles : [],
+            social_platforms: typeof artistData.social_platforms === 'string' 
+              ? JSON.parse(artistData.social_platforms) 
+              : Array.isArray(artistData.social_platforms) ? artistData.social_platforms : [],
+            artworks: typeof artistData.artworks === 'string' 
+              ? JSON.parse(artistData.artworks) 
+              : Array.isArray(artistData.artworks) ? artistData.artworks : []
+          };
           
-          // Then fetch the artist profile
-          const { data: profileData, error: profileError } = await supabase
-            .from('artist_profiles')
-            .select('*')
-            .eq('artist_id', artistData.id)
-            .single();
+          setArtist(processedArtist);
           
-          if (profileError && profileError.code !== 'PGRST116') {
-            throw profileError;
+          // Check if artist_profiles table exists in the database
+          // If not, use a default profile
+          const defaultProfile: ArtistProfile = {
+            id: '',
+            artist_id: processedArtist.id,
+            background_image: null,
+            background_color: '#f7cf1e',
+            panel_color: '#ffffff',
+            links: []
+          };
+          
+          setProfile(defaultProfile);
+          
+          // Note: Once the artist_profiles table is created in the database,
+          // uncomment the following code to fetch the profile
+          
+          /* 
+          try {
+            const { data: profileData, error: profileError } = await supabase
+              .from('artist_profiles')
+              .select('*')
+              .eq('artist_id', processedArtist.id)
+              .single();
+            
+            if (profileError && profileError.code !== 'PGRST116') {
+              throw profileError;
+            }
+            
+            if (profileData) {
+              setProfile(profileData);
+            } else {
+              setProfile(defaultProfile);
+            }
+          } catch (profileError: any) {
+            console.error('Error fetching artist profile:', profileError);
+            setProfile(defaultProfile);
           }
-          
-          if (profileData) {
-            setProfile(profileData);
-          } else {
-            // Use default profile if none exists
-            setProfile({
-              id: '',
-              artist_id: artistData.id,
-              background_image: null,
-              background_color: '#f7cf1e',
-              panel_color: '#ffffff',
-              links: []
-            });
-          }
+          */
         }
       } catch (error: any) {
         console.error('Error fetching artist data:', error);
