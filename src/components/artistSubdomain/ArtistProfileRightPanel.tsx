@@ -8,14 +8,12 @@ interface ArtistProfileRightPanelProps {
   artist: Artist;
   artworks: string[];
   panelColor: string;
-  textColor?: string;
 }
 
 const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   artist,
   artworks,
-  panelColor,
-  textColor = '#000000'
+  panelColor
 }) => {
   const isMobile = useIsMobile();
   
@@ -39,9 +37,9 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
             </div>
           </div>
           <div>
-            <h2 className="text-lg font-bold" style={{ color: textColor }}>{artist.name}</h2>
-            <p className="text-sm" style={{ color: `${textColor}99` }}>{artist.specialty}</p>
-            <p className="text-xs" style={{ color: `${textColor}77` }}>
+            <h2 className="text-lg font-bold">{artist.name}</h2>
+            <p className="text-sm text-gray-600">{artist.specialty}</p>
+            <p className="text-xs text-gray-500">
               {artist.city}{artist.city && artist.country ? ', ' : ''}{artist.country}
             </p>
           </div>
@@ -50,7 +48,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       
       {/* Artworks Section with ScrollArea */}
       <div className="flex-grow overflow-hidden">
-        <h3 className="text-base font-bold mb-3" style={{ color: textColor }}>Featured Artworks</h3>
+        <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
           <div className="flex flex-col space-y-4 pr-4 pb-4">
             {displayArtworks.map((artwork, index) => (

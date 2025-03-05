@@ -1,5 +1,5 @@
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useArtistData } from '@/components/artistSubdomain/useArtistData';
@@ -7,21 +7,14 @@ import LoadingState from '@/components/artistSubdomain/LoadingState';
 import NotFoundState from '@/components/artistSubdomain/NotFoundState';
 import DesktopLayout from '@/components/artistSubdomain/DesktopLayout';
 import MobileLayout from '@/components/artistSubdomain/MobileLayout';
-import { getArtistColorPalette } from '@/utils/colorExtraction';
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
   const { artist, profile, loading, getArtistData } = useArtistData(artistName);
   const isMobile = useIsMobile();
 
-  // Get custom color palette for the artist
-  const colorPalette = useMemo(() => {
-    if (!artist) return { background: '#f7cf1e', panel: '#ffffff', text: '#000000', accent: '#ef3f36' };
-    return getArtistColorPalette(artist);
-  }, [artist]);
-
   if (loading) {
-    return <LoadingState backgroundColor={colorPalette.background} />;
+    return <LoadingState backgroundColor={profile?.background_color || '#f7cf1e'} />;
   }
 
   if (!artist) {
@@ -30,19 +23,10 @@ const ArtistSubdomain = () => {
 
   const { techniques, styles, socialPlatforms, artworks } = getArtistData();
 
-  // Enhanced profile with custom colors
-  const enhancedProfile = {
-    ...profile,
-    background_color: colorPalette.background,
-    panel_color: colorPalette.panel,
-    text_color: colorPalette.text,
-    accent_color: colorPalette.accent
-  };
-
   return isMobile ? (
     <MobileLayout
       artist={artist}
-      profile={enhancedProfile}
+      profile={profile}
       techniques={techniques}
       styles={styles}
       socialPlatforms={socialPlatforms}
@@ -51,7 +35,7 @@ const ArtistSubdomain = () => {
   ) : (
     <DesktopLayout
       artist={artist}
-      profile={enhancedProfile}
+      profile={profile}
       techniques={techniques}
       styles={styles}
       socialPlatforms={socialPlatforms}

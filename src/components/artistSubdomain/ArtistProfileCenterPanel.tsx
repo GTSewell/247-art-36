@@ -1,54 +1,83 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
+import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink, Calendar, Globe, Book, MapPin, Tag, ShoppingCart, Palette, Mail, Video, Award, Camera, Music } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from '@/hooks/use-mobile';
-import { ExternalLink } from 'lucide-react';
 
 interface ArtistProfileCenterPanelProps {
   artist: Artist;
   socialPlatforms: string[];
-  links: Array<{ title: string; url: string }>;
+  links: {
+    type: string;
+    title: string;
+    url: string;
+  }[];
   panelColor: string;
-  textColor?: string;
-  accentColor?: string;
 }
 
 const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
   artist,
   socialPlatforms,
   links,
-  panelColor,
-  textColor = '#000000',
-  accentColor = '#ef3f36'
+  panelColor
 }) => {
   const isMobile = useIsMobile();
   
-  // Sample links to display when artist has no custom links
+  const socialIcons = {
+    facebook: <Facebook className="h-5 w-5" />,
+    instagram: <Instagram className="h-5 w-5" />,
+    twitter: <Twitter className="h-5 w-5" />,
+    linkedin: <Linkedin className="h-5 w-5" />,
+  };
+
+  // Sample links to show when no links are available
   const sampleLinks = [
-    { title: 'Portfolio Website', url: '#' },
-    { title: 'Next Exhibition', url: '#' },
-    { title: 'Public Art Projects', url: '#' },
-    { title: 'Commission Info', url: '#' },
-    { title: 'Artist Statement', url: '#' },
-    { title: 'Publications', url: '#' },
-    { title: 'CV/Resume', url: '#' },
-    { title: 'Art Shop', url: '#' }
+    { type: 'website', title: 'Portfolio Website', url: '#', icon: <Globe className="h-4 w-4" /> },
+    { type: 'exhibition', title: 'Next Exhibition', url: '#', icon: <Calendar className="h-4 w-4" /> },
+    { type: 'public art', title: 'Public Art Installation', url: '#', icon: <MapPin className="h-4 w-4" /> },
+    { type: 'shop', title: 'Online Art Shop', url: '#', icon: <ShoppingCart className="h-4 w-4" /> },
+    { type: 'gallery', title: 'Gallery Representation', url: '#', icon: <Palette className="h-4 w-4" /> },
+    { type: 'contact', title: 'Contact for Commissions', url: '#', icon: <Mail className="h-4 w-4" /> },
+    { type: 'video', title: 'Studio Tour Video', url: '#', icon: <Video className="h-4 w-4" /> },
+    { type: 'award', title: 'Recent Awards', url: '#', icon: <Award className="h-4 w-4" /> }
   ];
-  
-  // Display actual links if available, otherwise show sample links
-  const displayLinks = links.length > 0 ? links : sampleLinks;
-  
-  const getSocialIcon = (platform: string) => {
-    // Icons for various social platforms
-    const lowerPlatform = platform.toLowerCase();
-    if (lowerPlatform.includes('instagram')) return '/icons/instagram.svg';
-    if (lowerPlatform.includes('facebook')) return '/icons/facebook.svg';
-    if (lowerPlatform.includes('twitter') || lowerPlatform.includes('x.com')) return '/icons/twitter.svg';
-    if (lowerPlatform.includes('linkedin')) return '/icons/linkedin.svg';
-    if (lowerPlatform.includes('youtube')) return '/icons/youtube.svg';
-    if (lowerPlatform.includes('tiktok')) return '/icons/tiktok.svg';
-    return '/icons/link.svg';
+
+  // Group links by type
+  const groupedLinks = links.reduce((groups: Record<string, any[]>, link) => {
+    const group = groups[link.type] || [];
+    group.push(link);
+    groups[link.type] = group;
+    return groups;
+  }, {});
+
+  const linksToDisplay = links.length > 0 ? links : sampleLinks;
+  const groupedLinksToDisplay = links.length > 0 ? groupedLinks : 
+    sampleLinks.reduce((groups: Record<string, any[]>, link) => {
+      const group = groups[link.type] || [];
+      group.push(link);
+      groups[link.type] = group;
+      return groups;
+    }, {});
+
+  const getLinkColor = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'gallery': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'exhibition': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'marketplace': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'nft': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'metaverse': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'voxels': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'team': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'shop': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'website': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'public art': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'contact': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'video': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'award': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      default: return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+    }
   };
   
   return (
@@ -66,70 +95,70 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
             </div>
           </div>
           <div>
-            <h2 className="text-lg font-bold" style={{ color: textColor }}>{artist.name}</h2>
-            <p className="text-sm" style={{ color: `${textColor}99` }}>{artist.specialty}</p>
-            <p className="text-xs" style={{ color: `${textColor}77` }}>
+            <h2 className="text-lg font-bold">{artist.name}</h2>
+            <p className="text-sm text-gray-600">{artist.specialty}</p>
+            <p className="text-xs text-gray-500">
               {artist.city}{artist.city && artist.country ? ', ' : ''}{artist.country}
             </p>
           </div>
         </div>
       )}
       
-      <ScrollArea className="flex-grow pr-2">
-        {/* Social Media Section */}
-        {socialPlatforms.length > 0 && (
-          <div className="mb-6">
-            <h3 className="text-base font-bold mb-3" style={{ color: textColor }}>Social Media</h3>
-            <div className="flex flex-wrap gap-4">
-              {socialPlatforms.map((platform, index) => (
-                <a 
+      {/* Social Media Section */}
+      {socialPlatforms.length > 0 && (
+        <div className="mb-6">
+          <h3 className="text-base font-bold mb-2">Connect</h3>
+          <div className="flex flex-wrap gap-3">
+            {socialPlatforms.map((platform, index) => {
+              const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
+              return (
+                <Button
                   key={index}
-                  href="#" 
-                  className="flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 hover:scale-110"
-                  style={{ backgroundColor: `${accentColor}22` }}
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full h-10 w-10 border-2 border-gray-800 text-gray-800 hover:bg-gray-100"
                 >
-                  <img 
-                    src={getSocialIcon(platform)} 
-                    alt={platform} 
-                    className="w-5 h-5"
-                    style={{ filter: `brightness(0) saturate(100%) ${textColor === '#ffffff' ? 'invert(1)' : ''}` }}
-                  />
-                </a>
-              ))}
-            </div>
+                  {socialIcons[platformKey] || <Link className="h-5 w-5" />}
+                </Button>
+              );
+            })}
           </div>
-        )}
-        
-        {/* Artist Links Section */}
-        <div>
-          <h3 className="text-base font-bold mb-3" style={{ color: textColor }}>Links</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {displayLinks.map((link, index) => (
-              <a 
-                key={index}
-                href={link.url === '#' ? undefined : link.url}
-                className={`block p-3 rounded-md transition-all duration-200 hover:scale-105 ${links.length === 0 ? 'cursor-default' : 'cursor-pointer'}`}
-                style={{ 
-                  backgroundColor: `${accentColor}15`,
-                  color: accentColor,
-                  border: `1px solid ${accentColor}33`
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{link.title}</span>
-                  {link.url !== '#' && <ExternalLink size={14} />}
-                </div>
-              </a>
+        </div>
+      )}
+      
+      {/* Links Section */}
+      <div className="flex-grow">
+        <ScrollArea className="h-[calc(100%-40px)]">
+          <div className="space-y-4 pr-4">
+            {Object.entries(groupedLinksToDisplay).map(([type, typeLinks]) => (
+              <div key={type} className="space-y-2">
+                <h3 className="text-sm font-bold uppercase">{type}</h3>
+                {typeLinks.map((link, index) => (
+                  <a 
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center justify-between w-full py-3 px-4 rounded-full ${getLinkColor(type)} transition-colors duration-200 border-2 border-gray-800 text-center`}
+                  >
+                    <div className="flex items-center">
+                      {link.icon && <span className="mr-2">{link.icon}</span>}
+                    </div>
+                    <span className="flex-grow text-center font-medium">{link.title}</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
             ))}
           </div>
           
           {links.length === 0 && (
-            <p className="text-xs mt-4 italic text-center" style={{ color: `${textColor}77` }}>
-              These are sample links. Artists can customize their own links.
-            </p>
+            <div className="mt-4 text-center text-gray-500 text-sm italic">
+              <p>These are sample links to show how artist links would appear</p>
+            </div>
           )}
-        </div>
-      </ScrollArea>
+        </ScrollArea>
+      </div>
     </div>
   );
 };

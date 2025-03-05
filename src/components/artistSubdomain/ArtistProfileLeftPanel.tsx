@@ -2,27 +2,20 @@
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ArtistProfileLeftPanelProps {
   artist: Artist;
   techniques: string[];
   styles: string[];
   panelColor: string;
-  textColor?: string;
-  accentColor?: string;
 }
 
 const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
   artist,
   techniques,
   styles,
-  panelColor,
-  textColor = '#000000',
-  accentColor = '#ef3f36'
+  panelColor
 }) => {
-  const isMobile = useIsMobile();
-  
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
       <div className="flex items-start mb-4">
@@ -36,9 +29,9 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
           </div>
         </div>
         <div>
-          <h2 className="text-lg font-bold" style={{ color: textColor }}>{artist.name}</h2>
-          <p className="text-sm" style={{ color: `${textColor}99` }}>{artist.specialty}</p>
-          <p className="text-xs" style={{ color: `${textColor}77` }}>
+          <h2 className="text-lg font-bold">{artist.name}</h2>
+          <p className="text-sm text-gray-600">{artist.specialty}</p>
+          <p className="text-xs text-gray-500">
             {artist.city}{artist.city && artist.country ? ', ' : ''}{artist.country}
           </p>
         </div>
@@ -48,8 +41,8 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
         <ScrollArea className="flex-1">
           {/* Bio Section */}
           <div className="mb-6">
-            <h3 className="text-left font-bold text-base mb-3" style={{ color: textColor }}>Bio</h3>
-            <p className="leading-relaxed" style={{ color: `${textColor}ee` }}>{artist.bio}</p>
+            <h3 className="text-left font-bold text-base mb-3">Bio</h3>
+            <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
           </div>
           
           {/* This empty div will push the techniques & styles to the bottom */}
@@ -58,22 +51,18 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
           {/* Techniques & Styles Section - Now positioned at the bottom */}
           {(techniques.length > 0 || styles.length > 0) && (
             <div className="w-full mt-auto mb-2">
-              <h3 className="text-left font-bold text-base mb-3" style={{ color: textColor }}>
+              <h3 className="text-left font-bold text-base mb-3">
                 Techniques & Styles
               </h3>
               
               {techniques.length > 0 && (
                 <div className="mb-3">
-                  <h4 className="text-sm font-semibold mb-1" style={{ color: `${textColor}cc` }}>Techniques</h4>
+                  <h4 className="text-sm font-semibold mb-1">Techniques</h4>
                   <div className="flex flex-wrap gap-1">
                     {techniques.map((technique, index) => (
                       <span 
                         key={index} 
-                        className="inline-block px-2 py-1 text-xs rounded-md"
-                        style={{ 
-                          backgroundColor: `${accentColor}22`,
-                          color: accentColor
-                        }}
+                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
                       >
                         {technique}
                       </span>
@@ -84,16 +73,12 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
               
               {styles.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-semibold mb-1" style={{ color: `${textColor}cc` }}>Styles</h4>
+                  <h4 className="text-sm font-semibold mb-1">Styles</h4>
                   <div className="flex flex-wrap gap-1">
                     {styles.map((style, index) => (
                       <span 
                         key={index} 
-                        className="inline-block px-2 py-1 text-xs rounded-md"
-                        style={{ 
-                          backgroundColor: `${accentColor}22`,
-                          color: accentColor
-                        }}
+                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
                       >
                         {style}
                       </span>
