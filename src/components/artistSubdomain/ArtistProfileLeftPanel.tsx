@@ -1,13 +1,6 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ArtistProfileLeftPanelProps {
   artist: Artist;
@@ -22,8 +15,6 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
   styles,
   panelColor
 }) => {
-  const isMobile = useIsMobile();
-  
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
       <div className="flex items-start mb-4">
@@ -46,62 +37,51 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
       </div>
 
       <div className="flex-grow">
-        {/* Bio Section */}
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="bio" className="border-b-0">
-            <AccordionTrigger className="py-1 hover:no-underline">
-              <span className="text-left font-bold text-base">Bio</span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        {/* Bio Section - Expanded by default */}
+        <div className="mb-6">
+          <h3 className="text-left font-bold text-base mb-3">Bio</h3>
+          <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+        </div>
 
-        {/* Techniques & Styles Section */}
+        {/* Techniques & Styles Section - Expanded by default */}
         {(techniques.length > 0 || styles.length > 0) && (
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="techniques-styles" className="border-b-0">
-              <AccordionTrigger className="py-1 hover:no-underline">
-                <span className="text-left font-bold text-base">
-                  Techniques & Styles
-                </span>
-              </AccordionTrigger>
-              <AccordionContent>
-                {techniques.length > 0 && (
-                  <div className="mb-3">
-                    <h4 className="text-sm font-semibold mb-1">Techniques</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {techniques.map((technique, index) => (
-                        <span 
-                          key={index} 
-                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                        >
-                          {technique}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {styles.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-semibold mb-1">Styles</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {styles.map((style, index) => (
-                        <span 
-                          key={index} 
-                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                        >
-                          {style}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <div>
+            <h3 className="text-left font-bold text-base mb-3">
+              Techniques & Styles
+            </h3>
+            
+            {techniques.length > 0 && (
+              <div className="mb-3">
+                <h4 className="text-sm font-semibold mb-1">Techniques</h4>
+                <div className="flex flex-wrap gap-1">
+                  {techniques.map((technique, index) => (
+                    <span 
+                      key={index} 
+                      className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                    >
+                      {technique}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {styles.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold mb-1">Styles</h4>
+                <div className="flex flex-wrap gap-1">
+                  {styles.map((style, index) => (
+                    <span 
+                      key={index} 
+                      className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                    >
+                      {style}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

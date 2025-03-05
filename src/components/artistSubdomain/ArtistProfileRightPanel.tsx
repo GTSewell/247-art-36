@@ -16,7 +16,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   // If no artworks are provided, display placeholder images
   const displayArtworks = artworks.length > 0 
     ? artworks 
-    : Array(6).fill('/placeholder.svg');
+    : Array(4).fill('/placeholder.svg');
   
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
@@ -42,7 +42,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       {/* Artworks Section */}
       <div className="flex-grow">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col space-y-4 overflow-y-auto">
           {displayArtworks.map((artwork, index) => (
             <div 
               key={index}

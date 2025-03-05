@@ -54,11 +54,17 @@ const ArtistSubdomain = () => {
           setArtist(processedArtist);
           
           // Check if artist_profiles table exists in the database
-          // If not, use a default profile
+          // For now, use the first artwork as the background image
+          const artworkBackground = processedArtist.artworks && 
+            Array.isArray(processedArtist.artworks) && 
+            processedArtist.artworks.length > 0 
+              ? processedArtist.artworks[0] 
+              : null;
+          
           const defaultProfile: ArtistProfile = {
             id: '',
             artist_id: processedArtist.id,
-            background_image: null,
+            background_image: artworkBackground,
             background_color: '#f7cf1e',
             panel_color: '#ffffff',
             links: []
@@ -201,7 +207,7 @@ const ArtistSubdomain = () => {
     );
   }
 
-  // Desktop layout
+  // Desktop layout - Make panels taller with min-height
   return (
     <div 
       className="min-h-screen p-8"
@@ -214,7 +220,7 @@ const ArtistSubdomain = () => {
     >
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="rounded-lg overflow-hidden shadow-lg" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+          <div className="rounded-lg overflow-hidden shadow-lg min-h-[700px]" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
             <ArtistProfileLeftPanel 
               artist={artist} 
               techniques={techniques}
@@ -223,7 +229,7 @@ const ArtistSubdomain = () => {
             />
           </div>
           
-          <div className="rounded-lg overflow-hidden shadow-lg" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+          <div className="rounded-lg overflow-hidden shadow-lg min-h-[700px]" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
             <ArtistProfileCenterPanel 
               artist={artist}
               socialPlatforms={socialPlatforms}
@@ -232,7 +238,7 @@ const ArtistSubdomain = () => {
             />
           </div>
           
-          <div className="rounded-lg overflow-hidden shadow-lg" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+          <div className="rounded-lg overflow-hidden shadow-lg min-h-[700px]" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
             <ArtistProfileRightPanel 
               artist={artist}
               artworks={artworks}
