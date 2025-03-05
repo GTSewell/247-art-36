@@ -55,7 +55,7 @@ export function useArtistData(artistName: string | undefined) {
           
           const defaultProfile: ArtistProfile = {
             id: '',
-            artist_id: processedArtist.id,
+            artist_id: String(processedArtist.id), // Convert number to string here
             background_image: artworkBackground,
             background_color: colorPalette.background,
             panel_color: colorPalette.panel,
