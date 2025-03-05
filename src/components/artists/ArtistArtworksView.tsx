@@ -46,7 +46,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="relative h-full" data-no-flip="true">
-      <div className="grid grid-cols-2 gap-4 p-4 w-full h-full" data-no-flip="true">
+      <div className="grid grid-cols-2 gap-4 p-6 w-full h-full" data-no-flip="true">
         {displayArtworks.length > 0 ? (
           displayArtworks.slice(0, 4).map((artwork, index) => (
             <div 
