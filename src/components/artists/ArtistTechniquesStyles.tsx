@@ -39,7 +39,7 @@ const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ techniq
           )}
           
           {styles && styles.length > 0 && (
-            <div>
+            <div className="pb-2">
               <h4 className="text-sm font-medium mb-2">Styles</h4>
               <div className="flex flex-wrap gap-2">
                 {styles.map((style: string, index: number) => (

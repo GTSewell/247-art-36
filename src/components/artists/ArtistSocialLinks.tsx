@@ -19,7 +19,7 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({ socialPlatforms }
   }
 
   return (
-    <div className="space-y-1 mb-1">
+    <div className="space-y-1 mb-4">
       <h3 className="font-semibold text-gray-800 text-sm">Social Media</h3>
       <div className="flex gap-3">
         {socialPlatforms.map((platform: string) => {

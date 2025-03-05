@@ -19,7 +19,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   handleDomainClick
 }) => {
   return (
-    <div className="space-y-3 absolute bottom-5 md:bottom-5 left-5 right-5 pt-2">
+    <div className="space-y-3">
       <div className="flex items-center gap-2">
         <Button
           onClick={handleDomainClick}

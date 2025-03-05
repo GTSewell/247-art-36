@@ -8,6 +8,7 @@ import ArtistBio from './ArtistBio';
 import ArtistTechniquesStyles from './ArtistTechniquesStyles';
 import ArtistSocialLinks from './ArtistSocialLinks';
 import ArtistActions from './ArtistActions';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -54,7 +55,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col justify-between h-full p-5 md:p-8 overflow-y-auto max-h-[50vh] md:max-h-none">
+    <div className="relative flex flex-col h-full p-5 md:p-8">
       {onClose && (
         <button 
           onClick={onClose}
@@ -63,36 +64,43 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <X className="h-4 w-4 text-gray-500" />
         </button>
       )}
-      <div className="space-y-2 md:space-y-4 pb-20 md:pb-16">
+      
+      <div className="flex-none mb-4">
         <ArtistHeaderInfo 
           name={artist.name}
           specialty={artist.specialty}
           city={artist.city}
           country={artist.country}
         />
-
-        <ArtistBio 
-          bio={artist.bio} 
-          isMobile={isMobile} 
-        />
-
-        <ArtistTechniquesStyles 
-          techniques={techniques} 
-          styles={styles} 
-        />
-
-        <ArtistSocialLinks 
-          socialPlatforms={socialPlatforms} 
-        />
       </div>
 
-      <ArtistActions 
-        domainName={domainName}
-        artistId={artist.id}
-        isFavorite={isFavorite}
-        onFavoriteToggle={onFavoriteToggle}
-        handleDomainClick={handleDomainClick}
-      />
+      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-20">
+        <div className="space-y-4">
+          <ArtistBio 
+            bio={artist.bio} 
+            isMobile={isMobile} 
+          />
+
+          <ArtistTechniquesStyles 
+            techniques={techniques} 
+            styles={styles} 
+          />
+
+          <ArtistSocialLinks 
+            socialPlatforms={socialPlatforms} 
+          />
+        </div>
+      </ScrollArea>
+
+      <div className="flex-none absolute bottom-5 left-5 right-5">
+        <ArtistActions 
+          domainName={domainName}
+          artistId={artist.id}
+          isFavorite={isFavorite}
+          onFavoriteToggle={onFavoriteToggle}
+          handleDomainClick={handleDomainClick}
+        />
+      </div>
     </div>
   );
 };
