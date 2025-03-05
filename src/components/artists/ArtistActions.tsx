@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Zap } from 'lucide-react';
+import { Zap, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ArtistActionsProps {
   domainName: string;
@@ -28,6 +29,8 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   buttonBorderColor,
   useSubPath = false
 }) => {
+  const isMobile = useIsMobile();
+  
   const favoriteButtonStyles = buttonColor ? {
     backgroundColor: isFavorite ? '#f7cf1e' : buttonColor,
     color: isFavorite ? '#000000' : buttonTextColor || 'white',
@@ -40,34 +43,25 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     borderColor: buttonBorderColor || 'transparent'
   } : {};
 
-  // Handle hover state for favorite button
-  const handleFavoriteButtonHover = (isHovering: boolean) => {
-    if (!isFavorite && buttonHoverColor) {
-      return {
-        backgroundColor: isHovering ? buttonHoverColor : buttonColor
-      };
+  // Generate the domain display text based on screen size
+  const getDomainText = () => {
+    if (isMobile) {
+      // On mobile, we'll show just the domain name for brevity
+      return domainName;
+    } else {
+      // On desktop, we'll show the full URL format
+      return useSubPath ? `247.art/${domainName}` : `${domainName}.247.art`;
     }
-    return {};
-  };
-
-  // Handle hover state for visit button
-  const handleVisitButtonHover = (isHovering: boolean) => {
-    if (buttonHoverColor) {
-      return {
-        backgroundColor: isHovering ? buttonHoverColor : buttonColor
-      };
-    }
-    return {};
   };
 
   return (
-    <div className="flex justify-between w-full gap-4">
+    <div className="flex justify-between w-full gap-2">
       {onFavoriteToggle && (
         <Button
           variant="default"
-          className={`flex items-center gap-1 ${
+          className={`${
             isFavorite ? 'bg-zap-yellow text-black' : ''
-          }`}
+          } ${isMobile ? 'px-3' : ''}`}
           style={favoriteButtonStyles}
           onClick={(e) => {
             e.stopPropagation();
@@ -87,7 +81,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           }}
         >
           <Zap size={18} />
-          <span>{isFavorite ? 'Favorited' : 'Favorite'}</span>
+          {!isMobile && <span>{isFavorite ? 'Favorited' : 'Favorite'}</span>}
         </Button>
       )}
       
@@ -107,7 +101,14 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           }
         }}
       >
-        {useSubPath ? `Visit 247.art/${domainName}` : `Visit ${domainName}.247.art`}
+        {isMobile ? (
+          <>
+            <ExternalLink size={16} className="mr-1" />
+            <span className="text-sm truncate">{getDomainText()}</span>
+          </>
+        ) : (
+          <>Visit {useSubPath ? `247.art/${domainName}` : `${domainName}.247.art`}</>
+        )}
       </Button>
     </div>
   );

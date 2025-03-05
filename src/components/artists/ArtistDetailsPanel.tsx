@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeftCircle } from 'lucide-react';
+import { ArrowLeftCircle, Link as LinkIcon } from 'lucide-react';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
 import ArtistBio from './ArtistBio';
 import ArtistTechniquesStyles from './ArtistTechniquesStyles';
@@ -70,6 +71,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     navigate('/artists');
   };
 
+  // Create a formatted domain name for display
+  const artistDomain = artist.name.replace(/\s+/g, '');
+  
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8">
       {showReturnButton && (
@@ -96,10 +100,23 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       </div>
 
+      {/* For mobile, show a mini domain link at the top for better visibility */}
+      {isMobile && (
+        <div className="flex-none mb-3 flex items-center text-sm">
+          <LinkIcon size={14} className="mr-1" />
+          <button 
+            onClick={handleDomainClick}
+            className="text-black/70 hover:text-black font-mono truncate"
+          >
+            247.art/{artistDomain}
+          </button>
+        </div>
+      )}
+
       {isMobile && (
         <div className="flex-none mb-4 mt-2">
           <ArtistActions 
-            domainName={artist.name.replace(/\s+/g, '')}
+            domainName={artistDomain}
             artistId={artist.id}
             isFavorite={isFavorite}
             onFavoriteToggle={onFavoriteToggle}
@@ -138,7 +155,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       {!isMobile && (
         <div className="flex-none absolute bottom-3 left-5 right-5">
           <ArtistActions 
-            domainName={artist.name.replace(/\s+/g, '')}
+            domainName={artistDomain}
             artistId={artist.id}
             isFavorite={isFavorite}
             onFavoriteToggle={onFavoriteToggle}

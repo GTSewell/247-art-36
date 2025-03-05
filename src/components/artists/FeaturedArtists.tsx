@@ -116,7 +116,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             
             return (
               <CarouselItem key={artist.id}>
-                <div className="container mx-auto px-4 py-8">
+                <div className={`container mx-auto px-4 py-8 ${isMobile ? 'pb-12' : 'py-8'}`}>
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -130,14 +130,16 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                       isFavorite={favoriteArtists.has(artist.id)}
                       refreshArtists={refreshArtists}
                     />
-                    <ArtistDetailsPanel 
-                      artist={artist}
-                      onSelect={() => onSelect(artist)}
-                      onFavoriteToggle={(artistId, isFav) => onFavoriteToggle(artistId, isFav)}
-                      isFavorite={favoriteArtists.has(artist.id)}
-                      colorTheme={colorTheme}
-                      showReturnButton={false}
-                    />
+                    <div className={`${isMobile ? 'pb-1' : ''}`}>
+                      <ArtistDetailsPanel 
+                        artist={artist}
+                        onSelect={() => onSelect(artist)}
+                        onFavoriteToggle={(artistId, isFav) => onFavoriteToggle(artistId, isFav)}
+                        isFavorite={favoriteArtists.has(artist.id)}
+                        colorTheme={colorTheme}
+                        showReturnButton={false}
+                      />
+                    </div>
                   </motion.div>
                 </div>
               </CarouselItem>
@@ -153,7 +155,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className={`absolute ${
-                  isMobile ? '-left-7 top-1/2 -translate-y-1/2' : 'left-0 md:-left-4 top-1/2 -translate-y-1/2'
+                  isMobile ? '-left-2 top-1/2 -translate-y-1/2' : 'left-0 md:-left-4 top-1/2 -translate-y-1/2'
                 }`}
               >
                 <button onClick={() => api?.scrollPrev()} className="p-2">
@@ -166,7 +168,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className={`absolute ${
-                  isMobile ? '-right-7 top-1/2 -translate-y-1/2' : 'right-0 md:-right-4 top-1/2 -translate-y-1/2'
+                  isMobile ? '-right-2 top-1/2 -translate-y-1/2' : 'right-0 md:-right-4 top-1/2 -translate-y-1/2'
                 }`}
               >
                 <button onClick={() => api?.scrollNext()} className="p-2">

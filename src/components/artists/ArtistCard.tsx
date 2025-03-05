@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { logger } from "@/utils/logger";
 
 interface ArtistCardProps {
@@ -45,6 +44,7 @@ const ArtistCard = ({
   const subdomain = `247.art/${name.toLowerCase().replace(/\s+/g, '')}`;
   const location = [city, country].filter(Boolean).join(", ");
   const [imageError, setImageError] = useState(false);
+  const isMobile = useIsMobile();
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     logger.error("Artist card image failed to load:", image);
@@ -97,7 +97,7 @@ const ArtistCard = ({
               e.stopPropagation();
               onFavoriteToggle(!isFavorite);
             }}
-            title="Favorite"
+            title={isFavorite ? "Favorited" : "Favorite"}
           >
             <Zap size={isFeatured ? 24 : 20} />
           </Button>
