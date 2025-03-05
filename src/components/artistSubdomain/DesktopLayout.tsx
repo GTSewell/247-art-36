@@ -23,11 +23,16 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   socialPlatforms,
   artworks
 }) => {
+  const backgroundColor = profile?.background_color || '#f7cf1e';
+  const panelColor = profile?.panel_color || '#ffffff';
+  const textColor = profile?.text_color || '#000000';
+  const accentColor = profile?.accent_color || '#ef3f36';
+
   return (
     <div 
       className="min-h-screen flex items-center justify-center py-8 px-8 overflow-hidden"
       style={{ 
-        backgroundColor: profile?.background_color || '#f7cf1e',
+        backgroundColor: backgroundColor,
         backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -36,29 +41,34 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
     >
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-4rem)]">
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
             <ArtistProfileLeftPanel 
               artist={artist} 
               techniques={techniques}
               styles={styles}
-              panelColor={profile?.panel_color || '#ffffff'}
+              panelColor={panelColor}
+              textColor={textColor}
+              accentColor={accentColor}
             />
           </div>
           
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
             <ArtistProfileCenterPanel 
               artist={artist}
               socialPlatforms={socialPlatforms}
               links={profile?.links || []}
-              panelColor={profile?.panel_color || '#ffffff'}
+              panelColor={panelColor}
+              textColor={textColor}
+              accentColor={accentColor}
             />
           </div>
           
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: profile?.panel_color || '#ffffff' }}>
+          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: panelColor }}>
             <ArtistProfileRightPanel 
               artist={artist}
               artworks={artworks}
-              panelColor={profile?.panel_color || '#ffffff'}
+              panelColor={panelColor}
+              textColor={textColor}
             />
           </div>
         </div>

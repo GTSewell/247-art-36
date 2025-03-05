@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { toast } from 'sonner';
+import { getArtistColorPalette } from '@/utils/colorExtraction';
 
 export function useArtistData(artistName: string | undefined) {
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -49,12 +50,17 @@ export function useArtistData(artistName: string | undefined) {
               ? processedArtist.artworks[0] 
               : null;
           
+          // Get custom colors based on the artist's artwork
+          const colorPalette = getArtistColorPalette(processedArtist);
+          
           const defaultProfile: ArtistProfile = {
             id: '',
             artist_id: processedArtist.id,
             background_image: artworkBackground,
-            background_color: '#f7cf1e',
-            panel_color: '#ffffff',
+            background_color: colorPalette.background,
+            panel_color: colorPalette.panel,
+            text_color: colorPalette.text,
+            accent_color: colorPalette.accent,
             links: []
           };
           
