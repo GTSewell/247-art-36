@@ -11,12 +11,20 @@ import {
 interface ArtistTechniquesStylesProps {
   techniques: string[];
   styles: string[];
+  badgeBgColor?: string;
 }
 
-const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ techniques, styles }) => {
+const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ 
+  techniques, 
+  styles,
+  badgeBgColor
+}) => {
   if ((!techniques || techniques.length === 0) && (!styles || styles.length === 0)) {
     return null;
   }
+
+  const defaultBadgeBg = 'bg-gray-100';
+  const badgeStyle = badgeBgColor ? { backgroundColor: badgeBgColor } : {};
 
   return (
     <Accordion type="single" collapsible className="w-full">
@@ -30,7 +38,12 @@ const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ techniq
               <h4 className="text-sm font-medium mb-1">Techniques</h4>
               <div className="flex flex-wrap gap-2">
                 {techniques.map((technique: string, index: number) => (
-                  <Badge key={index} variant="secondary" className="bg-gray-100">
+                  <Badge 
+                    key={index} 
+                    variant="secondary" 
+                    className={badgeBgColor ? '' : defaultBadgeBg}
+                    style={badgeStyle}
+                  >
                     {technique}
                   </Badge>
                 ))}
@@ -43,7 +56,12 @@ const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ techniq
               <h4 className="text-sm font-medium mb-1">Styles</h4>
               <div className="flex flex-wrap gap-2">
                 {styles.map((style: string, index: number) => (
-                  <Badge key={index} variant="secondary" className="bg-gray-100">
+                  <Badge 
+                    key={index} 
+                    variant="secondary" 
+                    className={badgeBgColor ? '' : defaultBadgeBg}
+                    style={badgeStyle}
+                  >
                     {style}
                   </Badge>
                 ))}

@@ -15,6 +15,15 @@ interface ArtistDetailsPanelProps {
   onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
   isFavorite?: boolean;
   onClose?: (e: React.MouseEvent) => void;
+  colorTheme?: {
+    background: string;
+    panel: string;
+    button: string;
+    buttonText: string;
+    buttonHover: string;
+    buttonBorder: string;
+    badgeBg: string;
+  };
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({ 
@@ -22,7 +31,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   onSelect,
   onFavoriteToggle,
   isFavorite = false,
-  onClose
+  onClose,
+  colorTheme
 }) => {
   const isMobile = useIsMobile();
 
@@ -76,10 +86,14 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <ArtistTechniquesStyles 
             techniques={techniques} 
             styles={styles} 
+            badgeBgColor={colorTheme?.badgeBg}
           />
 
           <ArtistSocialLinks 
             socialPlatforms={socialPlatforms} 
+            buttonColor={colorTheme?.button}
+            buttonTextColor={colorTheme?.buttonText}
+            buttonHoverColor={colorTheme?.buttonHover}
           />
         </div>
       </ScrollArea>
@@ -91,6 +105,10 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           isFavorite={isFavorite}
           onFavoriteToggle={onFavoriteToggle}
           handleDomainClick={handleDomainClick}
+          buttonColor={colorTheme?.button}
+          buttonTextColor={colorTheme?.buttonText}
+          buttonHoverColor={colorTheme?.buttonHover}
+          buttonBorderColor={colorTheme?.buttonBorder}
         />
       </div>
     </div>

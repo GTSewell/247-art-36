@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistDetailsPanel from './ArtistDetailsPanel';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { generateColorTheme } from '@/utils/colorExtraction';
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -91,29 +92,56 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
         setApi={setApi}
       >
         <CarouselContent>
-          {artists.map((artist) => (
-            <CarouselItem key={artist.id}>
-              <div className="container mx-auto px-4 py-8">
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 bg-white rounded-xl shadow-[0_8px_20px_-5px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]"
-                >
-                  <ArtistImagePanel 
-                    artist={artist}
-                    onFavoriteToggle={onFavoriteToggle}
-                    isFavorite={favoriteArtists.has(artist.id)}
-                    refreshArtists={refreshArtists}
-                  />
-                  <ArtistDetailsPanel 
-                    artist={artist}
-                    onSelect={() => onSelect(artist)}
-                  />
-                </motion.div>
-              </div>
-            </CarouselItem>
-          ))}
+          {artists.map((artist) => {
+            // Get artworks array from the artist
+            const artworks = Array.isArray(artist.artworks) 
+              ? artist.artworks 
+              : typeof artist.artworks === 'string' && artist.artworks
+                ? JSON.parse(artist.artworks)
+                : [];
+                
+            // Generate a color theme for this specific artist
+            const colorTheme = generateColorTheme(
+              artist, 
+              { 
+                id: '',
+                artist_id: String(artist.id),
+                background_image: artworks[0] || null,
+                background_color: '#f7cf1e',
+                panel_color: '#ffffff',
+                links: []
+              }, 
+              artworks
+            );
+            
+            return (
+              <CarouselItem key={artist.id}>
+                <div className="container mx-auto px-4 py-8">
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 rounded-xl shadow-[0_8px_20px_-5px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]"
+                    style={{ backgroundColor: colorTheme.panel }}
+                  >
+                    <ArtistImagePanel 
+                      artist={artist}
+                      onFavoriteToggle={onFavoriteToggle}
+                      isFavorite={favoriteArtists.has(artist.id)}
+                      refreshArtists={refreshArtists}
+                    />
+                    <ArtistDetailsPanel 
+                      artist={artist}
+                      onSelect={() => onSelect(artist)}
+                      onFavoriteToggle={(artistId, isFav) => onFavoriteToggle(artistId, isFav)}
+                      isFavorite={favoriteArtists.has(artist.id)}
+                      colorTheme={colorTheme}
+                    />
+                  </motion.div>
+                </div>
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <AnimatePresence>
           {(showControls || !isMobile) && (

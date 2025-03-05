@@ -1,61 +1,112 @@
 
 import React from 'react';
-import { ExternalLink, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 
 interface ArtistActionsProps {
   domainName: string;
   artistId: number;
-  isFavorite: boolean;
+  isFavorite?: boolean;
   onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
   handleDomainClick: (e: React.MouseEvent) => void;
+  buttonColor?: string;
+  buttonTextColor?: string;
+  buttonHoverColor?: string;
+  buttonBorderColor?: string;
 }
 
-const ArtistActions: React.FC<ArtistActionsProps> = ({ 
-  domainName, 
-  artistId, 
-  isFavorite, 
+const ArtistActions: React.FC<ArtistActionsProps> = ({
+  domainName,
+  artistId,
+  isFavorite = false,
   onFavoriteToggle,
-  handleDomainClick
+  handleDomainClick,
+  buttonColor,
+  buttonTextColor,
+  buttonHoverColor,
+  buttonBorderColor
 }) => {
-  const navigate = useNavigate();
-  
-  const handleSubdomainClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigate(`/artist/${domainName}`);
-  };
-  
-  return (
-    <div className="space-y-3">
-      <div className="flex items-center gap-2">
-        <Button
-          onClick={handleSubdomainClick}
-          className="flex-1 bg-[#00baef] hover:bg-[#00a6d6] text-white"
-        >
-          247.art/{domainName}
-          <ExternalLink className="ml-1" size={16} />
-        </Button>
+  const favoriteButtonStyles = buttonColor ? {
+    backgroundColor: isFavorite ? '#f7cf1e' : buttonColor,
+    color: isFavorite ? '#000000' : buttonTextColor || 'white',
+    borderColor: isFavorite ? '#000000' : buttonBorderColor || 'transparent'
+  } : {};
 
+  const visitButtonStyles = buttonColor ? {
+    backgroundColor: buttonColor,
+    color: buttonTextColor || 'white',
+    borderColor: buttonBorderColor || 'transparent'
+  } : {};
+
+  // Handle hover state for favorite button
+  const handleFavoriteButtonHover = (isHovering: boolean) => {
+    if (!isFavorite && buttonHoverColor) {
+      return {
+        backgroundColor: isHovering ? buttonHoverColor : buttonColor
+      };
+    }
+    return {};
+  };
+
+  // Handle hover state for visit button
+  const handleVisitButtonHover = (isHovering: boolean) => {
+    if (buttonHoverColor) {
+      return {
+        backgroundColor: isHovering ? buttonHoverColor : buttonColor
+      };
+    }
+    return {};
+  };
+
+  return (
+    <div className="flex justify-between w-full gap-4">
+      {onFavoriteToggle && (
         <Button
-          variant="ghost"
-          size="icon"
+          variant="default"
+          className={`flex items-center gap-1 ${
+            isFavorite ? 'bg-zap-yellow text-black' : ''
+          }`}
+          style={favoriteButtonStyles}
           onClick={(e) => {
             e.stopPropagation();
             if (onFavoriteToggle) {
               onFavoriteToggle(artistId, !isFavorite);
             }
           }}
-          className={`${
-            isFavorite 
-              ? 'bg-[#f7cf1e] text-black hover:bg-[#f7cf1e]' 
-              : 'bg-gray-200 hover:bg-[#f7cf1e] hover:text-black text-gray-700'
-          }`}
+          onMouseOver={(e) => {
+            if (buttonHoverColor && !isFavorite) {
+              e.currentTarget.style.backgroundColor = buttonHoverColor;
+            }
+          }}
+          onMouseOut={(e) => {
+            if (buttonColor && !isFavorite) {
+              e.currentTarget.style.backgroundColor = buttonColor;
+            }
+          }}
         >
-          <Zap size={20} />
+          <Zap size={18} />
+          <span>{isFavorite ? 'Favorited' : 'Favorite'}</span>
         </Button>
-      </div>
+      )}
+      
+      <Button
+        variant="default"
+        className="flex-grow"
+        style={visitButtonStyles}
+        onClick={handleDomainClick}
+        onMouseOver={(e) => {
+          if (buttonHoverColor) {
+            e.currentTarget.style.backgroundColor = buttonHoverColor;
+          }
+        }}
+        onMouseOut={(e) => {
+          if (buttonColor) {
+            e.currentTarget.style.backgroundColor = buttonColor;
+          }
+        }}
+      >
+        Visit {domainName}.247.art
+      </Button>
     </div>
   );
 };
