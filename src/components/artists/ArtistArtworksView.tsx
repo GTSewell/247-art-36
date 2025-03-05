@@ -45,29 +45,31 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     : getArtworks();
 
   return (
-    <div className="relative h-full" data-no-flip="true">
-      <div className="grid grid-cols-2 gap-4 p-6 w-full h-full" data-no-flip="true">
-        {displayArtworks.length > 0 ? (
-          displayArtworks.slice(0, 4).map((artwork, index) => (
-            <div 
-              key={index} 
-              className="relative aspect-square rounded overflow-hidden"
-              data-no-flip="true"
-            >
-              <img
-                src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-cover"
-                onError={(e) => handleArtworkImageError(e, index)}
+    <div className="relative h-full w-full" data-no-flip="true">
+      <div className="p-6 w-full h-full" data-no-flip="true">
+        <div className="grid grid-cols-2 gap-6 w-full h-full" data-no-flip="true">
+          {displayArtworks.length > 0 ? (
+            displayArtworks.slice(0, 4).map((artwork, index) => (
+              <div 
+                key={index} 
+                className="relative aspect-square rounded overflow-hidden"
                 data-no-flip="true"
-              />
+              >
+                <img
+                  src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                  alt={`Artwork ${index + 1} by ${artist.name}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => handleArtworkImageError(e, index)}
+                  data-no-flip="true"
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
+              No artworks available
             </div>
-          ))
-        ) : (
-          <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
-            No artworks available
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
