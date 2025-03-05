@@ -3,6 +3,13 @@ import React from 'react';
 import { Gallery } from '@/data/types/gallery';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { 
+  Accordion, 
+  AccordionContent, 
+  AccordionItem, 
+  AccordionTrigger 
+} from "@/components/ui/accordion";
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface GalleryDetailsPanelProps {
   gallery: Gallery;
@@ -15,6 +22,13 @@ const GalleryDetailsPanel: React.FC<GalleryDetailsPanelProps> = ({
   onSelect,
   onClose,
 }) => {
+  const isMobile = useIsMobile();
+  
+  // Create a bio preview for mobile devices
+  const bioPreview = gallery.bio && gallery.bio.length > 120 
+    ? `${gallery.bio.substring(0, 120)}...` 
+    : gallery.bio;
+
   return (
     <div className="p-6 flex flex-col justify-between h-full">
       <div>
@@ -34,7 +48,23 @@ const GalleryDetailsPanel: React.FC<GalleryDetailsPanelProps> = ({
             </button>
           )}
         </div>
-        <p className="text-gray-700 mb-4">{gallery.bio}</p>
+        
+        {/* Bio section with accordion */}
+        {gallery.bio && (
+          <Accordion type="single" collapsible className="w-full mb-4">
+            <AccordionItem value="bio" className="border-b-0">
+              <AccordionTrigger className="py-2 hover:no-underline">
+                <span className="text-left font-normal">
+                  {isMobile ? bioPreview : gallery.bio}
+                </span>
+              </AccordionTrigger>
+              <AccordionContent>
+                <p className="text-gray-700 leading-relaxed">{gallery.bio}</p>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+        
         <div className="space-y-2 mb-4">
           <p className="text-sm">
             <span className="font-semibold">Specialty:</span> {gallery.specialty}
