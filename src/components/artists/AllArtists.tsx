@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistCard from "./ArtistCard";
@@ -8,7 +9,7 @@ import ArtistImagePanel from "./ArtistImagePanel";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import type { UseEmblaCarouselType } from "embla-carousel-react";
+import type { CarouselApi } from "@/components/ui/carousel";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -39,6 +40,7 @@ const AllArtists = ({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   const isMobile = useIsMobile();
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
@@ -61,6 +63,24 @@ const AllArtists = ({
       setSelectedArtist(artists[index]);
     }
   };
+
+  // Effect to handle carousel changes
+  React.useEffect(() => {
+    if (!carouselApi) return;
+
+    carouselApi.scrollTo(selectedArtistIndex);
+    
+    const onSelect = () => {
+      const currentIndex = carouselApi.selectedScrollSnap();
+      handleArtistChange(currentIndex);
+    };
+
+    carouselApi.on("select", onSelect);
+    
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi, selectedArtistIndex, artists]);
 
   return (
     <div className="mt-8">
@@ -118,12 +138,7 @@ const AllArtists = ({
                 containScroll: false,
                 startIndex: selectedArtistIndex
               }}
-              onSelect={(api: UseEmblaCarouselType) => {
-                if (api && typeof api.selectedScrollSnap === 'function') {
-                  const currentIndex = api.selectedScrollSnap();
-                  handleArtistChange(currentIndex);
-                }
-              }}
+              setApi={setCarouselApi}
             >
               <CarouselContent className="-ml-0 sm:-ml-2">
                 {artists.map((artist, index) => (
