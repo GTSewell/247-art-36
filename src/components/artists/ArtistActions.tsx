@@ -34,7 +34,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           onClick={handleSubdomainClick}
           className="flex-1 bg-[#00baef] hover:bg-[#00a6d6] text-white"
         >
-          {domainName}.247.art
+          247.art/{domainName}
           <ExternalLink className="ml-1" size={16} />
         </Button>
 

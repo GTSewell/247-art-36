@@ -18,15 +18,19 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
     setIsLoading(true);
     
     try {
+      // Get all site passwords
       const { data, error } = await supabase
         .from('site_settings')
-        .select('site_password')
-        .single();
+        .select('site_password');
       
       if (error) throw error;
       
-      if (data && password === data.site_password) {
+      // Check if entered password matches any of the passwords in the database
+      const isCorrect = data && data.some(row => password === row.site_password);
+      
+      if (isCorrect) {
         setIsPasswordCorrect(true);
+        localStorage.setItem("isPasswordCorrect", "true");
         toast.success('Welcome to 247.art!');
       } else {
         toast.error('Incorrect password');
