@@ -1,16 +1,9 @@
 
 import React, { useState } from "react";
 import { Artist } from "@/data/types/artist";
-import ArtistCard from "./ArtistCard";
 import AllArtistsHeader from "./AllArtistsHeader";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import ArtistDetailsPanel from "./ArtistDetailsPanel";
-import ArtistImagePanel from "./ArtistImagePanel";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import type { CarouselApi } from "@/components/ui/carousel";
-import { generateColorTheme } from "@/utils/colorExtraction";
+import ArtistDetailModal from "./ArtistDetailModal";
+import ArtistGrid from "./ArtistGrid";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -25,7 +18,7 @@ interface AllArtistsProps {
   refreshArtist: (artistId: number) => Promise<void>;
 }
 
-const AllArtists = ({
+const AllArtists: React.FC<AllArtistsProps> = ({
   artists,
   allArtistsSearch,
   setAllArtistsSearch,
@@ -36,12 +29,10 @@ const AllArtists = ({
   favoriteArtists,
   refreshArtists,
   refreshArtist
-}: AllArtistsProps) => {
+}) => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
-  const isMobile = useIsMobile();
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
@@ -51,37 +42,12 @@ const AllArtists = ({
     setDialogOpen(true);
   };
 
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-    setTimeout(() => {
-      setSelectedArtist(null);
-    }, 300); // Delay clearing selectedArtist until after dialog animation
-  };
-
   const handleArtistChange = (index: number) => {
     if (index >= 0 && index < artists.length) {
       setSelectedArtistIndex(index);
       setSelectedArtist(artists[index]);
     }
   };
-
-  // Effect to handle carousel changes
-  React.useEffect(() => {
-    if (!carouselApi) return;
-
-    carouselApi.scrollTo(selectedArtistIndex);
-    
-    const onSelect = () => {
-      const currentIndex = carouselApi.selectedScrollSnap();
-      handleArtistChange(currentIndex);
-    };
-
-    carouselApi.on("select", onSelect);
-    
-    return () => {
-      carouselApi.off("select", onSelect);
-    };
-  }, [carouselApi, selectedArtistIndex, artists]);
 
   return (
     <div className="mt-8">
@@ -93,125 +59,27 @@ const AllArtists = ({
         artistsCount={artists.length}
       />
 
-      <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {artists.length > 0 ? (
-          artists.map((artist) => (
-            <ArtistCard
-              key={artist.id}
-              id={artist.id}
-              name={artist.name}
-              specialty={artist.specialty}
-              image={artist.image}
-              city={artist.city}
-              country={artist.country}
-              bio={artist.bio || ""}
-              techniques={typeof artist.techniques === 'string' 
-                ? JSON.parse(artist.techniques) 
-                : artist.techniques}
-              styles={typeof artist.styles === 'string'
-                ? JSON.parse(artist.styles)
-                : artist.styles}
-              social_platforms={typeof artist.social_platforms === 'string'
-                ? JSON.parse(artist.social_platforms)
-                : artist.social_platforms}
-              onSelect={(e) => handleArtistClick(e, artist)}
-              onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
-              isFavorite={favoriteArtists.has(artist.id)}
-              refreshArtist={refreshArtist}
-            />
-          ))
-        ) : (
-          <div className="col-span-4 py-8 text-center text-gray-500">
-            {showFavorites
-              ? "You haven't favorited any artists yet."
-              : "No artists match your search criteria."}
-          </div>
-        )}
-      </div>
+      <ArtistGrid 
+        artists={artists}
+        onArtistClick={handleArtistClick}
+        onFavoriteToggle={onFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtist={refreshArtist}
+        showFavorites={showFavorites}
+      />
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh] overflow-y-auto">
-          <DialogTitle className="sr-only">Artist Details</DialogTitle>
-          {selectedArtist && (
-            <Carousel 
-              className="w-full" 
-              opts={{ 
-                align: "start",
-                containScroll: false,
-                startIndex: selectedArtistIndex
-              }}
-              setApi={setCarouselApi}
-            >
-              <CarouselContent className="-ml-0 sm:-ml-2">
-                {artists.map((artist, index) => {
-                  // Get artworks array from the artist
-                  const artworks = Array.isArray(artist.artworks) 
-                    ? artist.artworks 
-                    : typeof artist.artworks === 'string' && artist.artworks
-                      ? JSON.parse(artist.artworks)
-                      : [];
-                      
-                  // Generate a color theme for this specific artist
-                  const colorTheme = generateColorTheme(
-                    artist, 
-                    { 
-                      id: '',
-                      artist_id: String(artist.id),
-                      background_image: artworks[0] || null,
-                      background_color: '#f7cf1e',
-                      panel_color: '#ffffff',
-                      links: []
-                    }, 
-                    artworks
-                  );
-                  
-                  return (
-                    <CarouselItem key={artist.id} className="pl-0 sm:pl-2 w-full">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4" style={{ backgroundColor: colorTheme.panel }}>
-                        <div className="aspect-square md:aspect-auto md:h-auto">
-                          <ArtistImagePanel 
-                            artist={artist}
-                            onFavoriteToggle={onFavoriteToggle}
-                            isFavorite={favoriteArtists.has(artist.id)}
-                            refreshArtists={refreshArtists}
-                          />
-                        </div>
-                        <div className="aspect-square md:aspect-auto md:h-auto">
-                          <ArtistDetailsPanel 
-                            artist={artist}
-                            onSelect={() => onSelect(artist)}
-                            onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
-                            isFavorite={favoriteArtists.has(artist.id)}
-                            onClose={(e) => {
-                              e.stopPropagation();
-                              handleDialogClose();
-                            }}
-                            colorTheme={colorTheme}
-                            showReturnButton={false}
-                          />
-                        </div>
-                      </div>
-                    </CarouselItem>
-                  );
-                })}
-              </CarouselContent>
-              <div className="hidden md:block">
-                <CarouselPrevious className="left-1 md:left-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none" />
-                <CarouselNext className="right-1 md:right-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none" />
-              </div>
-              {isMobile && (
-                <div className="absolute bottom-16 left-0 right-0 flex justify-center space-x-2 py-2 z-10">
-                  <div className="flex gap-1 items-center bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full">
-                    <ChevronLeft size={16} className="text-gray-500" />
-                    <span className="text-xs text-gray-600">Swipe</span>
-                    <ChevronRight size={16} className="text-gray-500" />
-                  </div>
-                </div>
-              )}
-            </Carousel>
-          )}
-        </DialogContent>
-      </Dialog>
+      <ArtistDetailModal
+        artists={artists}
+        selectedArtist={selectedArtist}
+        selectedArtistIndex={selectedArtistIndex}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onArtistChange={handleArtistChange}
+        onFavoriteToggle={onFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtists={refreshArtists}
+        onSelect={onSelect}
+      />
     </div>
   );
 };
