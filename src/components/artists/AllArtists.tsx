@@ -118,9 +118,11 @@ const AllArtists = ({
                 containScroll: false,
                 startIndex: selectedArtistIndex
               }}
-              onSelect={(api) => {
-                const currentIndex = api.selectedScrollSnap();
-                handleArtistChange(currentIndex);
+              onSelect={(currentApi) => {
+                if (currentApi && typeof currentApi.selectedScrollSnap === 'function') {
+                  const currentIndex = currentApi.selectedScrollSnap();
+                  handleArtistChange(currentIndex);
+                }
               }}
             >
               <CarouselContent className="-ml-0 sm:-ml-2">
