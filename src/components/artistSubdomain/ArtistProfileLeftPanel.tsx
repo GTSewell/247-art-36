@@ -37,56 +37,57 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
         </div>
       </div>
 
-      <div className="flex-grow flex flex-col">
-        <ScrollArea className="h-full">
-          <div className="pr-4 flex flex-col justify-between h-full">
-            {/* Bio Section - At the top */}
-            <div className="mb-6">
-              <h3 className="text-left font-bold text-base mb-3">Bio</h3>
-              <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
-            </div>
-
-            {/* Techniques & Styles Section - Moved to bottom with auto margin top */}
-            {(techniques.length > 0 || styles.length > 0) && (
-              <div className="mt-auto pt-4">
-                <h3 className="text-left font-bold text-base mb-3">
-                  Techniques & Styles
-                </h3>
-                
-                {techniques.length > 0 && (
-                  <div className="mb-3">
-                    <h4 className="text-sm font-semibold mb-1">Techniques</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {techniques.map((technique, index) => (
-                        <span 
-                          key={index} 
-                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                        >
-                          {technique}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {styles.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-semibold mb-1">Styles</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {styles.map((style, index) => (
-                        <span 
-                          key={index} 
-                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                        >
-                          {style}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
+      <div className="flex-grow flex flex-col justify-between">
+        <ScrollArea className="flex-1 h-full flex flex-col">
+          {/* Bio Section - At the top */}
+          <div className="mb-6">
+            <h3 className="text-left font-bold text-base mb-3">Bio</h3>
+            <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
           </div>
+          
+          {/* Spacer div that will push the techniques & styles to the bottom */}
+          <div className="flex-grow" />
+          
+          {/* Techniques & Styles Section - Fixed at the bottom */}
+          {(techniques.length > 0 || styles.length > 0) && (
+            <div className="w-full mt-auto pt-4">
+              <h3 className="text-left font-bold text-base mb-3">
+                Techniques & Styles
+              </h3>
+              
+              {techniques.length > 0 && (
+                <div className="mb-3">
+                  <h4 className="text-sm font-semibold mb-1">Techniques</h4>
+                  <div className="flex flex-wrap gap-1">
+                    {techniques.map((technique, index) => (
+                      <span 
+                        key={index} 
+                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                      >
+                        {technique}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {styles.length > 0 && (
+                <div>
+                  <h4 className="text-sm font-semibold mb-1">Styles</h4>
+                  <div className="flex flex-wrap gap-1">
+                    {styles.map((style, index) => (
+                      <span 
+                        key={index} 
+                        className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                      >
+                        {style}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </ScrollArea>
       </div>
     </div>
