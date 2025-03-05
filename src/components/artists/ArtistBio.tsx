@@ -31,7 +31,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile }) => {
           </span>
         </AccordionTrigger>
         <AccordionContent>
-          <p className="text-gray-700 leading-relaxed pb-1">{bio}</p>
+          <div className="text-gray-700 leading-relaxed pb-1">{bio}</div>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

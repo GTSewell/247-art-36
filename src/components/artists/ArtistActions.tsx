@@ -46,11 +46,11 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   // Generate the domain display text based on screen size
   const getDomainText = () => {
     if (isMobile) {
-      // On mobile, we'll show just the domain name for brevity
+      // On mobile, we'll show just the domain name without "Visit"
       return domainName;
     } else {
-      // On desktop, we'll show the full URL format
-      return useSubPath ? `247.art/${domainName}` : `${domainName}.247.art`;
+      // On desktop, we'll show the full URL format with "Visit"
+      return useSubPath ? `Visit 247.art/${domainName}` : `Visit ${domainName}.247.art`;
     }
   };
 
@@ -81,7 +81,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           }}
         >
           <Zap size={18} />
-          {!isMobile && <span>{isFavorite ? 'Favorited' : 'Favorite'}</span>}
+          {!isMobile && <span className="ml-1">{isFavorite ? 'Favorited' : 'Favorite'}</span>}
         </Button>
       )}
       
@@ -104,10 +104,10 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
         {isMobile ? (
           <>
             <ExternalLink size={16} className="mr-1" />
-            <span className="text-sm truncate">{getDomainText()}</span>
+            <span className="text-sm truncate">{useSubPath ? `247.art/${domainName}` : `${domainName}.247.art`}</span>
           </>
         ) : (
-          <>Visit {useSubPath ? `247.art/${domainName}` : `${domainName}.247.art`}</>
+          <>{getDomainText()}</>
         )}
       </Button>
     </div>

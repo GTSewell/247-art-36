@@ -130,8 +130,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </div>
       )}
 
-      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-6">
-        <div className="space-y-4">
+      {/* Improved ScrollArea with proper height calculations */}
+      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-6" style={{ height: isMobile ? 'calc(60vh - 180px)' : 'calc(80vh - 220px)' }}>
+        <div className="space-y-4 pb-4">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
@@ -153,7 +154,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       </ScrollArea>
 
       {!isMobile && (
-        <div className="flex-none absolute bottom-3 left-5 right-5">
+        <div className="flex-none mt-auto pt-4">
           <ArtistActions 
             domainName={artistDomain}
             artistId={artist.id}
