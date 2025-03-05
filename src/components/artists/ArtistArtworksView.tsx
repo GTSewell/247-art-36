@@ -45,9 +45,9 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     : getArtworks();
 
   return (
-    <div className="relative h-full w-full" data-no-flip="true">
-      <div className="p-6 w-full h-full" data-no-flip="true">
-        <div className="grid grid-cols-2 gap-6 w-full h-full" data-no-flip="true">
+    <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
+      <div className="w-full h-full p-4" data-no-flip="true">
+        <div className="grid grid-cols-2 gap-4 h-full" data-no-flip="true">
           {displayArtworks.length > 0 ? (
             displayArtworks.slice(0, 4).map((artwork, index) => (
               <div 

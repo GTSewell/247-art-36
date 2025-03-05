@@ -144,22 +144,26 @@ const AllArtists = ({
                 {artists.map((artist, index) => (
                   <CarouselItem key={artist.id} className="pl-0 sm:pl-2 w-full">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
-                      <ArtistImagePanel 
-                        artist={artist}
-                        onFavoriteToggle={onFavoriteToggle}
-                        isFavorite={favoriteArtists.has(artist.id)}
-                        refreshArtists={refreshArtists}
-                      />
-                      <ArtistDetailsPanel 
-                        artist={artist}
-                        onSelect={() => onSelect(artist)}
-                        onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
-                        isFavorite={favoriteArtists.has(artist.id)}
-                        onClose={(e) => {
-                          e.stopPropagation();
-                          handleDialogClose();
-                        }}
-                      />
+                      <div className="aspect-square md:aspect-auto md:h-auto">
+                        <ArtistImagePanel 
+                          artist={artist}
+                          onFavoriteToggle={onFavoriteToggle}
+                          isFavorite={favoriteArtists.has(artist.id)}
+                          refreshArtists={refreshArtists}
+                        />
+                      </div>
+                      <div className="aspect-square md:aspect-auto md:h-auto">
+                        <ArtistDetailsPanel 
+                          artist={artist}
+                          onSelect={() => onSelect(artist)}
+                          onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
+                          isFavorite={favoriteArtists.has(artist.id)}
+                          onClose={(e) => {
+                            e.stopPropagation();
+                            handleDialogClose();
+                          }}
+                        />
+                      </div>
                     </div>
                   </CarouselItem>
                 ))}
