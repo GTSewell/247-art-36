@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
@@ -11,7 +12,6 @@ import GeneralStore from "./pages/GeneralStore";
 import NotFound from "./pages/NotFound";
 import ArtistSubmission from "./pages/ArtistSubmission";
 import { Toaster } from "sonner";
-import "./App.css";
 import { SitePassword } from "./components/SitePassword";
 import ArtistSubdomain from "./pages/ArtistSubdomain";
 

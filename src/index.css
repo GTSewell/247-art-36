@@ -75,6 +75,14 @@
   }
 
   body {
-    @apply bg-zap-yellow text-foreground;
+    @apply text-foreground;
+    margin: 0;
+    padding: 0;
   }
+}
+
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
