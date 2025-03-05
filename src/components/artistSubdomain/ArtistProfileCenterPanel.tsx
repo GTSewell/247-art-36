@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
-import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink } from 'lucide-react';
+import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink, Calendar, Globe, Book, MapPin, Tag, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -29,6 +29,18 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
     linkedin: <Linkedin className="h-5 w-5" />,
   };
 
+  // Sample links to show when no links are available
+  const sampleLinks = [
+    { type: 'gallery', title: 'OSHI GALLERY | EVENT SPACE', url: '#', icon: <Globe className="h-4 w-4" /> },
+    { type: 'exhibition', title: 'OSHI GALLERY | BOOK EVENT', url: '#', icon: <Calendar className="h-4 w-4" /> },
+    { type: 'marketplace', title: 'OSHI ON NIFTYGATE', url: '#', icon: <ShoppingCart className="h-4 w-4" /> },
+    { type: 'shop', title: 'OSHI | SHOP', url: '#', icon: <Tag className="h-4 w-4" /> },
+    { type: 'metaverse', title: 'OSHI | METAVERSE', url: '#', icon: <Globe className="h-4 w-4" /> },
+    { type: 'voxels', title: 'OSHI | VOXELS', url: '#', icon: <MapPin className="h-4 w-4" /> },
+    { type: 'voxels', title: 'OSHI | VOXELS', url: '#', icon: <MapPin className="h-4 w-4" /> },
+    { type: 'team', title: 'OSHI | TEAM', url: '#', icon: <Book className="h-4 w-4" /> }
+  ];
+
   // Group links by type
   const groupedLinks = links.reduce((groups: Record<string, any[]>, link) => {
     const group = groups[link.type] || [];
@@ -37,15 +49,26 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
     return groups;
   }, {});
 
+  const linksToDisplay = links.length > 0 ? links : sampleLinks;
+  const groupedLinksToDisplay = links.length > 0 ? groupedLinks : 
+    sampleLinks.reduce((groups: Record<string, any[]>, link) => {
+      const group = groups[link.type] || [];
+      group.push(link);
+      groups[link.type] = group;
+      return groups;
+    }, {});
+
   const getLinkColor = (type: string) => {
     switch (type.toLowerCase()) {
-      case 'gallery': return 'bg-blue-100 text-blue-700 hover:bg-blue-200';
-      case 'marketplace': return 'bg-green-100 text-green-700 hover:bg-green-200';
-      case 'nft': return 'bg-purple-100 text-purple-700 hover:bg-purple-200';
-      case 'metaverse': return 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200';
-      case 'voxels': return 'bg-pink-100 text-pink-700 hover:bg-pink-200';
-      case 'team': return 'bg-orange-100 text-orange-700 hover:bg-orange-200';
-      default: return 'bg-gray-100 text-gray-700 hover:bg-gray-200';
+      case 'gallery': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'exhibition': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'marketplace': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'nft': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'metaverse': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'voxels': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'team': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      case 'shop': return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
+      default: return 'bg-[#f7cf1e] text-gray-800 hover:bg-[#e6bf1a]';
     }
   };
   
@@ -82,7 +105,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
                   key={index}
                   variant="outline"
                   size="icon"
-                  className="rounded-full h-10 w-10"
+                  className="rounded-full h-10 w-10 border-2 border-gray-800 text-gray-800 hover:bg-gray-100"
                 >
                   {socialIcons[platformKey] || <Link className="h-5 w-5" />}
                 </Button>
@@ -95,29 +118,32 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       {/* Links Section */}
       <div className="flex-grow">
         <ScrollArea className="h-[calc(100%-40px)]">
-          {links.length > 0 ? (
-            <div className="space-y-4 pr-4">
-              {Object.entries(groupedLinks).map(([type, typeLinks]) => (
-                <div key={type} className="space-y-2">
-                  <h3 className="text-sm font-bold capitalize">{type}</h3>
-                  {typeLinks.map((link, index) => (
-                    <a 
-                      key={index}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`flex items-center justify-between w-full p-3 rounded-md ${getLinkColor(type)} transition-colors duration-200`}
-                    >
-                      <span className="font-medium">{link.title}</span>
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  ))}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-32">
-              <p className="text-gray-500">No links available</p>
+          <div className="space-y-4 pr-4">
+            {Object.entries(groupedLinksToDisplay).map(([type, typeLinks]) => (
+              <div key={type} className="space-y-2">
+                <h3 className="text-sm font-bold uppercase">{type}</h3>
+                {typeLinks.map((link, index) => (
+                  <a 
+                    key={index}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center justify-between w-full py-3 px-4 rounded-full ${getLinkColor(type)} transition-colors duration-200 border-2 border-gray-800 text-center`}
+                  >
+                    <div className="flex items-center">
+                      {link.icon && <span className="mr-2">{link.icon}</span>}
+                    </div>
+                    <span className="flex-grow text-center font-medium">{link.title}</span>
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+          
+          {links.length === 0 && (
+            <div className="mt-4 text-center text-gray-500 text-sm italic">
+              <p>These are sample links to show how artist links would appear</p>
             </div>
           )}
         </ScrollArea>
