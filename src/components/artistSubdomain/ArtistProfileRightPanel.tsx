@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ArtistProfileRightPanelProps {
   artist: Artist;
@@ -39,23 +40,25 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         </div>
       </div>
       
-      {/* Artworks Section */}
+      {/* Artworks Section with ScrollArea */}
       <div className="flex-grow">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
-        <div className="flex flex-col space-y-4 overflow-y-auto">
-          {displayArtworks.map((artwork, index) => (
-            <div 
-              key={index}
-              className="aspect-square rounded-md overflow-hidden shadow-sm"
-            >
-              <img 
-                src={artwork} 
-                alt={`Artwork ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
+        <ScrollArea className="h-[calc(100%-40px)]">
+          <div className="flex flex-col space-y-4 pr-4">
+            {displayArtworks.map((artwork, index) => (
+              <div 
+                key={index}
+                className="aspect-square rounded-md overflow-hidden shadow-sm"
+              >
+                <img 
+                  src={artwork} 
+                  alt={`Artwork ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );
