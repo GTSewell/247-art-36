@@ -1,16 +1,13 @@
 
 import React from 'react';
-import { MapPin, Palette, Instagram, Twitter, Linkedin, ExternalLink, Zap, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { X } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
-} from "@/components/ui/accordion";
+import ArtistHeaderInfo from './ArtistHeaderInfo';
+import ArtistBio from './ArtistBio';
+import ArtistTechniquesStyles from './ArtistTechniquesStyles';
+import ArtistSocialLinks from './ArtistSocialLinks';
+import ArtistActions from './ArtistActions';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -48,13 +45,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       ? JSON.parse(artist.social_platforms)
       : [];
 
-  const socialIcons = {
-    facebook: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>,
-    instagram: <Instagram className="h-5 w-5" />,
-    twitter: <Twitter className="h-5 w-5" />,
-    linkedin: <Linkedin className="h-5 w-5" />,
-  };
-
   const domainName = artist.name.replace(/\s+/g, '');
 
   const handleDomainClick = (e: React.MouseEvent) => {
@@ -62,10 +52,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     e.stopPropagation();
     window.open(`https://${domainName}.247.art`, '_blank');
   };
-  
-  const bioPreview = artist.bio && artist.bio.length > 120 
-    ? `${artist.bio.substring(0, 120)}...` 
-    : artist.bio;
 
   return (
     <div className="relative flex flex-col justify-between h-full p-5 md:p-8 overflow-y-auto max-h-[50vh] md:max-h-none">
@@ -78,125 +64,35 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </button>
       )}
       <div className="space-y-2 md:space-y-4 pb-20 md:pb-16">
-        <div>
-          <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
-          <div className="flex items-center gap-2 text-gray-600 mb-1">
-            <Palette size={18} />
-            <span>{artist.specialty}</span>
-          </div>
-          {(artist.city || artist.country) && (
-            <div className="flex items-center gap-2 text-gray-600">
-              <MapPin size={18} />
-              <span>{[artist.city, artist.country].filter(Boolean).join(", ")}</span>
-            </div>
-          )}
-        </div>
+        <ArtistHeaderInfo 
+          name={artist.name}
+          specialty={artist.specialty}
+          city={artist.city}
+          country={artist.country}
+        />
 
-        {/* Bio section with accordion */}
-        {artist.bio && (
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="bio" className="border-b-0">
-              <AccordionTrigger className="py-2 hover:no-underline">
-                <span className="text-left font-normal">
-                  {isMobile ? bioPreview : artist.bio}
-                </span>
-              </AccordionTrigger>
-              <AccordionContent>
-                <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
+        <ArtistBio 
+          bio={artist.bio} 
+          isMobile={isMobile} 
+        />
 
-        {/* Combined Techniques and Styles in one accordion */}
-        {((techniques && techniques.length > 0) || (styles && styles.length > 0)) && (
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="techniques-styles" className="border-b-0">
-              <AccordionTrigger className="py-2 hover:no-underline">
-                <span className="text-left font-semibold">Techniques & Styles</span>
-              </AccordionTrigger>
-              <AccordionContent>
-                {techniques && techniques.length > 0 && (
-                  <div className="mb-3">
-                    <h4 className="text-sm font-medium mb-2">Techniques</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {techniques.map((technique: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="bg-gray-100">
-                          {technique}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {styles && styles.length > 0 && (
-                  <div>
-                    <h4 className="text-sm font-medium mb-2">Styles</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {styles.map((style: string, index: number) => (
-                        <Badge key={index} variant="secondary" className="bg-gray-100">
-                          {style}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
+        <ArtistTechniquesStyles 
+          techniques={techniques} 
+          styles={styles} 
+        />
 
-        {/* Social Media section with reduced bottom padding */}
-        {socialPlatforms && socialPlatforms.length > 0 && (
-          <div className="space-y-1 mb-1">
-            <h3 className="font-semibold text-gray-800 text-sm">Social Media</h3>
-            <div className="flex gap-3">
-              {socialPlatforms.map((platform: string) => {
-                const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
-                return (
-                  <button
-                    key={platform}
-                    className="text-gray-600 hover:text-gray-900 transition-colors"
-                  >
-                    {socialIcons[platformKey] || <span>{platform}</span>}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        <ArtistSocialLinks 
+          socialPlatforms={socialPlatforms} 
+        />
       </div>
 
-      {/* Fixed position button at the bottom with increased bottom padding for mobile */}
-      <div className="space-y-3 absolute bottom-5 md:bottom-5 left-5 right-5 pt-2">
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={handleDomainClick}
-            className="flex-1 bg-[#00baef] hover:bg-[#00a6d6] text-white"
-          >
-            {domainName}.247.art
-            <ExternalLink className="ml-1" size={16} />
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onFavoriteToggle) {
-                onFavoriteToggle(artist.id, !isFavorite);
-              }
-            }}
-            className={`${
-              isFavorite 
-                ? 'bg-[#f7cf1e] text-black hover:bg-[#f7cf1e]' 
-                : 'bg-gray-200 hover:bg-[#f7cf1e] hover:text-black text-gray-700'
-            }`}
-          >
-            <Zap size={20} />
-          </Button>
-        </div>
-      </div>
+      <ArtistActions 
+        domainName={domainName}
+        artistId={artist.id}
+        isFavorite={isFavorite}
+        onFavoriteToggle={onFavoriteToggle}
+        handleDomainClick={handleDomainClick}
+      />
     </div>
   );
 };
