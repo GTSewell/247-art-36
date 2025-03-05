@@ -65,7 +65,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </button>
       )}
       
-      <div className="flex-none mb-4">
+      <div className="flex-none mb-2">
         <ArtistHeaderInfo 
           name={artist.name}
           specialty={artist.specialty}
@@ -74,8 +74,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       </div>
 
-      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-20">
-        <div className="space-y-4">
+      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-12">
+        <div className="space-y-1">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
@@ -92,7 +92,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </div>
       </ScrollArea>
 
-      <div className="flex-none absolute bottom-5 left-5 right-5">
+      <div className="flex-none absolute bottom-3 left-5 right-5">
         <ArtistActions 
           domainName={domainName}
           artistId={artist.id}

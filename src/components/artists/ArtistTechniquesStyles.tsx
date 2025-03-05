@@ -21,13 +21,13 @@ const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ techniq
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="techniques-styles" className="border-b-0">
-        <AccordionTrigger className="py-2 hover:no-underline">
+        <AccordionTrigger className="py-1 hover:no-underline">
           <span className="text-left font-semibold">Techniques & Styles</span>
         </AccordionTrigger>
         <AccordionContent>
           {techniques && techniques.length > 0 && (
-            <div className="mb-3">
-              <h4 className="text-sm font-medium mb-2">Techniques</h4>
+            <div className="mb-2">
+              <h4 className="text-sm font-medium mb-1">Techniques</h4>
               <div className="flex flex-wrap gap-2">
                 {techniques.map((technique: string, index: number) => (
                   <Badge key={index} variant="secondary" className="bg-gray-100">
@@ -39,8 +39,8 @@ const ArtistTechniquesStyles: React.FC<ArtistTechniquesStylesProps> = ({ techniq
           )}
           
           {styles && styles.length > 0 && (
-            <div className="pb-2">
-              <h4 className="text-sm font-medium mb-2">Styles</h4>
+            <div className="pb-1">
+              <h4 className="text-sm font-medium mb-1">Styles</h4>
               <div className="flex flex-wrap gap-2">
                 {styles.map((style: string, index: number) => (
                   <Badge key={index} variant="secondary" className="bg-gray-100">
