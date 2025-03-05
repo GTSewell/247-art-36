@@ -46,6 +46,11 @@ const AllArtists = ({
     setSelectedArtist(null);
   };
 
+  const handleRegenerateArtworks = async (artist: Artist) => {
+    if (!artist) return;
+    await refreshArtist(artist.id);
+  };
+
   return (
     <div className="mt-8">
       <AllArtistsHeader
@@ -93,19 +98,16 @@ const AllArtists = ({
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-3xl h-[90vh] p-0">
-          <ScrollArea className="h-full max-h-full">
-            {selectedArtist && (
-              <ArtistDetails
-                artist={selectedArtist}
-                onClose={handleDialogClose}
-                onFavoriteToggle={(artistId, isFavorite) => 
-                  onFavoriteToggle(artistId, isFavorite)
-                }
-                isFavorite={favoriteArtists.has(selectedArtist.id)}
-              />
-            )}
-          </ScrollArea>
+        <DialogContent className="max-w-3xl p-0 border-none bg-[#f8f8f5] overflow-hidden">
+          {selectedArtist && (
+            <ArtistDetails
+              artist={selectedArtist}
+              onClose={handleDialogClose}
+              onRegenerateArtworks={handleRegenerateArtworks}
+              onFavoriteToggle={onFavoriteToggle}
+              isFavorite={favoriteArtists.has(selectedArtist.id)}
+            />
+          )}
         </DialogContent>
       </Dialog>
     </div>
