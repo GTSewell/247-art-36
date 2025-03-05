@@ -41,19 +41,19 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       </div>
       
       {/* Artworks Section with ScrollArea */}
-      <div className="flex-grow">
+      <div className="flex-grow overflow-hidden">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
-        <ScrollArea className="h-[calc(100%-40px)]">
-          <div className="flex flex-col space-y-4 pr-4">
+        <ScrollArea className="h-[calc(100%-2rem)]">
+          <div className="flex flex-col space-y-4 pr-4 pb-4">
             {displayArtworks.map((artwork, index) => (
               <div 
                 key={index}
-                className="aspect-square rounded-md overflow-hidden shadow-sm"
+                className="min-h-fit rounded-md overflow-hidden shadow-sm"
               >
                 <img 
                   src={artwork} 
                   alt={`Artwork ${index + 1}`}
-                  className="w-full h-full object-cover"
+                  className="w-full object-cover"
                 />
               </div>
             ))}
