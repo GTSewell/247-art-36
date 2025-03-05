@@ -5,6 +5,7 @@ import ArtistCard from "./ArtistCard";
 import AllArtistsHeader from "./AllArtistsHeader";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
+import ArtistImagePanel from "./ArtistImagePanel";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -92,28 +93,25 @@ const AllArtists = ({
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-6xl p-0 border rounded-xl overflow-hidden bg-white">
+        <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)]">
           {selectedArtist && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="h-full">
-                <img
-                  src={selectedArtist.image}
-                  alt={selectedArtist.name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div>
-                <ArtistDetailsPanel
-                  artist={selectedArtist}
-                  onSelect={() => {}}
-                  onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
-                  isFavorite={favoriteArtists.has(selectedArtist.id)}
-                  onClose={(e) => {
-                    e.stopPropagation();
-                    handleDialogClose();
-                  }}
-                />
-              </div>
+              <ArtistImagePanel 
+                artist={selectedArtist}
+                onFavoriteToggle={onFavoriteToggle}
+                isFavorite={favoriteArtists.has(selectedArtist.id)}
+                refreshArtists={refreshArtists}
+              />
+              <ArtistDetailsPanel 
+                artist={selectedArtist}
+                onSelect={() => onSelect(selectedArtist)}
+                onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
+                isFavorite={favoriteArtists.has(selectedArtist.id)}
+                onClose={(e) => {
+                  e.stopPropagation();
+                  handleDialogClose();
+                }}
+              />
             </div>
           )}
         </DialogContent>
