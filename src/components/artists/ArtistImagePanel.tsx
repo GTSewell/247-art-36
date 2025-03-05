@@ -115,9 +115,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
       <div 
-        className="relative aspect-square rounded-lg overflow-hidden cursor-pointer"
+        className="relative aspect-auto md:aspect-square h-full w-full overflow-hidden cursor-pointer"
         style={{ perspective: '1000px' }}
         onClick={handleFlip}
         onMouseEnter={() => !isMobile && setIsHovered(true)}

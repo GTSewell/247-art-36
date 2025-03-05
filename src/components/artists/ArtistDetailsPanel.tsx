@@ -62,7 +62,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col justify-between h-full p-6 md:p-8">
+    <div className="relative flex flex-col justify-between h-full p-5 md:p-8 overflow-y-auto max-h-[50vh] md:max-h-none">
       {onClose && (
         <button 
           onClick={onClose}
@@ -71,7 +71,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           <X className="h-4 w-4 text-gray-500" />
         </button>
       )}
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
           <div className="flex items-center gap-2 text-gray-600 mb-1">

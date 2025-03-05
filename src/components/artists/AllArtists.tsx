@@ -6,6 +6,9 @@ import AllArtistsHeader from "./AllArtistsHeader";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -34,16 +37,29 @@ const AllArtists = ({
 }: AllArtistsProps) => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
+    const index = artists.findIndex(a => a.id === artist.id);
+    setSelectedArtistIndex(index);
     setSelectedArtist(artist);
     setDialogOpen(true);
   };
 
   const handleDialogClose = () => {
     setDialogOpen(false);
-    setSelectedArtist(null);
+    setTimeout(() => {
+      setSelectedArtist(null);
+    }, 300); // Delay clearing selectedArtist until after dialog animation
+  };
+
+  const handleArtistChange = (index: number) => {
+    if (index >= 0 && index < artists.length) {
+      setSelectedArtistIndex(index);
+      setSelectedArtist(artists[index]);
+    }
   };
 
   return (
@@ -93,26 +109,60 @@ const AllArtists = ({
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)]">
+        <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh] overflow-y-auto">
           {selectedArtist && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <ArtistImagePanel 
-                artist={selectedArtist}
-                onFavoriteToggle={onFavoriteToggle}
-                isFavorite={favoriteArtists.has(selectedArtist.id)}
-                refreshArtists={refreshArtists}
-              />
-              <ArtistDetailsPanel 
-                artist={selectedArtist}
-                onSelect={() => onSelect(selectedArtist)}
-                onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
-                isFavorite={favoriteArtists.has(selectedArtist.id)}
-                onClose={(e) => {
-                  e.stopPropagation();
-                  handleDialogClose();
-                }}
-              />
-            </div>
+            <Carousel 
+              className="w-full" 
+              opts={{ 
+                align: "start",
+                containScroll: false,
+                startIndex: selectedArtistIndex
+              }}
+              onSelect={(api) => {
+                if (api) {
+                  const currentIndex = api.selectedScrollSnap();
+                  handleArtistChange(currentIndex);
+                }
+              }}
+            >
+              <CarouselContent className="-ml-0 sm:-ml-2">
+                {artists.map((artist, index) => (
+                  <CarouselItem key={artist.id} className="pl-0 sm:pl-2 w-full">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4">
+                      <ArtistImagePanel 
+                        artist={artist}
+                        onFavoriteToggle={onFavoriteToggle}
+                        isFavorite={favoriteArtists.has(artist.id)}
+                        refreshArtists={refreshArtists}
+                      />
+                      <ArtistDetailsPanel 
+                        artist={artist}
+                        onSelect={() => onSelect(artist)}
+                        onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
+                        isFavorite={favoriteArtists.has(artist.id)}
+                        onClose={(e) => {
+                          e.stopPropagation();
+                          handleDialogClose();
+                        }}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <div className="hidden md:block">
+                <CarouselPrevious className="left-1 md:left-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none" />
+                <CarouselNext className="right-1 md:right-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none" />
+              </div>
+              {isMobile && (
+                <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 py-3 z-10">
+                  <div className="flex gap-1 items-center bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full">
+                    <ChevronLeft size={16} className="text-gray-500" />
+                    <span className="text-xs text-gray-600">Swipe</span>
+                    <ChevronRight size={16} className="text-gray-500" />
+                  </div>
+                </div>
+              )}
+            </Carousel>
           )}
         </DialogContent>
       </Dialog>
