@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MapPin, Palette, Facebook, Instagram, Linkedin, Twitter, ExternalLink, Zap, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, Palette, Instagram, Twitter, Linkedin, ExternalLink, Zap, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -27,8 +27,27 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const [isStylesExpanded, setIsStylesExpanded] = useState(false);
   const isMobile = useIsMobile();
 
+  // Parse techniques, styles, and social_platforms if they're strings
+  const techniques = Array.isArray(artist.techniques) 
+    ? artist.techniques 
+    : typeof artist.techniques === 'string' && artist.techniques
+      ? JSON.parse(artist.techniques)
+      : [];
+  
+  const styles = Array.isArray(artist.styles) 
+    ? artist.styles 
+    : typeof artist.styles === 'string' && artist.styles
+      ? JSON.parse(artist.styles)
+      : [];
+  
+  const socialPlatforms = Array.isArray(artist.social_platforms) 
+    ? artist.social_platforms 
+    : typeof artist.social_platforms === 'string' && artist.social_platforms
+      ? JSON.parse(artist.social_platforms)
+      : [];
+
   const socialIcons = {
-    facebook: <Facebook className="h-5 w-5" />,
+    facebook: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>,
     instagram: <Instagram className="h-5 w-5" />,
     twitter: <Twitter className="h-5 w-5" />,
     linkedin: <Linkedin className="h-5 w-5" />,
@@ -42,121 +61,17 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     window.open(`https://${domainName}.247.art`, '_blank');
   };
 
-  const renderBio = () => {
-    if (!isMobile) {
-      return <p className="text-gray-700 leading-relaxed">{artist.bio}</p>;
-    }
-
-    return (
-      <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
-        <div className="space-y-2">
-          <p className="text-gray-700 leading-relaxed line-clamp-2">{artist.bio}</p>
-          <CollapsibleContent>
-            <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
-          </CollapsibleContent>
-          <CollapsibleTrigger className="w-full flex items-center justify-center text-[#ea384c] hover:opacity-80">
-            {isExpanded ? (
-              <ChevronUp className="h-5 w-5" />
-            ) : (
-              <ChevronDown className="h-5 w-5" />
-            )}
-          </CollapsibleTrigger>
-        </div>
-      </Collapsible>
-    );
-  };
-
-  const renderTechniques = () => {
-    if (!isMobile) {
-      return (
-        <div className="flex flex-wrap gap-2">
-          {artist.techniques?.map((technique, index) => (
-            <Badge key={index} variant="secondary" className="bg-gray-100">
-              {technique}
-            </Badge>
-          ))}
-        </div>
-      );
-    }
-
-    return (
-      <Collapsible open={isTechniquesExpanded} onOpenChange={setIsTechniquesExpanded}>
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-gray-800">Techniques</h3>
-            <CollapsibleTrigger className="text-[#ea384c] hover:opacity-80">
-              {isTechniquesExpanded ? (
-                <ChevronUp className="h-5 w-5" />
-              ) : (
-                <ChevronDown className="h-5 w-5" />
-              )}
-            </CollapsibleTrigger>
-          </div>
-          <CollapsibleContent>
-            <div className="flex flex-wrap gap-2">
-              {artist.techniques?.map((technique, index) => (
-                <Badge key={index} variant="secondary" className="bg-gray-100">
-                  {technique}
-                </Badge>
-              ))}
-            </div>
-          </CollapsibleContent>
-        </div>
-      </Collapsible>
-    );
-  };
-
-  const renderStyles = () => {
-    if (!isMobile) {
-      return (
-        <div className="flex flex-wrap gap-2">
-          {artist.styles?.map((style, index) => (
-            <Badge key={index} variant="secondary" className="bg-gray-100">
-              {style}
-            </Badge>
-          ))}
-        </div>
-      );
-    }
-
-    return (
-      <Collapsible open={isStylesExpanded} onOpenChange={setIsStylesExpanded}>
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-gray-800">Styles</h3>
-            <CollapsibleTrigger className="text-[#ea384c] hover:opacity-80">
-              {isStylesExpanded ? (
-                <ChevronUp className="h-5 w-5" />
-              ) : (
-                <ChevronDown className="h-5 w-5" />
-              )}
-            </CollapsibleTrigger>
-          </div>
-          <CollapsibleContent>
-            <div className="flex flex-wrap gap-2">
-              {artist.styles?.map((style, index) => (
-                <Badge key={index} variant="secondary" className="bg-gray-100">
-                  {style}
-                </Badge>
-              ))}
-            </div>
-          </CollapsibleContent>
-        </div>
-      </Collapsible>
-    );
-  };
-
   return (
-    <div className="relative flex flex-col justify-between h-full bg-white/95 backdrop-blur-sm rounded-lg p-6 md:p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-shadow duration-300 hover:shadow-[0_0_25px_rgba(0,0,0,0.15)]">
+    <div className="relative flex flex-col justify-between h-full p-6 md:p-8">
       {onClose && (
         <button 
           onClick={onClose}
-          className="absolute -right-4 -top-4 z-10 bg-white/80 p-2 rounded-full hover:bg-white shadow-md backdrop-blur-sm"
+          className="absolute right-2 top-2 z-10 p-2 rounded-full hover:bg-gray-100"
         >
-          <X className="h-4 w-4 text-[#ea384c]" />
+          <X className="h-4 w-4 text-gray-500" />
         </button>
       )}
-      <div className={`space-y-${isMobile ? '2' : '4'}`}>
+      <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-bold mb-1">{artist.name}</h2>
           <div className="flex items-center gap-2 text-gray-600 mb-1">
@@ -164,34 +79,53 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             <span>{artist.specialty}</span>
           </div>
           {(artist.city || artist.country) && (
-            <div className="space-y-1">
-              <div className="flex items-center gap-2 text-gray-600">
-                <MapPin size={18} />
-                <span>{[artist.city, artist.country].filter(Boolean).join(", ")}</span>
-              </div>
+            <div className="flex items-center gap-2 text-gray-600">
+              <MapPin size={18} />
+              <span>{[artist.city, artist.country].filter(Boolean).join(", ")}</span>
             </div>
           )}
         </div>
 
-        {renderBio()}
-
-        <div className={`space-y-${isMobile ? '1' : '4'}`}>
-          {Array.isArray(artist.techniques) && artist.techniques.length > 0 && renderTechniques()}
-          {Array.isArray(artist.styles) && artist.styles.length > 0 && renderStyles()}
+        <div>
+          <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
         </div>
 
-        {Array.isArray(artist.social_platforms) && artist.social_platforms.length > 0 && (
+        {techniques && techniques.length > 0 && (
+          <div>
+            <div className="flex flex-wrap gap-2">
+              {techniques.map((technique: string, index: number) => (
+                <Badge key={index} variant="secondary" className="bg-gray-100">
+                  {technique}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {styles && styles.length > 0 && (
+          <div>
+            <div className="flex flex-wrap gap-2">
+              {styles.map((style: string, index: number) => (
+                <Badge key={index} variant="secondary" className="bg-gray-100">
+                  {style}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {socialPlatforms && socialPlatforms.length > 0 && (
           <div className="space-y-2">
             <h3 className="font-semibold text-gray-800">Social Media</h3>
             <div className="flex gap-3">
-              {artist.social_platforms.map((platform) => {
+              {socialPlatforms.map((platform: string) => {
                 const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
                 return (
                   <button
                     key={platform}
                     className="text-gray-600 hover:text-gray-900 transition-colors"
                   >
-                    {socialIcons[platformKey]}
+                    {socialIcons[platformKey] || <span>{platform}</span>}
                   </button>
                 );
               })}
@@ -200,11 +134,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         )}
       </div>
 
-      <div className="space-y-3 pt-4">
+      <div className="space-y-3 pt-4 mt-auto">
         <div className="flex items-center gap-2">
           <Button
             onClick={handleDomainClick}
-            className="flex-1 bg-[#00baef] hover:bg-[#f7cf1e] hover:text-black"
+            className="flex-1 bg-[#00baef] hover:bg-[#00a6d6] text-white"
           >
             {domainName}.247.art
             <ExternalLink className="ml-1" size={16} />
@@ -222,7 +156,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             className={`${
               isFavorite 
                 ? 'bg-[#f7cf1e] text-black hover:bg-[#f7cf1e]' 
-                : 'bg-black/20 hover:bg-[#f7cf1e] hover:text-black backdrop-blur-sm text-white'
+                : 'bg-gray-200 hover:bg-[#f7cf1e] hover:text-black text-gray-700'
             }`}
           >
             <Zap size={20} />

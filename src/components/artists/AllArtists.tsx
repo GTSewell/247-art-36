@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistCard from "./ArtistCard";
 import AllArtistsHeader from "./AllArtistsHeader";
-import ArtistDetails from "./ArtistDetails";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import ArtistDetailsPanel from "./ArtistDetailsPanel";
 
 interface AllArtistsProps {
   artists: Artist[];
@@ -44,11 +43,6 @@ const AllArtists = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
     setSelectedArtist(null);
-  };
-
-  const handleRegenerateArtworks = async (artist: Artist) => {
-    if (!artist) return;
-    await refreshArtist(artist.id);
   };
 
   return (
@@ -98,15 +92,29 @@ const AllArtists = ({
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-3xl p-0 border-none bg-[#f8f8f5] overflow-hidden">
+        <DialogContent className="max-w-6xl p-0 border rounded-xl overflow-hidden bg-white">
           {selectedArtist && (
-            <ArtistDetails
-              artist={selectedArtist}
-              onClose={handleDialogClose}
-              onRegenerateArtworks={handleRegenerateArtworks}
-              onFavoriteToggle={onFavoriteToggle}
-              isFavorite={favoriteArtists.has(selectedArtist.id)}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="h-full">
+                <img
+                  src={selectedArtist.image}
+                  alt={selectedArtist.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div>
+                <ArtistDetailsPanel
+                  artist={selectedArtist}
+                  onSelect={() => {}}
+                  onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
+                  isFavorite={favoriteArtists.has(selectedArtist.id)}
+                  onClose={(e) => {
+                    e.stopPropagation();
+                    handleDialogClose();
+                  }}
+                />
+              </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>
