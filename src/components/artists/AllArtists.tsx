@@ -119,10 +119,8 @@ const AllArtists = ({
                 startIndex: selectedArtistIndex
               }}
               onSelect={(api) => {
-                if (api) {
-                  const currentIndex = api.selectedScrollSnap();
-                  handleArtistChange(currentIndex);
-                }
+                const currentIndex = api.selectedScrollSnap();
+                handleArtistChange(currentIndex);
               }}
             >
               <CarouselContent className="-ml-0 sm:-ml-2">
@@ -154,7 +152,7 @@ const AllArtists = ({
                 <CarouselNext className="right-1 md:right-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none" />
               </div>
               {isMobile && (
-                <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 py-3 z-10">
+                <div className="absolute bottom-16 left-0 right-0 flex justify-center space-x-2 py-2 z-10">
                   <div className="flex gap-1 items-center bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full">
                     <ChevronLeft size={16} className="text-gray-500" />
                     <span className="text-xs text-gray-600">Swipe</span>
