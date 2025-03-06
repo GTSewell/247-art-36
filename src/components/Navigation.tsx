@@ -83,7 +83,7 @@ const Navigation = () => {
                   : "text-foreground hover:bg-accent hover:text-accent-foreground"
               )}
             >
-              Who the f#@k are we?
+              About Us
             </Link>
             <Link
               to="/services"
@@ -211,7 +211,7 @@ const Navigation = () => {
                   : "text-foreground hover:bg-accent hover:text-accent-foreground"
               )}
             >
-              Who the f#@k are we?
+              About Us
             </Link>
             <Link
               to="/services"
