@@ -34,7 +34,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   return (
     <>
       <section className="mb-8">
-        <div className="grid grid-cols-6 gap-4">
+        <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-4'}`}>
           {categories.map((category) => (
             <button
               key={category.id}
@@ -42,14 +42,15 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                 ? onCategoryChange(category.id as any) 
                 : undefined}
               className={`
-                aspect-square p-4 rounded-lg border-2 border-white
+                p-3 rounded-lg border-2 border-white
                 ${category.color}
                 ${(category.id === selectedCategory) ? 'ring-4 ring-white' : ''}
                 transition-all duration-200 hover:scale-105
                 flex items-center justify-center text-center
+                ${isMobile ? 'h-24 mb-2' : 'aspect-square'}
               `}
             >
-              <span className="font-nove text-white text-sm leading-tight">
+              <span className="font-nove text-white text-xs md:text-sm leading-tight">
                 {category.label}
               </span>
             </button>
