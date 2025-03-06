@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun } from "lucide-react";
 
-const ThemeToggle = () => {
+interface ThemeToggleProps {
+  localOnly?: boolean;
+}
+
+const ThemeToggle = ({ localOnly = false }: ThemeToggleProps) => {
   const [darkMode, setDarkMode] = useState(() => {
     // Check localStorage first
     const savedTheme = localStorage.getItem("theme");
@@ -15,15 +19,19 @@ const ThemeToggle = () => {
   });
 
   useEffect(() => {
-    // Apply the theme to the document
+    // Apply the theme to the document or container based on localOnly prop
     if (darkMode) {
-      document.documentElement.classList.add("dark");
+      if (!localOnly) {
+        document.documentElement.classList.add("dark");
+      }
       localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove("dark");
+      if (!localOnly) {
+        document.documentElement.classList.remove("dark");
+      }
       localStorage.setItem("theme", "light");
     }
-  }, [darkMode]);
+  }, [darkMode, localOnly]);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);

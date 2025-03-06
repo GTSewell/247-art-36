@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
 import FeaturedArtists from "@/components/artists/FeaturedArtists";
@@ -21,6 +21,15 @@ const Artists = () => {
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Check localStorage first
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      return savedTheme === "dark";
+    }
+    // If no saved preference, check system preference
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
 
   const {
     featuredArtists,
@@ -30,6 +39,14 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
+
+  // Apply theme only to the artists page container
+  useEffect(() => {
+    // Clean up function to ensure we don't affect other pages
+    return () => {
+      // No cleanup needed as we're using a local theme
+    };
+  }, []);
 
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
@@ -88,55 +105,57 @@ const Artists = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground transition-colors duration-200">
-      <Navigation />
-      
-      <div className="container mx-auto pt-20 px-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Artists</h1>
-          <ThemeToggle />
-        </div>
+    <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+      <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
+        <Navigation />
         
-        <ArtistsHeader
-          artistSearch={artistSearch}
-          setArtistSearch={setArtistSearch}
-          locationSearch={locationSearch}
-          setLocationSearch={setLocationSearch}
-          techniqueSearch={techniqueSearch}
-          setTechniqueSearch={setTechniqueSearch}
-          styleSearch={styleSearch}
-          setStyleSearch={setStyleSearch}
-          selectedTechniques={selectedTechniques}
-          setSelectedTechniques={setSelectedTechniques}
-          selectedStyles={selectedStyles}
-          setSelectedStyles={setSelectedStyles}
-          selectedSocials={selectedSocials}
-          setSelectedSocials={setSelectedSocials}
-          onUpdateSelection={handleUpdateSelection}
-          onClearFilters={handleClearFilters}
-        />
+        <div className="container mx-auto pt-20 px-4">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold">Artists</h1>
+            <ThemeToggle localOnly={true} />
+          </div>
+          
+          <ArtistsHeader
+            artistSearch={artistSearch}
+            setArtistSearch={setArtistSearch}
+            locationSearch={locationSearch}
+            setLocationSearch={setLocationSearch}
+            techniqueSearch={techniqueSearch}
+            setTechniqueSearch={setTechniqueSearch}
+            styleSearch={styleSearch}
+            setStyleSearch={setStyleSearch}
+            selectedTechniques={selectedTechniques}
+            setSelectedTechniques={setSelectedTechniques}
+            selectedStyles={selectedStyles}
+            setSelectedStyles={setSelectedStyles}
+            selectedSocials={selectedSocials}
+            setSelectedSocials={setSelectedSocials}
+            onUpdateSelection={handleUpdateSelection}
+            onClearFilters={handleClearFilters}
+          />
 
-        <FeaturedArtists
-          artists={filteredFeaturedArtists}
-          onSelect={setSelectedArtist}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={() => refreshArtists()}
-          refreshArtist={refreshArtist}
-        />
+          <FeaturedArtists
+            artists={filteredFeaturedArtists}
+            onSelect={setSelectedArtist}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtists={() => refreshArtists()}
+            refreshArtist={refreshArtist}
+          />
 
-        <AllArtists
-          artists={filteredAdditionalArtists}
-          allArtistsSearch={allArtistsSearch}
-          setAllArtistsSearch={setAllArtistsSearch}
-          showFavorites={showFavorites}
-          setShowFavorites={setShowFavorites}
-          onSelect={setSelectedArtist}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={() => refreshArtists()}
-          refreshArtist={refreshArtist}
-        />
+          <AllArtists
+            artists={filteredAdditionalArtists}
+            allArtistsSearch={allArtistsSearch}
+            setAllArtistsSearch={setAllArtistsSearch}
+            showFavorites={showFavorites}
+            setShowFavorites={setShowFavorites}
+            onSelect={setSelectedArtist}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtists={() => refreshArtists()}
+            refreshArtist={refreshArtist}
+          />
+        </div>
       </div>
     </div>
   );
