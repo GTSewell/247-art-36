@@ -74,14 +74,16 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     const onSelect = () => {
       const currentSlide = emblaApi.selectedScrollSnap();
       const tabs = ["about", "links", "artwork"];
-      if (tabs[currentSlide]) {
+      if (currentSlide >= 0 && currentSlide < tabs.length) {
         setActiveTab(tabs[currentSlide]);
       }
     };
     
     // Add both select and settle events to ensure tab updates
     emblaApi.on('select', onSelect);
-    emblaApi.on('settle', onSelect); // Add settle event for more reliable updates
+    
+    // The settle event is crucial for ensuring sync after drag
+    emblaApi.on('settle', onSelect);
     
     // Force an initial check
     onSelect();

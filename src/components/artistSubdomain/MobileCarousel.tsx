@@ -45,7 +45,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
   colorTheme
 }) => {
   return (
-    <div ref={emblaRef as React.RefObject<HTMLDivElement>} className="h-full">
+    <div className="h-full overflow-hidden" ref={emblaRef as React.RefObject<HTMLDivElement>}>
       <Carousel className="h-full">
         <CarouselContent className="h-full">
           {/* About Panel */}
