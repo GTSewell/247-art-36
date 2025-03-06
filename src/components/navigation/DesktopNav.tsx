@@ -1,6 +1,5 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
 
@@ -13,9 +12,6 @@ interface DesktopNavProps {
 const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   return (
     <div className="hidden md:flex items-center space-x-4">
-      <NavLink to="/" isActive={isActive("/")}>
-        Home
-      </NavLink>
       <NavLink to="/artists" isActive={isActive("/artists")}>
         Artists
       </NavLink>
