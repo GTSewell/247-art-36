@@ -102,7 +102,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
             {displayArtworks.map((artwork, index) => (
               <div 
                 key={index}
-                className="min-h-fit rounded-md overflow-hidden shadow-sm relative group"
+                className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
               >
                 <img 
                   src={artwork} 
@@ -110,17 +110,23 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                   className="w-full object-cover"
                 />
                 <div 
-                  className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100"
+                  className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
                   onClick={() => handleArtworkClick(artwork, index)}
                 >
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="bg-white text-black border-black hover:bg-gray-100"
-                  >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Add to Cart
-                  </Button>
+                  {/* Cart icon button that's always visible but becomes more prominent on hover */}
+                  <div className="absolute bottom-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                    <Button 
+                      size="icon"
+                      variant="secondary" 
+                      className="h-8 w-8 rounded-full bg-white text-black border border-black shadow-md hover:bg-gray-100"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleArtworkClick(artwork, index);
+                      }}
+                    >
+                      <ShoppingCart className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
