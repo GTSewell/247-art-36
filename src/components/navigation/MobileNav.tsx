@@ -14,7 +14,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden bg-background/80 backdrop-blur-md">
+    <div className="md:hidden backdrop-blur-md border-t border-border/20">
       <div className="container mx-auto px-4 py-2 space-y-1">
         <MobileNavLink to="/artists" isActive={isActive("/artists")}>
           Artists
