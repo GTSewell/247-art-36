@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -72,6 +73,17 @@ const Navigation = () => {
               )}
             >
               Artists
+            </Link>
+            <Link
+              to="/who-are-you"
+              className={cn(
+                "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive("/who-are-you")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Who the f#@k are we?
             </Link>
             <Link
               to="/services"
@@ -189,6 +201,17 @@ const Navigation = () => {
               )}
             >
               Artists
+            </Link>
+            <Link
+              to="/who-are-you"
+              className={cn(
+                "block px-3 py-2 rounded-md text-base font-medium",
+                isActive("/who-are-you")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Who the f#@k are we?
             </Link>
             <Link
               to="/services"
