@@ -4,7 +4,7 @@ import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { useNavigate } from 'react-router-dom';
 import { Tabs } from '@/components/ui/tabs';
-import useEmblaCarousel from 'embla-carousel-react';
+import useEmblaCarousel, { EmblaCarouselType } from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
 
@@ -75,6 +75,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     };
     
     emblaApi.on('select', onSelect);
+    
+    // Initialize the correct tab based on the current scroll position
+    onSelect();
     
     return () => {
       emblaApi.off('select', onSelect);

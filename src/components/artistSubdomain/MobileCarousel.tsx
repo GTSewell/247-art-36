@@ -11,7 +11,7 @@ import ArtistProfileRightPanel from './ArtistProfileRightPanel';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import MobilePanel from './MobilePanel';
-import type { EmblaCarouselType } from 'embla-carousel-react';
+import type { EmblaCarouselRefType } from 'embla-carousel-react';
 
 interface MobileCarouselProps {
   emblaRef: React.RefObject<HTMLDivElement> | ((instance: HTMLDivElement | null) => void);

@@ -20,6 +20,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
       <TabsList className="grid grid-cols-3 flex-1 bg-white/80 backdrop-blur-sm">
         <TabsTrigger 
           value="about" 
+          data-state={activeTab === "about" ? "active" : "inactive"}
           className="data-[state=active]:bg-yellow-100"
           onClick={() => handleTabChange("about")}
         >
@@ -27,6 +28,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
         </TabsTrigger>
         <TabsTrigger 
           value="links" 
+          data-state={activeTab === "links" ? "active" : "inactive"}
           className="data-[state=active]:bg-yellow-100"
           onClick={() => handleTabChange("links")}
         >
@@ -34,6 +36,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
         </TabsTrigger>
         <TabsTrigger 
           value="artwork" 
+          data-state={activeTab === "artwork" ? "active" : "inactive"}
           className="data-[state=active]:bg-yellow-100"
           onClick={() => handleTabChange("artwork")}
         >
