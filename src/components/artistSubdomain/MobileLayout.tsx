@@ -137,7 +137,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                       className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
                       style={{ 
                         backgroundColor: colorTheme.panel,
-                        height: panelHeight
+                        height: panelHeight,
+                        borderRadius: '0.5rem', // Ensure consistent border radius on all corners
                       }}
                     >
                       <ArtistProfileLeftPanel 
@@ -156,7 +157,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                       className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
                       style={{ 
                         backgroundColor: colorTheme.panel,
-                        height: panelHeight
+                        height: panelHeight,
+                        borderRadius: '0.5rem', // Ensure consistent border radius on all corners
                       }}
                     >
                       <ArtistProfileCenterPanel 
@@ -178,7 +180,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                       className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
                       style={{ 
                         backgroundColor: colorTheme.panel,
-                        height: panelHeight
+                        height: panelHeight,
+                        borderRadius: '0.5rem', // Ensure consistent border radius on all corners
                       }}
                     >
                       <ArtistProfileRightPanel 
