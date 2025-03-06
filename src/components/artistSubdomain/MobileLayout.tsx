@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+
+import React, { useState, useEffect, useCallback } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { useNavigate } from 'react-router-dom';
 import { Tabs } from '@/components/ui/tabs';
-import useEmblaCarousel, { UseEmblaCarouselType } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
 
@@ -45,6 +46,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     slidesToScroll: 1
   });
 
+  // Synchronize carousel position with tab selection
   useEffect(() => {
     if (!emblaApi) return;
     
@@ -63,6 +65,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     };
   }, [emblaApi]);
 
+  // Handle tab change and scroll carousel to matching slide
   const handleTabChange = useCallback((value: string) => {
     setActiveTab(value);
     
@@ -105,7 +108,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           <div className="flex-grow overflow-hidden">
             <MobileCarousel 
               emblaApi={emblaApi}
-              setEmblaRef={emblaRef}
+              emblaRef={emblaRef}
               artist={artist}
               profile={profile}
               techniques={techniques}

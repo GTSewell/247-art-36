@@ -20,24 +20,18 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
       <TabsList className="grid grid-cols-3 flex-1 bg-white/80 backdrop-blur-sm">
         <TabsTrigger 
           value="about" 
-          data-state={activeTab === "about" ? "active" : "inactive"}
-          onClick={() => handleTabChange("about")}
           className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
         >
           About
         </TabsTrigger>
         <TabsTrigger 
           value="links" 
-          data-state={activeTab === "links" ? "active" : "inactive"}
-          onClick={() => handleTabChange("links")}
           className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
         >
           Links
         </TabsTrigger>
         <TabsTrigger 
           value="artwork" 
-          data-state={activeTab === "artwork" ? "active" : "inactive"}
-          onClick={() => handleTabChange("artwork")}
           className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
         >
           Artwork

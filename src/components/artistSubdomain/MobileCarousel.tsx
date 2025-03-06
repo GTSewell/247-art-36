@@ -15,7 +15,7 @@ import { UseEmblaCarouselType } from 'embla-carousel-react';
 
 interface MobileCarouselProps {
   emblaApi: UseEmblaCarouselType[1] | undefined; 
-  setEmblaRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
+  emblaRef: React.RefCallback<HTMLDivElement>;
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
@@ -36,7 +36,7 @@ interface MobileCarouselProps {
 
 const MobileCarousel: React.FC<MobileCarouselProps> = ({
   emblaApi,
-  setEmblaRef,
+  emblaRef,
   artist,
   profile,
   techniques,
@@ -48,50 +48,48 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
 }) => {
   return (
     <div className="h-full overflow-hidden">
-      <div ref={setEmblaRef} className="h-full overflow-hidden">
-        <Carousel className="h-full">
-          <CarouselContent className="h-full">
-            {/* About Panel */}
-            <CarouselItem className="h-full">
-              <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-                <ArtistProfileLeftPanel 
-                  artist={artist} 
-                  techniques={techniques}
-                  styles={styles}
-                  panelColor={colorTheme.panel}
-                  badgeBgColor={colorTheme.badgeBg}
-                />
-              </MobilePanel>
-            </CarouselItem>
-            
-            {/* Links Panel */}
-            <CarouselItem className="h-full">
-              <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-                <ArtistProfileCenterPanel 
-                  artist={artist}
-                  socialPlatforms={socialPlatforms}
-                  links={profile?.links || []}
-                  panelColor={colorTheme.panel}
-                  buttonColor={colorTheme.button}
-                  buttonTextColor={colorTheme.buttonText}
-                  buttonHoverColor={colorTheme.buttonHover}
-                  buttonBorderColor={colorTheme.buttonBorder}
-                />
-              </MobilePanel>
-            </CarouselItem>
-            
-            {/* Artwork Panel */}
-            <CarouselItem className="h-full">
-              <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-                <ArtistProfileRightPanel 
-                  artist={artist}
-                  artworks={artworks}
-                  panelColor={colorTheme.panel}
-                />
-              </MobilePanel>
-            </CarouselItem>
-          </CarouselContent>
-        </Carousel>
+      <div ref={emblaRef} className="h-full overflow-hidden">
+        <div className="h-full flex">
+          {/* About Panel */}
+          <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
+            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
+              <ArtistProfileLeftPanel 
+                artist={artist} 
+                techniques={techniques}
+                styles={styles}
+                panelColor={colorTheme.panel}
+                badgeBgColor={colorTheme.badgeBg}
+              />
+            </MobilePanel>
+          </div>
+          
+          {/* Links Panel */}
+          <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
+            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
+              <ArtistProfileCenterPanel 
+                artist={artist}
+                socialPlatforms={socialPlatforms}
+                links={profile?.links || []}
+                panelColor={colorTheme.panel}
+                buttonColor={colorTheme.button}
+                buttonTextColor={colorTheme.buttonText}
+                buttonHoverColor={colorTheme.buttonHover}
+                buttonBorderColor={colorTheme.buttonBorder}
+              />
+            </MobilePanel>
+          </div>
+          
+          {/* Artwork Panel */}
+          <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
+            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
+              <ArtistProfileRightPanel 
+                artist={artist}
+                artworks={artworks}
+                panelColor={colorTheme.panel}
+              />
+            </MobilePanel>
+          </div>
+        </div>
       </div>
     </div>
   );
