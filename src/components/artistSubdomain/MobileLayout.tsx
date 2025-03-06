@@ -2,19 +2,11 @@
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
-import { ArrowLeftCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
-import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
-import ArtistProfileRightPanel from './ArtistProfileRightPanel';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from '@/components/ui/carousel';
+import { Tabs } from '@/components/ui/tabs';
 import useEmblaCarousel from 'embla-carousel-react';
+import MobileNavigation from './MobileNavigation';
+import MobileCarousel from './MobileCarousel';
 
 interface MobileLayoutProps {
   artist: Artist;
@@ -110,93 +102,24 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           onValueChange={handleTabChange} 
           className="w-full h-full flex flex-col"
         >
-          <div className="flex items-center justify-between mb-4">
-            <TabsList className="grid grid-cols-3 flex-1 bg-white/80 backdrop-blur-sm">
-              <TabsTrigger value="about" className="data-[state=active]:bg-yellow-100">About</TabsTrigger>
-              <TabsTrigger value="links" className="data-[state=active]:bg-yellow-100">Links</TabsTrigger>
-              <TabsTrigger value="artwork" className="data-[state=active]:bg-yellow-100">Artwork</TabsTrigger>
-            </TabsList>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              onClick={handleReturnToArtists}
-              className="ml-2 bg-white/80 hover:bg-white backdrop-blur-sm h-9 w-9"
-            >
-              <ArrowLeftCircle size={18} />
-              <span className="sr-only">Return to Artists</span>
-            </Button>
-          </div>
+          <MobileNavigation 
+            activeTab={activeTab}
+            handleTabChange={handleTabChange}
+            handleReturnToArtists={handleReturnToArtists}
+          />
           
           <div className="flex-grow overflow-hidden">
-            <div ref={emblaRef} className="h-full">
-              <Carousel className="h-full">
-                <CarouselContent className="h-full">
-                  {/* About Panel */}
-                  <CarouselItem className="h-full">
-                    <div 
-                      className="overflow-hidden shadow-lg w-full mx-auto my-2" 
-                      style={{ 
-                        backgroundColor: colorTheme.panel,
-                        height: panelHeight,
-                        borderRadius: '0.5rem',
-                        width: 'calc(100% - 16px)', // Account for the carousel padding
-                      }}
-                    >
-                      <ArtistProfileLeftPanel 
-                        artist={artist} 
-                        techniques={techniques}
-                        styles={styles}
-                        panelColor={colorTheme.panel}
-                        badgeBgColor={colorTheme.badgeBg}
-                      />
-                    </div>
-                  </CarouselItem>
-                  
-                  {/* Links Panel */}
-                  <CarouselItem className="h-full">
-                    <div 
-                      className="overflow-hidden shadow-lg w-full mx-auto my-2" 
-                      style={{ 
-                        backgroundColor: colorTheme.panel,
-                        height: panelHeight,
-                        borderRadius: '0.5rem',
-                        width: 'calc(100% - 16px)', // Account for the carousel padding
-                      }}
-                    >
-                      <ArtistProfileCenterPanel 
-                        artist={artist}
-                        socialPlatforms={socialPlatforms}
-                        links={profile?.links || []}
-                        panelColor={colorTheme.panel}
-                        buttonColor={colorTheme.button}
-                        buttonTextColor={colorTheme.buttonText}
-                        buttonHoverColor={colorTheme.buttonHover}
-                        buttonBorderColor={colorTheme.buttonBorder}
-                      />
-                    </div>
-                  </CarouselItem>
-                  
-                  {/* Artwork Panel */}
-                  <CarouselItem className="h-full">
-                    <div 
-                      className="overflow-hidden shadow-lg w-full mx-auto my-2" 
-                      style={{ 
-                        backgroundColor: colorTheme.panel,
-                        height: panelHeight,
-                        borderRadius: '0.5rem',
-                        width: 'calc(100% - 16px)', // Account for the carousel padding
-                      }}
-                    >
-                      <ArtistProfileRightPanel 
-                        artist={artist}
-                        artworks={artworks}
-                        panelColor={colorTheme.panel}
-                      />
-                    </div>
-                  </CarouselItem>
-                </CarouselContent>
-              </Carousel>
-            </div>
+            <MobileCarousel 
+              emblaRef={emblaRef}
+              artist={artist}
+              profile={profile}
+              techniques={techniques}
+              styles={styles}
+              socialPlatforms={socialPlatforms}
+              artworks={artworks}
+              panelHeight={panelHeight}
+              colorTheme={colorTheme}
+            />
           </div>
         </Tabs>
       </div>
