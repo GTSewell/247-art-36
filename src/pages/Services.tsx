@@ -7,11 +7,11 @@ import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "luci
 
 const Services = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-zap-blue">
       <Navigation />
       <div className="container mx-auto px-4 pt-24 pb-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center">Our Services</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center text-white">Our Services</h1>
           
           <div className="space-y-12 mt-10">
             {/* Printing Services */}
@@ -122,8 +122,8 @@ const Services = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <h2 className="text-2xl font-semibold mb-4">Ready to Work With Us?</h2>
-            <p className="mb-6 text-muted-foreground max-w-2xl mx-auto">
+            <h2 className="text-2xl font-semibold mb-4 text-white">Ready to Work With Us?</h2>
+            <p className="mb-6 text-white/80 max-w-2xl mx-auto">
               Contact us to discuss your project needs or to schedule a consultation with our team.
             </p>
             <Button asChild size="lg" className="mt-2">
