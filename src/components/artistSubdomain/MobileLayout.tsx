@@ -75,23 +75,22 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 
   return (
     <div 
-      className="flex items-center justify-center overflow-hidden"
+      className="flex items-center justify-center w-full h-full overflow-hidden"
       style={{ 
         backgroundColor: colorTheme.background,
         backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '100vh',
-        width: '100%'
+        minHeight: '100vh',
       }}
     >
-      <div className="w-full h-[calc(100vh-2rem)] mx-4">
+      <div className="w-full h-full max-w-md mx-auto p-4 flex flex-col">
         <Tabs 
           value={activeTab} 
           onValueChange={setActiveTab}
           className="w-full h-full flex flex-col"
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 sticky top-0 z-10 bg-white/80 backdrop-blur-sm rounded-lg p-1">
             <TabsList className="grid grid-cols-3 flex-1">
               <TabsTrigger value="about">About</TabsTrigger>
               <TabsTrigger value="links">Links</TabsTrigger>
@@ -113,7 +112,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             <div className="overflow-hidden h-full" ref={emblaRef}>
               <div className="flex h-full">
                 {/* About Panel */}
-                <div className="flex-shrink-0 flex-grow-0 min-w-full h-full">
+                <div className="flex-shrink-0 flex-grow-0 min-w-full h-full px-2">
                   <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                     <ArtistProfileLeftPanel 
                       artist={artist} 
@@ -126,7 +125,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                 </div>
                 
                 {/* Links Panel */}
-                <div className="flex-shrink-0 flex-grow-0 min-w-full h-full">
+                <div className="flex-shrink-0 flex-grow-0 min-w-full h-full px-2">
                   <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                     <ArtistProfileCenterPanel 
                       artist={artist}
@@ -142,7 +141,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                 </div>
                 
                 {/* Artwork Panel */}
-                <div className="flex-shrink-0 flex-grow-0 min-w-full h-full">
+                <div className="flex-shrink-0 flex-grow-0 min-w-full h-full px-2">
                   <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                     <ArtistProfileRightPanel 
                       artist={artist}
