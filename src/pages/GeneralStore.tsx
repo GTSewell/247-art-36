@@ -26,17 +26,23 @@ const GeneralStore = () => {
   } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      const {
-        data,
-        error
-      } = await supabase.from('products').select('*, artists(name, image)').order('created_at', {
-        ascending: false
-      });
-      if (error) {
+      try {
+        const {
+          data,
+          error
+        } = await supabase.from('products').select('*, artists(name, image)').order('created_at', {
+          ascending: false
+        });
+        if (error) {
+          toast.error("Failed to load products");
+          throw error;
+        }
+        return data || [];
+      } catch (error) {
+        console.error("Error loading products:", error);
         toast.error("Failed to load products");
-        throw error;
+        return [];
       }
-      return data;
     }
   });
 
