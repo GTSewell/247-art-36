@@ -101,7 +101,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
         width: '100%'
       }}
     >
-      <div className="w-full h-[calc(100vh-2rem)] mx-4">
+      <div className="w-full h-[calc(100vh-2rem)] mx-4 flex flex-col">
         <Tabs 
           value={activeTab} 
           onValueChange={handleTabChange} 
@@ -128,8 +128,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             <div ref={emblaRef} className="h-full">
               <Carousel className="h-full">
                 <CarouselContent className="h-full">
-                  <CarouselItem className="h-full">
-                    <div className="rounded-lg overflow-hidden shadow-lg h-full m-2" style={{ backgroundColor: colorTheme.panel }}>
+                  {/* About Panel */}
+                  <CarouselItem className="h-full flex items-center justify-center">
+                    <div className="rounded-lg overflow-hidden shadow-lg w-full h-[calc(100%-16px)] m-2" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileLeftPanel 
                         artist={artist} 
                         techniques={techniques}
@@ -140,8 +141,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                     </div>
                   </CarouselItem>
                   
-                  <CarouselItem className="h-full">
-                    <div className="rounded-lg overflow-hidden shadow-lg h-full m-2" style={{ backgroundColor: colorTheme.panel }}>
+                  {/* Links Panel */}
+                  <CarouselItem className="h-full flex items-center justify-center">
+                    <div className="rounded-lg overflow-hidden shadow-lg w-full h-[calc(100%-16px)] m-2" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileCenterPanel 
                         artist={artist}
                         socialPlatforms={socialPlatforms}
@@ -155,8 +157,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                     </div>
                   </CarouselItem>
                   
-                  <CarouselItem className="h-full">
-                    <div className="rounded-lg overflow-hidden shadow-lg h-full m-2" style={{ backgroundColor: colorTheme.panel }}>
+                  {/* Artwork Panel */}
+                  <CarouselItem className="h-full flex items-center justify-center">
+                    <div className="rounded-lg overflow-hidden shadow-lg w-full h-[calc(100%-16px)] m-2" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileRightPanel 
                         artist={artist}
                         artworks={artworks}
