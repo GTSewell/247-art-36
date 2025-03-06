@@ -37,62 +37,45 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("about");
-  const emblaRef = useRef<HTMLDivElement>(null);
+  const emblaRef = useRef(null);
   
-  // Initialize embla carousel
-  const [emblaApi, setEmblaApi] = useState<any>(null);
+  // Initialize embla carousel with proper options
+  const [emblaApi, emblaHelper] = useEmblaCarousel({
+    align: "start",
+    loop: false,
+    dragFree: false,
+    containScroll: "trimSnaps",
+    slidesToScroll: 1
+  });
 
-  // Setup embla carousel separately for more control
+  // Setup carousel events
   useEffect(() => {
-    if (emblaRef.current) {
-      const embla = useEmblaCarousel(emblaRef.current, {
-        align: "start",
-        loop: false,
-        dragFree: false,
-        containScroll: "trimSnaps",
-        slidesToScroll: 1
-      });
-      
-      if (embla && embla[1]) {
-        setEmblaApi(embla[1]);
-      }
-    }
-    
-    return () => {
-      if (emblaApi) {
-        emblaApi.destroy();
-      }
-    };
-  }, []);
-
-  // Handle tab change and carousel sync
-  const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value);
-    
-    if (emblaApi) {
-      const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
-      emblaApi.scrollTo(slideIndex);
-    }
-  }, [emblaApi]);
-
-  // Listen to carousel changes and update tabs
-  useEffect(() => {
-    if (!emblaApi) return;
+    if (!emblaHelper) return;
     
     const onSelect = () => {
-      const currentSlide = emblaApi.selectedScrollSnap();
+      const currentSlide = emblaHelper.selectedScrollSnap();
       const tabs = ["about", "links", "artwork"];
       if (currentSlide >= 0 && currentSlide < tabs.length) {
         setActiveTab(tabs[currentSlide]);
       }
     };
     
-    emblaApi.on('select', onSelect);
+    emblaHelper.on('select', onSelect);
     
     return () => {
-      emblaApi.off('select', onSelect);
+      emblaHelper.off('select', onSelect);
     };
-  }, [emblaApi]);
+  }, [emblaHelper]);
+
+  // Handle tab change and carousel sync
+  const handleTabChange = useCallback((value: string) => {
+    setActiveTab(value);
+    
+    if (emblaHelper) {
+      const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
+      emblaHelper.scrollTo(slideIndex);
+    }
+  }, [emblaHelper]);
 
   const handleReturnToArtists = () => {
     navigate('/artists');
@@ -127,7 +110,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           
           <div className="flex-grow overflow-hidden">
             <MobileCarousel 
-              emblaRef={emblaRef}
+              emblaApi={emblaHelper}
+              setEmblaRef={emblaApi}
               artist={artist}
               profile={profile}
               techniques={techniques}

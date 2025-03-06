@@ -11,9 +11,11 @@ import ArtistProfileRightPanel from './ArtistProfileRightPanel';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import MobilePanel from './MobilePanel';
+import { EmblaCarouselType } from 'embla-carousel-react';
 
 interface MobileCarouselProps {
-  emblaRef: React.RefObject<HTMLDivElement>;
+  emblaApi: EmblaCarouselType | undefined; 
+  setEmblaRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
@@ -33,7 +35,8 @@ interface MobileCarouselProps {
 }
 
 const MobileCarousel: React.FC<MobileCarouselProps> = ({
-  emblaRef,
+  emblaApi,
+  setEmblaRef,
   artist,
   profile,
   techniques,
@@ -45,7 +48,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
 }) => {
   return (
     <div className="h-full overflow-hidden">
-      <div className="h-full overflow-hidden" ref={emblaRef}>
+      <div ref={setEmblaRef} className="h-full overflow-hidden">
         <Carousel className="h-full">
           <CarouselContent className="h-full">
             {/* About Panel */}
