@@ -130,15 +130,16 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </div>
       )}
 
-      {/* Improved ScrollArea with better height calculation for mobile */}
+      {/* Fixed ScrollArea with improved height calculation for better mobile scrolling */}
       <ScrollArea 
         className="flex-grow overflow-y-auto pr-3 mb-6" 
         style={{ 
-          height: isMobile ? 'calc(100vh - 440px)' : 'calc(80vh - 180px)',
-          minHeight: isMobile ? '250px' : 'auto'
+          height: isMobile ? 'calc(100vh - 350px)' : 'calc(80vh - 180px)',
+          minHeight: isMobile ? '300px' : 'auto',
+          maxHeight: isMobile ? '400px' : undefined
         }}
       >
-        <div className="space-y-4 pb-6">
+        <div className="space-y-6 pb-10">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
