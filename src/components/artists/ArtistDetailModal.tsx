@@ -100,19 +100,16 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                 
                 return (
                   <CarouselItem key={artist.id} className="pl-0 sm:pl-2 w-full">
-                    <div className="flex flex-col" style={{ backgroundColor: colorTheme.panel }}>
-                      {/* Image Panel - Fixed height, 1:1 ratio */}
-                      <div className="w-full" style={{ maxHeight: isMobile ? '40vh' : '45vh' }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4" style={{ backgroundColor: colorTheme.panel }}>
+                      <div className="aspect-square md:aspect-auto md:h-auto">
                         <ArtistImagePanel 
                           artist={artist}
                           onFavoriteToggle={onFavoriteToggle}
                           isFavorite={favoriteArtists.has(artist.id)}
-                          refreshArtworks={refreshArtists}
+                          refreshArtists={refreshArtists}
                         />
                       </div>
-                      
-                      {/* Details Panel - Remaining height with scroll */}
-                      <div className="w-full" style={{ maxHeight: isMobile ? '50vh' : '45vh' }}>
+                      <div className="aspect-auto md:h-auto">
                         <ArtistDetailsPanel 
                           artist={artist}
                           onSelect={() => onSelect(artist)}

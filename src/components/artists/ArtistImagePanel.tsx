@@ -12,14 +12,14 @@ interface ArtistImagePanelProps {
   artist: Artist;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
-  refreshArtworks?: () => void;
+  refreshArtists?: () => void;
 }
 
 const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({ 
   artist, 
   onFavoriteToggle, 
   isFavorite,
-  refreshArtworks
+  refreshArtists
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -41,7 +41,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   }, [artist.id]);
 
+  // This function determines if a click should flip the card or not
   const handleFlip = (e: React.MouseEvent) => {
+    // Check if click originated from a button or interactive element
     const target = e.target as HTMLElement;
     const isInteractiveElement = 
       target.tagName === 'BUTTON' || 
@@ -51,6 +53,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       target.closest('[data-no-flip="true"]') ||
       target.getAttribute('data-no-flip') === 'true';
     
+    // Don't flip if clicking on a button or if we're in the middle of an operation
     if (isInteractiveElement || isGeneratingArtworks) {
       return;
     }
@@ -101,8 +104,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       if (data) {
         setCurrentArtist(data as Artist);
         
-        if (refreshArtworks) {
-          refreshArtworks();
+        // If parent component has a refresh function, call it too
+        if (refreshArtists) {
+          refreshArtists();
         }
       }
     } catch (error) {
@@ -111,9 +115,10 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   };
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
       <div 
-        className="relative w-full h-full cursor-pointer"
+        className="relative aspect-auto md:aspect-square h-full w-full overflow-hidden cursor-pointer"
+        style={{ perspective: '1000px' }}
         onClick={handleFlip}
         onMouseEnter={() => !isMobile && setIsHovered(true)}
         onMouseLeave={() => !isMobile && setIsHovered(false)}
@@ -141,7 +146,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               <img
                 src={mainImageError ? '/placeholder.svg' : currentArtist.image}
                 alt={currentArtist.name}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover"
                 onError={handleMainImageError}
               />
             </motion.div>
