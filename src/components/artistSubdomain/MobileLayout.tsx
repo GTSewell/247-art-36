@@ -14,6 +14,7 @@ import {
   CarouselContent,
   CarouselItem
 } from '@/components/ui/carousel';
+import useEmblaCarousel from 'embla-carousel-react';
 
 interface MobileLayoutProps {
   artist: Artist;
@@ -44,21 +45,49 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState("about");
+  
+  // Initialize embla carousel with options
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: true,
+  });
 
   const handleReturnToArtists = () => {
     navigate('/artists');
   };
 
-  // Handle tab change when swiping
+  // Handle tab change when clicking on tabs
   const handleTabChange = (value: string) => {
     setActiveTab(value);
+    
+    // Update carousel slide based on tab
+    if (emblaApi) {
+      const tabIndex = {
+        "about": 0,
+        "links": 1,
+        "artwork": 2
+      }[value];
+      
+      emblaApi.scrollTo(tabIndex);
+    }
   };
 
-  // Handle carousel change to update tab state
-  const handleCarouselChange = (index: number) => {
-    const tabs = ["about", "links", "artwork"];
-    setActiveTab(tabs[index]);
-  };
+  // Setup effect to sync embla carousel with tabs
+  React.useEffect(() => {
+    if (!emblaApi) return;
+    
+    const onSelect = () => {
+      const currentSlide = emblaApi.selectedScrollSnap();
+      const tabs = ["about", "links", "artwork"];
+      setActiveTab(tabs[currentSlide]);
+    };
+    
+    emblaApi.on('select', onSelect);
+    
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
 
   return (
     <div 
@@ -80,9 +109,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
         >
           <div className="flex items-center justify-between mb-4">
             <TabsList className="grid grid-cols-3 flex-1">
-              <TabsTrigger value="about" onClick={() => handleTabChange("about")}>About</TabsTrigger>
-              <TabsTrigger value="links" onClick={() => handleTabChange("links")}>Links</TabsTrigger>
-              <TabsTrigger value="artwork" onClick={() => handleTabChange("artwork")}>Artwork</TabsTrigger>
+              <TabsTrigger value="about">About</TabsTrigger>
+              <TabsTrigger value="links">Links</TabsTrigger>
+              <TabsTrigger value="artwork">Artwork</TabsTrigger>
             </TabsList>
             <Button 
               variant="outline" 
@@ -96,61 +125,48 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           </div>
           
           <div className="flex-grow overflow-hidden">
-            <Carousel 
-              className="h-full" 
-              opts={{
-                align: "start",
-                loop: true,
-              }}
-              onSlideChange={(_, api) => {
-                const currentSlide = api.selectedScrollSnap();
-                handleCarouselChange(currentSlide);
-              }}
-              value={{
-                about: 0,
-                links: 1,
-                artwork: 2
-              }[activeTab]}
-            >
-              <CarouselContent className="h-full">
-                <CarouselItem className="h-full">
-                  <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
-                    <ArtistProfileLeftPanel 
-                      artist={artist} 
-                      techniques={techniques}
-                      styles={styles}
-                      panelColor={colorTheme.panel}
-                      badgeBgColor={colorTheme.badgeBg}
-                    />
-                  </div>
-                </CarouselItem>
-                
-                <CarouselItem className="h-full">
-                  <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
-                    <ArtistProfileCenterPanel 
-                      artist={artist}
-                      socialPlatforms={socialPlatforms}
-                      links={profile?.links || []}
-                      panelColor={colorTheme.panel}
-                      buttonColor={colorTheme.button}
-                      buttonTextColor={colorTheme.buttonText}
-                      buttonHoverColor={colorTheme.buttonHover}
-                      buttonBorderColor={colorTheme.buttonBorder}
-                    />
-                  </div>
-                </CarouselItem>
-                
-                <CarouselItem className="h-full">
-                  <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
-                    <ArtistProfileRightPanel 
-                      artist={artist}
-                      artworks={artworks}
-                      panelColor={colorTheme.panel}
-                    />
-                  </div>
-                </CarouselItem>
-              </CarouselContent>
-            </Carousel>
+            <div ref={emblaRef} className="h-full">
+              <Carousel className="h-full">
+                <CarouselContent className="h-full">
+                  <CarouselItem className="h-full">
+                    <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+                      <ArtistProfileLeftPanel 
+                        artist={artist} 
+                        techniques={techniques}
+                        styles={styles}
+                        panelColor={colorTheme.panel}
+                        badgeBgColor={colorTheme.badgeBg}
+                      />
+                    </div>
+                  </CarouselItem>
+                  
+                  <CarouselItem className="h-full">
+                    <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+                      <ArtistProfileCenterPanel 
+                        artist={artist}
+                        socialPlatforms={socialPlatforms}
+                        links={profile?.links || []}
+                        panelColor={colorTheme.panel}
+                        buttonColor={colorTheme.button}
+                        buttonTextColor={colorTheme.buttonText}
+                        buttonHoverColor={colorTheme.buttonHover}
+                        buttonBorderColor={colorTheme.buttonBorder}
+                      />
+                    </div>
+                  </CarouselItem>
+                  
+                  <CarouselItem className="h-full">
+                    <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+                      <ArtistProfileRightPanel 
+                        artist={artist}
+                        artworks={artworks}
+                        panelColor={colorTheme.panel}
+                      />
+                    </div>
+                  </CarouselItem>
+                </CarouselContent>
+              </Carousel>
+            </div>
           </div>
         </Tabs>
       </div>
