@@ -1,72 +1,70 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "sonner";
-
+import React, { useEffect, useState } from "react";
+import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import WhoAreYou from "./pages/WhoAreYou";
+import VirtualTour from "./pages/VirtualTour";
+import Artists from "./pages/Artists";
 import Services from "./pages/Services";
 import Details from "./pages/Details";
-import Artists from "./pages/Artists";
-import ArtistSubmission from "./pages/ArtistSubmission";
-import WhoAreYou from "./pages/WhoAreYou";
-import GeneralStore from "./pages/GeneralStore";
-import VirtualTour from "./pages/VirtualTour";
 import Auth from "./pages/Auth";
+import GeneralStore from "./pages/GeneralStore";
+import NotFound from "./pages/NotFound";
+import ArtistSubmission from "./pages/ArtistSubmission";
+import { Toaster } from "sonner";
+import { SitePassword } from "./components/SitePassword";
 import ArtistSubdomain from "./pages/ArtistSubdomain";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import "./App.css";
+// Create a client
+const queryClient = new QueryClient();
 
-// Detect if we're on an artist subdomain
-const hostname = window.location.hostname;
-const isArtistSubdomain =
-  hostname.includes(".") &&
-  hostname.split(".").length >= 2 &&
-  !hostname.startsWith("www") &&
-  !hostname.startsWith("staging") &&
-  !hostname.startsWith("dev");
+function App() {
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(
+    localStorage.getItem("isPasswordCorrect") === "true"
+  );
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+  useEffect(() => {
+    localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
+  }, [isPasswordCorrect]);
 
-const App = () => {
-  if (isArtistSubdomain) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <ArtistSubdomain />
-        <Toaster position="top-center" richColors />
-      </QueryClientProvider>
-    );
+  if (!isPasswordCorrect) {
+    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <Router>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/details" element={<Details />} />
-            <Route path="/artists" element={<Artists />} />
-            <Route path="/submit-artist" element={<ArtistSubmission />} />
-            <Route path="/whoareyou" element={<WhoAreYou />} />
-            <Route path="/store" element={<GeneralStore />} />
+            <Route path="/who-are-you" element={<WhoAreYou />} />
             <Route path="/virtual-tour" element={<VirtualTour />} />
+            <Route path="/artists" element={<Artists />} />
+            <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/details" element={<Details />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/store" element={<GeneralStore />} />
+            <Route path="/artist-submission" element={<ArtistSubmission />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-          <Toaster position="top-center" richColors />
-        </Router>
-      </ThemeProvider>
-    </QueryClientProvider>
+        </BrowserRouter>
+        <Toaster richColors />
+      </QueryClientProvider>
+    </>
   );
-};
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 export default App;

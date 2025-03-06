@@ -39,7 +39,7 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 48 96% 15%;
     --foreground: 210 40% 98%;
 
     --card: 222.2 84% 4.9%;
@@ -85,28 +85,4 @@
   width: 100%;
   margin: 0;
   padding: 0;
-}
-
-.dark .artist-card {
-  @apply bg-gray-800 text-white border-gray-700;
-}
-
-.dark .artist-card-content {
-  @apply bg-gray-800;
-}
-
-.dark .artist-social-links svg {
-  @apply text-gray-300;
-}
-
-.dark button {
-  @apply border-gray-700;
-}
-
-.dark input, .dark select {
-  @apply bg-gray-700 text-white border-gray-600;
-}
-
-.dark .dialog-content {
-  @apply bg-gray-800 border-gray-700;
 }
