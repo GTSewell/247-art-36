@@ -108,10 +108,10 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           className="w-full h-full flex flex-col"
         >
           <div className="flex items-center justify-between mb-4">
-            <TabsList className="grid grid-cols-3 flex-1">
-              <TabsTrigger value="about">About</TabsTrigger>
-              <TabsTrigger value="links">Links</TabsTrigger>
-              <TabsTrigger value="artwork">Artwork</TabsTrigger>
+            <TabsList className="grid grid-cols-3 flex-1 bg-white/80 backdrop-blur-sm">
+              <TabsTrigger value="about" className="data-[state=active]:bg-yellow-100">About</TabsTrigger>
+              <TabsTrigger value="links" className="data-[state=active]:bg-yellow-100">Links</TabsTrigger>
+              <TabsTrigger value="artwork" className="data-[state=active]:bg-yellow-100">Artwork</TabsTrigger>
             </TabsList>
             <Button 
               variant="outline" 
@@ -128,7 +128,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             <div ref={emblaRef} className="h-full">
               <Carousel className="h-full">
                 <CarouselContent className="h-full">
-                  <CarouselItem className="h-full">
+                  <CarouselItem className="h-full p-2">
                     <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileLeftPanel 
                         artist={artist} 
@@ -140,7 +140,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                     </div>
                   </CarouselItem>
                   
-                  <CarouselItem className="h-full">
+                  <CarouselItem className="h-full p-2">
                     <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileCenterPanel 
                         artist={artist}
@@ -155,7 +155,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                     </div>
                   </CarouselItem>
                   
-                  <CarouselItem className="h-full">
+                  <CarouselItem className="h-full p-2">
                     <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileRightPanel 
                         artist={artist}
