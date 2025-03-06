@@ -1,10 +1,9 @@
 
-// This component has been deprecated and is no longer in use
 import React from 'react';
-import { Button } from '@/components/ui/button';
 
+// This component is disabled and no longer in use
 const DownloadArtistImages: React.FC = () => {
-  // Return null to prevent rendering
+  // Return null to ensure nothing is rendered
   return null;
 };
 
