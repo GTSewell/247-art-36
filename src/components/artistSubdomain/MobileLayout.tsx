@@ -128,8 +128,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             <div ref={emblaRef} className="h-full">
               <Carousel className="h-full">
                 <CarouselContent className="h-full">
-                  <CarouselItem className="h-full p-2">
-                    <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+                  <CarouselItem className="h-full">
+                    <div className="rounded-lg overflow-hidden shadow-lg h-full m-2" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileLeftPanel 
                         artist={artist} 
                         techniques={techniques}
@@ -140,8 +140,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                     </div>
                   </CarouselItem>
                   
-                  <CarouselItem className="h-full p-2">
-                    <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+                  <CarouselItem className="h-full">
+                    <div className="rounded-lg overflow-hidden shadow-lg h-full m-2" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileCenterPanel 
                         artist={artist}
                         socialPlatforms={socialPlatforms}
@@ -155,8 +155,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                     </div>
                   </CarouselItem>
                   
-                  <CarouselItem className="h-full p-2">
-                    <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+                  <CarouselItem className="h-full">
+                    <div className="rounded-lg overflow-hidden shadow-lg h-full m-2" style={{ backgroundColor: colorTheme.panel }}>
                       <ArtistProfileRightPanel 
                         artist={artist}
                         artworks={artworks}
