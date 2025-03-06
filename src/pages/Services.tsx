@@ -1,6 +1,6 @@
 
 import React from "react";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "lucide-react";
