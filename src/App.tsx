@@ -14,6 +14,10 @@ import ArtistSubmission from "./pages/ArtistSubmission";
 import { Toaster } from "sonner";
 import { SitePassword } from "./components/SitePassword";
 import ArtistSubdomain from "./pages/ArtistSubdomain";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(
@@ -30,23 +34,25 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/who-are-you" element={<WhoAreYou />} />
-          <Route path="/virtual-tour" element={<VirtualTour />} />
-          <Route path="/artists" element={<Artists />} />
-          <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/store" element={<GeneralStore />} />
-          <Route path="/artist-submission" element={<ArtistSubmission />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster richColors />
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/who-are-you" element={<WhoAreYou />} />
+            <Route path="/virtual-tour" element={<VirtualTour />} />
+            <Route path="/artists" element={<Artists />} />
+            <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/details" element={<Details />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/store" element={<GeneralStore />} />
+            <Route path="/artist-submission" element={<ArtistSubmission />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster richColors />
+      </QueryClientProvider>
     </>
   );
 }

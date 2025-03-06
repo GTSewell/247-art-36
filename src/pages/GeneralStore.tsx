@@ -8,6 +8,7 @@ import TimedEditionModal from "@/components/store/TimedEditionModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import FilteredProducts from "@/components/store/FilteredProducts";
 import { TimerProvider } from "@/contexts/TimerContext";
+import { logger } from "@/utils/logger";
 
 interface TimerState {
   hours: number;
@@ -22,7 +23,8 @@ const GeneralStore = () => {
   
   const {
     data: products,
-    isLoading
+    isLoading,
+    error
   } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -34,17 +36,23 @@ const GeneralStore = () => {
           ascending: false
         });
         if (error) {
+          logger.error("Failed to load products from Supabase", error);
           toast.error("Failed to load products");
-          throw error;
+          return [];
         }
         return data || [];
       } catch (error) {
-        console.error("Error loading products:", error);
+        logger.error("Error loading products:", error);
         toast.error("Failed to load products");
         return [];
       }
     }
   });
+
+  // Log any query errors to help with debugging
+  if (error) {
+    logger.error("Query error:", error);
+  }
 
   const featuredProducts = products?.filter(p => p.is_featured) || [];
   const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
