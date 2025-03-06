@@ -132,9 +132,9 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
         </div>
       )}
       
-      {/* Links Section */}
-      <div className="flex-grow">
-        <ScrollArea className="h-[calc(100%-40px)]">
+      {/* Links Section - Fixed height for mobile to ensure proper scrolling */}
+      <div className="flex-grow overflow-hidden">
+        <ScrollArea className="h-full pb-4">
           <div className="space-y-4 pr-4">
             {Object.entries(groupedLinksToDisplay).map(([type, typeLinks]) => (
               <div key={type} className="space-y-2">
@@ -160,7 +160,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
           </div>
           
           {links.length === 0 && (
-            <div className="mt-4 text-center text-gray-500 text-sm italic">
+            <div className="mt-4 text-center text-gray-500 text-sm italic pb-8">
               <p>These are sample links to show how artist links would appear</p>
             </div>
           )}
