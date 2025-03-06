@@ -12,14 +12,14 @@ interface ArtistImagePanelProps {
   artist: Artist;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
-  refreshArtists?: () => void;
+  refreshArtworks?: () => void;
 }
 
 const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({ 
   artist, 
   onFavoriteToggle, 
   isFavorite,
-  refreshArtists
+  refreshArtworks
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -41,9 +41,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   }, [artist.id]);
 
-  // This function determines if a click should flip the card or not
   const handleFlip = (e: React.MouseEvent) => {
-    // Check if click originated from a button or interactive element
     const target = e.target as HTMLElement;
     const isInteractiveElement = 
       target.tagName === 'BUTTON' || 
@@ -53,7 +51,6 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       target.closest('[data-no-flip="true"]') ||
       target.getAttribute('data-no-flip') === 'true';
     
-    // Don't flip if clicking on a button or if we're in the middle of an operation
     if (isInteractiveElement || isGeneratingArtworks) {
       return;
     }
@@ -104,9 +101,8 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       if (data) {
         setCurrentArtist(data as Artist);
         
-        // If parent component has a refresh function, call it too
-        if (refreshArtists) {
-          refreshArtists();
+        if (refreshArtworks) {
+          refreshArtworks();
         }
       }
     } catch (error) {
@@ -115,10 +111,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   };
 
   return (
-    <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
+    <div className="w-full h-full">
       <div 
-        className="relative aspect-auto md:aspect-square h-full w-full overflow-hidden cursor-pointer"
-        style={{ perspective: '1000px' }}
+        className="relative w-full h-full cursor-pointer"
         onClick={handleFlip}
         onMouseEnter={() => !isMobile && setIsHovered(true)}
         onMouseLeave={() => !isMobile && setIsHovered(false)}

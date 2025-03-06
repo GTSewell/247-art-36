@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -72,7 +73,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const artistDomain = artist.name.replace(/\s+/g, '');
   
   return (
-    <div className="relative flex flex-col h-full p-5 md:p-8">
+    <div className="relative flex flex-col h-full p-5 md:p-6">
       {showReturnButton && (
         <div className="absolute top-3 right-3 z-10">
           <Button 
@@ -127,10 +128,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       )}
 
       <ScrollArea 
-        className="flex-grow overflow-y-auto pr-3 mb-6" 
+        className="flex-grow overflow-y-auto pr-3" 
         style={{ 
-          height: isMobile ? 'calc(70vh - 200px)' : 'calc(80vh - 180px)',
-          maxHeight: isMobile ? '400px' : 'none'
+          height: isMobile ? 'calc(100% - 120px)' : 'calc(100% - 80px)',
         }}
       >
         <div className="space-y-4 pb-4">
