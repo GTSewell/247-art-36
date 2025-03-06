@@ -101,7 +101,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                 return (
                   <CarouselItem key={artist.id} className="pl-0 sm:pl-2 w-full">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4" style={{ backgroundColor: colorTheme.panel }}>
-                      <div className="aspect-square md:aspect-auto md:h-auto">
+                      <div className={`${isMobile ? 'max-h-[35vh]' : ''} aspect-square md:aspect-auto md:h-auto`}>
                         <ArtistImagePanel 
                           artist={artist}
                           onFavoriteToggle={onFavoriteToggle}
@@ -109,7 +109,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                           refreshArtists={refreshArtists}
                         />
                       </div>
-                      <div className="aspect-auto md:h-auto">
+                      <div className={`${isMobile ? 'max-h-[55vh]' : ''} aspect-auto md:h-auto`}>
                         <ArtistDetailsPanel 
                           artist={artist}
                           onSelect={() => onSelect(artist)}

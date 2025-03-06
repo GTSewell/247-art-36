@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -42,7 +41,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
-  // Parse techniques, styles, and social_platforms if they're strings
   const techniques = Array.isArray(artist.techniques) 
     ? artist.techniques 
     : typeof artist.techniques === 'string' && artist.techniques
@@ -71,7 +69,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     navigate('/artists');
   };
 
-  // Create a formatted domain name for display
   const artistDomain = artist.name.replace(/\s+/g, '');
   
   return (
@@ -100,7 +97,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       </div>
 
-      {/* For mobile, show a mini domain link at the top for better visibility */}
       {isMobile && (
         <div className="flex-none mb-3 flex items-center text-sm">
           <LinkIcon size={14} className="mr-1" />
@@ -130,9 +126,14 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </div>
       )}
 
-      {/* Improved ScrollArea with proper height calculations */}
-      <ScrollArea className="flex-grow overflow-y-auto pr-3 mb-6" style={{ height: isMobile ? 'calc(60vh - 170px)' : 'calc(80vh - 180px)' }}>
-        <div className="space-y-0 pb-4">
+      <ScrollArea 
+        className="flex-grow overflow-y-auto pr-3 mb-6" 
+        style={{ 
+          height: isMobile ? 'calc(70vh - 200px)' : 'calc(80vh - 180px)',
+          maxHeight: isMobile ? '400px' : 'none'
+        }}
+      >
+        <div className="space-y-4 pb-4">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
