@@ -20,83 +20,13 @@ interface DownloadResult {
   }>;
 }
 
+// Disable this hook completely
 export const useDownloadArtistImages = () => {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const [result, setResult] = useState<DownloadResult | null>(null);
-  const [errorDetails, setErrorDetails] = useState<string | null>(null);
-
-  const downloadImages = async () => {
-    try {
-      setIsDownloading(true);
-      setResult(null);
-      setErrorDetails(null);
-      
-      const { data: session } = await supabase.auth.getSession();
-      if (!session?.session) {
-        toast.error('You must be logged in to perform this action');
-        logger.error('Download artist images failed: User not logged in');
-        return;
-      }
-
-      logger.info('Starting artist image download process');
-      
-      try {
-        // Use the hardcoded Supabase URL since getUrl() is not available
-        const supabaseUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co";
-        
-        logger.info(`Using Supabase URL: ${supabaseUrl}`);
-        
-        const response = await fetch(
-          `${supabaseUrl}/functions/v1/download-artist-images`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${session.session.access_token}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              regenerateAll: true, // Tell the function to regenerate all images
-            }),
-          }
-        );
-        
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Server responded with ${response.status}: ${errorText}`);
-        }
-        
-        const responseData = await response.json();
-        
-        if (responseData.error) {
-          throw new Error(`API Error: ${responseData.error}`);
-        }
-
-        logger.info('Image processing completed successfully', responseData);
-        setResult(responseData.results);
-        toast.success(`Image processing complete. ${responseData.results.success.length} successful, ${responseData.results.failed.length} failed, ${responseData.results.skipped.length} skipped.`);
-        
-        // Trigger a refresh of the artists data without reloading the page
-        window.dispatchEvent(new CustomEvent('refreshArtists'));
-      } catch (fetchError: any) {
-        const errorMessage = fetchError.message || 'Failed to download artist images';
-        setErrorDetails(errorMessage);
-        logger.error('Fetch error in downloadImages:', fetchError);
-        toast.error(`Failed to download artist images: ${errorMessage}`);
-      }
-    } catch (error: any) {
-      const errorMessage = error.message || 'An unexpected error occurred';
-      setErrorDetails(errorMessage);
-      logger.error('Unexpected error in downloadImages:', error);
-      toast.error('An unexpected error occurred');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
+  // Return dummy values that don't do anything
   return {
-    downloadImages,
-    isDownloading,
-    result,
-    errorDetails,
+    downloadImages: () => {},
+    isDownloading: false,
+    result: null,
+    errorDetails: null,
   };
 };
