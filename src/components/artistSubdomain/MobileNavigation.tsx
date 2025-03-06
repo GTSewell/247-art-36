@@ -22,7 +22,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
           value="about" 
           data-state={activeTab === "about" ? "active" : "inactive"}
           onClick={() => handleTabChange("about")}
-          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black transition-colors duration-200"
+          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
         >
           About
         </TabsTrigger>
@@ -30,7 +30,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
           value="links" 
           data-state={activeTab === "links" ? "active" : "inactive"}
           onClick={() => handleTabChange("links")}
-          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black transition-colors duration-200"
+          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
         >
           Links
         </TabsTrigger>
@@ -38,7 +38,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
           value="artwork" 
           data-state={activeTab === "artwork" ? "active" : "inactive"}
           onClick={() => handleTabChange("artwork")}
-          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black transition-colors duration-200"
+          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
         >
           Artwork
         </TabsTrigger>

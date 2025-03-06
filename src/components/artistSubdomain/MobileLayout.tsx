@@ -4,7 +4,7 @@ import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { useNavigate } from 'react-router-dom';
 import { Tabs } from '@/components/ui/tabs';
-import useEmblaCarousel, { UseEmblaCarouselType } from 'embla-carousel-react';
+import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
 
@@ -38,11 +38,14 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState("about");
   
-  // Initialize embla carousel with options
+  // Initialize embla carousel with specific options
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    loop: false, // Disable loop to ensure consistent navigation
-    dragFree: false, // Ensure full slide transitions
+    loop: false,
+    dragFree: false,
+    watchDrag: true, // Ensure drag events are properly watched
+    watchResize: true, // React to resize events (important for mobile)
+    skipSnaps: false, // Force stopping at defined slides only
   });
 
   const handleReturnToArtists = () => {
@@ -53,7 +56,6 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   const handleTabChange = (value: string) => {
     setActiveTab(value);
     
-    // Update carousel slide based on tab
     if (emblaApi) {
       const tabIndex = {
         "about": 0,
@@ -70,27 +72,33 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   // Setup effect to sync embla carousel with tabs
   React.useEffect(() => {
     if (!emblaApi) return;
-    
-    const onSelect = () => {
-      const currentSlide = emblaApi.selectedScrollSnap();
-      const tabs = ["about", "links", "artwork"];
-      if (currentSlide >= 0 && currentSlide < tabs.length) {
-        setActiveTab(tabs[currentSlide]);
+
+    const syncTabsOnChange = () => {
+      try {
+        const currentSlide = emblaApi.selectedScrollSnap();
+        console.log('Current slide index:', currentSlide);
+        
+        const tabs = ["about", "links", "artwork"];
+        if (currentSlide >= 0 && currentSlide < tabs.length) {
+          const newTab = tabs[currentSlide];
+          console.log('Setting active tab to:', newTab);
+          setActiveTab(newTab);
+        }
+      } catch (error) {
+        console.error('Error syncing tabs:', error);
       }
     };
     
-    // Add both select and settle events to ensure tab updates
-    emblaApi.on('select', onSelect);
+    // Using both select and settle events for more reliable updates
+    emblaApi.on('select', syncTabsOnChange);
+    emblaApi.on('settle', syncTabsOnChange); 
     
-    // The settle event is crucial for ensuring sync after drag
-    emblaApi.on('settle', onSelect);
-    
-    // Force an initial check
-    onSelect();
+    // Run once on initial load
+    syncTabsOnChange();
     
     return () => {
-      emblaApi.off('select', onSelect);
-      emblaApi.off('settle', onSelect);
+      emblaApi.off('select', syncTabsOnChange);
+      emblaApi.off('settle', syncTabsOnChange);
     };
   }, [emblaApi]);
 

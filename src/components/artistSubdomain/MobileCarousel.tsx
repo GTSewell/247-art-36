@@ -45,50 +45,52 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
   colorTheme
 }) => {
   return (
-    <div className="h-full overflow-hidden" ref={emblaRef as React.RefObject<HTMLDivElement>}>
-      <Carousel className="h-full">
-        <CarouselContent className="h-full">
-          {/* About Panel */}
-          <CarouselItem className="h-full">
-            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-              <ArtistProfileLeftPanel 
-                artist={artist} 
-                techniques={techniques}
-                styles={styles}
-                panelColor={colorTheme.panel}
-                badgeBgColor={colorTheme.badgeBg}
-              />
-            </MobilePanel>
-          </CarouselItem>
-          
-          {/* Links Panel */}
-          <CarouselItem className="h-full">
-            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-              <ArtistProfileCenterPanel 
-                artist={artist}
-                socialPlatforms={socialPlatforms}
-                links={profile?.links || []}
-                panelColor={colorTheme.panel}
-                buttonColor={colorTheme.button}
-                buttonTextColor={colorTheme.buttonText}
-                buttonHoverColor={colorTheme.buttonHover}
-                buttonBorderColor={colorTheme.buttonBorder}
-              />
-            </MobilePanel>
-          </CarouselItem>
-          
-          {/* Artwork Panel */}
-          <CarouselItem className="h-full">
-            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-              <ArtistProfileRightPanel 
-                artist={artist}
-                artworks={artworks}
-                panelColor={colorTheme.panel}
-              />
-            </MobilePanel>
-          </CarouselItem>
-        </CarouselContent>
-      </Carousel>
+    <div className="h-full overflow-hidden">
+      <div className="h-full overflow-hidden" ref={emblaRef as React.RefObject<HTMLDivElement>}>
+        <Carousel className="h-full">
+          <CarouselContent className="h-full">
+            {/* About Panel */}
+            <CarouselItem className="h-full">
+              <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
+                <ArtistProfileLeftPanel 
+                  artist={artist} 
+                  techniques={techniques}
+                  styles={styles}
+                  panelColor={colorTheme.panel}
+                  badgeBgColor={colorTheme.badgeBg}
+                />
+              </MobilePanel>
+            </CarouselItem>
+            
+            {/* Links Panel */}
+            <CarouselItem className="h-full">
+              <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
+                <ArtistProfileCenterPanel 
+                  artist={artist}
+                  socialPlatforms={socialPlatforms}
+                  links={profile?.links || []}
+                  panelColor={colorTheme.panel}
+                  buttonColor={colorTheme.button}
+                  buttonTextColor={colorTheme.buttonText}
+                  buttonHoverColor={colorTheme.buttonHover}
+                  buttonBorderColor={colorTheme.buttonBorder}
+                />
+              </MobilePanel>
+            </CarouselItem>
+            
+            {/* Artwork Panel */}
+            <CarouselItem className="h-full">
+              <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
+                <ArtistProfileRightPanel 
+                  artist={artist}
+                  artworks={artworks}
+                  panelColor={colorTheme.panel}
+                />
+              </MobilePanel>
+            </CarouselItem>
+          </CarouselContent>
+        </Carousel>
+      </div>
     </div>
   );
 };
