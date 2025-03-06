@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import ArtistCard from './ArtistCard';
 import { Artist } from '@/data/types/artist';
+import ArtistDetailModal from './ArtistDetailModal';
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -20,6 +21,25 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   refreshArtists,
   refreshArtist
 }) => {
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+
+  const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
+    e.preventDefault();
+    const index = artists.findIndex(a => a.id === artist.id);
+    setSelectedArtistIndex(index);
+    setSelectedArtist(artist);
+    setDialogOpen(true);
+  };
+
+  const handleArtistChange = (index: number) => {
+    if (index >= 0 && index < artists.length) {
+      setSelectedArtistIndex(index);
+      setSelectedArtist(artists[index]);
+    }
+  };
+
   return (
     <div className="mb-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -36,13 +56,26 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             techniques={artist.techniques}
             styles={artist.styles}
             social_platforms={artist.social_platforms}
-            onSelect={() => onSelect(artist)}
+            onSelect={(e) => handleArtistClick(e, artist)}
             onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}
             refreshArtist={refreshArtist}
           />
         ))}
       </div>
+
+      <ArtistDetailModal
+        artists={artists}
+        selectedArtist={selectedArtist}
+        selectedArtistIndex={selectedArtistIndex}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onArtistChange={handleArtistChange}
+        onFavoriteToggle={onFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtists={refreshArtists}
+        onSelect={onSelect}
+      />
     </div>
   );
 };
