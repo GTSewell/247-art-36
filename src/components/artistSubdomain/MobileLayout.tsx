@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { useNavigate } from 'react-router-dom';
 import { Tabs } from '@/components/ui/tabs';
-import useEmblaCarousel from 'embla-carousel-react';
+import useEmblaCarousel, { UseEmblaCarouselType } from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
 
@@ -37,10 +36,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("about");
-  const emblaRef = useRef(null);
   
-  // Initialize embla carousel with proper options
-  const [emblaApi, emblaHelper] = useEmblaCarousel({
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: false,
     dragFree: false,
@@ -48,40 +45,37 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     slidesToScroll: 1
   });
 
-  // Setup carousel events
   useEffect(() => {
-    if (!emblaHelper) return;
+    if (!emblaApi) return;
     
     const onSelect = () => {
-      const currentSlide = emblaHelper.selectedScrollSnap();
+      const currentSlide = emblaApi.selectedScrollSnap();
       const tabs = ["about", "links", "artwork"];
       if (currentSlide >= 0 && currentSlide < tabs.length) {
         setActiveTab(tabs[currentSlide]);
       }
     };
     
-    emblaHelper.on('select', onSelect);
+    emblaApi.on('select', onSelect);
     
     return () => {
-      emblaHelper.off('select', onSelect);
+      emblaApi.off('select', onSelect);
     };
-  }, [emblaHelper]);
+  }, [emblaApi]);
 
-  // Handle tab change and carousel sync
   const handleTabChange = useCallback((value: string) => {
     setActiveTab(value);
     
-    if (emblaHelper) {
+    if (emblaApi) {
       const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
-      emblaHelper.scrollTo(slideIndex);
+      emblaApi.scrollTo(slideIndex);
     }
-  }, [emblaHelper]);
+  }, [emblaApi]);
 
   const handleReturnToArtists = () => {
     navigate('/artists');
   };
 
-  // Calculate panel height to ensure consistent sizing
   const panelHeight = "calc(100vh - 6rem)";
 
   return (
@@ -110,8 +104,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
           
           <div className="flex-grow overflow-hidden">
             <MobileCarousel 
-              emblaApi={emblaHelper}
-              setEmblaRef={emblaApi}
+              emblaApi={emblaApi}
+              setEmblaRef={emblaRef}
               artist={artist}
               profile={profile}
               techniques={techniques}

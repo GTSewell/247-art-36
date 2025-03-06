@@ -11,10 +11,10 @@ import ArtistProfileRightPanel from './ArtistProfileRightPanel';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import MobilePanel from './MobilePanel';
-import { EmblaCarouselType } from 'embla-carousel-react';
+import { UseEmblaCarouselType } from 'embla-carousel-react';
 
 interface MobileCarouselProps {
-  emblaApi: EmblaCarouselType | undefined; 
+  emblaApi: UseEmblaCarouselType[1] | undefined; 
   setEmblaRef: React.Dispatch<React.SetStateAction<HTMLElement | null>>;
   artist: Artist;
   profile: ArtistProfile | null;
