@@ -86,3 +86,38 @@
   margin: 0;
   padding: 0;
 }
+
+/* Hide the Fix Image URLs button */
+button, a {
+  &:has(> span:contains("Fix Image URLs")),
+  &:has(> div:contains("Fix Image URLs")),
+  &:has(+ span:contains("Fix Image URLs")),
+  &:contains("Fix Image URLs") {
+    display: none !important;
+  }
+}
+
+/* More specific selector targeting the button with download icon */
+button, a {
+  &:has(svg[data-lucide="download"]) {
+    display: none !important;
+  }
+}
+
+/* Target buttons with the text content */
+button:has(span:contains("Fix Image")),
+a:has(span:contains("Fix Image")),
+button:contains("Fix Image"),
+a:contains("Fix Image") {
+  display: none !important;
+}
+
+/* Target buttons that contain the text directly */
+[class*="fix-image"], 
+[class*="download-artist"], 
+[class*="artist-download"],
+[id*="fix-image"], 
+[id*="download-artist"],
+[id*="artist-download"] {
+  display: none !important;
+}

@@ -1,178 +1,256 @@
-
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Menu, X, User, LogIn, LogOut } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
+import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import AuthModal from "./AuthModal";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
-  const isWhoAreYou = location.pathname === '/whoareyou';
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
 
-  const navItems = [
-    { name: "The Details", path: "/details" },
-    { name: "The Superheroes of Art", path: "/artists" },
-    { name: "Who the f#@k are you?", path: "/whoareyou" },
-    { name: "The General Store", path: "/store" },
-  ];
-
+  // Close mobile menu when route changes
   useEffect(() => {
-    // Check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
+    setIsOpen(false);
+  }, [location.pathname]);
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogout = async () => {
+  const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
+      toast.success("Signed out successfully");
       navigate("/");
-      toast.success("Logged out successfully");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(`Error signing out: ${error.message}`);
     }
   };
 
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
-    <>
-      <nav className="fixed w-full top-0 z-50 bg-transparent">
-        <div className="flex justify-between items-center p-4">
-          <Link to="/" className="flex items-center space-x-2">
-            <img
-              src="/lovable-uploads/d8aafbad-7e01-4cec-9fba-67f66a7e7952.png"
-              alt="247/ART"
-              className="h-8"
-            />
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <span className="text-xl font-bold text-foreground">ZAP</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                to={item.path}
-                className={`text-gray-700 transition-colors duration-200 font-medium ${
-                  isWhoAreYou ? 'hover:text-zap-yellow' : 'hover:text-zap-blue'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            {user ? (
-              <Button
-                onClick={handleLogout}
-                variant="outline"
-                className={`ml-4 ${
-                  isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : ''
-                }`}
-              >
-                Log Out
-              </Button>
-            ) : (
-              <Button 
-                onClick={() => setShowAuthModal(true)}
-                className={`ml-4 bg-zap-red ${
-                  isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : 'hover:bg-zap-blue'
-                }`}
-              >
-                Sign In
-              </Button>
+          <div className="hidden md:flex items-center space-x-4">
+            <Link
+              to="/"
+              className={cn(
+                "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive("/")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Home
+            </Link>
+            <Link
+              to="/artists"
+              className={cn(
+                "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive("/artists")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Artists
+            </Link>
+            <Link
+              to="/services"
+              className={cn(
+                "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive("/services")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Services
+            </Link>
+            <Link
+              to="/store"
+              className={cn(
+                "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive("/store")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Store
+            </Link>
+            <Link
+              to="/virtual-tour"
+              className={cn(
+                "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                isActive("/virtual-tour")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Virtual Tour
+            </Link>
+
+            {!isLoading && (
+              <>
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="ml-4 flex items-center gap-2"
+                      >
+                        <User className="h-4 w-4" />
+                        <span className="hidden sm:inline">Account</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        className="cursor-pointer"
+                        onClick={handleSignOut}
+                      >
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="ml-4 flex items-center gap-2"
+                    onClick={() => navigate("/auth")}
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span className="hidden sm:inline">Sign In</span>
+                  </Button>
+                )}
+              </>
             )}
-            <img
-              src={isHovered ? "/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" : "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"}
-              alt="Connect"
-              className="h-8 cursor-pointer hover:opacity-90 transition-all duration-200 transform hover:scale-105"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            />
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => setIsOpen(!isOpen)}
-              className={`text-gray-700 ${
-                isWhoAreYou ? 'hover:text-zap-yellow' : 'hover:text-zap-blue'
-              }`}
+              aria-label="Toggle menu"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
           </div>
+        </div>
+      </div>
 
-          {/* Mobile Navigation */}
-          {isOpen && (
-            <div className="absolute top-full left-0 w-full bg-zap-yellow md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.path}
-                    className={`block px-3 py-2 text-gray-700 ${
-                      isWhoAreYou ? 'hover:text-zap-yellow' : 'hover:text-zap-blue'
-                    }`}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden bg-background border-t border-border">
+          <div className="container mx-auto px-4 py-2 space-y-1">
+            <Link
+              to="/"
+              className={cn(
+                "block px-3 py-2 rounded-md text-base font-medium",
+                isActive("/")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Home
+            </Link>
+            <Link
+              to="/artists"
+              className={cn(
+                "block px-3 py-2 rounded-md text-base font-medium",
+                isActive("/artists")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Artists
+            </Link>
+            <Link
+              to="/services"
+              className={cn(
+                "block px-3 py-2 rounded-md text-base font-medium",
+                isActive("/services")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Services
+            </Link>
+            <Link
+              to="/store"
+              className={cn(
+                "block px-3 py-2 rounded-md text-base font-medium",
+                isActive("/store")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Store
+            </Link>
+            <Link
+              to="/virtual-tour"
+              className={cn(
+                "block px-3 py-2 rounded-md text-base font-medium",
+                isActive("/virtual-tour")
+                  ? "bg-primary text-primary-foreground"
+                  : "text-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
+            >
+              Virtual Tour
+            </Link>
+
+            {!isLoading && (
+              <>
                 {user ? (
                   <Button
-                    onClick={handleLogout}
                     variant="outline"
-                    className={`w-full mt-2 ${
-                      isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : ''
-                    }`}
+                    className="w-full justify-start mt-4"
+                    onClick={handleSignOut}
                   >
-                    Log Out
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
                   </Button>
                 ) : (
-                  <Button 
-                    className={`w-full mt-2 bg-zap-red ${
-                      isWhoAreYou ? 'hover:bg-zap-yellow hover:text-black' : 'hover:bg-zap-blue'
-                    }`}
-                    onClick={() => {
-                      setIsOpen(false);
-                      setShowAuthModal(true);
-                    }}
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start mt-4"
+                    onClick={() => navigate("/auth")}
                   >
+                    <LogIn className="h-4 w-4 mr-2" />
                     Sign In
                   </Button>
                 )}
-                <div className="px-3 py-2">
-                  <img
-                    src={isHovered ? "/lovable-uploads/eb2c14e8-c113-4c23-ad33-76d46f95badd.png" : "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png"}
-                    alt="Connect"
-                    className="h-8 cursor-pointer hover:opacity-90 transition-all duration-200"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </div>
         </div>
-      </nav>
-      
-      <AuthModal 
-        open={showAuthModal} 
-        onOpenChange={setShowAuthModal}
-      />
-    </>
+      )}
+    </nav>
   );
 };
 

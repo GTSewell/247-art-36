@@ -38,6 +38,18 @@ function App() {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     }
+    
+    // Add custom style to hide the "Fix Image URLs" button
+    const style = document.createElement('style');
+    style.textContent = `
+      button:has(svg[data-lucide="download"]),
+      a:has(svg[data-lucide="download"]),
+      button:contains("Fix Image URLs"),
+      a:contains("Fix Image URLs") {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
   }, [isPasswordCorrect]);
 
   if (!isPasswordCorrect) {

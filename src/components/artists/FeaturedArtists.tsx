@@ -1,25 +1,13 @@
-
-import React, { useState, useEffect } from 'react';
-import { Artist } from '@/data/types/artist';
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem 
-} from '@/components/ui/carousel';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import ArtistImagePanel from './ArtistImagePanel';
-import ArtistDetailsPanel from './ArtistDetailsPanel';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { generateColorTheme } from '@/utils/colorExtraction';
+import React from 'react';
+import ArtistCard from './ArtistCard';
 
 interface FeaturedArtistsProps {
-  artists: Artist[];
-  onSelect: (artist: Artist) => void;
+  artists: any[];
+  onSelect: (artist: any) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
-  refreshArtists?: () => void;
-  refreshArtist?: (artistId: number) => Promise<Artist | void>;
+  refreshArtists: () => void;
+  refreshArtist: (artistId: number) => void;
 }
 
 const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
@@ -30,155 +18,20 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   refreshArtists,
   refreshArtist
 }) => {
-  const [showControls, setShowControls] = useState(true);
-  const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
-  const [api, setApi] = useState<any>(null);
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    if (!isMobile) return;
-    
-    const timeout = setTimeout(() => {
-      setShowControls(false);
-    }, 2000);
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [isMobile]);
-
-  const handleInteraction = () => {
-    if (!isMobile) return;
-    
-    setShowControls(true);
-    
-    if (interactionTimeout) {
-      clearTimeout(interactionTimeout);
-    }
-
-    const timeout = setTimeout(() => {
-      setShowControls(false);
-    }, 2000);
-
-    setInteractionTimeout(timeout);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      api?.scrollPrev();
-    } else if (event.key === "ArrowRight") {
-      event.preventDefault();
-      api?.scrollNext();
-    }
-  };
-
-  if (artists.length === 0) return null;
-
   return (
-    <div 
-      className="mb-12 relative focus:outline-none" 
-      onTouchStart={handleInteraction}
-      onMouseMove={handleInteraction}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-    >
-      <Carousel 
-        className="w-full max-w-full mx-auto" 
-        opts={{ 
-          loop: true,
-          duration: 50
-        }}
-        setApi={setApi}
-      >
-        <CarouselContent>
-          {artists.map((artist) => {
-            // Get artworks array from the artist
-            const artworks = Array.isArray(artist.artworks) 
-              ? artist.artworks 
-              : typeof artist.artworks === 'string' && artist.artworks
-                ? JSON.parse(artist.artworks)
-                : [];
-                
-            // Generate a color theme for this specific artist
-            const colorTheme = generateColorTheme(
-              artist, 
-              { 
-                id: '',
-                artist_id: String(artist.id),
-                background_image: artworks[0] || null,
-                background_color: '#f7cf1e',
-                panel_color: '#ffffff',
-                links: []
-              }, 
-              artworks
-            );
-            
-            return (
-              <CarouselItem key={artist.id}>
-                <div className={`container mx-auto px-4 py-8 ${isMobile ? 'pb-12' : 'py-8'}`}>
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-4 p-3 rounded-xl shadow-[0_8px_20px_-5px_rgba(0,0,0,0.25)] transition-shadow duration-300 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.3)]"
-                    style={{ backgroundColor: colorTheme.panel }}
-                  >
-                    <ArtistImagePanel 
-                      artist={artist}
-                      onFavoriteToggle={onFavoriteToggle}
-                      isFavorite={favoriteArtists.has(artist.id)}
-                      refreshArtists={refreshArtists}
-                    />
-                    <div className={`${isMobile ? 'pb-1' : ''}`}>
-                      <ArtistDetailsPanel 
-                        artist={artist}
-                        onSelect={() => onSelect(artist)}
-                        onFavoriteToggle={(artistId, isFav) => onFavoriteToggle(artistId, isFav)}
-                        isFavorite={favoriteArtists.has(artist.id)}
-                        colorTheme={colorTheme}
-                        showReturnButton={false}
-                      />
-                    </div>
-                  </motion.div>
-                </div>
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <AnimatePresence>
-          {(showControls || !isMobile) && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className={`absolute ${
-                  isMobile ? '-left-2 top-1/2 -translate-y-1/2' : 'left-0 md:-left-4 top-1/2 -translate-y-1/2'
-                }`}
-              >
-                <button onClick={() => api?.scrollPrev()} className="p-2">
-                  <ChevronLeft className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
-                </button>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className={`absolute ${
-                  isMobile ? '-right-2 top-1/2 -translate-y-1/2' : 'right-0 md:-right-4 top-1/2 -translate-y-1/2'
-                }`}
-              >
-                <button onClick={() => api?.scrollNext()} className="p-2">
-                  <ChevronRight className="h-6 w-6 text-gray-800" strokeWidth={2.5} />
-                </button>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </Carousel>
+    <div className="mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {artists.map((artist) => (
+          <ArtistCard
+            key={artist.id}
+            artist={artist}
+            onSelect={onSelect}
+            onFavoriteToggle={onFavoriteToggle}
+            isFavorite={favoriteArtists.has(artist.id)}
+            refreshArtist={refreshArtist}
+          />
+        ))}
+      </div>
     </div>
   );
 };
