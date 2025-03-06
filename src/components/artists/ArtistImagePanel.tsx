@@ -141,7 +141,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               <img
                 src={mainImageError ? '/placeholder.svg' : currentArtist.image}
                 alt={currentArtist.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center"
                 onError={handleMainImageError}
               />
             </motion.div>

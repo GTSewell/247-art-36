@@ -73,7 +73,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const artistDomain = artist.name.replace(/\s+/g, '');
   
   return (
-    <div className="relative flex flex-col h-full p-5 md:p-6">
+    <div className="relative flex flex-col h-full p-4 md:p-6">
       {showReturnButton && (
         <div className="absolute top-3 right-3 z-10">
           <Button 
@@ -128,12 +128,12 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       )}
 
       <ScrollArea 
-        className="flex-grow overflow-y-auto pr-3" 
+        className="flex-grow overflow-y-auto pr-2" 
         style={{ 
           height: isMobile ? 'calc(100% - 120px)' : 'calc(100% - 80px)',
         }}
       >
-        <div className="space-y-4 pb-4">
+        <div className="space-y-4 pb-6">
           <ArtistBio 
             bio={artist.bio} 
             isMobile={isMobile} 
