@@ -8,6 +8,7 @@ import ArtistsHeader from "@/components/artists/ArtistsHeader";
 import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const Artists = () => {
@@ -88,57 +89,59 @@ const Artists = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zap-yellow dark:bg-slate-800">
-      <Navigation />
-      
-      <div className="container mx-auto pt-20 px-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold dark:text-white">Artists</h1>
-          <ThemeToggle />
-        </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-zap-yellow dark:bg-slate-800">
+        <Navigation />
         
-        <ArtistsHeader
-          artistSearch={artistSearch}
-          setArtistSearch={setArtistSearch}
-          locationSearch={locationSearch}
-          setLocationSearch={setLocationSearch}
-          techniqueSearch={techniqueSearch}
-          setTechniqueSearch={setTechniqueSearch}
-          styleSearch={styleSearch}
-          setStyleSearch={setStyleSearch}
-          selectedTechniques={selectedTechniques}
-          setSelectedTechniques={setSelectedTechniques}
-          selectedStyles={selectedStyles}
-          setSelectedStyles={setSelectedStyles}
-          selectedSocials={selectedSocials}
-          setSelectedSocials={setSelectedSocials}
-          onUpdateSelection={handleUpdateSelection}
-          onClearFilters={handleClearFilters}
-        />
+        <div className="container mx-auto pt-20 px-4">
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-bold dark:text-white">Artists</h1>
+            <ThemeToggle />
+          </div>
+          
+          <ArtistsHeader
+            artistSearch={artistSearch}
+            setArtistSearch={setArtistSearch}
+            locationSearch={locationSearch}
+            setLocationSearch={setLocationSearch}
+            techniqueSearch={techniqueSearch}
+            setTechniqueSearch={setTechniqueSearch}
+            styleSearch={styleSearch}
+            setStyleSearch={setStyleSearch}
+            selectedTechniques={selectedTechniques}
+            setSelectedTechniques={setSelectedTechniques}
+            selectedStyles={selectedStyles}
+            setSelectedStyles={setSelectedStyles}
+            selectedSocials={selectedSocials}
+            setSelectedSocials={setSelectedSocials}
+            onUpdateSelection={handleUpdateSelection}
+            onClearFilters={handleClearFilters}
+          />
 
-        <FeaturedArtists
-          artists={filteredFeaturedArtists}
-          onSelect={setSelectedArtist}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={() => refreshArtists()}
-          refreshArtist={refreshArtist}
-        />
+          <FeaturedArtists
+            artists={filteredFeaturedArtists}
+            onSelect={setSelectedArtist}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtists={() => refreshArtists()}
+            refreshArtist={refreshArtist}
+          />
 
-        <AllArtists
-          artists={filteredAdditionalArtists}
-          allArtistsSearch={allArtistsSearch}
-          setAllArtistsSearch={setAllArtistsSearch}
-          showFavorites={showFavorites}
-          setShowFavorites={setShowFavorites}
-          onSelect={setSelectedArtist}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={() => refreshArtists()}
-          refreshArtist={refreshArtist}
-        />
+          <AllArtists
+            artists={filteredAdditionalArtists}
+            allArtistsSearch={allArtistsSearch}
+            setAllArtistsSearch={setAllArtistsSearch}
+            showFavorites={showFavorites}
+            setShowFavorites={setShowFavorites}
+            onSelect={setSelectedArtist}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtists={() => refreshArtists()}
+            refreshArtist={refreshArtist}
+          />
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
