@@ -89,6 +89,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     };
   }, [emblaApi]);
 
+  // Calculate panel height to ensure consistent sizing
+  const panelHeight = "calc(100vh - 6rem)"; // Accounting for tab height + margins
+
   return (
     <div 
       className="flex items-center justify-center overflow-hidden"
@@ -101,7 +104,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
         width: '100%'
       }}
     >
-      <div className="w-full h-[calc(100vh-2rem)] mx-4 flex flex-col">
+      <div className="w-full h-full px-4 py-4 flex flex-col">
         <Tabs 
           value={activeTab} 
           onValueChange={handleTabChange} 
@@ -129,8 +132,14 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
               <Carousel className="h-full">
                 <CarouselContent className="h-full">
                   {/* About Panel */}
-                  <CarouselItem className="h-full flex items-center justify-center">
-                    <div className="rounded-lg overflow-hidden shadow-lg w-full h-[calc(100%-16px)] m-2" style={{ backgroundColor: colorTheme.panel }}>
+                  <CarouselItem className="h-full">
+                    <div 
+                      className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
+                      style={{ 
+                        backgroundColor: colorTheme.panel,
+                        height: panelHeight
+                      }}
+                    >
                       <ArtistProfileLeftPanel 
                         artist={artist} 
                         techniques={techniques}
@@ -142,8 +151,14 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                   </CarouselItem>
                   
                   {/* Links Panel */}
-                  <CarouselItem className="h-full flex items-center justify-center">
-                    <div className="rounded-lg overflow-hidden shadow-lg w-full h-[calc(100%-16px)] m-2" style={{ backgroundColor: colorTheme.panel }}>
+                  <CarouselItem className="h-full">
+                    <div 
+                      className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
+                      style={{ 
+                        backgroundColor: colorTheme.panel,
+                        height: panelHeight
+                      }}
+                    >
                       <ArtistProfileCenterPanel 
                         artist={artist}
                         socialPlatforms={socialPlatforms}
@@ -158,8 +173,14 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                   </CarouselItem>
                   
                   {/* Artwork Panel */}
-                  <CarouselItem className="h-full flex items-center justify-center">
-                    <div className="rounded-lg overflow-hidden shadow-lg w-full h-[calc(100%-16px)] m-2" style={{ backgroundColor: colorTheme.panel }}>
+                  <CarouselItem className="h-full">
+                    <div 
+                      className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
+                      style={{ 
+                        backgroundColor: colorTheme.panel,
+                        height: panelHeight
+                      }}
+                    >
                       <ArtistProfileRightPanel 
                         artist={artist}
                         artworks={artworks}
