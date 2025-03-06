@@ -8,7 +8,7 @@ import ArtistsHeader from "@/components/artists/ArtistsHeader";
 import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
-import DownloadArtistImages from "@/components/artists/DownloadArtistImages";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
@@ -76,7 +76,7 @@ const Artists = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-zap-yellow">
+      <div className="min-h-screen bg-zap-yellow dark:bg-slate-800">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
           <div className="flex justify-center items-center h-64">
@@ -88,13 +88,13 @@ const Artists = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zap-yellow">
+    <div className="min-h-screen bg-zap-yellow dark:bg-slate-800">
       <Navigation />
       
       <div className="container mx-auto pt-20 px-4">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Artists</h1>
-          <DownloadArtistImages />
+          <h1 className="text-2xl font-bold dark:text-white">Artists</h1>
+          <ThemeToggle />
         </div>
         
         <ArtistsHeader

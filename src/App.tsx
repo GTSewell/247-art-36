@@ -1,70 +1,72 @@
 
-import React, { useEffect, useState } from "react";
-import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
+
 import Index from "./pages/Index";
-import WhoAreYou from "./pages/WhoAreYou";
-import VirtualTour from "./pages/VirtualTour";
-import Artists from "./pages/Artists";
+import NotFound from "./pages/NotFound";
 import Services from "./pages/Services";
 import Details from "./pages/Details";
-import Auth from "./pages/Auth";
-import GeneralStore from "./pages/GeneralStore";
-import NotFound from "./pages/NotFound";
+import Artists from "./pages/Artists";
 import ArtistSubmission from "./pages/ArtistSubmission";
-import { Toaster } from "sonner";
-import { SitePassword } from "./components/SitePassword";
+import WhoAreYou from "./pages/WhoAreYou";
+import GeneralStore from "./pages/GeneralStore";
+import VirtualTour from "./pages/VirtualTour";
+import Auth from "./pages/Auth";
 import ArtistSubdomain from "./pages/ArtistSubdomain";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
-// Create a client
-const queryClient = new QueryClient();
+import "./App.css";
 
-function App() {
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState(
-    localStorage.getItem("isPasswordCorrect") === "true"
-  );
+// Detect if we're on an artist subdomain
+const hostname = window.location.hostname;
+const isArtistSubdomain =
+  hostname.includes(".") &&
+  hostname.split(".").length >= 2 &&
+  !hostname.startsWith("www") &&
+  !hostname.startsWith("staging") &&
+  !hostname.startsWith("dev");
 
-  useEffect(() => {
-    localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
-  }, [isPasswordCorrect]);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-  if (!isPasswordCorrect) {
-    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
+const App = () => {
+  if (isArtistSubdomain) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ArtistSubdomain />
+        <Toaster position="top-center" richColors />
+      </QueryClientProvider>
+    );
   }
 
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <ScrollToTop />
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <Router>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/who-are-you" element={<WhoAreYou />} />
-            <Route path="/virtual-tour" element={<VirtualTour />} />
-            <Route path="/artists" element={<Artists />} />
-            <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
-            <Route path="/services" element={<Services />} />
             <Route path="/details" element={<Details />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/artists" element={<Artists />} />
+            <Route path="/submit-artist" element={<ArtistSubmission />} />
+            <Route path="/whoareyou" element={<WhoAreYou />} />
             <Route path="/store" element={<GeneralStore />} />
-            <Route path="/artist-submission" element={<ArtistSubmission />} />
+            <Route path="/virtual-tour" element={<VirtualTour />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-        <Toaster richColors />
-      </QueryClientProvider>
-    </>
+          <Toaster position="top-center" richColors />
+        </Router>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
-}
-
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
+};
 
 export default App;
