@@ -1,4 +1,3 @@
-
 @import './fonts.css';
 
 @tailwind base;
@@ -87,37 +86,53 @@
   padding: 0;
 }
 
-/* Hide the Fix Image URLs button */
 button, a {
-  &:has(> span:contains("Fix Image URLs")),
-  &:has(> div:contains("Fix Image URLs")),
-  &:has(+ span:contains("Fix Image URLs")),
-  &:contains("Fix Image URLs") {
+  &:has(svg[data-lucide="download"]),
+  &:has(span:contains("Fix Image")),
+  &:has(div:contains("Fix Image")),
+  &:has(span:contains("Download Artist")),
+  &:contains("Fix Image"),
+  &:contains("Download Artist") {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
   }
 }
 
-/* More specific selector targeting the button with download icon */
-button, a {
-  &:has(svg[data-lucide="download"]) {
-    display: none !important;
-  }
-}
-
-/* Target buttons with the text content */
-button:has(span:contains("Fix Image")),
-a:has(span:contains("Fix Image")),
-button:contains("Fix Image"),
-a:contains("Fix Image") {
-  display: none !important;
-}
-
-/* Target buttons that contain the text directly */
+.downloadBtn,
+.artistImageBtn,
+.fix-image-button,
+.download-artist-button,
 [class*="fix-image"], 
 [class*="download-artist"], 
 [class*="artist-download"],
 [id*="fix-image"], 
 [id*="download-artist"],
-[id*="artist-download"] {
+[id*="artist-download"],
+[data-testid="fix-image-btn"],
+[aria-label*="image"],
+[aria-label*="download"],
+[title*="image"],
+[title*="download"] {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  pointer-events: none !important;
+}
+
+button img[src*="download"],
+a img[src*="download"],
+button svg[class*="download"],
+a svg[class*="download"] {
+  display: none !important;
+}
+
+:has(> button:contains("Fix Image")),
+:has(> a:contains("Fix Image")),
+:has(> button:contains("Download")),
+:has(> a:contains("Download")) {
+  position: relative !important;
 }

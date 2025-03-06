@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,6 +40,7 @@ const ArtistCard = ({
   social_platforms,
   refreshArtist
 }: ArtistCardProps) => {
+  
   const subdomain = `247.art/${name.toLowerCase().replace(/\s+/g, '')}`;
   const location = [city, country].filter(Boolean).join(", ");
   const [imageError, setImageError] = useState(false);

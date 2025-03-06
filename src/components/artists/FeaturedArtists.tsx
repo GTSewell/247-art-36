@@ -1,13 +1,15 @@
+
 import React from 'react';
 import ArtistCard from './ArtistCard';
+import { Artist } from '@/data/types/artist';
 
 interface FeaturedArtistsProps {
-  artists: any[];
-  onSelect: (artist: any) => void;
+  artists: Artist[];
+  onSelect: (artist: Artist) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
   refreshArtists: () => void;
-  refreshArtist: (artistId: number) => void;
+  refreshArtist: (artistId: number) => Promise<void | Artist>;
 }
 
 const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
@@ -24,9 +26,18 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
         {artists.map((artist) => (
           <ArtistCard
             key={artist.id}
-            artist={artist}
-            onSelect={onSelect}
-            onFavoriteToggle={onFavoriteToggle}
+            id={artist.id}
+            name={artist.name}
+            specialty={artist.specialty}
+            image={artist.image}
+            city={artist.city}
+            country={artist.country}
+            bio={artist.bio}
+            techniques={artist.techniques}
+            styles={artist.styles}
+            social_platforms={artist.social_platforms}
+            onSelect={() => onSelect(artist)}
+            onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}
             refreshArtist={refreshArtist}
           />

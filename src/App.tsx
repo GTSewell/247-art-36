@@ -39,14 +39,45 @@ function App() {
       localStorage.setItem("theme", "dark");
     }
     
-    // Add custom style to hide the "Fix Image URLs" button
+    // Enhanced CSS to hide the "Fix Image URLs" button with more specific selectors
     const style = document.createElement('style');
     style.textContent = `
+      /* Hide buttons with download icon */
       button:has(svg[data-lucide="download"]),
       a:has(svg[data-lucide="download"]),
-      button:contains("Fix Image URLs"),
-      a:contains("Fix Image URLs") {
+      
+      /* Hide buttons with specific text content */
+      button:has(span:contains("Fix Image")),
+      a:has(span:contains("Fix Image")),
+      button:has(div:contains("Fix Image")),
+      a:has(div:contains("Fix Image")),
+      
+      /* Target by direct text content */
+      button:contains("Fix Image"),
+      a:contains("Fix Image"),
+      
+      /* Target elements with specific classes or IDs */
+      [class*="fix-image"], 
+      [class*="download-artist"], 
+      [class*="artist-download"],
+      [id*="fix-image"], 
+      [id*="download-artist"],
+      [id*="artist-download"],
+      
+      /* Additional selectors to catch the button */
+      .artistImageBtn,
+      .downloadBtn,
+      [data-testid="fix-image-btn"],
+      [aria-label*="Fix Image"],
+      [title*="Fix Image"] {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        position: absolute !important;
+        pointer-events: none !important;
+        overflow: hidden !important;
       }
     `;
     document.head.appendChild(style);
