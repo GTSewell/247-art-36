@@ -41,7 +41,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   // Initialize embla carousel with options
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    loop: true,
+    loop: false, // Disable loop to ensure consistent navigation
+    dragFree: false, // Ensure full slide transitions
   });
 
   const handleReturnToArtists = () => {
@@ -60,7 +61,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
         "artwork": 2
       }[value];
       
-      emblaApi.scrollTo(tabIndex);
+      if (tabIndex !== undefined) {
+        emblaApi.scrollTo(tabIndex);
+      }
     }
   };
 
@@ -71,16 +74,21 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     const onSelect = () => {
       const currentSlide = emblaApi.selectedScrollSnap();
       const tabs = ["about", "links", "artwork"];
-      setActiveTab(tabs[currentSlide]);
+      if (tabs[currentSlide]) {
+        setActiveTab(tabs[currentSlide]);
+      }
     };
     
+    // Add both select and settle events to ensure tab updates
     emblaApi.on('select', onSelect);
+    emblaApi.on('settle', onSelect); // Add settle event for more reliable updates
     
-    // Initialize the correct tab based on the current scroll position
+    // Force an initial check
     onSelect();
     
     return () => {
       emblaApi.off('select', onSelect);
+      emblaApi.off('settle', onSelect);
     };
   }, [emblaApi]);
 
