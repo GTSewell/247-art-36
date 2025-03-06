@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { useNavigate } from 'react-router-dom';
 import { Tabs } from '@/components/ui/tabs';
-import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
 
@@ -36,74 +36,70 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   colorTheme
 }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = React.useState("about");
+  const [activeTab, setActiveTab] = useState("about");
+  const emblaRef = useRef<HTMLDivElement>(null);
   
-  // Initialize embla carousel with specific options
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    loop: false,
-    dragFree: false,
-    watchDrag: true, // Ensure drag events are properly watched
-    watchResize: true, // React to resize events (important for mobile)
-    skipSnaps: false, // Force stopping at defined slides only
-  });
+  // Initialize embla carousel
+  const [emblaApi, setEmblaApi] = useState<any>(null);
+
+  // Setup embla carousel separately for more control
+  useEffect(() => {
+    if (emblaRef.current) {
+      const embla = useEmblaCarousel(emblaRef.current, {
+        align: "start",
+        loop: false,
+        dragFree: false,
+        containScroll: "trimSnaps",
+        slidesToScroll: 1
+      });
+      
+      if (embla && embla[1]) {
+        setEmblaApi(embla[1]);
+      }
+    }
+    
+    return () => {
+      if (emblaApi) {
+        emblaApi.destroy();
+      }
+    };
+  }, []);
+
+  // Handle tab change and carousel sync
+  const handleTabChange = useCallback((value: string) => {
+    setActiveTab(value);
+    
+    if (emblaApi) {
+      const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
+      emblaApi.scrollTo(slideIndex);
+    }
+  }, [emblaApi]);
+
+  // Listen to carousel changes and update tabs
+  useEffect(() => {
+    if (!emblaApi) return;
+    
+    const onSelect = () => {
+      const currentSlide = emblaApi.selectedScrollSnap();
+      const tabs = ["about", "links", "artwork"];
+      if (currentSlide >= 0 && currentSlide < tabs.length) {
+        setActiveTab(tabs[currentSlide]);
+      }
+    };
+    
+    emblaApi.on('select', onSelect);
+    
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
 
   const handleReturnToArtists = () => {
     navigate('/artists');
   };
 
-  // Handle tab change when clicking on tabs
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    
-    if (emblaApi) {
-      const tabIndex = {
-        "about": 0,
-        "links": 1,
-        "artwork": 2
-      }[value];
-      
-      if (tabIndex !== undefined) {
-        emblaApi.scrollTo(tabIndex);
-      }
-    }
-  };
-
-  // Setup effect to sync embla carousel with tabs
-  React.useEffect(() => {
-    if (!emblaApi) return;
-
-    const syncTabsOnChange = () => {
-      try {
-        const currentSlide = emblaApi.selectedScrollSnap();
-        console.log('Current slide index:', currentSlide);
-        
-        const tabs = ["about", "links", "artwork"];
-        if (currentSlide >= 0 && currentSlide < tabs.length) {
-          const newTab = tabs[currentSlide];
-          console.log('Setting active tab to:', newTab);
-          setActiveTab(newTab);
-        }
-      } catch (error) {
-        console.error('Error syncing tabs:', error);
-      }
-    };
-    
-    // Using both select and settle events for more reliable updates
-    emblaApi.on('select', syncTabsOnChange);
-    emblaApi.on('settle', syncTabsOnChange); 
-    
-    // Run once on initial load
-    syncTabsOnChange();
-    
-    return () => {
-      emblaApi.off('select', syncTabsOnChange);
-      emblaApi.off('settle', syncTabsOnChange);
-    };
-  }, [emblaApi]);
-
   // Calculate panel height to ensure consistent sizing
-  const panelHeight = "calc(100vh - 6rem)"; // Accounting for tab height + margins
+  const panelHeight = "calc(100vh - 6rem)";
 
   return (
     <div 
