@@ -27,7 +27,8 @@ function App() {
   useEffect(() => {
     localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
     
-    // Remove global theme management - no longer needed
+    // Remove dark mode class from document - let artists page manage it locally
+    document.documentElement.classList.remove('dark');
     
     // Enhanced CSS to hide the "Fix Image URLs" button with more specific selectors
     const style = document.createElement('style');

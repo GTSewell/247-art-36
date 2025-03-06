@@ -5,9 +5,10 @@ import { Moon, Sun } from "lucide-react";
 
 interface ThemeToggleProps {
   localOnly?: boolean;
+  onToggle?: (isDark: boolean) => void;
 }
 
-const ThemeToggle = ({ localOnly = false }: ThemeToggleProps) => {
+const ThemeToggle = ({ localOnly = false, onToggle }: ThemeToggleProps) => {
   const [darkMode, setDarkMode] = useState(() => {
     // Check localStorage first
     const savedTheme = localStorage.getItem("theme");
@@ -31,7 +32,12 @@ const ThemeToggle = ({ localOnly = false }: ThemeToggleProps) => {
       }
       localStorage.setItem("theme", "light");
     }
-  }, [darkMode, localOnly]);
+
+    // Call the onToggle callback if provided
+    if (onToggle) {
+      onToggle(darkMode);
+    }
+  }, [darkMode, localOnly, onToggle]);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);

@@ -22,13 +22,7 @@ const Artists = () => {
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
-    // Check localStorage first
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      return savedTheme === "dark";
-    }
-    // If no saved preference, check system preference
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return localStorage.getItem("theme") === "dark";
   });
 
   const {
@@ -40,13 +34,10 @@ const Artists = () => {
     refreshArtists
   } = useArtists();
 
-  // Apply theme only to the artists page container
-  useEffect(() => {
-    // Clean up function to ensure we don't affect other pages
-    return () => {
-      // No cleanup needed as we're using a local theme
-    };
-  }, []);
+  // Handle dark mode changes
+  const handleThemeToggle = (isDark: boolean) => {
+    setDarkMode(isDark);
+  };
 
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
@@ -112,7 +103,7 @@ const Artists = () => {
         <div className="container mx-auto pt-20 px-4">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">Artists</h1>
-            <ThemeToggle localOnly={true} />
+            <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
           <ArtistsHeader
