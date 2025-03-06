@@ -40,7 +40,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    loop: false,
+    loop: true,
     dragFree: false,
     containScroll: "trimSnaps",
     slidesToScroll: 1
