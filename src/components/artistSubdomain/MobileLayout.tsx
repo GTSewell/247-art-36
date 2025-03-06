@@ -134,11 +134,12 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                   {/* About Panel */}
                   <CarouselItem className="h-full">
                     <div 
-                      className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
+                      className="overflow-hidden shadow-lg w-full mx-auto my-2" 
                       style={{ 
                         backgroundColor: colorTheme.panel,
                         height: panelHeight,
-                        borderRadius: '0.5rem', // Ensure consistent border radius on all corners
+                        borderRadius: '0.5rem',
+                        width: 'calc(100% - 16px)', // Account for the carousel padding
                       }}
                     >
                       <ArtistProfileLeftPanel 
@@ -154,11 +155,12 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                   {/* Links Panel */}
                   <CarouselItem className="h-full">
                     <div 
-                      className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
+                      className="overflow-hidden shadow-lg w-full mx-auto my-2" 
                       style={{ 
                         backgroundColor: colorTheme.panel,
                         height: panelHeight,
-                        borderRadius: '0.5rem', // Ensure consistent border radius on all corners
+                        borderRadius: '0.5rem',
+                        width: 'calc(100% - 16px)', // Account for the carousel padding
                       }}
                     >
                       <ArtistProfileCenterPanel 
@@ -177,11 +179,12 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
                   {/* Artwork Panel */}
                   <CarouselItem className="h-full">
                     <div 
-                      className="rounded-lg overflow-hidden shadow-lg w-full m-2" 
+                      className="overflow-hidden shadow-lg w-full mx-auto my-2" 
                       style={{ 
                         backgroundColor: colorTheme.panel,
                         height: panelHeight,
-                        borderRadius: '0.5rem', // Ensure consistent border radius on all corners
+                        borderRadius: '0.5rem',
+                        width: 'calc(100% - 16px)', // Account for the carousel padding
                       }}
                     >
                       <ArtistProfileRightPanel 
