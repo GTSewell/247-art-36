@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
 
@@ -15,14 +15,16 @@ interface ArtistArtworksViewProps {
 export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   artist,
   isGeneratingArtworks,
+  setIsGeneratingArtworks,
   artworkErrors,
-  handleArtworkImageError
+  handleArtworkImageError,
+  refreshArtworks
 }) => {
   // State to track processed artworks
-  const [processedArtworks, setProcessedArtworks] = React.useState<string[]>([]);
+  const [processedArtworks, setProcessedArtworks] = useState<string[]>([]);
 
   // Process artist artworks with strict limitation to exactly 4
-  React.useEffect(() => {
+  useEffect(() => {
     let artworks: string[] = [];
     
     try {
@@ -54,17 +56,25 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   }, [artist.artworks, artist.id]);
 
   // Create a fixed array of exactly 4 items
-  const fixedArtworks = Array(4).fill('').map((_, i) => processedArtworks[i] || '');
+  // If we have less than 4 artworks, we'll fill the rest with empty strings
+  const fixedArtworks = [...processedArtworks];
+  while (fixedArtworks.length < 4) {
+    fixedArtworks.push('');
+  }
+
+  // Strictly limit to exactly 4 artworks maximum
+  const displayArtworks = fixedArtworks.slice(0, 4);
 
   return (
-    <div className="w-full h-full p-4">
-      <div className="h-full w-full flex items-center justify-center">
-        <div className="w-full h-full p-4">
-          <div className="grid grid-cols-2 gap-2 h-full">
-            {fixedArtworks.map((artwork, index) => (
+    <div className="w-full h-full p-4" data-artworks-container="true">
+      <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
+        <div className="w-full h-full p-4" data-no-flip="true">
+          <div className="grid grid-cols-2 gap-2 h-full" data-no-flip="true">
+            {displayArtworks.map((artwork, index) => (
               <div 
                 key={index} 
                 className="relative aspect-square rounded overflow-hidden"
+                data-no-flip="true"
                 data-artwork-cell={`cell-${index}`}
               >
                 {artwork && (
@@ -74,7 +84,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                     className="w-full h-full object-cover"
                     onError={(e) => handleArtworkImageError(e, index)}
                     data-artwork-image={`image-${index}`}
-                    loading="lazy"
+                    data-no-flip="true"
                   />
                 )}
               </div>
@@ -84,4 +94,4 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       </div>
     </div>
   );
-}
+};

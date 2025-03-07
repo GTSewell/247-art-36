@@ -9,7 +9,6 @@ import ArtistCardFront from './ArtistCardFront';
 import { useArtistData } from './hooks/useArtistData';
 import { useCardFlip } from './hooks/useCardFlip';
 import { useImageErrors } from './hooks/useImageErrors';
-import { logger } from '@/utils/logger';
 
 interface ArtistImagePanelProps {
   artist: Artist;
@@ -44,23 +43,12 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  // Debug log for flip state
-  React.useEffect(() => {
-    logger.info(`ArtistImagePanel - Artist: ${artist.id}, isFlipped: ${isFlipped}`);
-  }, [isFlipped, artist.id]);
-
-  // Handle card click with proper event propagation management
-  const onCardClick = (e: React.MouseEvent) => {
-    logger.info(`Card clicked for artist ${artist.id}, current flip state: ${isFlipped}`);
-    handleFlip(e, isGeneratingArtworks);
-  };
-
   return (
     <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
       <div 
         className="relative aspect-auto md:aspect-square h-full w-full overflow-hidden cursor-pointer"
         style={{ perspective: '1000px' }}
-        onClick={onCardClick}
+        onClick={(e) => handleFlip(e, isGeneratingArtworks)}
         onMouseEnter={() => !isMobile && setIsHovered(true)}
         onMouseLeave={() => !isMobile && setIsHovered(false)}
         onTouchStart={handleInteraction}
