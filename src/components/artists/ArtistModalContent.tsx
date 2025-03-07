@@ -32,6 +32,12 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   const isFirstArtist = selectedArtistIndex === 0;
   const isFavorite = favoriteArtists.has(selectedArtist.id);
 
+  // Create a handler that adapts onSelect to the expected event signature
+  const handleSelect = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onSelect(selectedArtist);
+  };
+
   return (
     <div 
       className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}
@@ -53,13 +59,14 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           artist={selectedArtist} 
           onFavoriteToggle={onFavoriteToggle}
           isFavorite={isFavorite}
-          onSelect={onSelect}
+          onSelect={handleSelect}
         />
       </div>
       
       <ArtistCarouselNavigation
         isFirstArtist={isFirstArtist}
         isLastArtist={isLastArtist}
+        isMobile={isMobile}
         onPrevious={() => onArtistChange(selectedArtistIndex - 1)}
         onNext={() => onArtistChange(selectedArtistIndex + 1)}
       />
