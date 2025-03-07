@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { supabase } from '@/integrations/supabase/client';
@@ -43,7 +44,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     ? generatedArtworks 
     : getArtworks();
 
-  // Duplicate artworks if needed to fill a 3x2 grid (6 items)
+  // Duplicate artworks if needed to fill a 2x3 grid (6 items)
   const getArtworksForGrid = (): string[] => {
     if (displayArtworks.length === 0) return [];
     
@@ -67,7 +68,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="h-full w-full" data-no-flip="true">
-      <div className="grid grid-cols-3 grid-rows-2 h-full" data-no-flip="true">
+      <div className="grid grid-cols-3 grid-rows-2 h-full gap-0" data-no-flip="true">
         {gridArtworks.length > 0 ? (
           gridArtworks.map((artwork, index) => (
             <div 

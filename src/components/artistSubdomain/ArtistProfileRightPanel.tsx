@@ -120,7 +120,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       <div className="flex-grow overflow-hidden">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
-          <div className="grid grid-cols-3 grid-rows-2 pr-2">
+          <div className="grid grid-cols-3 grid-rows-2 gap-0 pr-2">
             {gridArtworks.map((artwork, index) => (
               <div 
                 key={index}
