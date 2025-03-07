@@ -11,7 +11,7 @@ interface DesktopNavProps {
 
 const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   return (
-    <div className="hidden md:flex items-center space-x-4">
+    <div className="hidden md:flex items-center space-x-4 w-full justify-end">
       <NavLink to="/artists" isActive={isActive("/artists")}>
         Artists
       </NavLink>
