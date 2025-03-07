@@ -15,10 +15,8 @@ interface ArtistArtworksViewProps {
 export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   artist,
   isGeneratingArtworks,
-  setIsGeneratingArtworks,
   artworkErrors,
-  handleArtworkImageError,
-  refreshArtworks
+  handleArtworkImageError
 }) => {
   // State to track processed artworks
   const [processedArtworks, setProcessedArtworks] = React.useState<string[]>([]);
@@ -56,21 +54,14 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   }, [artist.artworks, artist.id]);
 
   // Create a fixed array of exactly 4 items
-  // If we have less than 4 artworks, we'll fill the rest with empty strings
-  const fixedArtworks = [...processedArtworks];
-  while (fixedArtworks.length < 4) {
-    fixedArtworks.push('');
-  }
-
-  // Strictly limit to exactly 4 artworks maximum
-  const displayArtworks = fixedArtworks.slice(0, 4);
+  const fixedArtworks = Array(4).fill('').map((_, i) => processedArtworks[i] || '');
 
   return (
     <div className="w-full h-full p-4">
       <div className="h-full w-full flex items-center justify-center">
         <div className="w-full h-full p-4">
           <div className="grid grid-cols-2 gap-2 h-full">
-            {displayArtworks.map((artwork, index) => (
+            {fixedArtworks.map((artwork, index) => (
               <div 
                 key={index} 
                 className="relative aspect-square rounded overflow-hidden"
@@ -83,6 +74,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                     className="w-full h-full object-cover"
                     onError={(e) => handleArtworkImageError(e, index)}
                     data-artwork-image={`image-${index}`}
+                    loading="lazy"
                   />
                 )}
               </div>
@@ -92,4 +84,4 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
       </div>
     </div>
   );
-};
+}
