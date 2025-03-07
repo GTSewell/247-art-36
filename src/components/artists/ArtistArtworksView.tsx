@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { supabase } from '@/integrations/supabase/client';
@@ -67,31 +66,29 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const gridArtworks = getArtworksForGrid();
 
   return (
-    <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
-      <div className="w-full h-full p-0" data-no-flip="true">
-        <div className="grid grid-cols-3 gap-0 h-full" data-no-flip="true">
-          {gridArtworks.length > 0 ? (
-            gridArtworks.map((artwork, index) => (
-              <div 
-                key={index} 
-                className="relative aspect-square overflow-hidden"
+    <div className="h-full w-full" data-no-flip="true">
+      <div className="grid grid-cols-3 grid-rows-2 h-full" data-no-flip="true">
+        {gridArtworks.length > 0 ? (
+          gridArtworks.map((artwork, index) => (
+            <div 
+              key={index} 
+              className="aspect-square overflow-hidden"
+              data-no-flip="true"
+            >
+              <img
+                src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                alt={`Artwork ${index + 1} by ${artist.name}`}
+                className="w-full h-full object-cover"
+                onError={(e) => handleArtworkImageError(e, index)}
                 data-no-flip="true"
-              >
-                <img
-                  src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                  alt={`Artwork ${index + 1} by ${artist.name}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => handleArtworkImageError(e, index)}
-                  data-no-flip="true"
-                />
-              </div>
-            ))
-          ) : (
-            <div className="col-span-3 flex items-center justify-center h-full text-gray-500 text-sm italic">
-              No artworks available
+              />
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          <div className="col-span-3 row-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
+            No artworks available
+          </div>
+        )}
       </div>
     </div>
   );
