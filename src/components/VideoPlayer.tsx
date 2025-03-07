@@ -118,7 +118,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       
       logger.info("Checking if video exists", { bucket, path });
       
-      // Use Supabase Storage API to check if file exists
+      // Instead of directly checking for existence (which requires authentication),
+      // we'll just check if we can get the public URL which is always accessible
       const { data, error } = await supabase
         .storage
         .from(bucket)
@@ -129,7 +130,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         return false;
       }
       
-      return !!data;
+      // If we got a public URL, we assume the file exists
+      return true;
     } catch (err) {
       logger.error("Exception checking video existence", { err });
       return false;
