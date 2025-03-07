@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
@@ -18,19 +17,21 @@ const Services = () => {
           backgroundSize: "contain",
           width: "100%",
           height: "100%",
+          opacity: 1,
         }}
       />
       
       {/* Colored overlay */}
       <div 
-        className="absolute inset-0 bg-zap-blue z-1"
+        className="absolute inset-0 bg-zap-blue z-10"
         style={{
-          opacity: 0.85,
+          opacity: 0.8,
+          mixBlendMode: "multiply",
         }}
       />
       
       <Navigation />
-      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
+      <div className="container mx-auto px-4 pt-24 pb-16 relative z-20">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center text-white">Our Services</h1>
           
