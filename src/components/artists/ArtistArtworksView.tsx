@@ -49,43 +49,58 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     logger.info(`ArtistArtworksView - Total artworks: ${displayArtworks.length}, Displaying: ${Math.min(4, displayArtworks.length)}`);
   }, [displayArtworks]);
 
-  // IMPORTANT: Limit to exactly 4 artworks for a 2x2 grid
+  // IMPORTANT: Force limit to exactly 4 artworks maximum
   const artworksToShow = displayArtworks.slice(0, 4);
+
+  // If we have less than 4, pad the array with empty strings to maintain grid structure
+  while (artworksToShow.length < 4) {
+    artworksToShow.push('');
+  }
 
   return (
     <div className="w-full h-full" data-no-flip="true">
-      {artworksToShow.length > 0 ? (
-        <div 
-          className="w-full h-full grid grid-cols-2 gap-4 p-4" 
-          style={{ 
-            display: 'grid !important', 
-            gridTemplateColumns: 'repeat(2, 1fr) !important',
-            gridTemplateRows: 'repeat(2, 1fr)',
-          }}
-          data-testid="artwork-grid"
-          data-no-flip="true"
-        >
-          {artworksToShow.map((artwork, index) => (
-            <div 
-              key={index} 
-              className="relative aspect-square rounded overflow-hidden"
-              data-no-flip="true"
-            >
+      <div 
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateRows: 'repeat(2, 1fr)',
+          gap: '1rem',
+          padding: '1rem',
+          width: '100%',
+          height: '100%',
+          maxHeight: '100%'
+        }}
+        data-testid="artwork-grid"
+        data-no-flip="true"
+      >
+        {artworksToShow.map((artwork, index) => (
+          <div 
+            key={index} 
+            style={{
+              position: 'relative',
+              aspectRatio: '1/1',
+              borderRadius: '0.25rem',
+              overflow: 'hidden',
+              backgroundColor: artwork ? 'transparent' : '#f3f4f6'
+            }}
+            data-no-flip="true"
+          >
+            {artwork && (
               <img
                 src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-cover"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
                 onError={(e) => handleArtworkImageError(e, index)}
                 data-no-flip="true"
               />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm italic">
-          No artworks available
-        </div>
-      )}
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
