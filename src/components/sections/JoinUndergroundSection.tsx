@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Zap, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -34,7 +35,7 @@ const JoinUndergroundSection = () => {
     }
   ];
 
-  const outro1 = "One voice is good. A chorus is louder.\nThis isn't about one artist, one show, one sale—it's about a movement. The more artists on board, the bigger the energy, the louder the noise, the stronger the impact.";
+  // Removed the outro1 paragraph as requested
   const outro2 = "Right now, we're in invite-only mode—meaning you get a sneak peek before anyone else. Nothing's locked in yet, we just wanna know if you're down. No payment needed—just drop your EOI for priority curation before we open this up to the world.";
 
   return (
@@ -78,11 +79,6 @@ const JoinUndergroundSection = () => {
                 </motion.div>
               ))}
             </Accordion>
-          </div>
-
-          {/* Outro 1 */}
-          <div className="pt-4">
-            <p className="text-xl font-semibold text-white/90 whitespace-pre-wrap">{outro1}</p>
           </div>
 
           {/* Outro 2 */}
