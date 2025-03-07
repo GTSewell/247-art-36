@@ -6,6 +6,11 @@ export const useCardFlip = (artistId: number) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showClickIndicator, setShowClickIndicator] = useState(true);
   
+  // Reset flip state when artist changes
+  useEffect(() => {
+    setIsFlipped(false);
+  }, [artistId]);
+  
   // Check if the user has flipped the card before
   useEffect(() => {
     const hasFlipped = localStorage.getItem(`flipped-${artistId}`);
@@ -28,11 +33,13 @@ export const useCardFlip = (artistId: number) => {
     
     // Don't flip if clicking on a button or if we're in the middle of an operation
     if (isInteractiveElement || isGeneratingArtworks) {
+      logger.info(`Flip prevented for artist ${artistId}: interactive element clicked or generating artworks`);
       return;
     }
     
     logger.info(`Flipping card for artist ${artistId} from ${isFlipped ? 'back' : 'front'} to ${isFlipped ? 'front' : 'back'}`);
-    setIsFlipped(!isFlipped);
+    setIsFlipped(prevState => !prevState);
+    
     if (showClickIndicator) {
       setShowClickIndicator(false);
       localStorage.setItem(`flipped-${artistId}`, 'true');

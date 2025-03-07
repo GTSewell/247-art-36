@@ -65,16 +65,21 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   // Strictly limit to exactly 4 artworks maximum
   const displayArtworks = fixedArtworks.slice(0, 4);
 
+  // Stop propagation for any clicks within the artworks container
+  const handleContainerClick = (e: React.MouseEvent) => {
+    // Don't stop propagation - this prevents the card from flipping back
+    // We'll let the parent's click handler determine if it should flip or not
+  };
+
   return (
-    <div className="w-full h-full p-4" data-artworks-container="true">
-      <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
-        <div className="w-full h-full p-4" data-no-flip="true">
-          <div className="grid grid-cols-2 gap-2 h-full" data-no-flip="true">
+    <div className="w-full h-full p-4">
+      <div className="h-full w-full flex items-center justify-center">
+        <div className="w-full h-full p-4">
+          <div className="grid grid-cols-2 gap-2 h-full">
             {displayArtworks.map((artwork, index) => (
               <div 
                 key={index} 
                 className="relative aspect-square rounded overflow-hidden"
-                data-no-flip="true"
                 data-artwork-cell={`cell-${index}`}
               >
                 {artwork && (
@@ -84,7 +89,6 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                     className="w-full h-full object-cover"
                     onError={(e) => handleArtworkImageError(e, index)}
                     data-artwork-image={`image-${index}`}
-                    data-no-flip="true"
                   />
                 )}
               </div>
