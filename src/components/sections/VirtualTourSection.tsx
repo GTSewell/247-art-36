@@ -7,7 +7,7 @@ const VirtualTourSection = () => {
   return (
     <section 
       id="virtual-tour" 
-      className="px-4 bg-gradient-to-b from-zap-blue via-transparent to-zap-yellow relative z-10 my-0 py-[80px]"
+      className="px-4 bg-gradient-to-b from-zap-blue to-zap-yellow relative z-10 my-0 py-[80px]"
     >
       <motion.div 
         initial={{ opacity: 0, y: 20 }} 
