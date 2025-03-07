@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from "@/hooks/use-toast";
 import { logger } from "@/utils/logger";
@@ -71,18 +72,25 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         if (isLoading) {
           logger.warn("Video load timeout", { src });
           
-          checkVideoExists(src)
-            .then(exists => {
-              if (!exists) {
-                setError("The video file could not be found. Please check if it was uploaded correctly.");
-                toast({
-                  title: "Video Not Found",
-                  description: "The video file could not be found in storage.",
-                  variant: "destructive"
-                });
-              }
-              setIsLoading(false);
-            });
+          // For signed URLs, we don't need to check if they exist
+          // The presence of a token indicates the file should be accessible
+          if (!src.includes('token=')) {
+            checkVideoExists(src)
+              .then(exists => {
+                if (!exists) {
+                  setError("The video file could not be found. Please check if it was uploaded correctly.");
+                  toast({
+                    title: "Video Not Found",
+                    description: "The video file could not be found in storage.",
+                    variant: "destructive"
+                  });
+                }
+                setIsLoading(false);
+              });
+          } else {
+            // For signed URLs, just set loading to false after timeout
+            setIsLoading(false);
+          }
         }
       }, 15000);
 
@@ -96,6 +104,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const checkVideoExists = async (url: string): Promise<boolean> => {
     try {
+      // If it's a signed URL, assume it exists
+      if (url.includes('token=')) {
+        return true;
+      }
+      
       if (!url.includes('supabase.co/storage')) {
         return true;
       }

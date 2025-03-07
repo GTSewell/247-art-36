@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -15,9 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 const JoinUndergroundSection = () => {
   const intro = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up. No fees yet, no commitment—just a chance to be part of something big from day one.";
   
-  // Define a default video URL from Supabase storage
-  // This is a placeholder - update with your actual video URL after uploading
-  const videoUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/videos/showcase-video.mp4";
+  // Updated video URL using the signed URL from Supabase product-images bucket
+  const videoUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/sign/product-images/247-Zap-OSHI-lowres.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwcm9kdWN0LWltYWdlcy8yNDctWmFwLU9TSEktbG93cmVzLm1wNCIsImlhdCI6MTc0MTMyMDc3NSwiZXhwIjoxODI3NzIwNzc1fQ.Ahy09SxUV4GxpZ-tUTuD1_nZGLbVy3XwYywvz-RHJss";
   
   const faqItems = [
     {
