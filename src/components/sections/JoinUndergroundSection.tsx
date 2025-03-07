@@ -19,7 +19,7 @@ const JoinUndergroundSection = () => {
     },
     {
       title: "Artist-Friendly Commission Structure",
-      content: <span key="commission">How does a <strong className="font-bold">0% or 25% COMMISSION</strong> sound? Traditional galleries charge artists on average a 50% commission. Well, we're not planning to be a "traditional" gallery at all, things need to be shaken up, and, we're here to do that with you. It's time for something different! Our aim is to put as much as possible back into artists pockets. Let's turn the "Starving artist" notion to the "Sufficiently fed and happy Artist" as a first step.</span>
+      content: <span key="commission">How does a <strong className="font-bold">25% COMMISSION</strong> sound? Traditional galleries charge artists on average a 50% commission. Well, we're not planning to be a "traditional" gallery at all, things need to be shaken up, and, we're here to do that with you. It's time for something different! Our aim is to put as much as possible back into artists pockets. Let's turn the "Starving artist" notion to the "Sufficiently fed and happy Artist" as a first step.</span>
     },
     {
       title: "Your Personal Retail Print Shop",
