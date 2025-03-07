@@ -68,7 +68,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="h-full w-full" data-no-flip="true">
-      <div className="grid grid-cols-3 grid-rows-2 h-full gap-0" data-no-flip="true">
+      <div className="grid grid-cols-2 grid-rows-3 h-full gap-0" data-no-flip="true">
         {gridArtworks.length > 0 ? (
           gridArtworks.map((artwork, index) => (
             <div 
@@ -86,7 +86,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
             </div>
           ))
         ) : (
-          <div className="col-span-3 row-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
+          <div className="col-span-2 row-span-3 flex items-center justify-center h-full text-gray-500 text-sm italic">
             No artworks available
           </div>
         )}
