@@ -8,7 +8,7 @@ const benefits = [
   "Artists are paid 75% \nOriginal Art & Print profit\nThis is not a typo!",
   "Exclusive Printing\ndiscounts ... For Ever!",
   "Stickers,Tees, Prints + \nCustom book with all\ngenesis exhibition artists!",
-  "Your very own custom\nkick ass online profile.",
+  "Your very own kick ass\ncustom artist profile\n[artistname].247.art",
   "Events & Workshops:\nLet's level-up and have\nsome fun!"
 ];
 
