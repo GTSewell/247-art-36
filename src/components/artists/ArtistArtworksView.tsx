@@ -49,40 +49,43 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     logger.info(`ArtistArtworksView - Total artworks: ${displayArtworks.length}, Displaying: ${Math.min(4, displayArtworks.length)}`);
   }, [displayArtworks]);
 
+  // IMPORTANT: Limit to exactly 4 artworks for a 2x2 grid
   const artworksToShow = displayArtworks.slice(0, 4);
 
   return (
-    <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
-      <div className="w-full h-full p-4" data-no-flip="true">
-        {/* Force a 2x2 grid with !important to override any conflicting styles */}
+    <div className="w-full h-full" data-no-flip="true">
+      {artworksToShow.length > 0 ? (
         <div 
-          className="!grid !grid-cols-2 gap-4 h-full" 
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}
+          className="w-full h-full grid grid-cols-2 gap-4 p-4" 
+          style={{ 
+            display: 'grid !important', 
+            gridTemplateColumns: 'repeat(2, 1fr) !important',
+            gridTemplateRows: 'repeat(2, 1fr)',
+          }}
+          data-testid="artwork-grid"
           data-no-flip="true"
         >
-          {artworksToShow.length > 0 ? (
-            artworksToShow.map((artwork, index) => (
-              <div 
-                key={index} 
-                className="relative aspect-square rounded overflow-hidden"
+          {artworksToShow.map((artwork, index) => (
+            <div 
+              key={index} 
+              className="relative aspect-square rounded overflow-hidden"
+              data-no-flip="true"
+            >
+              <img
+                src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                alt={`Artwork ${index + 1} by ${artist.name}`}
+                className="w-full h-full object-cover"
+                onError={(e) => handleArtworkImageError(e, index)}
                 data-no-flip="true"
-              >
-                <img
-                  src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                  alt={`Artwork ${index + 1} by ${artist.name}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => handleArtworkImageError(e, index)}
-                  data-no-flip="true"
-                />
-              </div>
-            ))
-          ) : (
-            <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
-              No artworks available
+              />
             </div>
-          )}
+          ))}
         </div>
-      </div>
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-gray-500 text-sm italic">
+          No artworks available
+        </div>
+      )}
     </div>
   );
 };

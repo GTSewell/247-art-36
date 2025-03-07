@@ -171,16 +171,14 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
             >
-              <div className="h-full w-full">
-                <ArtistArtworksView 
-                  artist={currentArtist}
-                  isGeneratingArtworks={isGeneratingArtworks}
-                  setIsGeneratingArtworks={setIsGeneratingArtworks}
-                  artworkErrors={artworkErrors}
-                  handleArtworkImageError={handleArtworkImageError}
-                  refreshArtworks={refreshArtist}
-                />
-              </div>
+              <ArtistArtworksView 
+                artist={currentArtist}
+                isGeneratingArtworks={isGeneratingArtworks}
+                setIsGeneratingArtworks={setIsGeneratingArtworks}
+                artworkErrors={artworkErrors}
+                handleArtworkImageError={handleArtworkImageError}
+                refreshArtworks={refreshArtist}
+              />
             </motion.div>
           )}
         </AnimatePresence>
