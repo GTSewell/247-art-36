@@ -1,12 +1,13 @@
+
 import { motion } from "framer-motion";
-import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, Printer, ShoppingBag } from "lucide-react";
+import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, Printer, ShoppingBag, BookOpen } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const benefits = [
   "3+ month Exhibition\non always vibing\nSmith St, Collingwood",
   "Artists are paid 75% \nOriginal Art & Print profit\nThis is not a typo!",
   "Exclusive Printing\ndiscounts ... For Ever!",
-  "Your art on Stickers,\nTees & Prints and more\nstocked in our space",
+  "Your art on Stickers,\nTees. Prints + custom book \nwith genesis exhibition artists!",
   "Your very own custom\nkick ass online profile.",
   "Events & Workshops:\nLet's level-up and have\nsome fun!"
 ];
