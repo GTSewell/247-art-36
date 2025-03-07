@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -42,6 +41,28 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const displayArtworks = artworks.length > 0 
     ? artworks 
     : Array(6).fill('/placeholder.svg');
+  
+  // Ensure we have 6 artworks for the grid
+  const getArtworksForGrid = (): string[] => {
+    if (displayArtworks.length === 0) return [];
+    
+    if (displayArtworks.length >= 6) {
+      return displayArtworks.slice(0, 6);
+    }
+    
+    // Create a new array to avoid modifying the original
+    const artworksCopy = [...displayArtworks];
+    
+    // Keep duplicating the existing artworks until we have 6 items
+    while (artworksCopy.length < 6) {
+      const index = artworksCopy.length % displayArtworks.length;
+      artworksCopy.push(displayArtworks[index]);
+    }
+    
+    return artworksCopy;
+  };
+
+  const gridArtworks = getArtworksForGrid();
   
   // Mock artwork details - in a real app, these would come from the database
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
@@ -98,11 +119,12 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       <div className="flex-grow overflow-hidden">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 pr-3 pb-3">
-            {displayArtworks.slice(0, 6).map((artwork, index) => (
+          <div className="grid grid-cols-3 gap-0 pr-2">
+            {gridArtworks.map((artwork, index) => (
               <div 
                 key={index}
-                className="aspect-square rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
+                className="aspect-square overflow-hidden relative group cursor-pointer"
+                onClick={() => handleArtworkClick(artwork, index)}
               >
                 <img 
                   src={artwork} 
@@ -111,7 +133,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                 />
                 <div 
                   className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
-                  onClick={() => handleArtworkClick(artwork, index)}
                 >
                   {/* Cart icon button that's always visible but becomes more prominent on hover */}
                   <div className="absolute bottom-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity">

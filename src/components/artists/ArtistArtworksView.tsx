@@ -68,13 +68,13 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
-      <div className="w-full h-full p-4" data-no-flip="true">
-        <div className="grid grid-cols-3 gap-3 h-full" data-no-flip="true">
+      <div className="w-full h-full p-0" data-no-flip="true">
+        <div className="grid grid-cols-3 gap-0 h-full" data-no-flip="true">
           {gridArtworks.length > 0 ? (
             gridArtworks.map((artwork, index) => (
               <div 
                 key={index} 
-                className="relative aspect-square rounded overflow-hidden"
+                className="relative aspect-square overflow-hidden"
                 data-no-flip="true"
               >
                 <img
