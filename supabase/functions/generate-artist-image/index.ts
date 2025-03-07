@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4';
 import { v4 as uuidv4 } from 'https://esm.sh/uuid@9.0.1';
@@ -74,7 +73,37 @@ serve(async (req) => {
     // If save is true, we're just updating the DB to mark the temp image as permanent
     if (save) {
       console.log('Saving existing artist image as permanent');
-      // Just return a success message for now
+      
+      // Trigger download of the image to Supabase storage
+      try {
+        // Call the download-artist-images function for this specific artist
+        const downloadResponse = await fetch(
+          `${Deno.env.get('SUPABASE_URL')}/functions/v1/download-artist-images`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+            },
+            body: JSON.stringify({ 
+              artist_ids: [artist_id],
+              regenerateAll: false 
+            }),
+          }
+        );
+
+        if (!downloadResponse.ok) {
+          const errorData = await downloadResponse.json();
+          console.error('Error downloading images:', errorData);
+        } else {
+          console.log('Successfully triggered image download');
+        }
+      } catch (downloadError) {
+        console.error('Error calling download-artist-images function:', downloadError);
+        // Continue with returning success even if download fails
+      }
+      
+      // Just return a success message 
       return new Response(
         JSON.stringify({ message: 'Artist image saved as permanent' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -358,6 +387,30 @@ serve(async (req) => {
           }
         );
       }
+    }
+
+    // Add automatic call to download-artist-images at the end
+    try {
+      // This will happen in the background and won't block the response
+      EdgeRuntime.waitUntil(
+        fetch(
+          `${Deno.env.get('SUPABASE_URL')}/functions/v1/download-artist-images`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY')}`,
+            },
+            body: JSON.stringify({ 
+              artist_ids: [artist_id],
+              regenerateAll: false 
+            }),
+          }
+        ).catch(e => console.error('Background download failed:', e))
+      );
+    } catch (backgroundError) {
+      console.error('Error initiating background download:', backgroundError);
+      // Continue with returning success even if background task fails
     }
   } catch (error) {
     console.error('Unexpected error in generate-artist-image function:', error);

@@ -9,6 +9,8 @@ import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
+import DownloadArtistImages from "@/components/artists/DownloadArtistImages";
+import { supabase } from "@/integrations/supabase/client";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
@@ -21,6 +23,7 @@ const Artists = () => {
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
@@ -33,6 +36,26 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
+
+  // Check if user is admin
+  useEffect(() => {
+    const checkUserRole = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        const { data } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+          
+        setIsAdmin(!!data);
+      }
+    };
+    
+    checkUserRole();
+  }, []);
 
   // Handle dark mode changes
   const handleThemeToggle = (isDark: boolean) => {
@@ -105,6 +128,8 @@ const Artists = () => {
             <h1 className="text-2xl font-bold">Artists</h1>
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
+          
+          {isAdmin && <DownloadArtistImages />}
           
           <ArtistsHeader
             artistSearch={artistSearch}
