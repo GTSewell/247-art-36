@@ -143,9 +143,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   return (
-    <div className={`video-container w-full overflow-hidden rounded-lg ${className}`}>
+    <div className={`video-container relative w-full ${className}`}>
       {isLoading && (
-        <div className="w-full h-64 bg-gray-200 animate-pulse flex items-center justify-center text-gray-500">
+        <div className="aspect-video w-full bg-gray-200 animate-pulse flex items-center justify-center text-gray-500">
           <div className="text-center">
             <div className="mb-2">Loading video...</div>
             {retryCount > 0 && (
@@ -156,7 +156,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       )}
       
       {error ? (
-        <div className="w-full h-64 bg-red-100 flex flex-col items-center justify-center text-red-500 p-4 text-center">
+        <div className="aspect-video w-full bg-red-100 flex flex-col items-center justify-center text-red-500 p-4 text-center">
           <p>{error}</p>
           <p className="text-sm mt-2">The video may be too large or unavailable</p>
           <button 
@@ -167,17 +167,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </button>
         </div>
       ) : (
-        <video
-          ref={videoRef}
-          className={`w-full h-full object-cover ${isLoading ? 'hidden' : 'block'}`}
-          controls={controls}
-          poster={poster}
-          preload="metadata"
-          playsInline
-        >
-          <source src={src} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <div className="aspect-video w-full">
+          <video
+            ref={videoRef}
+            className={`w-full h-full ${isLoading ? 'hidden' : 'block'}`}
+            controls={controls}
+            poster={poster}
+            preload="metadata"
+            playsInline
+          >
+            <source src={src} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       )}
       {title && <span className="sr-only">{title}</span>}
     </div>
