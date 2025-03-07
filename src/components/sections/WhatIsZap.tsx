@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion";
-import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, Printer } from "lucide-react";
+import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, ShoppingBag } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const benefits = [
@@ -23,7 +23,7 @@ const cardStyles = [{
   iconBg: "bg-white",
   border: "border-white"
 }, {
-  icon: Printer, // Changed from Palette to Printer
+  icon: ShoppingBag, // Changed from Printer to ShoppingBag for merchandise icon
   bgColor: "bg-zap-red",
   iconBg: "bg-white",
   border: "border-white"
