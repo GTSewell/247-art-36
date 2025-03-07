@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from "@/hooks/use-toast";
 import { logger } from "@/utils/logger";
@@ -33,11 +32,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         logger.error("Video error:", { src, error: video.error, retryCount });
         
         if (retryCount < maxRetries) {
-          // Try to reload the video
           setRetryCount(prevCount => prevCount + 1);
           setIsLoading(true);
           
-          // Add a small delay before retrying
           setTimeout(() => {
             if (videoRef.current) {
               videoRef.current.load();
@@ -50,7 +47,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
             variant: "default"
           });
         } else {
-          // Max retries reached, show error
           const errorMessage = "Unable to load video. Please try again later.";
           setError(errorMessage);
           setIsLoading(false);
@@ -71,13 +67,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       video.addEventListener('error', handleError);
       video.addEventListener('loadeddata', handleLoaded);
       
-      // Set a timeout to check if video is still loading after 15 seconds
-      // Increased from 10s to 15s to accommodate larger files
       const timeout = setTimeout(() => {
         if (isLoading) {
           logger.warn("Video load timeout", { src });
           
-          // Check if the source actually exists in Supabase
           checkVideoExists(src)
             .then(exists => {
               if (!exists) {
@@ -101,15 +94,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   }, [src, isLoading, retryCount]);
 
-  // Utility function to check if a video exists in Supabase
   const checkVideoExists = async (url: string): Promise<boolean> => {
     try {
       if (!url.includes('supabase.co/storage')) {
-        // Not a Supabase URL, assume it exists
         return true;
       }
       
-      // Extract path from URL - this is a simplified approach
       const bucketMatch = url.match(/\/storage\/v1\/object\/public\/([^\/]+)\/(.+)/);
       if (!bucketMatch) return false;
       
@@ -118,20 +108,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       
       logger.info("Checking if video exists", { bucket, path });
       
-      // Instead of directly checking for existence (which requires authentication),
-      // we'll just check if we can get the public URL which is always accessible
-      const { data, error } = await supabase
+      const { data } = await supabase
         .storage
         .from(bucket)
         .getPublicUrl(path);
       
-      if (error) {
-        logger.error("Error checking video existence", { error });
-        return false;
-      }
-      
-      // If we got a public URL, we assume the file exists
-      return true;
+      return !!data.publicUrl;
     } catch (err) {
       logger.error("Exception checking video existence", { err });
       return false;
