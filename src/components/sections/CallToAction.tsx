@@ -20,19 +20,13 @@ const CallToAction = () => {
         <div className="mt-16 relative z-10">
           <p className="text-black mb-6 text-lg font-extrabold">Powered by:</p>
           <div className="flex justify-center gap-4 flex-wrap">
-            <motion.a
-              href="https://www.247.art"
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              className="text-black font-extrabold text-3xl"
             >
-              <img
-                src="/lovable-uploads/43f5719e-a69d-483e-aeda-bc85b9c5deba.png"
-                alt="247 Art"
-                className="h-12"
-              />
-            </motion.a>
+              ARTISTS
+            </motion.div>
           </div>
         </div>
       </motion.div>
