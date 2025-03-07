@@ -48,6 +48,16 @@ const JoinUndergroundSection = () => {
               title="Future of Art Technology Showcase"
               poster="/placeholder.svg"
             />
+            <div className="text-center mt-2">
+              <a 
+                href="https://www.instagram.com/p/DG4QxbBSjtz/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-zap-yellow hover:underline inline-flex items-center gap-1"
+              >
+                View on Instagram
+              </a>
+            </div>
           </div>
           
           <br />Aside from some artists having gripes with AI LLM's (Large Language Models) training off artworks all across the internets, this is not what we're about. We understand it, but, we also know it's not going to wait for us either. We need to build and harness the technology for the best parts.<br /><br />The simple fact is, you are the best LLM already, Human Intelligence, or, "HI".<br /><br />We're all about AI helping you make the "other things in life" easier, more efficient. If you already use AI for your art practice, we're all supportive!<br /><br /><div className="text-center">/// Insert Blockchain here ///</div><br /><br />Seriously. DON'T RUN! We know some of you create NFTs and some of you hate them. We're fine with that. BUT. We are not interested in pushing new mediums on anyone, far from it. We also do not care for the speculative crypto gambling on meme coins and 'pump & dumps', in most cases it's a zero-sum game. We don't like that part.<br /><br />What we do like, is the technology that underpins it all, the blockchain. It can, and will, change the way we simplify things like transactions and provenance in the art world.<br /><br />We have 8yrs experience in this area, leading Australia in the blockchain art sector. What we are working on will not only change the local art scene, but, the global art economy. Big call, we know. It's coming.<br /><br />Anyway, we are and will be at the forefront, finding the best AI, blockchain and new technology solutions to help artists with the day-to-day grind with the likes of social media and administration.
