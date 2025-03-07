@@ -25,34 +25,39 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const [generatedArtworks, setGeneratedArtworks] = useState<string[]>([]);
 
   // Helper function to parse artworks if they're stored as a string
+  // CRUCIAL FIX: Strictly enforcing a maximum of 4 artworks during data processing
   const getArtworks = (): string[] => {
     if (!artist.artworks) return [];
     
+    let artworks: string[] = [];
+    
     if (typeof artist.artworks === 'string') {
       try {
-        return JSON.parse(artist.artworks);
+        artworks = JSON.parse(artist.artworks);
       } catch {
         return [];
       }
+    } else {
+      artworks = Array.isArray(artist.artworks) ? artist.artworks : [];
     }
     
-    return Array.isArray(artist.artworks) ? artist.artworks : [];
+    // Strictly limit to exactly 4 artworks maximum
+    return artworks.slice(0, 4);
   };
 
-  // Determine which artworks to display
+  // Determine which artworks to display, strictly limited to 4
   const displayArtworks = generatedArtworks.length > 0 
-    ? generatedArtworks 
+    ? generatedArtworks.slice(0, 4) 
     : getArtworks();
   
   // For debugging - log the number of artworks
   useEffect(() => {
-    logger.info(`ArtistArtworksView - Total artworks: ${displayArtworks.length}, Displaying: ${Math.min(4, displayArtworks.length)}`);
-  }, [displayArtworks]);
+    logger.info(`ArtistArtworksView - Raw artworks: ${Array.isArray(artist.artworks) ? artist.artworks.length : 'unknown'}`);
+    logger.info(`ArtistArtworksView - Processed artworks: ${displayArtworks.length}, Will display: ${Math.min(4, displayArtworks.length)}`);
+  }, [displayArtworks, artist.artworks]);
 
-  // IMPORTANT: Force limit to exactly 4 artworks maximum
-  const artworksToShow = displayArtworks.slice(0, 4);
-
-  // If we have less than 4, pad the array with empty strings to maintain grid structure
+  // Create a fixed array of exactly 4 items
+  const artworksToShow = [...displayArtworks];
   while (artworksToShow.length < 4) {
     artworksToShow.push('');
   }
@@ -73,7 +78,8 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         data-testid="artwork-grid"
         data-no-flip="true"
       >
-        {artworksToShow.map((artwork, index) => (
+        {/* Force rendering of exactly 4 grid items */}
+        {artworksToShow.slice(0, 4).map((artwork, index) => (
           <div 
             key={index} 
             style={{

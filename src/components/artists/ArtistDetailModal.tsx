@@ -43,13 +43,22 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   React.useEffect(() => {
     if (selectedArtist) {
       logger.info(`ArtistDetailModal - Selected artist: ${selectedArtist.name}, ID: ${selectedArtist.id}`);
-      // Log artworks info
+      
+      // Process and log artworks info
       const artworks = Array.isArray(selectedArtist.artworks) 
         ? selectedArtist.artworks 
         : typeof selectedArtist.artworks === 'string' && selectedArtist.artworks
           ? JSON.parse(selectedArtist.artworks)
           : [];
-      logger.info(`ArtistDetailModal - Artworks count: ${artworks.length}`);
+          
+      const artworkCount = Array.isArray(artworks) ? artworks.length : 0;
+      logger.info(`ArtistDetailModal - Artworks count before processing: ${artworkCount}`);
+      
+      // Log the first 6 artwork URLs for debugging
+      if (Array.isArray(artworks) && artworks.length > 0) {
+        const limitedArtworks = artworks.slice(0, 4); // Enforce 4 max
+        logger.info(`ArtistDetailModal - Limited to 4 artworks, actual count: ${limitedArtworks.length}`);
+      }
     }
   }, [selectedArtist]);
 
@@ -76,6 +85,27 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
     };
   }, [carouselApi, selectedArtistIndex, artists, onArtistChange]);
 
+  // Process selected artist's artworks to ensure maximum of 4
+  const processArtist = (artist: Artist): Artist => {
+    if (!artist.artworks) return artist;
+    
+    const processed = {...artist};
+    
+    // Process artworks to ensure maximum of 4
+    if (typeof processed.artworks === 'string') {
+      try {
+        const parsed = JSON.parse(processed.artworks);
+        processed.artworks = Array.isArray(parsed) ? parsed.slice(0, 4) : [];
+      } catch {
+        processed.artworks = [];
+      }
+    } else if (Array.isArray(processed.artworks)) {
+      processed.artworks = processed.artworks.slice(0, 4);
+    }
+    
+    return processed;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]">
@@ -93,19 +123,22 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
           >
             <CarouselContent className="-ml-0 sm:-ml-2">
               {artists.map((artist, index) => {
-                // Get artworks array from the artist
-                const artworks = Array.isArray(artist.artworks) 
-                  ? artist.artworks 
-                  : typeof artist.artworks === 'string' && artist.artworks
-                    ? JSON.parse(artist.artworks)
+                // Pre-process artist to ensure max 4 artworks
+                const processedArtist = processArtist(artist);
+                
+                // Get artworks array from the processed artist
+                const artworks = Array.isArray(processedArtist.artworks) 
+                  ? processedArtist.artworks 
+                  : typeof processedArtist.artworks === 'string' && processedArtist.artworks
+                    ? JSON.parse(processedArtist.artworks).slice(0, 4)
                     : [];
                     
                 // Generate a color theme for this specific artist
                 const colorTheme = generateColorTheme(
-                  artist, 
+                  processedArtist, 
                   { 
                     id: '',
-                    artist_id: String(artist.id),
+                    artist_id: String(processedArtist.id),
                     background_image: artworks[0] || null,
                     background_color: '#f7cf1e',
                     panel_color: '#ffffff',
@@ -119,7 +152,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-4" style={{ backgroundColor: colorTheme.panel }}>
                       <div className="aspect-square md:aspect-auto md:h-auto">
                         <ArtistImagePanel 
-                          artist={artist}
+                          artist={processedArtist}
                           onFavoriteToggle={onFavoriteToggle}
                           isFavorite={favoriteArtists.has(artist.id)}
                           refreshArtists={refreshArtists}
@@ -127,7 +160,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                       </div>
                       <div className="aspect-auto md:h-auto">
                         <ArtistDetailsPanel 
-                          artist={artist}
+                          artist={processedArtist}
                           onSelect={() => onSelect(artist)}
                           onFavoriteToggle={(artistId, isFavorite) => onFavoriteToggle(artistId, isFavorite)}
                           isFavorite={favoriteArtists.has(artist.id)}

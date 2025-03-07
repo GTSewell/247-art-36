@@ -32,13 +32,23 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
 
   // Log artworks info for debugging
   useEffect(() => {
+    // Process artworks for logging
     const artworks = Array.isArray(artist.artworks) 
       ? artist.artworks 
       : typeof artist.artworks === 'string' && artist.artworks
         ? JSON.parse(artist.artworks)
         : [];
     
-    logger.info(`ArtistImagePanel - Artist ID: ${artist.id}, Artworks count: ${artworks.length}`);
+    // Detailed artwork logging
+    const artworkCount = Array.isArray(artworks) ? artworks.length : 0;
+    logger.info(`ArtistImagePanel - Artist ID: ${artist.id}, Name: ${artist.name}, Artworks count: ${artworkCount}`);
+    
+    // Log the first 6 artwork URLs for debugging
+    if (Array.isArray(artworks) && artworks.length > 0) {
+      artworks.slice(0, 6).forEach((url, index) => {
+        logger.info(`Artwork ${index}: ${typeof url === 'string' ? url.substring(0, 30) + '...' : 'not a string'}`);
+      });
+    }
   }, [artist]);
 
   useEffect(() => {
@@ -113,7 +123,23 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
       if (error) throw error;
       
       if (data) {
-        setCurrentArtist(data as Artist);
+        const artistData = data as Artist;
+        
+        // Process artworks to ensure we only have at most 4
+        if (artistData.artworks) {
+          if (typeof artistData.artworks === 'string') {
+            try {
+              const parsed = JSON.parse(artistData.artworks);
+              artistData.artworks = Array.isArray(parsed) ? parsed.slice(0, 4) : [];
+            } catch {
+              artistData.artworks = [];
+            }
+          } else if (Array.isArray(artistData.artworks)) {
+            artistData.artworks = artistData.artworks.slice(0, 4);
+          }
+        }
+        
+        setCurrentArtist(artistData);
         
         // If parent component has a refresh function, call it too
         if (refreshArtists) {
