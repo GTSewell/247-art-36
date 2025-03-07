@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Zap, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -26,7 +27,7 @@ const JoinUndergroundSection = () => {
     },
     {
       title: "Digital Profile and Presence",
-      content: <span key="profile">Not everyone can make it to our IRL space, and that's why we're taking it to the world with your very own <strong className="font-bold">247.art KICK-ASS digital profile!</strong> Each artist will receive their own custom profile, think of it as a 'Link in BIO' domain, just not as bland as what is out there today. We call it the artist <strong className="font-bold">ATLAS</strong>, an acronym for Artist BIO, Techniques/Styles, Links, Artworks & Social media. A searchable artist "encyclopedia" (do they even exist anymore?) all in one place!<br /><br /><div className="flex items-center gap-2 justify-center"><ArrowLeft className="w-5 h-5" /> <strong className="font-bold">[yournamehere].247.art</strong> <ArrowRight className="w-5 h-5" /></div></span>
+      content: <span key="profile">Not everyone can make it to our IRL space, and that's why we're taking it to the world with your very own <strong className="font-bold">247.art KICK-ASS digital profile!</strong><br /><br />Each artist will receive their own custom profile, think of it as a 'Link in BIO' domain with direct sales right there in your BIO, and not as bland as what is out there today.<br /><br />We call it the artist <strong className="font-bold">ATLAS</strong>, an acronym for Artist BIO, Techniques/Styles, Links, Artworks & Social media. A searchable artist "encyclopedia" (do they even exist anymore?) all in one place!<br /><br />On top of that, we'll add a fully immersive 3D lidar scan of the exhibition! Peep the /virtualtour<br /><br /><div className="flex items-center gap-2 justify-center"><ArrowLeft className="w-5 h-5" /> <strong className="font-bold">[yournamehere].247.art</strong> <ArrowRight className="w-5 h-5" /></div></span>
     },
     {
       title: "Future Technology Integration",
