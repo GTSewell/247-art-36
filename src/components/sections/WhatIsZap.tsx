@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const benefits = [
   "3+ month Exhibition\non always vibing\nSmith St, Collingwood",
-  "0% - 25% Commission.\nYou choose.\nThat is not a typo!",
+  "Artist are paid 75% \nOriginal Art & Print profit\nThis is not a typo!",
   "Exclusive Printing\ndiscounts ... For Ever!",
   "Your art on Stickers,\nTees & Prints and more\nstocked in our space",
   "Your very own custom\nkick ass online profile.",
