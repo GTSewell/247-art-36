@@ -16,14 +16,6 @@ const CallToAction = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto text-center relative z-10"
       >
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-zap-blue text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-opacity-90 transition-colors mb-16"
-        >
-          Get Started with <img src="/lovable-uploads/1012b9a0-07f9-4f8d-9297-417bb4f99733.png" alt="ZAP!" className="inline-block h-8" />
-        </motion.button>
-
         {/* Powered By Section */}
         <div className="mt-16 relative z-10">
           <p className="text-black mb-6 text-lg font-extrabold">Powered by:</p>
