@@ -1,3 +1,4 @@
+
 import React from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
@@ -6,16 +7,24 @@ import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "luci
 
 const Services = () => {
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background layer with halftone pattern */}
       <div 
-        className="absolute inset-0 bg-zap-blue z-0"
+        className="absolute inset-0 z-0"
         style={{
           backgroundImage: "url('/lovable-uploads/7e79079e-96ff-48da-b653-ebfb4449d077.png')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundAttachment: "fixed",
-          opacity: 0.7,
+        }}
+      />
+      
+      {/* Colored overlay */}
+      <div 
+        className="absolute inset-0 bg-zap-blue z-0"
+        style={{
+          opacity: 0.85,
         }}
       />
       
