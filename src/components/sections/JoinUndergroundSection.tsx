@@ -15,10 +15,10 @@ import { supabase } from "@/integrations/supabase/client";
 const JoinUndergroundSection = () => {
   const intro = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up. No fees yet, no commitment—just a chance to be part of something big from day one.";
   
-  // Define the video URL from Supabase storage
-  // This would need to be updated with your actual video URL after uploading
+  // Define a default video URL from Supabase storage
+  // This is a placeholder - update with your actual video URL after uploading
   const videoUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/videos/showcase-video.mp4";
-
+  
   const faqItems = [
     {
       title: "Exhibition Opportunity",
