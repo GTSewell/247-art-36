@@ -41,7 +41,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   // If no artworks are provided, display placeholder images
   const displayArtworks = artworks.length > 0 
     ? artworks 
-    : Array(4).fill('/placeholder.svg');
+    : Array(6).fill('/placeholder.svg');
   
   // Mock artwork details - in a real app, these would come from the database
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
@@ -98,8 +98,8 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       <div className="flex-grow overflow-hidden">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
-          <div className="flex flex-col space-y-4 pr-4 pb-4">
-            {displayArtworks.map((artwork, index) => (
+          <div className="grid grid-cols-2 gap-4 pr-4 pb-4">
+            {displayArtworks.slice(0, 6).map((artwork, index) => (
               <div 
                 key={index}
                 className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
