@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Artist } from "@/data/types/artist";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
@@ -65,6 +65,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]">
         <DialogTitle className="sr-only">Artist Details</DialogTitle>
+        <DialogDescription className="sr-only">Detailed information about the artist</DialogDescription>
         {selectedArtist && (
           <Carousel 
             className="w-full" 
