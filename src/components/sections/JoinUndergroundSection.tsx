@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState } from "react";
@@ -29,7 +28,7 @@ const JoinUndergroundSection = () => {
     },
     {
       title: "Your Personal Retail Print Shop",
-      content: <span key="retail"><strong className="font-bold">Your very own retail print shop</strong> stocked with everything from your own custom stickers, T-shirts & Poster designs as affordable art for new age collectors, to premium line of signed/embossed Limited & Timed Edition Museum grade archival Fine Art Prints (Giclee) to appease your existing collectors. We'll be adding some more cool things for you to add if you like in over time. Even if you've got an idea for something, we'll do our best to make it happen!<br /><br />Artists need to embrace creating affordable art & collectibles, as you are leaving 99.99% of prospective 'art collectors' on the table. The kiddo that buys your $4 sticker today, buys your $1000 painting tomorrow. We do not discount that value, and neither should you.<br /><br />With time you build your 100 true collectors, or even 1000!<br /><br />BTW. We'll take care of all the boring shit that's a hassle, consider us as your personal sales assistant & print bitches for the 3 months. <strong className="font-bold">YOU just focus on your art!</strong></span>
+      content: <span key="retail"><strong className="font-bold">Your very own retail print shop</strong> stocked with everything from your own custom stickers, T-shirts & Poster designs as affordable art for new age collectors, to premium line of signed/embossed Limited & Timed Edition Museum grade archival Fine Art Prints (Giclee) to appease your existing collectors. We'll be adding some more cool things for you to add if you like in over time. Even if you've got an idea for something, we'll do our best to make it happen!<br /><br />You receive 75% of all profits on your base retail Stickers, T-shirts, unsigned and open edition prints etc. On your custom signed Limited Editions etc there is a base price, and you get the rest!<br /><br />Artists need to embrace creating affordable art & collectibles, as you are leaving 99.99% of prospective 'art collectors' on the table. The kiddo that buys your $4 sticker today, buys your $1000 painting tomorrow. We do not discount that value, and neither should you.<br /><br />With time you build your 100 true collectors, or even 1000!<br /><br />BTW. We'll take care of all the boring shit that's a hassle, consider us as your personal sales assistant & print bitches for the 3 months. <strong className="font-bold">YOU just focus on your art!</strong></span>
     },
     {
       title: "Digital Profile and Presence",
