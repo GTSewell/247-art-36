@@ -1,3 +1,4 @@
+
 import React from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
@@ -12,11 +13,10 @@ const Services = () => {
         style={{
           backgroundImage: "url('/lovable-uploads/7572ae4d-a323-4c2d-a57a-2824bb5e9016.png')",
           backgroundRepeat: "repeat",
-          backgroundSize: "200px",
+          backgroundSize: "auto",
           backgroundPosition: "center",
           opacity: 1,
           zIndex: 0,
-          mixBlendMode: "normal"
         }}
       />
       
