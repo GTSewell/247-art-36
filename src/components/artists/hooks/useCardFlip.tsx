@@ -9,6 +9,7 @@ export const useCardFlip = (artistId: number) => {
   // Reset flip state when artist changes
   useEffect(() => {
     setIsFlipped(false);
+    logger.info(`Reset flip state for artist ${artistId}`);
   }, [artistId]);
   
   // Check if the user has flipped the card before
@@ -16,6 +17,7 @@ export const useCardFlip = (artistId: number) => {
     const hasFlipped = localStorage.getItem(`flipped-${artistId}`);
     if (hasFlipped) {
       setShowClickIndicator(false);
+      logger.info(`User previously flipped card for artist ${artistId}, hiding indicator`);
     }
   }, [artistId]);
 

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
 
@@ -21,10 +21,10 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   refreshArtworks
 }) => {
   // State to track processed artworks
-  const [processedArtworks, setProcessedArtworks] = useState<string[]>([]);
+  const [processedArtworks, setProcessedArtworks] = React.useState<string[]>([]);
 
   // Process artist artworks with strict limitation to exactly 4
-  useEffect(() => {
+  React.useEffect(() => {
     let artworks: string[] = [];
     
     try {
@@ -64,12 +64,6 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   // Strictly limit to exactly 4 artworks maximum
   const displayArtworks = fixedArtworks.slice(0, 4);
-
-  // Stop propagation for any clicks within the artworks container
-  const handleContainerClick = (e: React.MouseEvent) => {
-    // Don't stop propagation - this prevents the card from flipping back
-    // We'll let the parent's click handler determine if it should flip or not
-  };
 
   return (
     <div className="w-full h-full p-4">
