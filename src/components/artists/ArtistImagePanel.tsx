@@ -30,31 +30,37 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
   const isMobile = useIsMobile();
 
-  // Log artworks info for debugging
+  // Update current artist when artist prop changes
   useEffect(() => {
-    // Process artworks for logging
-    const artworks = Array.isArray(artist.artworks) 
-      ? artist.artworks 
-      : typeof artist.artworks === 'string' && artist.artworks
-        ? JSON.parse(artist.artworks)
-        : [];
-    
-    // Detailed artwork logging
-    const artworkCount = Array.isArray(artworks) ? artworks.length : 0;
-    logger.info(`ArtistImagePanel - Artist ID: ${artist.id}, Name: ${artist.name}, Artworks count: ${artworkCount}`);
-    
-    // Log the first 6 artwork URLs for debugging
-    if (Array.isArray(artworks) && artworks.length > 0) {
-      artworks.slice(0, 6).forEach((url, index) => {
-        logger.info(`Artwork ${index}: ${typeof url === 'string' ? url.substring(0, 30) + '...' : 'not a string'}`);
-      });
+    // Create a copy of the artist to modify
+    const artistCopy = {...artist};
+
+    // Ensure artworks are parsed and limited to 4 items
+    if (artistCopy.artworks) {
+      // Parse string artworks
+      if (typeof artistCopy.artworks === 'string') {
+        try {
+          const parsed = JSON.parse(artistCopy.artworks);
+          artistCopy.artworks = Array.isArray(parsed) ? parsed.slice(0, 4) : [];
+        } catch (error) {
+          logger.error('Error parsing artworks:', error);
+          artistCopy.artworks = [];
+        }
+      }
+      // Limit array artworks
+      else if (Array.isArray(artistCopy.artworks)) {
+        artistCopy.artworks = artistCopy.artworks.slice(0, 4);
+      }
     }
+
+    // Log the processed artworks for debugging
+    logger.info(`ArtistImagePanel - Processed artist "${artistCopy.name}" (ID: ${artistCopy.id}) with ${Array.isArray(artistCopy.artworks) ? artistCopy.artworks.length : 0} artworks`);
+    
+    // Update state with processed artist
+    setCurrentArtist(artistCopy);
   }, [artist]);
 
-  useEffect(() => {
-    setCurrentArtist(artist);
-  }, [artist]);
-
+  // Check if the user has flipped the card before
   useEffect(() => {
     const hasFlipped = localStorage.getItem(`flipped-${artist.id}`);
     if (hasFlipped) {
@@ -62,7 +68,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   }, [artist.id]);
 
-  // This function determines if a click should flip the card or not
+  // Handle card flip
   const handleFlip = (e: React.MouseEvent) => {
     // Check if click originated from a button or interactive element
     const target = e.target as HTMLElement;
@@ -87,6 +93,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
+  // Handle mobile interaction
   const handleInteraction = () => {
     if (isMobile) {
       setIsHovered(true);
@@ -100,6 +107,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
+  // Handle image errors
   const handleMainImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     logger.error("Main image failed to load:", artist.image);
     setMainImageError(true);
@@ -107,11 +115,15 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   };
 
   const handleArtworkImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
-    logger.error(`Artwork image ${index} failed to load:`, artist.artworks?.[index]);
+    logger.error(`Artwork image ${index} failed to load:`, 
+      Array.isArray(currentArtist.artworks) && index < currentArtist.artworks.length 
+        ? currentArtist.artworks[index] 
+        : 'Unknown artwork');
     setArtworkErrors(prev => ({ ...prev, [index]: true }));
     e.currentTarget.src = '/placeholder.svg';
   };
 
+  // Refresh artist data from supabase
   const refreshArtist = async () => {
     try {
       const { data, error } = await supabase
@@ -138,6 +150,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
             artistData.artworks = artistData.artworks.slice(0, 4);
           }
         }
+        
+        // Log the refreshed artist data
+        logger.info(`Refreshed artist data for ID ${artist.id}: ${artistData.name} with ${Array.isArray(artistData.artworks) ? artistData.artworks.length : 0} artworks`);
         
         setCurrentArtist(artistData);
         

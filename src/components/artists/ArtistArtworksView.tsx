@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
+import { cn } from '@/lib/utils';
 
 interface ArtistArtworksViewProps {
   artist: Artist;
@@ -22,86 +21,84 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   handleArtworkImageError,
   refreshArtworks
 }) => {
-  const [generatedArtworks, setGeneratedArtworks] = useState<string[]>([]);
+  // State to track processed artworks
+  const [processedArtworks, setProcessedArtworks] = useState<string[]>([]);
 
-  // Helper function to parse artworks if they're stored as a string
-  // CRUCIAL FIX: Strictly enforcing a maximum of 4 artworks during data processing
-  const getArtworks = (): string[] => {
-    if (!artist.artworks) return [];
-    
+  // Process artist artworks with strict limitation to exactly 4
+  useEffect(() => {
     let artworks: string[] = [];
     
-    if (typeof artist.artworks === 'string') {
-      try {
-        artworks = JSON.parse(artist.artworks);
-      } catch {
-        return [];
+    try {
+      // Handle string or array format
+      if (typeof artist.artworks === 'string') {
+        try {
+          const parsed = JSON.parse(artist.artworks);
+          artworks = Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          logger.error('Failed to parse artworks string:', error);
+          artworks = [];
+        }
+      } else if (Array.isArray(artist.artworks)) {
+        artworks = artist.artworks;
       }
-    } else {
-      artworks = Array.isArray(artist.artworks) ? artist.artworks : [];
+      
+      // Strictly limit to maximum 4 artworks
+      artworks = artworks.slice(0, 4);
+      
+      // Log for debugging
+      logger.info(`ArtistArtworksView: Processed ${artworks.length} artworks for artist ID ${artist.id}`);
+      
+      // Set the processed artworks
+      setProcessedArtworks(artworks);
+    } catch (error) {
+      logger.error('Error processing artworks:', error);
+      setProcessedArtworks([]);
     }
-    
-    // Strictly limit to exactly 4 artworks maximum
-    return artworks.slice(0, 4);
-  };
-
-  // Determine which artworks to display, strictly limited to 4
-  const displayArtworks = generatedArtworks.length > 0 
-    ? generatedArtworks.slice(0, 4) 
-    : getArtworks();
-  
-  // For debugging - log the number of artworks
-  useEffect(() => {
-    logger.info(`ArtistArtworksView - Raw artworks: ${Array.isArray(artist.artworks) ? artist.artworks.length : 'unknown'}`);
-    logger.info(`ArtistArtworksView - Processed artworks: ${displayArtworks.length}, Will display: ${Math.min(4, displayArtworks.length)}`);
-  }, [displayArtworks, artist.artworks]);
+  }, [artist.artworks, artist.id]);
 
   // Create a fixed array of exactly 4 items
-  const artworksToShow = [...displayArtworks];
-  while (artworksToShow.length < 4) {
-    artworksToShow.push('');
+  // If we have less than 4 artworks, we'll fill the rest with empty strings
+  const fixedArtworks = [...processedArtworks];
+  while (fixedArtworks.length < 4) {
+    fixedArtworks.push('');
   }
 
+  // Strictly limit to exactly 4 artworks maximum
+  const displayArtworks = fixedArtworks.slice(0, 4);
+
   return (
-    <div className="w-full h-full" data-no-flip="true">
+    <div className="w-full h-full p-4" data-artworks-container="true">
+      {/* Grid container with forced 2x2 layout */}
       <div 
+        className={cn(
+          "grid grid-cols-2 grid-rows-2 gap-4 w-full h-full"
+        )}
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, 1fr)',
           gridTemplateRows: 'repeat(2, 1fr)',
           gap: '1rem',
-          padding: '1rem',
-          width: '100%',
-          height: '100%',
-          maxHeight: '100%'
         }}
         data-testid="artwork-grid"
-        data-no-flip="true"
+        data-artwork-grid="true"
       >
-        {/* Force rendering of exactly 4 grid items */}
-        {artworksToShow.slice(0, 4).map((artwork, index) => (
+        {/* Render exactly 4 grid cells */}
+        {displayArtworks.map((artwork, index) => (
           <div 
             key={index} 
+            className="relative rounded overflow-hidden bg-gray-100 aspect-square"
             style={{
-              position: 'relative',
-              aspectRatio: '1/1',
-              borderRadius: '0.25rem',
-              overflow: 'hidden',
-              backgroundColor: artwork ? 'transparent' : '#f3f4f6'
+              aspectRatio: '1/1'
             }}
-            data-no-flip="true"
+            data-artwork-cell={`cell-${index}`}
           >
             {artwork && (
               <img
                 src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover'
-                }}
+                className="w-full h-full object-cover"
                 onError={(e) => handleArtworkImageError(e, index)}
-                data-no-flip="true"
+                data-artwork-image={`image-${index}`}
               />
             )}
           </div>
