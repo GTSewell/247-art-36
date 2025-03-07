@@ -44,52 +44,32 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     ? generatedArtworks 
     : getArtworks();
 
-  // Duplicate artworks if needed to fill a 2x3 grid (6 items)
-  const getArtworksForGrid = (): string[] => {
-    if (displayArtworks.length === 0) return [];
-    
-    if (displayArtworks.length >= 6) {
-      return displayArtworks.slice(0, 6);
-    }
-    
-    // Create a new array to avoid modifying the original
-    const artworksCopy = [...displayArtworks];
-    
-    // Keep duplicating the existing artworks until we have 6 items
-    while (artworksCopy.length < 6) {
-      const index = artworksCopy.length % displayArtworks.length;
-      artworksCopy.push(displayArtworks[index]);
-    }
-    
-    return artworksCopy;
-  };
-
-  const gridArtworks = getArtworksForGrid();
-
   return (
-    <div className="h-full w-full" data-no-flip="true">
-      <div className="grid grid-cols-2 grid-rows-3 h-full gap-0" data-no-flip="true">
-        {gridArtworks.length > 0 ? (
-          gridArtworks.map((artwork, index) => (
-            <div 
-              key={index} 
-              className="aspect-square overflow-hidden"
-              data-no-flip="true"
-            >
-              <img
-                src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-cover"
-                onError={(e) => handleArtworkImageError(e, index)}
+    <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
+      <div className="w-full h-full p-4" data-no-flip="true">
+        <div className="grid grid-cols-2 gap-4 h-full" data-no-flip="true">
+          {displayArtworks.length > 0 ? (
+            displayArtworks.slice(0, 4).map((artwork, index) => (
+              <div 
+                key={index} 
+                className="relative aspect-square rounded overflow-hidden"
                 data-no-flip="true"
-              />
+              >
+                <img
+                  src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                  alt={`Artwork ${index + 1} by ${artist.name}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => handleArtworkImageError(e, index)}
+                  data-no-flip="true"
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-2 flex items-center justify-center h-full text-gray-500 text-sm italic">
+              No artworks available
             </div>
-          ))
-        ) : (
-          <div className="col-span-2 row-span-3 flex items-center justify-center h-full text-gray-500 text-sm italic">
-            No artworks available
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
