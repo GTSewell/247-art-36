@@ -7,7 +7,7 @@ const benefits = [
   "3+ month Exhibition\non always vibing\nSmith St, Collingwood",
   "Artists are paid 75% \nOriginal Art & Print profit\nThis is not a typo!",
   "Exclusive Printing\ndiscounts ... For Ever!",
-  "Stickers,Tees. Prints + \nCustom book with all\ngenesis exhibition artists!",
+  "Stickers,Tees, Prints + \nCustom book with all\ngenesis exhibition artists!",
   "Your very own custom\nkick ass online profile.",
   "Events & Workshops:\nLet's level-up and have\nsome fun!"
 ];
