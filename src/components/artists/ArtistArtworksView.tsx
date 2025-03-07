@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { supabase } from '@/integrations/supabase/client';
@@ -43,7 +44,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     ? generatedArtworks 
     : getArtworks();
 
-  // Duplicate artworks if needed to fill a 2x3 grid (6 items)
+  // Duplicate artworks if needed to fill a 3x2 grid (6 items)
   const getArtworksForGrid = (): string[] => {
     if (displayArtworks.length === 0) return [];
     
@@ -68,7 +69,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   return (
     <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
       <div className="w-full h-full p-4" data-no-flip="true">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 h-full" data-no-flip="true">
+        <div className="grid grid-cols-3 gap-3 h-full" data-no-flip="true">
           {gridArtworks.length > 0 ? (
             gridArtworks.map((artwork, index) => (
               <div 
@@ -86,7 +87,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
               </div>
             ))
           ) : (
-            <div className="col-span-2 md:col-span-3 flex items-center justify-center h-full text-gray-500 text-sm italic">
+            <div className="col-span-3 flex items-center justify-center h-full text-gray-500 text-sm italic">
               No artworks available
             </div>
           )}

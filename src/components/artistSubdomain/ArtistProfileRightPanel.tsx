@@ -98,16 +98,16 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       <div className="flex-grow overflow-hidden">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
-          <div className="grid grid-cols-2 gap-4 pr-4 pb-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 pr-3 pb-3">
             {displayArtworks.slice(0, 6).map((artwork, index) => (
               <div 
                 key={index}
-                className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
+                className="aspect-square rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
               >
                 <img 
                   src={artwork} 
                   alt={`Artwork ${index + 1}`}
-                  className="w-full object-cover"
+                  className="w-full h-full object-cover"
                 />
                 <div 
                   className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
