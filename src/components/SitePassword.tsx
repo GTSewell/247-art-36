@@ -44,15 +44,32 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   };
   
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-zap-yellow p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-bold mb-6 text-center">247.art</h1>
-        <p className="mb-4 text-center text-gray-600">
+    <div className="h-screen flex flex-col items-center justify-center bg-zap-yellow relative overflow-hidden">
+      {/* Blue halftone background overlay */}
+      <div 
+        className="absolute inset-0 z-0 opacity-80" 
+        style={{ 
+          backgroundImage: "url('/lovable-uploads/6b4832cd-f117-41c5-a008-1ba2948714bc.png')", 
+          backgroundSize: "cover",
+          backgroundPosition: "center"
+        }}
+      />
+      
+      <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8">
+        <div className="flex justify-center mb-6">
+          <img 
+            src="/lovable-uploads/e3632eac-612c-482e-aad1-8d4fd3b2947c.png" 
+            alt="247.art" 
+            className="h-12"
+          />
+        </div>
+        
+        <p className="mb-6 text-center text-gray-600">
           This site is password protected. Please enter the password to continue.
         </p>
         
-        <form onSubmit={handlePasswordSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handlePasswordSubmit} className="space-y-4">
+          <div>
             <Input
               type="password"
               placeholder="Enter password"
@@ -71,6 +88,12 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
             {isLoading ? 'Checking...' : 'Enter'}
           </Button>
         </form>
+        
+        <div className="mt-6 pt-4 border-t border-gray-100">
+          <p className="text-xs text-center text-gray-500 italic">
+            Note: This site is purely in prototype mode solely for reference purposes only.
+          </p>
+        </div>
       </div>
     </div>
   );
