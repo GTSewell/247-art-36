@@ -10,5 +10,7 @@ export const registerServiceWorker = () => {
           console.error('ServiceWorker registration failed: ', error);
         });
     });
+  } else {
+    console.log('Service workers are not supported in this browser');
   }
 };

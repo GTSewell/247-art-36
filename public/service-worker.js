@@ -1,64 +1,55 @@
 
-// Cache names
+// Cache name version
 const CACHE_NAME = 'zap-underground-v1';
-const RUNTIME_CACHE = 'runtime-cache';
 
-// Resources to pre-cache
-const PRECACHE_URLS = [
+// Files to cache
+const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/favicon.ico',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  // Add other important assets here
+  '/icons/apple-touch-icon.png'
 ];
 
-// Install event - pre-cache resources
+// Install service worker
 self.addEventListener('install', event => {
+  // Perform install steps
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_URLS))
-      .then(() => self.skipWaiting())
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-// Activate event - clean up old caches
+// Cache and return requests
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
+  );
+});
+
+// Update a service worker
 self.addEventListener('activate', event => {
-  const currentCaches = [CACHE_NAME, RUNTIME_CACHE];
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
-      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
-    }).then(cachesToDelete => {
-      return Promise.all(cachesToDelete.map(cacheToDelete => {
-        return caches.delete(cacheToDelete);
-      }));
-    }).then(() => self.clients.claim())
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
-});
-
-// Fetch event - serve from cache or network
-self.addEventListener('fetch', event => {
-  // Skip cross-origin requests
-  if (event.request.url.startsWith(self.location.origin)) {
-    event.respondWith(
-      caches.match(event.request).then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return caches.open(RUNTIME_CACHE).then(cache => {
-          return fetch(event.request).then(response => {
-            // Put a copy of the response in the runtime cache
-            return cache.put(event.request, response.clone()).then(() => {
-              return response;
-            });
-          }).catch(error => {
-            console.error('Fetch failed:', error);
-            // You can return a custom offline page here
-          });
-        });
-      })
-    );
-  }
 });
