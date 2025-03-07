@@ -1,18 +1,86 @@
+
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4';
-import { v4 as uuidv4 } from 'https://esm.sh/uuid@9.0.1';
-
-// CORS headers for browser requests
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { corsHeaders } from "../_shared/cors.ts";
+import { processArtistProfileImage, processArtistArtworks } from "../_shared/artist-images.ts";
 
 // Create a Supabase client
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL') || '',
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
 );
+
+/**
+ * Ensure the artist-images storage bucket exists
+ */
+async function ensureStorageBucketExists(): Promise<void> {
+  try {
+    const { data: bucketData, error: bucketError } = await supabaseAdmin
+      .storage
+      .getBucket('artist-images');
+    
+    if (bucketError && bucketError.message.includes('does not exist')) {
+      // Create the bucket if it doesn't exist
+      const { error: createBucketError } = await supabaseAdmin
+        .storage
+        .createBucket('artist-images', {
+          public: true
+        });
+      
+      if (createBucketError) {
+        console.error('Error creating storage bucket:', createBucketError);
+        throw new Error(`Failed to create storage bucket: ${createBucketError.message}`);
+      }
+      console.log('Created artist-images bucket successfully');
+    }
+  } catch (error) {
+    console.error('Error checking/creating bucket:', error);
+    // Continue execution, as this might not be fatal
+  }
+}
+
+/**
+ * Process a single artist's images (profile and artworks)
+ */
+async function processArtist(
+  artist: any, 
+  storageFolder: string,
+  results: any
+): Promise<void> {
+  try {
+    // Skip artists without an id or name
+    if (!artist.id || !artist.name) {
+      results.skipped.push({
+        id: artist.id || 0,
+        reason: 'Missing ID or name'
+      });
+      return;
+    }
+
+    console.log(`Processing artist: ${artist.name} (ID: ${artist.id})`);
+
+    // Process profile image
+    await processArtistProfileImage(artist, storageFolder, supabaseAdmin);
+    
+    // Process artwork images
+    await processArtistArtworks(artist, storageFolder, supabaseAdmin);
+
+    // Record success
+    results.success.push({
+      id: artist.id,
+      name: artist.name,
+      newUrl: artist.image
+    });
+    
+    console.log(`Successfully processed artist ${artist.name} (ID: ${artist.id})`);
+  } catch (artistError) {
+    console.error(`Error processing artist ${artist.id}:`, artistError);
+    results.failed.push({
+      id: artist.id,
+      reason: artistError.message || 'Unknown error'
+    });
+  }
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
@@ -24,34 +92,12 @@ serve(async (req) => {
 
   try {
     // Get the request body
-    const { regenerateAll = false } = await req.json();
+    const { regenerateAll = false, artist_ids = [] } = await req.json();
 
-    console.log(`Processing request to download artist images, regenerateAll=${regenerateAll}`);
+    console.log(`Processing request to download artist images, regenerateAll=${regenerateAll}, specific artist_ids=${artist_ids.length > 0 ? artist_ids.join(',') : 'none'}`);
 
-    // Check if the artist-images bucket exists, create it if it doesn't
-    try {
-      const { data: bucketData, error: bucketError } = await supabaseAdmin
-        .storage
-        .getBucket('artist-images');
-      
-      if (bucketError && bucketError.message.includes('does not exist')) {
-        // Create the bucket if it doesn't exist
-        const { error: createBucketError } = await supabaseAdmin
-          .storage
-          .createBucket('artist-images', {
-            public: true
-          });
-        
-        if (createBucketError) {
-          console.error('Error creating storage bucket:', createBucketError);
-          throw new Error(`Failed to create storage bucket: ${createBucketError.message}`);
-        }
-        console.log('Created artist-images bucket successfully');
-      }
-    } catch (error) {
-      console.error('Error checking/creating bucket:', error);
-      // Continue execution, as this might not be fatal
-    }
+    // Make sure the storage bucket exists
+    await ensureStorageBucketExists();
 
     // Initialize results
     const results = {
@@ -64,10 +110,15 @@ serve(async (req) => {
     const timestamp = new Date().toISOString().replace(/[-:.]/g, '');
     const storageFolder = `processed-${timestamp}`;
 
-    // Fetch all artists
-    const { data: artists, error: artistsError } = await supabaseAdmin
-      .from('artists')
-      .select('*');
+    // Fetch all artists or specific ones
+    let artistsQuery = supabaseAdmin.from('artists').select('*');
+    
+    // If specific artist ids were provided, filter by them
+    if (artist_ids && artist_ids.length > 0) {
+      artistsQuery = artistsQuery.in('id', artist_ids);
+    }
+    
+    const { data: artists, error: artistsError } = await artistsQuery;
 
     if (artistsError) {
       throw new Error(`Failed to fetch artists: ${artistsError.message}`);
@@ -77,111 +128,7 @@ serve(async (req) => {
 
     // Process each artist
     for (const artist of artists) {
-      try {
-        // Skip artists without an id or name
-        if (!artist.id || !artist.name) {
-          results.skipped.push({
-            id: artist.id || 0,
-            reason: 'Missing ID or name'
-          });
-          continue;
-        }
-
-        console.log(`Processing artist: ${artist.name} (ID: ${artist.id})`);
-
-        // Process profile image
-        if (artist.image) {
-          try {
-            // Download and store the profile image
-            const profileImageUrl = await downloadAndStoreImage(
-              artist.image,
-              `${storageFolder}/profiles/${artist.id}.webp`,
-              supabaseAdmin
-            );
-
-            if (profileImageUrl) {
-              // Update the artist record with the new image URL
-              const { error: updateError } = await supabaseAdmin
-                .from('artists')
-                .update({ image: profileImageUrl })
-                .eq('id', artist.id);
-
-              if (updateError) {
-                console.error(`Error updating profile image for artist ${artist.id}:`, updateError);
-              } else {
-                console.log(`Updated profile image for artist ${artist.name}`);
-              }
-            }
-          } catch (imageError) {
-            console.error(`Error processing profile image for artist ${artist.id}:`, imageError);
-          }
-        }
-
-        // Process artwork images
-        if (artist.artworks) {
-          try {
-            const artworks = typeof artist.artworks === 'string' 
-              ? JSON.parse(artist.artworks) 
-              : artist.artworks;
-            
-            if (Array.isArray(artworks)) {
-              const updatedArtworks = [];
-              
-              for (let i = 0; i < artworks.length; i++) {
-                try {
-                  // Download and store the artwork
-                  const artworkUrl = await downloadAndStoreImage(
-                    artworks[i],
-                    `${storageFolder}/artworks/${artist.id}_${i+1}.webp`,
-                    supabaseAdmin
-                  );
-                  
-                  if (artworkUrl) {
-                    updatedArtworks.push(artworkUrl);
-                  } else {
-                    // Keep the original URL if download fails
-                    updatedArtworks.push(artworks[i]);
-                  }
-                } catch (artworkError) {
-                  console.error(`Error processing artwork ${i+1} for artist ${artist.id}:`, artworkError);
-                  // Keep the original URL if processing fails
-                  updatedArtworks.push(artworks[i]);
-                }
-              }
-              
-              // Update the artist record with the new artwork URLs
-              const { error: updateError } = await supabaseAdmin
-                .from('artists')
-                .update({ artworks: updatedArtworks })
-                .eq('id', artist.id);
-              
-              if (updateError) {
-                console.error(`Error updating artworks for artist ${artist.id}:`, updateError);
-              } else {
-                console.log(`Updated ${updatedArtworks.length} artworks for artist ${artist.name}`);
-              }
-            }
-          } catch (artworksError) {
-            console.error(`Error processing artworks for artist ${artist.id}:`, artworksError);
-          }
-        }
-
-        // Record success
-        results.success.push({
-          id: artist.id,
-          name: artist.name,
-          newUrl: artist.image
-        });
-        
-        console.log(`Successfully processed artist ${artist.name} (ID: ${artist.id})`);
-        
-      } catch (artistError) {
-        console.error(`Error processing artist ${artist.id}:`, artistError);
-        results.failed.push({
-          id: artist.id,
-          reason: artistError.message || 'Unknown error'
-        });
-      }
+      await processArtist(artist, storageFolder, results);
     }
 
     // Return results
@@ -203,54 +150,3 @@ serve(async (req) => {
     );
   }
 });
-
-// Helper function to download and store an image
-async function downloadAndStoreImage(
-  imageUrl: string,
-  storagePath: string,
-  supabase: any
-): Promise<string | null> {
-  try {
-    console.log(`Downloading image from ${imageUrl}`);
-    
-    // Skip if the URL is already a Supabase storage URL
-    if (imageUrl.includes('storage.googleapis.com') && imageUrl.includes('artist-images')) {
-      console.log('Image is already in Supabase storage, skipping');
-      return imageUrl;
-    }
-    
-    // Download the image
-    const imageResponse = await fetch(imageUrl);
-    if (!imageResponse.ok) {
-      throw new Error(`Failed to download image: ${imageResponse.status}`);
-    }
-
-    // Get the image data as a blob
-    const imageBlob = await imageResponse.blob();
-
-    // Upload to Supabase Storage
-    const { data, error } = await supabase
-      .storage
-      .from('artist-images')
-      .upload(storagePath, imageBlob, {
-        contentType: 'image/webp',
-        upsert: true
-      });
-
-    if (error) {
-      throw new Error(`Failed to upload to storage: ${error.message}`);
-    }
-
-    // Get the public URL
-    const { data: { publicUrl } } = supabase
-      .storage
-      .from('artist-images')
-      .getPublicUrl(storagePath);
-
-    console.log(`Successfully stored image at ${publicUrl}`);
-    return publicUrl;
-  } catch (error) {
-    console.error('Error in downloadAndStoreImage:', error);
-    return null;
-  }
-}
