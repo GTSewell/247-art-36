@@ -79,7 +79,7 @@ function App() {
   }
 
   return (
-    <>
+    <React.Fragment>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <ScrollToTop />
@@ -99,7 +99,7 @@ function App() {
         </BrowserRouter>
         <Toaster richColors />
       </QueryClientProvider>
-    </>
+    </React.Fragment>
   );
 }
 
