@@ -30,6 +30,17 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [currentArtist, setCurrentArtist] = useState<Artist>(artist);
   const isMobile = useIsMobile();
 
+  // Log artworks info for debugging
+  useEffect(() => {
+    const artworks = Array.isArray(artist.artworks) 
+      ? artist.artworks 
+      : typeof artist.artworks === 'string' && artist.artworks
+        ? JSON.parse(artist.artworks)
+        : [];
+    
+    logger.info(`ArtistImagePanel - Artist ID: ${artist.id}, Artworks count: ${artworks.length}`);
+  }, [artist]);
+
   useEffect(() => {
     setCurrentArtist(artist);
   }, [artist]);
@@ -160,7 +171,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
             >
-              <div className="h-full w-full" onClick={() => setIsFlipped(false)}>
+              <div className="h-full w-full">
                 <ArtistArtworksView 
                   artist={currentArtist}
                   isGeneratingArtworks={isGeneratingArtworks}

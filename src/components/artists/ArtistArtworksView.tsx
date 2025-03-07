@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -43,13 +43,25 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const displayArtworks = generatedArtworks.length > 0 
     ? generatedArtworks 
     : getArtworks();
+  
+  // For debugging - log the number of artworks
+  useEffect(() => {
+    logger.info(`ArtistArtworksView - Total artworks: ${displayArtworks.length}, Displaying: ${Math.min(4, displayArtworks.length)}`);
+  }, [displayArtworks]);
+
+  const artworksToShow = displayArtworks.slice(0, 4);
 
   return (
     <div className="h-full w-full flex items-center justify-center" data-no-flip="true">
       <div className="w-full h-full p-4" data-no-flip="true">
-        <div className="grid grid-cols-2 gap-4 h-full" data-no-flip="true">
-          {displayArtworks.length > 0 ? (
-            displayArtworks.slice(0, 4).map((artwork, index) => (
+        {/* Force a 2x2 grid with !important to override any conflicting styles */}
+        <div 
+          className="!grid !grid-cols-2 gap-4 h-full" 
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}
+          data-no-flip="true"
+        >
+          {artworksToShow.length > 0 ? (
+            artworksToShow.map((artwork, index) => (
               <div 
                 key={index} 
                 className="relative aspect-square rounded overflow-hidden"

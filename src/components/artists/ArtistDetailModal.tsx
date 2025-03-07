@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { CarouselApi } from "@/components/ui/carousel";
 import { generateColorTheme } from "@/utils/colorExtraction";
+import { logger } from "@/utils/logger";
 
 interface ArtistDetailModalProps {
   artists: Artist[];
@@ -37,6 +38,20 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const [carouselApi, setCarouselApi] = React.useState<CarouselApi | null>(null);
+
+  // Add debug logging
+  React.useEffect(() => {
+    if (selectedArtist) {
+      logger.info(`ArtistDetailModal - Selected artist: ${selectedArtist.name}, ID: ${selectedArtist.id}`);
+      // Log artworks info
+      const artworks = Array.isArray(selectedArtist.artworks) 
+        ? selectedArtist.artworks 
+        : typeof selectedArtist.artworks === 'string' && selectedArtist.artworks
+          ? JSON.parse(selectedArtist.artworks)
+          : [];
+      logger.info(`ArtistDetailModal - Artworks count: ${artworks.length}`);
+    }
+  }, [selectedArtist]);
 
   // Handle dialog close
   const handleDialogClose = () => {
