@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import { Zap, ArrowLeft, ArrowRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
   Accordion,
   AccordionContent,
@@ -23,21 +23,40 @@ declare global {
 
 const JoinUndergroundSection = () => {
   const intro = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up. No fees yet, no commitment—just a chance to be part of something big from day one.";
+  const instagramLoaded = useRef(false);
   
   useEffect(() => {
-    const existingScript = document.getElementById('instagram-embed-script');
-    if (!existingScript) {
-      const script = document.createElement('script');
-      script.id = 'instagram-embed-script';
-      script.src = '//www.instagram.com/embed.js';
-      script.async = true;
-      document.body.appendChild(script);
-    } else {
-      // Safely check if instgrm is available on the window object
+    // Check if the Instagram script is already loaded
+    if (!instagramLoaded.current) {
+      const existingScript = document.getElementById('instagram-embed-script');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.id = 'instagram-embed-script';
+        script.src = 'https://www.instagram.com/embed.js';
+        script.async = true;
+        script.onload = () => {
+          // Process embeds once script is loaded
+          if (window.instgrm) {
+            window.instgrm.Embeds.process();
+          }
+          instagramLoaded.current = true;
+        };
+        document.body.appendChild(script);
+      } else if (window.instgrm) {
+        // If script exists but embeds haven't been processed
+        window.instgrm.Embeds.process();
+        instagramLoaded.current = true;
+      }
+    }
+    
+    // Add a fallback to process embeds after component mounts
+    const timer = setTimeout(() => {
       if (window.instgrm) {
         window.instgrm.Embeds.process();
       }
-    }
+    }, 2000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
   const faqItems = [
@@ -59,31 +78,54 @@ const JoinUndergroundSection = () => {
     },
     {
       title: "Future Technology Integration",
-      content: <span key="future"><strong className="font-bold">THE FUTURE IS HERE</strong> and we are already ahead of the game, and we don't want you to be left behind!
-      
-      <div className="my-4 flex justify-center">
-        <blockquote 
-          className="instagram-media" 
-          data-instgrm-captioned 
-          data-instgrm-permalink="https://www.instagram.com/reel/DG4QxbBSjtz/?utm_source=ig_embed&amp;utm_campaign=loading" 
-          data-instgrm-version="14" 
-          style={{ 
-            background: '#FFF', 
-            border: 0, 
-            borderRadius: '3px', 
-            boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)', 
-            margin: '1px', 
-            maxWidth: '540px', 
-            minWidth: '326px', 
-            padding: 0, 
-            width: '99.375%'
-          }}
-        >
-          <div style={{ padding: '16px' }}></div>
-        </blockquote>
-      </div>
-      
-      <br /><br />Wait. DON'T RUN! Aside from some artists having gripes with AI LLM's (Large Language Models) training off artworks all across the internets, this is not what we're about. We understand it, but, we also know it's not going to wait for us either. We need to build and harness the technology for the best parts.<br /><br />The simple fact is, you are the best LLM already, Human Intelligence, or, "HI".<br /><br />We're all about AI helping you make the "other things in life" easier, more efficient. If you already use AI for your art practice, we're all supportive! Hey, we even used AI to help build this website, and even with our nightmarish spreadsheets.<br /><br /><div className="text-center">/// Insert Blockchain here ///</div><br /><br />Seriously. DON'T RUN! We know some of you create NFTs and some of you hate them. We're fine with that. BUT. We are not interested in pushing new mediums on anyone, far from it. We also do not care for the speculative crypto gambling on meme coins and 'pump & dumps', in most cases it's a zero-sum game. We don't like that part.<br /><br />What we do like, is the technology that underpins it all, the blockchain. It can, and will, change the way we simplify things like transactions and provenance in the art world.<br /><br />We have 8yrs experience in this area, leading Australia in the blockchain art sector. What we are working on will not only change the local art scene, but, the global art economy. Big call, we know. It's coming.<br /><br />Anyway, we are and will be at the forefront, finding the best AI, blockchain and new technology solutions to help artists with the day-to-day grind with the likes of social media and administration.</span>
+      content: (
+        <span key="future">
+          <strong className="font-bold">THE FUTURE IS HERE</strong> and we are already ahead of the game, and we don't want you to be left behind!
+          
+          <div className="my-4">
+            <blockquote 
+              className="instagram-media mx-auto" 
+              data-instgrm-permalink="https://www.instagram.com/reel/DG4QxbBSjtz/"
+              data-instgrm-version="14"
+              style={{
+                background: '#FFF',
+                border: '0',
+                borderRadius: '3px',
+                boxShadow: '0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)',
+                margin: '1px auto',
+                maxWidth: '540px',
+                minWidth: '326px',
+                padding: '0',
+                width: '99.375%',
+              }}
+            >
+              <div style={{ padding: '16px' }}>
+                <a 
+                  href="https://www.instagram.com/reel/DG4QxbBSjtz/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    background: '#FFFFFF',
+                    lineHeight: '0',
+                    padding: '0 0',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    width: '100%',
+                    display: 'block',
+                    color: '#c9c8cd',
+                    fontFamily: 'Arial,sans-serif',
+                    fontSize: '14px',
+                  }}
+                >
+                  View on Instagram
+                </a>
+              </div>
+            </blockquote>
+          </div>
+          
+          <br />Wait. DON'T RUN! Aside from some artists having gripes with AI LLM's (Large Language Models) training off artworks all across the internets, this is not what we're about. We understand it, but, we also know it's not going to wait for us either. We need to build and harness the technology for the best parts.<br /><br />The simple fact is, you are the best LLM already, Human Intelligence, or, "HI".<br /><br />We're all about AI helping you make the "other things in life" easier, more efficient. If you already use AI for your art practice, we're all supportive! Hey, we even used AI to help build this website, and even with our nightmarish spreadsheets.<br /><br /><div className="text-center">/// Insert Blockchain here ///</div><br /><br />Seriously. DON'T RUN! We know some of you create NFTs and some of you hate them. We're fine with that. BUT. We are not interested in pushing new mediums on anyone, far from it. We also do not care for the speculative crypto gambling on meme coins and 'pump & dumps', in most cases it's a zero-sum game. We don't like that part.<br /><br />What we do like, is the technology that underpins it all, the blockchain. It can, and will, change the way we simplify things like transactions and provenance in the art world.<br /><br />We have 8yrs experience in this area, leading Australia in the blockchain art sector. What we are working on will not only change the local art scene, but, the global art economy. Big call, we know. It's coming.<br /><br />Anyway, we are and will be at the forefront, finding the best AI, blockchain and new technology solutions to help artists with the day-to-day grind with the likes of social media and administration.
+        </span>
+      )
     }
   ];
 
