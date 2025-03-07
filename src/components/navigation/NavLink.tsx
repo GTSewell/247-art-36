@@ -18,7 +18,7 @@ const NavLink = ({ to, isActive, children, className }: NavLinkProps) => {
         "px-3 py-2 rounded-md text-sm font-medium transition-colors",
         isActive
           ? "bg-primary text-primary-foreground"
-          : "text-foreground hover:bg-accent hover:text-accent-foreground",
+          : "bg-gray-100 text-foreground hover:bg-accent hover:text-accent-foreground",
         className
       )}
     >
