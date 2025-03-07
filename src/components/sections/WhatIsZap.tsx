@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, Printer, ShoppingBag } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,12 +22,12 @@ const cardStyles = [{
   iconBg: "bg-white",
   border: "border-white"
 }, {
-  icon: Printer, // Changed back to Printer for printing icon
+  icon: Printer,
   bgColor: "bg-zap-red",
   iconBg: "bg-white",
   border: "border-white"
 }, {
-  icon: ShoppingBag, // Changed to ShoppingBag for merchandise icon
+  icon: ShoppingBag,
   bgColor: "bg-zap-yellow",
   iconBg: "bg-white",
   border: "border-white"
@@ -62,7 +61,16 @@ const WhatIsZap = () => {
           zIndex: 1,
           mixBlendMode: 'normal'
         }}
-      />
+      >
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.5 }}
+          className="text-5xl md:text-6xl font-bold text-white text-center absolute bottom-8 w-full"
+        >
+          THERE&apos;S PLENTY MORE TO COME!
+        </motion.h1>
+      </div>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
