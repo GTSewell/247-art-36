@@ -9,7 +9,7 @@ const benefits = [
   "Exclusive Printing\ndiscounts ... For Ever!",
   "Your art on Stickers,\nTees & Prints and more\nstocked in our space",
   "Your very own custom\nkick ass online profile.",
-  "Art & Tech Workshops:\nLevel-up with fun &\neducational events!"
+  "Events & Workshops:\nLet's level-up and have\nsome fun!"
 ];
 
 const cardStyles = [{
