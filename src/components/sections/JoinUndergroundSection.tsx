@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Zap, ArrowLeft, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -8,6 +9,17 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Link } from "react-router-dom";
+
+// Add type declaration for Instagram embed API
+declare global {
+  interface Window {
+    instgrm?: {
+      Embeds: {
+        process: () => void;
+      };
+    };
+  }
+}
 
 const JoinUndergroundSection = () => {
   const intro = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up. No fees yet, no commitment—just a chance to be part of something big from day one.";
@@ -21,6 +33,7 @@ const JoinUndergroundSection = () => {
       script.async = true;
       document.body.appendChild(script);
     } else {
+      // Safely check if instgrm is available on the window object
       if (window.instgrm) {
         window.instgrm.Embeds.process();
       }
