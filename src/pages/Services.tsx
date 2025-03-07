@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
@@ -7,9 +6,21 @@ import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "luci
 
 const Services = () => {
   return (
-    <div className="min-h-screen bg-zap-blue">
+    <div className="min-h-screen relative">
+      <div 
+        className="absolute inset-0 bg-zap-blue z-0"
+        style={{
+          backgroundImage: "url('/lovable-uploads/7e79079e-96ff-48da-b653-ebfb4449d077.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundAttachment: "fixed",
+          opacity: 0.7,
+        }}
+      />
+      
       <Navigation />
-      <div className="container mx-auto px-4 pt-24 pb-16">
+      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center text-white">Our Services</h1>
           
