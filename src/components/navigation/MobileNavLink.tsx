@@ -17,7 +17,7 @@ const MobileNavLink = ({ to, isActive, children }: MobileNavLinkProps) => {
         "block px-3 py-2 rounded-md text-base font-medium",
         isActive
           ? "bg-primary text-primary-foreground"
-          : "bg-gray-100 text-foreground hover:bg-accent hover:text-accent-foreground"
+          : "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground"
       )}
     >
       {children}
