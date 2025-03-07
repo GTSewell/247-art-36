@@ -13,16 +13,17 @@ const Services = () => {
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: "url('/lovable-uploads/7e79079e-96ff-48da-b653-ebfb4449d077.png')",
-          backgroundRepeat: "no-repeat",
+          backgroundRepeat: "repeat",
           backgroundPosition: "center",
-          backgroundSize: "cover",
-          backgroundAttachment: "fixed",
+          backgroundSize: "contain",
+          width: "100%",
+          height: "100%",
         }}
       />
       
       {/* Colored overlay */}
       <div 
-        className="absolute inset-0 bg-zap-blue z-0"
+        className="absolute inset-0 bg-zap-blue z-1"
         style={{
           opacity: 0.85,
         }}
