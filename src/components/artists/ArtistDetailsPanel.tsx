@@ -3,14 +3,11 @@ import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeftCircle, Link as LinkIcon } from 'lucide-react';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
-import ArtistBio from './ArtistBio';
-import ArtistTechniquesStyles from './ArtistTechniquesStyles';
-import ArtistSocialLinks from './ArtistSocialLinks';
 import ArtistActions from './ArtistActions';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
+import ArtistReturnButton from './ArtistReturnButton';
+import ArtistDomainLink from './ArtistDomainLink';
+import ArtistInfoContainer from './ArtistInfoContainer';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -76,20 +73,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8">
-      {showReturnButton && (
-        <div className="absolute top-3 right-3 z-10">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleReturnToArtists}
-            className="bg-white/80 hover:bg-white backdrop-blur-sm"
-            style={{ borderColor: colorTheme?.buttonBorder }}
-          >
-            <ArrowLeftCircle size={18} />
-            <span className="sr-only">Return to Artists</span>
-          </Button>
-        </div>
-      )}
+      <ArtistReturnButton 
+        onReturn={handleReturnToArtists}
+        colorTheme={colorTheme}
+        showReturnButton={showReturnButton}
+      />
       
       <div className="flex-none mb-2">
         <ArtistHeaderInfo 
@@ -102,15 +90,10 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
       {/* For mobile, show a mini domain link at the top for better visibility */}
       {isMobile && (
-        <div className="flex-none mb-3 flex items-center text-sm">
-          <LinkIcon size={14} className="mr-1" />
-          <button 
-            onClick={handleDomainClick}
-            className="text-black/70 hover:text-black font-mono truncate"
-          >
-            247.art/{artistDomain}
-          </button>
-        </div>
+        <ArtistDomainLink 
+          artistDomain={artistDomain}
+          handleDomainClick={handleDomainClick}
+        />
       )}
 
       {isMobile && (
@@ -130,38 +113,19 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         </div>
       )}
 
-      {/* Fixed ScrollArea with improved height calculation for better mobile scrolling */}
-      <ScrollArea 
-        className="flex-grow overflow-y-auto pr-3 mb-6" 
-        style={{ 
-          height: isMobile ? 'calc(100vh - 350px)' : 'calc(80vh - 180px)',
-          minHeight: isMobile ? '300px' : 'auto',
-          maxHeight: isMobile ? '400px' : undefined
+      <ArtistInfoContainer 
+        bio={artist.bio}
+        techniques={techniques}
+        styles={styles}
+        socialPlatforms={socialPlatforms}
+        isMobile={isMobile}
+        colorTheme={{
+          badgeBg: colorTheme?.badgeBg,
+          button: colorTheme?.button,
+          buttonTextColor: colorTheme?.buttonText,
+          buttonHoverColor: colorTheme?.buttonHover
         }}
-      >
-        <div className="space-y-6 pb-10">
-          <ArtistBio 
-            bio={artist.bio} 
-            isMobile={isMobile} 
-            useAccordion={false}
-          />
-
-          <ArtistTechniquesStyles 
-            techniques={techniques} 
-            styles={styles} 
-            badgeBgColor={colorTheme?.badgeBg}
-            useAccordion={false}
-          />
-
-          <ArtistSocialLinks 
-            socialPlatforms={socialPlatforms} 
-            buttonColor={colorTheme?.button}
-            buttonTextColor={colorTheme?.buttonText}
-            buttonHoverColor={colorTheme?.buttonHover}
-            useAccordion={false}
-          />
-        </div>
-      </ScrollArea>
+      />
 
       {!isMobile && (
         <div className="flex-none mt-auto pt-4">
