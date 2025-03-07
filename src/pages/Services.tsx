@@ -1,3 +1,4 @@
+
 import React from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
@@ -6,74 +7,66 @@ import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "luci
 
 const Services = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background layer with halftone pattern */}
-      <div 
-        className="absolute inset-0 z-0"
+    <div className="min-h-screen bg-[#50c8f0]">
+      {/* Background with visible halftone pattern */}
+      <div className="absolute inset-0 w-full h-full" 
         style={{
-          backgroundImage: "url('/lovable-uploads/7e79079e-96ff-48da-b653-ebfb4449d077.png')",
+          backgroundImage: "url('/lovable-uploads/7572ae4d-a323-4c2d-a57a-2824bb5e9016.png')",
           backgroundRepeat: "repeat",
+          backgroundSize: "auto",
           backgroundPosition: "center",
-          backgroundSize: "contain",
-          width: "100%",
-          height: "100%",
           opacity: 1,
-        }}
-      />
-      
-      {/* Colored overlay */}
-      <div 
-        className="absolute inset-0 bg-zap-blue z-10"
-        style={{
-          opacity: 0.8,
-          mixBlendMode: "multiply",
+          zIndex: 0,
         }}
       />
       
       <Navigation />
-      <div className="container mx-auto px-4 pt-24 pb-16 relative z-20">
+      
+      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-center text-white">Our Services</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-12 text-center text-white">Our Services</h1>
           
-          <div className="space-y-12 mt-10">
-            {/* Printing Services */}
-            <section className="bg-card rounded-lg p-6 shadow-md">
-              <div className="flex items-center mb-4">
-                <Printer className="h-6 w-6 mr-2 text-primary" />
+          <div className="space-y-12">
+            {/* Print Services */}
+            <section className="bg-white rounded-lg p-8 shadow-md">
+              <div className="flex items-center mb-6">
+                <Printer className="h-7 w-7 mr-3 text-primary" />
                 <h2 className="text-2xl font-semibold">Print Services</h2>
               </div>
-              <p className="mb-4 text-muted-foreground">
-                We offer a range of high-quality printing services for artists and businesses, 
-                from fine art prints to commercial applications.
+              
+              <p className="mb-6 text-muted-foreground">
+                We offer a range of high-quality printing services for artists and businesses, from fine art prints to commercial applications.
               </p>
-              <div className="grid md:grid-cols-3 gap-4 mt-6">
-                <div className="bg-accent/20 p-4 rounded-md">
+              
+              <div className="grid md:grid-cols-3 gap-6 mt-8">
+                <div>
                   <h3 className="font-medium mb-2">Fine Art Prints</h3>
-                  <p className="text-sm text-muted-foreground">Museum-quality reproductions of artwork on premium papers and canvas.</p>
+                  <p className="text-muted-foreground">Museum-quality reproductions of artwork on premium papers and canvas.</p>
                 </div>
-                <div className="bg-accent/20 p-4 rounded-md">
+                <div>
                   <h3 className="font-medium mb-2">Large Format Graphics</h3>
-                  <p className="text-sm text-muted-foreground">Banners, posters, and large-scale prints for exhibitions and promotions.</p>
+                  <p className="text-muted-foreground">Banners, posters, and large-scale prints for exhibitions and promotions.</p>
                 </div>
-                <div className="bg-accent/20 p-4 rounded-md">
+                <div>
                   <h3 className="font-medium mb-2">Merchandise Printing</h3>
-                  <p className="text-sm text-muted-foreground">Custom printing on apparel, accessories, and promotional items.</p>
+                  <p className="text-muted-foreground">Custom printing on apparel, accessories, and promotional items.</p>
                 </div>
               </div>
             </section>
 
             {/* Artist Services */}
-            <section className="bg-card rounded-lg p-6 shadow-md">
-              <div className="flex items-center mb-4">
-                <Users className="h-6 w-6 mr-2 text-primary" />
+            <section className="bg-white rounded-lg p-8 shadow-md">
+              <div className="flex items-center mb-6">
+                <Users className="h-7 w-7 mr-3 text-primary" />
                 <h2 className="text-2xl font-semibold">Artist Management & Support</h2>
               </div>
-              <div className="space-y-6">
-                <div className="border-b border-border pb-4">
+              
+              <div className="space-y-8">
+                <div className="border-b border-gray-100 pb-4">
                   <h3 className="font-medium mb-2">Representation & Management</h3>
                   <p className="text-muted-foreground">We provide career development, exhibition opportunities, and promotional services for emerging and established artists.</p>
                 </div>
-                <div className="border-b border-border pb-4">
+                <div className="border-b border-gray-100 pb-4">
                   <h3 className="font-medium mb-2">Portfolio Development</h3>
                   <p className="text-muted-foreground">Professional photography, digital archiving, and presentation materials to showcase your work effectively.</p>
                 </div>
@@ -85,13 +78,13 @@ const Services = () => {
             </section>
 
             {/* Commercial & Event Services */}
-            <section className="bg-card rounded-lg p-6 shadow-md">
-              <div className="flex items-center mb-4">
-                <Sparkles className="h-6 w-6 mr-2 text-primary" />
+            <section className="bg-white rounded-lg p-8 shadow-md">
+              <div className="flex items-center mb-6">
+                <Sparkles className="h-7 w-7 mr-3 text-primary" />
                 <h2 className="text-2xl font-semibold">Commercial & Event Services</h2>
               </div>
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="border border-border rounded-md p-4">
+                <div className="border border-gray-100 rounded-md p-5">
                   <div className="flex items-center mb-2">
                     <ImageIcon className="h-5 w-5 mr-2 text-primary" />
                     <h3 className="font-medium">Commercial Art Activations</h3>
@@ -101,7 +94,7 @@ const Services = () => {
                     Live art demonstrations, interactive exhibitions, and brand collaborations.
                   </p>
                 </div>
-                <div className="border border-border rounded-md p-4">
+                <div className="border border-gray-100 rounded-md p-5">
                   <div className="flex items-center mb-2">
                     <Calendar className="h-5 w-5 mr-2 text-primary" />
                     <h3 className="font-medium">Private Events</h3>
@@ -115,24 +108,24 @@ const Services = () => {
             </section>
 
             {/* Product & Merchandise */}
-            <section className="bg-card rounded-lg p-6 shadow-md">
-              <div className="flex items-center mb-4">
-                <ShoppingBag className="h-6 w-6 mr-2 text-primary" />
+            <section className="bg-white rounded-lg p-8 shadow-md">
+              <div className="flex items-center mb-6">
+                <ShoppingBag className="h-7 w-7 mr-3 text-primary" />
                 <h2 className="text-2xl font-semibold">Products & Merchandise</h2>
               </div>
               <p className="mb-6 text-muted-foreground">
                 We help artists transform their work into high-quality products and merchandise, 
                 from limited edition prints to branded apparel and accessories.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-accent/20 p-4 rounded-md">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gray-50 p-5 rounded-md">
                   <h3 className="font-medium mb-2">Custom Merchandise</h3>
                   <p className="text-sm text-muted-foreground">
                     Development and production of branded merchandise featuring your artwork. Perfect for artists 
                     looking to diversify their income streams and expand their reach.
                   </p>
                 </div>
-                <div className="bg-accent/20 p-4 rounded-md">
+                <div className="bg-gray-50 p-5 rounded-md">
                   <h3 className="font-medium mb-2">Limited Edition Collections</h3>
                   <p className="text-sm text-muted-foreground">
                     Creation of exclusive, limited-run products and art objects that increase value and 
@@ -145,7 +138,7 @@ const Services = () => {
 
           <div className="mt-12 text-center">
             <h2 className="text-2xl font-semibold mb-4 text-white">Ready to Work With Us?</h2>
-            <p className="mb-6 text-white/80 max-w-2xl mx-auto">
+            <p className="mb-6 text-white opacity-90 max-w-2xl mx-auto">
               Contact us to discuss your project needs or to schedule a consultation with our team.
             </p>
             <Button asChild size="lg" className="mt-2">
