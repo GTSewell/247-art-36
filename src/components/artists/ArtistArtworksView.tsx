@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
-import { cn } from '@/lib/utils';
 
 interface ArtistArtworksViewProps {
   artist: Artist;
@@ -10,7 +9,7 @@ interface ArtistArtworksViewProps {
   setIsGeneratingArtworks: (value: boolean) => void;
   artworkErrors: Record<number, boolean>;
   handleArtworkImageError: (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => void;
-  refreshArtworks?: () => void; // Optional prop to refresh artworks without page reload
+  refreshArtworks?: () => void;
 }
 
 export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
@@ -68,28 +67,12 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="w-full h-full p-4" data-artworks-container="true">
-      {/* Grid container with forced 2x2 layout */}
-      <div 
-        className={cn(
-          "grid grid-cols-2 grid-rows-2 gap-4 w-full h-full"
-        )}
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gridTemplateRows: 'repeat(2, 1fr)',
-          gap: '1rem',
-        }}
-        data-testid="artwork-grid"
-        data-artwork-grid="true"
-      >
-        {/* Render exactly 4 grid cells */}
+      <div className="grid grid-cols-2 gap-2 h-full" data-no-flip="true">
         {displayArtworks.map((artwork, index) => (
           <div 
             key={index} 
-            className="relative rounded overflow-hidden bg-gray-100 aspect-square"
-            style={{
-              aspectRatio: '1/1'
-            }}
+            className="relative aspect-square rounded overflow-hidden"
+            data-no-flip="true"
             data-artwork-cell={`cell-${index}`}
           >
             {artwork && (
@@ -99,6 +82,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                 className="w-full h-full object-cover"
                 onError={(e) => handleArtworkImageError(e, index)}
                 data-artwork-image={`image-${index}`}
+                data-no-flip="true"
               />
             )}
           </div>
