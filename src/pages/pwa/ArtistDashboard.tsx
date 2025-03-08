@@ -10,6 +10,7 @@ import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 
+// Define explicit interfaces for the artist and role data
 interface ArtistRecord {
   id: number;
   user_id: string;
@@ -46,39 +47,38 @@ const ArtistDashboard: React.FC = () => {
     try {
       setLoading(true);
 
-      // Use explicit types for the queries
-      const userIdString = user.id as string;
+      // Use the user id string directly
+      const userIdString = user.id;
 
-      // Separate query execution from data extraction
-      const roleResponse = await supabase
+      // Check if user has artist role
+      const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userIdString)
         .eq('role', 'artist');
 
-      // Parse role data with explicit typing
-      const roleData: RoleRecord[] | null = roleResponse.error ? null : roleResponse.data;
-
-      // Separate query for artist profile
-      const artistResponse = await supabase
+      // Check if user has an artist profile
+      const { data: artistData, error: artistError } = await supabase
         .from('artists')
-        .select('id')
+        .select('id, user_id')
         .eq('user_id', userIdString);
-
-      // Parse artist data with explicit typing
-      const artistData: ArtistRecord[] | null = artistResponse.error ? null : artistResponse.data;
-
-      if (roleResponse.error) {
-        console.error("Error checking artist role:", roleResponse.error);
+      
+      // Handle any query errors
+      if (roleError) {
+        console.error("Error checking artist role:", roleError);
       }
 
-      if (artistResponse.error) {
-        console.error("Error checking artist profile:", artistResponse.error);
+      if (artistError) {
+        console.error("Error checking artist profile:", artistError);
       }
 
-      if ((roleData && roleData.length > 0) || (artistData && artistData.length > 0)) {
+      // Check if user is an artist based on role or profile
+      const hasArtistRole = roleData && roleData.length > 0;
+      const hasArtistProfile = artistData && artistData.length > 0;
+      
+      if (hasArtistRole || hasArtistProfile) {
         setIsArtist(true);
-        if (artistData && artistData.length > 0) {
+        if (hasArtistProfile) {
           setArtistId(artistData[0].id);
         }
       } else {
