@@ -50,11 +50,15 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  // Handle click on card for flipping - simplified to just flip the card
-  const handleCardClick = () => {
-    logger.info(`Card clicked, current flip state: ${isFlipped ? 'back' : 'front'}`);
+  // Add debug logging for handleCardClick
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Prevent event propagation to parent elements
+    e.stopPropagation();
+    
+    logger.info(`Card clicked for artist ${artist.id}, current flip state: ${isFlipped ? 'back' : 'front'}`);
     if (!isGeneratingArtworks) {
       handleFlip();
+      logger.info(`Flip state after handleFlip: ${!isFlipped ? 'back' : 'front'}`);
     } else {
       logger.info('Card flip aborted: artwork generation in progress');
     }

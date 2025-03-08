@@ -12,12 +12,18 @@ const ArtistCardFront: React.FC<ArtistCardFrontProps> = ({
   name,
   onImageError
 }) => {
+  // Stop propagation of click events on the image
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <div className="w-full h-full overflow-hidden">
       <img 
         src={image} 
         alt={name} 
         onError={onImageError} 
+        onClick={handleClick}
         className="w-full h-full object-cover" 
       />
     </div>

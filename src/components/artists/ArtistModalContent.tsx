@@ -5,6 +5,7 @@ import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
 import ArtistCarouselNavigation from "./ArtistCarouselNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { logger } from "@/utils/logger";
 
 interface ArtistModalContentProps {
   artists: Artist[];
@@ -28,24 +29,30 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   const isMobile = useIsMobile();
   const selectedArtist = artists[selectedArtistIndex];
   
-  // Remove isLastArtist and isFirstArtist checks since we're implementing looping
-
+  // Log when the modal content is rendered
+  React.useEffect(() => {
+    logger.info(`Modal content rendered for artist: ${selectedArtist.name} (ID: ${selectedArtist.id})`);
+  }, [selectedArtist]);
+  
   const isFavorite = favoriteArtists.has(selectedArtist.id);
 
   // Create a handler that adapts onSelect to the expected event signature
   const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault();
     onSelect(selectedArtist);
+    logger.info(`Select handler called for artist: ${selectedArtist.name}`);
   };
   
   // Create handlers for next and previous that implement looping
   const handlePrevious = () => {
     const newIndex = selectedArtistIndex === 0 ? artists.length - 1 : selectedArtistIndex - 1;
+    logger.info(`Navigating to previous artist, new index: ${newIndex}`);
     onArtistChange(newIndex);
   };
   
   const handleNext = () => {
     const newIndex = selectedArtistIndex === artists.length - 1 ? 0 : selectedArtistIndex + 1;
+    logger.info(`Navigating to next artist, new index: ${newIndex}`);
     onArtistChange(newIndex);
   };
   
