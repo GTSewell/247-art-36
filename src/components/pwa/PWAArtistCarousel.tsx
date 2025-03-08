@@ -52,7 +52,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       >
         <CarouselContent>
           {artists.map((artist) => (
-            <CarouselItem key={artist.id} className="basis-full sm:basis-1/2 md:basis-1/3 pl-4">
+            <CarouselItem key={artist.id} className="basis-2/3 sm:basis-1/2 md:basis-1/3 pl-4">
               <div className="h-150">
                 <ArtistCard
                   id={artist.id}

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
@@ -13,10 +12,6 @@ import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 interface ArtistRecord {
   id: number;
   user_id?: string;
-}
-
-interface RoleRecord {
-  role: string;
 }
 
 const ArtistDashboard: React.FC = () => {
