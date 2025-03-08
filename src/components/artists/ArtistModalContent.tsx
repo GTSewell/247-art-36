@@ -34,7 +34,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     onSelect(selectedArtist);
   };
   return <div className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}>
-      <div className="lg:w-1/2 p-4 lg:p-8 overflow-y-auto py-0 px-px">
+      <div className="lg:w-1/2 p-4 lg:p-8 overflow-y-auto py-0 px-0">
         <ArtistImagePanel artist={selectedArtist} onFavoriteToggle={onFavoriteToggle} isFavorite={isFavorite} refreshArtists={refreshArtists} />
       </div>
       
