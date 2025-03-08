@@ -1,8 +1,8 @@
 
 {
-  "name": "Zap Underground",
-  "short_name": "Zap",
-  "description": "Zap Underground - Art and Music Platform",
+  "name": "247.ART",
+  "short_name": "247.ART",
+  "description": "247.ART - Art and Music Platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
