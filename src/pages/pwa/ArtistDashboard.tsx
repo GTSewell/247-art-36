@@ -52,11 +52,15 @@ const ArtistDashboard = () => {
       }
       
       // Check if user is linked to an artist profile
-      const { data: artistData, error: artistError } = await supabase
+      // Using explicit type casting to avoid deep type instantiation issues
+      const artistQuery = await supabase
         .from('artists')
         .select('id')
         .eq('user_id', user.id)
         .maybeSingle();
+      
+      const artistData = artistQuery.data;
+      const artistError = artistQuery.error;
       
       if (artistError) {
         console.error("Error checking artist profile:", artistError);
