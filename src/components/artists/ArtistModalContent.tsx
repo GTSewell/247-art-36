@@ -5,7 +5,6 @@ import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
 import ArtistCarouselNavigation from "./ArtistCarouselNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
-import DownloadArtistImages from "./DownloadArtistImages";
 
 interface ArtistModalContentProps {
   artists: Artist[];
@@ -49,9 +48,6 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           isFavorite={isFavorite}
           refreshArtists={refreshArtists}
         />
-        
-        {/* Add Download Images component for the selected artist */}
-        <DownloadArtistImages artistId={selectedArtist.id} />
       </div>
       
       <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto">
