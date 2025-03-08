@@ -129,22 +129,8 @@ const PWAHome = () => {
             )}
           </div>
 
-          {/* Timed Edition Drops Section */}
+          {/* Timed Edition Drops Section - Title and emojis removed */}
           <div>
-            <h2 className="text-3xl font-bold mb-6 text-black text-center flex items-center justify-center">
-              <img
-                src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
-                alt="Dynamite"
-                className="w-8 h-8 mr-2"
-              />
-              TIMED EDITION DROPS
-              <img
-                src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
-                alt="Dynamite"
-                className="w-8 h-8 ml-2 scale-x-[-1]"
-              />
-            </h2>
-
             {!isLoading && products.length > 0 ? (
               <FeaturedProducts
                 products={products}
