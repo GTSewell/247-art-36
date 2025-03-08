@@ -1,6 +1,6 @@
 
 // Cache name version - increased to force refresh
-const CACHE_NAME = '247-art-v1';
+const CACHE_NAME = '247-art-v2';
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [
@@ -61,8 +61,10 @@ self.addEventListener('fetch', event => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  // For icon requests, always go to network then cache
-  if (url.pathname.includes('/icons/') || url.pathname.includes('favicon.ico') || url.pathname.includes('manifest.json')) {
+  // For PWA critical resources (manifest and icons), never use cache
+  if (url.pathname.includes('/icons/') || 
+      url.pathname.includes('favicon.ico') || 
+      url.pathname.includes('manifest.json')) {
     event.respondWith(
       fetch(event.request)
         .then(response => {
