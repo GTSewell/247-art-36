@@ -1,6 +1,6 @@
 
-// Cache name version
-const CACHE_NAME = 'zap-underground-v3';
+// Cache name version - increased to force refresh
+const CACHE_NAME = '247-art-v1';
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [
@@ -9,7 +9,8 @@ const urlsToCache = [
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  '/icons/apple-touch-icon.png'
+  '/icons/apple-touch-icon.png',
+  '/favicon.ico'
 ];
 
 // Install service worker
@@ -57,8 +58,33 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   
-  // Handle same-origin navigation requests specially
-  if (event.request.mode === 'navigate' && url.origin === self.location.origin) {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') return;
+
+  // For icon requests, always go to network then cache
+  if (url.pathname.includes('/icons/') || url.pathname.includes('favicon.ico') || url.pathname.includes('manifest.json')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Clone the response
+          const responseToCache = response.clone();
+          
+          caches.open(CACHE_NAME)
+            .then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+            
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+  
+  // For navigation requests, try network first
+  if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
         .catch(() => {
@@ -98,18 +124,10 @@ self.addEventListener('fetch', event => {
             return response;
           })
           .catch(() => {
-            // If both network and cache fail for non-navigation requests,
-            // serve a fallback or offline page
-            if (event.request.mode === 'navigate') {
-              return caches.match('/index.html');
-            }
-            
-            // For images, serve a fallback image
             if (event.request.destination === 'image') {
               return caches.match('/placeholder.svg');
             }
             
-            // For other resources, return a simple offline response
             return new Response('Network is unavailable', {
               status: 503,
               statusText: 'Service Unavailable',
