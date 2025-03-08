@@ -34,9 +34,8 @@ const AllArtists: React.FC<AllArtistsProps> = ({
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
-    // Navigate directly to artist profile page
-    const artistSlug = artist.name.toLowerCase().replace(/\s+/g, '');
-    navigate(`/artist/${artistSlug}`);
+    // Navigate using the correct route format
+    navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
     // Still call onSelect for any parent components that might need this info
     onSelect(artist);
   };

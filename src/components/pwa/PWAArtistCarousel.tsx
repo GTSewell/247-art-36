@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import ArtistCard from '@/components/artists/ArtistCard';
 import ArtistCarouselNavigation from '@/components/artists/ArtistCarouselNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useNavigate } from 'react-router-dom';
 
 interface PWAArtistCarouselProps {
   artists: Artist[];
@@ -23,6 +24,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 }) => {
   const [api, setApi] = useState<any>(null);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   const handlePrevious = () => {
     api?.scrollPrev();
@@ -30,6 +32,13 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 
   const handleNext = () => {
     api?.scrollNext();
+  };
+
+  const handleArtistClick = (artist: Artist) => {
+    // Navigate directly to artist profile page with the correct route
+    navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
+    // Still call onSelect for any parent components that might need this info
+    onSelect(artist);
   };
 
   // Center the first artist when the carousel is initialized
@@ -78,7 +87,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
                   techniques={artist.techniques}
                   styles={artist.styles}
                   social_platforms={artist.social_platforms}
-                  onSelect={() => onSelect(artist)}
+                  onSelect={() => handleArtistClick(artist)}
                   onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
                   isFavorite={favoriteArtists.has(artist.id)}
                   refreshArtist={refreshArtist}
