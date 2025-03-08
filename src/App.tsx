@@ -30,6 +30,10 @@ function App() {
     // Remove dark mode class from document - let artists page manage it locally
     document.documentElement.classList.remove('dark');
     
+    // Log the current PWA state
+    const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+    console.log('App initialized in mode:', isPWA ? 'PWA/standalone' : 'browser');
+    
     // Enhanced CSS to hide the "Fix Image URLs" button with more specific selectors
     const style = document.createElement('style');
     style.textContent = `
