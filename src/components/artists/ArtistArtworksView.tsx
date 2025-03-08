@@ -66,29 +66,25 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const displayArtworks = fixedArtworks.slice(0, 4);
 
   return (
-    <div className="w-full h-full p-4">
-      <div className="h-full w-full flex items-center justify-center">
-        <div className="w-full h-full p-4">
-          <div className="grid grid-cols-2 gap-2 h-full">
-            {displayArtworks.map((artwork, index) => (
-              <div 
-                key={index} 
-                className="relative aspect-square rounded overflow-hidden"
-                data-artwork-cell={`cell-${index}`}
-              >
-                {artwork && (
-                  <img
-                    src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                    alt={`Artwork ${index + 1} by ${artist.name}`}
-                    className="w-full h-full object-cover"
-                    onError={(e) => handleArtworkImageError(e, index)}
-                    data-artwork-image={`image-${index}`}
-                  />
-                )}
-              </div>
-            ))}
+    <div className="w-full h-full px-4 py-8" data-no-flip="true">
+      <div className="grid grid-cols-2 gap-2 h-full">
+        {displayArtworks.map((artwork, index) => (
+          <div 
+            key={index} 
+            className="relative aspect-square rounded overflow-hidden"
+            data-artwork-cell={`cell-${index}`}
+          >
+            {artwork && (
+              <img
+                src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                alt={`Artwork ${index + 1} by ${artist.name}`}
+                className="w-full h-full object-cover"
+                onError={(e) => handleArtworkImageError(e, index)}
+                data-artwork-image={`image-${index}`}
+              />
+            )}
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
