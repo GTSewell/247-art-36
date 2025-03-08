@@ -16,6 +16,13 @@ const CallToAction = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto text-center relative z-10"
       >
+        {/* Logo */}
+        <img 
+          src="/lovable-uploads/d4751e5a-f75b-474b-993f-c64d99319afb.png"
+          alt="247.ART Logo"
+          className="h-24 mx-auto mb-8"
+        />
+        
         {/* Powered By Section */}
         <div className="mt-16 relative z-10">
           <p className="text-black mb-6 text-lg font-extrabold">Powered by:</p>

@@ -58,7 +58,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8">
         <div className="flex justify-center mb-6">
           <img 
-            src="/lovable-uploads/e3632eac-612c-482e-aad1-8d4fd3b2947c.png" 
+            src="/lovable-uploads/d4751e5a-f75b-474b-993f-c64d99319afb.png" 
             alt="247.art" 
             className="h-12"
           />
