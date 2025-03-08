@@ -1,9 +1,36 @@
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [isInstallable, setIsInstallable] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      setDeferredPrompt(e);
+      // Update UI to notify the user they can install the PWA
+      setIsInstallable(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstallable(false);
+      setIsClicked(true);
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
 
   const scrollToWhatIsZap = () => {
     const whatIsZapSection = document.getElementById('247-details');
@@ -11,6 +38,38 @@ const Hero = () => {
       whatIsZapSection.scrollIntoView({
         behavior: 'smooth'
       });
+    }
+  };
+
+  const handleInstallClick = async () => {
+    setIsClicked(true);
+    
+    if (!deferredPrompt) {
+      // The app is already installed or not installable
+      toast.info("App is already installed or not installable on this device");
+      return;
+    }
+
+    // Show the install prompt
+    try {
+      // @ts-ignore - deferredPrompt is a non-standard API
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      // @ts-ignore - deferredPrompt is a non-standard API
+      const { outcome } = await deferredPrompt.userChoice;
+      
+      if (outcome === 'accepted') {
+        toast.success("ZAP! has been installed successfully!");
+        setDeferredPrompt(null);
+      } else {
+        toast.info("Installation cancelled");
+        // Allow the user to try again
+        setIsClicked(false);
+      }
+    } catch (error) {
+      console.error('Installation error:', error);
+      toast.error("There was a problem installing the app");
+      setIsClicked(false);
     }
   };
 
@@ -67,8 +126,12 @@ const Hero = () => {
           delay: 0.6,
           duration: 0.5
         }} className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => setIsClicked(!isClicked)} className={`${isClicked ? 'bg-zap-blue' : 'bg-[#ea384c]'} text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105`}>
-              {isClicked ? 'Coming soon' : 'Get the app'}
+            <button 
+              onClick={handleInstallClick} 
+              className={`${isClicked && !isInstallable ? 'bg-zap-blue' : 'bg-[#ea384c]'} text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105`}
+              disabled={isClicked && !isInstallable}
+            >
+              {isClicked && !isInstallable ? 'Installed' : isInstallable ? 'Install App' : 'Get the app'}
             </button>
             <button onClick={scrollToWhatIsZap} className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200">
               Learn More
