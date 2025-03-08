@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
@@ -9,7 +10,6 @@ import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 
-// Define explicit interfaces to help TypeScript with type resolution
 interface ArtistRecord {
   id: number;
   user_id: string;
@@ -46,37 +46,38 @@ const ArtistDashboard: React.FC = () => {
     try {
       setLoading(true);
 
-      // Query for user role with explicit type annotation
-      const roleQuery = await supabase
-        .from<RoleRecord>("user_roles")
-        .select("role")
-        .eq("user_id", user.id as string)
-        .eq("role", "artist");
+      // Use explicit types for the queries
+      const userIdString = user.id as string;
 
-      const roleData = roleQuery.data as RoleRecord[] | null;
-      const roleError = roleQuery.error;
+      // Check if user has artist role
+      const { data: roleData, error: roleError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userIdString)
+        .eq('role', 'artist');
 
       if (roleError) {
         console.error("Error checking artist role:", roleError);
       }
 
-      // Query for artist profile with explicit type annotation
-      const artistQuery = await supabase
-        .from<ArtistRecord>("artists")
-        .select("id")
-        .eq("user_id", user.id as string);
-
-      const artistData = artistQuery.data as ArtistRecord[] | null;
-      const artistError = artistQuery.error;
+      // Check for artist profile
+      const { data: artistData, error: artistError } = await supabase
+        .from('artists')
+        .select('id')
+        .eq('user_id', userIdString);
 
       if (artistError) {
         console.error("Error checking artist profile:", artistError);
       }
 
-      if ((roleData && roleData.length > 0) || (artistData && artistData.length > 0)) {
+      // Cast data arrays to the correct types
+      const typedRoleData = roleData as RoleRecord[] | null;
+      const typedArtistData = artistData as ArtistRecord[] | null;
+
+      if ((typedRoleData && typedRoleData.length > 0) || (typedArtistData && typedArtistData.length > 0)) {
         setIsArtist(true);
-        if (artistData && artistData.length > 0) {
-          setArtistId(artistData[0].id);
+        if (typedArtistData && typedArtistData.length > 0) {
+          setArtistId(typedArtistData[0].id);
         }
       } else {
         toast.error("You do not have artist access");

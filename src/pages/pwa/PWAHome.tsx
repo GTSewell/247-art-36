@@ -1,87 +1,126 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
 import PWANavigation from "@/components/pwa/PWANavigation";
-import { Palette, Store, User, UserCircle } from "lucide-react";
-import { toast } from "sonner";
+import { useArtists } from "@/hooks/use-artists";
+import FeaturedArtists from "@/components/artists/FeaturedArtists";
+import FeaturedProducts from "@/components/store/FeaturedProducts";
+import { supabase } from "@/integrations/supabase/client";
+import { Artist } from "@/data/types/artist";
 
 const PWAHome = () => {
   const navigate = useNavigate();
-  const { user, isLoading } = useAuth();
-  
-  const navigateTo = (path: string) => {
-    navigate(path);
+  const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
+  const [products, setProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [timerState, setTimerState] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .eq('is_featured', true)
+          .order('created_at', { ascending: false })
+          .limit(6);
+
+        if (error) throw error;
+        setProducts(data || []);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleProductSelect = (product: any, timer: any) => {
+    setSelectedProduct(product);
+    setTimerState(timer);
   };
-  
-  const handleLogin = () => {
-    navigate('/auth');
+
+  const handleArtistSelect = (artist: Artist) => {
+    navigate(`/artists/${artist.id}`);
   };
-  
+
+  const refreshArtist = async (artistId: number): Promise<Artist | void> => {
+    try {
+      const { data, error } = await supabase
+        .from('artists')
+        .select('*')
+        .eq('id', artistId)
+        .single();
+        
+      if (error) throw error;
+      return data as Artist;
+    } catch (error) {
+      console.error('Error refreshing artist:', error);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-zap-yellow">
+    <div className="min-h-screen bg-zap-yellow pb-20">
       <PWANavigation />
       
-      <main className="container mx-auto px-4 pt-20 pb-12">
-        <div className="flex justify-center mb-8">
+      <main className="container mx-auto px-4 pt-20">
+        <div className="flex justify-center mb-8 mt-4">
           <img 
             src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png" 
             alt="247.ART Logo" 
-            className="h-24 w-auto"
+            className="h-16 w-auto"
           />
         </div>
         
-        <h1 className="text-2xl font-bold text-center mb-8">Welcome to 247.ART</h1>
-        
-        <div className="grid grid-cols-2 gap-4 max-w-xl mx-auto">
-          <Button 
-            variant="outline" 
-            className="h-32 bg-white flex flex-col gap-2 p-4 items-center justify-center"
-            onClick={() => navigateTo('/artists')}
-          >
-            <Palette size={32} />
-            <span>Artists</span>
-          </Button>
+        {/* Featured Artists Section */}
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold mb-6 text-black text-center">FEATURED ARTISTS</h2>
           
-          <Button 
-            variant="outline" 
-            className="h-32 bg-white flex flex-col gap-2 p-4 items-center justify-center"
-            onClick={() => navigateTo('/store')}
-          >
-            <Store size={32} />
-            <span>Store</span>
-          </Button>
-          
-          {user ? (
-            <>
-              <Button 
-                variant="outline" 
-                className="h-32 bg-white flex flex-col gap-2 p-4 items-center justify-center"
-                onClick={() => navigateTo('/dashboard/artist')}
-              >
-                <User size={32} />
-                <span>Artist Dashboard</span>
-              </Button>
-              
-              <Button 
-                variant="outline" 
-                className="h-32 bg-white flex flex-col gap-2 p-4 items-center justify-center"
-                onClick={() => navigateTo('/dashboard/collector')}
-              >
-                <UserCircle size={32} />
-                <span>Collector Dashboard</span>
-              </Button>
-            </>
+          {featuredArtists.length > 0 ? (
+            <FeaturedArtists 
+              artists={featuredArtists}
+              onSelect={handleArtistSelect}
+              onFavoriteToggle={handleFavoriteToggle}
+              favoriteArtists={favoriteArtists}
+              refreshArtists={refreshArtists}
+              refreshArtist={refreshArtist}
+            />
           ) : (
-            <Button 
-              variant="default" 
-              className="h-32 col-span-2 bg-zap-red hover:bg-zap-blue flex flex-col gap-2 p-4 items-center justify-center"
-              onClick={handleLogin}
-            >
-              <UserCircle size={32} />
-              <span>Sign In / Sign Up</span>
-            </Button>
+            <div className="flex justify-center items-center h-40">
+              <p className="text-lg">Loading artists...</p>
+            </div>
+          )}
+        </div>
+        
+        {/* Timed Edition Drops Section */}
+        <div>
+          <h2 className="text-3xl font-bold mb-6 text-black text-center flex items-center justify-center">
+            <img 
+              src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png" 
+              alt="Dynamite"
+              className="w-8 h-8 mr-2"
+            />
+            TIMED EDITION DROPS
+            <img 
+              src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png" 
+              alt="Dynamite"
+              className="w-8 h-8 ml-2 scale-x-[-1]"
+            />
+          </h2>
+          
+          {!isLoading && products.length > 0 ? (
+            <FeaturedProducts 
+              products={products}
+              onProductSelect={handleProductSelect}
+            />
+          ) : (
+            <div className="flex justify-center items-center h-40">
+              <p className="text-lg">Loading products...</p>
+            </div>
           )}
         </div>
       </main>

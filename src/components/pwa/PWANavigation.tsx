@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Home, Menu, Palette, ShoppingBag, User, X } from "lucide-react";
+import { Home, Palette, ShoppingBag, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
@@ -36,18 +36,23 @@ const PWANavigation = () => {
               />
             </Link>
 
-            {/* Mobile menu button */}
+            {/* Profile icon button */}
             <div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsOpen(!isOpen)}
-                aria-label="Toggle menu"
+                aria-label="User menu"
+                className="rounded-full overflow-hidden"
               >
                 {isOpen ? (
                   <X className="h-6 w-6" />
                 ) : (
-                  <Menu className="h-6 w-6" />
+                  <img 
+                    src="/lovable-uploads/3ee38748-01eb-40cf-9d48-f01c3757620a.png" 
+                    alt="Profile" 
+                    className="h-8 w-8"
+                  />
                 )}
               </Button>
             </div>
@@ -105,7 +110,11 @@ const PWANavigation = () => {
                   )}
                   onClick={() => navigateTo("/dashboard/artist")}
                 >
-                  <User className="mr-2 h-5 w-5" />
+                  <img 
+                    src="/lovable-uploads/3ee38748-01eb-40cf-9d48-f01c3757620a.png" 
+                    alt="Artist Profile"
+                    className="mr-2 h-5 w-5"
+                  />
                   Artist Dashboard
                 </Button>
 
@@ -117,7 +126,11 @@ const PWANavigation = () => {
                   )}
                   onClick={() => navigateTo("/dashboard/collector")}
                 >
-                  <User className="mr-2 h-5 w-5" />
+                  <img 
+                    src="/lovable-uploads/3ee38748-01eb-40cf-9d48-f01c3757620a.png" 
+                    alt="Collector Profile"
+                    className="mr-2 h-5 w-5"
+                  />
                   Collector Dashboard
                 </Button>
               </>
@@ -139,7 +152,10 @@ const PWANavigation = () => {
         <div className="grid grid-cols-3 h-16">
           <Button 
             variant="ghost" 
-            className="flex flex-col items-center justify-center rounded-none h-full"
+            className={cn(
+              "flex flex-col items-center justify-center rounded-none h-full",
+              isActive("/") && "text-primary"
+            )}
             onClick={() => navigateTo("/")}
           >
             <Home className="h-5 w-5" />
@@ -147,7 +163,10 @@ const PWANavigation = () => {
           </Button>
           <Button 
             variant="ghost" 
-            className="flex flex-col items-center justify-center rounded-none h-full"
+            className={cn(
+              "flex flex-col items-center justify-center rounded-none h-full",
+              isActive("/artists") && "text-primary"
+            )}
             onClick={() => navigateTo("/artists")}
           >
             <Palette className="h-5 w-5" />
@@ -155,7 +174,10 @@ const PWANavigation = () => {
           </Button>
           <Button 
             variant="ghost" 
-            className="flex flex-col items-center justify-center rounded-none h-full"
+            className={cn(
+              "flex flex-col items-center justify-center rounded-none h-full",
+              isActive("/store") && "text-primary"
+            )}
             onClick={() => navigateTo("/store")}
           >
             <ShoppingBag className="h-5 w-5" />
