@@ -16,6 +16,9 @@ export const useCardFlip = (artistId: number) => {
 
   // Handle card flip
   const handleFlip = (e: React.MouseEvent, isGeneratingArtworks: boolean) => {
+    // Log the click event for debugging
+    logger.info(`Card flip triggered for artist ${artistId}`);
+    
     // Don't flip if we're in the middle of an operation
     if (isGeneratingArtworks) {
       logger.info('Card flip aborted: artwork generation in progress');
@@ -45,6 +48,8 @@ export const useCardFlip = (artistId: number) => {
     }
     
     logger.info(`Flipping card for artist ${artistId} from ${isFlipped ? 'back' : 'front'} to ${isFlipped ? 'front' : 'back'}`);
+    
+    // Use a callback to ensure we're using the latest state
     setIsFlipped(prevState => !prevState);
     
     if (showClickIndicator) {

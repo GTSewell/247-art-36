@@ -82,8 +82,15 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               animate={{ rotateY: 0 }}
               exit={{ rotateY: 90 }}
               transition={{ duration: 0.4 }}
-              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
-              className="absolute w-full h-full"
+              style={{ 
+                transformStyle: 'preserve-3d', 
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                position: 'absolute',
+                width: '100%',
+                height: '100%'
+              }}
+              className="w-full h-full"
             >
               <ArtistCardFront 
                 image={mainImageError ? '/placeholder.svg' : currentArtist.image}
@@ -98,8 +105,15 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               animate={{ rotateY: 0 }}
               exit={{ rotateY: -90 }}
               transition={{ duration: 0.4 }}
-              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
-              className="absolute w-full h-full bg-white"
+              style={{ 
+                transformStyle: 'preserve-3d', 
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                position: 'absolute',
+                width: '100%',
+                height: '100%'
+              }}
+              className="w-full h-full bg-white"
               data-testid="artist-card-back"
             >
               <ArtistArtworksView 
