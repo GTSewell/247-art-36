@@ -15,6 +15,7 @@ import { Toaster } from "sonner";
 import { SitePassword } from "./components/SitePassword";
 import ArtistSubdomain from "./pages/ArtistSubdomain";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { logger } from "./utils/logger";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -23,8 +24,12 @@ function App() {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(
     localStorage.getItem("isPasswordCorrect") === "true"
   );
+  const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
+    // Log app initialization
+    logger.info("App component mounted");
+    
     localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
     
     // Remove dark mode class from document - let artists page manage it locally
@@ -32,7 +37,7 @@ function App() {
     
     // Log the current PWA state
     const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-    console.log('App initialized in mode:', isPWA ? 'PWA/standalone' : 'browser');
+    logger.info('App initialized in mode:', isPWA ? 'PWA/standalone' : 'browser');
     
     // Enhanced CSS to hide the "Fix Image URLs" button with more specific selectors
     const style = document.createElement('style');
@@ -76,7 +81,24 @@ function App() {
       }
     `;
     document.head.appendChild(style);
+    
+    // Mark app as ready after a short delay to ensure DOM is fully ready
+    const timer = setTimeout(() => {
+      setAppReady(true);
+      logger.info("App marked as ready");
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [isPasswordCorrect]);
+
+  // Handle initial loading state
+  if (!appReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <p>Loading ZAP...</p>
+      </div>
+    );
+  }
 
   if (!isPasswordCorrect) {
     return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
@@ -112,6 +134,8 @@ function ScrollToTop() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Log page navigation for debugging
+    logger.info(`Navigated to: ${pathname}`);
   }, [pathname]);
 
   return null;
