@@ -2,21 +2,44 @@
 {
   "name": "247.ART",
   "short_name": "247.ART",
-  "description": "247.ART - Art and Music Platform",
-  "start_url": "/",
+  "description": "247.ART - Artist & Collector Platform",
+  "start_url": "/?source=pwa",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#ffc82c",
+  "background_color": "#f7cf1e",
+  "theme_color": "#f7cf1e",
   "orientation": "portrait",
   "scope": "/",
   "prefer_related_applications": false,
   "related_applications": [],
+  "categories": ["art", "music", "lifestyle", "social"],
   "icons": [
     {
       "src": "/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Artists",
+      "url": "/artists",
+      "icons": [
+        {
+          "src": "/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Store",
+      "url": "/store",
+      "icons": [
+        {
+          "src": "/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

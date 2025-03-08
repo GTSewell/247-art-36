@@ -16,15 +16,32 @@ import { SitePassword } from "./components/SitePassword";
 import ArtistSubdomain from "./pages/ArtistSubdomain";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { logger } from "./utils/logger";
+import { AppModeProvider, useAppMode } from "./contexts/AppModeContext";
+import ArtistDashboard from "./pages/pwa/ArtistDashboard";
+import PWAHome from "./pages/pwa/PWAHome";
+import CollectorDashboard from "./pages/pwa/CollectorDashboard";
 
 // Create a client
 const queryClient = new QueryClient();
 
-function App() {
+// Main application wrapper with providers
+function AppWrapper() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AppModeProvider>
+        <AppContent />
+      </AppModeProvider>
+    </QueryClientProvider>
+  );
+}
+
+// Application content with conditional routing based on PWA or browser mode
+function AppContent() {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(
     localStorage.getItem("isPasswordCorrect") === "true"
   );
   const [appReady, setAppReady] = useState(false);
+  const { isPWA } = useAppMode();
 
   useEffect(() => {
     // Log app initialization
@@ -36,7 +53,6 @@ function App() {
     document.documentElement.classList.remove('dark');
     
     // Log the current PWA state
-    const isPWA = window.matchMedia('(display-mode: standalone)').matches;
     logger.info('App initialized in mode:', isPWA ? 'PWA/standalone' : 'browser');
     
     // Enhanced CSS to hide the "Fix Image URLs" button with more specific selectors
@@ -89,7 +105,7 @@ function App() {
     }, 100);
     
     return () => clearTimeout(timer);
-  }, [isPasswordCorrect]);
+  }, [isPasswordCorrect, isPWA]);
 
   // Handle initial loading state
   if (!appReady) {
@@ -105,27 +121,38 @@ function App() {
   }
 
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/who-are-you" element={<WhoAreYou />} />
-            <Route path="/virtual-tour" element={<VirtualTour />} />
-            <Route path="/artists" element={<Artists />} />
-            <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/details" element={<Details />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/store" element={<GeneralStore />} />
-            <Route path="/artist-submission" element={<ArtistSubmission />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster richColors />
-      </QueryClientProvider>
-    </>
+    <BrowserRouter>
+      <ScrollToTop />
+      {isPWA ? (
+        // PWA Routes - Focused on Artists and Store functionality
+        <Routes>
+          <Route path="/" element={<PWAHome />} />
+          <Route path="/artists" element={<Artists />} />
+          <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
+          <Route path="/store" element={<GeneralStore />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard/artist" element={<ArtistDashboard />} />
+          <Route path="/dashboard/collector" element={<CollectorDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      ) : (
+        // Browser Routes - Full website experience
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/who-are-you" element={<WhoAreYou />} />
+          <Route path="/virtual-tour" element={<VirtualTour />} />
+          <Route path="/artists" element={<Artists />} />
+          <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/details" element={<Details />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/store" element={<GeneralStore />} />
+          <Route path="/artist-submission" element={<ArtistSubmission />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      )}
+      <Toaster richColors />
+    </BrowserRouter>
   );
 }
 
@@ -141,4 +168,4 @@ function ScrollToTop() {
   return null;
 }
 
-export default App;
+export default AppWrapper;
