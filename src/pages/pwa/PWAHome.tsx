@@ -106,13 +106,7 @@ const PWAHome = () => {
         <PWANavigation />
 
         <main className="container mx-auto px-4 pt-20">
-          <div className="flex justify-center mb-8 mt-4">
-            <img
-              src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png"
-              alt="247.ART Logo"
-              className="h-16 w-auto"
-            />
-          </div>
+          {/* Removed the Zap logo div that was here */}
 
           {/* Featured Artists Section - Now using Carousel */}
           <div className="mb-12">
