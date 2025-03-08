@@ -46,10 +46,16 @@ export const useCardFlip = (artistId: number) => {
     }
   };
 
+  // Force flip to front or back
+  const setFlipState = (flipped: boolean) => {
+    setIsFlipped(flipped);
+  };
+
   return { 
     isFlipped, 
     showClickIndicator, 
     handleFlip,
-    hideClickIndicator
+    hideClickIndicator,
+    setFlipState
   };
 };

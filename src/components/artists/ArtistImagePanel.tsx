@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -29,8 +29,13 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   
   // Custom hooks
   const { currentArtist, refreshArtist } = useArtistData(artist, refreshArtists);
-  const { isFlipped, showClickIndicator, handleFlip, hideClickIndicator } = useCardFlip(artist.id);
+  const { isFlipped, showClickIndicator, handleFlip, hideClickIndicator, setFlipState } = useCardFlip(artist.id);
   const { mainImageError, artworkErrors, handleMainImageError, handleArtworkImageError } = useImageErrors(artist.id, artist.name);
+
+  // Reset flip state when artist changes
+  useEffect(() => {
+    setFlipState(false);
+  }, [artist.id, setFlipState]);
 
   // Handle mobile interaction
   const handleInteraction = () => {
@@ -43,12 +48,17 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
+  // Handle click on card for flipping
+  const handleCardClick = (e: React.MouseEvent) => {
+    handleFlip(e, isGeneratingArtworks);
+  };
+
   return (
     <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
       <div 
         className="relative aspect-auto md:aspect-square h-full w-full overflow-hidden cursor-pointer"
         style={{ perspective: '1000px' }}
-        onClick={(e) => handleFlip(e, isGeneratingArtworks)}
+        onClick={handleCardClick}
         onMouseEnter={() => !isMobile && setIsHovered(true)}
         onMouseLeave={() => !isMobile && setIsHovered(false)}
         onTouchStart={handleInteraction}
@@ -87,6 +97,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               transition={{ duration: 0.4 }}
               style={{ transformStyle: 'preserve-3d' }}
               className="absolute w-full h-full bg-white"
+              data-testid="artist-card-back"
             >
               <ArtistArtworksView 
                 artist={currentArtist}
