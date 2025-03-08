@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import PWANavigation from "@/components/pwa/PWANavigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { ArrowUpRight, BarChart3, Image, Settings } from "lucide-react";
 import { toast } from "sonner";
 import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
@@ -40,33 +37,30 @@ const ArtistDashboard = () => {
       setLoading(true);
       
       // Check if the user has an artist role
-      const roleResult = await supabase
+      const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
         .eq('role', 'artist')
         .maybeSingle();
       
-      const roleData = roleResult.data;
-      const roleError = roleResult.error;
-      
       if (roleError) {
         console.error("Error checking artist role:", roleError);
       }
       
       // Check if user is linked to an artist profile
-      // Breaking down the query to avoid type recursion issues
-      const artistResult = await supabase
+      // Using type assertions to avoid deep type instantiation
+      const artistProfileQuery = await supabase
         .from('artists')
         .select('id')
         .eq('user_id', user.id)
-        .maybeSingle();
+        .single();
       
-      // Explicitly extracting data and error to avoid type recursion
-      const artistData = artistResult.data as { id: number } | null;
-      const artistError = artistResult.error;
+      // Use type assertion to break the recursive type checking
+      const artistData = artistProfileQuery.data as { id: number } | null;
+      const artistError = artistProfileQuery.error;
       
-      if (artistError) {
+      if (artistError && artistError.code !== 'PGRST116') {
         console.error("Error checking artist profile:", artistError);
       }
       

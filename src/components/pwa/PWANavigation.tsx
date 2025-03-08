@@ -55,7 +55,7 @@ const PWANavigation = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation Menu */}
+      {/* Mobile Navigation Menu - Simplified for PWA */}
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-white pt-16">
           <div className="container mx-auto px-4 py-6 space-y-4">
@@ -95,7 +95,7 @@ const PWANavigation = () => {
               Store
             </Button>
 
-            {user && (
+            {user ? (
               <>
                 <Button
                   variant="outline"
@@ -121,9 +121,7 @@ const PWANavigation = () => {
                   Collector Dashboard
                 </Button>
               </>
-            )}
-
-            {!user && !isLoading && (
+            ) : (
               <Button
                 variant="default"
                 className="w-full justify-center text-lg p-4 bg-zap-red hover:bg-zap-blue"
