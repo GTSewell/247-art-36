@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import ArtistCard from '@/components/artists/ArtistCard';
 import ArtistCarouselNavigation from '@/components/artists/ArtistCarouselNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ArtistDetailModal from '@/components/artists/ArtistDetailModal';
 
 interface PWAArtistCarouselProps {
   artists: Artist[];
@@ -22,6 +23,9 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
   refreshArtist
 }) => {
   const [api, setApi] = useState<any>(null);
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   const isMobile = useIsMobile();
 
   const handlePrevious = () => {
@@ -30,6 +34,21 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 
   const handleNext = () => {
     api?.scrollNext();
+  };
+
+  const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
+    e.preventDefault();
+    const index = artists.findIndex(a => a.id === artist.id);
+    setSelectedArtistIndex(index);
+    setSelectedArtist(artist);
+    setDialogOpen(true);
+  };
+
+  const handleArtistChange = (index: number) => {
+    if (index >= 0 && index < artists.length) {
+      setSelectedArtistIndex(index);
+      setSelectedArtist(artists[index]);
+    }
   };
 
   // Center the first artist when the carousel is initialized
@@ -58,12 +77,12 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center", // Change from "start" to "center"
+          align: "center",
           loop: true
         }}
         className="w-full"
       >
-        <CarouselContent className="ml-0"> {/* Remove default left margin */}
+        <CarouselContent className="ml-0">
           {artists.map((artist) => (
             <CarouselItem key={artist.id} className="basis-2/3 sm:basis-1/2 md:basis-1/3 pl-4">
               <div className="h-150">
@@ -78,7 +97,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
                   techniques={artist.techniques}
                   styles={artist.styles}
                   social_platforms={artist.social_platforms}
-                  onSelect={() => onSelect(artist)}
+                  onSelect={(e) => handleArtistClick(e, artist)}
                   onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
                   isFavorite={favoriteArtists.has(artist.id)}
                   refreshArtist={refreshArtist}
@@ -95,6 +114,20 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
           onNext={handleNext} 
         />
       </Carousel>
+
+      {/* Artist Detail Modal */}
+      <ArtistDetailModal
+        artists={artists}
+        selectedArtist={selectedArtist}
+        selectedArtistIndex={selectedArtistIndex}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onArtistChange={handleArtistChange}
+        onFavoriteToggle={onFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtists={() => {}}
+        onSelect={onSelect}
+      />
     </div>
   );
 };

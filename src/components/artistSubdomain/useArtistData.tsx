@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { toast } from 'sonner';
+import { logger } from "@/utils/logger";
 
 export function useArtistData(artistName: string | undefined) {
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -15,16 +16,27 @@ export function useArtistData(artistName: string | undefined) {
       try {
         setLoading(true);
         
-        const formattedName = artistName?.replace(/([A-Z])/g, ' $1').trim();
+        if (!artistName) {
+          setLoading(false);
+          return;
+        }
+        
+        const formattedName = artistName.replace(/([A-Z])/g, ' $1').trim();
+        logger.info(`Fetching artist data for: ${formattedName}`);
+        
         const { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .ilike('name', formattedName || '')
-          .single();
+          .ilike('name', formattedName)
+          .maybeSingle();
         
-        if (artistError) throw artistError;
+        if (artistError) {
+          logger.error("Error fetching artist data:", artistError);
+          throw artistError;
+        }
         
         if (artistData) {
+          logger.info(`Found artist: ${artistData.name}, ID: ${artistData.id}`);
           const processedArtist: Artist = {
             ...artistData,
             techniques: typeof artistData.techniques === 'string' 
@@ -59,9 +71,11 @@ export function useArtistData(artistName: string | undefined) {
           };
           
           setProfile(defaultProfile);
+        } else {
+          logger.warn(`No artist found with name: ${formattedName}`);
         }
       } catch (error: any) {
-        console.error('Error fetching artist data:', error);
+        logger.error('Error fetching artist data:', error);
         toast.error(`Failed to load artist: ${error.message}`);
       } finally {
         setLoading(false);
@@ -70,6 +84,8 @@ export function useArtistData(artistName: string | undefined) {
 
     if (artistName) {
       fetchArtistData();
+    } else {
+      setLoading(false);
     }
   }, [artistName]);
 

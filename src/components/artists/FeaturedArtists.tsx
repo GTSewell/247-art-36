@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ArtistCard from './ArtistCard';
 import { Artist } from '@/data/types/artist';
 import ArtistDetailModal from './ArtistDetailModal';
+import { logger } from "@/utils/logger";
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -27,6 +28,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
+    logger.info(`Artist clicked: ${artist.name}, ID: ${artist.id}`);
     const index = artists.findIndex(a => a.id === artist.id);
     setSelectedArtistIndex(index);
     setSelectedArtist(artist);
@@ -35,6 +37,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
 
   const handleArtistChange = (index: number) => {
     // No need to check bounds since we're implementing looping in ArtistModalContent
+    logger.info(`Changing to artist at index: ${index}`);
     setSelectedArtistIndex(index);
     setSelectedArtist(artists[index]);
   };
