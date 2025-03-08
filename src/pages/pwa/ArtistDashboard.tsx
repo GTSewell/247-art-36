@@ -10,6 +10,16 @@ import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 
+// Define explicit interfaces to help TypeScript with type resolution
+interface ArtistRecord {
+  id: number;
+  user_id?: string;
+}
+
+interface RoleRecord {
+  role: string;
+}
+
 const ArtistDashboard = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useAuth();
@@ -36,38 +46,39 @@ const ArtistDashboard = () => {
     try {
       setLoading(true);
       
-      // Check if the user has an artist role
-      const { data: roleData, error: roleError } = await supabase
+      // Check if the user has an artist role with explicit type annotation
+      const roleQuery = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'artist')
-        .maybeSingle();
+        .eq('user_id', user.id as string)
+        .eq('role', 'artist');
+      
+      // Explicitly extract data and error to avoid type recursion
+      const roleData = roleQuery.data as RoleRecord[] | null;
+      const roleError = roleQuery.error;
       
       if (roleError) {
         console.error("Error checking artist role:", roleError);
       }
       
-      // Check if user is linked to an artist profile
-      // Using type assertions to avoid deep type instantiation
-      const artistProfileQuery = await supabase
+      // Check if user is linked to an artist profile with explicit typing
+      const artistQuery = await supabase
         .from('artists')
         .select('id')
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', user.id as string);
       
-      // Use type assertion to break the recursive type checking
-      const artistData = artistProfileQuery.data as { id: number } | null;
-      const artistError = artistProfileQuery.error;
+      // Explicitly extract data and error with type annotations
+      const artistData = artistQuery.data as ArtistRecord[] | null;
+      const artistError = artistQuery.error;
       
-      if (artistError && artistError.code !== 'PGRST116') {
+      if (artistError) {
         console.error("Error checking artist profile:", artistError);
       }
       
-      if (roleData || artistData) {
+      if ((roleData && roleData.length > 0) || (artistData && artistData.length > 0)) {
         setIsArtist(true);
-        if (artistData) {
-          setArtistId(artistData.id);
+        if (artistData && artistData.length > 0) {
+          setArtistId(artistData[0].id);
         }
       } else {
         toast.error("You do not have artist access");
