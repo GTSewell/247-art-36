@@ -50,35 +50,38 @@ const ArtistDashboard: React.FC = () => {
       // Use the user id string directly
       const userIdString = user.id;
 
-      // Check if user has artist role
+      // Check if user has artist role - fix type issues by separating the query from data access
       const roleResponse = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userIdString)
         .eq('role', 'artist');
 
-      // Check if user has an artist profile
+      // Check if user has an artist profile - fix type issues by separating the query from data access
       const artistResponse = await supabase
         .from('artists')
-        .select('id, user_id')
+        .select('id')
         .eq('user_id', userIdString);
       
-      // Handle any query errors
-      if (roleResponse.error) {
+      // Safely handle potential errors from both queries
+      const hasRoleError = roleResponse.error !== null;
+      const hasArtistError = artistResponse.error !== null;
+      
+      if (hasRoleError) {
         console.error("Error checking artist role:", roleResponse.error);
       }
 
-      if (artistResponse.error) {
+      if (hasArtistError) {
         console.error("Error checking artist profile:", artistResponse.error);
       }
 
-      // Check if user is an artist based on role or profile
-      const hasArtistRole = roleResponse.data && roleResponse.data.length > 0;
-      const hasArtistProfile = artistResponse.data && artistResponse.data.length > 0;
+      // Safely check if data exists and has length
+      const hasArtistRole = !hasRoleError && roleResponse.data && roleResponse.data.length > 0;
+      const hasArtistProfile = !hasArtistError && artistResponse.data && artistResponse.data.length > 0;
       
       if (hasArtistRole || hasArtistProfile) {
         setIsArtist(true);
-        if (hasArtistProfile && artistResponse.data) {
+        if (hasArtistProfile && artistResponse.data && artistResponse.data.length > 0) {
           setArtistId(artistResponse.data[0].id);
         }
       } else {
