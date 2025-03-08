@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import ArtistCard from './ArtistCard';
 import { Artist } from '@/data/types/artist';
@@ -58,6 +59,7 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}
             refreshArtist={refreshArtist}
+            showNameOverlay={true}
           />
         ))}
       </div>

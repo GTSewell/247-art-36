@@ -69,6 +69,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
                   onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
                   isFavorite={favoriteArtists.has(artist.id)}
                   refreshArtist={refreshArtist}
+                  showNameOverlay={true}
                 />
               </div>
             </CarouselItem>

@@ -46,6 +46,7 @@ const ArtistGrid: React.FC<ArtistGridProps> = ({
             onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}
             refreshArtist={refreshArtist}
+            showNameOverlay={true}
           />
         ))
       ) : (
