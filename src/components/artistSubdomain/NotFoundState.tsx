@@ -30,6 +30,9 @@ const NotFoundState: React.FC = () => {
           We couldn't find an artist named "{artistName}". 
           The artist may have been removed or the URL might be incorrect.
         </p>
+        <p className="text-sm text-gray-500 mb-4 text-center">
+          Artist names in URLs are case-sensitive and should match exactly how they appear in the database.
+        </p>
         <Button 
           onClick={handleBackToArtists}
           className="w-full bg-[#f7cf1e] hover:bg-[#e6bf1a] text-gray-800"

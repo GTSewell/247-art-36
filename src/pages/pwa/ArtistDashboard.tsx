@@ -26,7 +26,7 @@ const ArtistDashboard = () => {
           .from('artists')
           .select('id')
           .eq('user_id', user.id)
-          .single();
+          .maybeSingle();
 
         if (error) {
           logger.error('Error fetching artist ID:', error);

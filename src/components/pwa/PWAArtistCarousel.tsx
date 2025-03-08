@@ -6,6 +6,7 @@ import ArtistCard from '@/components/artists/ArtistCard';
 import ArtistCarouselNavigation from '@/components/artists/ArtistCarouselNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useNavigate } from 'react-router-dom';
+import { logger } from '@/utils/logger';
 
 interface PWAArtistCarouselProps {
   artists: Artist[];
@@ -35,8 +36,13 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
   };
 
   const handleArtistClick = (artist: Artist) => {
-    // Navigate directly to artist profile page with the correct route
-    navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
+    // Create URL-friendly slug from artist name
+    const artistSlug = artist.name.toLowerCase().replace(/\s+/g, '');
+    logger.info(`Navigating to artist: ${artistSlug}`);
+    
+    // Navigate to artist profile page
+    navigate(`/artist/${artistSlug}`);
+    
     // Still call onSelect for any parent components that might need this info
     onSelect(artist);
   };
@@ -67,12 +73,12 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center", // Change from "start" to "center"
+          align: "center",
           loop: true
         }}
         className="w-full"
       >
-        <CarouselContent className="ml-0"> {/* Remove default left margin */}
+        <CarouselContent className="ml-0">
           {artists.map((artist) => (
             <CarouselItem key={artist.id} className="basis-2/3 sm:basis-1/2 md:basis-1/3 pl-4">
               <div className="h-150">

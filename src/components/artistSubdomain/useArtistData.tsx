@@ -19,20 +19,44 @@ export function useArtistData(artistName: string | undefined) {
         setLoading(true);
         logger.info(`Fetching artist data for: ${artistName}`);
         
-        // First try exact match on name after transforming the URL slug back to a name
-        // This transforms "johnsmith" back to something closer to "John Smith"
-        let processedName = artistName;
+        // First, try to standardize the artist name that comes from the URL
+        // URL slugs are usually lowercase with spaces removed
+        const cleanedName = artistName.toLowerCase().trim();
         
-        // Query the database - we'll use ilike for case-insensitive matching
+        // Query the database with multiple ways to match the artist
         const { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .or(`name.ilike.%${processedName}%,name.ilike.%${artistName}%`)
+          .or(`name.ilike.${cleanedName}%, name.ilike.%${cleanedName}%`)
           .limit(1);
         
         if (artistError) {
           logger.error('Error fetching artist data:', artistError);
           throw artistError;
+        }
+        
+        // If not found, try a more flexible search
+        if (!artistData || artistData.length === 0) {
+          logger.info(`No exact match found, trying with more flexible pattern for: ${cleanedName}`);
+          
+          // Create a version of the name with spaces to try matching
+          const possibleNameWithSpaces = cleanedName.replace(/([a-z])([A-Z])/g, '$1 $2');
+          
+          const { data: flexibleResults, error: flexibleError } = await supabase
+            .from('artists')
+            .select('*')
+            .or(`name.ilike.%${cleanedName}%, name.ilike.%${possibleNameWithSpaces}%`)
+            .limit(5);
+            
+          if (flexibleError) {
+            logger.error('Error in flexible artist search:', flexibleError);
+            throw flexibleError;
+          }
+          
+          if (flexibleResults && flexibleResults.length > 0) {
+            logger.info(`Found artist with flexible search: ${flexibleResults[0].name}`);
+            artistData = flexibleResults;
+          }
         }
         
         if (artistData && artistData.length > 0) {
