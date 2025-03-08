@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { toast } from 'sonner';
-import { logger } from '@/utils/logger';
 
 export function useArtistData(artistName: string | undefined) {
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -14,64 +13,32 @@ export function useArtistData(artistName: string | undefined) {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        if (!artistName) return;
-        
         setLoading(true);
-        logger.info(`Fetching artist data for: ${artistName}`);
         
-        const cleanedName = artistName.toLowerCase().trim();
-        
-        // Use 'let' so we can reassign artistData later if needed
-        let { data: artistData, error: artistError } = await supabase
+        const formattedName = artistName?.replace(/([A-Z])/g, ' $1').trim();
+        const { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .or(`name.ilike.${cleanedName}%, name.ilike.%${cleanedName}%`)
-          .limit(1);
+          .ilike('name', formattedName || '')
+          .single();
         
-        if (artistError) {
-          logger.error('Error fetching artist data:', artistError);
-          throw artistError;
-        }
+        if (artistError) throw artistError;
         
-        // If not found, try a more flexible search
-        if (!artistData || artistData.length === 0) {
-          logger.info(`No exact match found, trying with more flexible pattern for: ${cleanedName}`);
-          const possibleNameWithSpaces = cleanedName.replace(/([a-z])([A-Z])/g, '$1 $2');
-          
-          const { data: flexibleResults, error: flexibleError } = await supabase
-            .from('artists')
-            .select('*')
-            .or(`name.ilike.%${cleanedName}%, name.ilike.%${possibleNameWithSpaces}%`)
-            .limit(5);
-            
-          if (flexibleError) {
-            logger.error('Error in flexible artist search:', flexibleError);
-            throw flexibleError;
-          }
-          
-          if (flexibleResults && flexibleResults.length > 0) {
-            logger.info(`Found artist with flexible search: ${flexibleResults[0].name}`);
-            artistData = flexibleResults; // reassign flexible results to artistData
-          }
-        }
-        
-        if (artistData && artistData.length > 0) {
-          logger.info(`Found artist: ${artistData[0].name}`);
-          
+        if (artistData) {
           const processedArtist: Artist = {
-            ...artistData[0],
-            techniques: typeof artistData[0].techniques === 'string' 
-              ? JSON.parse(artistData[0].techniques) 
-              : Array.isArray(artistData[0].techniques) ? artistData[0].techniques : [],
-            styles: typeof artistData[0].styles === 'string' 
-              ? JSON.parse(artistData[0].styles) 
-              : Array.isArray(artistData[0].styles) ? artistData[0].styles : [],
-            social_platforms: typeof artistData[0].social_platforms === 'string' 
-              ? JSON.parse(artistData[0].social_platforms) 
-              : Array.isArray(artistData[0].social_platforms) ? artistData[0].social_platforms : [],
-            artworks: typeof artistData[0].artworks === 'string' 
-              ? JSON.parse(artistData[0].artworks) 
-              : Array.isArray(artistData[0].artworks) ? artistData[0].artworks : []
+            ...artistData,
+            techniques: typeof artistData.techniques === 'string' 
+              ? JSON.parse(artistData.techniques) 
+              : Array.isArray(artistData.techniques) ? artistData.techniques : [],
+            styles: typeof artistData.styles === 'string' 
+              ? JSON.parse(artistData.styles) 
+              : Array.isArray(artistData.styles) ? artistData.styles : [],
+            social_platforms: typeof artistData.social_platforms === 'string' 
+              ? JSON.parse(artistData.social_platforms) 
+              : Array.isArray(artistData.social_platforms) ? artistData.social_platforms : [],
+            artworks: typeof artistData.artworks === 'string' 
+              ? JSON.parse(artistData.artworks) 
+              : Array.isArray(artistData.artworks) ? artistData.artworks : []
           };
           
           setArtist(processedArtist);
@@ -92,14 +59,10 @@ export function useArtistData(artistName: string | undefined) {
           };
           
           setProfile(defaultProfile);
-        } else {
-          logger.error(`Artist not found for: ${artistName}`);
-          setArtist(null);
         }
       } catch (error: any) {
         console.error('Error fetching artist data:', error);
         toast.error(`Failed to load artist: ${error.message}`);
-        setArtist(null);
       } finally {
         setLoading(false);
       }
@@ -110,7 +73,7 @@ export function useArtistData(artistName: string | undefined) {
     }
   }, [artistName]);
 
-  // Helper function to get artist data details
+  // Helper functions to parse artist data
   const getArtistData = () => {
     if (!artist) return {
       techniques: [],

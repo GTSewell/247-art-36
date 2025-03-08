@@ -1,18 +1,11 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
-import { toast } from 'sonner';
 
 const NotFoundState: React.FC = () => {
   const navigate = useNavigate();
-  const { artistName } = useParams<{ artistName: string }>();
-  
-  const handleBackToArtists = () => {
-    toast.info("Redirecting to artists page");
-    navigate('/artists');
-  };
   
   return (
     <div 
@@ -27,14 +20,10 @@ const NotFoundState: React.FC = () => {
         </div>
         <h2 className="text-xl font-semibold text-center mb-4">Artist Not Found</h2>
         <p className="text-gray-600 text-center mb-6">
-          We couldn't find an artist named "{artistName}". 
-          The artist may have been removed or the URL might be incorrect.
-        </p>
-        <p className="text-sm text-gray-500 mb-4 text-center">
-          Artist names in URLs are case-sensitive and should match exactly how they appear in the database.
+          We couldn't find the artist you're looking for. They may have been removed or the URL might be incorrect.
         </p>
         <Button 
-          onClick={handleBackToArtists}
+          onClick={() => navigate('/artists')}
           className="w-full bg-[#f7cf1e] hover:bg-[#e6bf1a] text-gray-800"
         >
           Back to Artists

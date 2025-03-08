@@ -5,8 +5,6 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import ArtistCard from '@/components/artists/ArtistCard';
 import ArtistCarouselNavigation from '@/components/artists/ArtistCarouselNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useNavigate } from 'react-router-dom';
-import { logger } from '@/utils/logger';
 
 interface PWAArtistCarouselProps {
   artists: Artist[];
@@ -25,7 +23,6 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 }) => {
   const [api, setApi] = useState<any>(null);
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
 
   const handlePrevious = () => {
     api?.scrollPrev();
@@ -33,18 +30,6 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 
   const handleNext = () => {
     api?.scrollNext();
-  };
-
-  const handleArtistClick = (artist: Artist) => {
-    // Create URL-friendly slug from artist name
-    const artistSlug = artist.name.toLowerCase().replace(/\s+/g, '');
-    logger.info(`Navigating to artist: ${artistSlug}`);
-    
-    // Navigate to artist profile page
-    navigate(`/artist/${artistSlug}`);
-    
-    // Still call onSelect for any parent components that might need this info
-    onSelect(artist);
   };
 
   // Center the first artist when the carousel is initialized
@@ -73,12 +58,12 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       <Carousel
         setApi={setApi}
         opts={{
-          align: "center",
+          align: "center", // Change from "start" to "center"
           loop: true
         }}
         className="w-full"
       >
-        <CarouselContent className="ml-0">
+        <CarouselContent className="ml-0"> {/* Remove default left margin */}
           {artists.map((artist) => (
             <CarouselItem key={artist.id} className="basis-2/3 sm:basis-1/2 md:basis-1/3 pl-4">
               <div className="h-150">
@@ -93,7 +78,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
                   techniques={artist.techniques}
                   styles={artist.styles}
                   social_platforms={artist.social_platforms}
-                  onSelect={() => handleArtistClick(artist)}
+                  onSelect={() => onSelect(artist)}
                   onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
                   isFavorite={favoriteArtists.has(artist.id)}
                   refreshArtist={refreshArtist}

@@ -1,8 +1,8 @@
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import ArtistCard from './ArtistCard';
 import { Artist } from '@/data/types/artist';
+import ArtistDetailModal from './ArtistDetailModal';
 
 interface FeaturedArtistsProps {
   artists: Artist[];
@@ -21,14 +21,22 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   refreshArtists,
   refreshArtist
 }) => {
-  const navigate = useNavigate();
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
-    // Navigate using the correct route format
-    navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
-    // Still call onSelect for any parent components that might need this info
-    onSelect(artist);
+    const index = artists.findIndex(a => a.id === artist.id);
+    setSelectedArtistIndex(index);
+    setSelectedArtist(artist);
+    setDialogOpen(true);
+  };
+
+  const handleArtistChange = (index: number) => {
+    // No need to check bounds since we're implementing looping in ArtistModalContent
+    setSelectedArtistIndex(index);
+    setSelectedArtist(artists[index]);
   };
 
   return (
@@ -55,6 +63,19 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
           />
         ))}
       </div>
+
+      <ArtistDetailModal
+        artists={artists}
+        selectedArtist={selectedArtist}
+        selectedArtistIndex={selectedArtistIndex}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onArtistChange={handleArtistChange}
+        onFavoriteToggle={onFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtists={refreshArtists}
+        onSelect={onSelect}
+      />
     </div>
   );
 };
