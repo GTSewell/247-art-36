@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
@@ -21,10 +20,8 @@ import ArtistDashboard from "./pages/pwa/ArtistDashboard";
 import PWAHome from "./pages/pwa/PWAHome";
 import CollectorDashboard from "./pages/pwa/CollectorDashboard";
 
-// Create a client
 const queryClient = new QueryClient();
 
-// Main application wrapper with providers
 function AppWrapper() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -35,7 +32,6 @@ function AppWrapper() {
   );
 }
 
-// Application content with conditional routing based on PWA or browser mode
 function AppContent() {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(
     localStorage.getItem("isPasswordCorrect") === "true"
@@ -44,43 +40,26 @@ function AppContent() {
   const { isPWA } = useAppMode();
 
   useEffect(() => {
-    // Log app initialization
     logger.info("App component mounted");
-    
     localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
-    
-    // Remove dark mode class from document - let artists page manage it locally
     document.documentElement.classList.remove('dark');
-    
-    // Log the current PWA state
     logger.info('App initialized in mode:', isPWA ? 'PWA/standalone' : 'browser');
-    
-    // Enhanced CSS to hide the "Fix Image URLs" button with more specific selectors
     const style = document.createElement('style');
     style.textContent = `
-      /* Hide buttons with download icon */
       button:has(svg[data-lucide="download"]),
       a:has(svg[data-lucide="download"]),
-      
-      /* Hide buttons with specific text content */
       button:has(span:contains("Fix Image")),
       a:has(span:contains("Fix Image")),
       button:has(div:contains("Fix Image")),
       a:has(div:contains("Fix Image")),
-      
-      /* Target by direct text content */
       button:contains("Fix Image"),
       a:contains("Fix Image"),
-      
-      /* Target elements with specific classes or IDs */
       [class*="fix-image"], 
       [class*="download-artist"], 
       [class*="artist-download"],
       [id*="fix-image"], 
       [id*="download-artist"],
       [id*="artist-download"],
-      
-      /* Additional selectors to catch the button */
       .artistImageBtn,
       .downloadBtn,
       [data-testid="fix-image-btn"],
@@ -97,17 +76,13 @@ function AppContent() {
       }
     `;
     document.head.appendChild(style);
-    
-    // Mark app as ready after a short delay to ensure DOM is fully ready
     const timer = setTimeout(() => {
       setAppReady(true);
       logger.info("App marked as ready");
     }, 100);
-    
     return () => clearTimeout(timer);
   }, [isPasswordCorrect, isPWA]);
 
-  // Handle initial loading state
   if (!appReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black text-white">
@@ -123,34 +98,29 @@ function AppContent() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      {isPWA ? (
-        // PWA Routes - Focused on Artists and Store functionality
-        <Routes>
-          <Route path="/" element={<PWAHome />} />
-          <Route path="/artists" element={<Artists />} />
-          <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
-          <Route path="/store" element={<GeneralStore />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard/artist" element={<ArtistDashboard />} />
-          <Route path="/dashboard/collector" element={<CollectorDashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      ) : (
-        // Browser Routes - Full website experience
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/who-are-you" element={<WhoAreYou />} />
-          <Route path="/virtual-tour" element={<VirtualTour />} />
-          <Route path="/artists" element={<Artists />} />
-          <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/store" element={<GeneralStore />} />
-          <Route path="/artist-submission" element={<ArtistSubmission />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      )}
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/artists" element={<Artists />} />
+        <Route path="/who-are-you" element={<WhoAreYou />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/store" element={<GeneralStore />} />
+        <Route path="/details" element={<Details />} />
+        <Route path="/virtual-tour" element={<VirtualTour />} />
+        <Route path="/artist-submission" element={<ArtistSubmission />} />
+        <Route path="/dashboard/artist" element={<ArtistDashboard />} />
+        <Route path="/dashboard/collector" element={<CollectorDashboard />} />
+        <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
+        
+        {isPWA && (
+          <>
+            <Route path="/" element={<PWAHome />} />
+            <Route path="/artists" element={<PWAArtists />} />
+          </>
+        )}
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
       <Toaster richColors />
     </BrowserRouter>
   );
@@ -161,7 +131,6 @@ function ScrollToTop() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Log page navigation for debugging
     logger.info(`Navigated to: ${pathname}`);
   }, [pathname]);
 
