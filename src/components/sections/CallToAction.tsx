@@ -16,6 +16,15 @@ const CallToAction = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto text-center relative z-10"
       >
+        {/* Lightning Logo */}
+        <div className="mb-8 flex justify-center">
+          <img 
+            src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png" 
+            alt="247.ART Logo" 
+            className="h-20 w-auto"
+          />
+        </div>
+        
         {/* Powered By Section */}
         <div className="mt-16 relative z-10">
           <p className="text-black mb-6 text-lg font-extrabold">Powered by:</p>

@@ -28,7 +28,7 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
-              src="/lovable-uploads/e3632eac-612c-482e-aad1-8d4fd3b2947c.png" 
+              src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png" 
               alt="247art" 
               className="h-8"
             />
