@@ -33,7 +33,7 @@ const PWANavigation = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center">
               <img 
-                src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png" 
+                src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" 
                 alt="247.ART" 
                 className="h-8"
               />
