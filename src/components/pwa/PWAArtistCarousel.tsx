@@ -34,7 +34,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 
   if (!artists || artists.length === 0) {
     return (
-      <div className="flex justify-center items-center h-24">
+      <div className="flex justify-center items-center h-48">
         <p className="text-lg">No featured artists found</p>
       </div>
     );
@@ -52,23 +52,25 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       >
         <CarouselContent>
           {artists.map((artist) => (
-            <CarouselItem key={artist.id} className="basis-1/3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
-              <ArtistCard
-                id={artist.id}
-                name={artist.name}
-                specialty={artist.specialty}
-                image={artist.image}
-                city={artist.city}
-                country={artist.country}
-                bio={artist.bio}
-                techniques={artist.techniques}
-                styles={artist.styles}
-                social_platforms={artist.social_platforms}
-                onSelect={() => onSelect(artist)}
-                onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
-                isFavorite={favoriteArtists.has(artist.id)}
-                refreshArtist={refreshArtist}
-              />
+            <CarouselItem key={artist.id} className="basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 pl-2">
+              <div className="h-64 md:h-72">
+                <ArtistCard
+                  id={artist.id}
+                  name={artist.name}
+                  specialty={artist.specialty}
+                  image={artist.image}
+                  city={artist.city}
+                  country={artist.country}
+                  bio={artist.bio}
+                  techniques={artist.techniques}
+                  styles={artist.styles}
+                  social_platforms={artist.social_platforms}
+                  onSelect={() => onSelect(artist)}
+                  onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
+                  isFavorite={favoriteArtists.has(artist.id)}
+                  refreshArtist={refreshArtist}
+                />
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>

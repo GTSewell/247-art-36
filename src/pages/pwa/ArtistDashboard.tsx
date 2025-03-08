@@ -10,10 +10,13 @@ import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 
-// Simplified typings to avoid excessive type instantiation
 interface ArtistRecord {
   id: number;
   user_id?: string;
+}
+
+interface RoleRecord {
+  role: string;
 }
 
 const ArtistDashboard: React.FC = () => {
@@ -43,22 +46,23 @@ const ArtistDashboard: React.FC = () => {
     try {
       setLoading(true);
 
-      // Using Promise.all to run queries in parallel
-      const results = await Promise.all([
-        supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'artist'),
-        supabase
-          .from('artists')
-          .select('id')
-          .eq('user_id', user.id)
+      // Properly type the promises to avoid excessive type instantiation
+      const rolePromise = supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'artist');
+
+      const artistPromise = supabase
+        .from('artists')
+        .select('id')
+        .eq('user_id', user.id);
+
+      const [roleResult, artistResult] = await Promise.all([
+        rolePromise,
+        artistPromise
       ]);
       
-      const roleResult = results[0];
-      const artistResult = results[1];
-
       // Handle potential errors
       if (roleResult.error) {
         console.error("Error checking artist role:", roleResult.error);

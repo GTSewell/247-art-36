@@ -106,13 +106,13 @@ const PWAHome = () => {
         <PWANavigation />
 
         <main className="container mx-auto px-4 pt-16">
-          {/* Featured Artists Section - Using the new image for title */}
-          <div className="mb-6">
-            <div className="flex justify-center mb-2">
+          {/* Featured Artists Section */}
+          <div className="mb-4">
+            <div className="flex justify-center mb-1">
               <img 
                 src="/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png" 
                 alt="Featured Artists" 
-                className="h-16 object-contain"
+                className="h-14 object-contain"
               />
             </div>
 
@@ -131,13 +131,13 @@ const PWAHome = () => {
             )}
           </div>
 
-          {/* Timed Edition Drops Section - Using the new image for title */}
+          {/* Timed Edition Drops Section */}
           <div>
-            <div className="flex justify-center mb-2">
+            <div className="flex justify-center mb-1">
               <img 
                 src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
                 alt="Timed Editions" 
-                className="h-16 object-contain"
+                className="h-14 object-contain"
               />
             </div>
 

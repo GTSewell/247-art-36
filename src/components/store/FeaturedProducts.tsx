@@ -80,9 +80,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             {products.map((product, index) => {
               const initialTime = getInitialTime(index);
               return (
-                <CarouselItem key={product.id} className="basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
+                <CarouselItem key={product.id} className="basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 pl-2">
                   <div 
-                    className="relative group overflow-hidden rounded-lg cursor-pointer"
+                    className="relative group overflow-hidden rounded-lg cursor-pointer h-64 md:h-72"
                     onClick={() => onProductSelect(product, initialTime)}
                   >
                     <div className="absolute top-1 right-1 z-10">
@@ -93,7 +93,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                         productId={product.id}
                       />
                     </div>
-                    <div className="aspect-square overflow-hidden">
+                    <div className="h-full overflow-hidden">
                       <img 
                         src={product.image_url || '/placeholder.svg'} 
                         alt={product.name} 
@@ -103,7 +103,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-1 left-1 right-1">
-                        <h3 className="text-white text-xs font-bold">{product.name}</h3>
+                        <h3 className="text-white text-sm font-bold">{product.name}</h3>
                         <p className="text-white/90 text-xs">${product.price}</p>
                         <Button className="w-full mt-1 bg-zap-red hover:bg-zap-blue text-xs py-0.5" size="sm">
                           Add to Cart
@@ -121,9 +121,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="relative h-6 w-6 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <ArrowBigLeft className="w-4 h-4 text-white relative z-10" />
+                <ArrowBigLeft className="w-5 h-5 text-white relative z-10" />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -131,9 +131,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="relative h-6 w-6 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <ArrowBigRight className="w-4 h-4 text-white relative z-10" />
+                <ArrowBigRight className="w-5 h-5 text-white relative z-10" />
               </Button>
             </div>
           </div>
