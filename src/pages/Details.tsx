@@ -1,5 +1,4 @@
-
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import PricingPackage from "@/components/details/PricingPackage";
 

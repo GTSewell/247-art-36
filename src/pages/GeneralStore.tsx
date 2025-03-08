@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import { toast } from "sonner";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
@@ -49,7 +48,6 @@ const GeneralStore = () => {
     }
   });
 
-  // Log any query errors to help with debugging
   if (error) {
     logger.error("Query error:", error);
   }
