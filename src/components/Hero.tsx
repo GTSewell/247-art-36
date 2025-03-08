@@ -17,6 +17,7 @@ const Hero = () => {
       setDeferredPrompt(e);
       // Update UI to notify the user they can install the PWA
       setIsInstallable(true);
+      console.log('PWA installation prompt captured');
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -25,6 +26,14 @@ const Hero = () => {
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstallable(false);
       setIsClicked(true);
+      console.log('App is already in standalone mode');
+    }
+
+    // For Android, also check if it's installed through the app mode
+    if (navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+      setIsInstallable(false);
+      setIsClicked(true);
+      console.log('App is in standalone mode (iOS or Android)');
     }
 
     return () => {
@@ -45,8 +54,10 @@ const Hero = () => {
     setIsClicked(true);
     
     if (!deferredPrompt) {
-      // The app is already installed or not installable
-      toast.info("App is already installed or not installable on this device");
+      // If not installable via prompt, provide instructions for manual installation
+      toast.info("You can install this app by tapping the browser menu and selecting 'Add to Home Screen'", {
+        duration: 5000
+      });
       return;
     }
 
@@ -61,6 +72,7 @@ const Hero = () => {
       if (outcome === 'accepted') {
         toast.success("ZAP! has been installed successfully!");
         setDeferredPrompt(null);
+        setIsInstallable(false);
       } else {
         toast.info("Installation cancelled");
         // Allow the user to try again

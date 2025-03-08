@@ -7,6 +7,10 @@
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ffc82c",
+  "orientation": "portrait",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "related_applications": [],
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
