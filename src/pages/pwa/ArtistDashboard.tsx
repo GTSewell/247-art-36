@@ -22,6 +22,7 @@ const ArtistDashboard = () => {
           return;
         }
         
+        // Query the artists table to find the record associated with this user
         const { data, error } = await supabase
           .from('artists')
           .select('id')

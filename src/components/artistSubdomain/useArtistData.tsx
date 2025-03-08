@@ -24,7 +24,7 @@ export function useArtistData(artistName: string | undefined) {
         const cleanedName = artistName.toLowerCase().trim();
         
         // Query the database with multiple ways to match the artist
-        const { data: artistData, error: artistError } = await supabase
+        let { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
           .or(`name.ilike.${cleanedName}%, name.ilike.%${cleanedName}%`)
