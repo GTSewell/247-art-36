@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { useArtists } from "@/hooks/use-artists";
 import PWAArtistCarousel from "@/components/pwa/PWAArtistCarousel";
@@ -9,15 +8,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
 import { logger } from "@/utils/logger";
 import { TimerProvider } from "@/contexts/TimerContext";
+import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
 
 const PWAHome = () => {
-  const navigate = useNavigate();
   const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [timerState, setTimerState] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Artist modal state
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -58,7 +62,15 @@ const PWAHome = () => {
   };
 
   const handleArtistSelect = (artist: Artist) => {
-    navigate(`/artists/${artist.id}`);
+    const index = featuredArtists.findIndex(a => a.id === artist.id);
+    setSelectedArtistIndex(index >= 0 ? index : 0);
+    setSelectedArtist(artist);
+    setDialogOpen(true);
+  };
+
+  const handleArtistChange = (index: number) => {
+    setSelectedArtistIndex(index);
+    setSelectedArtist(featuredArtists[index]);
   };
 
   // Refresh an artist's data
@@ -155,6 +167,20 @@ const PWAHome = () => {
             )}
           </div>
         </main>
+
+        {/* Artist Detail Modal */}
+        <ArtistDetailModal
+          artists={featuredArtists}
+          selectedArtist={selectedArtist}
+          selectedArtistIndex={selectedArtistIndex}
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onArtistChange={handleArtistChange}
+          onFavoriteToggle={handleFavoriteToggle}
+          favoriteArtists={favoriteArtists}
+          refreshArtists={refreshArtists}
+          onSelect={(artist) => {}}
+        />
       </div>
     </TimerProvider>
   );
