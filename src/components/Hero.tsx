@@ -29,8 +29,9 @@ const Hero = () => {
       console.log('App is already in standalone mode');
     }
 
-    // For Android, also check if it's installed through the app mode
-    if (navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+    // For iOS Safari, use the navigator.standalone property (safely check it exists first)
+    const isStandalone = (window.navigator as any).standalone;
+    if (isStandalone === true || window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstallable(false);
       setIsClicked(true);
       console.log('App is in standalone mode (iOS or Android)');
