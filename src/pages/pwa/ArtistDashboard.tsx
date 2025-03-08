@@ -30,6 +30,12 @@ const ArtistDashboard = () => {
   }, [user, isLoading, navigate]);
   
   const checkArtistStatus = async () => {
+    if (!user || !user.id) {
+      toast.error("User information is missing");
+      navigate('/auth');
+      return;
+    }
+
     try {
       setLoading(true);
       
@@ -37,7 +43,7 @@ const ArtistDashboard = () => {
       const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', user?.id || '')
+        .eq('user_id', user.id)
         .eq('role', 'artist')
         .maybeSingle();
       
@@ -49,7 +55,7 @@ const ArtistDashboard = () => {
       const { data: artistData, error: artistError } = await supabase
         .from('artists')
         .select('id')
-        .eq('user_id', user?.id || '')
+        .eq('user_id', user.id)
         .maybeSingle();
       
       if (artistError) {
