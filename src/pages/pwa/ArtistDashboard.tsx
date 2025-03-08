@@ -34,19 +34,27 @@ const ArtistDashboard = () => {
       setLoading(true);
       
       // Check if the user has an artist role
-      const { data: roleData } = await supabase
+      const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('user_id', user?.id)
+        .eq('user_id', user?.id || '')
         .eq('role', 'artist')
         .maybeSingle();
       
+      if (roleError) {
+        console.error("Error checking artist role:", roleError);
+      }
+      
       // Check if user is linked to an artist profile
-      const { data: artistData } = await supabase
+      const { data: artistData, error: artistError } = await supabase
         .from('artists')
         .select('id')
-        .eq('user_id', user?.id)
+        .eq('user_id', user?.id || '')
         .maybeSingle();
+      
+      if (artistError) {
+        console.error("Error checking artist profile:", artistError);
+      }
       
       if (roleData || artistData) {
         setIsArtist(true);
