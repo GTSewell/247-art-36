@@ -82,7 +82,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               animate={{ rotateY: 0 }}
               exit={{ rotateY: 90 }}
               transition={{ duration: 0.4 }}
-              style={{ transformStyle: 'preserve-3d' }}
+              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
               className="absolute w-full h-full"
             >
               <ArtistCardFront 
@@ -98,7 +98,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
               animate={{ rotateY: 0 }}
               exit={{ rotateY: -90 }}
               transition={{ duration: 0.4 }}
-              style={{ transformStyle: 'preserve-3d' }}
+              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
               className="absolute w-full h-full bg-white"
               data-testid="artist-card-back"
             >

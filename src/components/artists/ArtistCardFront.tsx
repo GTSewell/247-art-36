@@ -13,12 +13,14 @@ const ArtistCardFront: React.FC<ArtistCardFrontProps> = ({
   onImageError 
 }) => {
   return (
-    <img
-      src={image}
-      alt={name}
-      className="w-full h-full object-cover"
-      onError={onImageError}
-    />
+    <div className="w-full h-full">
+      <img
+        src={image}
+        alt={name}
+        className="w-full h-full object-cover"
+        onError={onImageError}
+      />
+    </div>
   );
 };
 

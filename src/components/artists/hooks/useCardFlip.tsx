@@ -16,23 +16,37 @@ export const useCardFlip = (artistId: number) => {
 
   // Handle card flip
   const handleFlip = (e: React.MouseEvent, isGeneratingArtworks: boolean) => {
+    // Don't flip if we're in the middle of an operation
+    if (isGeneratingArtworks) {
+      logger.info('Card flip aborted: artwork generation in progress');
+      return;
+    }
+    
     // Check if click originated from a button or interactive element
     const target = e.target as HTMLElement;
-    const isInteractiveElement = 
-      target.tagName === 'BUTTON' || 
-      target.closest('button') ||
-      target.closest('[data-button-container="true"]') ||
-      target.getAttribute('data-button-container') === 'true' ||
-      target.closest('[data-no-flip="true"]') ||
-      target.getAttribute('data-no-flip') === 'true';
     
-    // Don't flip if clicking on a button or if we're in the middle of an operation
-    if (isInteractiveElement || isGeneratingArtworks) {
+    // Interactive elements that should not trigger flip
+    const interactiveSelectors = [
+      'button', 
+      '[data-button-container="true"]', 
+      '[data-no-flip="true"]'
+    ];
+    
+    // Check if the clicked element or any of its parents match the interactive selectors
+    const isInteractiveElement = interactiveSelectors.some(selector => {
+      return target.closest(selector) !== null || 
+             target.matches(selector);
+    });
+    
+    // Don't flip if clicking on a button or interactive element
+    if (isInteractiveElement) {
+      logger.info('Card flip aborted: clicked on interactive element');
       return;
     }
     
     logger.info(`Flipping card for artist ${artistId} from ${isFlipped ? 'back' : 'front'} to ${isFlipped ? 'front' : 'back'}`);
-    setIsFlipped(!isFlipped);
+    setIsFlipped(prevState => !prevState);
+    
     if (showClickIndicator) {
       setShowClickIndicator(false);
       localStorage.setItem(`flipped-${artistId}`, 'true');
@@ -48,6 +62,7 @@ export const useCardFlip = (artistId: number) => {
 
   // Force flip to front or back
   const setFlipState = (flipped: boolean) => {
+    logger.info(`Manually setting flip state to: ${flipped ? 'back' : 'front'}`);
     setIsFlipped(flipped);
   };
 
