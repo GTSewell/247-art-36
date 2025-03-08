@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
@@ -66,7 +65,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const displayArtworks = fixedArtworks.slice(0, 4);
 
   return (
-    <div className="w-full h-full px-4 py-8" data-no-flip="true">
+    <div className="w-full h-full px-4 py-8">
       <div className="grid grid-cols-2 gap-2 h-full">
         {displayArtworks.map((artwork, index) => (
           <div 
