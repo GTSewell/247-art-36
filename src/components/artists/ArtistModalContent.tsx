@@ -38,7 +38,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         <ArtistImagePanel artist={selectedArtist} onFavoriteToggle={onFavoriteToggle} isFavorite={isFavorite} refreshArtists={refreshArtists} />
       </div>
       
-      <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto">
+      <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto px-0 py-0">
         <ArtistDetailsPanel artist={selectedArtist} onFavoriteToggle={onFavoriteToggle} isFavorite={isFavorite} onSelect={handleSelect} />
       </div>
       
