@@ -40,27 +40,31 @@ const ArtistDashboard = () => {
       setLoading(true);
       
       // Check if the user has an artist role
-      const { data: roleData, error: roleError } = await supabase
+      const roleResult = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', user.id)
         .eq('role', 'artist')
         .maybeSingle();
       
+      const roleData = roleResult.data;
+      const roleError = roleResult.error;
+      
       if (roleError) {
         console.error("Error checking artist role:", roleError);
       }
       
       // Check if user is linked to an artist profile
-      // Using explicit type casting to avoid deep type instantiation issues
-      const artistQuery = await supabase
+      // Breaking down the query to avoid type recursion issues
+      const artistResult = await supabase
         .from('artists')
         .select('id')
         .eq('user_id', user.id)
         .maybeSingle();
       
-      const artistData = artistQuery.data;
-      const artistError = artistQuery.error;
+      // Explicitly extracting data and error to avoid type recursion
+      const artistData = artistResult.data as { id: number } | null;
+      const artistError = artistResult.error;
       
       if (artistError) {
         console.error("Error checking artist profile:", artistError);
