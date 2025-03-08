@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import ArtistCard from './ArtistCard';
 import { Artist } from '@/data/types/artist';
@@ -34,10 +33,9 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
   };
 
   const handleArtistChange = (index: number) => {
-    if (index >= 0 && index < artists.length) {
-      setSelectedArtistIndex(index);
-      setSelectedArtist(artists[index]);
-    }
+    // No need to check bounds since we're implementing looping in ArtistModalContent
+    setSelectedArtistIndex(index);
+    setSelectedArtist(artists[index]);
   };
 
   return (

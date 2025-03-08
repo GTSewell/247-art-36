@@ -1,19 +1,14 @@
 
 import React from "react";
-import { CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ArtistCarouselNavigationProps {
-  isFirstArtist?: boolean;
-  isLastArtist?: boolean;
   isMobile?: boolean;
   onPrevious?: () => void;
   onNext?: () => void;
 }
 
 const ArtistCarouselNavigation: React.FC<ArtistCarouselNavigationProps> = ({ 
-  isFirstArtist = false,
-  isLastArtist = false,
   isMobile = false,
   onPrevious,
   onNext
@@ -23,16 +18,14 @@ const ArtistCarouselNavigation: React.FC<ArtistCarouselNavigationProps> = ({
       <div className="hidden md:block absolute top-1/2 -translate-y-1/2 left-0 right-0 z-10">
         <button 
           onClick={onPrevious}
-          disabled={isFirstArtist}
-          className={`absolute left-1 md:left-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none rounded-full p-2 ${isFirstArtist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          className="absolute left-1 md:left-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none rounded-full p-2 cursor-pointer"
         >
           <ChevronLeft className="h-4 w-4" />
           <span className="sr-only">Previous artist</span>
         </button>
         <button 
           onClick={onNext}
-          disabled={isLastArtist}
-          className={`absolute right-1 md:right-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none rounded-full p-2 ${isLastArtist ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          className="absolute right-1 md:right-3 bg-white/70 backdrop-blur-sm hover:bg-white hover:text-black border-none rounded-full p-2 cursor-pointer"
         >
           <ChevronRight className="h-4 w-4" />
           <span className="sr-only">Next artist</span>
