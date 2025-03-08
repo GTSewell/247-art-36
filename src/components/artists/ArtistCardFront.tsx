@@ -12,13 +12,8 @@ const ArtistCardFront: React.FC<ArtistCardFrontProps> = ({
   name, 
   onImageError 
 }) => {
-  // Simple pass-through for clicks
-  const handleImageClick = (e: React.MouseEvent) => {
-    // Allow click to propagate to parent
-  };
-
   return (
-    <div className="w-full h-full overflow-hidden" onClick={handleImageClick}>
+    <div className="w-full h-full overflow-hidden cursor-pointer">
       <img
         src={image}
         alt={name}
