@@ -9,6 +9,7 @@ import ArtistCardFront from './ArtistCardFront';
 import { useArtistData } from './hooks/useArtistData';
 import { useCardFlip } from './hooks/useCardFlip';
 import { useImageErrors } from './hooks/useImageErrors';
+import { logger } from '@/utils/logger';
 
 interface ArtistImagePanelProps {
   artist: Artist;
@@ -34,6 +35,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
 
   // Reset flip state when artist changes
   useEffect(() => {
+    logger.info(`Artist changed to ${artist.id}, resetting flip state to front`);
     setFlipState(false);
   }, [artist.id, setFlipState]);
 
@@ -50,6 +52,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
 
   // Handle click on card for flipping
   const handleCardClick = (e: React.MouseEvent) => {
+    logger.info(`Card clicked, current flip state: ${isFlipped ? 'back' : 'front'}`);
     handleFlip(e, isGeneratingArtworks);
   };
 
