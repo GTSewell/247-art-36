@@ -1,6 +1,6 @@
 
 // Cache name version
-const CACHE_NAME = 'zap-underground-v2';
+const CACHE_NAME = 'zap-underground-v3';
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [
@@ -9,10 +9,7 @@ const urlsToCache = [
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  '/icons/apple-touch-icon.png',
-  '/assets/index.css', // Main CSS
-  '/assets/index.js',  // Main JS
-  '/artists'           // Artists route
+  '/icons/apple-touch-icon.png'
 ];
 
 // Install service worker
@@ -56,54 +53,73 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - use network first, fall back to cache
+// Special handling for navigation requests in standalone mode
 self.addEventListener('fetch', event => {
-  // Skip cross-origin requests
-  if (!event.request.url.startsWith(self.location.origin)) {
+  const url = new URL(event.request.url);
+  
+  // Handle same-origin navigation requests specially
+  if (event.request.mode === 'navigate' && url.origin === self.location.origin) {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => {
+          return caches.match('/index.html');
+        })
+    );
     return;
   }
   
-  // Network first strategy with cache fallback
+  // For other requests, use cache-first strategy
   event.respondWith(
-    fetch(event.request)
+    caches.match(event.request)
       .then(response => {
-        // Check if we received a valid response
-        if (!response || response.status !== 200 || response.type !== 'basic') {
+        // Cache hit - return response
+        if (response) {
           return response;
         }
         
-        // Clone the response
-        const responseToCache = response.clone();
+        // Clone the request
+        const fetchRequest = event.request.clone();
         
-        // Open cache and store response
-        caches.open(CACHE_NAME)
-          .then(cache => {
-            cache.put(event.request, responseToCache);
-          })
-          .catch(err => {
-            console.error('[ServiceWorker] Cache update error:', err);
-          });
-        
-        return response;
-      })
-      .catch(() => {
-        // Try to get the resource from cache if network fails
-        return caches.match(event.request)
-          .then(cachedResponse => {
-            if (cachedResponse) {
-              console.log('[ServiceWorker] Serving from cache:', event.request.url);
-              return cachedResponse;
+        return fetch(fetchRequest)
+          .then(response => {
+            // Check if we received a valid response
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
             }
             
-            // For navigation requests, return the cached index.html
+            // Clone the response
+            const responseToCache = response.clone();
+            
+            caches.open(CACHE_NAME)
+              .then(cache => {
+                cache.put(event.request, responseToCache);
+              });
+              
+            return response;
+          })
+          .catch(() => {
+            // If both network and cache fail for non-navigation requests,
+            // serve a fallback or offline page
             if (event.request.mode === 'navigate') {
               return caches.match('/index.html');
             }
             
-            return new Response('Network error', { status: 408, headers: { 'Content-Type': 'text/plain' } });
+            // For images, serve a fallback image
+            if (event.request.destination === 'image') {
+              return caches.match('/placeholder.svg');
+            }
+            
+            // For other resources, return a simple offline response
+            return new Response('Network is unavailable', {
+              status: 503,
+              statusText: 'Service Unavailable',
+              headers: new Headers({
+                'Content-Type': 'text/plain'
+              })
+            });
           });
       })
-  );
+    );
 });
 
 // Handle messages from clients

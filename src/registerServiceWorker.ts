@@ -7,9 +7,13 @@ export const registerServiceWorker = () => {
         .then(registrations => {
           if (registrations.length > 0) {
             console.log('Unregistering existing service workers first...');
-            return Promise.all(registrations.map(registration => registration.unregister()));
+            // Return a consistent Promise<any[]> type
+            return Promise.all(registrations.map(registration => 
+              registration.unregister().then(success => success)
+            ));
           }
-          return Promise.resolve();
+          // Return empty array to maintain consistent return type
+          return Promise.resolve([]);
         })
         .then(() => {
           console.log('Registering service worker...');
