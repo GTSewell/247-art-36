@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
 import FeaturedArtists from "@/components/artists/FeaturedArtists";
 import AllArtists from "@/components/artists/AllArtists";

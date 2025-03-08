@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import Navigation from "@/components/Navigation";
+import Navigation from "@/components/navigation/Navigation";
 import FeaturedGalleries from "@/components/galleries/FeaturedGalleries";
 import { useGalleries } from "@/hooks/use-galleries";
 import { Gallery } from "@/data/types/gallery";
