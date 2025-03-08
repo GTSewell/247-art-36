@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
@@ -45,19 +46,18 @@ const ArtistDashboard: React.FC = () => {
     try {
       setLoading(true);
 
-      // Fetch role and artist profile in parallel
-      const [roleResult, artistResult] = await Promise.all([
-        supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'artist'),
-        
-        supabase
-          .from('artists')
-          .select('id')
-          .eq('user_id', user.id)
-      ]);
+      // Get role info
+      const roleResult = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'artist');
+      
+      // Get artist profile
+      const artistResult = await supabase
+        .from('artists')
+        .select('id')
+        .eq('user_id', user.id);
       
       // Handle potential errors
       if (roleResult.error) {
