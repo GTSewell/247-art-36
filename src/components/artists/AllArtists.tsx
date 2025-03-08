@@ -1,8 +1,8 @@
 
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Artist } from "@/data/types/artist";
 import AllArtistsHeader from "./AllArtistsHeader";
-import ArtistDetailModal from "./ArtistDetailModal";
 import ArtistGrid from "./ArtistGrid";
 
 interface AllArtistsProps {
@@ -30,23 +30,15 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   refreshArtists,
   refreshArtist
 }) => {
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+  const navigate = useNavigate();
 
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
-    const index = artists.findIndex(a => a.id === artist.id);
-    setSelectedArtistIndex(index);
-    setSelectedArtist(artist);
-    setDialogOpen(true);
-  };
-
-  const handleArtistChange = (index: number) => {
-    if (index >= 0 && index < artists.length) {
-      setSelectedArtistIndex(index);
-      setSelectedArtist(artists[index]);
-    }
+    // Navigate directly to artist profile page
+    const artistSlug = artist.name.toLowerCase().replace(/\s+/g, '');
+    navigate(`/artist/${artistSlug}`);
+    // Still call onSelect for any parent components that might need this info
+    onSelect(artist);
   };
 
   return (
@@ -66,19 +58,6 @@ const AllArtists: React.FC<AllArtistsProps> = ({
         favoriteArtists={favoriteArtists}
         refreshArtist={refreshArtist}
         showFavorites={showFavorites}
-      />
-
-      <ArtistDetailModal
-        artists={artists}
-        selectedArtist={selectedArtist}
-        selectedArtistIndex={selectedArtistIndex}
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-        onArtistChange={handleArtistChange}
-        onFavoriteToggle={onFavoriteToggle}
-        favoriteArtists={favoriteArtists}
-        refreshArtists={refreshArtists}
-        onSelect={onSelect}
       />
     </div>
   );

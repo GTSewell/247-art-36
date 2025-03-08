@@ -1,124 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
-import PWANavigation from "@/components/pwa/PWANavigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "sonner";
-import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
-import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
-import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 
-interface ArtistRecord {
-  id: number;
-  user_id?: string;
-}
+import React, { useState } from 'react';
+import PWANavigation from '@/components/pwa/PWANavigation';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
+import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
+import ArtistSalesAnalytics from '@/components/pwa/ArtistSalesAnalytics';
 
-const ArtistDashboard: React.FC = () => {
-  const navigate = useNavigate();
-  const { user, isLoading } = useAuth();
-  const [isArtist, setIsArtist] = useState(false);
-  const [artistId, setArtistId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!isLoading && !user) {
-      toast.error("Please sign in to access the artist dashboard");
-      navigate("/auth");
-    } else if (user) {
-      checkArtistStatus();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, isLoading]);
-
-  const checkArtistStatus = async () => {
-    if (!user || !user.id) {
-      toast.error("User information is missing");
-      navigate("/auth");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      // Get role info
-      const roleResult = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'artist');
-      
-      // Get artist profile
-      const artistResult = await supabase
-        .from('artists')
-        .select('id')
-        .eq('user_id', user.id);
-      
-      // Handle potential errors
-      if (roleResult.error) {
-        console.error("Error checking artist role:", roleResult.error);
-      }
-
-      if (artistResult.error) {
-        console.error("Error checking artist profile:", artistResult.error);
-      }
-
-      // Check results
-      const hasArtistRole = roleResult.data && roleResult.data.length > 0;
-      const hasArtistProfile = artistResult.data && artistResult.data.length > 0;
-      
-      if (hasArtistRole || hasArtistProfile) {
-        setIsArtist(true);
-        if (hasArtistProfile && artistResult.data && artistResult.data.length > 0) {
-          setArtistId(artistResult.data[0].id);
-        }
-      } else {
-        toast.error("You do not have artist access");
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Error checking artist status:", error);
-      toast.error("Failed to verify artist status");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-zap-yellow">
-        <PWANavigation />
-        <div className="container mx-auto px-4 pt-20 pb-20 flex items-center justify-center">
-          <p>Loading artist dashboard...</p>
-        </div>
-      </div>
-    );
-  }
+const ArtistDashboard = () => {
+  const [activeTab, setActiveTab] = useState('profile');
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <PWANavigation />
 
       <main className="container mx-auto px-4 pt-20 pb-20">
-        <h1 className="text-2xl font-bold mb-6">Artist Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-4">Artist Dashboard</h1>
 
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+        <Tabs defaultValue="profile" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="artworks">Artworks</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
-
-          <TabsContent value="profile" className="space-y-4">
-            <ArtistProfileSettings artistId={artistId} />
+          <TabsContent value="profile">
+            <ArtistProfileSettings />
           </TabsContent>
-
-          <TabsContent value="artworks" className="space-y-4">
-            <ArtistArtworkManager artistId={artistId} />
+          <TabsContent value="artworks">
+            <ArtistArtworkManager />
           </TabsContent>
-
-          <TabsContent value="analytics" className="space-y-4">
-            <ArtistSalesAnalytics artistId={artistId} />
+          <TabsContent value="analytics">
+            <ArtistSalesAnalytics />
           </TabsContent>
         </Tabs>
       </main>
