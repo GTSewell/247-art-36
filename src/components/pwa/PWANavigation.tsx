@@ -6,6 +6,7 @@ import { Home, Palette, ShoppingBag, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import { logger } from "@/utils/logger";
+import { supabase } from "@/integrations/supabase/client";
 
 const PWANavigation = () => {
   const [isOpen, setIsOpen] = useState(false);

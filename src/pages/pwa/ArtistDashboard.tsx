@@ -49,18 +49,24 @@ const ArtistDashboard: React.FC = () => {
       // Use explicit types for the queries
       const userIdString = user.id as string;
 
-      // Check if user has artist role
+      // Separate query execution from data extraction
       const roleResponse = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userIdString)
         .eq('role', 'artist');
 
-      // Check for artist profile
+      // Parse role data with explicit typing
+      const roleData: RoleRecord[] | null = roleResponse.error ? null : roleResponse.data;
+
+      // Separate query for artist profile
       const artistResponse = await supabase
         .from('artists')
         .select('id')
         .eq('user_id', userIdString);
+
+      // Parse artist data with explicit typing
+      const artistData: ArtistRecord[] | null = artistResponse.error ? null : artistResponse.data;
 
       if (roleResponse.error) {
         console.error("Error checking artist role:", roleResponse.error);
@@ -69,10 +75,6 @@ const ArtistDashboard: React.FC = () => {
       if (artistResponse.error) {
         console.error("Error checking artist profile:", artistResponse.error);
       }
-
-      // Cast data arrays to the correct types
-      const roleData = roleResponse.data as RoleRecord[] | null;
-      const artistData = artistResponse.data as ArtistRecord[] | null;
 
       if ((roleData && roleData.length > 0) || (artistData && artistData.length > 0)) {
         setIsArtist(true);
