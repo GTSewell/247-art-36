@@ -50,10 +50,12 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  // Handle click on card for flipping
+  // Handle click on card for flipping - simplify to ensure it works
   const handleCardClick = (e: React.MouseEvent) => {
     logger.info(`Card clicked, current flip state: ${isFlipped ? 'back' : 'front'}`);
-    handleFlip(e, isGeneratingArtworks);
+    // Simplified version that doesn't check for interactive elements
+    setFlipState(!isFlipped);
+    hideClickIndicator();
   };
 
   return (

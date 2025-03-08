@@ -25,30 +25,9 @@ export const useCardFlip = (artistId: number) => {
       return;
     }
     
-    // Check if click originated from a button or interactive element
-    const target = e.target as HTMLElement;
-    
-    // Interactive elements that should not trigger flip
-    const interactiveSelectors = [
-      'button', 
-      '[data-button-container="true"]'
-    ];
-    
-    // Check if the clicked element or any of its parents match the interactive selectors
-    const isInteractiveElement = interactiveSelectors.some(selector => {
-      return target.closest(selector) !== null || 
-             target.matches(selector);
-    });
-    
-    // Don't flip if clicking on a button or interactive element
-    if (isInteractiveElement) {
-      logger.info('Card flip aborted: clicked on interactive element');
-      return;
-    }
-    
     logger.info(`Flipping card for artist ${artistId} from ${isFlipped ? 'back' : 'front'} to ${isFlipped ? 'front' : 'back'}`);
     
-    // Use a callback to ensure we're using the latest state
+    // Simply toggle the flipped state
     setIsFlipped(prevState => !prevState);
     
     if (showClickIndicator) {
