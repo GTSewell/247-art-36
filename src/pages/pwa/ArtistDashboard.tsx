@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
@@ -13,68 +12,67 @@ import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 // Define explicit interfaces to help TypeScript with type resolution
 interface ArtistRecord {
   id: number;
-  user_id?: string;
+  user_id: string;
 }
 
 interface RoleRecord {
   role: string;
 }
 
-const ArtistDashboard = () => {
+const ArtistDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useAuth();
   const [isArtist, setIsArtist] = useState(false);
   const [artistId, setArtistId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     if (!isLoading && !user) {
       toast.error("Please sign in to access the artist dashboard");
-      navigate('/auth');
+      navigate("/auth");
     } else if (user) {
       checkArtistStatus();
     }
-  }, [user, isLoading, navigate]);
-  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isLoading]);
+
   const checkArtistStatus = async () => {
     if (!user || !user.id) {
       toast.error("User information is missing");
-      navigate('/auth');
+      navigate("/auth");
       return;
     }
 
     try {
       setLoading(true);
-      
-      // Check if the user has an artist role with explicit type annotation
+
+      // Query for user role with explicit type annotation
       const roleQuery = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id as string)
-        .eq('role', 'artist');
-      
-      // Explicitly extract data and error to avoid type recursion
+        .from<RoleRecord>("user_roles")
+        .select("role")
+        .eq("user_id", user.id as string)
+        .eq("role", "artist");
+
       const roleData = roleQuery.data as RoleRecord[] | null;
       const roleError = roleQuery.error;
-      
+
       if (roleError) {
         console.error("Error checking artist role:", roleError);
       }
-      
-      // Check if user is linked to an artist profile with explicit typing
+
+      // Query for artist profile with explicit type annotation
       const artistQuery = await supabase
-        .from('artists')
-        .select('id')
-        .eq('user_id', user.id as string);
-      
-      // Explicitly extract data and error with type annotations
+        .from<ArtistRecord>("artists")
+        .select("id")
+        .eq("user_id", user.id as string);
+
       const artistData = artistQuery.data as ArtistRecord[] | null;
       const artistError = artistQuery.error;
-      
+
       if (artistError) {
         console.error("Error checking artist profile:", artistError);
       }
-      
+
       if ((roleData && roleData.length > 0) || (artistData && artistData.length > 0)) {
         setIsArtist(true);
         if (artistData && artistData.length > 0) {
@@ -82,7 +80,7 @@ const ArtistDashboard = () => {
         }
       } else {
         toast.error("You do not have artist access");
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
       console.error("Error checking artist status:", error);
@@ -91,7 +89,7 @@ const ArtistDashboard = () => {
       setLoading(false);
     }
   };
-  
+
   if (loading) {
     return (
       <div className="min-h-screen bg-zap-yellow">
@@ -102,29 +100,29 @@ const ArtistDashboard = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <PWANavigation />
-      
+
       <main className="container mx-auto px-4 pt-20 pb-20">
         <h1 className="text-2xl font-bold mb-6">Artist Dashboard</h1>
-        
+
         <Tabs defaultValue="profile" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-6">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="artworks">Artworks</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="profile" className="space-y-4">
             <ArtistProfileSettings artistId={artistId} />
           </TabsContent>
-          
+
           <TabsContent value="artworks" className="space-y-4">
             <ArtistArtworkManager artistId={artistId} />
           </TabsContent>
-          
+
           <TabsContent value="analytics" className="space-y-4">
             <ArtistSalesAnalytics artistId={artistId} />
           </TabsContent>
