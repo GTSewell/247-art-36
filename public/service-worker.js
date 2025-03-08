@@ -1,6 +1,6 @@
 
 // Cache name version - increased to force refresh
-const CACHE_NAME = '247-art-v2';
+const CACHE_NAME = '247-art-v3';
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [
