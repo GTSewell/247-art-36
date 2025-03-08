@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
 import { Button } from "@/components/ui/button";
-import { Filter, Zap, RotateCw } from "lucide-react";
+import { Filter, Heart, RotateCw, Search } from "lucide-react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
 import { Artist } from "@/data/types/artist";
 import { useNavigate } from "react-router-dom";
 
@@ -49,15 +48,6 @@ const PWAArtists = () => {
       <div className="container mx-auto px-4 py-4">
         {/* Search and filter bar */}
         <div className="flex items-center gap-2 mb-4">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="bg-yellow-100 border-yellow-300"
-          >
-            <Filter size={18} />
-            <span className="ml-1 font-bold">ATLAS</span>
-          </Button>
-          
           <Input
             type="text"
             placeholder="Search artists..."
@@ -72,7 +62,7 @@ const PWAArtists = () => {
             onClick={() => setShowFavorites(!showFavorites)}
             className={showFavorites ? "bg-yellow-300 text-black" : ""}
           >
-            <Zap size={18} />
+            <Heart size={18} className={showFavorites ? "fill-current" : ""} />
           </Button>
           
           <Button 

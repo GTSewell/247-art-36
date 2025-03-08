@@ -18,6 +18,7 @@ import { logger } from "./utils/logger";
 import { AppModeProvider, useAppMode } from "./contexts/AppModeContext";
 import ArtistDashboard from "./pages/pwa/ArtistDashboard";
 import PWAHome from "./pages/pwa/PWAHome";
+import PWAArtists from "./pages/pwa/PWAArtists";
 import CollectorDashboard from "./pages/pwa/CollectorDashboard";
 
 const queryClient = new QueryClient();
@@ -99,9 +100,9 @@ function AppContent() {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={isPWA ? <PWAHome /> : <Index />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/artists" element={<Artists />} />
+        <Route path="/artists" element={isPWA ? <PWAArtists /> : <Artists />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/services" element={<Services />} />
         <Route path="/store" element={<GeneralStore />} />
@@ -111,14 +112,6 @@ function AppContent() {
         <Route path="/dashboard/artist" element={<ArtistDashboard />} />
         <Route path="/dashboard/collector" element={<CollectorDashboard />} />
         <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
-        
-        {isPWA && (
-          <>
-            <Route path="/" element={<PWAHome />} />
-            <Route path="/artists" element={<PWAArtists />} />
-          </>
-        )}
-        
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster richColors />

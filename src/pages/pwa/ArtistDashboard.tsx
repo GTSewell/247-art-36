@@ -36,7 +36,8 @@ const ArtistDashboard = () => {
         const { data, error } = await supabase
           .from('artists')
           .select('*')
-          .eq('user_id', user.id);
+          .eq('user_id', user.id)
+          .limit(1);
         
         if (error) throw error;
         
@@ -95,7 +96,7 @@ const ArtistDashboard = () => {
           <TabsContent value="artwork">
             <Card>
               <CardContent className="p-4">
-                <ArtistArtworkManager />
+                <ArtistArtworkManager artistId={artistProfile?.id} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -103,7 +104,7 @@ const ArtistDashboard = () => {
           <TabsContent value="analytics">
             <Card>
               <CardContent className="p-4">
-                <ArtistSalesAnalytics />
+                <ArtistSalesAnalytics artistId={artistProfile?.id} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -111,10 +112,7 @@ const ArtistDashboard = () => {
           <TabsContent value="settings">
             <Card>
               <CardContent className="p-4">
-                <ArtistProfileSettings
-                  artistProfile={artistProfile}
-                  setArtistProfile={setArtistProfile}
-                />
+                <ArtistProfileSettings artistId={artistProfile?.id} />
               </CardContent>
             </Card>
           </TabsContent>
