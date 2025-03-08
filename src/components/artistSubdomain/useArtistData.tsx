@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 
 export function useArtistData(artistName: string | undefined) {
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -13,32 +14,44 @@ export function useArtistData(artistName: string | undefined) {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        setLoading(true);
+        if (!artistName) return;
         
-        const formattedName = artistName?.replace(/([A-Z])/g, ' $1').trim();
+        setLoading(true);
+        logger.info(`Fetching artist data for: ${artistName}`);
+        
+        // First try exact match on name after transforming the URL slug back to a name
+        // This transforms "johnsmith" back to something closer to "John Smith"
+        let processedName = artistName;
+        
+        // Query the database - we'll use ilike for case-insensitive matching
         const { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .ilike('name', formattedName || '')
-          .single();
+          .or(`name.ilike.%${processedName}%,name.ilike.%${artistName}%`)
+          .limit(1);
         
-        if (artistError) throw artistError;
+        if (artistError) {
+          logger.error('Error fetching artist data:', artistError);
+          throw artistError;
+        }
         
-        if (artistData) {
+        if (artistData && artistData.length > 0) {
+          logger.info(`Found artist: ${artistData[0].name}`);
+          
           const processedArtist: Artist = {
-            ...artistData,
-            techniques: typeof artistData.techniques === 'string' 
-              ? JSON.parse(artistData.techniques) 
-              : Array.isArray(artistData.techniques) ? artistData.techniques : [],
-            styles: typeof artistData.styles === 'string' 
-              ? JSON.parse(artistData.styles) 
-              : Array.isArray(artistData.styles) ? artistData.styles : [],
-            social_platforms: typeof artistData.social_platforms === 'string' 
-              ? JSON.parse(artistData.social_platforms) 
-              : Array.isArray(artistData.social_platforms) ? artistData.social_platforms : [],
-            artworks: typeof artistData.artworks === 'string' 
-              ? JSON.parse(artistData.artworks) 
-              : Array.isArray(artistData.artworks) ? artistData.artworks : []
+            ...artistData[0],
+            techniques: typeof artistData[0].techniques === 'string' 
+              ? JSON.parse(artistData[0].techniques) 
+              : Array.isArray(artistData[0].techniques) ? artistData[0].techniques : [],
+            styles: typeof artistData[0].styles === 'string' 
+              ? JSON.parse(artistData[0].styles) 
+              : Array.isArray(artistData[0].styles) ? artistData[0].styles : [],
+            social_platforms: typeof artistData[0].social_platforms === 'string' 
+              ? JSON.parse(artistData[0].social_platforms) 
+              : Array.isArray(artistData[0].social_platforms) ? artistData[0].social_platforms : [],
+            artworks: typeof artistData[0].artworks === 'string' 
+              ? JSON.parse(artistData[0].artworks) 
+              : Array.isArray(artistData[0].artworks) ? artistData[0].artworks : []
           };
           
           setArtist(processedArtist);
@@ -59,10 +72,14 @@ export function useArtistData(artistName: string | undefined) {
           };
           
           setProfile(defaultProfile);
+        } else {
+          logger.error(`Artist not found for: ${artistName}`);
+          setArtist(null);
         }
       } catch (error: any) {
         console.error('Error fetching artist data:', error);
         toast.error(`Failed to load artist: ${error.message}`);
+        setArtist(null);
       } finally {
         setLoading(false);
       }

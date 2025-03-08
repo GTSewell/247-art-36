@@ -14,26 +14,33 @@ const ArtistDashboard = () => {
 
   useEffect(() => {
     const fetchArtistId = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        try {
-          const { data, error } = await supabase
-            .from('artists')
-            .select('id')
-            .eq('user_id', user.id)
-            .single();
-
-          if (error) {
-            logger.error('Error fetching artist ID:', error);
-            return;
-          }
-
-          if (data) {
-            setArtistId(data.id);
-          }
-        } catch (error) {
-          logger.error('Error in fetchArtistId:', error);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          logger.warn('No authenticated user found');
+          return;
         }
+        
+        const { data, error } = await supabase
+          .from('artists')
+          .select('id')
+          .eq('user_id', user.id)
+          .single();
+
+        if (error) {
+          logger.error('Error fetching artist ID:', error);
+          return;
+        }
+
+        if (data) {
+          setArtistId(data.id);
+          logger.info(`Artist ID set: ${data.id}`);
+        } else {
+          logger.warn('No artist record found for this user');
+        }
+      } catch (error) {
+        logger.error('Error in fetchArtistId:', error);
       }
     };
 
