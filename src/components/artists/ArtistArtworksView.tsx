@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
@@ -72,6 +73,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
             key={index} 
             className="relative aspect-square rounded overflow-hidden"
             data-artwork-cell={`cell-${index}`}
+            data-no-flip="true"
           >
             {artwork && (
               <img
@@ -80,6 +82,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                 className="w-full h-full object-cover"
                 onError={(e) => handleArtworkImageError(e, index)}
                 data-artwork-image={`image-${index}`}
+                data-no-flip="true"
               />
             )}
           </div>
