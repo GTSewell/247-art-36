@@ -107,12 +107,12 @@ const PWAHome = () => {
 
         <main className="container mx-auto px-4 pt-20">
           {/* Featured Artists Section - Using the new image for title */}
-          <div className="mb-12">
-            <div className="flex justify-center mb-6">
+          <div className="mb-8">
+            <div className="flex justify-center mb-4">
               <img 
                 src="/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png" 
                 alt="Featured Artists" 
-                className="h-auto w-full max-w-md"
+                className="h-[300px] w-[300px] object-contain"
               />
             </div>
 
@@ -133,11 +133,11 @@ const PWAHome = () => {
 
           {/* Timed Edition Drops Section - Using the new image for title */}
           <div>
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4">
               <img 
                 src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
                 alt="Timed Editions" 
-                className="h-auto w-full max-w-md"
+                className="h-[300px] w-[300px] object-contain"
               />
             </div>
 

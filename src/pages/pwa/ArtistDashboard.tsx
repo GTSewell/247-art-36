@@ -43,7 +43,7 @@ const ArtistDashboard: React.FC = () => {
     try {
       setLoading(true);
 
-      // Check if user has artist role - using Promise.all to prevent deep type instantiation
+      // Using Promise.all to run queries in parallel
       const [roleResult, artistResult] = await Promise.all([
         supabase
           .from('user_roles')
