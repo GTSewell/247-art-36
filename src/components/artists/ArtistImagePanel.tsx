@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { ArtistArtworksView } from './ArtistArtworksView';
 import { ClickIndicator } from './ClickIndicator';
 import ArtistCardFront from './ArtistCardFront';
+import ArtistCardBack from './ArtistCardBack';
 import { useArtistData } from './hooks/useArtistData';
 import { useCardFlip } from './hooks/useCardFlip';
 import { useImageErrors } from './hooks/useImageErrors';
@@ -121,16 +121,16 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
                 width: '100%',
                 height: '100%'
               }}
-              className="w-full h-full bg-white"
-              data-testid="artist-card-back"
+              className="w-full h-full"
             >
-              <ArtistArtworksView 
+              <ArtistCardBack 
                 artist={currentArtist}
                 isGeneratingArtworks={isGeneratingArtworks}
                 setIsGeneratingArtworks={setIsGeneratingArtworks}
                 artworkErrors={artworkErrors}
                 handleArtworkImageError={handleArtworkImageError}
                 refreshArtworks={refreshArtist}
+                onBackClick={handleCardClick}
               />
             </motion.div>
           )}
