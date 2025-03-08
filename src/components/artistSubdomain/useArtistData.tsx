@@ -19,11 +19,9 @@ export function useArtistData(artistName: string | undefined) {
         setLoading(true);
         logger.info(`Fetching artist data for: ${artistName}`);
         
-        // First, try to standardize the artist name that comes from the URL
-        // URL slugs are usually lowercase with spaces removed
         const cleanedName = artistName.toLowerCase().trim();
         
-        // Query the database with multiple ways to match the artist
+        // Use 'let' so we can reassign artistData later if needed
         let { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
@@ -38,8 +36,6 @@ export function useArtistData(artistName: string | undefined) {
         // If not found, try a more flexible search
         if (!artistData || artistData.length === 0) {
           logger.info(`No exact match found, trying with more flexible pattern for: ${cleanedName}`);
-          
-          // Create a version of the name with spaces to try matching
           const possibleNameWithSpaces = cleanedName.replace(/([a-z])([A-Z])/g, '$1 $2');
           
           const { data: flexibleResults, error: flexibleError } = await supabase
@@ -55,7 +51,7 @@ export function useArtistData(artistName: string | undefined) {
           
           if (flexibleResults && flexibleResults.length > 0) {
             logger.info(`Found artist with flexible search: ${flexibleResults[0].name}`);
-            artistData = flexibleResults;
+            artistData = flexibleResults; // reassign flexible results to artistData
           }
         }
         
@@ -114,7 +110,7 @@ export function useArtistData(artistName: string | undefined) {
     }
   }, [artistName]);
 
-  // Helper functions to parse artist data
+  // Helper function to get artist data details
   const getArtistData = () => {
     if (!artist) return {
       techniques: [],

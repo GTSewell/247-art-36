@@ -23,6 +23,7 @@ const ArtistDashboard = () => {
         }
         
         // Query the artists table to find the record associated with this user
+        // Use a proper typing for data to avoid TypeScript issues
         const { data, error } = await supabase
           .from('artists')
           .select('id')
