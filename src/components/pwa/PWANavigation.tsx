@@ -26,8 +26,8 @@ const PWANavigation = () => {
 
   return (
     <>
-      {/* Top navigation bar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/20 bg-white w-full">
+      {/* Top navigation bar - removed bg-white */}
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/20 bg-transparent w-full">
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
           <div className="flex justify-between items-center h-16 w-full">
             {/* Logo */}

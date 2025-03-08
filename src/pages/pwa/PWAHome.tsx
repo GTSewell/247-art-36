@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { useArtists } from "@/hooks/use-artists";
-import FeaturedArtists from "@/components/artists/FeaturedArtists";
+import PWAArtistCarousel from "@/components/pwa/PWAArtistCarousel";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
@@ -114,27 +114,24 @@ const PWAHome = () => {
             />
           </div>
 
-          {/* Featured Artists Section */}
+          {/* Featured Artists Section - Now using Carousel */}
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-6 text-black text-center">
               FEATURED ARTISTS
             </h2>
 
-            {featuredArtists && featuredArtists.length > 0 ? (
-              <FeaturedArtists
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <p className="text-lg">Loading artists...</p>
+              </div>
+            ) : (
+              <PWAArtistCarousel
                 artists={featuredArtists}
                 onSelect={handleArtistSelect}
                 onFavoriteToggle={handleFavoriteToggle}
                 favoriteArtists={favoriteArtists}
-                refreshArtists={refreshArtists}
                 refreshArtist={refreshArtist}
               />
-            ) : (
-              <div className="flex justify-center items-center h-40">
-                <p className="text-lg">
-                  {isLoading ? "Loading artists..." : "No featured artists found"}
-                </p>
-              </div>
             )}
           </div>
 

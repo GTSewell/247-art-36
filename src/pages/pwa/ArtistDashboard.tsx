@@ -50,39 +50,36 @@ const ArtistDashboard: React.FC = () => {
       // Use the user id string directly
       const userIdString = user.id;
 
-      // Check if user has artist role - fix type issues by separating the query from data access
-      const roleResponse = await supabase
+      // Check if user has artist role - fix type issues using simple approach
+      const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userIdString)
         .eq('role', 'artist');
-
-      // Check if user has an artist profile - fix type issues by separating the query from data access
-      const artistResponse = await supabase
+      
+      // Check if user has an artist profile with simplified query
+      const { data: artistData, error: artistError } = await supabase
         .from('artists')
         .select('id')
         .eq('user_id', userIdString);
-      
-      // Safely handle potential errors from both queries
-      const hasRoleError = roleResponse.error !== null;
-      const hasArtistError = artistResponse.error !== null;
-      
-      if (hasRoleError) {
-        console.error("Error checking artist role:", roleResponse.error);
+
+      // Handle potential errors
+      if (roleError) {
+        console.error("Error checking artist role:", roleError);
       }
 
-      if (hasArtistError) {
-        console.error("Error checking artist profile:", artistResponse.error);
+      if (artistError) {
+        console.error("Error checking artist profile:", artistError);
       }
 
-      // Safely check if data exists and has length
-      const hasArtistRole = !hasRoleError && roleResponse.data && roleResponse.data.length > 0;
-      const hasArtistProfile = !hasArtistError && artistResponse.data && artistResponse.data.length > 0;
+      // Check results
+      const hasArtistRole = roleData && roleData.length > 0;
+      const hasArtistProfile = artistData && artistData.length > 0;
       
       if (hasArtistRole || hasArtistProfile) {
         setIsArtist(true);
-        if (hasArtistProfile && artistResponse.data && artistResponse.data.length > 0) {
-          setArtistId(artistResponse.data[0].id);
+        if (hasArtistProfile && artistData && artistData.length > 0) {
+          setArtistId(artistData[0].id);
         }
       } else {
         toast.error("You do not have artist access");
