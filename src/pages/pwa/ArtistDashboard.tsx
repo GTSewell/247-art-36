@@ -44,7 +44,7 @@ const ArtistDashboard: React.FC = () => {
       setLoading(true);
 
       // Using Promise.all to run queries in parallel
-      const [roleResult, artistResult] = await Promise.all([
+      const results = await Promise.all([
         supabase
           .from('user_roles')
           .select('role')
@@ -55,6 +55,9 @@ const ArtistDashboard: React.FC = () => {
           .select('id')
           .eq('user_id', user.id)
       ]);
+      
+      const roleResult = results[0];
+      const artistResult = results[1];
 
       // Handle potential errors
       if (roleResult.error) {

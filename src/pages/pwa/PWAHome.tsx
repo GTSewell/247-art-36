@@ -105,19 +105,19 @@ const PWAHome = () => {
       <div className="min-h-screen bg-zap-yellow pb-20">
         <PWANavigation />
 
-        <main className="container mx-auto px-4 pt-20">
+        <main className="container mx-auto px-4 pt-16">
           {/* Featured Artists Section - Using the new image for title */}
-          <div className="mb-8">
-            <div className="flex justify-center mb-4">
+          <div className="mb-6">
+            <div className="flex justify-center mb-2">
               <img 
                 src="/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png" 
                 alt="Featured Artists" 
-                className="h-[300px] w-[300px] object-contain"
+                className="h-16 object-contain"
               />
             </div>
 
             {isLoading ? (
-              <div className="flex justify-center items-center h-40">
+              <div className="flex justify-center items-center h-24">
                 <p className="text-lg">Loading artists...</p>
               </div>
             ) : (
@@ -133,11 +133,11 @@ const PWAHome = () => {
 
           {/* Timed Edition Drops Section - Using the new image for title */}
           <div>
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-2">
               <img 
                 src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
                 alt="Timed Editions" 
-                className="h-[300px] w-[300px] object-contain"
+                className="h-16 object-contain"
               />
             </div>
 
@@ -147,7 +147,7 @@ const PWAHome = () => {
                 onProductSelect={handleProductSelect}
               />
             ) : (
-              <div className="flex justify-center items-center h-40">
+              <div className="flex justify-center items-center h-24">
                 <p className="text-lg">
                   {isLoading ? "Loading products..." : "No products found"}
                 </p>

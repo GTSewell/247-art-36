@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
@@ -68,7 +69,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   };
 
   return (
-    <section className="mb-16">
+    <section className="mb-8">
       <div 
         className="relative" 
         onTouchStart={handleInteraction}
@@ -79,12 +80,12 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             {products.map((product, index) => {
               const initialTime = getInitialTime(index);
               return (
-                <CarouselItem key={product.id} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={product.id} className="basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
                   <div 
                     className="relative group overflow-hidden rounded-lg cursor-pointer"
                     onClick={() => onProductSelect(product, initialTime)}
                   >
-                    <div className="absolute top-4 right-4 z-10">
+                    <div className="absolute top-1 right-1 z-10">
                       <CountdownTimer
                         initialHours={initialTime.hours}
                         initialMinutes={initialTime.minutes}
@@ -101,10 +102,10 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                       />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-white text-lg font-bold mb-1">{product.name}</h3>
-                        <p className="text-white/90">${product.price}</p>
-                        <Button className="w-full mt-2 bg-zap-red hover:bg-zap-blue">
+                      <div className="absolute bottom-1 left-1 right-1">
+                        <h3 className="text-white text-xs font-bold">{product.name}</h3>
+                        <p className="text-white/90 text-xs">${product.price}</p>
+                        <Button className="w-full mt-1 bg-zap-red hover:bg-zap-blue text-xs py-0.5" size="sm">
                           Add to Cart
                         </Button>
                       </div>
@@ -114,16 +115,15 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
               );
             })}
           </CarouselContent>
-          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-4">
+          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-1">
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
               <Button 
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollPrev()} 
-                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                className="relative h-6 w-6 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <div className="absolute inset-0 rounded-full bg-zap-blue/50 animate-ping" />
-                <ArrowBigLeft className="w-6 h-6 text-white relative z-10" />
+                <ArrowBigLeft className="w-4 h-4 text-white relative z-10" />
               </Button>
             </div>
             <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
@@ -131,10 +131,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                 variant="ghost" 
                 size="icon" 
                 onClick={() => api?.scrollNext()} 
-                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
+                className="relative h-6 w-6 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
               >
-                <div className="absolute inset-0 rounded-full bg-zap-blue/50 animate-ping" />
-                <ArrowBigRight className="w-6 h-6 text-white relative z-10" />
+                <ArrowBigRight className="w-4 h-4 text-white relative z-10" />
               </Button>
             </div>
           </div>

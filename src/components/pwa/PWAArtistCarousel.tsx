@@ -34,7 +34,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
 
   if (!artists || artists.length === 0) {
     return (
-      <div className="flex justify-center items-center h-40">
+      <div className="flex justify-center items-center h-24">
         <p className="text-lg">No featured artists found</p>
       </div>
     );
@@ -52,7 +52,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       >
         <CarouselContent>
           {artists.map((artist) => (
-            <CarouselItem key={artist.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/3 pl-4">
+            <CarouselItem key={artist.id} className="basis-1/3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
               <ArtistCard
                 id={artist.id}
                 name={artist.name}
