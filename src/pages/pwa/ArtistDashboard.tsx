@@ -43,36 +43,36 @@ const ArtistDashboard: React.FC = () => {
     try {
       setLoading(true);
 
-      // Check if user has artist role
-      const { data: roleData, error: roleError } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'artist');
-      
-      // Check if user has an artist profile
-      const { data: artistData, error: artistError } = await supabase
-        .from('artists')
-        .select('id')
-        .eq('user_id', user.id);
+      // Check if user has artist role - using Promise.all to prevent deep type instantiation
+      const [roleResult, artistResult] = await Promise.all([
+        supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'artist'),
+        supabase
+          .from('artists')
+          .select('id')
+          .eq('user_id', user.id)
+      ]);
 
       // Handle potential errors
-      if (roleError) {
-        console.error("Error checking artist role:", roleError);
+      if (roleResult.error) {
+        console.error("Error checking artist role:", roleResult.error);
       }
 
-      if (artistError) {
-        console.error("Error checking artist profile:", artistError);
+      if (artistResult.error) {
+        console.error("Error checking artist profile:", artistResult.error);
       }
 
       // Check results
-      const hasArtistRole = roleData && roleData.length > 0;
-      const hasArtistProfile = artistData && artistData.length > 0;
+      const hasArtistRole = roleResult.data && roleResult.data.length > 0;
+      const hasArtistProfile = artistResult.data && artistResult.data.length > 0;
       
       if (hasArtistRole || hasArtistProfile) {
         setIsArtist(true);
-        if (hasArtistProfile && artistData && artistData.length > 0) {
-          setArtistId(artistData[0].id);
+        if (hasArtistProfile && artistResult.data && artistResult.data.length > 0) {
+          setArtistId(artistResult.data[0].id);
         }
       } else {
         toast.error("You do not have artist access");

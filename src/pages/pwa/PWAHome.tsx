@@ -106,13 +106,15 @@ const PWAHome = () => {
         <PWANavigation />
 
         <main className="container mx-auto px-4 pt-20">
-          {/* Removed the Zap logo div that was here */}
-
-          {/* Featured Artists Section - Now using Carousel */}
+          {/* Featured Artists Section - Using image for title */}
           <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-6 text-black text-center">
-              FEATURED ARTISTS
-            </h2>
+            <div className="flex justify-center mb-6">
+              <img 
+                src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png" 
+                alt="Featured Artists" 
+                className="h-10 md:h-16 w-auto"
+              />
+            </div>
 
             {isLoading ? (
               <div className="flex justify-center items-center h-40">
@@ -129,8 +131,16 @@ const PWAHome = () => {
             )}
           </div>
 
-          {/* Timed Edition Drops Section - Title and emojis removed */}
+          {/* Timed Edition Drops Section - Using image for title */}
           <div>
+            <div className="flex justify-center mb-6">
+              <img 
+                src="/lovable-uploads/1ad216c5-788d-45eb-898a-f6600cee2e79.png" 
+                alt="Timed Edition Drops" 
+                className="h-10 md:h-16 w-auto"
+              />
+            </div>
+
             {!isLoading && products.length > 0 ? (
               <FeaturedProducts
                 products={products}
