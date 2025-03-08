@@ -7,6 +7,7 @@ import FeaturedArtists from "@/components/artists/FeaturedArtists";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
+import { logger } from "@/utils/logger";
 
 const PWAHome = () => {
   const navigate = useNavigate();
@@ -15,11 +16,15 @@ const PWAHome = () => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [timerState, setTimerState] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
+        setError(null);
+        logger.info("Fetching featured products");
+        
         const { data, error } = await supabase
           .from('products')
           .select('*')
@@ -27,10 +32,17 @@ const PWAHome = () => {
           .order('created_at', { ascending: false })
           .limit(6);
 
-        if (error) throw error;
+        if (error) {
+          logger.error("Error fetching products:", error);
+          setError("Failed to load products");
+          throw error;
+        }
+        
+        logger.info(`Fetched ${data?.length || 0} products`);
         setProducts(data || []);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        logger.error('Error in fetchProducts:', error);
+        setError("An error occurred while loading products");
       } finally {
         setIsLoading(false);
       }
@@ -50,18 +62,41 @@ const PWAHome = () => {
 
   const refreshArtist = async (artistId: number): Promise<Artist | void> => {
     try {
+      logger.info(`Refreshing artist with ID: ${artistId}`);
       const { data, error } = await supabase
         .from('artists')
         .select('*')
         .eq('id', artistId)
         .single();
         
-      if (error) throw error;
+      if (error) {
+        logger.error("Error refreshing artist:", error);
+        throw error;
+      }
+      
+      logger.info("Artist refreshed successfully");
       return data as Artist;
     } catch (error) {
-      console.error('Error refreshing artist:', error);
+      logger.error('Error in refreshArtist:', error);
     }
   };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-zap-yellow">
+        <PWANavigation />
+        <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-zap-red text-white rounded-md"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zap-yellow pb-20">
@@ -80,7 +115,7 @@ const PWAHome = () => {
         <div className="mb-12">
           <h2 className="text-3xl font-bold mb-6 text-black text-center">FEATURED ARTISTS</h2>
           
-          {featuredArtists.length > 0 ? (
+          {featuredArtists && featuredArtists.length > 0 ? (
             <FeaturedArtists 
               artists={featuredArtists}
               onSelect={handleArtistSelect}
@@ -91,7 +126,7 @@ const PWAHome = () => {
             />
           ) : (
             <div className="flex justify-center items-center h-40">
-              <p className="text-lg">Loading artists...</p>
+              <p className="text-lg">{isLoading ? "Loading artists..." : "No featured artists found"}</p>
             </div>
           )}
         </div>
@@ -119,7 +154,7 @@ const PWAHome = () => {
             />
           ) : (
             <div className="flex justify-center items-center h-40">
-              <p className="text-lg">Loading products...</p>
+              <p className="text-lg">{isLoading ? "Loading products..." : "No products found"}</p>
             </div>
           )}
         </div>

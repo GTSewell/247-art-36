@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Home, Palette, ShoppingBag, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
+import { logger } from "@/utils/logger";
 
 const PWANavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +18,7 @@ const PWANavigation = () => {
   };
 
   const navigateTo = (path: string) => {
+    logger.info(`Navigating to: ${path}`);
     navigate(path);
     setIsOpen(false);
   };
@@ -64,42 +66,6 @@ const PWANavigation = () => {
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-white pt-16">
           <div className="container mx-auto px-4 py-6 space-y-4">
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full justify-start text-lg p-4",
-                isActive("/") && "bg-primary text-primary-foreground"
-              )}
-              onClick={() => navigateTo("/")}
-            >
-              <Home className="mr-2 h-5 w-5" />
-              Home
-            </Button>
-            
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full justify-start text-lg p-4",
-                isActive("/artists") && "bg-primary text-primary-foreground"
-              )}
-              onClick={() => navigateTo("/artists")}
-            >
-              <Palette className="mr-2 h-5 w-5" />
-              Artists
-            </Button>
-            
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full justify-start text-lg p-4",
-                isActive("/store") && "bg-primary text-primary-foreground"
-              )}
-              onClick={() => navigateTo("/store")}
-            >
-              <ShoppingBag className="mr-2 h-5 w-5" />
-              Store
-            </Button>
-
             {user ? (
               <>
                 <Button
@@ -132,6 +98,18 @@ const PWANavigation = () => {
                     className="mr-2 h-5 w-5"
                   />
                   Collector Dashboard
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-lg p-4 text-red-500"
+                  onClick={async () => {
+                    await supabase.auth.signOut();
+                    navigateTo("/");
+                    window.location.reload();
+                  }}
+                >
+                  Sign Out
                 </Button>
               </>
             ) : (

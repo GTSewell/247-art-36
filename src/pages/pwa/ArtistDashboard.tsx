@@ -50,34 +50,34 @@ const ArtistDashboard: React.FC = () => {
       const userIdString = user.id as string;
 
       // Check if user has artist role
-      const { data: roleData, error: roleError } = await supabase
+      const roleResponse = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userIdString)
         .eq('role', 'artist');
 
-      if (roleError) {
-        console.error("Error checking artist role:", roleError);
-      }
-
       // Check for artist profile
-      const { data: artistData, error: artistError } = await supabase
+      const artistResponse = await supabase
         .from('artists')
         .select('id')
         .eq('user_id', userIdString);
 
-      if (artistError) {
-        console.error("Error checking artist profile:", artistError);
+      if (roleResponse.error) {
+        console.error("Error checking artist role:", roleResponse.error);
+      }
+
+      if (artistResponse.error) {
+        console.error("Error checking artist profile:", artistResponse.error);
       }
 
       // Cast data arrays to the correct types
-      const typedRoleData = roleData as RoleRecord[] | null;
-      const typedArtistData = artistData as ArtistRecord[] | null;
+      const roleData = roleResponse.data as RoleRecord[] | null;
+      const artistData = artistResponse.data as ArtistRecord[] | null;
 
-      if ((typedRoleData && typedRoleData.length > 0) || (typedArtistData && typedArtistData.length > 0)) {
+      if ((roleData && roleData.length > 0) || (artistData && artistData.length > 0)) {
         setIsArtist(true);
-        if (typedArtistData && typedArtistData.length > 0) {
-          setArtistId(typedArtistData[0].id);
+        if (artistData && artistData.length > 0) {
+          setArtistId(artistData[0].id);
         }
       } else {
         toast.error("You do not have artist access");
