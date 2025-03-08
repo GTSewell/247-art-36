@@ -50,7 +50,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  // Handle click on card for flipping
+  // Handle click on card for flipping - simplified to just flip the card
   const handleCardClick = () => {
     logger.info(`Card clicked, current flip state: ${isFlipped ? 'back' : 'front'}`);
     if (!isGeneratingArtworks) {
@@ -61,9 +61,9 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   };
 
   return (
-    <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
+    <div className="w-full h-full">
       <div 
-        className="relative aspect-auto md:aspect-square h-full w-full overflow-hidden cursor-pointer"
+        className="relative h-full w-full overflow-hidden cursor-pointer"
         style={{ perspective: '1000px' }}
         onClick={handleCardClick}
         onMouseEnter={() => !isMobile && setIsHovered(true)}
