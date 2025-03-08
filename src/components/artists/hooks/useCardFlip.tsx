@@ -31,8 +31,7 @@ export const useCardFlip = (artistId: number) => {
     // Interactive elements that should not trigger flip
     const interactiveSelectors = [
       'button', 
-      '[data-button-container="true"]', 
-      '[data-no-flip="true"]'
+      '[data-button-container="true"]'
     ];
     
     // Check if the clicked element or any of its parents match the interactive selectors
