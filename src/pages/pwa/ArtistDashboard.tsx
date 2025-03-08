@@ -51,35 +51,35 @@ const ArtistDashboard: React.FC = () => {
       const userIdString = user.id;
 
       // Check if user has artist role
-      const { data: roleData, error: roleError } = await supabase
+      const roleResponse = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userIdString)
         .eq('role', 'artist');
 
       // Check if user has an artist profile
-      const { data: artistData, error: artistError } = await supabase
+      const artistResponse = await supabase
         .from('artists')
         .select('id, user_id')
         .eq('user_id', userIdString);
       
       // Handle any query errors
-      if (roleError) {
-        console.error("Error checking artist role:", roleError);
+      if (roleResponse.error) {
+        console.error("Error checking artist role:", roleResponse.error);
       }
 
-      if (artistError) {
-        console.error("Error checking artist profile:", artistError);
+      if (artistResponse.error) {
+        console.error("Error checking artist profile:", artistResponse.error);
       }
 
       // Check if user is an artist based on role or profile
-      const hasArtistRole = roleData && roleData.length > 0;
-      const hasArtistProfile = artistData && artistData.length > 0;
+      const hasArtistRole = roleResponse.data && roleResponse.data.length > 0;
+      const hasArtistProfile = artistResponse.data && artistResponse.data.length > 0;
       
       if (hasArtistRole || hasArtistProfile) {
         setIsArtist(true);
-        if (hasArtistProfile) {
-          setArtistId(artistData[0].id);
+        if (hasArtistProfile && artistResponse.data) {
+          setArtistId(artistResponse.data[0].id);
         }
       } else {
         toast.error("You do not have artist access");

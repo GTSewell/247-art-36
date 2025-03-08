@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PWANavigation from "@/components/pwa/PWANavigation";
@@ -7,6 +8,7 @@ import FeaturedProducts from "@/components/store/FeaturedProducts";
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
 import { logger } from "@/utils/logger";
+import { TimerProvider } from "@/contexts/TimerContext";
 
 const PWAHome = () => {
   const navigate = useNavigate();
@@ -59,13 +61,13 @@ const PWAHome = () => {
     navigate(`/artists/${artist.id}`);
   };
 
-  // Refresh an artist's data with explicit generic type and explicit select fields.
-  const refreshArtist = async (artistId: number): Promise<Artist | void> => {
+  // Refresh an artist's data
+  const refreshArtist = async (artistId: number): Promise<void | Artist> => {
     try {
       logger.info(`Refreshing artist with ID: ${artistId}`);
       const { data, error } = await supabase
-        .from<Artist>("artists")
-        .select("id, user_id") // ensure both id and user_id are selected
+        .from('artists')
+        .select("*")
         .eq("id", artistId)
         .single();
 
@@ -75,7 +77,7 @@ const PWAHome = () => {
       }
 
       logger.info("Artist refreshed successfully");
-      return data;
+      return data as Artist;
     } catch (err) {
       logger.error("Error in refreshArtist:", err);
     }
@@ -99,73 +101,75 @@ const PWAHome = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zap-yellow pb-20">
-      <PWANavigation />
+    <TimerProvider>
+      <div className="min-h-screen bg-zap-yellow pb-20">
+        <PWANavigation />
 
-      <main className="container mx-auto px-4 pt-20">
-        <div className="flex justify-center mb-8 mt-4">
-          <img
-            src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png"
-            alt="247.ART Logo"
-            className="h-16 w-auto"
-          />
-        </div>
-
-        {/* Featured Artists Section */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-black text-center">
-            FEATURED ARTISTS
-          </h2>
-
-          {featuredArtists && featuredArtists.length > 0 ? (
-            <FeaturedArtists
-              artists={featuredArtists}
-              onSelect={handleArtistSelect}
-              onFavoriteToggle={handleFavoriteToggle}
-              favoriteArtists={favoriteArtists}
-              refreshArtists={refreshArtists}
-              refreshArtist={refreshArtist}
-            />
-          ) : (
-            <div className="flex justify-center items-center h-40">
-              <p className="text-lg">
-                {isLoading ? "Loading artists..." : "No featured artists found"}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Timed Edition Drops Section */}
-        <div>
-          <h2 className="text-3xl font-bold mb-6 text-black text-center flex items-center justify-center">
+        <main className="container mx-auto px-4 pt-20">
+          <div className="flex justify-center mb-8 mt-4">
             <img
-              src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
-              alt="Dynamite"
-              className="w-8 h-8 mr-2"
+              src="/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png"
+              alt="247.ART Logo"
+              className="h-16 w-auto"
             />
-            TIMED EDITION DROPS
-            <img
-              src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
-              alt="Dynamite"
-              className="w-8 h-8 ml-2 scale-x-[-1]"
-            />
-          </h2>
+          </div>
 
-          {!isLoading && products.length > 0 ? (
-            <FeaturedProducts
-              products={products}
-              onProductSelect={handleProductSelect}
-            />
-          ) : (
-            <div className="flex justify-center items-center h-40">
-              <p className="text-lg">
-                {isLoading ? "Loading products..." : "No products found"}
-              </p>
-            </div>
-          )}
-        </div>
-      </main>
-    </div>
+          {/* Featured Artists Section */}
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-black text-center">
+              FEATURED ARTISTS
+            </h2>
+
+            {featuredArtists && featuredArtists.length > 0 ? (
+              <FeaturedArtists
+                artists={featuredArtists}
+                onSelect={handleArtistSelect}
+                onFavoriteToggle={handleFavoriteToggle}
+                favoriteArtists={favoriteArtists}
+                refreshArtists={refreshArtists}
+                refreshArtist={refreshArtist}
+              />
+            ) : (
+              <div className="flex justify-center items-center h-40">
+                <p className="text-lg">
+                  {isLoading ? "Loading artists..." : "No featured artists found"}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Timed Edition Drops Section */}
+          <div>
+            <h2 className="text-3xl font-bold mb-6 text-black text-center flex items-center justify-center">
+              <img
+                src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
+                alt="Dynamite"
+                className="w-8 h-8 mr-2"
+              />
+              TIMED EDITION DROPS
+              <img
+                src="/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png"
+                alt="Dynamite"
+                className="w-8 h-8 ml-2 scale-x-[-1]"
+              />
+            </h2>
+
+            {!isLoading && products.length > 0 ? (
+              <FeaturedProducts
+                products={products}
+                onProductSelect={handleProductSelect}
+              />
+            ) : (
+              <div className="flex justify-center items-center h-40">
+                <p className="text-lg">
+                  {isLoading ? "Loading products..." : "No products found"}
+                </p>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+    </TimerProvider>
   );
 };
 
