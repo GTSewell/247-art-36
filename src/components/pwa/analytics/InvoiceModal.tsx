@@ -28,13 +28,13 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ open, onOpenChange, invoice
   const formattedDate = `${today.getDate()} ${today.toLocaleString('default', { month: 'long' })} ${today.getFullYear()}`;
   const invoiceNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
   
-  // State for bank details
-  const [bankName, setBankName] = useState("[Insert Bank Name]");
-  const [bsb, setBsb] = useState("[Insert BSB]");
-  const [accountNumber, setAccountNumber] = useState("[Insert Account Number]");
+  // State for bank details - changed from default values with instructions to empty strings
+  const [bankName, setBankName] = useState("");
+  const [bsb, setBsb] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   
-  // State for zoom level
-  const [zoomLevel, setZoomLevel] = useState(0.85); // Starting with a slightly reduced zoom for better fit
+  // State for zoom level - changed from 0.85 to 1.0 for 100% initial zoom
+  const [zoomLevel, setZoomLevel] = useState(1.0);
   
   const handleSendInvoice = () => {
     toast({
@@ -90,7 +90,7 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ open, onOpenChange, invoice
               <Printer className="mr-2 h-4 w-4" />
               Print
             </Button>
-            <Button onClick={handleSendInvoice} className="gap-2">
+            <Button onClick={handleSendInvoice} className="gap-2 bg-green-600 hover:bg-green-700">
               <Check className="h-4 w-4" />
               Proof & Send
               <Mail className="h-4 w-4" />
