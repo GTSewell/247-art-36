@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
@@ -48,10 +49,19 @@ export function useArtists() {
           location: artist.location || '',
           city: artist.city || '',
           country: artist.country || '',
-          techniques: Array.isArray(artist.techniques) ? artist.techniques : [],
-          styles: Array.isArray(artist.styles) ? artist.styles : [],
-          social_platforms: Array.isArray(artist.social_platforms) ? artist.social_platforms : [],
-          artworks: Array.isArray(artist.artworks) ? artist.artworks : [],
+          // Convert Json[] to string[] for these fields
+          techniques: Array.isArray(artist.techniques) 
+            ? artist.techniques.map(item => String(item)) 
+            : [],
+          styles: Array.isArray(artist.styles) 
+            ? artist.styles.map(item => String(item)) 
+            : [],
+          social_platforms: Array.isArray(artist.social_platforms) 
+            ? artist.social_platforms.map(item => String(item)) 
+            : [],
+          artworks: Array.isArray(artist.artworks) 
+            ? artist.artworks.map(item => String(item)) 
+            : [],
           locked_artworks: artist.locked_artworks || false
         }));
         
