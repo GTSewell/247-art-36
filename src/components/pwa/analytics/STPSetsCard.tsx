@@ -2,8 +2,11 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const STPSetsCard: React.FC = () => {
+  const isMobile = useIsMobile();
+  
   // Mock data - in a real app this would come from an API
   const stpPacksSold = 10;
   const initialCommissionRate = 25;
@@ -34,13 +37,17 @@ const STPSetsCard: React.FC = () => {
             className="absolute top-0 left-0 h-full bg-green-500 flex items-center justify-center text-black font-bold"
             style={{ width: `${progressPercentage}%` }}
           >
-            {progressPercentage > 30 && (
-              <span>Your Gallery Commission is now: {currentCommissionRate}%</span>
+            {progressPercentage > 15 && (
+              <span className="whitespace-nowrap px-2 truncate">
+                Your Gallery Commission is now: {currentCommissionRate}%
+              </span>
             )}
           </div>
-          {progressPercentage <= 30 && (
+          {progressPercentage <= 15 && (
             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-              <span className="font-bold">Your Gallery Commission is now: {currentCommissionRate}%</span>
+              <span className="font-bold whitespace-nowrap px-2">
+                Your Gallery Commission is now: {currentCommissionRate}%
+              </span>
             </div>
           )}
         </div>
