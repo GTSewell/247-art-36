@@ -1,11 +1,10 @@
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Mail, Printer, Check } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import ZoomControls from "./invoice/ZoomControls";
 import InvoiceDocument from "./invoice/InvoiceDocument";
+import InvoiceActions from "./invoice/InvoiceActions";
 
 interface InvoiceModalProps {
   open: boolean;
@@ -81,22 +80,10 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ open, onOpenChange, invoice
           />
         </div>
         
-        <DialogFooter className="sticky bottom-0 bg-background pt-2 p-4 border-t">
-          <div className="w-full flex flex-col sm:flex-row gap-2 justify-end">
-            <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button variant="outline">
-              <Printer className="mr-2 h-4 w-4" />
-              Print
-            </Button>
-            <Button onClick={handleSendInvoice} className="gap-2 bg-green-600 hover:bg-green-700">
-              <Check className="h-4 w-4" />
-              Proof & Send
-              <Mail className="h-4 w-4" />
-            </Button>
-          </div>
-        </DialogFooter>
+        <InvoiceActions 
+          onCancel={() => onOpenChange(false)} 
+          onSend={handleSendInvoice} 
+        />
       </DialogContent>
     </Dialog>
   );
