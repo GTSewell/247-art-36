@@ -21,6 +21,7 @@ export const useArtistProfile = (userId: string | null) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [artist, setArtist] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [formData, setFormData] = useState<ArtistProfileFormData>({
     name: "",
     specialty: "",
@@ -33,6 +34,26 @@ export const useArtistProfile = (userId: string | null) => {
     published: false,
     profile_image_url: ""
   });
+  
+  // Check if user is admin
+  useEffect(() => {
+    const checkUserRole = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        const { data } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+          
+        setIsAdmin(!!data);
+      }
+    };
+    
+    checkUserRole();
+  }, []);
   
   useEffect(() => {
     if (userId) {
@@ -95,6 +116,12 @@ export const useArtistProfile = (userId: string | null) => {
   };
   
   const handleCheckboxChange = (name: string, checked: boolean) => {
+    // If trying to publish and not admin, prevent it
+    if (name === "published" && checked && !isAdmin) {
+      toast.error("Only administrators can publish artist profiles");
+      return;
+    }
+    
     setFormData(prev => ({
       ...prev,
       [name]: checked
@@ -169,7 +196,8 @@ export const useArtistProfile = (userId: string | null) => {
         techniques: formData.techniques.split(',').map(item => item.trim()),
         styles: formData.styles.split(',').map(item => item.trim()),
         social_platforms: formData.social_platforms.split(',').map(item => item.trim()),
-        published: formData.published,
+        // Only admins can publish profiles
+        published: isAdmin ? formData.published : artist?.published || false,
         profile_image_url: formData.profile_image_url,
         image: formData.profile_image_url // Set image field to same value for backward compatibility
       };
@@ -229,6 +257,7 @@ export const useArtistProfile = (userId: string | null) => {
     handleChange,
     handleCheckboxChange,
     handleProfileImageUpload,
-    handleSubmit
+    handleSubmit,
+    isAdmin
   };
 };
