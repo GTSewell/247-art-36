@@ -26,6 +26,14 @@ export function useArtistData(artistName: string | undefined) {
         // Try multiple query approaches to find the artist
         let artistData = null;
         let artistError = null;
+
+        // Log all artists for debugging
+        const allArtistsDebug = await supabase
+          .from('artists')
+          .select('id, name')
+          .eq('published', true);
+        
+        logger.info(`Available artists: ${JSON.stringify(allArtistsDebug.data?.map(a => ({id: a.id, name: a.name})))}`);
         
         // 1. Try exact match (for no spaces)
         let result = await supabase
@@ -78,9 +86,14 @@ export function useArtistData(artistName: string | undefined) {
           const allArtists = allArtistsResult.data || [];
           
           // Find the artist whose name with spaces removed matches the artistName
+          const normalizedSearchName = artistName.toLowerCase().replace(/\s+/g, '');
           artistData = allArtists.find(a => 
-            a.name?.replace(/\s+/g, '').toLowerCase() === artistName.toLowerCase()
+            (a.name?.replace(/\s+/g, '').toLowerCase() === normalizedSearchName)
           ) || null;
+          
+          if (artistData) {
+            logger.info(`Found artist using normalized name matching: ${artistData.name}`);
+          }
         }
         
         // 5. Try additional fuzzy matching approaches
@@ -100,11 +113,36 @@ export function useArtistData(artistName: string | undefined) {
           
           // If no match, try removing spaces from both sides and compare
           if (!matchedArtist) {
+            const normalizedInputName = artistName.toLowerCase().replace(/\s+/g, '');
             matchedArtist = allNames.find(a => {
-              const normalizedDbName = a.name?.toLowerCase().replace(/\s+/g, '') || '';
-              const normalizedInputName = artistName.toLowerCase().replace(/\s+/g, '');
-              return normalizedDbName.includes(normalizedInputName) || normalizedInputName.includes(normalizedDbName);
+              if (!a.name) return false;
+              const normalizedDbName = a.name.toLowerCase().replace(/\s+/g, '');
+              return normalizedDbName.includes(normalizedInputName) || 
+                     normalizedInputName.includes(normalizedDbName);
             });
+            
+            if (matchedArtist) {
+              logger.info(`Found fuzzy match: "${matchedArtist.name}" for search: "${artistName}"`);
+            }
+          }
+          
+          // 6. Try treating the input as potentially part of the name
+          if (!matchedArtist) {
+            // Even looser matching - find if any word in the artist name matches
+            matchedArtist = allNames.find(a => {
+              if (!a.name) return false;
+              const artistNameWords = a.name.toLowerCase().split(' ');
+              const searchTermWords = artistName.toLowerCase().split(/[^a-z0-9]/);
+              return artistNameWords.some(word => 
+                searchTermWords.some(searchWord => 
+                  word.includes(searchWord) || searchWord.includes(word)
+                )
+              );
+            });
+            
+            if (matchedArtist) {
+              logger.info(`Found partial word match: "${matchedArtist.name}" for search: "${artistName}"`);
+            }
           }
           
           if (matchedArtist) {
