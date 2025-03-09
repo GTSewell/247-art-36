@@ -29,11 +29,11 @@ const Artists = () => {
   });
 
   const {
-    loading: isLoading,
-    artists,
     featuredArtists,
+    additionalArtists,
+    isLoading,
     favoriteArtists,
-    toggleFavorite: handleFavoriteToggle,
+    handleFavoriteToggle,
     refreshArtists
   } = useArtists();
 
@@ -82,16 +82,9 @@ const Artists = () => {
     await refreshArtists(artistId);
   };
 
-  // Safe access to artists arrays
-  const safeArtists = artists || [];
-  const safeFeaturedArtists = featuredArtists || [];
-
-  // We want all artists to show in the All Artists section
-  const allArtistsToShow = safeArtists;
-
   // Filter artists based on selected criteria
   const filteredFeaturedArtists = filterArtists({
-    artists: safeFeaturedArtists,
+    artists: featuredArtists,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,
@@ -101,8 +94,8 @@ const Artists = () => {
     favoriteArtists
   });
 
-  const filteredAllArtists = filterArtists({
-    artists: allArtistsToShow,
+  const filteredAdditionalArtists = filterArtists({
+    artists: additionalArtists,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,
@@ -111,10 +104,6 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
-
-  console.log("Artists count:", safeArtists.length);
-  console.log("Featured artists count:", safeFeaturedArtists.length);
-  console.log("Filtered all artists count:", filteredAllArtists.length);
 
   if (isLoading) {
     return (
@@ -161,20 +150,17 @@ const Artists = () => {
             onClearFilters={handleClearFilters}
           />
 
-          {/* Only render the FeaturedArtists section if there are actually featured artists */}
-          {filteredFeaturedArtists.length > 0 && (
-            <FeaturedArtists
-              artists={filteredFeaturedArtists}
-              onSelect={setSelectedArtist}
-              onFavoriteToggle={handleFavoriteToggle}
-              favoriteArtists={favoriteArtists}
-              refreshArtists={() => refreshArtists()}
-              refreshArtist={refreshArtist}
-            />
-          )}
+          <FeaturedArtists
+            artists={filteredFeaturedArtists}
+            onSelect={setSelectedArtist}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtists={() => refreshArtists()}
+            refreshArtist={refreshArtist}
+          />
 
           <AllArtists
-            artists={filteredAllArtists}
+            artists={filteredAdditionalArtists}
             allArtistsSearch={allArtistsSearch}
             setAllArtistsSearch={setAllArtistsSearch}
             showFavorites={showFavorites}

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
 import { Button } from "@/components/ui/button";
-import { Heart, RotateCw, Search } from "lucide-react";
+import { Filter, Heart, RotateCw, Search } from "lucide-react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Input } from "@/components/ui/input";
 import { Artist } from "@/data/types/artist";
@@ -19,21 +19,22 @@ const PWAArtists = () => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   
   const { 
-    loading: isLoading, 
-    artists, 
+    featuredArtists, 
+    additionalArtists, 
+    isLoading, 
     favoriteArtists, 
-    toggleFavorite: handleFavoriteToggle,
+    handleFavoriteToggle,
     refreshArtists 
   } = useArtists();
 
-  // All artists from both sections
-  const allArtists = artists || [];
-  
+  // Combine featured and additional artists into one array
+  const allArtists = [...featuredArtists, ...additionalArtists];
+
   // Filter artists based on search term and favorites
   const filteredArtists = allArtists.filter(artist => {
     const matchesSearch = !searchTerm || 
       artist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (artist.specialty && artist.specialty.toLowerCase().includes(searchTerm.toLowerCase()));
+      artist.specialty.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesFavorites = !showFavorites || favoriteArtists.has(artist.id);
     
@@ -43,7 +44,7 @@ const PWAArtists = () => {
   const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
     e.preventDefault();
     const index = filteredArtists.findIndex(a => a.id === artist.id);
-    setSelectedArtistIndex(index >= 0 ? index : 0);
+    setSelectedArtistIndex(index);
     setSelectedArtist(artist);
     setDialogOpen(true);
   };
@@ -55,14 +56,9 @@ const PWAArtists = () => {
     }
   };
 
-  // Navigate to artist subdomain page
+  // Navigate to artist subdomain page - now a separate function that can be used elsewhere
   const navigateToArtistPage = (artist: Artist) => {
     navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
-  };
-
-  // Refresh a specific artist if needed
-  const refreshArtist = async (artistId: number) => {
-    await refreshArtists(artistId);
   };
 
   return (
@@ -103,37 +99,31 @@ const PWAArtists = () => {
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
           </div>
-        ) : filteredArtists.length > 0 ? (
+        ) : (
           <ArtistGrid
             artists={filteredArtists}
             onArtistClick={handleArtistClick}
             onFavoriteToggle={handleFavoriteToggle}
             favoriteArtists={favoriteArtists}
-            refreshArtist={refreshArtist}
+            refreshArtist={(artistId) => refreshArtists(artistId)}
             showFavorites={showFavorites}
           />
-        ) : (
-          <div className="flex justify-center items-center h-64">
-            <p className="text-lg">No artists found</p>
-          </div>
         )}
       </div>
 
       {/* Artist Detail Modal */}
-      {selectedArtist && (
-        <ArtistDetailModal
-          artists={filteredArtists}
-          selectedArtist={selectedArtist}
-          selectedArtistIndex={selectedArtistIndex}
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onArtistChange={handleArtistChange}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={refreshArtists}
-          onSelect={navigateToArtistPage}
-        />
-      )}
+      <ArtistDetailModal
+        artists={filteredArtists}
+        selectedArtist={selectedArtist}
+        selectedArtistIndex={selectedArtistIndex}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onArtistChange={handleArtistChange}
+        onFavoriteToggle={handleFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtists={refreshArtists}
+        onSelect={navigateToArtistPage}
+      />
     </div>
   );
 };

@@ -1,121 +1,176 @@
 
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Artist } from '@/data/types/artist';
-import { toast } from 'sonner';
-import { logger } from '@/utils/logger';
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Artist } from "@/data/types/artist";
+import { logger } from "@/utils/logger";
 
-export function useArtists() {
-  const [loading, setLoading] = useState(true);
-  const [artists, setArtists] = useState<Artist[]>([]);
+export const useArtists = () => {
   const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
+  const [additionalArtists, setAdditionalArtists] = useState<Artist[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
-  useEffect(() => {
-    fetchArtists();
-    // You would also fetch favorite artists here if user is logged in
-  }, []);
-
-  const fetchArtists = async (artistId?: number) => {
+  const fetchArtists = async () => {
     try {
-      setLoading(true);
-      logger.info("Fetching artists from Supabase");
-      
-      let query = supabase
+      setIsLoading(true);
+      const { data: artists, error } = await supabase
         .from('artists')
-        .select('*');
-      
-      // If artistId is provided, only fetch that specific artist
-      if (artistId) {
-        query = query.eq('id', artistId);
-      } else {
-        // When fetching all artists, only get published ones
-        query = query.eq('published', true);
-      }
-      
-      const { data, error } = await query;
-      
+        .select('*')
+        .order('id', { ascending: true });
+
       if (error) {
         throw error;
       }
-      
-      logger.info(`Fetched ${data?.length || 0} artists from Supabase`);
-      
-      if (data) {
-        // Process the data to ensure correct types
-        const processedArtists: Artist[] = data.map(artist => ({
-          id: artist.id,
-          name: artist.name || 'Unknown Artist',
-          specialty: artist.specialty || '',
-          image: artist.image || '/placeholder.svg',
-          bio: artist.bio || '',
-          location: artist.location || '',
-          city: artist.city || '',
-          country: artist.country || '',
-          // Convert Json[] to string[] for these fields
-          techniques: Array.isArray(artist.techniques) 
-            ? artist.techniques.map((item: any) => String(item)) 
-            : [],
-          styles: Array.isArray(artist.styles) 
-            ? artist.styles.map((item: any) => String(item)) 
-            : [],
-          social_platforms: Array.isArray(artist.social_platforms) 
-            ? artist.social_platforms.map((item: any) => String(item)) 
-            : [],
-          artworks: Array.isArray(artist.artworks) 
-            ? artist.artworks.map((item: any) => String(item)) 
-            : [],
-          locked_artworks: artist.locked_artworks || false
-        }));
+
+      if (artists) {
+        // Filter specific artists that should always go to the additional section
+        const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
         
-        logger.info(`Processed ${processedArtists.length} artists`);
+        // First, separate the artists that must go to additional section
+        const mustBeAdditional = artists.filter(artist => 
+          additionalArtistNames.includes(artist.name)
+        );
         
-        if (artistId) {
-          // If we're updating just one artist, replace it in the current list
-          setArtists(prev => {
-            const newList = [...prev];
-            const index = newList.findIndex(a => a.id === artistId);
-            if (index !== -1 && processedArtists.length > 0) {
-              newList[index] = processedArtists[0];
-            }
-            return newList;
-          });
-        } else {
-          // Otherwise update the full list
-          setArtists(processedArtists);
-          
-          // Currently we're not featuring any specific artists
-          setFeaturedArtists([]);
-        }
+        // Get eligible artists for featured section (all artists not in mustBeAdditional)
+        const eligibleForFeatured = artists.filter(artist => 
+          !additionalArtistNames.includes(artist.name)
+        );
+        
+        // Take the first 3 eligible artists for featured section
+        const featured = eligibleForFeatured.slice(0, 3);
+        
+        // Put the rest of eligible artists along with mustBeAdditional into additional
+        const additional = [
+          ...mustBeAdditional,
+          ...eligibleForFeatured.slice(3)
+        ];
+        
+        setFeaturedArtists(featured as Artist[]);
+        setAdditionalArtists(additional as Artist[]);
       }
     } catch (error: any) {
-      console.error('Error fetching artists:', error);
+      logger.error('Error fetching artists:', error);
       toast.error(`Failed to load artists: ${error.message}`);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const toggleFavorite = (artistId: number, isFavorite: boolean) => {
-    const newFavorites = new Set(favoriteArtists);
-    
-    if (isFavorite) {
-      newFavorites.add(artistId);
-    } else {
-      newFavorites.delete(artistId);
+  const fetchFavorites = async () => {
+    try {
+      const user = (await supabase.auth.getUser()).data.user;
+      
+      if (!user) return;
+      
+      const { data, error } = await supabase
+        .from('favorite_artists')
+        .select('artist_id')
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      
+      if (data) {
+        const favoriteIds = new Set(data.map(fav => fav.artist_id));
+        setFavoriteArtists(favoriteIds);
+      }
+    } catch (error: any) {
+      logger.error('Error fetching favorites:', error);
     }
-    
-    setFavoriteArtists(newFavorites);
-    
-    // Here you would also update the favorites in the database if user is logged in
+  };
+
+  useEffect(() => {
+    fetchArtists();
+    fetchFavorites();
+  }, []);
+
+  const handleFavoriteToggle = async (artistId: number, isFavorite: boolean) => {
+    try {
+      const user = (await supabase.auth.getUser()).data.user;
+      
+      if (!user) {
+        toast.error('You must be logged in to favorite artists');
+        return;
+      }
+      
+      if (isFavorite) {
+        // Remove from favorites
+        const { error } = await supabase
+          .from('favorite_artists')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('artist_id', artistId);
+        
+        if (error) throw error;
+        
+        setFavoriteArtists(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(artistId);
+          return newSet;
+        });
+        
+        toast.success('Removed from favorites');
+      } else {
+        // Add to favorites
+        const { error } = await supabase
+          .from('favorite_artists')
+          .insert({ user_id: user.id, artist_id: artistId });
+        
+        if (error) throw error;
+        
+        setFavoriteArtists(prev => {
+          const newSet = new Set(prev);
+          newSet.add(artistId);
+          return newSet;
+        });
+        
+        toast.success('Added to favorites');
+      }
+    } catch (error: any) {
+      logger.error('Error toggling favorite:', error);
+      toast.error(`Failed to update favorites: ${error.message}`);
+    }
+  };
+
+  // Improved refreshArtists function that refreshes a single artist if specified
+  const refreshArtists = async (artistId?: number): Promise<void> => {
+    if (artistId) {
+      try {
+        // Fetch the specific artist data
+        const { data, error } = await supabase
+          .from('artists')
+          .select('*')
+          .eq('id', artistId)
+          .single();
+          
+        if (error) throw error;
+        
+        if (data) {
+          // Update the artist in the featured/additional artists arrays
+          setFeaturedArtists(prev => 
+            prev.map(artist => artist.id === artistId ? data as Artist : artist)
+          );
+          
+          setAdditionalArtists(prev => 
+            prev.map(artist => artist.id === artistId ? data as Artist : artist)
+          );
+        }
+      } catch (error: any) {
+        logger.error('Error refreshing specific artist:', error);
+        toast.error(`Failed to refresh artist: ${error.message}`);
+      }
+    } else {
+      // Refresh all artists
+      await fetchArtists();
+    }
   };
 
   return {
-    loading,
-    artists,
     featuredArtists,
+    additionalArtists,
+    isLoading,
     favoriteArtists,
-    toggleFavorite,
-    refreshArtists: fetchArtists
+    handleFavoriteToggle,
+    refreshArtists
   };
-}
+};
