@@ -1,12 +1,21 @@
 
+import { isLovablePreview } from './utils/environmentDetector';
+import { logger } from './utils/logger';
+
 export const registerServiceWorker = () => {
+  // Skip service worker registration in preview mode
+  if (isLovablePreview()) {
+    logger.info('Skipping service worker registration in preview mode');
+    return;
+  }
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       // First, clear any existing registrations to ensure we start fresh
       navigator.serviceWorker.getRegistrations()
         .then(registrations => {
           if (registrations.length > 0) {
-            console.log('Unregistering existing service workers first...');
+            logger.info('Unregistering existing service workers first...');
             // Unregister all existing service workers
             return Promise.all(
               registrations.map(registration => registration.unregister())
@@ -15,13 +24,13 @@ export const registerServiceWorker = () => {
           return Promise.resolve([]);
         })
         .then(() => {
-          console.log('Registering service worker...');
+          logger.info('Registering service worker...');
           return navigator.serviceWorker.register('/service-worker.js', {
             scope: '/'
           });
         })
         .then(registration => {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          logger.info('ServiceWorker registration successful with scope: ', registration.scope);
           
           // Check if there's an update and notify the user
           registration.addEventListener('updatefound', () => {
@@ -29,7 +38,7 @@ export const registerServiceWorker = () => {
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('New content is available; please refresh.');
+                  logger.info('New content is available; please refresh.');
                   // Show toast notification if in PWA mode
                   if (window.matchMedia('(display-mode: standalone)').matches) {
                     if ('Notification' in window && Notification.permission === 'granted') {
@@ -45,35 +54,36 @@ export const registerServiceWorker = () => {
           });
         })
         .catch(error => {
-          console.error('ServiceWorker registration failed: ', error);
+          logger.error('ServiceWorker registration failed: ', error);
         });
     });
   } else {
-    console.log('Service workers are not supported in this browser');
+    logger.info('Service workers are not supported in this browser');
   }
 };
 
 // Add event listener for PWA lifecycle events
 window.addEventListener('load', () => {
   // Add this to diagnose PWA startup issues
-  console.log('Application loaded in mode:', window.matchMedia('(display-mode: standalone)').matches ? 'standalone/PWA' : 'browser');
+  logger.info('Application loaded in mode:', window.matchMedia('(display-mode: standalone)').matches ? 'standalone/PWA' : 'browser');
+  logger.info('Is Lovable preview:', isLovablePreview());
   
   // Handle PWA display modes
   window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
-    console.log('Display mode changed to:', evt.matches ? 'standalone/PWA' : 'browser');
+    logger.info('Display mode changed to:', evt.matches ? 'standalone/PWA' : 'browser');
     // Reload the page to apply correct routing
     window.location.reload();
   });
   
   // Add event listener to check if document loaded correctly
-  console.log('Document readiness state:', document.readyState);
+  logger.info('Document readiness state:', document.readyState);
   if (document.readyState === 'complete') {
-    console.log('DOM fully loaded and parsed');
-    console.log('Root element exists:', !!document.getElementById('root'));
+    logger.info('DOM fully loaded and parsed');
+    logger.info('Root element exists:', !!document.getElementById('root'));
   }
   
   // Request notification permission for PWA
-  if (window.matchMedia('(display-mode: standalone)').matches) {
+  if (window.matchMedia('(display-mode: standalone)').matches && !isLovablePreview()) {
     if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
       Notification.requestPermission();
     }
