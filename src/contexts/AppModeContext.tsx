@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { logger } from '../utils/logger';
 import { isLovablePreview, isPWAMode } from '../utils/environmentDetector';
@@ -46,12 +47,17 @@ export const AppModeProvider = ({ children }: { children: React.ReactNode }) => 
         return;
       }
 
-      // Standard PWA detection
+      // Immediate check for PWA mode
       const checkPWAMode = () => {
         const inPWAMode = isPWAMode();
         setMode(inPWAMode ? 'pwa' : 'browser');
         logger.info(`App mode set to: ${inPWAMode ? 'pwa' : 'browser'}`);
         setIsInitialized(true);
+        
+        // If in PWA mode, store this information
+        if (inPWAMode && sessionStorage) {
+          sessionStorage.setItem('running_as_pwa', 'true');
+        }
       };
 
       // Initial check
@@ -62,6 +68,11 @@ export const AppModeProvider = ({ children }: { children: React.ReactNode }) => 
         const newMode = evt.matches ? 'pwa' : 'browser';
         logger.info(`Display mode changed to: ${newMode}`);
         setMode(newMode);
+        
+        // If changed to PWA mode, store this information
+        if (evt.matches && sessionStorage) {
+          sessionStorage.setItem('running_as_pwa', 'true');
+        }
       };
 
       // Add listener if supported

@@ -1,5 +1,5 @@
 
-import { isLovablePreview } from './utils/environmentDetector';
+import { isLovablePreview, isPWAMode } from './utils/environmentDetector';
 import { logger } from './utils/logger';
 
 export const registerServiceWorker = () => {
@@ -35,6 +35,12 @@ export const registerServiceWorker = () => {
           .then(registration => {
             logger.info('ServiceWorker registration successful with scope: ', registration.scope);
             
+            // If we're in standalone mode, set the session flag
+            if (isPWAMode() && sessionStorage) {
+              sessionStorage.setItem('running_as_pwa', 'true');
+              logger.info('PWA mode confirmed and session flag set');
+            }
+            
             // Check if there's an update and notify the user
             registration.addEventListener('updatefound', () => {
               const newWorker = registration.installing;
@@ -43,7 +49,7 @@ export const registerServiceWorker = () => {
                   if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     logger.info('New content is available; please refresh.');
                     // Show toast notification if in PWA mode
-                    if (window.matchMedia('(display-mode: standalone)').matches) {
+                    if (isPWAMode()) {
                       if ('Notification' in window && Notification.permission === 'granted') {
                         new Notification('247.ART Update Available', {
                           body: 'A new version is available. Refresh to update.',
@@ -78,14 +84,41 @@ window.addEventListener('load', () => {
   
   try {
     // Add this to diagnose PWA startup issues
-    logger.info('Application loaded in mode:', window.matchMedia('(display-mode: standalone)').matches ? 'standalone/PWA' : 'browser');
+    const currentMode = isPWAMode() ? 'standalone/PWA' : 'browser';
+    logger.info('Application loaded in mode:', currentMode);
     
     // Handle PWA display modes
-    window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
-      logger.info('Display mode changed to:', evt.matches ? 'standalone/PWA' : 'browser');
-      // Reload the page to apply correct routing
-      window.location.reload();
-    });
+    if (window.matchMedia) {
+      const mediaQuery = window.matchMedia('(display-mode: standalone)');
+      
+      const handleDisplayModeChange = (evt: MediaQueryListEvent | MediaQueryList) => {
+        const isStandalone = evt.matches;
+        const newMode = isStandalone ? 'standalone/PWA' : 'browser';
+        logger.info(`Display mode ${evt === mediaQuery ? 'initially' : 'changed to'}: ${newMode}`);
+        
+        // Set flag for PWA mode
+        if (isStandalone && sessionStorage) {
+          sessionStorage.setItem('running_as_pwa', 'true');
+        }
+        
+        // If display mode changed (not initial check), reload to apply correct routing
+        if (evt !== mediaQuery) {
+          window.location.reload();
+        }
+      };
+      
+      // Initial check
+      handleDisplayModeChange(mediaQuery);
+      
+      // Set up listener for changes - with browser compatibility
+      try {
+        mediaQuery.addEventListener('change', handleDisplayModeChange);
+      } catch (err) {
+        // Fallback for older browsers
+        // @ts-ignore - for older browsers
+        mediaQuery.addListener && mediaQuery.addListener(handleDisplayModeChange);
+      }
+    }
     
     // Add event listener to check if document loaded correctly
     logger.info('Document readiness state:', document.readyState);
@@ -95,7 +128,7 @@ window.addEventListener('load', () => {
     }
     
     // Request notification permission for PWA
-    if (window.matchMedia('(display-mode: standalone)').matches && !isLovablePreview()) {
+    if (isPWAMode() && !isLovablePreview()) {
       if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
         Notification.requestPermission();
       }
