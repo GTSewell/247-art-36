@@ -21,36 +21,45 @@ export function useArtistData(artistName: string | undefined) {
           return;
         }
         
-        const formattedName = artistName.replace(/([A-Z])/g, ' $1').trim();
-        logger.info(`Fetching artist data for: ${formattedName}`);
-        
-        const { data: artistData, error: artistError } = await supabase
+        // First try to match the exact formatted name from the URL
+        let { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .ilike('name', formattedName)
-          .maybeSingle();
+          .eq('published', true);
         
         if (artistError) {
           logger.error("Error fetching artist data:", artistError);
           throw artistError;
         }
         
-        if (artistData) {
-          logger.info(`Found artist: ${artistData.name}, ID: ${artistData.id}`);
+        // Find the artist by comparing the formatted URL-safe name
+        let foundArtist = null;
+        if (artistData && artistData.length > 0) {
+          foundArtist = artistData.find(artist => {
+            const formattedName = artist.name
+              .replace(/[^\w\s]/gi, '')
+              .replace(/\s+/g, '')
+              .toLowerCase();
+            return formattedName === artistName.toLowerCase();
+          });
+        }
+        
+        if (foundArtist) {
+          logger.info(`Found artist: ${foundArtist.name}, ID: ${foundArtist.id}`);
           const processedArtist: Artist = {
-            ...artistData,
-            techniques: typeof artistData.techniques === 'string' 
-              ? JSON.parse(artistData.techniques) 
-              : Array.isArray(artistData.techniques) ? artistData.techniques : [],
-            styles: typeof artistData.styles === 'string' 
-              ? JSON.parse(artistData.styles) 
-              : Array.isArray(artistData.styles) ? artistData.styles : [],
-            social_platforms: typeof artistData.social_platforms === 'string' 
-              ? JSON.parse(artistData.social_platforms) 
-              : Array.isArray(artistData.social_platforms) ? artistData.social_platforms : [],
-            artworks: typeof artistData.artworks === 'string' 
-              ? JSON.parse(artistData.artworks) 
-              : Array.isArray(artistData.artworks) ? artistData.artworks : []
+            ...foundArtist,
+            techniques: typeof foundArtist.techniques === 'string' 
+              ? JSON.parse(foundArtist.techniques) 
+              : Array.isArray(foundArtist.techniques) ? foundArtist.techniques : [],
+            styles: typeof foundArtist.styles === 'string' 
+              ? JSON.parse(foundArtist.styles) 
+              : Array.isArray(foundArtist.styles) ? foundArtist.styles : [],
+            social_platforms: typeof foundArtist.social_platforms === 'string' 
+              ? JSON.parse(foundArtist.social_platforms) 
+              : Array.isArray(foundArtist.social_platforms) ? foundArtist.social_platforms : [],
+            artworks: typeof foundArtist.artworks === 'string' 
+              ? JSON.parse(foundArtist.artworks) 
+              : Array.isArray(foundArtist.artworks) ? foundArtist.artworks : []
           };
           
           setArtist(processedArtist);
@@ -72,7 +81,7 @@ export function useArtistData(artistName: string | undefined) {
           
           setProfile(defaultProfile);
         } else {
-          logger.warn(`No artist found with name: ${formattedName}`);
+          logger.warn(`No artist found with name: ${artistName}`);
         }
       } catch (error: any) {
         logger.error('Error fetching artist data:', error);
