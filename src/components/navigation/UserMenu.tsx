@@ -87,7 +87,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
             className="ml-4 rounded-full"
           >
             <Avatar>
-              <AvatarImage src="/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png" alt="Profile" />
+              <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
               <AvatarFallback>
                 <User className="h-5 w-5" />
               </AvatarFallback>
@@ -115,7 +115,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
       onClick={() => navigate("/auth")}
     >
       <Avatar>
-        <AvatarImage src="/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png" alt="Profile" />
+        <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
         <AvatarFallback>
           <User className="h-5 w-5" />
         </AvatarFallback>

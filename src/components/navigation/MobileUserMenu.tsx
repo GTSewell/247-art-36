@@ -68,7 +68,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
         onClick={handleSignOut}
       >
         <Avatar className="h-5 w-5 mr-2">
-          <AvatarImage src="/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png" alt="Profile" />
+          <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
           <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
         </Avatar>
         Sign Out
@@ -83,7 +83,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
       onClick={() => navigate("/auth")}
     >
       <Avatar className="h-5 w-5 mr-2">
-        <AvatarImage src="/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png" alt="Profile" />
+        <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
         <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
       </Avatar>
       Sign In
