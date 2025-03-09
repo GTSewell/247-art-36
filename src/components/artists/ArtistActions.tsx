@@ -31,6 +31,9 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
 }) => {
   const isMobile = useIsMobile();
   
+  // Remove spaces from the display version of the domain
+  const displayDomain = domainName.replace(/\s+/g, '');
+  
   const favoriteButtonStyles = buttonColor ? {
     backgroundColor: isFavorite ? '#f7cf1e' : buttonColor,
     color: isFavorite ? '#000000' : buttonTextColor || 'white',
@@ -47,10 +50,10 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   const getDomainText = () => {
     if (isMobile) {
       // On mobile, we'll show just the domain name without "Visit"
-      return domainName;
+      return displayDomain;
     } else {
       // On desktop, we'll always show the subdomain format for display
-      return `Visit ${domainName}.247.art`;
+      return `Visit ${displayDomain}.247.art`;
     }
   };
 
@@ -104,7 +107,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
         {isMobile ? (
           <>
             <ExternalLink size={16} className="mr-1" />
-            <span className="text-sm truncate">{`${domainName}.247.art`}</span>
+            <span className="text-sm truncate">{`${displayDomain}.247.art`}</span>
           </>
         ) : (
           <>{getDomainText()}</>

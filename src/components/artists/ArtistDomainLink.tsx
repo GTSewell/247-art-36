@@ -11,6 +11,9 @@ const ArtistDomainLink: React.FC<ArtistDomainLinkProps> = ({
   artistDomain, 
   handleDomainClick 
 }) => {
+  // Remove spaces from the display version of the domain
+  const displayDomain = artistDomain.replace(/\s+/g, '');
+  
   return (
     <div className="flex-none mb-3 flex items-center text-sm">
       <LinkIcon size={14} className="mr-1" />
@@ -18,7 +21,7 @@ const ArtistDomainLink: React.FC<ArtistDomainLinkProps> = ({
         onClick={handleDomainClick}
         className="text-black/70 hover:text-black font-mono truncate"
       >
-        {`${artistDomain}.247.art`}
+        {`${displayDomain}.247.art`}
       </button>
     </div>
   );

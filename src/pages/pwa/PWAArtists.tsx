@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
@@ -28,10 +27,8 @@ const PWAArtists = () => {
     refreshArtists 
   } = useArtists();
 
-  // Combine featured and additional artists into one array
   const allArtists = [...featuredArtists, ...additionalArtists];
 
-  // Filter artists based on search term and favorites
   const filteredArtists = allArtists.filter(artist => {
     const matchesSearch = !searchTerm || 
       artist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -57,9 +54,8 @@ const PWAArtists = () => {
     }
   };
 
-  // Updated navigation function to correctly navigate to the artist profile page
   const navigateToArtistPage = (artist: Artist) => {
-    const formattedName = artist.name;
+    const formattedName = artist.name.replace(/\s+/g, '');
     logger.info(`Navigating to artist page: ${formattedName}`);
     navigate(`/artists/${formattedName}`);
   };
@@ -69,7 +65,6 @@ const PWAArtists = () => {
       <PWANavigation />
       
       <div className="container mx-auto px-4 py-4">
-        {/* Search and filter bar */}
         <div className="flex items-center gap-2 mb-4">
           <Input
             type="text"
@@ -97,7 +92,6 @@ const PWAArtists = () => {
           </Button>
         </div>
 
-        {/* Artists Grid - explicitly set to 2 columns */}
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
@@ -119,7 +113,6 @@ const PWAArtists = () => {
         )}
       </div>
 
-      {/* Artist Detail Modal */}
       <ArtistDetailModal
         artists={filteredArtists}
         selectedArtist={selectedArtist}
