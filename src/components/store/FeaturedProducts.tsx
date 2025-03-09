@@ -1,11 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { motion, AnimatePresence } from "framer-motion";
+import ProductItem from "./ProductItem";
+import CarouselNavigation from "./CarouselNavigation";
 
 interface TimerState {
   hours: number;
@@ -85,10 +83,6 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
     api?.scrollNext();
   };
 
-  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/placeholder.svg';
-  };
-
   return (
     <section className="mb-8">
       <div 
@@ -111,83 +105,22 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
               const initialTime = getInitialTime(index);
               return (
                 <CarouselItem key={product.id} className="basis-4/5 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 pl-4">
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    whileHover={{ scale: 1.03 }}
-                    className="relative group overflow-hidden rounded-lg cursor-pointer h-64 md:h-72"
-                    onClick={() => onProductSelect(product, initialTime)}
-                  >
-                    <div className="absolute top-1 right-1 z-10">
-                      <CountdownTimer
-                        initialHours={initialTime.hours}
-                        initialMinutes={initialTime.minutes}
-                        initialSeconds={initialTime.seconds}
-                        productId={product.id}
-                      />
-                    </div>
-                    <div className="h-full overflow-hidden">
-                      <img 
-                        src={product.image_url || '/placeholder.svg'} 
-                        alt={product.name} 
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" 
-                        onError={handleImageError} 
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-1 left-1 right-1">
-                        <h3 className="text-white text-sm font-bold">{product.name}</h3>
-                        <p className="text-white/90 text-xs">${product.price}</p>
-                        <Button className="w-full mt-1 bg-zap-red hover:bg-zap-blue text-xs py-0.5" size="sm">
-                          Add to Cart
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.div>
+                  <ProductItem 
+                    product={product} 
+                    initialTime={initialTime}
+                    onSelect={onProductSelect}
+                  />
                 </CarouselItem>
               );
             })}
           </CarouselContent>
           
-          <AnimatePresence>
-            {(showControls || !isMobile) && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute z-50 left-2 top-1/2 -translate-y-1/2"
-                >
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={handlePrevious} 
-                    className="h-8 w-8 rounded-full bg-white/80 hover:bg-white shadow-md transition-colors"
-                  >
-                    <ChevronLeft className="h-5 w-5" />
-                  </Button>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute z-50 right-2 top-1/2 -translate-y-1/2"
-                >
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={handleNext} 
-                    className="h-8 w-8 rounded-full bg-white/80 hover:bg-white shadow-md transition-colors"
-                  >
-                    <ChevronRight className="h-5 w-5" />
-                  </Button>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+          <CarouselNavigation 
+            showControls={showControls}
+            isMobile={isMobile}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+          />
         </Carousel>
       </div>
     </section>
