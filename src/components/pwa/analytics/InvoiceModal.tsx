@@ -1,11 +1,11 @@
 
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Mail, Printer, Check, ZoomIn, ZoomOut } from "lucide-react";
+import { Mail, Printer, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
+import ZoomControls from "./invoice/ZoomControls";
+import InvoiceDocument from "./invoice/InvoiceDocument";
 
 interface InvoiceModalProps {
   open: boolean;
@@ -58,154 +58,27 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ open, onOpenChange, invoice
         <DialogHeader className="sticky top-0 bg-background z-10 p-4 border-b">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-2xl font-bold">INVOICE</DialogTitle>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={zoomOut}>
-                <ZoomOut className="h-4 w-4" />
-              </Button>
-              <span className="text-sm">{Math.round(zoomLevel * 100)}%</span>
-              <Button variant="outline" size="sm" onClick={zoomIn}>
-                <ZoomIn className="h-4 w-4" />
-              </Button>
-            </div>
+            <ZoomControls 
+              zoomLevel={zoomLevel} 
+              zoomIn={zoomIn} 
+              zoomOut={zoomOut} 
+            />
           </div>
         </DialogHeader>
         
         <div className="p-4 md:p-6 overflow-auto">
-          {/* A4 Paper Container - aspect ratio 1:√2 (1:1.414) */}
-          <div 
-            className="bg-white mx-auto shadow-lg relative"
-            style={{ 
-              width: '100%',
-              maxWidth: '800px',
-              aspectRatio: '1/1.414',
-              transform: `scale(${zoomLevel})`, 
-              transformOrigin: 'top center',
-              marginBottom: zoomLevel > 1 ? `${(zoomLevel - 1) * 100}%` : '0',
-              transition: 'transform 0.2s ease',
-              padding: '2rem',
-            }}
-          >
-            {/* Invoice Header */}
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="font-medium">N. INVOICE</p>
-                <p className="font-bold">{invoiceNumber}</p>
-                <p className="font-medium mt-2">DATE</p>
-                <p>{formattedDate}</p>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <Avatar className="h-12 w-12">
-                  <div className="bg-muted rounded-full w-full h-full flex items-center justify-center">
-                    <span className="text-lg font-medium">
-                      {invoiceData.artistName.charAt(0)}
-                    </span>
-                  </div>
-                </Avatar>
-                <div>
-                  <p className="font-bold">{invoiceData.artistName}</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Bill To/From - Now side by side */}
-            <div className="grid grid-cols-2 gap-6 mt-8">
-              <div>
-                <p className="font-bold mb-2">BILL TO:</p>
-                <p>247art Pty Ltd</p>
-                <p>123 Art Way</p>
-                <p>Sydney, NSW 2000</p>
-                <p>admin@247art.com</p>
-              </div>
-              
-              <div>
-                <p className="font-bold mb-2">BILL FROM:</p>
-                <p>{invoiceData.artistName}</p>
-                <p>Artist Address</p>
-                <p>artist@example.com</p>
-              </div>
-            </div>
-            
-            {/* Line Items */}
-            <div className="border rounded-md overflow-hidden mt-8">
-              <table className="w-full text-sm">
-                <thead className="bg-muted">
-                  <tr>
-                    <th className="text-left py-2 px-2 font-semibold">QTY</th>
-                    <th className="text-left py-2 px-2 font-semibold">Title</th>
-                    <th className="text-left py-2 px-2 font-semibold">Type</th>
-                    <th className="text-right py-2 px-2 font-semibold">Unit $</th>
-                    <th className="text-right py-2 px-2 font-semibold">Total $</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoiceData.lineItems.map((item, index) => (
-                    <tr key={index} className="border-t">
-                      <td className="py-2 px-2">{item.quantity}</td>
-                      <td className="py-2 px-2">{item.title}</td>
-                      <td className="py-2 px-2">{item.type}</td>
-                      <td className="py-2 px-2 text-right">${item.unitPrice.toFixed(2)}</td>
-                      <td className="py-2 px-2 text-right">${(item.quantity * item.unitPrice).toFixed(2)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            
-            {/* Total */}
-            <div className="flex justify-end mt-4">
-              <div className="w-full sm:w-1/3">
-                <div className="flex justify-between py-2 border-t">
-                  <span className="font-semibold">TOTAL OWING:</span>
-                  <span className="font-bold">${invoiceData.totalAmount.toFixed(2)}</span>
-                </div>
-              </div>
-            </div>
-            
-            {/* Payment Info */}
-            <div className="border rounded-md p-4 bg-muted/20 mt-8">
-              <p className="font-bold mb-2">Pay to:</p>
-              <p>{invoiceData.artistName}</p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
-                <div className="flex flex-col">
-                  <label htmlFor="bankName" className="text-sm text-muted-foreground">Bank Name:</label>
-                  <Input 
-                    id="bankName"
-                    value={bankName} 
-                    onChange={(e) => setBankName(e.target.value)}
-                    placeholder="Enter bank name"
-                    className="mt-1"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="bsb" className="text-sm text-muted-foreground">BSB:</label>
-                  <Input 
-                    id="bsb"
-                    value={bsb} 
-                    onChange={(e) => setBsb(e.target.value)}
-                    placeholder="Enter BSB"
-                    className="mt-1"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label htmlFor="accountNumber" className="text-sm text-muted-foreground">Account Number:</label>
-                  <Input 
-                    id="accountNumber"
-                    value={accountNumber} 
-                    onChange={(e) => setAccountNumber(e.target.value)}
-                    placeholder="Enter account number"
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* Thank You */}
-            <div className="text-center mt-8">
-              <p className="font-bold text-lg">THANK YOU!</p>
-              <p className="text-sm text-muted-foreground mt-1">For your business with 247.art</p>
-            </div>
-          </div>
+          <InvoiceDocument
+            invoiceNumber={invoiceNumber}
+            formattedDate={formattedDate}
+            invoiceData={invoiceData}
+            bankName={bankName}
+            setBankName={setBankName}
+            bsb={bsb}
+            setBsb={setBsb}
+            accountNumber={accountNumber}
+            setAccountNumber={setAccountNumber}
+            zoomLevel={zoomLevel}
+          />
         </div>
         
         <DialogFooter className="sticky bottom-0 bg-background pt-2 p-4 border-t">
