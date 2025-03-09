@@ -14,6 +14,38 @@ interface ArtistTagsProps {
 }
 
 const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
+  // Helper function to handle social platform input
+  const handleSocialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // Clean up formats to prevent duplications like instagram.com/instagram.com/username
+    const cleanedValue = value
+      .split(',')
+      .map(platform => platform.trim())
+      .map(platform => {
+        // Remove duplicate domain prefixes
+        if (platform.includes('instagram.com/instagram.com/')) {
+          return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
+        }
+        if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
+          return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
+        }
+        return platform;
+      })
+      .join(', ');
+
+    // Create a synthetic event with the cleaned value
+    const syntheticEvent = {
+      ...e,
+      target: {
+        ...e.target,
+        value: cleanedValue
+      }
+    };
+
+    handleChange(syntheticEvent);
+  };
+
   return (
     <>
       <div className="space-y-2">
@@ -42,14 +74,20 @@ const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
         <Label htmlFor="social_platforms">Social Platforms (comma separated)</Label>
         <div className="text-xs text-gray-500 flex items-start gap-1 mb-1">
           <Info className="h-3 w-3 mt-0.5" />
-          <span>Enter full URLs (e.g., www.instagram.com/username) or just the platform name and username</span>
+          <span>Add just usernames or full URLs. Examples:</span>
+        </div>
+        <div className="grid grid-cols-2 gap-2 mb-2 text-xs text-gray-500">
+          <div>• instagram.com/username</div>
+          <div>• twitter.com/username</div>
+          <div>• @username (for Instagram)</div>
+          <div>• facebook.com/username</div>
         </div>
         <Input
           id="social_platforms"
           name="social_platforms"
           value={formData.social_platforms}
-          onChange={handleChange}
-          placeholder="www.instagram.com/username, twitter.com/username, etc."
+          onChange={handleSocialChange}
+          placeholder="instagram.com/username, twitter.com/username, etc."
         />
       </div>
     </>

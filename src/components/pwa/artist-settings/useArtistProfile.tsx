@@ -54,6 +54,26 @@ export const useArtistProfile = (artistId: string | null) => {
       if (data) {
         // If artist profile exists, load it
         setArtist(data);
+        
+        // Format social platforms to prevent duplication
+        let formattedSocialPlatforms = "";
+        if (Array.isArray(data.social_platforms)) {
+          formattedSocialPlatforms = data.social_platforms
+            .map((platform: string) => {
+              // Clean up formats to prevent duplications
+              if (platform.includes('instagram.com/instagram.com/')) {
+                return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
+              }
+              if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
+                return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
+              }
+              return platform;
+            })
+            .join(', ');
+        } else if (typeof data.social_platforms === 'string') {
+          formattedSocialPlatforms = data.social_platforms;
+        }
+        
         setFormData({
           name: data.name || "",
           specialty: data.specialty || "",
@@ -66,9 +86,7 @@ export const useArtistProfile = (artistId: string | null) => {
           styles: Array.isArray(data.styles) 
             ? data.styles.join(', ') 
             : typeof data.styles === 'string' ? data.styles : "",
-          social_platforms: Array.isArray(data.social_platforms) 
-            ? data.social_platforms.join(', ') 
-            : typeof data.social_platforms === 'string' ? data.social_platforms : ""
+          social_platforms: formattedSocialPlatforms
         });
       }
     } catch (error: any) {
@@ -87,6 +105,35 @@ export const useArtistProfile = (artistId: string | null) => {
     }));
   };
   
+  const processSocialPlatforms = (platforms: string): string[] => {
+    if (!platforms) return [];
+    
+    return platforms.split(',')
+      .map(platform => platform.trim())
+      .filter(platform => platform) // Remove empty strings
+      .map(platform => {
+        // Clean up formats to prevent duplications
+        if (platform.includes('instagram.com/instagram.com/')) {
+          return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
+        }
+        if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
+          return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
+        }
+        
+        // Ensure @ handles are properly formatted
+        if (platform.startsWith('@') && !platform.includes('.com')) {
+          return platform; // Keep as is, will be processed when displayed
+        }
+        
+        // Add https:// protocol if not present and not an @ handle
+        if (!platform.startsWith('http://') && !platform.startsWith('https://') && !platform.startsWith('@')) {
+          return `https://${platform}`;
+        }
+        
+        return platform;
+      });
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -102,9 +149,9 @@ export const useArtistProfile = (artistId: string | null) => {
       const processedData = {
         ...formData,
         user_id: artistId,
-        techniques: formData.techniques.split(',').map(item => item.trim()),
-        styles: formData.styles.split(',').map(item => item.trim()),
-        social_platforms: formData.social_platforms.split(',').map(item => item.trim())
+        techniques: formData.techniques.split(',').map(item => item.trim()).filter(item => item),
+        styles: formData.styles.split(',').map(item => item.trim()).filter(item => item),
+        social_platforms: processSocialPlatforms(formData.social_platforms)
       };
       
       if (artist) {

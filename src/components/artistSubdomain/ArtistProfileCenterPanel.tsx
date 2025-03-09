@@ -33,11 +33,38 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
 }) => {
   const isMobile = useIsMobile();
   
+  // Process social platforms to extract the platform type
+  const processedSocialPlatforms = socialPlatforms.map(platform => {
+    // Default to "other" for unrecognized platforms
+    let platformType = "other";
+    
+    const platformLower = platform.toLowerCase();
+    
+    if (platformLower.includes("instagram") || platformLower.startsWith("@")) {
+      platformType = "instagram";
+    } else if (platformLower.includes("twitter") || platformLower.includes("x.com")) {
+      platformType = "twitter";
+    } else if (platformLower.includes("facebook")) {
+      platformType = "facebook";
+    } else if (platformLower.includes("linkedin")) {
+      platformType = "linkedin";
+    } else if (platformLower.includes("youtube")) {
+      platformType = "youtube";
+    }
+    
+    return {
+      original: platform,
+      type: platformType
+    };
+  });
+  
   const socialIcons = {
     facebook: <Facebook className="h-5 w-5" />,
     instagram: <Instagram className="h-5 w-5" />,
     twitter: <Twitter className="h-5 w-5" />,
     linkedin: <Linkedin className="h-5 w-5" />,
+    youtube: <Youtube className="h-5 w-5" />,
+    other: <Link className="h-5 w-5" />
   };
 
   // Sample links to show when no links are available
@@ -85,6 +112,21 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
     return `hover:bg-[${buttonHoverColor}]`;
   };
   
+  const getSocialUrl = (platform: string, type: string) => {
+    // Handle username with @ format
+    if (platform.startsWith('@')) {
+      return `https://instagram.com/${platform.substring(1)}`;
+    }
+    
+    // If the platform string is already a URL (has protocol), return it
+    if (platform.startsWith('http://') || platform.startsWith('https://')) {
+      return platform;
+    }
+    
+    // Add https:// if it's not there
+    return `https://${platform}`;
+  };
+  
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
       {/* Only show the header section on mobile */}
@@ -110,12 +152,11 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       )}
       
       {/* Social Media Section */}
-      {socialPlatforms.length > 0 && (
+      {processedSocialPlatforms.length > 0 && (
         <div className="mb-6">
           <h3 className="text-base font-bold mb-2">Connect</h3>
           <div className="flex flex-wrap gap-3">
-            {socialPlatforms.map((platform, index) => {
-              const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
+            {processedSocialPlatforms.map((platform, index) => {
               return (
                 <Button
                   key={index}
@@ -123,8 +164,16 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
                   size="icon"
                   className="rounded-full h-10 w-10 border-2 hover:bg-gray-100"
                   style={socialButtonStyle}
+                  asChild
                 >
-                  {socialIcons[platformKey] || <Link className="h-5 w-5" />}
+                  <a 
+                    href={getSocialUrl(platform.original, platform.type)} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${platform.original}`}
+                  >
+                    {socialIcons[platform.type as keyof typeof socialIcons] || socialIcons.other}
+                  </a>
                 </Button>
               );
             })}
