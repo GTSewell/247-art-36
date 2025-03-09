@@ -8,7 +8,7 @@ import { logger } from '@/utils/logger';
 import { Artist } from '@/data/types/artist';
 import { useArtists } from '@/hooks/use-artists';
 
-const DownloadArtistImages = ({ artistId }: { artistId?: number }) => {
+const DownloadArtistImages = ({ artistId, isPwa = false }: { artistId?: number; isPwa?: boolean }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState<{
     success: number;
@@ -57,6 +57,11 @@ const DownloadArtistImages = ({ artistId }: { artistId?: number }) => {
       setIsLoading(false);
     }
   };
+
+  // Only render this component if it's in PWA mode or if it's for a specific artist
+  if (!isPwa && !artistId) {
+    return null;
+  }
 
   return (
     <div className="mt-4 p-4 border rounded-md bg-white shadow-sm">

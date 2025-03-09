@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
@@ -37,7 +36,6 @@ const Artists = () => {
     refreshArtists
   } = useArtists();
 
-  // Check if user is admin
   useEffect(() => {
     const checkUserRole = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -57,7 +55,6 @@ const Artists = () => {
     checkUserRole();
   }, []);
 
-  // Handle dark mode changes
   const handleThemeToggle = (isDark: boolean) => {
     setDarkMode(isDark);
   };
@@ -77,12 +74,10 @@ const Artists = () => {
     toast.success('Filters cleared');
   };
 
-  // Refresh a specific artist if needed
   const refreshArtist = async (artistId: number): Promise<void> => {
     await refreshArtists(artistId);
   };
 
-  // Filter artists based on selected criteria
   const filteredFeaturedArtists = filterArtists({
     artists: featuredArtists,
     allArtistsSearch,
@@ -129,7 +124,7 @@ const Artists = () => {
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
-          {isAdmin && <DownloadArtistImages />}
+          {isAdmin && <DownloadArtistImages isPwa={false} />}
           
           <ArtistsHeader
             artistSearch={artistSearch}
