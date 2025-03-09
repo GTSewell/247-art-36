@@ -9,7 +9,7 @@ import { Image, Plus, Trash } from "lucide-react";
 import { toast } from "sonner";
 
 interface ArtistArtworkManagerProps {
-  artistId: number | null;
+  artistId: string | null;
 }
 
 const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId }) => {
@@ -29,10 +29,12 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       const { data, error } = await supabase
         .from('artists')
         .select('artworks')
-        .eq('id', artistId)
-        .single();
+        .eq('user_id', artistId)
+        .maybeSingle();
       
-      if (error) throw error;
+      if (error) {
+        console.log("No existing artworks found");
+      }
       
       if (data && data.artworks) {
         // Parse artworks if needed
@@ -59,7 +61,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     }
     
     if (!artistId) {
-      toast.error("Artist ID not found");
+      toast.error("User ID not found");
       return;
     }
     
@@ -71,7 +73,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       const { error } = await supabase
         .from('artists')
         .update({ artworks: updatedArtworks })
-        .eq('id', artistId);
+        .eq('user_id', artistId);
       
       if (error) throw error;
       
@@ -88,7 +90,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
   
   const handleRemoveArtwork = async (index: number) => {
     if (!artistId) {
-      toast.error("Artist ID not found");
+      toast.error("User ID not found");
       return;
     }
     
@@ -101,7 +103,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       const { error } = await supabase
         .from('artists')
         .update({ artworks: updatedArtworks })
-        .eq('id', artistId);
+        .eq('user_id', artistId);
       
       if (error) throw error;
       

@@ -42,8 +42,8 @@ const ArtistDashboard: React.FC = () => {
     );
   }
 
-  // Use user.id as artistId if user exists
-  const artistId = user?.id || "";
+  // Use user.id directly as the artistId
+  const artistId = user?.id || null;
 
   return (
     <div className="min-h-screen bg-black">

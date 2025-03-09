@@ -9,7 +9,7 @@ import ArtistTags from "./artist-settings/ArtistTags";
 import { useArtistProfile } from "./artist-settings/useArtistProfile";
 
 interface ArtistProfileSettingsProps {
-  artistId: number | null;
+  artistId: string | null;
 }
 
 const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId }) => {

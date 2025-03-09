@@ -14,7 +14,7 @@ interface ArtistProfileFormData {
   social_platforms: string;
 }
 
-export const useArtistProfile = (artistId: number | null) => {
+export const useArtistProfile = (artistId: string | null) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [artist, setArtist] = useState<any>(null);
@@ -38,15 +38,21 @@ export const useArtistProfile = (artistId: number | null) => {
   const fetchArtistProfile = async () => {
     try {
       setLoading(true);
+      
+      // First check if user already has an artist profile
       const { data, error } = await supabase
         .from('artists')
         .select('*')
-        .eq('id', artistId)
-        .single();
+        .eq('user_id', artistId)
+        .maybeSingle();
       
-      if (error) throw error;
+      if (error) {
+        // If no profile exists with user_id, we'll create one later
+        console.log("No existing artist profile found, will create a new one if needed");
+      }
       
       if (data) {
+        // If artist profile exists, load it
         setArtist(data);
         setFormData({
           name: data.name || "",
@@ -85,7 +91,7 @@ export const useArtistProfile = (artistId: number | null) => {
     e.preventDefault();
     
     if (!artistId) {
-      toast.error("Artist ID not found");
+      toast.error("User ID not found");
       return;
     }
     
@@ -95,19 +101,32 @@ export const useArtistProfile = (artistId: number | null) => {
       // Process array values
       const processedData = {
         ...formData,
+        user_id: artistId,
         techniques: formData.techniques.split(',').map(item => item.trim()),
         styles: formData.styles.split(',').map(item => item.trim()),
         social_platforms: formData.social_platforms.split(',').map(item => item.trim())
       };
       
-      const { error } = await supabase
-        .from('artists')
-        .update(processedData)
-        .eq('id', artistId);
-      
-      if (error) throw error;
-      
-      toast.success("Profile updated successfully");
+      if (artist) {
+        // Update existing artist profile
+        const { error } = await supabase
+          .from('artists')
+          .update(processedData)
+          .eq('user_id', artistId);
+        
+        if (error) throw error;
+        
+        toast.success("Profile updated successfully");
+      } else {
+        // Create new artist profile
+        const { error } = await supabase
+          .from('artists')
+          .insert([processedData]);
+        
+        if (error) throw error;
+        
+        toast.success("Profile created successfully");
+      }
     } catch (error: any) {
       console.error("Error updating artist profile:", error);
       toast.error(`Failed to update profile: ${error.message}`);
