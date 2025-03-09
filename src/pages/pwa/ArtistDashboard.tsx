@@ -6,7 +6,6 @@ import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 import { useAuth } from "@/hooks/use-auth";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 type TabType = "profile" | "artworks" | "analytics";
@@ -57,15 +56,15 @@ const ArtistDashboard: React.FC = () => {
           </TabsList>
           
           <TabsContent value="profile" className="space-y-4">
-            <ArtistProfileSettings user={user} />
+            <ArtistProfileSettings />
           </TabsContent>
           
           <TabsContent value="artworks" className="space-y-4">
-            <ArtistArtworkManager user={user} />
+            <ArtistArtworkManager />
           </TabsContent>
           
           <TabsContent value="analytics" className="space-y-4">
-            <ArtistSalesAnalytics user={user} />
+            <ArtistSalesAnalytics />
           </TabsContent>
         </Tabs>
       </div>

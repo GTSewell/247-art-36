@@ -19,19 +19,19 @@ const StoreCategories: React.FC<StoreCategoriesProps> = ({ onCategorySelect }) =
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-2">
       {categories.map((category) => (
         <button
           key={category.id}
-          onClick={() => onCategorySelect(category.label)}
+          onClick={() => onCategorySelect(category.id)}
           className={`
-            p-4 rounded-lg border-4 border-white/80 shadow-md
+            p-3 rounded-lg border-4 border-white/80 shadow-md
             ${category.color}
             transition-all duration-200 active:scale-95
-            flex items-center justify-center text-center h-24
+            flex items-center justify-center text-center h-20
           `}
         >
-          <span className="font-nove text-white text-base md:text-lg leading-tight drop-shadow-md">
+          <span className="font-nove text-white text-base leading-tight drop-shadow-md">
             {category.label}
           </span>
         </button>

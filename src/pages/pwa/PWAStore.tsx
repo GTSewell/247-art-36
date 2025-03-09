@@ -54,10 +54,45 @@ const PWAStore = () => {
     logger.error("Query error:", error);
   }
 
+  // Generate sample products if there are none for the selected category
+  const getProductsForCategory = (categoryId: string) => {
+    const categoryProducts = products?.filter(p => p.category === categoryId) || [];
+    
+    // If no products exist for this category, generate sample ones
+    if (categoryProducts.length === 0 && !isLoading) {
+      const sampleProducts = [];
+      const categoryNames = {
+        'original': 'Original Artwork',
+        'signed': 'Signed Print',
+        'sticker': 'Sticker',
+        'merch': 'T-Shirt',
+        'print': 'Art Print',
+        'collection': '247 Collection'
+      };
+      
+      // Generate 6 sample products
+      for (let i = 1; i <= 6; i++) {
+        sampleProducts.push({
+          id: `sample-${categoryId}-${i}`,
+          name: `${categoryNames[categoryId as keyof typeof categoryNames]} ${i}`,
+          price: (Math.random() * 100 + 20).toFixed(2),
+          category: categoryId,
+          image_url: i % 3 === 0 ? '/placeholder.svg' : 
+                    categoryId === 'print' ? 'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?q=80&w=1000&auto=format&fit=crop' : 
+                    'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop',
+          is_limited_edition: i % 2 === 0,
+          artists: { name: 'Demo Artist' }
+        });
+      }
+      
+      return sampleProducts;
+    }
+    
+    return categoryProducts;
+  };
+
   const featuredProducts = products?.filter(p => p.is_featured) || [];
-  const categoryProducts = selectedCategory 
-    ? products?.filter(p => p.category === selectedCategory.toLowerCase()) || []
-    : [];
+  const categoryProducts = selectedCategory ? getProductsForCategory(selectedCategory) : [];
 
   const handleProductSelect = (product: any, timerState: TimerState) => {
     setSelectedProduct(product);
@@ -73,12 +108,24 @@ const PWAStore = () => {
     setSelectedCategory(null);
   };
 
+  const getCategoryDisplayName = (categoryId: string) => {
+    switch(categoryId) {
+      case 'original': return 'ORIGINAL ARTWORK';
+      case 'signed': return 'SIGNED & NUMBERED';
+      case 'sticker': return 'STICKERS & FUN STUFF';
+      case 'merch': return 'T-SHIRTS & APPAREL';
+      case 'print': return 'ART PRINTS & POSTERS';
+      case 'collection': return 'THE 247 COLLECTION';
+      default: return categoryId.toUpperCase();
+    }
+  };
+
   return (
     <TimerProvider>
-      <div className="min-h-screen bg-zap-red pb-20">
+      <div className="min-h-screen bg-zap-red">
         <PWANavigation />
         
-        <main className="container mx-auto px-4 pt-20">
+        <main className="container mx-auto px-4 pt-16 pb-24">
           {selectedCategory ? (
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -89,7 +136,7 @@ const PWAStore = () => {
                   <ChevronLeft className="h-6 w-6" />
                 </button>
                 <h1 className="text-2xl font-nove text-white text-center uppercase tracking-wide">
-                  {selectedCategory}
+                  {getCategoryDisplayName(selectedCategory)}
                 </h1>
                 <div className="w-10"></div> {/* Empty div for alignment */}
               </div>
@@ -101,8 +148,8 @@ const PWAStore = () => {
           ) : (
             <>
               {/* Timed Edition Drops Section */}
-              <div className="mb-8">
-                <div className="flex justify-center mb-1">
+              <div className="mb-6">
+                <div className="flex justify-center mb-3">
                   <img 
                     src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
                     alt="Timed Editions" 
@@ -124,7 +171,7 @@ const PWAStore = () => {
                 )}
               </div>
 
-              {/* Categories Section */}
+              {/* Categories Section with reduced height */}
               <StoreCategories onCategorySelect={handleCategorySelect} />
             </>
           )}
