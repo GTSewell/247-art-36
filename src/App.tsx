@@ -22,7 +22,6 @@ import PWAHome from "./pages/pwa/PWAHome";
 import PWAArtists from "./pages/pwa/PWAArtists";
 import PWAStore from "./pages/pwa/PWAStore";
 import CollectorDashboard from "./pages/pwa/CollectorDashboard";
-import { isLovablePreview } from "./utils/environmentDetector";
 
 const queryClient = new QueryClient();
 
@@ -38,25 +37,16 @@ function AppWrapper() {
 
 function AppContent() {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(
-    localStorage.getItem("isPasswordCorrect") === "true" || isLovablePreview()
+    localStorage.getItem("isPasswordCorrect") === "true"
   );
   const [appReady, setAppReady] = useState(false);
-  const { isPWA, isPreview } = useAppMode();
+  const { isPWA } = useAppMode();
 
   useEffect(() => {
-    logger.info("App component mounted", { isPWA, isPreview, isPasswordCorrect });
-    
-    // Always bypass password in preview mode
-    if (isPreview && !isPasswordCorrect) {
-      logger.info("Bypassing password in preview mode");
-      setIsPasswordCorrect(true);
-    } else {
-      localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
-    }
-    
+    logger.info("App component mounted");
+    localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
     document.documentElement.classList.remove('dark');
-    logger.info('App initialized in mode:', isPWA ? 'PWA/standalone' : isPreview ? 'preview' : 'browser');
-    
+    logger.info('App initialized in mode:', isPWA ? 'PWA/standalone' : 'browser');
     const style = document.createElement('style');
     style.textContent = `
       button:has(svg[data-lucide="download"]),
@@ -89,14 +79,12 @@ function AppContent() {
       }
     `;
     document.head.appendChild(style);
-    
     const timer = setTimeout(() => {
       setAppReady(true);
       logger.info("App marked as ready");
     }, 100);
-    
     return () => clearTimeout(timer);
-  }, [isPasswordCorrect, isPWA, isPreview]);
+  }, [isPasswordCorrect, isPWA]);
 
   if (!appReady) {
     return (
