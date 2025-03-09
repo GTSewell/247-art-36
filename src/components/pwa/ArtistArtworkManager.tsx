@@ -4,9 +4,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Image, Plus, Trash, Upload } from "lucide-react";
+import { Image, Upload, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "@/utils/uuid";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ArtistArtworkManagerProps {
   artistId: string | null;
@@ -17,6 +18,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
   const [uploading, setUploading] = useState(false);
   const [artworks, setArtworks] = useState<string[]>([]);
   const [artworkFiles, setArtworkFiles] = useState<string[]>([]);
+  const isMobile = useIsMobile();
   
   useEffect(() => {
     if (artistId) {
@@ -205,7 +207,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="flex flex-col space-y-2">
             <Label htmlFor="artwork-upload" className="mb-2">Upload new artwork</Label>
             <div className="flex items-center gap-2">
@@ -220,7 +222,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
               <Button 
                 onClick={() => document.getElementById('artwork-upload')?.click()}
                 disabled={uploading}
-                className="w-full"
+                className="w-full bg-zap-yellow hover:bg-zap-blue text-black hover:text-white"
               >
                 <Upload className="h-4 w-4 mr-2" />
                 {uploading ? "Uploading..." : "Upload Artwork"}
@@ -233,17 +235,19 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
               You haven't added any artworks yet
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className={`grid gap-4 mt-4 ${isMobile ? 'grid-cols-2' : 'grid-cols-4'}`}>
               {artworks.map((artwork, index) => (
                 <div key={index} className="relative group">
-                  <img 
-                    src={artwork} 
-                    alt={`Artwork ${index + 1}`} 
-                    className="w-full h-48 object-cover rounded-md"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "/placeholder.svg";
-                    }}
-                  />
+                  <div className="aspect-square overflow-hidden rounded-md border border-gray-200">
+                    <img 
+                      src={artwork} 
+                      alt={`Artwork ${index + 1}`} 
+                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/placeholder.svg";
+                      }}
+                    />
+                  </div>
                   <Button 
                     variant="destructive" 
                     size="icon" 
