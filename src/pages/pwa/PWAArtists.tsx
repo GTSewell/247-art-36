@@ -1,158 +1,129 @@
 
-import React, { useState, useEffect } from "react";
-import PWANavigation from "@/components/pwa/PWANavigation";
-import PWAArtistCarousel from "@/components/pwa/PWAArtistCarousel";
+import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
+import ArtistGrid from "@/components/artists/ArtistGrid";
+import { Button } from "@/components/ui/button";
+import { Filter, Heart, RotateCw, Search } from "lucide-react";
+import PWANavigation from "@/components/pwa/PWANavigation";
+import { Input } from "@/components/ui/input";
 import { Artist } from "@/data/types/artist";
-import { filterArtists } from "@/components/artists/ArtistsFilter";
-import AllArtists from "@/components/artists/AllArtists";
-import ArtistsHeader from "@/components/artists/ArtistsHeader";
-import { toast } from "sonner";
-import DownloadArtistImages from "@/components/artists/DownloadArtistImages";
-import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
 
 const PWAArtists = () => {
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
-  const [artistSearch, setArtistSearch] = useState("");
-  const [allArtistsSearch, setAllArtistsSearch] = useState("");
-  const [locationSearch, setLocationSearch] = useState("");
-  const [techniqueSearch, setTechniqueSearch] = useState("");
-  const [styleSearch, setStyleSearch] = useState("");
-  const [selectedTechniques, setSelectedTechniques] = useState<string[]>([]);
-  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
-  const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
   const [showFavorites, setShowFavorites] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const {
-    artists,
-    featuredArtists,
-    loading,
-    favoriteArtists,
-    toggleFavorite,
-    refreshArtists
-  } = useArtists();
+  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   
-  // For compatibility with existing code
-  const handleFavoriteToggle = toggleFavorite;
-  const nonFeaturedArtists = artists.filter(artist => 
-    !featuredArtists.some(featured => featured.id === artist.id)
-  );
+  const { 
+    featuredArtists, 
+    additionalArtists, 
+    isLoading, 
+    favoriteArtists, 
+    handleFavoriteToggle,
+    refreshArtists 
+  } = useArtists();
 
-  // Check if user is admin
-  useEffect(() => {
-    const checkUserRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-          
-        setIsAdmin(!!data);
-      }
-    };
+  // Combine featured and additional artists into one array
+  const allArtists = [...featuredArtists, ...additionalArtists];
+
+  // Filter artists based on search term and favorites
+  const filteredArtists = allArtists.filter(artist => {
+    const matchesSearch = !searchTerm || 
+      artist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      artist.specialty.toLowerCase().includes(searchTerm.toLowerCase());
     
-    checkUserRole();
-  }, []);
-
-  const handleUpdateSelection = () => {
-    toast.success('Filters applied successfully');
-  };
-
-  const handleClearFilters = () => {
-    setArtistSearch("");
-    setLocationSearch("");
-    setTechniqueSearch("");
-    setStyleSearch("");
-    setSelectedTechniques([]);
-    setSelectedStyles([]);
-    setSelectedSocials([]);
-    toast.success('Filters cleared');
-  };
-
-  // Refresh a specific artist if needed
-  const refreshArtist = async (artistId: number): Promise<void | Artist> => {
-    return await refreshArtists(artistId);
-  };
-
-  // Filter artists based on selected criteria
-  const filteredAdditionalArtists = filterArtists({
-    artists: nonFeaturedArtists,
-    allArtistsSearch,
-    locationSearch,
-    selectedTechniques,
-    selectedStyles,
-    selectedSocials,
-    showFavorites,
-    favoriteArtists
+    const matchesFavorites = !showFavorites || favoriteArtists.has(artist.id);
+    
+    return matchesSearch && matchesFavorites;
   });
 
-  if (loading) {
-    return (
-      <div className="bg-background min-h-screen pb-16">
-        <PWANavigation />
-        <div className="container mx-auto pt-20 px-4">
-          <div className="flex justify-center items-center h-64">
-            <p className="text-lg">Loading artists...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleArtistClick = (e: React.MouseEvent, artist: Artist) => {
+    e.preventDefault();
+    const index = filteredArtists.findIndex(a => a.id === artist.id);
+    setSelectedArtistIndex(index);
+    setSelectedArtist(artist);
+    setDialogOpen(true);
+  };
+
+  const handleArtistChange = (index: number) => {
+    if (index >= 0 && index < filteredArtists.length) {
+      setSelectedArtistIndex(index);
+      setSelectedArtist(filteredArtists[index]);
+    }
+  };
+
+  // Navigate to artist subdomain page - now a separate function that can be used elsewhere
+  const navigateToArtistPage = (artist: Artist) => {
+    navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
+  };
 
   return (
-    <div className="bg-background min-h-screen pb-16">
+    <div className="pb-20 pt-16">
       <PWANavigation />
-      <div className="container mx-auto pt-20 px-4">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Artists</h1>
-          {isAdmin && <DownloadArtistImages />}
+      
+      <div className="container mx-auto px-4 py-4">
+        {/* Search and filter bar */}
+        <div className="flex items-center gap-2 mb-4">
+          <Input
+            type="text"
+            placeholder="Search artists..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-grow"
+          />
+          
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={() => setShowFavorites(!showFavorites)}
+            className={showFavorites ? "bg-yellow-300 text-black" : ""}
+          >
+            <Heart size={18} className={showFavorites ? "fill-current" : ""} />
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            size="icon"
+            onClick={() => refreshArtists()}
+          >
+            <RotateCw size={18} />
+          </Button>
         </div>
-        
-        <ArtistsHeader
-          artistSearch={artistSearch}
-          setArtistSearch={setArtistSearch}
-          locationSearch={locationSearch}
-          setLocationSearch={setLocationSearch}
-          techniqueSearch={techniqueSearch}
-          setTechniqueSearch={setTechniqueSearch}
-          styleSearch={styleSearch}
-          setStyleSearch={setStyleSearch}
-          selectedTechniques={selectedTechniques}
-          setSelectedTechniques={setSelectedTechniques}
-          selectedStyles={selectedStyles}
-          setSelectedStyles={setSelectedStyles}
-          selectedSocials={selectedSocials}
-          setSelectedSocials={setSelectedSocials}
-          onUpdateSelection={handleUpdateSelection}
-          onClearFilters={handleClearFilters}
-        />
 
-        <PWAArtistCarousel 
-          artists={featuredArtists}
-          onSelect={setSelectedArtist}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtist={refreshArtist}
-        />
-
-        <AllArtists
-          artists={filteredAdditionalArtists}
-          allArtistsSearch={allArtistsSearch}
-          setAllArtistsSearch={setAllArtistsSearch}
-          showFavorites={showFavorites}
-          setShowFavorites={setShowFavorites}
-          onSelect={setSelectedArtist}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={() => refreshArtists()}
-          refreshArtist={refreshArtist}
-        />
+        {/* Artists Grid */}
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
+          </div>
+        ) : (
+          <ArtistGrid
+            artists={filteredArtists}
+            onArtistClick={handleArtistClick}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtist={(artistId) => refreshArtists(artistId)}
+            showFavorites={showFavorites}
+          />
+        )}
       </div>
+
+      {/* Artist Detail Modal */}
+      <ArtistDetailModal
+        artists={filteredArtists}
+        selectedArtist={selectedArtist}
+        selectedArtistIndex={selectedArtistIndex}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        onArtistChange={handleArtistChange}
+        onFavoriteToggle={handleFavoriteToggle}
+        favoriteArtists={favoriteArtists}
+        refreshArtists={refreshArtists}
+        onSelect={navigateToArtistPage}
+      />
     </div>
   );
 };

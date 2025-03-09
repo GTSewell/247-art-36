@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
@@ -17,21 +18,14 @@ export function useArtists() {
     // You would also fetch favorite artists here if user is logged in
   }, []);
 
-  const fetchArtists = async (artistId?: number) => {
+  const fetchArtists = async () => {
     try {
       setLoading(true);
       
-      // If artistId is provided, fetch only that artist
-      const query = supabase
+      const { data, error } = await supabase
         .from('artists')
         .select('*')
         .is('published', true); // Only get published artists
-      
-      if (artistId) {
-        query.eq('id', artistId);
-      }
-      
-      const { data, error } = await query;
       
       if (error) {
         throw error;
@@ -49,27 +43,18 @@ export function useArtists() {
           location: artist.location || '',
           city: artist.city || '',
           country: artist.country || '',
-          techniques: Array.isArray(artist.techniques) ? artist.techniques.map(String) : [],
-          styles: Array.isArray(artist.styles) ? artist.styles.map(String) : [],
-          social_platforms: Array.isArray(artist.social_platforms) ? artist.social_platforms.map(String) : [],
-          artworks: Array.isArray(artist.artworks) ? artist.artworks.map(String) : [],
+          techniques: Array.isArray(artist.techniques) ? artist.techniques : [],
+          styles: Array.isArray(artist.styles) ? artist.styles : [],
+          social_platforms: Array.isArray(artist.social_platforms) ? artist.social_platforms : [],
+          artworks: Array.isArray(artist.artworks) ? artist.artworks : [],
           locked_artworks: artist.locked_artworks || false,
-          published: artist.published || false,
-          user_id: artist.user_id || ''
         }));
         
-        if (artistId) {
-          // If we're refreshing a specific artist, only update that one in the state
-          setArtists(prev => prev.map(a => a.id === artistId ? processedArtists[0] : a));
-          setFeaturedArtists(prev => prev.map(a => a.id === artistId ? processedArtists[0] : a));
-        } else {
-          // Otherwise update all artists
-          setArtists(processedArtists);
-          
-          // Set featured artists (first 5 or all if less than 5)
-          const featured = processedArtists.filter(artist => featuredArtistIds.includes(artist.id));
-          setFeaturedArtists(featured.length > 0 ? featured : processedArtists.slice(0, Math.min(5, processedArtists.length)));
-        }
+        setArtists(processedArtists);
+        
+        // Set featured artists (first 5 or all if less than 5)
+        const featured = processedArtists.filter(artist => featuredArtistIds.includes(artist.id));
+        setFeaturedArtists(featured.length > 0 ? featured : processedArtists.slice(0, Math.min(5, processedArtists.length)));
       }
     } catch (error: any) {
       console.error('Error fetching artists:', error);

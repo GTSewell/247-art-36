@@ -12,7 +12,7 @@ export const processArtistFormData = (formData: ArtistProfileFormData, userId: s
     techniques: formData.techniques.split(',').map(item => item.trim()),
     styles: formData.styles.split(',').map(item => item.trim()),
     social_platforms: formData.social_platforms.split(',').map(item => item.trim()),
-    published: formData.published
+    is_published: formData.is_published
   };
 };
 
@@ -32,6 +32,6 @@ export const formatArtistDataForForm = (data: any): ArtistProfileFormData => {
     social_platforms: Array.isArray(data.social_platforms) 
       ? data.social_platforms.join(', ') 
       : typeof data.social_platforms === 'string' ? data.social_platforms : "",
-    published: data.published
+    is_published: data.is_published
   };
 };

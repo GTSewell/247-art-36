@@ -19,7 +19,7 @@ export const useArtistProfile = (userId: string | null): ArtistProfileHookReturn
     techniques: "",
     styles: "",
     social_platforms: "",
-    published: false
+    is_published: false
   });
   
   useEffect(() => {
@@ -80,7 +80,7 @@ export const useArtistProfile = (userId: string | null): ArtistProfileHookReturn
       const submissionData = { ...formData };
       if (!isAdmin && artist) {
         // For non-admins, preserve the existing published status
-        submissionData.published = artist.published;
+        submissionData.is_published = artist.is_published;
       }
       
       const updatedArtist = await updateArtistProfile(submissionData, userId, artist);

@@ -29,19 +29,13 @@ const Artists = () => {
   });
 
   const {
-    artists,
     featuredArtists,
-    loading,
+    additionalArtists,
+    isLoading,
     favoriteArtists,
-    toggleFavorite,
+    handleFavoriteToggle,
     refreshArtists
   } = useArtists();
-  
-  // For compatibility with existing code
-  const handleFavoriteToggle = toggleFavorite;
-  const nonFeaturedArtists = artists.filter(artist => 
-    !featuredArtists.some(featured => featured.id === artist.id)
-  );
 
   // Check if user is admin
   useEffect(() => {
@@ -101,7 +95,7 @@ const Artists = () => {
   });
 
   const filteredAdditionalArtists = filterArtists({
-    artists: nonFeaturedArtists,
+    artists: additionalArtists,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,
@@ -111,7 +105,7 @@ const Artists = () => {
     favoriteArtists
   });
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
