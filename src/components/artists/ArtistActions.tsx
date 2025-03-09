@@ -49,8 +49,8 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
       // On mobile, we'll show just the domain name without "Visit"
       return domainName;
     } else {
-      // On desktop, we'll show the full URL format with "Visit"
-      return useSubPath ? `Visit 247.art/artists/${domainName}` : `Visit ${domainName}.247.art`;
+      // On desktop, we'll always show the subdomain format for display
+      return `Visit ${domainName}.247.art`;
     }
   };
 
@@ -104,7 +104,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
         {isMobile ? (
           <>
             <ExternalLink size={16} className="mr-1" />
-            <span className="text-sm truncate">{useSubPath ? `247.art/artists/${domainName}` : `${domainName}.247.art`}</span>
+            <span className="text-sm truncate">{`${domainName}.247.art`}</span>
           </>
         ) : (
           <>{getDomainText()}</>

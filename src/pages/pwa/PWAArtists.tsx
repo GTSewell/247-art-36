@@ -59,8 +59,6 @@ const PWAArtists = () => {
 
   // Updated navigation function to correctly navigate to the artist profile page
   const navigateToArtistPage = (artist: Artist) => {
-    // Keep artist name as-is for the URL, instead of changing the format
-    // This ensures it matches exactly how it's stored in the database
     const formattedName = artist.name;
     logger.info(`Navigating to artist page: ${formattedName}`);
     navigate(`/artists/${formattedName}`);
@@ -99,20 +97,25 @@ const PWAArtists = () => {
           </Button>
         </div>
 
-        {/* Artists Grid */}
+        {/* Artists Grid - explicitly set to 2 columns */}
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
           </div>
         ) : (
-          <ArtistGrid
-            artists={filteredArtists}
-            onArtistClick={handleArtistClick}
-            onFavoriteToggle={handleFavoriteToggle}
-            favoriteArtists={favoriteArtists}
-            refreshArtist={(artistId) => refreshArtists(artistId)}
-            showFavorites={showFavorites}
-          />
+          <div className="grid grid-cols-2 gap-4">
+            {filteredArtists.map((artist) => (
+              <ArtistGrid
+                key={artist.id}
+                artists={[artist]}
+                onArtistClick={handleArtistClick}
+                onFavoriteToggle={handleFavoriteToggle}
+                favoriteArtists={favoriteArtists}
+                refreshArtist={(artistId) => refreshArtists(artistId)}
+                showFavorites={showFavorites}
+              />
+            ))}
+          </div>
         )}
       </div>
 

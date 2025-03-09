@@ -94,7 +94,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             buttonTextColor={colorTheme?.buttonText} 
             buttonHoverColor={colorTheme?.buttonHover} 
             buttonBorderColor={colorTheme?.buttonBorder}
-            useSubPath={true} 
+            useSubPath={false} 
           />
         </div>
       )}
@@ -125,7 +125,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
             buttonTextColor={colorTheme?.buttonText} 
             buttonHoverColor={colorTheme?.buttonHover} 
             buttonBorderColor={colorTheme?.buttonBorder}
-            useSubPath={true} 
+            useSubPath={false} 
           />
         </div>
       )}
