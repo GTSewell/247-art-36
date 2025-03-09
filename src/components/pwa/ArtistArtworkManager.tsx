@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Image, Plus, Trash } from "lucide-react";
+import { Image, Plus, Trash, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ArtistArtworkManagerProps {
   artistId: string | null;
@@ -15,6 +16,10 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
   const [loading, setLoading] = useState(true);
   const [artworks, setArtworks] = useState<string[]>([]);
   const [newArtworkUrl, setNewArtworkUrl] = useState("");
+  const [uploadTab, setUploadTab] = useState<"url" | "file">("url");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   
   useEffect(() => {
     if (artistId) {
@@ -50,6 +55,80 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       toast.error(`Failed to load artworks: ${error.message}`);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+  
+  const handleFileUpload = async () => {
+    if (!artistId) {
+      toast.error("User ID not found");
+      return;
+    }
+    
+    if (!selectedFile) {
+      toast.error("Please select a file to upload");
+      return;
+    }
+    
+    try {
+      setUploading(true);
+      setUploadProgress(0);
+      
+      // Create a unique filename using the artist ID and timestamp
+      const fileExt = selectedFile.name.split('.').pop();
+      const fileName = `${artistId}_${Date.now()}.${fileExt}`;
+      const filePath = `artworks/${fileName}`;
+      
+      // Upload the file to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('artist-images')
+        .upload(filePath, selectedFile, {
+          cacheControl: '3600',
+          upsert: false,
+          onUploadProgress: (progress) => {
+            const percent = Math.round((progress.loaded / progress.total) * 100);
+            setUploadProgress(percent);
+          }
+        });
+      
+      if (error) throw error;
+      
+      // Get the public URL for the uploaded file
+      const { data: urlData } = supabase.storage
+        .from('artist-images')
+        .getPublicUrl(filePath);
+      
+      const publicUrl = urlData.publicUrl;
+      
+      // Add the new artwork URL to the artist's profile
+      const updatedArtworks = [...artworks, publicUrl];
+      
+      const { error: updateError } = await supabase
+        .from('artists')
+        .update({ artworks: updatedArtworks })
+        .eq('user_id', artistId);
+      
+      if (updateError) throw updateError;
+      
+      setArtworks(updatedArtworks);
+      setSelectedFile(null);
+      toast.success("Artwork uploaded successfully");
+      
+      // Reset the file input
+      const fileInput = document.getElementById('artwork-file-upload') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
+      
+    } catch (error: any) {
+      console.error("Error uploading artwork:", error);
+      toast.error(`Failed to upload artwork: ${error.message}`);
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
     }
   };
   
@@ -130,19 +209,71 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="flex space-x-2">
-            <div className="flex-grow">
-              <Input
-                value={newArtworkUrl}
-                onChange={(e) => setNewArtworkUrl(e.target.value)}
-                placeholder="Enter artwork URL"
-              />
-            </div>
-            <Button onClick={handleAddArtwork} disabled={loading}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add
-            </Button>
-          </div>
+          <Tabs value={uploadTab} onValueChange={(value) => setUploadTab(value as "url" | "file")}>
+            <TabsList className="w-full grid grid-cols-2">
+              <TabsTrigger value="url">Add by URL</TabsTrigger>
+              <TabsTrigger value="file">Upload Image</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="url" className="pt-4">
+              <div className="flex space-x-2">
+                <div className="flex-grow">
+                  <Input
+                    value={newArtworkUrl}
+                    onChange={(e) => setNewArtworkUrl(e.target.value)}
+                    placeholder="Enter artwork URL"
+                  />
+                </div>
+                <Button onClick={handleAddArtwork} disabled={loading || !newArtworkUrl.trim()}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add
+                </Button>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="file" className="pt-4">
+              <div className="space-y-4">
+                <div className="border-2 border-dashed border-gray-300 rounded-md p-6 text-center">
+                  <input
+                    id="artwork-file-upload"
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                  <label 
+                    htmlFor="artwork-file-upload" 
+                    className="cursor-pointer block"
+                  >
+                    <Upload className="mx-auto h-12 w-12 text-gray-400" />
+                    <p className="mt-2 text-sm text-gray-500">
+                      {selectedFile ? selectedFile.name : "Click to upload an image"}
+                    </p>
+                  </label>
+                </div>
+                
+                {selectedFile && (
+                  <div className="flex flex-col space-y-2">
+                    {uploading && (
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                          className="bg-blue-600 h-2.5 rounded-full" 
+                          style={{ width: `${uploadProgress}%` }}
+                        ></div>
+                      </div>
+                    )}
+                    <Button 
+                      onClick={handleFileUpload} 
+                      disabled={uploading || !selectedFile}
+                      className="w-full"
+                    >
+                      {uploading ? `Uploading (${uploadProgress}%)` : "Upload Artwork"}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+          </Tabs>
           
           {artworks.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
