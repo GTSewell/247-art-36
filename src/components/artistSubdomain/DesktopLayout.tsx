@@ -49,7 +49,11 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   const safeArtworks = artworks || [];
   
   // Convert the record to an array for links
-  const linksArray = safeProfile?.links || [];
+  const linksArray = safeProfile?.links ? 
+    (typeof safeProfile.links === 'string' ? 
+      JSON.parse(safeProfile.links) : 
+      safeProfile.links) : 
+    [];
   
   return (
     <div className="min-h-screen grid grid-cols-12" style={{ backgroundColor: colorTheme.background }}>

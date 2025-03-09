@@ -4,7 +4,7 @@ import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import MobileNavigation from './MobileNavigation';
 import MobilePanel from './MobilePanel';
-import { useEmblaCarousel as importedUseEmblaCarousel } from 'embla-carousel-react';
+import useEmblaCarousel from 'embla-carousel-react';
 import MobileCarousel from './MobileCarousel';
 
 // Correctly define the ColorTheme interface with all required properties
@@ -41,7 +41,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   colorTheme,
   onBack
 }) => {
-  const [emblaRef, emblaApi] = importedUseEmblaCarousel({ loop: false, align: 'start' });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
   const [panelHeight, setPanelHeight] = useState('calc(100vh - 4rem)');
   
   // Safe handling of potentially undefined/null values

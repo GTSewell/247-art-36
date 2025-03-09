@@ -1,16 +1,24 @@
 
 import React from 'react';
-import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
-import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
-import ArtistProfileRightPanel from './ArtistProfileRightPanel';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import MobilePanel from './MobilePanel';
-import { UseEmblaCarouselType } from 'embla-carousel-react';
+
+interface ColorTheme {
+  background: string;
+  header: string;
+  panel: string;
+  text: string;
+  button: string;
+  buttonText: string;
+  buttonHover: string;
+  buttonBorder: string;
+  badgeBg: string;
+}
 
 interface MobileCarouselProps {
-  emblaApi: UseEmblaCarouselType[1] | undefined; 
-  emblaRef: React.RefCallback<HTMLDivElement>;
+  emblaRef: React.RefObject<HTMLDivElement>;
+  emblaApi: any;
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
@@ -18,22 +26,12 @@ interface MobileCarouselProps {
   socialPlatforms: Record<string, string>;
   artworks: string[];
   panelHeight: string;
-  colorTheme: {
-    background: string;
-    header: string;
-    panel: string;
-    text: string;
-    button: string;
-    buttonText: string;
-    buttonHover: string;
-    buttonBorder: string;
-    badgeBg: string;
-  };
+  colorTheme: ColorTheme;
 }
 
 const MobileCarousel: React.FC<MobileCarouselProps> = ({
-  emblaApi,
   emblaRef,
+  emblaApi,
   artist,
   profile,
   techniques,
@@ -50,54 +48,65 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
   const safeStyles = styles || [];
   const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
   const safeArtworks = artworks || [];
-  
+
   // Convert the record to an array for links
-  const linksArray = safeProfile?.links || [];
+  const linksArray = safeProfile?.links ? 
+    (typeof safeProfile.links === 'string' ? 
+      JSON.parse(safeProfile.links) : 
+      safeProfile.links) : 
+    [];
+
+  // Define panel data
+  const panels = [
+    {
+      id: 'info',
+      title: 'Info',
+      content: (
+        <MobilePanel
+          key="info"
+          title="Artist Info"
+          artist={safeArtist}
+          profile={safeProfile}
+          techniques={safeTechniques}
+          styles={safeStyles}
+          socialPlatforms={safeSocialPlatforms}
+          links={linksArray}
+          panelColor={colorTheme.panel}
+          buttonColor={colorTheme.button}
+          buttonTextColor={colorTheme.buttonText}
+          buttonHoverColor={colorTheme.buttonHover}
+          buttonBorderColor={colorTheme.buttonBorder}
+          badgeBgColor={colorTheme.badgeBg}
+          height={panelHeight}
+          type="info"
+        />
+      )
+    },
+    {
+      id: 'artworks',
+      title: 'Artworks',
+      content: (
+        <MobilePanel
+          key="artworks"
+          title="Artworks"
+          artist={safeArtist}
+          artworks={safeArtworks}
+          panelColor={colorTheme.panel}
+          height={panelHeight}
+          type="artworks"
+        />
+      )
+    }
+  ];
 
   return (
-    <div className="h-full overflow-hidden">
-      <div ref={emblaRef} className="h-full overflow-hidden">
-        <div className="h-full flex">
-          {/* About Panel */}
-          <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
-            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-              <ArtistProfileLeftPanel 
-                artist={safeArtist}
-                techniques={safeTechniques}
-                styles={safeStyles}
-                panelColor={colorTheme.panel}
-                badgeBgColor={colorTheme.badgeBg}
-              />
-            </MobilePanel>
+    <div className="embla" ref={emblaRef}>
+      <div className="embla__container flex">
+        {panels.map((panel) => (
+          <div key={panel.id} className="embla__slide flex-shrink-0 w-full">
+            {panel.content}
           </div>
-          
-          {/* Links Panel */}
-          <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
-            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-              <ArtistProfileCenterPanel 
-                artist={safeArtist}
-                socialPlatforms={safeSocialPlatforms}
-                links={linksArray}
-                panelColor={colorTheme.panel}
-                buttonColor={colorTheme.button}
-                buttonTextColor={colorTheme.buttonText}
-                buttonHoverColor={colorTheme.buttonHover}
-                buttonBorderColor={colorTheme.buttonBorder}
-              />
-            </MobilePanel>
-          </div>
-          
-          {/* Artwork Panel */}
-          <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
-            <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
-              <ArtistProfileRightPanel 
-                artist={safeArtist}
-                artworks={safeArtworks}
-                panelColor={colorTheme.panel}
-              />
-            </MobilePanel>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
