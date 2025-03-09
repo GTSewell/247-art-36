@@ -112,20 +112,43 @@ export const useArtistProfile = (artistId: string | null) => {
         const { error } = await supabase
           .from('artists')
           .update(processedData)
-          .eq('user_id', artistId);
+          .eq('id', artist.id);
         
         if (error) throw error;
         
         toast.success("Profile updated successfully");
       } else {
-        // Create new artist profile
+        // For new artist profiles, we need to get a new ID from the sequence
+        // First, query to get the next available ID
+        const { data: maxIdData, error: maxIdError } = await supabase
+          .from('artists')
+          .select('id')
+          .order('id', { ascending: false })
+          .limit(1)
+          .single();
+          
+        if (maxIdError && !maxIdError.message.includes('No rows found')) {
+          throw maxIdError;
+        }
+        
+        // Calculate next ID (either increment max ID or start at 1)
+        const nextId = maxIdData ? maxIdData.id + 1 : 1;
+        
+        // Create new artist profile with the new ID
         const { error } = await supabase
           .from('artists')
-          .insert([processedData]);
+          .insert([{
+            id: nextId,
+            ...processedData,
+            published: true // Set published to true by default
+          }]);
         
         if (error) throw error;
         
         toast.success("Profile created successfully");
+        
+        // Fetch the newly created profile to update the state
+        fetchArtistProfile();
       }
     } catch (error: any) {
       console.error("Error updating artist profile:", error);
