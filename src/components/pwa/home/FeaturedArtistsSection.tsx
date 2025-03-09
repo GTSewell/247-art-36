@@ -31,6 +31,8 @@ const FeaturedArtistsSection: React.FC<FeaturedArtistsSectionProps> = ({
     }
   };
 
+  logger.info(`FeaturedArtistsSection rendering with ${artists?.length || 0} artists`);
+
   return (
     <div className="mb-4">
       <div className="flex justify-center mb-1">
@@ -55,7 +57,7 @@ const FeaturedArtistsSection: React.FC<FeaturedArtistsSectionProps> = ({
         />
       ) : (
         <div className="flex justify-center items-center h-24">
-          <p className="text-lg">No artists found</p>
+          <p className="text-lg">No featured artists available</p>
         </div>
       )}
     </div>

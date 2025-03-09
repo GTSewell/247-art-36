@@ -8,8 +8,12 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
 import FeaturedArtistsSection from "@/components/pwa/home/FeaturedArtistsSection";
 import TimedEditionsSection from "@/components/pwa/home/TimedEditionsSection";
+import { logger } from "@/utils/logger";
 
 const PWAHome = () => {
+  // Log when the component mounts
+  logger.info("PWAHome component mounted");
+  
   const { artists, favoriteArtists, toggleFavorite: handleFavoriteToggle, refreshArtists, loading: artistsLoading } = useArtists();
   const { products, isLoading: productsLoading, error } = useFeaturedProducts();
   
@@ -20,6 +24,9 @@ const PWAHome = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+
+  // Log the number of artists fetched
+  logger.info(`PWAHome: ${artists?.length || 0} artists loaded, loading state: ${artistsLoading}`);
 
   const handleProductSelect = (product: any, timer: any) => {
     setSelectedProduct(product);

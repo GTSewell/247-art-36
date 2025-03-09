@@ -1,7 +1,9 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 
 export function useArtists() {
   const [loading, setLoading] = useState(true);
@@ -17,15 +19,18 @@ export function useArtists() {
   const fetchArtists = async (artistId?: number) => {
     try {
       setLoading(true);
+      logger.info("Fetching artists from Supabase");
       
       let query = supabase
         .from('artists')
-        .select('*')
-        .eq('published', true); // Only get published artists
+        .select('*');
       
       // If artistId is provided, only fetch that specific artist
       if (artistId) {
         query = query.eq('id', artistId);
+      } else {
+        // When fetching all artists, only get published ones
+        query = query.eq('published', true);
       }
       
       const { data, error } = await query;
@@ -33,6 +38,8 @@ export function useArtists() {
       if (error) {
         throw error;
       }
+      
+      logger.info(`Fetched ${data?.length || 0} artists from Supabase`);
       
       if (data) {
         // Process the data to ensure correct types
@@ -61,6 +68,8 @@ export function useArtists() {
           locked_artworks: artist.locked_artworks || false
         }));
         
+        logger.info(`Processed ${processedArtists.length} artists`);
+        
         if (artistId) {
           // If we're updating just one artist, replace it in the current list
           setArtists(prev => {
@@ -75,8 +84,7 @@ export function useArtists() {
           // Otherwise update the full list
           setArtists(processedArtists);
           
-          // Set featured artists - for now we're not using this but keeping the functionality
-          // In case we want to feature specific artists in the future
+          // Currently we're not featuring any specific artists
           setFeaturedArtists([]);
         }
       }
