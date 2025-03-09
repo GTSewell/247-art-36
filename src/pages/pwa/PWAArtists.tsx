@@ -19,16 +19,17 @@ const PWAArtists = () => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   
   const { 
+    loading,
+    artists,
     featuredArtists, 
     additionalArtists, 
-    isLoading, 
     favoriteArtists, 
     handleFavoriteToggle,
     refreshArtists 
   } = useArtists();
 
   // Combine featured and additional artists into one array
-  const allArtists = [...featuredArtists, ...additionalArtists];
+  const allArtists = artists?.length ? artists : [...(featuredArtists || []), ...(additionalArtists || [])];
 
   // Filter artists based on search term and favorites
   const filteredArtists = allArtists.filter(artist => {
@@ -59,6 +60,10 @@ const PWAArtists = () => {
   // Navigate to artist subdomain page - now a separate function that can be used elsewhere
   const navigateToArtistPage = (artist: Artist) => {
     navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
+  };
+
+  const refreshArtist = async (artistId: number): Promise<void> => {
+    await refreshArtists(artistId);
   };
 
   return (
@@ -95,7 +100,7 @@ const PWAArtists = () => {
         </div>
 
         {/* Artists Grid */}
-        {isLoading ? (
+        {loading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
           </div>
@@ -105,7 +110,7 @@ const PWAArtists = () => {
             onArtistClick={handleArtistClick}
             onFavoriteToggle={handleFavoriteToggle}
             favoriteArtists={favoriteArtists}
-            refreshArtist={(artistId) => refreshArtists(artistId)}
+            refreshArtist={refreshArtist}
             showFavorites={showFavorites}
           />
         )}

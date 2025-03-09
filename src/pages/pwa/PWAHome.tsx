@@ -74,22 +74,10 @@ const PWAHome = () => {
   };
 
   // Refresh an artist's data
-  const refreshArtist = async (artistId: number): Promise<void | Artist> => {
+  const refreshArtist = async (artistId: number): Promise<void> => {
     try {
       logger.info(`Refreshing artist with ID: ${artistId}`);
-      const { data, error } = await supabase
-        .from('artists')
-        .select("*")
-        .eq("id", artistId)
-        .single();
-
-      if (error) {
-        logger.error("Error refreshing artist:", error);
-        throw error;
-      }
-
-      logger.info("Artist refreshed successfully");
-      return data as Artist;
+      await refreshArtists(artistId);
     } catch (err) {
       logger.error("Error in refreshArtist:", err);
     }
@@ -134,7 +122,7 @@ const PWAHome = () => {
               </div>
             ) : (
               <PWAArtistCarousel
-                artists={featuredArtists}
+                artists={featuredArtists || []}
                 onSelect={handleArtistSelect}
                 onFavoriteToggle={handleFavoriteToggle}
                 favoriteArtists={favoriteArtists}
@@ -170,7 +158,7 @@ const PWAHome = () => {
 
         {/* Artist Detail Modal */}
         <ArtistDetailModal
-          artists={featuredArtists}
+          artists={featuredArtists || []}
           selectedArtist={selectedArtist}
           selectedArtistIndex={selectedArtistIndex}
           open={dialogOpen}
