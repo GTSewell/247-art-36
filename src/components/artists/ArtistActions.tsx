@@ -31,7 +31,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
 }) => {
   const isMobile = useIsMobile();
   
-  // Remove spaces from the display version of the domain
+  // Remove spaces from the display version of the domain only
   const displayDomain = domainName.replace(/\s+/g, '');
   
   const favoriteButtonStyles = buttonColor ? {

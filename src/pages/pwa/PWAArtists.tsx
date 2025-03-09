@@ -55,9 +55,8 @@ const PWAArtists = () => {
   };
 
   const navigateToArtistPage = (artist: Artist) => {
-    const formattedName = artist.name.replace(/\s+/g, '');
-    logger.info(`Navigating to artist page: ${formattedName}`);
-    navigate(`/artists/${formattedName}`);
+    logger.info(`Navigating to artist page: ${artist.name}`);
+    navigate(`/artists/${artist.name}`);
   };
 
   return (

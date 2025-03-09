@@ -46,8 +46,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const formattedName = artist.name.replace(/\s+/g, '');
-    navigate(`/artists/${formattedName}`);
+    // Keep the original name with spaces
+    navigate(`/artists/${artist.name}`);
   };
   
   const handleReturnToArtists = () => {
@@ -55,7 +55,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   };
 
   // Create a formatted domain name for display
-  const artistDomain = artist.name;
+  const artistDomain = artist.name.replace(/\s+/g, '');
   
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0">

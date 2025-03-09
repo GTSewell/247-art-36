@@ -2,16 +2,17 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
+import { logger } from "@/utils/logger";
 
 const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
+    logger.error(
+      `404 Error: User attempted to access non-existent route: ${location.pathname}`,
+      { path: location.pathname, search: location.search }
     );
-  }, [location.pathname]);
+  }, [location.pathname, location.search]);
 
   return (
     <div className="min-h-screen">
