@@ -20,6 +20,10 @@ const PWANavigation = () => {
     if (path === "/artists") {
       return location.pathname === "/artists" || location.pathname.startsWith("/artist/");
     }
+    // Check if the current path is exactly the store path
+    if (path === "/store") {
+      return location.pathname === "/store";
+    }
     return location.pathname === path;
   };
 
@@ -31,7 +35,7 @@ const PWANavigation = () => {
 
   return (
     <>
-      {/* Top navigation bar - removed bg-white */}
+      {/* Top navigation bar - transparent background */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/20 bg-transparent w-full">
         <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
           <div className="flex justify-between items-center h-16 w-full">
@@ -160,7 +164,7 @@ const PWANavigation = () => {
             variant="ghost" 
             className={cn(
               "flex flex-col items-center justify-center rounded-none h-full",
-              isActive("/store") && "text-primary"
+              isActive("/store") && "text-zap-red"
             )}
             onClick={() => navigateTo("/store")}
           >

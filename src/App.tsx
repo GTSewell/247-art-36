@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
@@ -19,6 +20,7 @@ import { AppModeProvider, useAppMode } from "./contexts/AppModeContext";
 import ArtistDashboard from "./pages/pwa/ArtistDashboard";
 import PWAHome from "./pages/pwa/PWAHome";
 import PWAArtists from "./pages/pwa/PWAArtists";
+import PWAStore from "./pages/pwa/PWAStore";
 import CollectorDashboard from "./pages/pwa/CollectorDashboard";
 
 const queryClient = new QueryClient();
@@ -105,7 +107,7 @@ function AppContent() {
         <Route path="/artists" element={isPWA ? <PWAArtists /> : <Artists />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/store" element={<GeneralStore />} />
+        <Route path="/store" element={isPWA ? <PWAStore /> : <GeneralStore />} />
         <Route path="/details" element={<Details />} />
         <Route path="/virtual-tour" element={<VirtualTour />} />
         <Route path="/artist-submission" element={<ArtistSubmission />} />
