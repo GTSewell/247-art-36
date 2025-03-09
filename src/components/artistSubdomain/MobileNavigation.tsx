@@ -1,48 +1,51 @@
 
 import React from 'react';
-import { ChevronLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowLeftCircle } from 'lucide-react';
 
 interface MobileNavigationProps {
-  name: string;
-  backgroundColor?: string;
-  textColor?: string;
-  onBack?: () => void;
+  activeTab: string;
+  handleTabChange: (value: string) => void;
+  handleReturnToArtists: () => void;
 }
 
-const MobileNavigation: React.FC<MobileNavigationProps> = ({ 
-  name, 
-  backgroundColor = 'transparent',
-  textColor = 'black',
-  onBack
+const MobileNavigation: React.FC<MobileNavigationProps> = ({
+  activeTab,
+  handleTabChange,
+  handleReturnToArtists
 }) => {
-  const navigate = useNavigate();
-  
-  const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1);
-    }
-  };
-
   return (
-    <div 
-      className="fixed top-0 left-0 right-0 h-16 flex items-center px-4 z-50"
-      style={{ backgroundColor: backgroundColor }}
-    >
-      <button 
-        onClick={handleBack}
-        className="mr-4 p-2 rounded-full hover:bg-black/10 transition-colors"
+    <div className="flex items-center justify-between mb-4">
+      <TabsList className="grid grid-cols-3 flex-1 bg-white/80 backdrop-blur-sm">
+        <TabsTrigger 
+          value="about" 
+          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
+        >
+          About
+        </TabsTrigger>
+        <TabsTrigger 
+          value="links" 
+          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
+        >
+          Links
+        </TabsTrigger>
+        <TabsTrigger 
+          value="artwork" 
+          className="data-[state=active]:bg-yellow-100 data-[state=active]:text-black data-[state=active]:font-medium transition-all duration-200"
+        >
+          Artwork
+        </TabsTrigger>
+      </TabsList>
+      <Button 
+        variant="outline" 
+        size="icon" 
+        onClick={handleReturnToArtists}
+        className="ml-2 bg-white/80 hover:bg-white backdrop-blur-sm h-9 w-9"
       >
-        <ChevronLeft size={24} style={{ color: textColor }} />
-      </button>
-      <h1 
-        className="text-lg font-medium truncate" 
-        style={{ color: textColor }}
-      >
-        {name}
-      </h1>
+        <ArrowLeftCircle size={18} />
+        <span className="sr-only">Return to Artists</span>
+      </Button>
     </div>
   );
 };

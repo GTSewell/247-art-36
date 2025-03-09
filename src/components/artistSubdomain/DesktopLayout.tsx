@@ -1,34 +1,30 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
+import { ArrowLeftCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from './ArtistProfileRightPanel';
-import ArtistReturnButton from '../artists/ArtistReturnButton';
-import { logger } from '@/utils/logger';
-
-interface ColorTheme {
-  background: string;
-  header: string;
-  panel: string;
-  text: string;
-  button: string;
-  buttonText: string;
-  buttonHover: string;
-  buttonBorder: string;
-  badgeBg: string;
-}
 
 interface DesktopLayoutProps {
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
   styles: string[];
-  socialPlatforms: Record<string, string>;
+  socialPlatforms: string[];
   artworks: string[];
-  colorTheme: ColorTheme;
-  onBack?: () => void;
+  colorTheme: {
+    background: string;
+    panel: string;
+    button: string;
+    buttonText: string;
+    buttonHover: string;
+    buttonBorder: string;
+    badgeBg: string;
+  };
 }
 
 const DesktopLayout: React.FC<DesktopLayoutProps> = ({
@@ -38,63 +34,71 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   styles,
   socialPlatforms,
   artworks,
-  colorTheme,
-  onBack
+  colorTheme
 }) => {
-  // Safe handling of potentially undefined/null values
-  const safeArtist = artist || {} as Artist;
-  const safeProfile = profile || null;
-  const safeTechniques = techniques || [];
-  const safeStyles = styles || [];
-  const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
-  const safeArtworks = artworks || [];
-  
-  // Log information to help diagnose issues
-  useEffect(() => {
-    logger.info(`DesktopLayout loaded for artist: ${safeArtist.name}, ID: ${safeArtist.id}`);
-    logger.info(`Artist techniques: ${JSON.stringify(safeTechniques)}`);
-    logger.info(`Artist styles: ${JSON.stringify(safeStyles)}`);
-    logger.info(`Artist artworks: ${JSON.stringify(safeArtworks)}`);
-  }, [safeArtist, safeTechniques, safeStyles, safeArtworks]);
-  
-  // Convert the record to an array for links
-  const linksArray = safeProfile?.links ? 
-    (typeof safeProfile.links === 'string' ? 
-      JSON.parse(safeProfile.links) : 
-      safeProfile.links) : 
-    [];
-  
+  const navigate = useNavigate();
+
+  const handleReturnToArtists = () => {
+    navigate('/artists');
+  };
+
   return (
-    <div className="min-h-screen grid grid-cols-12" style={{ backgroundColor: colorTheme.background }}>
-      <div className="col-span-12 p-4">
-        <ArtistReturnButton 
-          textColor={colorTheme.text} 
-          onClick={onBack}
-        />
+    <div 
+      className="min-h-screen flex items-center justify-center py-8 px-8 overflow-hidden"
+      style={{ 
+        backgroundColor: colorTheme.background,
+        backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '100vh'
+      }}
+    >
+      <div className="container mx-auto">
+        <div className="absolute top-4 right-4 z-50">
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={handleReturnToArtists}
+            className="bg-white/80 hover:bg-white backdrop-blur-sm"
+          >
+            <ArrowLeftCircle size={20} />
+            <span className="sr-only">Return to Artists</span>
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-4rem)]">
+          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+            <ArtistProfileLeftPanel 
+              artist={artist} 
+              techniques={techniques}
+              styles={styles}
+              panelColor={colorTheme.panel}
+              badgeBgColor={colorTheme.badgeBg}
+            />
+          </div>
+          
+          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+            <ArtistProfileCenterPanel 
+              artist={artist}
+              socialPlatforms={socialPlatforms}
+              links={profile?.links || []}
+              panelColor={colorTheme.panel}
+              buttonColor={colorTheme.button}
+              buttonTextColor={colorTheme.buttonText}
+              buttonHoverColor={colorTheme.buttonHover}
+              buttonBorderColor={colorTheme.buttonBorder}
+            />
+          </div>
+          
+          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
+            <ArtistProfileRightPanel 
+              artist={artist}
+              artworks={artworks}
+              panelColor={colorTheme.panel}
+            />
+          </div>
+        </div>
       </div>
-      
-      <ArtistProfileLeftPanel
-        artist={safeArtist}
-        techniques={safeTechniques}
-        styles={safeStyles}
-        panelColor={colorTheme.panel}
-        badgeBgColor={colorTheme.badgeBg}
-      />
-      <ArtistProfileCenterPanel
-        artist={safeArtist}
-        links={linksArray}
-        socialPlatforms={safeSocialPlatforms}
-        panelColor={colorTheme.panel}
-        buttonColor={colorTheme.button}
-        buttonTextColor={colorTheme.buttonText}
-        buttonHoverColor={colorTheme.buttonHover}
-        buttonBorderColor={colorTheme.buttonBorder}
-      />
-      <ArtistProfileRightPanel
-        artist={safeArtist}
-        artworks={safeArtworks}
-        panelColor={colorTheme.panel}
-      />
     </div>
   );
 };

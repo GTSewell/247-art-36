@@ -1,48 +1,120 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PWANavigation from '@/components/pwa/PWANavigation';
-import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
-import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
-import ArtistSalesAnalytics from '@/components/pwa/ArtistSalesAnalytics';
-
-const MOCK_ARTIST_ID = 1; // For development purposes
+import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/hooks/use-auth";
+import PWANavigation from "@/components/pwa/PWANavigation";
+import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
+import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
+import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const ArtistDashboard = () => {
-  const [activeTab, setActiveTab] = useState('profile');
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
+  const [artistProfile, setArtistProfile] = useState<any>(null);
+  const [isArtistProfileLoading, setIsArtistProfileLoading] = useState(true);
 
-  // Hardcoded artist ID for development
-  const artistId = MOCK_ARTIST_ID;
+  useEffect(() => {
+    // Redirect if not logged in
+    if (!isLoading && !user) {
+      toast.error("You must be logged in to view the artist dashboard");
+      navigate("/auth");
+    }
+  }, [user, isLoading, navigate]);
+
+  useEffect(() => {
+    const fetchArtistProfile = async () => {
+      if (!user) return;
+      
+      try {
+        setIsArtistProfileLoading(true);
+        
+        // First check if user has an artist profile
+        const { data, error } = await supabase
+          .from('artists')
+          .select('*')
+          .eq('user_id', user.id)
+          .limit(1);
+        
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          setArtistProfile(data[0]);
+        } else {
+          // If no artist profile, create a default one
+          setArtistProfile({
+            id: null,
+            user_id: user.id,
+            name: user.user_metadata?.full_name || "New Artist",
+            bio: "",
+            specialty: "Digital Art",
+            image: "/placeholder.svg",
+            techniques: [],
+            styles: [],
+            social_platforms: [],
+            artworks: []
+          });
+        }
+      } catch (error: any) {
+        console.error("Error fetching artist profile:", error);
+        toast.error(`Failed to load artist profile: ${error.message}`);
+      } finally {
+        setIsArtistProfileLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchArtistProfile();
+    }
+  }, [user]);
+
+  if (isLoading || isArtistProfileLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="pb-20 pt-16 min-h-screen bg-gray-50">
+    <div className="min-h-screen pb-20 pt-16">
       <PWANavigation />
       
-      <div className="container mx-auto px-4 py-4">
-        <h1 className="text-2xl font-bold mb-4">Artist Dashboard</h1>
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-2xl font-bold mb-6">Artist Dashboard</h1>
         
-        <Tabs 
-          defaultValue="profile" 
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="w-full"
-        >
-          <TabsList className="grid grid-cols-3 mb-4">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="artworks">Artworks</TabsTrigger>
+        <Tabs defaultValue="artwork" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
+            <TabsTrigger value="artwork">Artwork</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="profile" className="space-y-4">
-            <ArtistProfileSettings artistId={artistId} />
+          <TabsContent value="artwork">
+            <Card>
+              <CardContent className="p-4">
+                <ArtistArtworkManager artistId={artistProfile?.id} />
+              </CardContent>
+            </Card>
           </TabsContent>
           
-          <TabsContent value="artworks" className="space-y-4">
-            <ArtistArtworkManager artistId={artistId} />
+          <TabsContent value="analytics">
+            <Card>
+              <CardContent className="p-4">
+                <ArtistSalesAnalytics artistId={artistProfile?.id} />
+              </CardContent>
+            </Card>
           </TabsContent>
           
-          <TabsContent value="analytics" className="space-y-4">
-            <ArtistSalesAnalytics artistId={artistId} />
+          <TabsContent value="settings">
+            <Card>
+              <CardContent className="p-4">
+                <ArtistProfileSettings artistId={artistProfile?.id} />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>

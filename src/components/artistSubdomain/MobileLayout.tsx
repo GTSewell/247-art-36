@@ -1,35 +1,29 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
-import MobileNavigation from './MobileNavigation';
-import MobilePanel from './MobilePanel';
+import { useNavigate } from 'react-router-dom';
+import { Tabs } from '@/components/ui/tabs';
 import useEmblaCarousel from 'embla-carousel-react';
+import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
-import { logger } from '@/utils/logger';
-
-// Correctly define the ColorTheme interface with all required properties
-interface ColorTheme {
-  background: string;
-  header: string;
-  panel: string;
-  text: string;
-  button: string;
-  buttonText: string;
-  buttonHover: string;
-  buttonBorder: string;
-  badgeBg: string;
-}
 
 interface MobileLayoutProps {
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
   styles: string[];
-  socialPlatforms: Record<string, string>;
+  socialPlatforms: string[];
   artworks: string[];
-  colorTheme: ColorTheme;
-  onBack?: () => void;
+  colorTheme: {
+    background: string;
+    panel: string;
+    button: string;
+    buttonText: string;
+    buttonHover: string;
+    buttonBorder: string;
+    badgeBg: string;
+  };
 }
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({
@@ -39,56 +33,93 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   styles,
   socialPlatforms,
   artworks,
-  colorTheme,
-  onBack
+  colorTheme
 }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
-  const [panelHeight, setPanelHeight] = useState('calc(100vh - 4rem)');
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("about");
   
-  // Safe handling of potentially undefined/null values
-  const safeArtist = artist || {} as Artist;
-  const safeProfile = profile || null;
-  const safeTechniques = techniques || [];
-  const safeStyles = styles || [];
-  const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
-  const safeArtworks = artworks || [];
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    loop: true,
+    dragFree: false,
+    containScroll: "trimSnaps",
+    slidesToScroll: 1
+  });
 
+  // Synchronize carousel position with tab selection
   useEffect(() => {
-    const handleResize = () => {
-      setPanelHeight(`calc(100vh - 4rem)`);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    // Log the artist data to help diagnose issues
-    logger.info(`MobileLayout loaded for artist: ${safeArtist.name}, ID: ${safeArtist.id}`);
+    if (!emblaApi) return;
     
-    return () => window.removeEventListener('resize', handleResize);
-  }, [safeArtist]);
+    const onSelect = () => {
+      const currentSlide = emblaApi.selectedScrollSnap();
+      const tabs = ["about", "links", "artwork"];
+      if (currentSlide >= 0 && currentSlide < tabs.length) {
+        setActiveTab(tabs[currentSlide]);
+      }
+    };
+    
+    emblaApi.on('select', onSelect);
+    
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi]);
+
+  // Handle tab change and scroll carousel to matching slide
+  const handleTabChange = useCallback((value: string) => {
+    setActiveTab(value);
+    
+    if (emblaApi) {
+      const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
+      emblaApi.scrollTo(slideIndex);
+    }
+  }, [emblaApi]);
+
+  const handleReturnToArtists = () => {
+    navigate('/artists');
+  };
+
+  const panelHeight = "calc(100vh - 6rem)";
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: colorTheme.background }}>
-      <MobileNavigation 
-        name={safeArtist.name || 'Artist'} 
-        backgroundColor={colorTheme.header} 
-        textColor={colorTheme.text}
-        onBack={onBack}
-      />
-      
-      <div className="flex-grow overflow-hidden">
-        <MobileCarousel 
-          emblaApi={emblaApi}
-          emblaRef={emblaRef}
-          artist={safeArtist}
-          profile={safeProfile}
-          techniques={safeTechniques}
-          styles={safeStyles}
-          socialPlatforms={safeSocialPlatforms}
-          artworks={safeArtworks}
-          panelHeight={panelHeight}
-          colorTheme={colorTheme}
-        />
+    <div 
+      className="flex items-center justify-center overflow-hidden"
+      style={{ 
+        backgroundColor: colorTheme.background,
+        backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '100vh',
+        width: '100%'
+      }}
+    >
+      <div className="w-full h-full px-4 py-4 flex flex-col">
+        <Tabs 
+          value={activeTab} 
+          onValueChange={handleTabChange} 
+          className="w-full h-full flex flex-col"
+        >
+          <MobileNavigation 
+            activeTab={activeTab}
+            handleTabChange={handleTabChange}
+            handleReturnToArtists={handleReturnToArtists}
+          />
+          
+          <div className="flex-grow overflow-hidden">
+            <MobileCarousel 
+              emblaApi={emblaApi}
+              emblaRef={emblaRef}
+              artist={artist}
+              profile={profile}
+              techniques={techniques}
+              styles={styles}
+              socialPlatforms={socialPlatforms}
+              artworks={artworks}
+              panelHeight={panelHeight}
+              colorTheme={colorTheme}
+            />
+          </div>
+        </Tabs>
       </div>
     </div>
   );

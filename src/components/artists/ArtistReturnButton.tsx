@@ -1,39 +1,36 @@
 
 import React from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ArrowLeftCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 
 interface ArtistReturnButtonProps {
-  textColor?: string;
-  onClick?: () => void;
+  onReturn: () => void;
+  colorTheme?: {
+    buttonBorder?: string;
+  };
+  showReturnButton: boolean;
 }
 
 const ArtistReturnButton: React.FC<ArtistReturnButtonProps> = ({ 
-  textColor = 'black',
-  onClick
+  onReturn, 
+  colorTheme, 
+  showReturnButton 
 }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    if (onClick) {
-      onClick();
-    } else {
-      navigate(-1);
-    }
-  };
-
+  if (!showReturnButton) return null;
+  
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      className="hover:bg-black/10 transition-colors flex items-center mb-4"
-      onClick={handleClick}
-      style={{ color: textColor }}
-    >
-      <ChevronLeft className="mr-1" size={16} />
-      Back
-    </Button>
+    <div className="absolute top-3 right-3 z-10">
+      <Button 
+        variant="ghost" 
+        size="icon" 
+        onClick={onReturn}
+        className="bg-white/80 hover:bg-white backdrop-blur-sm"
+        style={{ borderColor: colorTheme?.buttonBorder }}
+      >
+        <ArrowLeftCircle size={18} />
+        <span className="sr-only">Return to Artists</span>
+      </Button>
+    </div>
   );
 };
 
