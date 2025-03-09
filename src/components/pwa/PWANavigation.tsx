@@ -15,6 +15,11 @@ const PWANavigation = () => {
   const { user, isLoading } = useAuth();
 
   const isActive = (path: string) => {
+    // Check if the current path starts with the given path
+    // This will match both /artists and /artist/:artistName
+    if (path === "/artists") {
+      return location.pathname === "/artists" || location.pathname.startsWith("/artist/");
+    }
     return location.pathname === path;
   };
 
@@ -144,7 +149,7 @@ const PWANavigation = () => {
             variant="ghost" 
             className={cn(
               "flex flex-col items-center justify-center rounded-none h-full",
-              isActive("/artists") && "text-primary"
+              isActive("/artists") && "text-zap-blue"
             )}
             onClick={() => navigateTo("/artists")}
           >
