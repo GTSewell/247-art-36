@@ -75,8 +75,8 @@ const PWAArtists = () => {
   };
 
   // Refresh a specific artist if needed
-  const refreshArtist = async (artistId: number): Promise<void> => {
-    await refreshArtists(artistId);
+  const refreshArtist = async (artistId: number): Promise<void | Artist> => {
+    return await refreshArtists(artistId);
   };
 
   // Filter artists based on selected criteria
@@ -137,6 +137,7 @@ const PWAArtists = () => {
           onSelect={setSelectedArtist}
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
+          refreshArtist={refreshArtist}
         />
 
         <AllArtists

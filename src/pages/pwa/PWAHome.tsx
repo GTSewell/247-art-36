@@ -3,12 +3,24 @@ import React from "react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import PWAArtistCarousel from "@/components/pwa/PWAArtistCarousel";
 import { useArtists } from "@/hooks/use-artists";
+import { Artist } from "@/data/types/artist";
 
 const PWAHome = () => {
-  const { featuredArtists, favoriteArtists, toggleFavorite } = useArtists();
+  const { featuredArtists, favoriteArtists, toggleFavorite, refreshArtists } = useArtists();
   
   // For compatibility with existing code
   const handleFavoriteToggle = toggleFavorite;
+
+  // Add the missing onSelect handler
+  const handleArtistSelect = (artist: Artist) => {
+    // This is just a placeholder function to satisfy the type requirement
+    console.log("Artist selected:", artist.name);
+  };
+
+  // Add the missing refreshArtist function
+  const refreshArtist = async (artistId: number) => {
+    return await refreshArtists(artistId);
+  };
 
   return (
     <div className="bg-background min-h-screen pb-16">
@@ -20,6 +32,8 @@ const PWAHome = () => {
           artists={featuredArtists} 
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
+          onSelect={handleArtistSelect}
+          refreshArtist={refreshArtist}
         />
         
         <div className="mt-8">
