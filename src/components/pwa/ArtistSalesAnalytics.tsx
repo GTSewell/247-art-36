@@ -2,7 +2,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { TrendingUp, DollarSign, ShoppingBag, Award } from "lucide-react";
+import { TrendingUp, DollarSign, ShoppingBag, Award, Palette, Printer, CheckCircle2 } from "lucide-react";
 
 interface ArtistSalesAnalyticsProps {
   artistId: string | null;
@@ -43,54 +43,117 @@ const ArtistSalesAnalytics: React.FC<ArtistSalesAnalyticsProps> = ({ artistId })
     },
   ];
 
-  // Example stats for demonstration
-  const totalRevenue = "$24,106";
-  const totalUnitsSold = "16,060";
-  const mostPopularItem = "Abstract Series #1";
+  // Client-requested stats
+  const totalRevenue = "$3,420";
+  const popularItems = [
+    { name: "Abstract 1 Fine art print", count: 20 },
+    { name: "Abstract 1 T-shirt", count: 8 },
+    { name: "Abstract 2 Art Poster", count: 5 },
+  ];
 
   return (
     <div className="space-y-4">
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-black border-zinc-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center text-base font-medium text-white">
-              <DollarSign className="mr-2 h-4 w-4 text-zap-red" />
-              Total Sales
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-white">{totalRevenue}</p>
-            <p className="text-xs text-zinc-400">Last 6 months</p>
-          </CardContent>
-        </Card>
+      {/* Original Art */}
+      <Card className="bg-black border-zinc-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center text-base font-medium text-white">
+            <Palette className="mr-2 h-4 w-4 text-purple-500" />
+            Original Art
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-between">
+            <div>
+              <p className="text-xs text-zinc-400">Sales:</p>
+              <p className="text-xl font-bold text-white">$2,650</p>
+            </div>
+            <div>
+              <p className="text-xs text-zinc-400">Units:</p>
+              <p className="text-xl font-bold text-white">2</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card className="bg-black border-zinc-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center text-base font-medium text-white">
-              <ShoppingBag className="mr-2 h-4 w-4 text-zap-blue" />
-              Total Units Sold
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-white">{totalUnitsSold}</p>
-            <p className="text-xs text-zinc-400">Last 6 months</p>
-          </CardContent>
-        </Card>
+      {/* Prints */}
+      <Card className="bg-black border-zinc-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center text-base font-medium text-white">
+            <Printer className="mr-2 h-4 w-4 text-blue-400" />
+            Print
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-between">
+            <div>
+              <p className="text-xs text-zinc-400">Sales:</p>
+              <p className="text-xl font-bold text-white">$770</p>
+            </div>
+            <div>
+              <p className="text-xs text-zinc-400">Units:</p>
+              <p className="text-xl font-bold text-white">33</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card className="bg-black border-zinc-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center text-base font-medium text-white">
-              <Award className="mr-2 h-4 w-4 text-yellow-500" />
-              Most Popular
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg font-bold text-white truncate">{mostPopularItem}</p>
-            <p className="text-xs text-zinc-400">Highest selling artwork</p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Total Sales */}
+      <Card className="bg-black border-zinc-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center text-base font-medium text-white">
+            <DollarSign className="mr-2 h-4 w-4 text-green-500" />
+            Total Sales
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-2xl font-bold text-white">{totalRevenue}</p>
+        </CardContent>
+      </Card>
+
+      {/* Most Popular */}
+      <Card className="bg-black border-zinc-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center text-base font-medium text-white">
+            <Award className="mr-2 h-4 w-4 text-yellow-500" />
+            Most Popular
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {popularItems.map((item, index) => (
+            <div key={index} className="flex items-center">
+              <span className="text-white font-medium mr-2">{index + 1}.</span>
+              <span className="text-white">{item.name}</span>
+              <span className="text-zinc-400 text-sm ml-1">[{item.count}]</span>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
+      {/* STP Sets */}
+      <Card className="bg-black border-zinc-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center text-base font-medium text-white">
+            <CheckCircle2 className="mr-2 h-4 w-4 text-zap-red" />
+            STP Sets
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-xs text-zinc-400">Stickers</p>
+              <p className="text-xl font-bold text-white">3</p>
+            </div>
+            <div>
+              <p className="text-xs text-zinc-400">T-shirts</p>
+              <p className="text-xl font-bold text-white">8</p>
+            </div>
+            <div>
+              <p className="text-xs text-zinc-400">Prints</p>
+              <p className="text-xl font-bold text-white">20</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Chart */}
       <Card>
