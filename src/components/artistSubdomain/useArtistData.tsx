@@ -23,35 +23,64 @@ export function useArtistData(artistName: string | undefined) {
         
         logger.info(`Fetching artist data for: ${artistName}`);
         
-        // First try exact match (for no spaces)
-        let { data: artistData, error: artistError } = await supabase
+        // Try multiple query approaches to find the artist
+        let artistData = null;
+        let artistError = null;
+        
+        // 1. Try exact match (for no spaces)
+        let result = await supabase
           .from('artists')
           .select('*')
           .eq('name', artistName)
           .eq('published', true)
           .maybeSingle();
+          
+        artistData = result.data;
+        artistError = result.error;
         
-        // If not found, try with spaces re-added (for backward compatibility)
+        // 2. If not found, try with spaces re-added
         if (!artistData && artistName) {
           // Try adding spaces in common positions (before uppercase letters)
           const nameWithPossibleSpaces = artistName.replace(/([a-z])([A-Z])/g, '$1 $2');
           
-          ({ data: artistData, error: artistError } = await supabase
+          result = await supabase
             .from('artists')
             .select('*')
             .eq('name', nameWithPossibleSpaces)
             .eq('published', true)
-            .maybeSingle());
+            .maybeSingle();
             
-          if (!artistData) {
-            // If still not found, try a more flexible search
-            ({ data: artistData, error: artistError } = await supabase
-              .from('artists')
-              .select('*')
-              .ilike('name', `%${artistName}%`) 
-              .eq('published', true)
-              .maybeSingle());
-          }
+          artistData = result.data;
+          artistError = result.error;
+        }
+        
+        // 3. If still not found, try case-insensitive search
+        if (!artistData) {
+          result = await supabase
+            .from('artists')
+            .select('*')
+            .ilike('name', artistName.replace(/([A-Z])/g, ' $1').trim())
+            .eq('published', true)
+            .maybeSingle();
+            
+          artistData = result.data;
+          artistError = result.error;
+        }
+        
+        // 4. Try one more approach - removing all spaces and comparing
+        if (!artistData) {
+          // Get all artists and filter manually
+          result = await supabase
+            .from('artists')
+            .select('*')
+            .eq('published', true);
+            
+          const allArtists = result.data || [];
+          
+          // Find the artist whose name with spaces removed matches the artistName
+          artistData = allArtists.find(a => 
+            a.name.replace(/\s+/g, '').toLowerCase() === artistName.toLowerCase()
+          );
         }
         
         if (artistError) {

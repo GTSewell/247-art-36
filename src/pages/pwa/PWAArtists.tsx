@@ -56,6 +56,7 @@ const PWAArtists = () => {
   };
 
   const navigateToArtistPage = (artist: Artist) => {
+    // Remove spaces from artist name for URL
     const formattedName = artist.name.replace(/\s+/g, '');
     logger.info(`Navigating to artist page: ${formattedName}`);
     navigate(`/artists/${formattedName}`);

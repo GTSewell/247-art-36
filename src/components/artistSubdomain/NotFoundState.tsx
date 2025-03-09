@@ -12,7 +12,7 @@ const NotFoundState: React.FC = () => {
       className="flex flex-col justify-center items-center min-h-screen gap-4" 
       style={{ backgroundColor: '#f7cf1e' }}
     >
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
         <div className="flex items-center justify-center mb-4">
           <div className="bg-red-100 p-3 rounded-full">
             <X className="h-8 w-8 text-red-500" />
