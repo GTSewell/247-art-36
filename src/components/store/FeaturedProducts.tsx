@@ -1,10 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
-import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import CountdownTimer from "./CountdownTimer";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TimerState {
   hours: number;
@@ -50,6 +51,18 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
     };
   }, []);
 
+  useEffect(() => {
+    if (api && products.length > 0) {
+      // Small delay to ensure carousel is fully rendered
+      const timer = setTimeout(() => {
+        // Scroll to the first item and center it
+        api.scrollTo(0, { immediate: true });
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [api, products.length]);
+
   const handleInteraction = () => {
     setShowControls(true);
     
@@ -64,6 +77,14 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
     setInteractionTimeout(timeout);
   };
 
+  const handlePrevious = () => {
+    api?.scrollPrev();
+  };
+
+  const handleNext = () => {
+    api?.scrollNext();
+  };
+
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
@@ -75,13 +96,26 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
         onTouchStart={handleInteraction}
         onMouseMove={handleInteraction}
       >
-        <Carousel className="w-full" setApi={setApi}>
-          <CarouselContent>
+        <Carousel 
+          className="w-full" 
+          setApi={setApi}
+          opts={{
+            align: "center",
+            loop: true,
+            skipSnaps: false,
+            dragFree: false
+          }}
+        >
+          <CarouselContent className="ml-0">
             {products.map((product, index) => {
               const initialTime = getInitialTime(index);
               return (
-                <CarouselItem key={product.id} className="basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 pl-2">
-                  <div 
+                <CarouselItem key={product.id} className="basis-4/5 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 pl-4">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    whileHover={{ scale: 1.03 }}
                     className="relative group overflow-hidden rounded-lg cursor-pointer h-64 md:h-72"
                     onClick={() => onProductSelect(product, initialTime)}
                   >
@@ -110,33 +144,50 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
                         </Button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 </CarouselItem>
               );
             })}
           </CarouselContent>
-          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between pointer-events-none px-1">
-            <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => api?.scrollPrev()} 
-                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-              >
-                <ArrowBigLeft className="w-5 h-5 text-white relative z-10" />
-              </Button>
-            </div>
-            <div className={`transition-opacity duration-300 pointer-events-auto ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => api?.scrollNext()} 
-                className="relative h-8 w-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm"
-              >
-                <ArrowBigRight className="w-5 h-5 text-white relative z-10" />
-              </Button>
-            </div>
-          </div>
+          
+          <AnimatePresence>
+            {(showControls || !isMobile) && (
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute z-50 left-2 top-1/2 -translate-y-1/2"
+                >
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={handlePrevious} 
+                    className="h-8 w-8 rounded-full bg-white/80 hover:bg-white shadow-md transition-colors"
+                  >
+                    <ChevronLeft className="h-5 w-5" />
+                  </Button>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute z-50 right-2 top-1/2 -translate-y-1/2"
+                >
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={handleNext} 
+                    className="h-8 w-8 rounded-full bg-white/80 hover:bg-white shadow-md transition-colors"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </Carousel>
       </div>
     </section>
