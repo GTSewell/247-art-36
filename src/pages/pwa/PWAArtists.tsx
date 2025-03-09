@@ -3,15 +3,13 @@ import React, { useState, useEffect } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
 import { Button } from "@/components/ui/button";
-import { Filter, Heart, RotateCw, Search } from "lucide-react";
+import { Heart, RotateCw, Search } from "lucide-react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Input } from "@/components/ui/input";
 import { Artist } from "@/data/types/artist";
 import { useNavigate } from "react-router-dom";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
 import { logger } from "@/utils/logger";
-import { supabase } from "@/integrations/supabase/client";
-import DownloadArtistImages from "@/components/artists/DownloadArtistImages";
 
 const PWAArtists = () => {
   const navigate = useNavigate();
@@ -20,7 +18,6 @@ const PWAArtists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
-  const [isAdmin, setIsAdmin] = useState(false);
   
   const { 
     featuredArtists, 
@@ -30,26 +27,6 @@ const PWAArtists = () => {
     handleFavoriteToggle,
     refreshArtists 
   } = useArtists();
-
-  // Check if user is admin
-  useEffect(() => {
-    const checkUserRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-          
-        setIsAdmin(!!data);
-      }
-    };
-    
-    checkUserRole();
-  }, []);
 
   const allArtists = [...featuredArtists, ...additionalArtists];
 
@@ -90,8 +67,6 @@ const PWAArtists = () => {
       <PWANavigation />
       
       <div className="container mx-auto px-4 py-4">
-        {isAdmin && <DownloadArtistImages isPwa={true} />}
-        
         <div className="flex items-center gap-2 mb-4">
           <Input
             type="text"
