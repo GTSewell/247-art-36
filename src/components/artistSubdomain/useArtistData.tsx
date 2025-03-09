@@ -83,6 +83,42 @@ export function useArtistData(artistName: string | undefined) {
           ) || null;
         }
         
+        // 5. Try additional fuzzy matching approaches
+        if (!artistData) {
+          // Try matching by checking if the input is a substring of any artist name
+          const allNamesResult = await supabase
+            .from('artists')
+            .select('id, name')
+            .eq('published', true);
+            
+          const allNames = allNamesResult.data || [];
+          
+          // First try direct substring match
+          let matchedArtist = allNames.find(a => 
+            a.name?.toLowerCase().includes(artistName.toLowerCase())
+          );
+          
+          // If no match, try removing spaces from both sides and compare
+          if (!matchedArtist) {
+            matchedArtist = allNames.find(a => {
+              const normalizedDbName = a.name?.toLowerCase().replace(/\s+/g, '') || '';
+              const normalizedInputName = artistName.toLowerCase().replace(/\s+/g, '');
+              return normalizedDbName.includes(normalizedInputName) || normalizedInputName.includes(normalizedDbName);
+            });
+          }
+          
+          if (matchedArtist) {
+            // If we found a match, fetch the full artist data
+            const matchResult = await supabase
+              .from('artists')
+              .select('*')
+              .eq('id', matchedArtist.id)
+              .maybeSingle();
+              
+            artistData = matchResult.data;
+          }
+        }
+        
         if (artistError) {
           logger.error("Error fetching artist data:", artistError);
           throw artistError;
@@ -126,6 +162,7 @@ export function useArtistData(artistName: string | undefined) {
           setProfile(defaultProfile);
         } else {
           logger.warn(`No artist found with name: ${artistName}`);
+          logger.error(`Artist not found: ${artistName}`);
         }
       } catch (error: any) {
         logger.error('Error fetching artist data:', error);
