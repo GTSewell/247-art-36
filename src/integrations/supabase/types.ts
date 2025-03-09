@@ -41,6 +41,7 @@ export type Database = {
       }
       artists: {
         Row: {
+          artwork_files: Json | null
           artworks: Json | null
           bio: string | null
           city: string | null
@@ -59,6 +60,7 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          artwork_files?: Json | null
           artworks?: Json | null
           bio?: string | null
           city?: string | null
@@ -77,6 +79,7 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          artwork_files?: Json | null
           artworks?: Json | null
           bio?: string | null
           city?: string | null

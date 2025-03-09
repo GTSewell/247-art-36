@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Image, Plus, Trash } from "lucide-react";
+import { Image, Plus, Trash, Upload } from "lucide-react";
 import { toast } from "sonner";
+import { v4 as uuidv4 } from "@/utils/uuid";
 
 interface ArtistArtworkManagerProps {
   artistId: string | null;
@@ -14,8 +14,9 @@ interface ArtistArtworkManagerProps {
 
 const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId }) => {
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
   const [artworks, setArtworks] = useState<string[]>([]);
-  const [newArtworkUrl, setNewArtworkUrl] = useState("");
+  const [artworkFiles, setArtworkFiles] = useState<string[]>([]);
   
   useEffect(() => {
     if (artistId) {
@@ -28,7 +29,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       setLoading(true);
       const { data, error } = await supabase
         .from('artists')
-        .select('artworks')
+        .select('artworks, artwork_files')
         .eq('user_id', artistId)
         .maybeSingle();
       
@@ -36,15 +37,41 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
         console.log("No existing artworks found");
       }
       
-      if (data && data.artworks) {
-        // Parse artworks if needed
-        const artworkArray = Array.isArray(data.artworks) 
-          ? data.artworks 
-          : typeof data.artworks === 'string' 
-            ? JSON.parse(data.artworks) 
-            : [];
+      if (data) {
+        // Process artworks from both sources
+        let combinedArtworks: string[] = [];
+        
+        // Process legacy URL artworks if they exist
+        if (data.artworks) {
+          const artworkArray = Array.isArray(data.artworks) 
+            ? data.artworks 
+            : typeof data.artworks === 'string' 
+              ? JSON.parse(data.artworks) 
+              : [];
+          combinedArtworks = [...combinedArtworks, ...artworkArray];
+        }
+        
+        // Process new file-based artworks
+        if (data.artwork_files) {
+          const fileArray = Array.isArray(data.artwork_files) 
+            ? data.artwork_files 
+            : typeof data.artwork_files === 'string' 
+              ? JSON.parse(data.artwork_files) 
+              : [];
+          setArtworkFiles(fileArray);
+          
+          // Get public URLs for each artwork file
+          for (const filePath of fileArray) {
+            const { data: { publicUrl } } = supabase
+              .storage
+              .from('artist_artworks')
+              .getPublicUrl(filePath);
             
-        setArtworks(artworkArray);
+            combinedArtworks.push(publicUrl);
+          }
+        }
+        
+        setArtworks(combinedArtworks);
       }
     } catch (error: any) {
       console.error("Error fetching artworks:", error);
@@ -54,9 +81,8 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     }
   };
   
-  const handleAddArtwork = async () => {
-    if (!newArtworkUrl.trim()) {
-      toast.error("Please enter an artwork URL");
+  const handleUploadArtwork = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
       return;
     }
     
@@ -66,25 +92,52 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     }
     
     try {
-      setLoading(true);
+      setUploading(true);
       
-      const updatedArtworks = [...artworks, newArtworkUrl];
+      const file = e.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${uuidv4()}.${fileExt}`;
+      const filePath = `${artistId}/${fileName}`;
       
-      const { error } = await supabase
+      // Upload file to Supabase storage
+      const { error: uploadError } = await supabase
+        .storage
+        .from('artist_artworks')
+        .upload(filePath, file);
+      
+      if (uploadError) throw uploadError;
+      
+      // Get the public URL
+      const { data: { publicUrl } } = supabase
+        .storage
+        .from('artist_artworks')
+        .getPublicUrl(filePath);
+      
+      // Update the artworks list in state
+      const updatedArtworks = [...artworks, publicUrl];
+      setArtworks(updatedArtworks);
+      
+      // Update the artwork files list in state and database
+      const updatedArtworkFiles = [...artworkFiles, filePath];
+      setArtworkFiles(updatedArtworkFiles);
+      
+      // Update the database
+      const { error: dbError } = await supabase
         .from('artists')
-        .update({ artworks: updatedArtworks })
+        .update({ artwork_files: updatedArtworkFiles })
         .eq('user_id', artistId);
       
-      if (error) throw error;
+      if (dbError) throw dbError;
       
-      setArtworks(updatedArtworks);
-      setNewArtworkUrl("");
-      toast.success("Artwork added successfully");
+      toast.success("Artwork uploaded successfully");
+      
+      // Clear the file input
+      e.target.value = '';
     } catch (error: any) {
-      console.error("Error adding artwork:", error);
-      toast.error(`Failed to add artwork: ${error.message}`);
+      console.error("Error uploading artwork:", error);
+      toast.error(`Failed to upload artwork: ${error.message}`);
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
   
@@ -97,17 +150,39 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     try {
       setLoading(true);
       
+      // Remove from artworks list
       const updatedArtworks = [...artworks];
       updatedArtworks.splice(index, 1);
-      
-      const { error } = await supabase
-        .from('artists')
-        .update({ artworks: updatedArtworks })
-        .eq('user_id', artistId);
-      
-      if (error) throw error;
-      
       setArtworks(updatedArtworks);
+      
+      // If we have a file path for this artwork, remove it from storage
+      if (index < artworkFiles.length) {
+        const filePath = artworkFiles[index];
+        
+        // Remove file from storage
+        const { error: storageError } = await supabase
+          .storage
+          .from('artist_artworks')
+          .remove([filePath]);
+        
+        if (storageError) {
+          console.error("Error removing file from storage:", storageError);
+        }
+        
+        // Remove from artwork_files list
+        const updatedArtworkFiles = [...artworkFiles];
+        updatedArtworkFiles.splice(index, 1);
+        setArtworkFiles(updatedArtworkFiles);
+        
+        // Update the database
+        const { error: dbError } = await supabase
+          .from('artists')
+          .update({ artwork_files: updatedArtworkFiles })
+          .eq('user_id', artistId);
+        
+        if (dbError) throw dbError;
+      }
+      
       toast.success("Artwork removed successfully");
     } catch (error: any) {
       console.error("Error removing artwork:", error);
@@ -131,18 +206,26 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="flex space-x-2">
-            <div className="flex-grow">
-              <Input
-                value={newArtworkUrl}
-                onChange={(e) => setNewArtworkUrl(e.target.value)}
-                placeholder="Enter artwork URL"
+          <div className="flex flex-col space-y-2">
+            <Label htmlFor="artwork-upload" className="mb-2">Upload new artwork</Label>
+            <div className="flex items-center gap-2">
+              <input
+                id="artwork-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleUploadArtwork}
+                className="hidden"
+                disabled={uploading}
               />
+              <Button 
+                onClick={() => document.getElementById('artwork-upload')?.click()}
+                disabled={uploading}
+                className="w-full"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                {uploading ? "Uploading..." : "Upload Artwork"}
+              </Button>
             </div>
-            <Button onClick={handleAddArtwork} disabled={loading}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add
-            </Button>
           </div>
           
           {artworks.length === 0 ? (
