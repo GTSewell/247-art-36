@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Instagram, Twitter, Linkedin } from 'lucide-react';
+import { Instagram, Twitter, Linkedin, Facebook, Youtube, ExternalLink } from 'lucide-react';
 
 interface ArtistSocialLinksProps {
   socialPlatforms: string[];
@@ -17,11 +16,49 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
   buttonHoverColor,
   useAccordion = false
 }) => {
-  const socialIcons = {
-    facebook: <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>,
-    instagram: <Instagram className="h-5 w-5" />,
-    twitter: <Twitter className="h-5 w-5" />,
-    linkedin: <Linkedin className="h-5 w-5" />,
+  const getSocialIcon = (platform: string) => {
+    let platformName = platform.toLowerCase();
+    
+    if (platformName.includes('instagram')) platformName = 'instagram';
+    else if (platformName.includes('twitter') || platformName.includes('x.com')) platformName = 'twitter';
+    else if (platformName.includes('facebook')) platformName = 'facebook';
+    else if (platformName.includes('linkedin')) platformName = 'linkedin';
+    else if (platformName.includes('youtube')) platformName = 'youtube';
+    
+    switch (platformName) {
+      case 'instagram':
+        return <Instagram className="h-5 w-5" />;
+      case 'twitter':
+        return <Twitter className="h-5 w-5" />;
+      case 'facebook':
+        return <Facebook className="h-5 w-5" />;
+      case 'linkedin':
+        return <Linkedin className="h-5 w-5" />;
+      case 'youtube':
+        return <Youtube className="h-5 w-5" />;
+      default:
+        return <ExternalLink className="h-5 w-5" />;
+    }
+  };
+  
+  const getSocialUrl = (platform: string) => {
+    if (platform.startsWith('http://') || platform.startsWith('https://')) {
+      return platform;
+    }
+    
+    if (platform.toLowerCase().includes('instagram')) {
+      return `https://instagram.com/${platform.replace('@', '')}`;
+    } else if (platform.toLowerCase().includes('twitter') || platform.toLowerCase().includes('x.com')) {
+      return `https://twitter.com/${platform.replace('@', '')}`;
+    } else if (platform.toLowerCase().includes('facebook')) {
+      return `https://facebook.com/${platform}`;
+    } else if (platform.toLowerCase().includes('linkedin')) {
+      return `https://linkedin.com/in/${platform}`;
+    } else if (platform.toLowerCase().includes('youtube')) {
+      return `https://youtube.com/${platform}`;
+    }
+    
+    return `https://${platform}`;
   };
 
   if (!socialPlatforms || socialPlatforms.length === 0) {
@@ -37,11 +74,13 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
     <div className="mb-4">
       <h3 className="font-bold text-base mb-2">Social Media</h3>
       <div className="flex gap-3">
-        {socialPlatforms.map((platform: string) => {
-          const platformKey = platform.toLowerCase() as keyof typeof socialIcons;
+        {socialPlatforms.map((platform: string, index: number) => {
           return (
-            <button
-              key={platform}
+            <a
+              key={index}
+              href={getSocialUrl(platform)}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full"
               style={buttonStyle}
               onMouseOver={(e) => {
@@ -54,9 +93,10 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
                   e.currentTarget.style.backgroundColor = buttonColor;
                 }
               }}
+              aria-label={`Visit ${platform}`}
             >
-              {socialIcons[platformKey] || <span>{platform}</span>}
-            </button>
+              {getSocialIcon(platform)}
+            </a>
           );
         })}
       </div>

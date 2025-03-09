@@ -21,13 +21,18 @@ export function useArtistData(artistName: string | undefined) {
           return;
         }
         
-        const formattedName = artistName.replace(/([A-Z])/g, ' $1').trim();
-        logger.info(`Fetching artist data for: ${formattedName}`);
+        // Allow for format variations by normalizing the artist name
+        // First, handle camelCase names (e.g., "JohnDoe" -> "John Doe")
+        const formattedNameFromCamel = artistName.replace(/([A-Z])/g, ' $1').trim();
+        
+        // Also handle direct matches on the name field
+        logger.info(`Fetching artist data for: ${artistName} or ${formattedNameFromCamel}`);
         
         const { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .ilike('name', formattedName)
+          .or(`name.ilike.${artistName},name.ilike.${formattedNameFromCamel}`)
+          .eq('published', true)
           .maybeSingle();
         
         if (artistError) {
@@ -72,7 +77,7 @@ export function useArtistData(artistName: string | undefined) {
           
           setProfile(defaultProfile);
         } else {
-          logger.warn(`No artist found with name: ${formattedName}`);
+          logger.warn(`No artist found with name: ${artistName} or ${formattedNameFromCamel}`);
         }
       } catch (error: any) {
         logger.error('Error fetching artist data:', error);
