@@ -46,6 +46,8 @@ const DownloadArtistImages = ({ artistId }: { artistId?: number }) => {
         // Refresh artist data to show updated image URLs
         if (artistId) {
           await refreshArtists(artistId);
+        } else {
+          await refreshArtists();
         }
         
         toast.success(`Successfully processed ${data.success} artists!`);

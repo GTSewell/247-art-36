@@ -1,188 +1,36 @@
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PWANavigation from "@/components/pwa/PWANavigation";
-import { useArtists } from "@/hooks/use-artists";
 import PWAArtistCarousel from "@/components/pwa/PWAArtistCarousel";
-import FeaturedProducts from "@/components/store/FeaturedProducts";
-import { supabase } from "@/integrations/supabase/client";
-import { Artist } from "@/data/types/artist";
-import { logger } from "@/utils/logger";
-import { TimerProvider } from "@/contexts/TimerContext";
-import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
+import { useArtists } from "@/hooks/use-artists";
 
 const PWAHome = () => {
-  const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
-  const [products, setProducts] = useState<any[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [timerState, setTimerState] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { featuredArtists, favoriteArtists, toggleFavorite } = useArtists();
   
-  // Artist modal state
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        logger.info("Fetching featured products");
-
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .eq("is_featured", true)
-          .order("created_at", { ascending: false })
-          .limit(6);
-
-        if (error) {
-          logger.error("Error fetching products:", error);
-          setError("Failed to load products");
-          throw error;
-        }
-
-        logger.info(`Fetched ${data?.length || 0} products`);
-        setProducts(data || []);
-      } catch (err) {
-        logger.error("Error in fetchProducts:", err);
-        setError("An error occurred while loading products");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const handleProductSelect = (product: any, timer: any) => {
-    setSelectedProduct(product);
-    setTimerState(timer);
-  };
-
-  const handleArtistSelect = (artist: Artist) => {
-    const index = featuredArtists.findIndex(a => a.id === artist.id);
-    setSelectedArtistIndex(index >= 0 ? index : 0);
-    setSelectedArtist(artist);
-    setDialogOpen(true);
-  };
-
-  const handleArtistChange = (index: number) => {
-    setSelectedArtistIndex(index);
-    setSelectedArtist(featuredArtists[index]);
-  };
-
-  // Refresh an artist's data
-  const refreshArtist = async (artistId: number): Promise<void | Artist> => {
-    try {
-      logger.info(`Refreshing artist with ID: ${artistId}`);
-      const { data, error } = await supabase
-        .from('artists')
-        .select("*")
-        .eq("id", artistId)
-        .single();
-
-      if (error) {
-        logger.error("Error refreshing artist:", error);
-        throw error;
-      }
-
-      logger.info("Artist refreshed successfully");
-      return data as Artist;
-    } catch (err) {
-      logger.error("Error in refreshArtist:", err);
-    }
-  };
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-zap-yellow">
-        <PWANavigation />
-        <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
-          <p className="text-red-600 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-zap-red text-white rounded-md"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // For compatibility with existing code
+  const handleFavoriteToggle = toggleFavorite;
 
   return (
-    <TimerProvider>
-      <div className="min-h-screen bg-zap-yellow pb-20">
-        <PWANavigation />
-
-        <main className="container mx-auto px-4 pt-16">
-          {/* Featured Artists Section */}
-          <div className="mb-4">
-            <div className="flex justify-center mb-1">
-              <img 
-                src="/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png" 
-                alt="Featured Artists" 
-                className="h-14 object-contain"
-              />
-            </div>
-
-            {isLoading ? (
-              <div className="flex justify-center items-center h-24">
-                <p className="text-lg">Loading artists...</p>
-              </div>
-            ) : (
-              <PWAArtistCarousel
-                artists={featuredArtists}
-                onSelect={handleArtistSelect}
-                onFavoriteToggle={handleFavoriteToggle}
-                favoriteArtists={favoriteArtists}
-                refreshArtist={refreshArtist}
-              />
-            )}
-          </div>
-
-          {/* Timed Edition Drops Section */}
-          <div>
-            <div className="flex justify-center mb-1">
-              <img 
-                src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
-                alt="Timed Editions" 
-                className="h-14 object-contain"
-              />
-            </div>
-
-            {!isLoading && products.length > 0 ? (
-              <FeaturedProducts
-                products={products}
-                onProductSelect={handleProductSelect}
-              />
-            ) : (
-              <div className="flex justify-center items-center h-24">
-                <p className="text-lg">
-                  {isLoading ? "Loading products..." : "No products found"}
-                </p>
-              </div>
-            )}
-          </div>
-        </main>
-
-        {/* Artist Detail Modal */}
-        <ArtistDetailModal
-          artists={featuredArtists}
-          selectedArtist={selectedArtist}
-          selectedArtistIndex={selectedArtistIndex}
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onArtistChange={handleArtistChange}
+    <div className="bg-background min-h-screen pb-16">
+      <PWANavigation />
+      <div className="container mx-auto pt-20 px-4">
+        <h1 className="text-2xl font-bold mb-6">Featured Artists</h1>
+        
+        <PWAArtistCarousel 
+          artists={featuredArtists} 
           onFavoriteToggle={handleFavoriteToggle}
           favoriteArtists={favoriteArtists}
-          refreshArtists={refreshArtists}
-          onSelect={(artist) => {}}
         />
+        
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">What's New</h2>
+          {/* Recent updates or news would go here */}
+          <div className="bg-card rounded-lg p-4 shadow">
+            <p>ZAP is constantly evolving! Check back soon for updates on new features and artists.</p>
+          </div>
+        </div>
       </div>
-    </TimerProvider>
+    </div>
   );
 };
 
