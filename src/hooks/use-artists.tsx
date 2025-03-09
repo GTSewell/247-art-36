@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -17,37 +16,33 @@ export const useArtists = () => {
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
+        .eq('is_published', true) // Only fetch published artists
         .order('id', { ascending: true });
 
       if (error) {
         throw error;
       }
 
-      if (artists) {
-        // Filter specific artists that should always go to the additional section
-        const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
+      if (artists && artists.length > 0) {
+        // Define specific featured artist names - these should always be in featured section
+        const featuredArtistNames = ['John', 'Sophia', 'Michael']; // Example featured artists
         
-        // First, separate the artists that must go to additional section
-        const mustBeAdditional = artists.filter(artist => 
-          additionalArtistNames.includes(artist.name)
+        // Filter for featured artists (either by name or another criteria)
+        const featured = artists.filter(artist => 
+          featuredArtistNames.includes(artist.name)
         );
         
-        // Get eligible artists for featured section (all artists not in mustBeAdditional)
-        const eligibleForFeatured = artists.filter(artist => 
-          !additionalArtistNames.includes(artist.name)
+        // All other artists go to additional
+        const additional = artists.filter(artist => 
+          !featuredArtistNames.includes(artist.name)
         );
-        
-        // Take the first 3 eligible artists for featured section
-        const featured = eligibleForFeatured.slice(0, 3);
-        
-        // Put the rest of eligible artists along with mustBeAdditional into additional
-        const additional = [
-          ...mustBeAdditional,
-          ...eligibleForFeatured.slice(3)
-        ];
         
         setFeaturedArtists(featured as Artist[]);
         setAdditionalArtists(additional as Artist[]);
+      } else {
+        // No artists found or empty array
+        setFeaturedArtists([]);
+        setAdditionalArtists([]);
       }
     } catch (error: any) {
       logger.error('Error fetching artists:', error);
@@ -132,7 +127,6 @@ export const useArtists = () => {
     }
   };
 
-  // Improved refreshArtists function that refreshes a single artist if specified
   const refreshArtists = async (artistId?: number): Promise<void> => {
     if (artistId) {
       try {

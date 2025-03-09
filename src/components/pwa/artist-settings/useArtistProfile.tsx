@@ -1,24 +1,15 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Json } from "@/integrations/supabase/types";
+import { ArtistProfileFormData, ArtistProfileHookReturn } from "./types";
+import { fetchArtistProfile, updateArtistProfile, checkUserIsAdmin } from "./artistProfileApi";
+import { formatArtistDataForForm } from "./artistProfileUtils";
 
-interface ArtistProfileFormData {
-  name: string;
-  specialty: string;
-  bio: string;
-  city: string;
-  country: string;
-  techniques: string;
-  styles: string;
-  social_platforms: string;
-}
-
-export const useArtistProfile = (userId: string | null) => {
+export const useArtistProfile = (userId: string | null): ArtistProfileHookReturn => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [artist, setArtist] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [formData, setFormData] = useState<ArtistProfileFormData>({
     name: "",
     specialty: "",
@@ -27,50 +18,29 @@ export const useArtistProfile = (userId: string | null) => {
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: ""
+    social_platforms: "",
+    is_published: false
   });
   
   useEffect(() => {
     if (userId) {
-      fetchArtistProfile();
+      loadArtistProfile();
+      checkAdminStatus();
     }
   }, [userId]);
   
-  const fetchArtistProfile = async () => {
+  const loadArtistProfile = async () => {
     try {
       setLoading(true);
       
-      // Check if user already has an artist profile
-      const { data, error } = await supabase
-        .from('artists')
-        .select('*')
-        .eq('user_id', userId)
-        .maybeSingle();
+      if (!userId) return;
       
-      if (error) {
-        console.error("Error fetching artist profile:", error);
-        console.log("No existing artist profile found, will create a new one if needed");
-      }
+      const data = await fetchArtistProfile(userId);
       
       if (data) {
         // If artist profile exists, load it
         setArtist(data);
-        setFormData({
-          name: data.name || "",
-          specialty: data.specialty || "",
-          bio: data.bio || "",
-          city: data.city || "",
-          country: data.country || "",
-          techniques: Array.isArray(data.techniques) 
-            ? data.techniques.join(', ') 
-            : typeof data.techniques === 'string' ? data.techniques : "",
-          styles: Array.isArray(data.styles) 
-            ? data.styles.join(', ') 
-            : typeof data.styles === 'string' ? data.styles : "",
-          social_platforms: Array.isArray(data.social_platforms) 
-            ? data.social_platforms.join(', ') 
-            : typeof data.social_platforms === 'string' ? data.social_platforms : ""
-        });
+        setFormData(formatArtistDataForForm(data));
       }
     } catch (error: any) {
       console.error("Error fetching artist profile:", error);
@@ -78,6 +48,13 @@ export const useArtistProfile = (userId: string | null) => {
     } finally {
       setLoading(false);
     }
+  };
+  
+  const checkAdminStatus = async () => {
+    if (!userId) return;
+    
+    const adminStatus = await checkUserIsAdmin(userId);
+    setIsAdmin(adminStatus);
   };
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -99,58 +76,23 @@ export const useArtistProfile = (userId: string | null) => {
     try {
       setSaving(true);
       
-      // Process array values
-      const processedData = {
-        user_id: userId,
-        name: formData.name,
-        specialty: formData.specialty,
-        bio: formData.bio,
-        city: formData.city,
-        country: formData.country,
-        techniques: formData.techniques.split(',').map(item => item.trim()),
-        styles: formData.styles.split(',').map(item => item.trim()),
-        social_platforms: formData.social_platforms.split(',').map(item => item.trim())
-      };
-      
-      if (artist) {
-        // Update existing artist profile
-        const { error } = await supabase
-          .from('artists')
-          .update(processedData)
-          .eq('user_id', userId);
-        
-        if (error) throw error;
-        
-        toast.success("Profile updated successfully");
-      } else {
-        // Create new artist profile - we need to generate a numeric ID
-        // First, get the next available ID by checking the max ID in the table
-        const { data: maxIdData, error: maxIdError } = await supabase
-          .from('artists')
-          .select('id')
-          .order('id', { ascending: false })
-          .limit(1)
-          .single();
-          
-        if (maxIdError && !maxIdError.message.includes('No rows found')) {
-          throw maxIdError;
-        }
-        
-        // Set the new ID as max + 1, or start at 1 if no records exist
-        const newId = maxIdData ? maxIdData.id + 1 : 1;
-        
-        // Create new artist profile with the ID
-        const { error } = await supabase
-          .from('artists')
-          .insert([{ ...processedData, id: newId }]);
-        
-        if (error) throw error;
-        
-        toast.success("Profile created successfully");
-        
-        // Fetch the newly created profile to update the UI
-        fetchArtistProfile();
+      // If user is not admin, ensure we don't change publish status
+      const submissionData = { ...formData };
+      if (!isAdmin && artist) {
+        // For non-admins, preserve the existing published status
+        submissionData.is_published = artist.is_published;
       }
+      
+      const updatedArtist = await updateArtistProfile(submissionData, userId, artist);
+      
+      // Update the local artist state with the new data
+      if (updatedArtist) {
+        setArtist(updatedArtist);
+      }
+      
+      // Refresh the form data after the update
+      await loadArtistProfile();
+      
     } catch (error: any) {
       console.error("Error updating artist profile:", error);
       toast.error(`Failed to update profile: ${error.message}`);
@@ -165,6 +107,7 @@ export const useArtistProfile = (userId: string | null) => {
     artist,
     formData,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    isAdmin
   };
 };

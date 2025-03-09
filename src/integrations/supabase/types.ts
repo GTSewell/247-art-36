@@ -50,6 +50,8 @@ export type Database = {
           location: string | null
           locked_artworks: boolean | null
           name: string | null
+          profile_image_url: string | null
+          published: boolean | null
           social_platforms: Json | null
           specialty: string | null
           styles: Json | null
@@ -66,6 +68,8 @@ export type Database = {
           location?: string | null
           locked_artworks?: boolean | null
           name?: string | null
+          profile_image_url?: string | null
+          published?: boolean | null
           social_platforms?: Json | null
           specialty?: string | null
           styles?: Json | null
@@ -82,6 +86,8 @@ export type Database = {
           location?: string | null
           locked_artworks?: boolean | null
           name?: string | null
+          profile_image_url?: string | null
+          published?: boolean | null
           social_platforms?: Json | null
           specialty?: string | null
           styles?: Json | null

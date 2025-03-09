@@ -7,6 +7,10 @@ import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
 import { useArtistProfile } from "./artist-settings/useArtistProfile";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { InfoIcon } from "lucide-react";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
@@ -18,12 +22,25 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     saving,
     formData,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    isAdmin
   } = useArtistProfile(artistId);
   
   if (loading) {
     return <div className="p-8 text-center">Loading artist profile...</div>;
   }
+  
+  // Handle publish toggle change
+  const handlePublishToggle = (checked: boolean) => {
+    const event = {
+      target: {
+        name: "is_published",
+        value: checked
+      }
+    } as React.ChangeEvent<HTMLInputElement>;
+    
+    handleChange(event);
+  };
   
   return (
     <Card>
@@ -49,6 +66,28 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
             formData={formData}
             handleChange={handleChange}
           />
+          
+          {/* Publish Profile Toggle - Only editable by admins */}
+          <div className="flex flex-col space-y-2">
+            <div className="flex items-center space-x-2">
+              <Switch 
+                id="is_published"
+                checked={!!formData.is_published}
+                onCheckedChange={handlePublishToggle}
+                disabled={!isAdmin}
+              />
+              <Label htmlFor="is_published">Publish Profile</Label>
+            </div>
+            
+            {!isAdmin && (
+              <Alert variant="default" className="bg-muted">
+                <InfoIcon className="h-4 w-4" />
+                <AlertDescription>
+                  Only administrators can publish profiles. Your profile will be reviewed and published by an admin.
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
           
           <Button type="submit" className="w-full" disabled={saving}>
             {saving ? "Saving..." : "Save Changes"}
