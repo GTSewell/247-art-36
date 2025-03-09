@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
@@ -9,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Artist } from "@/data/types/artist";
 import { useNavigate } from "react-router-dom";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
+import { logger } from "@/utils/logger";
 
 const PWAArtists = () => {
   const navigate = useNavigate();
@@ -56,9 +56,13 @@ const PWAArtists = () => {
     }
   };
 
-  // Navigate to artist subdomain page - now a separate function that can be used elsewhere
+  // Updated navigation function to handle artist profile routing better
   const navigateToArtistPage = (artist: Artist) => {
-    navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
+    // Keep artist name as-is for the URL, instead of changing the format
+    // This ensures it matches exactly how it's stored in the database
+    const formattedName = artist.name;
+    logger.info(`Navigating to artist page: ${formattedName}`);
+    navigate(`/artist/${formattedName}`);
   };
 
   return (

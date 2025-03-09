@@ -21,7 +21,7 @@ const ArtistGrid: React.FC<ArtistGridProps> = ({
   showFavorites
 }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {artists.length > 0 ? (
         artists.map((artist) => (
           <ArtistCard
