@@ -1,10 +1,5 @@
 
 import React from 'react';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from '@/components/ui/carousel';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from './ArtistProfileRightPanel';
@@ -20,7 +15,7 @@ interface MobileCarouselProps {
   profile: ArtistProfile | null;
   techniques: string[];
   styles: string[];
-  socialPlatforms: string[];
+  socialPlatforms: Record<string, string>;
   artworks: string[];
   panelHeight: string;
   colorTheme: {
@@ -46,6 +41,14 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
   panelHeight,
   colorTheme
 }) => {
+  // Safe handling of potentially undefined/null values
+  const safeArtist = artist || {} as Artist;
+  const safeProfile = profile || null;
+  const safeTechniques = techniques || [];
+  const safeStyles = styles || [];
+  const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
+  const safeArtworks = artworks || [];
+
   return (
     <div className="h-full overflow-hidden">
       <div ref={emblaRef} className="h-full overflow-hidden">
@@ -54,9 +57,9 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
           <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
             <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
               <ArtistProfileLeftPanel 
-                artist={artist} 
-                techniques={techniques}
-                styles={styles}
+                artist={safeArtist}
+                techniques={safeTechniques}
+                styles={safeStyles}
                 panelColor={colorTheme.panel}
                 badgeBgColor={colorTheme.badgeBg}
               />
@@ -67,9 +70,9 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
           <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
             <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
               <ArtistProfileCenterPanel 
-                artist={artist}
-                socialPlatforms={socialPlatforms}
-                links={profile?.links || []}
+                artist={safeArtist}
+                socialPlatforms={safeSocialPlatforms}
+                links={safeProfile?.links || []}
                 panelColor={colorTheme.panel}
                 buttonColor={colorTheme.button}
                 buttonTextColor={colorTheme.buttonText}
@@ -83,8 +86,8 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
           <div className="h-full min-w-0 shrink-0 grow-0 basis-full">
             <MobilePanel panelHeight={panelHeight} panelColor={colorTheme.panel}>
               <ArtistProfileRightPanel 
-                artist={artist}
-                artworks={artworks}
+                artist={safeArtist}
+                artworks={safeArtworks}
                 panelColor={colorTheme.panel}
               />
             </MobilePanel>
