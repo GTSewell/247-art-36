@@ -10,6 +10,7 @@ import CategoryProducts from "@/components/pwa/CategoryProducts";
 import { TimerProvider } from "@/contexts/TimerContext";
 import { logger } from "@/utils/logger";
 import { ChevronLeft } from "lucide-react";
+import TimedEditionModal from "@/components/store/TimedEditionModal";
 
 interface TimerState {
   hours: number;
@@ -95,6 +96,7 @@ const PWAStore = () => {
   const categoryProducts = selectedCategory ? getProductsForCategory(selectedCategory) : [];
 
   const handleProductSelect = (product: any, timerState: TimerState) => {
+    logger.info(`Selected product: ${product.id}, timer: ${JSON.stringify(timerState)}`);
     setSelectedProduct(product);
     setSelectedTimerState(timerState);
   };
@@ -176,6 +178,17 @@ const PWAStore = () => {
             </>
           )}
         </main>
+
+        {/* Timed Edition Modal */}
+        <TimedEditionModal
+          isOpen={!!selectedProduct}
+          onClose={() => {
+            setSelectedProduct(null);
+            setSelectedTimerState(null);
+          }}
+          product={selectedProduct}
+          timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
+        />
       </div>
     </TimerProvider>
   );

@@ -9,12 +9,19 @@ import { Artist } from "@/data/types/artist";
 import { logger } from "@/utils/logger";
 import { TimerProvider } from "@/contexts/TimerContext";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
+import TimedEditionModal from "@/components/store/TimedEditionModal";
+
+interface TimerState {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 
 const PWAHome = () => {
   const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [timerState, setTimerState] = useState<any>(null);
+  const [timerState, setTimerState] = useState<TimerState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -56,7 +63,8 @@ const PWAHome = () => {
     fetchProducts();
   }, []);
 
-  const handleProductSelect = (product: any, timer: any) => {
+  const handleProductSelect = (product: any, timer: TimerState) => {
+    logger.info(`Selected product: ${product.id}, timer: ${JSON.stringify(timer)}`);
     setSelectedProduct(product);
     setTimerState(timer);
   };
@@ -180,6 +188,17 @@ const PWAHome = () => {
           favoriteArtists={favoriteArtists}
           refreshArtists={refreshArtists}
           onSelect={(artist) => {}}
+        />
+
+        {/* Timed Edition Modal */}
+        <TimedEditionModal
+          isOpen={!!selectedProduct}
+          onClose={() => {
+            setSelectedProduct(null);
+            setTimerState(null);
+          }}
+          product={selectedProduct}
+          timeLeft={timerState || { hours: 0, minutes: 0, seconds: 0 }}
         />
       </div>
     </TimerProvider>
