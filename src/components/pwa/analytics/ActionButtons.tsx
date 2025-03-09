@@ -28,8 +28,7 @@ const ActionButtons: React.FC = () => {
           Export Analytics Report
         </Button>
         <Button 
-          className="w-full md:w-auto" 
-          variant="secondary"
+          className="w-full md:w-auto bg-green-500 hover:bg-green-600" 
           onClick={() => setInvoiceModalOpen(true)}
         >
           <Mail className="mr-2 h-4 w-4" />
