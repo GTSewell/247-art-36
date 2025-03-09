@@ -8,7 +8,6 @@ export function useArtists() {
   const [loading, setLoading] = useState(true);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
-  const [additionalArtists, setAdditionalArtists] = useState<Artist[]>([]);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
 
   // Hardcoded list of featured artist IDs
@@ -19,20 +18,14 @@ export function useArtists() {
     // You would also fetch favorite artists here if user is logged in
   }, []);
 
-  const fetchArtists = async (artistId?: number) => {
+  const fetchArtists = async () => {
     try {
       setLoading(true);
       
-      let query = supabase
+      const { data, error } = await supabase
         .from('artists')
         .select('*')
         .is('published', true); // Only get published artists
-      
-      if (artistId) {
-        query = query.eq('id', artistId);
-      }
-      
-      const { data, error } = await query;
       
       if (error) {
         throw error;
@@ -57,63 +50,11 @@ export function useArtists() {
           locked_artworks: artist.locked_artworks || false,
         }));
         
-        // If fetching a specific artist, just update that artist
-        if (artistId) {
-          setArtists(prevArtists => {
-            const updatedArtists = [...prevArtists];
-            const index = updatedArtists.findIndex(a => a.id === artistId);
-            if (index !== -1 && processedArtists.length > 0) {
-              updatedArtists[index] = processedArtists[0];
-            }
-            return updatedArtists;
-          });
-          
-          // Update featured artists if this artist is featured
-          if (featuredArtistIds.includes(artistId)) {
-            setFeaturedArtists(prevFeatured => {
-              const updatedFeatured = [...prevFeatured];
-              const index = updatedFeatured.findIndex(a => a.id === artistId);
-              if (index !== -1 && processedArtists.length > 0) {
-                updatedFeatured[index] = processedArtists[0];
-              }
-              return updatedFeatured;
-            });
-          }
-          
-          // Update additional artists if this artist is not featured
-          if (!featuredArtistIds.includes(artistId)) {
-            setAdditionalArtists(prevAdditional => {
-              const updatedAdditional = [...prevAdditional];
-              const index = updatedAdditional.findIndex(a => a.id === artistId);
-              if (index !== -1 && processedArtists.length > 0) {
-                updatedAdditional[index] = processedArtists[0];
-              }
-              return updatedAdditional;
-            });
-          }
-        } else {
-          // Set all artists
-          setArtists(processedArtists);
-          
-          // Set featured artists (those with IDs in the featuredArtistIds array)
-          const featured = processedArtists.filter(artist => 
-            featuredArtistIds.includes(artist.id)
-          );
-          
-          // Make sure we have featured artists - if not, use the first 5 artists or less
-          setFeaturedArtists(
-            featured.length > 0 
-              ? featured 
-              : processedArtists.slice(0, Math.min(5, processedArtists.length))
-          );
-          
-          // Set additional artists (those not in the featured list)
-          setAdditionalArtists(
-            processedArtists.filter(artist => 
-              !featuredArtistIds.includes(artist.id)
-            )
-          );
-        }
+        setArtists(processedArtists);
+        
+        // Set featured artists (first 5 or all if less than 5)
+        const featured = processedArtists.filter(artist => featuredArtistIds.includes(artist.id));
+        setFeaturedArtists(featured.length > 0 ? featured : processedArtists.slice(0, Math.min(5, processedArtists.length)));
       }
     } catch (error: any) {
       console.error('Error fetching artists:', error);
@@ -123,7 +64,7 @@ export function useArtists() {
     }
   };
 
-  const handleFavoriteToggle = (artistId: number, isFavorite: boolean) => {
+  const toggleFavorite = (artistId: number, isFavorite: boolean) => {
     const newFavorites = new Set(favoriteArtists);
     
     if (isFavorite) {
@@ -139,12 +80,10 @@ export function useArtists() {
 
   return {
     loading,
-    isLoading: loading,
     artists,
     featuredArtists,
-    additionalArtists,
     favoriteArtists,
-    handleFavoriteToggle,
+    toggleFavorite,
     refreshArtists: fetchArtists
   };
 }

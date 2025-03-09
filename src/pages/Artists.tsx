@@ -31,7 +31,7 @@ const Artists = () => {
   const {
     featuredArtists,
     additionalArtists,
-    loading: isLoading,
+    isLoading,
     favoriteArtists,
     handleFavoriteToggle,
     refreshArtists
@@ -84,7 +84,7 @@ const Artists = () => {
 
   // Filter artists based on selected criteria
   const filteredFeaturedArtists = filterArtists({
-    artists: featuredArtists || [],
+    artists: featuredArtists,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,
@@ -95,7 +95,7 @@ const Artists = () => {
   });
 
   const filteredAdditionalArtists = filterArtists({
-    artists: additionalArtists || [],
+    artists: additionalArtists,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,
