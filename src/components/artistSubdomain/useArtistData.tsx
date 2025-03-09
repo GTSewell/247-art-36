@@ -70,17 +70,17 @@ export function useArtistData(artistName: string | undefined) {
         // 4. Try one more approach - removing all spaces and comparing
         if (!artistData) {
           // Get all artists and filter manually
-          result = await supabase
+          const allArtistsResult = await supabase
             .from('artists')
             .select('*')
             .eq('published', true);
             
-          const allArtists = result.data || [];
+          const allArtists = allArtistsResult.data || [];
           
           // Find the artist whose name with spaces removed matches the artistName
           artistData = allArtists.find(a => 
-            a.name.replace(/\s+/g, '').toLowerCase() === artistName.toLowerCase()
-          );
+            a.name?.replace(/\s+/g, '').toLowerCase() === artistName.toLowerCase()
+          ) || null;
         }
         
         if (artistError) {
