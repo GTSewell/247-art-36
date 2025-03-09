@@ -28,15 +28,8 @@ const PWAArtists = () => {
   } = useArtists();
 
   // All artists - combine featured and other artists and ensure no duplicates
-  const allArtists = [...(featuredArtists || [])];
+  const allArtists = [...(artists || [])];
   
-  // Make sure we're not re-adding artists already in the featured section
-  const featuredIds = new Set(featuredArtists?.map(a => a.id) || []);
-  
-  // Add additional artists that aren't already in featured
-  const additionalArtists = (artists || []).filter(artist => !featuredIds.has(artist.id));
-  allArtists.push(...additionalArtists);
-
   // Filter artists based on search term and favorites
   const filteredArtists = allArtists.filter(artist => {
     const matchesSearch = !searchTerm || 

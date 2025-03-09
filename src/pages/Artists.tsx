@@ -86,9 +86,8 @@ const Artists = () => {
   const safeArtists = artists || [];
   const safeFeaturedArtists = featuredArtists || [];
 
-  // Get additional artists (those not in featured)
-  const featuredIds = new Set(safeFeaturedArtists.map(a => a.id));
-  const additionalArtists = safeArtists.filter(artist => !featuredIds.has(artist.id));
+  // We want all artists to show in the All Artists section
+  const allArtistsToShow = safeArtists;
 
   // Filter artists based on selected criteria
   const filteredFeaturedArtists = filterArtists({
@@ -102,8 +101,8 @@ const Artists = () => {
     favoriteArtists
   });
 
-  const filteredAdditionalArtists = filterArtists({
-    artists: additionalArtists,
+  const filteredAllArtists = filterArtists({
+    artists: allArtistsToShow,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,
@@ -158,17 +157,20 @@ const Artists = () => {
             onClearFilters={handleClearFilters}
           />
 
-          <FeaturedArtists
-            artists={filteredFeaturedArtists}
-            onSelect={setSelectedArtist}
-            onFavoriteToggle={handleFavoriteToggle}
-            favoriteArtists={favoriteArtists}
-            refreshArtists={() => refreshArtists()}
-            refreshArtist={refreshArtist}
-          />
+          {/* Only render the FeaturedArtists section if there are actually featured artists */}
+          {filteredFeaturedArtists.length > 0 && (
+            <FeaturedArtists
+              artists={filteredFeaturedArtists}
+              onSelect={setSelectedArtist}
+              onFavoriteToggle={handleFavoriteToggle}
+              favoriteArtists={favoriteArtists}
+              refreshArtists={() => refreshArtists()}
+              refreshArtist={refreshArtist}
+            />
+          )}
 
           <AllArtists
-            artists={filteredAdditionalArtists}
+            artists={filteredAllArtists}
             allArtistsSearch={allArtistsSearch}
             setAllArtistsSearch={setAllArtistsSearch}
             showFavorites={showFavorites}

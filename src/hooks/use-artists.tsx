@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
@@ -9,9 +8,6 @@ export function useArtists() {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
-
-  // Hardcoded list of featured artist IDs
-  const featuredArtistIds = [1, 2, 3, 4, 5]; // First 5 artists are featured
 
   useEffect(() => {
     fetchArtists();
@@ -75,29 +71,14 @@ export function useArtists() {
             }
             return newList;
           });
-          
-          // Also update it in featured artists if needed
-          setFeaturedArtists(prev => {
-            const newList = [...prev];
-            const index = newList.findIndex(a => a.id === artistId);
-            if (index !== -1 && processedArtists.length > 0) {
-              newList[index] = processedArtists[0];
-            }
-            return newList;
-          });
         } else {
           // Otherwise update the full list
           setArtists(processedArtists);
           
-          // Set featured artists (first 5 or all if less than 5)
-          const featured = processedArtists.filter(artist => 
-            featuredArtistIds.includes(artist.id)
-          );
-          
-          setFeaturedArtists(featured.length > 0 
-            ? featured 
-            : processedArtists.slice(0, Math.min(5, processedArtists.length))
-          );
+          // IMPORTANT: We're no longer using hardcoded featuredArtistIds
+          // Instead, we'll keep the featured artists section empty
+          // All published artists will go to "All Artists" section
+          setFeaturedArtists([]);
         }
       }
     } catch (error: any) {
