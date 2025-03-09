@@ -21,7 +21,7 @@ const ArtistGrid: React.FC<ArtistGridProps> = ({
   showFavorites
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {artists.length > 0 ? (
         artists.map((artist) => (
           <ArtistCard
@@ -50,7 +50,7 @@ const ArtistGrid: React.FC<ArtistGridProps> = ({
           />
         ))
       ) : (
-        <div className="col-span-2 py-8 text-center text-gray-500">
+        <div className="col-span-full py-8 text-center text-gray-500">
           {showFavorites
             ? "You haven't favorited any artists yet."
             : "No artists match your search criteria."}
