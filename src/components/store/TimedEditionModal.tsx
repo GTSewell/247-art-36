@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Info } from "lucide-react";
@@ -8,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TimerState {
   hours: number;
@@ -30,6 +30,13 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
 }) => {
   const variations = Array(4).fill(product?.image_url);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    setOpenAccordions(isMobile ? [] : ['details']);
+  }, [isMobile]);
+
+  const [openAccordions, setOpenAccordions] = useState<string[]>(isMobile ? [] : ['details']);
 
   const handleAddToCart = () => {
     toast.success("Added to cart!", {
@@ -43,6 +50,14 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
     } else {
       setSelectedImage(index);
     }
+  };
+
+  const handleAccordionChange = (value: string) => {
+    setOpenAccordions(prev => 
+      prev.includes(value) 
+        ? prev.filter(item => item !== value)
+        : [...prev, value]
+    );
   };
 
   return (
@@ -106,13 +121,27 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   />
                 )}
               </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Details</h3>
-                <p className="text-muted-foreground">
-                  {product?.description || "Discover this exclusive limited edition print, meticulously crafted to capture the essence of contemporary artistry. Each piece is individually numbered and personally signed by the artist, making it a unique addition to any collection."}
-                </p>
-              </div>
-              <Accordion type="single" collapsible className="w-full">
+              
+              <Accordion 
+                type="multiple" 
+                value={openAccordions} 
+                onValueChange={(values) => setOpenAccordions(values)} 
+                className="w-full"
+              >
+                <AccordionItem value="details">
+                  <AccordionTrigger className={isMobile ? "text-lg font-semibold" : "sr-only"}>
+                    Details
+                  </AccordionTrigger>
+                  <AccordionContent forceMount className={isMobile ? undefined : "!mt-0 !pt-0"}>
+                    <div className={isMobile ? "pt-2" : ""}>
+                      <h3 className={isMobile ? "sr-only" : "text-lg font-semibold mb-2"}>Details</h3>
+                      <p className="text-muted-foreground">
+                        {product?.description || "Discover this exclusive limited edition print, meticulously crafted to capture the essence of contemporary artistry. Each piece is individually numbered and personally signed by the artist, making it a unique addition to any collection."}
+                      </p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+                
                 <AccordionItem value="specifications">
                   <AccordionTrigger className="text-lg font-semibold">
                     Specifications
@@ -127,6 +156,7 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                     </ul>
                   </AccordionContent>
                 </AccordionItem>
+                
                 <AccordionItem value="production-shipping">
                   <AccordionTrigger className="text-lg font-semibold">
                     Production & Shipping
@@ -149,6 +179,7 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
+              
               <Button 
                 className="w-full bg-zap-red hover:bg-zap-blue text-white"
                 onClick={handleAddToCart}
