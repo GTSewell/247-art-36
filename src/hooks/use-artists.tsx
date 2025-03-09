@@ -10,70 +10,44 @@ export const useArtists = () => {
   const [additionalArtists, setAdditionalArtists] = useState<Artist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [favoriteArtists, setFavoriteArtists] = useState<Set<number>>(new Set());
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  // Check if user is admin
-  useEffect(() => {
-    const checkUserRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-          
-        setIsAdmin(!!data);
-      }
-    };
-    
-    checkUserRole();
-  }, []);
 
   const fetchArtists = async () => {
     try {
       setIsLoading(true);
-      
-      // Only fetch published artists
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
-        .eq('published', true)
         .order('id', { ascending: true });
 
       if (error) {
         throw error;
       }
 
-      if (artists && artists.length > 0) {
-        logger.info(`Fetched ${artists.length} artists from database`);
+      if (artists) {
+        // Filter specific artists that should always go to the additional section
+        const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
         
-        // Predefined artists for featured section - these should be the "featured" artists you specifically want to highlight
-        // All other published artists will go to "additional" section
-        const featuredArtistNames = ['Sarah', 'Marcus', 'Elena']; // Add your featured artist names here
-        
-        // First, filter artists that should go to featured section (only the predefined ones)
-        const featured = artists.filter(artist => 
-          featuredArtistNames.includes(artist.name)
+        // First, separate the artists that must go to additional section
+        const mustBeAdditional = artists.filter(artist => 
+          additionalArtistNames.includes(artist.name)
         );
         
-        // All other artists go to the additional section
-        const additional = artists.filter(artist => 
-          !featuredArtistNames.includes(artist.name)
+        // Get eligible artists for featured section (all artists not in mustBeAdditional)
+        const eligibleForFeatured = artists.filter(artist => 
+          !additionalArtistNames.includes(artist.name)
         );
         
-        logger.info(`Featured artists: ${featured.map(a => a.name).join(', ')}`);
-        logger.info(`Additional artists: ${additional.map(a => a.name).join(', ')}`);
+        // Take the first 3 eligible artists for featured section
+        const featured = eligibleForFeatured.slice(0, 3);
+        
+        // Put the rest of eligible artists along with mustBeAdditional into additional
+        const additional = [
+          ...mustBeAdditional,
+          ...eligibleForFeatured.slice(3)
+        ];
         
         setFeaturedArtists(featured as Artist[]);
         setAdditionalArtists(additional as Artist[]);
-        logger.info(`Set ${featured.length} featured artists and ${additional.length} additional artists`);
-      } else {
-        logger.warn('No published artists found in the database');
-        setFeaturedArtists([]);
-        setAdditionalArtists([]);
       }
     } catch (error: any) {
       logger.error('Error fetching artists:', error);
@@ -167,7 +141,6 @@ export const useArtists = () => {
           .from('artists')
           .select('*')
           .eq('id', artistId)
-          .eq('published', true)
           .single();
           
         if (error) throw error;
@@ -198,7 +171,6 @@ export const useArtists = () => {
     isLoading,
     favoriteArtists,
     handleFavoriteToggle,
-    refreshArtists,
-    isAdmin
+    refreshArtists
   };
 };

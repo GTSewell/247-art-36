@@ -6,12 +6,7 @@ import { User } from "lucide-react";
 import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
-import ProfileImageUpload from "./artist-settings/ProfileImageUpload";
-import PublishToggle from "./artist-settings/PublishToggle";
 import { useArtistProfile } from "./artist-settings/useArtistProfile";
-import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
-import { useState, useEffect } from "react";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
@@ -23,32 +18,8 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     saving,
     formData,
     handleChange,
-    handleCheckboxChange,
-    handleProfileImageUpload,
     handleSubmit
   } = useArtistProfile(artistId);
-  
-  const [isAdmin, setIsAdmin] = useState(false);
-  
-  // Check if user is admin
-  useEffect(() => {
-    const checkUserRole = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      if (user) {
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .maybeSingle();
-          
-        setIsAdmin(!!data);
-      }
-    };
-    
-    checkUserRole();
-  }, []);
   
   if (loading) {
     return <div className="p-8 text-center">Loading artist profile...</div>;
@@ -63,15 +34,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="flex flex-col items-center mb-6">
-            <ProfileImageUpload 
-              currentImage={formData.profile_image_url} 
-              onImageUpload={handleProfileImageUpload}
-              saving={saving}
-            />
-          </div>
-          
+        <form onSubmit={handleSubmit} className="space-y-4">
           <BasicInfoForm 
             formData={formData} 
             handleChange={handleChange} 
@@ -85,13 +48,6 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
           <ArtistTags 
             formData={formData}
             handleChange={handleChange}
-          />
-          
-          <PublishToggle
-            published={formData.published}
-            onChange={handleCheckboxChange}
-            disabled={saving}
-            isAdmin={isAdmin}
           />
           
           <Button type="submit" className="w-full" disabled={saving}>
