@@ -42,6 +42,8 @@ export function useArtistData(artistName: string | undefined) {
               .toLowerCase();
             return formattedName === artistName.toLowerCase();
           });
+          
+          logger.info(`Searching for artist: ${artistName}, found: ${foundArtist ? foundArtist.name : 'none'}`);
         }
         
         if (foundArtist) {

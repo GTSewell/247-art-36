@@ -14,7 +14,7 @@ export const useArtists = () => {
   const fetchArtists = async () => {
     try {
       setIsLoading(true);
-      // Only fetch published artists or all artists if the user is an admin
+      // Only fetch published artists
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
@@ -25,7 +25,9 @@ export const useArtists = () => {
         throw error;
       }
 
-      if (artists) {
+      if (artists && artists.length > 0) {
+        logger.info(`Fetched ${artists.length} artists from database`);
+        
         // Filter specific artists that should always go to the additional section
         const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
         
@@ -39,7 +41,8 @@ export const useArtists = () => {
           !additionalArtistNames.includes(artist.name)
         );
         
-        // Take the first 3 eligible artists for featured section
+        // Take up to 3 eligible artists for featured section
+        // Important: Check if there are artists to show in featured section
         const featured = eligibleForFeatured.slice(0, 3);
         
         // Put the rest of eligible artists along with mustBeAdditional into additional
@@ -50,6 +53,11 @@ export const useArtists = () => {
         
         setFeaturedArtists(featured as Artist[]);
         setAdditionalArtists(additional as Artist[]);
+        logger.info(`Set ${featured.length} featured artists and ${additional.length} additional artists`);
+      } else {
+        logger.warn('No published artists found in the database');
+        setFeaturedArtists([]);
+        setAdditionalArtists([]);
       }
     } catch (error: any) {
       logger.error('Error fetching artists:', error);
@@ -143,6 +151,7 @@ export const useArtists = () => {
           .from('artists')
           .select('*')
           .eq('id', artistId)
+          .eq('published', true)
           .single();
           
         if (error) throw error;
