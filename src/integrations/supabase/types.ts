@@ -54,6 +54,7 @@ export type Database = {
           specialty: string | null
           styles: Json | null
           techniques: Json | null
+          user_id: string | null
         }
         Insert: {
           artworks?: Json | null
@@ -69,6 +70,7 @@ export type Database = {
           specialty?: string | null
           styles?: Json | null
           techniques?: Json | null
+          user_id?: string | null
         }
         Update: {
           artworks?: Json | null
@@ -84,6 +86,7 @@ export type Database = {
           specialty?: string | null
           styles?: Json | null
           techniques?: Json | null
+          user_id?: string | null
         }
         Relationships: []
       }

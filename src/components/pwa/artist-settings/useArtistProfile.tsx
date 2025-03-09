@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { Json } from "@/integrations/supabase/types";
 
 interface ArtistProfileFormData {
   name: string;
@@ -14,7 +15,7 @@ interface ArtistProfileFormData {
   social_platforms: string;
 }
 
-export const useArtistProfile = (artistId: string | null) => {
+export const useArtistProfile = (userId: string | null) => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [artist, setArtist] = useState<any>(null);
@@ -30,24 +31,24 @@ export const useArtistProfile = (artistId: string | null) => {
   });
   
   useEffect(() => {
-    if (artistId) {
+    if (userId) {
       fetchArtistProfile();
     }
-  }, [artistId]);
+  }, [userId]);
   
   const fetchArtistProfile = async () => {
     try {
       setLoading(true);
       
-      // First check if user already has an artist profile
+      // Check if user already has an artist profile
       const { data, error } = await supabase
         .from('artists')
         .select('*')
-        .eq('user_id', artistId)
+        .eq('user_id', userId)
         .maybeSingle();
       
       if (error) {
-        // If no profile exists with user_id, we'll create one later
+        console.error("Error fetching artist profile:", error);
         console.log("No existing artist profile found, will create a new one if needed");
       }
       
@@ -90,7 +91,7 @@ export const useArtistProfile = (artistId: string | null) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!artistId) {
+    if (!userId) {
       toast.error("User ID not found");
       return;
     }
@@ -100,8 +101,12 @@ export const useArtistProfile = (artistId: string | null) => {
       
       // Process array values
       const processedData = {
-        ...formData,
-        user_id: artistId,
+        user_id: userId,
+        name: formData.name,
+        specialty: formData.specialty,
+        bio: formData.bio,
+        city: formData.city,
+        country: formData.country,
         techniques: formData.techniques.split(',').map(item => item.trim()),
         styles: formData.styles.split(',').map(item => item.trim()),
         social_platforms: formData.social_platforms.split(',').map(item => item.trim())
@@ -112,7 +117,7 @@ export const useArtistProfile = (artistId: string | null) => {
         const { error } = await supabase
           .from('artists')
           .update(processedData)
-          .eq('user_id', artistId);
+          .eq('user_id', userId);
         
         if (error) throw error;
         

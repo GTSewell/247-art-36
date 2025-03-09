@@ -42,7 +42,7 @@ const ArtistDashboard: React.FC = () => {
     );
   }
 
-  // Use user.id directly as the artistId
+  // Use user.id as the artistId
   const artistId = user?.id || null;
 
   return (
