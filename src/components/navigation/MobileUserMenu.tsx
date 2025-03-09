@@ -2,9 +2,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAppMode } from "@/contexts/AppModeContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface MobileUserMenuProps {
   user: any | null;
@@ -13,6 +15,7 @@ interface MobileUserMenuProps {
 
 const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
   const navigate = useNavigate();
+  const { isPWA } = useAppMode();
 
   const handleSignOut = async () => {
     try {
@@ -29,6 +32,34 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
     return null;
   }
 
+  // If in PWA mode, use the original buttons
+  if (isPWA) {
+    if (user) {
+      return (
+        <Button
+          variant="outline"
+          className="w-full justify-start mt-4"
+          onClick={handleSignOut}
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          Sign Out
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        variant="outline"
+        className="w-full justify-start mt-4"
+        onClick={() => navigate("/auth")}
+      >
+        <User className="h-4 w-4 mr-2" />
+        Sign In
+      </Button>
+    );
+  }
+
+  // For regular website mode
   if (user) {
     return (
       <Button
@@ -36,7 +67,10 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
         className="w-full justify-start mt-4"
         onClick={handleSignOut}
       >
-        <LogOut className="h-4 w-4 mr-2" />
+        <Avatar className="h-5 w-5 mr-2">
+          <AvatarImage src="/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png" alt="Profile" />
+          <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
+        </Avatar>
         Sign Out
       </Button>
     );
@@ -48,7 +82,10 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
       className="w-full justify-start mt-4"
       onClick={() => navigate("/auth")}
     >
-      <LogIn className="h-4 w-4 mr-2" />
+      <Avatar className="h-5 w-5 mr-2">
+        <AvatarImage src="/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png" alt="Profile" />
+        <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
+      </Avatar>
       Sign In
     </Button>
   );
