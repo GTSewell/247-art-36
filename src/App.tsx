@@ -113,7 +113,7 @@ function AppContent() {
         <Route path="/artist-submission" element={<ArtistSubmission />} />
         <Route path="/dashboard/artist" element={<ArtistDashboard />} />
         <Route path="/dashboard/collector" element={<CollectorDashboard />} />
-        <Route path="/artist/:artistName" element={<ArtistSubdomain />} />
+        <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Toaster richColors />
