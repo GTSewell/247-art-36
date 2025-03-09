@@ -61,7 +61,7 @@ const PWANavigation = () => {
                   <X className="h-6 w-6" />
                 ) : (
                   <img 
-                    src="/lovable-uploads/54a6a4ac-14da-4fd9-9656-9c2f2366744b.png" 
+                    src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
                     alt="Profile" 
                     className="h-8 w-8"
                   />
@@ -87,7 +87,7 @@ const PWANavigation = () => {
                   onClick={() => navigateTo("/dashboard/artist")}
                 >
                   <img 
-                    src="/lovable-uploads/54a6a4ac-14da-4fd9-9656-9c2f2366744b.png" 
+                    src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
                     alt="Artist Profile"
                     className="mr-2 h-5 w-5"
                   />
@@ -103,7 +103,7 @@ const PWANavigation = () => {
                   onClick={() => navigateTo("/dashboard/collector")}
                 >
                   <img 
-                    src="/lovable-uploads/54a6a4ac-14da-4fd9-9656-9c2f2366744b.png" 
+                    src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
                     alt="Collector Profile"
                     className="mr-2 h-5 w-5"
                   />

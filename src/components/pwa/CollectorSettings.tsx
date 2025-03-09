@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Bell, Settings, User } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const CollectorSettings: React.FC = () => {
   const { user } = useAuth();
@@ -53,7 +54,10 @@ const CollectorSettings: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <User className="mr-2 h-5 w-5" />
+            <Avatar className="mr-2 h-6 w-6">
+              <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
+              <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
+            </Avatar>
             Profile Settings
           </CardTitle>
         </CardHeader>
