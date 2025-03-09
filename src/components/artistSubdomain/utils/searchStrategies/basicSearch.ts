@@ -2,6 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { ArtistSearchResult } from '../types';
+import { processArtistData } from "../../utils/artistDataProcessor";
 
 /**
  * Basic search strategy - direct match on name
@@ -31,7 +32,9 @@ export async function searchArtistBasic(formattedName: string): Promise<ArtistSe
     
     if (artistData) {
       logger.info(`Basic search found artist: ${artistData.name}`);
-      return { artistData, artistError: null };
+      // Process artist data to ensure proper typing
+      const processedArtist = processArtistData(artistData);
+      return { artistData: processedArtist, artistError: null };
     }
     
     return { artistData: null, artistError: null };

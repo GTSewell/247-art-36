@@ -1,7 +1,6 @@
 
 import { Artist } from '@/data/types/artist';
 import { logger } from "@/utils/logger";
-import { supabase } from "@/integrations/supabase/client";
 import { ArtistSearchResult } from './types';
 import { searchArtistBasic } from './searchStrategies/basicSearch';
 import { searchArtistAdvanced } from './searchStrategies/advancedSearch';

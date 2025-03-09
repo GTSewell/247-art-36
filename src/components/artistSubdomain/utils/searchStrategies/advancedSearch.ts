@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 import { ArtistSearchResult } from '../types';
 import { Artist } from "@/data/types/artist";
+import { processArtistData } from "../../utils/artistDataProcessor";
 
 /**
  * Advanced search strategy - try various matching techniques
@@ -26,8 +27,11 @@ export async function searchArtistAdvanced(formattedName: string): Promise<Artis
       return { artistData: null, artistError: null };
     }
     
+    // Process the data to ensure proper typing before passing to findBestMatch
+    const processedArtists = artistsData.map(artist => processArtistData(artist)).filter(Boolean) as Artist[];
+    
     // Try to find the best match by comparing formatted names
-    const foundArtist = findBestMatch(artistsData, formattedName);
+    const foundArtist = findBestMatch(processedArtists, formattedName);
     
     if (foundArtist) {
       logger.info(`Advanced search found artist: ${foundArtist.name}`);

@@ -13,19 +13,19 @@ export function processArtistData(artistData: any): Artist | null {
     logger.info(`Processing artist: ${artistData.name}, ID: ${artistData.id}`);
     
     const processedArtist: Artist = {
-      ...artistData,
-      techniques: typeof artistData.techniques === 'string' 
-        ? JSON.parse(artistData.techniques) 
-        : Array.isArray(artistData.techniques) ? artistData.techniques : [],
-      styles: typeof artistData.styles === 'string' 
-        ? JSON.parse(artistData.styles) 
-        : Array.isArray(artistData.styles) ? artistData.styles : [],
-      social_platforms: typeof artistData.social_platforms === 'string' 
-        ? JSON.parse(artistData.social_platforms) 
-        : Array.isArray(artistData.social_platforms) ? artistData.social_platforms : [],
-      artworks: typeof artistData.artworks === 'string' 
-        ? JSON.parse(artistData.artworks) 
-        : Array.isArray(artistData.artworks) ? artistData.artworks : []
+      id: artistData.id,
+      name: artistData.name || '',
+      specialty: artistData.specialty || '',
+      bio: artistData.bio || '',
+      image: artistData.image || '',
+      location: artistData.location || '',
+      city: artistData.city || '',
+      country: artistData.country || '',
+      techniques: parsePotentialJsonArray(artistData.techniques),
+      styles: parsePotentialJsonArray(artistData.styles),
+      social_platforms: parsePotentialJsonArray(artistData.social_platforms),
+      artworks: parsePotentialJsonArray(artistData.artworks),
+      locked_artworks: artistData.locked_artworks || false
     };
     
     return processedArtist;
@@ -33,6 +33,35 @@ export function processArtistData(artistData: any): Artist | null {
     logger.error("Error processing artist data:", error);
     return null;
   }
+}
+
+/**
+ * Helper function to parse a value that could be a JSON string, an array, or something else
+ * Returns an array of strings regardless of input type
+ */
+function parsePotentialJsonArray(value: any): string[] {
+  if (!value) {
+    return [];
+  }
+
+  // If already an array, return as is
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  // If it's a string that might be JSON, try to parse it
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [value];
+    } catch (e) {
+      // If it fails to parse as JSON, return it as a single-item array
+      return [value];
+    }
+  }
+
+  // For any other type, convert to string and return as single-item array
+  return [String(value)];
 }
 
 /**
@@ -66,29 +95,10 @@ export function extractArtistData(artist: Artist | null) {
     artworks: []
   };
 
-  const techniques = Array.isArray(artist.techniques) 
-    ? artist.techniques 
-    : typeof artist.techniques === 'string' && artist.techniques
-      ? JSON.parse(artist.techniques)
-      : [];
-  
-  const styles = Array.isArray(artist.styles) 
-    ? artist.styles 
-    : typeof artist.styles === 'string' && artist.styles
-      ? JSON.parse(artist.styles)
-      : [];
-  
-  const socialPlatforms = Array.isArray(artist.social_platforms) 
-    ? artist.social_platforms 
-    : typeof artist.social_platforms === 'string' && artist.social_platforms
-      ? JSON.parse(artist.social_platforms)
-      : [];
-  
-  const artworks = Array.isArray(artist.artworks) 
-    ? artist.artworks 
-    : typeof artist.artworks === 'string' && artist.artworks
-      ? JSON.parse(artist.artworks)
-      : [];
-
-  return { techniques, styles, socialPlatforms, artworks };
+  return {
+    techniques: artist.techniques || [],
+    styles: artist.styles || [],
+    socialPlatforms: artist.social_platforms || [],
+    artworks: artist.artworks || []
+  };
 }
