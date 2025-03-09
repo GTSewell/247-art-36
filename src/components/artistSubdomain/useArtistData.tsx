@@ -26,7 +26,7 @@ export function useArtistData(artistName: string | undefined) {
         const { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .ilike('name', artistName)
+          .eq('name', artistName)  // Use exact match instead of ilike for more precision
           .eq('published', true)
           .maybeSingle();
         
