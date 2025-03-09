@@ -1,141 +1,70 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
-import { SearchResult } from "../types";
+import { ArtistSearchResult } from '../types';
+import { Artist } from "@/data/types/artist";
 
 /**
- * Try removing all spaces and comparing
+ * Advanced search strategy - try various matching techniques
  */
-export async function normalizedNameSearch(artistName: string): Promise<SearchResult> {
-  logger.info(`Attempting normalized name search for: ${artistName}`);
-  
-  // Get all artists and filter manually
-  const allArtistsResult = await supabase
-    .from('artists')
-    .select('*')
-    .eq('published', true);
+export async function searchArtistAdvanced(formattedName: string): Promise<ArtistSearchResult> {
+  try {
+    logger.info(`Executing advanced search for artist: ${formattedName}`);
     
-  const allArtists = allArtistsResult.data || [];
-  
-  // Find the artist whose name with spaces removed matches the artistName
-  const normalizedSearchName = artistName.toLowerCase().replace(/\s+/g, '');
-  const artistData = allArtists.find(a => 
-    (a.name?.replace(/\s+/g, '').toLowerCase() === normalizedSearchName)
-  ) || null;
-  
-  if (artistData) {
-    logger.info(`Found artist using normalized name matching: ${artistData.name}`);
-  }
-  
-  return { 
-    artistData,
-    artistError: allArtistsResult.error
-  };
-}
-
-/**
- * Try substring matching approaches
- */
-export async function substringSearch(artistName: string): Promise<SearchResult> {
-  logger.info(`Attempting substring search for: ${artistName}`);
-  
-  // Try matching by checking if the input is a substring of any artist name
-  const allNamesResult = await supabase
-    .from('artists')
-    .select('id, name')
-    .eq('published', true);
+    // Try matching with various patterns
+    const { data: artistsData, error } = await supabase
+      .from('artists')
+      .select('*');
     
-  const allNames = allNamesResult.data || [];
-  
-  // First try direct substring match
-  let matchedArtist = allNames.find(a => 
-    a.name?.toLowerCase().includes(artistName.toLowerCase())
-  );
-  
-  if (matchedArtist) {
-    logger.info(`Found substring match: "${matchedArtist.name}" for search: "${artistName}"`);
-  }
-  
-  return await fetchArtistById(matchedArtist?.id);
-}
-
-/**
- * Try fuzzy matching approaches by comparing normalized names
- */
-export async function fuzzyNameSearch(artistName: string): Promise<SearchResult> {
-  logger.info(`Attempting fuzzy name search for: ${artistName}`);
-  
-  const allNamesResult = await supabase
-    .from('artists')
-    .select('id, name')
-    .eq('published', true);
+    if (error) {
+      logger.error("Error in advanced search:", error);
+      return { artistData: null, artistError: error };
+    }
     
-  const allNames = allNamesResult.data || [];
-  
-  // Try removing spaces from both sides and compare
-  const normalizedInputName = artistName.toLowerCase().replace(/\s+/g, '');
-  const matchedArtist = allNames.find(a => {
-    if (!a.name) return false;
-    const normalizedDbName = a.name.toLowerCase().replace(/\s+/g, '');
-    return normalizedDbName.includes(normalizedInputName) || 
-            normalizedInputName.includes(normalizedDbName);
-  });
-  
-  if (matchedArtist) {
-    logger.info(`Found fuzzy match: "${matchedArtist.name}" for search: "${artistName}"`);
-  }
-  
-  return await fetchArtistById(matchedArtist?.id);
-}
-
-/**
- * Try partial word matching as a last resort
- */
-export async function partialWordSearch(artistName: string): Promise<SearchResult> {
-  logger.info(`Attempting partial word search for: ${artistName}`);
-  
-  const allNamesResult = await supabase
-    .from('artists')
-    .select('id, name')
-    .eq('published', true);
+    if (!artistsData || artistsData.length === 0) {
+      logger.info("No artists found in database");
+      return { artistData: null, artistError: null };
+    }
     
-  const allNames = allNamesResult.data || [];
-  
-  // Even looser matching - find if any word in the artist name matches
-  const matchedArtist = allNames.find(a => {
-    if (!a.name) return false;
-    const artistNameWords = a.name.toLowerCase().split(' ');
-    const searchTermWords = artistName.toLowerCase().split(/[^a-z0-9]/);
-    return artistNameWords.some(word => 
-      searchTermWords.some(searchWord => 
-        word.includes(searchWord) || searchWord.includes(word)
-      )
-    );
-  });
-  
-  if (matchedArtist) {
-    logger.info(`Found partial word match: "${matchedArtist.name}" for search: "${artistName}"`);
-  }
-  
-  return await fetchArtistById(matchedArtist?.id);
-}
-
-/**
- * Helper function to fetch full artist data by ID
- */
-async function fetchArtistById(artistId: number | undefined): Promise<SearchResult> {
-  if (!artistId) {
+    // Try to find the best match by comparing formatted names
+    const foundArtist = findBestMatch(artistsData, formattedName);
+    
+    if (foundArtist) {
+      logger.info(`Advanced search found artist: ${foundArtist.name}`);
+      return { artistData: foundArtist, artistError: null };
+    }
+    
+    logger.info(`No matches found in advanced search for: ${formattedName}`);
     return { artistData: null, artistError: null };
+  } catch (error: any) {
+    logger.error("Error in searchArtistAdvanced:", error);
+    return { artistData: null, artistError: error };
+  }
+}
+
+/**
+ * Find the best match from a list of artists
+ */
+function findBestMatch(artists: Artist[], formattedNameQuery: string): Artist | null {
+  // First try: Exact match after formatting
+  for (const artist of artists) {
+    const artistFormattedName = artist.name?.replace(/\s+/g, '') || '';
+    if (artistFormattedName.toLowerCase() === formattedNameQuery.toLowerCase()) {
+      return artist;
+    }
   }
   
-  const matchResult = await supabase
-    .from('artists')
-    .select('*')
-    .eq('id', artistId)
-    .maybeSingle();
-    
-  return { 
-    artistData: matchResult.data, 
-    artistError: matchResult.error 
-  };
+  // Second try: Partial match (contains)
+  for (const artist of artists) {
+    const artistFormattedName = artist.name?.replace(/\s+/g, '') || '';
+    if (
+      artistFormattedName.toLowerCase().includes(formattedNameQuery.toLowerCase()) ||
+      formattedNameQuery.toLowerCase().includes(artistFormattedName.toLowerCase())
+    ) {
+      return artist;
+    }
+  }
+  
+  // No match found
+  return null;
 }

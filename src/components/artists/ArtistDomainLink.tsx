@@ -12,6 +12,7 @@ const ArtistDomainLink: React.FC<ArtistDomainLinkProps> = ({
   handleDomainClick 
 }) => {
   // Remove spaces from the display version of the domain
+  // This ensures what's displayed matches what's in the URL
   const displayDomain = artistDomain.replace(/\s+/g, '');
   
   return (

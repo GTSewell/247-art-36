@@ -1,64 +1,42 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
-import { SearchResult } from "../types";
+import { ArtistSearchResult } from '../types';
 
 /**
- * Try exact match (for no spaces)
+ * Basic search strategy - direct match on name
  */
-export async function exactMatchSearch(artistName: string): Promise<SearchResult> {
-  logger.info(`Attempting exact match search for: ${artistName}`);
-  
-  const result = await supabase
-    .from('artists')
-    .select('*')
-    .eq('name', artistName)
-    .eq('published', true)
-    .maybeSingle();
+export async function searchArtistBasic(formattedName: string): Promise<ArtistSearchResult> {
+  try {
+    logger.info(`Executing basic search for artist: ${formattedName}`);
     
-  return { 
-    artistData: result.data,
-    artistError: result.error
-  };
-}
-
-/**
- * Try with spaces re-added
- */
-export async function spacedNameSearch(artistName: string): Promise<SearchResult> {
-  // Try adding spaces in common positions (before uppercase letters)
-  const nameWithPossibleSpaces = artistName.replace(/([a-z])([A-Z])/g, '$1 $2');
-  
-  logger.info(`Attempting spaced name search for: ${nameWithPossibleSpaces}`);
-  
-  const result = await supabase
-    .from('artists')
-    .select('*')
-    .eq('name', nameWithPossibleSpaces)
-    .eq('published', true)
-    .maybeSingle();
+    // First, try searching by formatted name (no spaces)
+    const { data: artistData, error } = await supabase
+      .from('artists')
+      .select('*')
+      .or(`name.ilike.${formattedName},name.ilike.%${formattedName}%`)
+      .single();
     
-  return { 
-    artistData: result.data,
-    artistError: result.error
-  };
-}
-
-/**
- * Try case-insensitive search
- */
-export async function caseInsensitiveSearch(artistName: string): Promise<SearchResult> {
-  logger.info(`Attempting case-insensitive search for: ${artistName}`);
-  
-  const result = await supabase
-    .from('artists')
-    .select('*')
-    .ilike('name', artistName.replace(/([A-Z])/g, ' $1').trim())
-    .eq('published', true)
-    .maybeSingle();
+    if (error) {
+      // If it's not a "no rows returned" error, it's a real error
+      if (!error.message.includes('no rows')) {
+        logger.error("Error in basic search:", error);
+        return { artistData: null, artistError: error };
+      }
+      
+      // No results found in basic search
+      logger.info(`No results found in basic search for: ${formattedName}`);
+      return { artistData: null, artistError: null };
+    }
     
-  return { 
-    artistData: result.data,
-    artistError: result.error
-  };
+    if (artistData) {
+      logger.info(`Basic search found artist: ${artistData.name}`);
+      return { artistData, artistError: null };
+    }
+    
+    return { artistData: null, artistError: null };
+  } catch (error: any) {
+    logger.error("Error in searchArtistBasic:", error);
+    return { artistData: null, artistError: error };
+  }
 }
