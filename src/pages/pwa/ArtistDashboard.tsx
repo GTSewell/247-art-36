@@ -42,6 +42,9 @@ const ArtistDashboard: React.FC = () => {
     );
   }
 
+  // Use user.id as artistId if user exists
+  const artistId = user?.id || "";
+
   return (
     <div className="min-h-screen bg-black">
       <PWANavigation />
@@ -56,15 +59,15 @@ const ArtistDashboard: React.FC = () => {
           </TabsList>
           
           <TabsContent value="profile" className="space-y-4">
-            <ArtistProfileSettings />
+            <ArtistProfileSettings artistId={artistId} />
           </TabsContent>
           
           <TabsContent value="artworks" className="space-y-4">
-            <ArtistArtworkManager />
+            <ArtistArtworkManager artistId={artistId} />
           </TabsContent>
           
           <TabsContent value="analytics" className="space-y-4">
-            <ArtistSalesAnalytics />
+            <ArtistSalesAnalytics artistId={artistId} />
           </TabsContent>
         </Tabs>
       </div>

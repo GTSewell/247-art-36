@@ -43,7 +43,7 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
 
   return (
     <div className="bg-zap-yellow rounded-lg border-4 border-white overflow-hidden">
-      <ScrollArea className="h-[calc(100vh-180px)]">
+      <ScrollArea className="h-[calc(100vh-240px)]">
         <div className="p-4">
           <div className="grid grid-cols-2 gap-4">
             {products.map(product => (
