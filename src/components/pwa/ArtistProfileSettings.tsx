@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { InfoIcon } from "lucide-react";
+import ImageUpload from "./artist-settings/ImageUpload";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
@@ -20,10 +21,12 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
   const {
     loading,
     saving,
+    artist,
     formData,
     handleChange,
     handleSubmit,
-    isAdmin
+    isAdmin,
+    handleImageUpload
   } = useArtistProfile(artistId);
   
   if (loading) {
@@ -37,7 +40,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         name: "is_published",
         value: checked
       }
-    } as React.ChangeEvent<HTMLInputElement>;
+    } as unknown as React.ChangeEvent<HTMLInputElement>;
     
     handleChange(event);
   };
@@ -52,6 +55,11 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <ImageUpload 
+            artistImage={artist?.image || ""} 
+            onImageUpload={handleImageUpload} 
+          />
+          
           <BasicInfoForm 
             formData={formData} 
             handleChange={handleChange} 

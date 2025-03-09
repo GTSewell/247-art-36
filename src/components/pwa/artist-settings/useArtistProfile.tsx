@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "./types";
-import { fetchArtistProfile, updateArtistProfile, checkUserIsAdmin } from "./artistProfileApi";
+import { fetchArtistProfile, updateArtistProfile, checkUserIsAdmin, uploadProfileImage } from "./artistProfileApi";
 import { formatArtistDataForForm } from "./artistProfileUtils";
 
 export const useArtistProfile = (userId: string | null): ArtistProfileHookReturn => {
@@ -101,6 +101,28 @@ export const useArtistProfile = (userId: string | null): ArtistProfileHookReturn
     }
   };
 
+  const handleImageUpload = async (file: File) => {
+    if (!userId || !artist) {
+      toast.error("User profile not found");
+      return;
+    }
+
+    try {
+      const imageUrl = await uploadProfileImage(file, userId, artist.id);
+      
+      // Update the artist state with the new image URL
+      setArtist(prev => ({
+        ...prev,
+        image: imageUrl
+      }));
+      
+    } catch (error: any) {
+      console.error("Error uploading profile image:", error);
+      toast.error(`Failed to upload image: ${error.message}`);
+      throw error; // Rethrow to be handled by the ImageUpload component
+    }
+  };
+
   return {
     loading,
     saving,
@@ -108,6 +130,7 @@ export const useArtistProfile = (userId: string | null): ArtistProfileHookReturn
     formData,
     handleChange,
     handleSubmit,
-    isAdmin
+    isAdmin,
+    handleImageUpload
   };
 };

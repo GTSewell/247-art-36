@@ -21,4 +21,5 @@ export interface ArtistProfileHookReturn {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   isAdmin: boolean;
+  handleImageUpload: (file: File) => Promise<void>;
 }

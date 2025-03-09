@@ -75,13 +75,57 @@ export const updateArtistProfile = async (formData: ArtistProfileFormData, userI
   }
 };
 
+export const uploadProfileImage = async (file: File, userId: string, artistId: number | null) => {
+  try {
+    if (!userId || !artistId) {
+      throw new Error("Missing user ID or artist ID");
+    }
+
+    // Create a unique file name
+    const fileExt = file.name.split('.').pop();
+    const fileName = `profile_${artistId}_${Date.now()}.${fileExt}`;
+    const filePath = `profiles/${fileName}`;
+    
+    // Upload to Supabase Storage
+    const { data, error } = await supabase
+      .storage
+      .from('artist-images')
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
+    
+    if (error) throw error;
+    
+    // Get the public URL
+    const { data: { publicUrl } } = supabase
+      .storage
+      .from('artist-images')
+      .getPublicUrl(data.path);
+    
+    // Update the artist's image in the database
+    const { error: updateError } = await supabase
+      .from('artists')
+      .update({ image: publicUrl })
+      .eq('id', artistId);
+    
+    if (updateError) throw updateError;
+    
+    return publicUrl;
+  } catch (error: any) {
+    console.error("Error uploading profile image:", error);
+    throw error;
+  }
+};
+
 export const checkUserIsAdmin = async (userId: string): Promise<boolean> => {
   try {
-    // Query for admin role - assuming there's a table or a way to check admin status
+    // Query for admin role in user_roles table instead of admin_users
     const { data, error } = await supabase
-      .from('admin_users')
-      .select('user_id')
+      .from('user_roles')
+      .select('role')
       .eq('user_id', userId)
+      .eq('role', 'admin')
       .maybeSingle();
 
     if (error) {
