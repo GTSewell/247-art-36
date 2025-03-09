@@ -4,28 +4,48 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3 } from "lucide-react";
 
 const STPSetsCard: React.FC = () => {
+  // Mock data - in a real app this would come from an API
+  const stpPacksSold = 10;
+  const initialCommissionRate = 25;
+  const commissionReductionPerPack = 1;
+  
+  // Calculate current commission rate
+  const commissionReduction = Math.min(stpPacksSold * commissionReductionPerPack, initialCommissionRate);
+  const currentCommissionRate = initialCommissionRate - commissionReduction;
+  
+  // Calculate progress percentage for the green bar
+  const progressPercentage = (commissionReduction / initialCommissionRate) * 100;
+  
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center">
           <BarChart3 className="mr-2 h-5 w-5" />
-          STP Sets
+          STP Collecter Packs Sold: {stpPacksSold}
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <h3 className="text-lg font-semibold">Stickers</h3>
-            <p className="text-2xl font-bold mt-1">3</p>
+      <CardContent className="space-y-4">
+        <div className="flex justify-between">
+          <span className="font-bold">{initialCommissionRate}%</span>
+          <span className="font-bold">0%</span>
+        </div>
+        <div className="relative h-10 w-full overflow-hidden rounded-lg border border-gray-200">
+          <div 
+            className="absolute top-0 left-0 h-full bg-green-500 flex items-center justify-center text-black font-bold"
+            style={{ width: `${progressPercentage}%` }}
+          >
+            {progressPercentage > 30 && (
+              <span>Your Gallery Commission is now: {currentCommissionRate}%</span>
+            )}
           </div>
-          <div>
-            <h3 className="text-lg font-semibold">T-shirts</h3>
-            <p className="text-2xl font-bold mt-1">8</p>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold">Prints</h3>
-            <p className="text-2xl font-bold mt-1">20</p>
-          </div>
+          {progressPercentage <= 30 && (
+            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+              <span className="font-bold">Your Gallery Commission is now: {currentCommissionRate}%</span>
+            </div>
+          )}
+        </div>
+        <div className="text-sm text-gray-500 mt-2">
+          For every STP Collector Pack sold, your gallery commission decreases by 1%.
         </div>
       </CardContent>
     </Card>
