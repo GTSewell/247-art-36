@@ -11,7 +11,7 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
 
 const PWAHome = () => {
-  const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
+  const { featuredArtists, favoriteArtists, toggleFavorite: handleFavoriteToggle, refreshArtists } = useArtists();
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [timerState, setTimerState] = useState<any>(null);
@@ -62,6 +62,8 @@ const PWAHome = () => {
   };
 
   const handleArtistSelect = (artist: Artist) => {
+    if (!featuredArtists) return;
+    
     const index = featuredArtists.findIndex(a => a.id === artist.id);
     setSelectedArtistIndex(index >= 0 ? index : 0);
     setSelectedArtist(artist);
@@ -69,8 +71,12 @@ const PWAHome = () => {
   };
 
   const handleArtistChange = (index: number) => {
-    setSelectedArtistIndex(index);
-    setSelectedArtist(featuredArtists[index]);
+    if (!featuredArtists) return;
+    
+    if (index >= 0 && index < featuredArtists.length) {
+      setSelectedArtistIndex(index);
+      setSelectedArtist(featuredArtists[index]);
+    }
   };
 
   // Refresh an artist's data
@@ -128,11 +134,11 @@ const PWAHome = () => {
               />
             </div>
 
-            {isLoading ? (
+            {isLoading || !featuredArtists ? (
               <div className="flex justify-center items-center h-24">
                 <p className="text-lg">Loading artists...</p>
               </div>
-            ) : (
+            ) : featuredArtists.length > 0 ? (
               <PWAArtistCarousel
                 artists={featuredArtists}
                 onSelect={handleArtistSelect}
@@ -140,6 +146,10 @@ const PWAHome = () => {
                 favoriteArtists={favoriteArtists}
                 refreshArtist={refreshArtist}
               />
+            ) : (
+              <div className="flex justify-center items-center h-24">
+                <p className="text-lg">No featured artists found</p>
+              </div>
             )}
           </div>
 
@@ -169,18 +179,20 @@ const PWAHome = () => {
         </main>
 
         {/* Artist Detail Modal */}
-        <ArtistDetailModal
-          artists={featuredArtists}
-          selectedArtist={selectedArtist}
-          selectedArtistIndex={selectedArtistIndex}
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onArtistChange={handleArtistChange}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={refreshArtists}
-          onSelect={(artist) => {}}
-        />
+        {selectedArtist && featuredArtists && (
+          <ArtistDetailModal
+            artists={featuredArtists}
+            selectedArtist={selectedArtist}
+            selectedArtistIndex={selectedArtistIndex}
+            open={dialogOpen}
+            onOpenChange={setDialogOpen}
+            onArtistChange={handleArtistChange}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtists={refreshArtists}
+            onSelect={() => {}}
+          />
+        )}
       </div>
     </TimerProvider>
   );

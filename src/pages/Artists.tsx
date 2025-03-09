@@ -29,11 +29,11 @@ const Artists = () => {
   });
 
   const {
+    loading: isLoading,
+    artists,
     featuredArtists,
-    additionalArtists,
-    isLoading,
     favoriteArtists,
-    handleFavoriteToggle,
+    toggleFavorite: handleFavoriteToggle,
     refreshArtists
   } = useArtists();
 
@@ -82,9 +82,17 @@ const Artists = () => {
     await refreshArtists(artistId);
   };
 
+  // Safe access to artists arrays
+  const safeArtists = artists || [];
+  const safeFeaturedArtists = featuredArtists || [];
+
+  // Get additional artists (those not in featured)
+  const featuredIds = new Set(safeFeaturedArtists.map(a => a.id));
+  const additionalArtists = safeArtists.filter(artist => !featuredIds.has(artist.id));
+
   // Filter artists based on selected criteria
   const filteredFeaturedArtists = filterArtists({
-    artists: featuredArtists,
+    artists: safeFeaturedArtists,
     allArtistsSearch,
     locationSearch,
     selectedTechniques,

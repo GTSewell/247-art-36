@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
@@ -18,14 +17,21 @@ export function useArtists() {
     // You would also fetch favorite artists here if user is logged in
   }, []);
 
-  const fetchArtists = async () => {
+  const fetchArtists = async (artistId?: number) => {
     try {
       setLoading(true);
       
-      const { data, error } = await supabase
+      let query = supabase
         .from('artists')
         .select('*')
         .is('published', true); // Only get published artists
+      
+      // If artistId is provided, only fetch that specific artist
+      if (artistId) {
+        query = query.eq('id', artistId);
+      }
+      
+      const { data, error } = await query;
       
       if (error) {
         throw error;
@@ -34,7 +40,6 @@ export function useArtists() {
       if (data) {
         // Process the data to ensure correct types
         const processedArtists: Artist[] = data.map(artist => ({
-          ...artist,
           id: artist.id,
           name: artist.name || 'Unknown Artist',
           specialty: artist.specialty || '',
@@ -47,14 +52,43 @@ export function useArtists() {
           styles: Array.isArray(artist.styles) ? artist.styles : [],
           social_platforms: Array.isArray(artist.social_platforms) ? artist.social_platforms : [],
           artworks: Array.isArray(artist.artworks) ? artist.artworks : [],
-          locked_artworks: artist.locked_artworks || false,
+          locked_artworks: artist.locked_artworks || false
         }));
         
-        setArtists(processedArtists);
-        
-        // Set featured artists (first 5 or all if less than 5)
-        const featured = processedArtists.filter(artist => featuredArtistIds.includes(artist.id));
-        setFeaturedArtists(featured.length > 0 ? featured : processedArtists.slice(0, Math.min(5, processedArtists.length)));
+        if (artistId) {
+          // If we're updating just one artist, replace it in the current list
+          setArtists(prev => {
+            const newList = [...prev];
+            const index = newList.findIndex(a => a.id === artistId);
+            if (index !== -1 && processedArtists.length > 0) {
+              newList[index] = processedArtists[0];
+            }
+            return newList;
+          });
+          
+          // Also update it in featured artists if needed
+          setFeaturedArtists(prev => {
+            const newList = [...prev];
+            const index = newList.findIndex(a => a.id === artistId);
+            if (index !== -1 && processedArtists.length > 0) {
+              newList[index] = processedArtists[0];
+            }
+            return newList;
+          });
+        } else {
+          // Otherwise update the full list
+          setArtists(processedArtists);
+          
+          // Set featured artists (first 5 or all if less than 5)
+          const featured = processedArtists.filter(artist => 
+            featuredArtistIds.includes(artist.id)
+          );
+          
+          setFeaturedArtists(featured.length > 0 
+            ? featured 
+            : processedArtists.slice(0, Math.min(5, processedArtists.length))
+          );
+        }
       }
     } catch (error: any) {
       console.error('Error fetching artists:', error);
