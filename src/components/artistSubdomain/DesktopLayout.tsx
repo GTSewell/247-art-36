@@ -1,30 +1,21 @@
-
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
-import { ArrowLeftCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from './ArtistProfileRightPanel';
+import ArtistReturnButton from '../artists/ArtistReturnButton';
+import { ColorTheme } from '@/utils/colorExtraction';
 
 interface DesktopLayoutProps {
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
   styles: string[];
-  socialPlatforms: string[];
+  socialPlatforms: Record<string, string>;
   artworks: string[];
-  colorTheme: {
-    background: string;
-    panel: string;
-    button: string;
-    buttonText: string;
-    buttonHover: string;
-    buttonBorder: string;
-    badgeBg: string;
-  };
+  colorTheme: ColorTheme;
+  onBack?: () => void;
 }
 
 const DesktopLayout: React.FC<DesktopLayoutProps> = ({
@@ -34,71 +25,38 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   styles,
   socialPlatforms,
   artworks,
-  colorTheme
+  colorTheme,
+  onBack
 }) => {
-  const navigate = useNavigate();
-
-  const handleReturnToArtists = () => {
-    navigate('/artists');
-  };
-
+  
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center py-8 px-8 overflow-hidden"
-      style={{ 
-        backgroundColor: colorTheme.background,
-        backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100vh'
-      }}
-    >
-      <div className="container mx-auto">
-        <div className="absolute top-4 right-4 z-50">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            onClick={handleReturnToArtists}
-            className="bg-white/80 hover:bg-white backdrop-blur-sm"
-          >
-            <ArrowLeftCircle size={20} />
-            <span className="sr-only">Return to Artists</span>
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-[calc(100vh-4rem)]">
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
-            <ArtistProfileLeftPanel 
-              artist={artist} 
-              techniques={techniques}
-              styles={styles}
-              panelColor={colorTheme.panel}
-              badgeBgColor={colorTheme.badgeBg}
-            />
-          </div>
-          
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
-            <ArtistProfileCenterPanel 
-              artist={artist}
-              socialPlatforms={socialPlatforms}
-              links={profile?.links || []}
-              panelColor={colorTheme.panel}
-              buttonColor={colorTheme.button}
-              buttonTextColor={colorTheme.buttonText}
-              buttonHoverColor={colorTheme.buttonHover}
-              buttonBorderColor={colorTheme.buttonBorder}
-            />
-          </div>
-          
-          <div className="rounded-lg overflow-hidden shadow-lg h-full" style={{ backgroundColor: colorTheme.panel }}>
-            <ArtistProfileRightPanel 
-              artist={artist}
-              artworks={artworks}
-              panelColor={colorTheme.panel}
-            />
-          </div>
-        </div>
+    <div className="min-h-screen grid grid-cols-12" style={{ backgroundColor: colorTheme.background }}>
+      <div className="col-span-12 p-4">
+        <ArtistReturnButton 
+          textColor={colorTheme.text} 
+          onClick={onBack}
+        />
       </div>
+      
+      <ArtistProfileLeftPanel
+        artist={artist}
+        profile={profile}
+        colorTheme={colorTheme}
+      />
+      <ArtistProfileCenterPanel
+        artist={artist}
+        profile={profile}
+        techniques={techniques}
+        styles={styles}
+        artworks={artworks}
+        colorTheme={colorTheme}
+      />
+      <ArtistProfileRightPanel
+        artist={artist}
+        profile={profile}
+        socialPlatforms={socialPlatforms}
+        colorTheme={colorTheme}
+      />
     </div>
   );
 };

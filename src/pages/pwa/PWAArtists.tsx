@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
 import { Button } from "@/components/ui/button";
@@ -7,16 +7,20 @@ import { Filter, Heart, RotateCw, Search } from "lucide-react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Input } from "@/components/ui/input";
 import { Artist } from "@/data/types/artist";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
+import { useScrollPosition } from "@/contexts/ScrollPositionContext";
 
 const PWAArtists = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { saveScrollPosition, getScrollPosition } = useScrollPosition();
   const [searchTerm, setSearchTerm] = useState("");
   const [showFavorites, setShowFavorites] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+  const pageContainerRef = useRef<HTMLDivElement>(null);
   
   const { 
     featuredArtists, 
@@ -56,13 +60,31 @@ const PWAArtists = () => {
     }
   };
 
-  // Navigate to artist subdomain page - now a separate function that can be used elsewhere
+  // Navigate to artist subdomain page - now saving scroll position before navigation
   const navigateToArtistPage = (artist: Artist) => {
+    if (pageContainerRef.current) {
+      saveScrollPosition('pwaArtistsPage', pageContainerRef.current.scrollTop);
+    }
     navigate(`/artist/${artist.name.toLowerCase().replace(/\s+/g, '')}`);
   };
 
+  // Restore scroll position when returning to this page
+  useEffect(() => {
+    if (pageContainerRef.current) {
+      const savedPosition = getScrollPosition('pwaArtistsPage');
+      if (savedPosition) {
+        // Use requestAnimationFrame to ensure the DOM has been updated
+        requestAnimationFrame(() => {
+          if (pageContainerRef.current) {
+            pageContainerRef.current.scrollTop = savedPosition;
+          }
+        });
+      }
+    }
+  }, [getScrollPosition]);
+
   return (
-    <div className="pb-20 pt-16">
+    <div ref={pageContainerRef} className="pb-20 pt-16 h-screen overflow-auto">
       <PWANavigation />
       
       <div className="container mx-auto px-4 py-4">

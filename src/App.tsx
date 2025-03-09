@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
@@ -20,6 +21,7 @@ import ArtistDashboard from "./pages/pwa/ArtistDashboard";
 import PWAHome from "./pages/pwa/PWAHome";
 import PWAArtists from "./pages/pwa/PWAArtists";
 import CollectorDashboard from "./pages/pwa/CollectorDashboard";
+import { ScrollPositionProvider } from "./contexts/ScrollPositionContext";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +29,9 @@ function AppWrapper() {
   return (
     <QueryClientProvider client={queryClient}>
       <AppModeProvider>
-        <AppContent />
+        <ScrollPositionProvider>
+          <AppContent />
+        </ScrollPositionProvider>
       </AppModeProvider>
     </QueryClientProvider>
   );

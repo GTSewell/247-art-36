@@ -1,29 +1,20 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
-import { useNavigate } from 'react-router-dom';
-import { Tabs } from '@/components/ui/tabs';
-import useEmblaCarousel from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
+import MobilePanel from './MobilePanel';
 import MobileCarousel from './MobileCarousel';
+import { ColorTheme } from '@/utils/colorExtraction';
 
 interface MobileLayoutProps {
   artist: Artist;
   profile: ArtistProfile | null;
   techniques: string[];
   styles: string[];
-  socialPlatforms: string[];
+  socialPlatforms: Record<string, string>;
   artworks: string[];
-  colorTheme: {
-    background: string;
-    panel: string;
-    button: string;
-    buttonText: string;
-    buttonHover: string;
-    buttonBorder: string;
-    badgeBg: string;
-  };
+  colorTheme: ColorTheme;
+  onBack?: () => void;
 }
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({
@@ -33,93 +24,31 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   styles,
   socialPlatforms,
   artworks,
-  colorTheme
+  colorTheme,
+  onBack
 }) => {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("about");
-  
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    loop: true,
-    dragFree: false,
-    containScroll: "trimSnaps",
-    slidesToScroll: 1
-  });
-
-  // Synchronize carousel position with tab selection
-  useEffect(() => {
-    if (!emblaApi) return;
-    
-    const onSelect = () => {
-      const currentSlide = emblaApi.selectedScrollSnap();
-      const tabs = ["about", "links", "artwork"];
-      if (currentSlide >= 0 && currentSlide < tabs.length) {
-        setActiveTab(tabs[currentSlide]);
-      }
-    };
-    
-    emblaApi.on('select', onSelect);
-    
-    return () => {
-      emblaApi.off('select', onSelect);
-    };
-  }, [emblaApi]);
-
-  // Handle tab change and scroll carousel to matching slide
-  const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value);
-    
-    if (emblaApi) {
-      const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
-      emblaApi.scrollTo(slideIndex);
-    }
-  }, [emblaApi]);
-
-  const handleReturnToArtists = () => {
-    navigate('/artists');
-  };
-
-  const panelHeight = "calc(100vh - 6rem)";
-
   return (
-    <div 
-      className="flex items-center justify-center overflow-hidden"
-      style={{ 
-        backgroundColor: colorTheme.background,
-        backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        height: '100vh',
-        width: '100%'
-      }}
-    >
-      <div className="w-full h-full px-4 py-4 flex flex-col">
-        <Tabs 
-          value={activeTab} 
-          onValueChange={handleTabChange} 
-          className="w-full h-full flex flex-col"
-        >
-          <MobileNavigation 
-            activeTab={activeTab}
-            handleTabChange={handleTabChange}
-            handleReturnToArtists={handleReturnToArtists}
-          />
-          
-          <div className="flex-grow overflow-hidden">
-            <MobileCarousel 
-              emblaApi={emblaApi}
-              emblaRef={emblaRef}
-              artist={artist}
-              profile={profile}
-              techniques={techniques}
-              styles={styles}
-              socialPlatforms={socialPlatforms}
-              artworks={artworks}
-              panelHeight={panelHeight}
-              colorTheme={colorTheme}
-            />
-          </div>
-        </Tabs>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: colorTheme.background }}>
+      <MobileNavigation 
+        name={artist.name} 
+        backgroundColor={colorTheme.header} 
+        textColor={colorTheme.text}
+        onBack={onBack}
+      />
+      
+      <div className="flex-grow overflow-y-auto">
+        <MobilePanel 
+          artist={artist}
+          profile={profile}
+          techniques={techniques}
+          styles={styles}
+          socialPlatforms={socialPlatforms}
+          colorTheme={colorTheme}
+        />
+        <MobileCarousel 
+          artworks={artworks}
+          colorTheme={colorTheme}
+        />
       </div>
     </div>
   );
