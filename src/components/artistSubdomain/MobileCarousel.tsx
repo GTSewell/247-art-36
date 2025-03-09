@@ -20,7 +20,9 @@ interface MobileCarouselProps {
   panelHeight: string;
   colorTheme: {
     background: string;
+    header: string;
     panel: string;
+    text: string;
     button: string;
     buttonText: string;
     buttonHover: string;
@@ -48,6 +50,9 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
   const safeStyles = styles || [];
   const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
   const safeArtworks = artworks || [];
+  
+  // Convert the record to an array for links
+  const linksArray = safeProfile?.links || [];
 
   return (
     <div className="h-full overflow-hidden">
@@ -72,7 +77,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
               <ArtistProfileCenterPanel 
                 artist={safeArtist}
                 socialPlatforms={safeSocialPlatforms}
-                links={safeProfile?.links || []}
+                links={linksArray}
                 panelColor={colorTheme.panel}
                 buttonColor={colorTheme.button}
                 buttonTextColor={colorTheme.buttonText}

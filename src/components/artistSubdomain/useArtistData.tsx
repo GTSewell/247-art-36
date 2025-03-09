@@ -37,20 +37,29 @@ export function useArtistData(artistName: string | undefined) {
         
         if (artistData) {
           logger.info(`Found artist: ${artistData.name}, ID: ${artistData.id}`);
+          
+          // Create a safe default artist object with all required fields
+          const defaultArtist: Artist = {
+            id: 0,
+            name: '',
+            specialty: '',
+            image: '/placeholder.svg',
+            bio: '',
+            techniques: [],
+            styles: [],
+            social_platforms: [],
+            artworks: []
+          };
+          
+          // Merge with the data we got
           const processedArtist: Artist = {
+            ...defaultArtist,
             ...artistData,
-            techniques: typeof artistData.techniques === 'string' 
-              ? JSON.parse(artistData.techniques) 
-              : Array.isArray(artistData.techniques) ? artistData.techniques : [],
-            styles: typeof artistData.styles === 'string' 
-              ? JSON.parse(artistData.styles) 
-              : Array.isArray(artistData.styles) ? artistData.styles : [],
-            social_platforms: typeof artistData.social_platforms === 'string' 
-              ? JSON.parse(artistData.social_platforms) 
-              : Array.isArray(artistData.social_platforms) ? artistData.social_platforms : [],
-            artworks: typeof artistData.artworks === 'string' 
-              ? JSON.parse(artistData.artworks) 
-              : Array.isArray(artistData.artworks) ? artistData.artworks : []
+            // Parse string fields or provide empty arrays
+            techniques: parseSafeJsonArray(artistData.techniques),
+            styles: parseSafeJsonArray(artistData.styles),
+            social_platforms: parseSafeJsonArray(artistData.social_platforms),
+            artworks: parseSafeJsonArray(artistData.artworks)
           };
           
           setArtist(processedArtist);
@@ -89,40 +98,52 @@ export function useArtistData(artistName: string | undefined) {
     }
   }, [artistName]);
 
+  // Helper function to safely parse JSON arrays
+  const parseSafeJsonArray = (value: any): any[] => {
+    if (Array.isArray(value)) {
+      return value;
+    } 
+    if (typeof value === 'string' && value) {
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        logger.error('Error parsing JSON array:', error);
+        return [];
+      }
+    }
+    return [];
+  };
+
   // Helper functions to parse artist data
   const getArtistData = () => {
     if (!artist) return {
       techniques: [],
       styles: [],
-      socialPlatforms: [],
+      socialPlatforms: {},
       artworks: []
     };
 
-    const techniques = Array.isArray(artist.techniques) 
-      ? artist.techniques 
-      : typeof artist.techniques === 'string' && artist.techniques
-        ? JSON.parse(artist.techniques)
-        : [];
-    
-    const styles = Array.isArray(artist.styles) 
-      ? artist.styles 
-      : typeof artist.styles === 'string' && artist.styles
-        ? JSON.parse(artist.styles)
-        : [];
-    
-    const socialPlatforms = Array.isArray(artist.social_platforms) 
-      ? artist.social_platforms 
-      : typeof artist.social_platforms === 'string' && artist.social_platforms
-        ? JSON.parse(artist.social_platforms)
-        : [];
-    
-    const artworks = Array.isArray(artist.artworks) 
-      ? artist.artworks 
-      : typeof artist.artworks === 'string' && artist.artworks
-        ? JSON.parse(artist.artworks)
-        : [];
+    // Parse social platforms to create a Record from array
+    const socialPlatformsRecord: Record<string, string> = {};
+    if (Array.isArray(artist.social_platforms)) {
+      artist.social_platforms.forEach(platform => {
+        if (typeof platform === 'object' && platform !== null) {
+          const entries = Object.entries(platform);
+          if (entries.length > 0) {
+            const [key, value] = entries[0];
+            socialPlatformsRecord[key] = value as string;
+          }
+        }
+      });
+    }
 
-    return { techniques, styles, socialPlatforms, artworks };
+    return {
+      techniques: parseSafeJsonArray(artist.techniques),
+      styles: parseSafeJsonArray(artist.styles),
+      socialPlatforms: socialPlatformsRecord,
+      artworks: parseSafeJsonArray(artist.artworks)
+    };
   };
 
   return {

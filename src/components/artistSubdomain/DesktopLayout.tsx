@@ -48,6 +48,9 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
   const safeArtworks = artworks || [];
   
+  // Convert the record to an array for links
+  const linksArray = safeProfile?.links || [];
+  
   return (
     <div className="min-h-screen grid grid-cols-12" style={{ backgroundColor: colorTheme.background }}>
       <div className="col-span-12 p-4">
@@ -66,7 +69,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
       />
       <ArtistProfileCenterPanel
         artist={safeArtist}
-        links={safeProfile?.links || []}
+        links={linksArray}
         socialPlatforms={safeSocialPlatforms}
         panelColor={colorTheme.panel}
         buttonColor={colorTheme.button}

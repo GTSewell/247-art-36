@@ -9,6 +9,7 @@ import DesktopLayout from '@/components/artistSubdomain/DesktopLayout';
 import MobileLayout from '@/components/artistSubdomain/MobileLayout';
 import { generateColorTheme } from '@/utils/colorExtraction';
 import { useAppMode } from '@/contexts/AppModeContext';
+import { useScrollPosition } from '@/contexts/ScrollPositionContext';
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
@@ -16,6 +17,7 @@ const ArtistSubdomain = () => {
   const isMobile = useIsMobile();
   const { isPWA } = useAppMode();
   const navigate = useNavigate();
+  const { saveScrollPosition, getScrollPosition } = useScrollPosition();
 
   // Custom back handler that takes into account the app mode
   const handleBack = () => {
@@ -37,7 +39,14 @@ const ArtistSubdomain = () => {
   const { techniques, styles, socialPlatforms, artworks } = getArtistData();
   
   // Generate color theme based on artist and artworks
-  const colorTheme = generateColorTheme(artist, profile, artworks);
+  const baseColorTheme = generateColorTheme(artist, profile, artworks);
+  
+  // Extend the color theme with required header and text properties
+  const colorTheme = {
+    ...baseColorTheme,
+    header: baseColorTheme.panel,  // Use panel color for header if not provided
+    text: '#333333'  // Default text color if not provided
+  };
 
   // Pass the custom back handler to the layouts
   return isMobile ? (
