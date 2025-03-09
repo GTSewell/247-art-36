@@ -13,6 +13,8 @@ interface ArtistProfileFormData {
   techniques: string;
   styles: string;
   social_platforms: string;
+  published: boolean;
+  profile_image_url: string;
 }
 
 export const useArtistProfile = (userId: string | null) => {
@@ -27,7 +29,9 @@ export const useArtistProfile = (userId: string | null) => {
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: ""
+    social_platforms: "",
+    published: false,
+    profile_image_url: ""
   });
   
   useEffect(() => {
@@ -69,7 +73,9 @@ export const useArtistProfile = (userId: string | null) => {
             : typeof data.styles === 'string' ? data.styles : "",
           social_platforms: Array.isArray(data.social_platforms) 
             ? data.social_platforms.join(', ') 
-            : typeof data.social_platforms === 'string' ? data.social_platforms : ""
+            : typeof data.social_platforms === 'string' ? data.social_platforms : "",
+          published: data.published || false,
+          profile_image_url: data.profile_image_url || data.image || ""
         });
       }
     } catch (error: any) {
@@ -86,6 +92,59 @@ export const useArtistProfile = (userId: string | null) => {
       ...prev,
       [name]: value
     }));
+  };
+  
+  const handleCheckboxChange = (name: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked
+    }));
+  };
+
+  const handleProfileImageUpload = async (file: File) => {
+    if (!userId) {
+      toast.error("User ID not found");
+      return null;
+    }
+
+    try {
+      setSaving(true);
+      
+      // Create a unique filename using the artist ID and timestamp
+      const fileExt = file.name.split('.').pop();
+      const fileName = `profile_${userId}_${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+      
+      // Upload the file to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('profile-images')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if (error) throw error;
+      
+      // Get the public URL for the uploaded file
+      const { data: urlData } = supabase.storage
+        .from('profile-images')
+        .getPublicUrl(filePath);
+      
+      const publicUrl = urlData.publicUrl;
+      
+      setFormData(prev => ({
+        ...prev,
+        profile_image_url: publicUrl
+      }));
+      
+      return publicUrl;
+    } catch (error: any) {
+      console.error("Error uploading profile image:", error);
+      toast.error(`Failed to upload profile image: ${error.message}`);
+      return null;
+    } finally {
+      setSaving(false);
+    }
   };
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -109,7 +168,10 @@ export const useArtistProfile = (userId: string | null) => {
         country: formData.country,
         techniques: formData.techniques.split(',').map(item => item.trim()),
         styles: formData.styles.split(',').map(item => item.trim()),
-        social_platforms: formData.social_platforms.split(',').map(item => item.trim())
+        social_platforms: formData.social_platforms.split(',').map(item => item.trim()),
+        published: formData.published,
+        profile_image_url: formData.profile_image_url,
+        image: formData.profile_image_url // Set image field to same value for backward compatibility
       };
       
       if (artist) {
@@ -165,6 +227,8 @@ export const useArtistProfile = (userId: string | null) => {
     artist,
     formData,
     handleChange,
+    handleCheckboxChange,
+    handleProfileImageUpload,
     handleSubmit
   };
 };

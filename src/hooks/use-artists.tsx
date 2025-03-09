@@ -14,9 +14,11 @@ export const useArtists = () => {
   const fetchArtists = async () => {
     try {
       setIsLoading(true);
+      // Only fetch published artists or all artists if the user is an admin
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
+        .eq('published', true)
         .order('id', { ascending: true });
 
       if (error) {

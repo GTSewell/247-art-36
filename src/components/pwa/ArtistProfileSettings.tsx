@@ -6,6 +6,8 @@ import { User } from "lucide-react";
 import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
+import ProfileImageUpload from "./artist-settings/ProfileImageUpload";
+import PublishToggle from "./artist-settings/PublishToggle";
 import { useArtistProfile } from "./artist-settings/useArtistProfile";
 
 interface ArtistProfileSettingsProps {
@@ -18,6 +20,8 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     saving,
     formData,
     handleChange,
+    handleCheckboxChange,
+    handleProfileImageUpload,
     handleSubmit
   } = useArtistProfile(artistId);
   
@@ -34,7 +38,15 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="flex flex-col items-center mb-6">
+            <ProfileImageUpload 
+              currentImage={formData.profile_image_url} 
+              onImageUpload={handleProfileImageUpload}
+              saving={saving}
+            />
+          </div>
+          
           <BasicInfoForm 
             formData={formData} 
             handleChange={handleChange} 
@@ -48,6 +60,12 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
           <ArtistTags 
             formData={formData}
             handleChange={handleChange}
+          />
+          
+          <PublishToggle
+            published={formData.published}
+            onChange={handleCheckboxChange}
+            disabled={saving}
           />
           
           <Button type="submit" className="w-full" disabled={saving}>
