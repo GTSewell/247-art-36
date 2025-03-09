@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Artist } from '@/data/types/artist';
-import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink, Calendar, Globe, Book, MapPin, Tag, ShoppingCart, Palette, Mail, Video, Award, Camera, Music } from 'lucide-react';
+import { Instagram, Twitter, Linkedin, Facebook, Link, ExternalLink, Calendar, Globe, Book, MapPin, Tag, ShoppingCart, Palette, Mail, Video, Award, Camera, Music, Youtube as YoutubeIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -63,7 +63,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
     instagram: <Instagram className="h-5 w-5" />,
     twitter: <Twitter className="h-5 w-5" />,
     linkedin: <Linkedin className="h-5 w-5" />,
-    youtube: <Youtube className="h-5 w-5" />,
+    youtube: <YoutubeIcon className="h-5 w-5" />,
     other: <Link className="h-5 w-5" />
   };
 
