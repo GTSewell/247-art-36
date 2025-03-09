@@ -37,7 +37,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
   const handlePublishToggle = (checked: boolean) => {
     const event = {
       target: {
-        name: "is_published",
+        name: "published",
         value: checked
       }
     } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -79,12 +79,12 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
           <div className="flex flex-col space-y-2">
             <div className="flex items-center space-x-2">
               <Switch 
-                id="is_published"
-                checked={!!formData.is_published}
+                id="published"
+                checked={!!formData.published}
                 onCheckedChange={handlePublishToggle}
                 disabled={!isAdmin}
               />
-              <Label htmlFor="is_published">Publish Profile</Label>
+              <Label htmlFor="published">Publish Profile</Label>
             </div>
             
             {!isAdmin && (

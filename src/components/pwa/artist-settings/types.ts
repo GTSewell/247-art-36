@@ -10,7 +10,7 @@ export interface ArtistProfileFormData {
   techniques: string;
   styles: string;
   social_platforms: string;
-  is_published?: boolean;
+  published?: boolean;
 }
 
 export interface ArtistProfileHookReturn {
