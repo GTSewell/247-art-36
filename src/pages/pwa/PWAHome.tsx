@@ -2,104 +2,33 @@
 import React, { useState, useEffect } from "react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { useArtists } from "@/hooks/use-artists";
-import PWAArtistCarousel from "@/components/pwa/PWAArtistCarousel";
-import FeaturedProducts from "@/components/store/FeaturedProducts";
-import { supabase } from "@/integrations/supabase/client";
-import { Artist } from "@/data/types/artist";
-import { logger } from "@/utils/logger";
 import { TimerProvider } from "@/contexts/TimerContext";
-import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
-import TimedEditionModal from "@/components/store/TimedEditionModal";
-
-interface TimerState {
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+import PWAFeaturedArtists from "@/components/pwa/PWAFeaturedArtists";
+import PWATimedEditions from "@/components/pwa/PWATimedEditions";
+import { logger } from "@/utils/logger";
 
 const PWAHome = () => {
   const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
-  const [products, setProducts] = useState<any[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [timerState, setTimerState] = useState<TimerState | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
-  // Artist modal state
-  const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        logger.info("Fetching featured products");
-
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .eq("is_featured", true)
-          .order("created_at", { ascending: false })
-          .limit(6);
-
-        if (error) {
-          logger.error("Error fetching products:", error);
-          setError("Failed to load products");
-          throw error;
-        }
-
-        logger.info(`Fetched ${data?.length || 0} products`);
-        setProducts(data || []);
-      } catch (err) {
-        logger.error("Error in fetchProducts:", err);
-        setError("An error occurred while loading products");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  const handleProductSelect = (product: any, timer: TimerState) => {
-    logger.info(`Selected product: ${product.id}, timer: ${JSON.stringify(timer)}`);
-    setSelectedProduct(product);
-    setTimerState(timer);
-  };
-
-  const handleArtistSelect = (artist: Artist) => {
-    const index = featuredArtists.findIndex(a => a.id === artist.id);
-    setSelectedArtistIndex(index >= 0 ? index : 0);
-    setSelectedArtist(artist);
-    setDialogOpen(true);
-  };
-
-  const handleArtistChange = (index: number) => {
-    setSelectedArtistIndex(index);
-    setSelectedArtist(featuredArtists[index]);
-  };
+    // Set loading to false after artists have been loaded
+    if (featuredArtists.length > 0) {
+      setIsLoading(false);
+    }
+  }, [featuredArtists]);
 
   // Refresh an artist's data
-  const refreshArtist = async (artistId: number): Promise<void | Artist> => {
+  const refreshArtist = async (artistId: number) => {
     try {
       logger.info(`Refreshing artist with ID: ${artistId}`);
-      const { data, error } = await supabase
-        .from('artists')
-        .select("*")
-        .eq("id", artistId)
-        .single();
-
-      if (error) {
-        logger.error("Error refreshing artist:", error);
-        throw error;
-      }
-
+      const result = await refreshArtists(artistId);
       logger.info("Artist refreshed successfully");
-      return data as Artist;
+      return result;
     } catch (err) {
       logger.error("Error in refreshArtist:", err);
+      return undefined;
     }
   };
 
@@ -127,79 +56,25 @@ const PWAHome = () => {
 
         <main className="container mx-auto px-4 pt-16">
           {/* Featured Artists Section */}
-          <div className="mb-4">
-            <div className="flex justify-center mb-1">
-              <img 
-                src="/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png" 
-                alt="Featured Artists" 
-                className="h-14 object-contain"
-              />
+          {isLoading ? (
+            <div className="flex justify-center items-center h-24">
+              <p className="text-lg">Loading artists...</p>
             </div>
-
-            {isLoading ? (
-              <div className="flex justify-center items-center h-24">
-                <p className="text-lg">Loading artists...</p>
-              </div>
-            ) : (
-              <PWAArtistCarousel
-                artists={featuredArtists}
-                onSelect={handleArtistSelect}
-                onFavoriteToggle={handleFavoriteToggle}
-                favoriteArtists={favoriteArtists}
-                refreshArtist={refreshArtist}
-              />
-            )}
-          </div>
+          ) : (
+            <PWAFeaturedArtists
+              featuredArtists={featuredArtists}
+              favoriteArtists={favoriteArtists}
+              handleFavoriteToggle={handleFavoriteToggle}
+              refreshArtists={refreshArtists}
+              refreshArtist={refreshArtist}
+            />
+          )}
 
           {/* Timed Edition Drops Section */}
-          <div>
-            <div className="flex justify-center mb-1">
-              <img 
-                src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
-                alt="Timed Editions" 
-                className="h-14 object-contain"
-              />
-            </div>
-
-            {!isLoading && products.length > 0 ? (
-              <FeaturedProducts
-                products={products}
-                onProductSelect={handleProductSelect}
-              />
-            ) : (
-              <div className="flex justify-center items-center h-24">
-                <p className="text-lg">
-                  {isLoading ? "Loading products..." : "No products found"}
-                </p>
-              </div>
-            )}
-          </div>
+          <PWATimedEditions
+            isLoading={isLoading}
+          />
         </main>
-
-        {/* Artist Detail Modal */}
-        <ArtistDetailModal
-          artists={featuredArtists}
-          selectedArtist={selectedArtist}
-          selectedArtistIndex={selectedArtistIndex}
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onArtistChange={handleArtistChange}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={refreshArtists}
-          onSelect={(artist) => {}}
-        />
-
-        {/* Timed Edition Modal */}
-        <TimedEditionModal
-          isOpen={!!selectedProduct}
-          onClose={() => {
-            setSelectedProduct(null);
-            setTimerState(null);
-          }}
-          product={selectedProduct}
-          timeLeft={timerState || { hours: 0, minutes: 0, seconds: 0 }}
-        />
       </div>
     </TimerProvider>
   );
