@@ -1,11 +1,12 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import MobileNavigation from './MobileNavigation';
 import MobilePanel from './MobilePanel';
 import useEmblaCarousel from 'embla-carousel-react';
 import MobileCarousel from './MobileCarousel';
+import { logger } from '@/utils/logger';
 
 // Correctly define the ColorTheme interface with all required properties
 interface ColorTheme {
@@ -60,8 +61,11 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     window.addEventListener('resize', handleResize);
     handleResize();
 
+    // Log the artist data to help diagnose issues
+    logger.info(`MobileLayout loaded for artist: ${safeArtist.name}, ID: ${safeArtist.id}`);
+    
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [safeArtist]);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: colorTheme.background }}>

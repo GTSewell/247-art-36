@@ -7,6 +7,7 @@ import ArtistHeaderInfo from './ArtistHeaderInfo';
 import ArtistActions from './ArtistActions';
 import ArtistDomainLink from './ArtistDomainLink';
 import ArtistInfoContainer from './ArtistInfoContainer';
+import { logger } from '@/utils/logger';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -46,7 +47,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/artist/${artist.name.replace(/\s+/g, '')}`);
+    
+    // Create a URL-friendly artist name by removing spaces and special characters
+    const formattedName = artist.name.replace(/\s+/g, '').replace(/[^\w]/g, '');
+    logger.info(`Navigating to artist profile: ${formattedName}`);
+    navigate(`/artist/${formattedName}`);
   };
 
   // Create a formatted domain name for display

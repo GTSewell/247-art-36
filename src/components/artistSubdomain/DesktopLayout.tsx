@@ -1,11 +1,12 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from './ArtistProfileRightPanel';
 import ArtistReturnButton from '../artists/ArtistReturnButton';
+import { logger } from '@/utils/logger';
 
 interface ColorTheme {
   background: string;
@@ -47,6 +48,14 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   const safeStyles = styles || [];
   const safeSocialPlatforms = typeof socialPlatforms === 'object' ? socialPlatforms : {};
   const safeArtworks = artworks || [];
+  
+  // Log information to help diagnose issues
+  useEffect(() => {
+    logger.info(`DesktopLayout loaded for artist: ${safeArtist.name}, ID: ${safeArtist.id}`);
+    logger.info(`Artist techniques: ${JSON.stringify(safeTechniques)}`);
+    logger.info(`Artist styles: ${JSON.stringify(safeStyles)}`);
+    logger.info(`Artist artworks: ${JSON.stringify(safeArtworks)}`);
+  }, [safeArtist, safeTechniques, safeStyles, safeArtworks]);
   
   // Convert the record to an array for links
   const linksArray = safeProfile?.links ? 

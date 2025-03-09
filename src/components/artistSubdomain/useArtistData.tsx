@@ -21,14 +21,44 @@ export function useArtistData(artistName: string | undefined) {
           return;
         }
         
-        const formattedName = artistName.replace(/([A-Z])/g, ' $1').trim();
+        // Try multiple formats for the artist name to improve matches
+        const formattedName = artistName
+          .replace(/([A-Z])/g, ' $1')  // Add space before capital letters
+          .trim();                      // Trim extra spaces
+          
         logger.info(`Fetching artist data for: ${formattedName}`);
         
-        const { data: artistData, error: artistError } = await supabase
+        // First attempt - try exact match
+        let { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .ilike('name', formattedName)
+          .eq('name', formattedName)
           .maybeSingle();
+          
+        // Second attempt - try case-insensitive match
+        if (!artistData && !artistError) {
+          const { data, error } = await supabase
+            .from('artists')
+            .select('*')
+            .ilike('name', formattedName)
+            .maybeSingle();
+            
+          artistData = data;
+          artistError = error;
+        }
+        
+        // Third attempt - try with first letter capitalized
+        if (!artistData && !artistError) {
+          const capitalizedName = formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
+          const { data, error } = await supabase
+            .from('artists')
+            .select('*')
+            .ilike('name', capitalizedName)
+            .maybeSingle();
+            
+          artistData = data;
+          artistError = error;
+        }
         
         if (artistError) {
           logger.error("Error fetching artist data:", artistError);

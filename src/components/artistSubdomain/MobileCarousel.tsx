@@ -17,7 +17,7 @@ interface ColorTheme {
 }
 
 interface MobileCarouselProps {
-  emblaRef: React.RefObject<HTMLDivElement>;
+  emblaRef: React.RefObject<HTMLDivElement> | any; // Fix TypeScript error by allowing any for emblaRef
   emblaApi: any;
   artist: Artist;
   profile: ArtistProfile | null;
@@ -56,15 +56,13 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
       safeProfile.links) : 
     [];
 
-  // Define panel data
+  // Define panel data - remove title props that don't exist on MobilePanel component
   const panels = [
     {
       id: 'info',
-      title: 'Info',
       content: (
         <MobilePanel
           key="info"
-          title="Artist Info"
           artist={safeArtist}
           profile={safeProfile}
           techniques={safeTechniques}
@@ -84,11 +82,9 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
     },
     {
       id: 'artworks',
-      title: 'Artworks',
       content: (
         <MobilePanel
           key="artworks"
-          title="Artworks"
           artist={safeArtist}
           artworks={safeArtworks}
           panelColor={colorTheme.panel}

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useArtistData } from '@/components/artistSubdomain/useArtistData';
@@ -10,6 +10,7 @@ import MobileLayout from '@/components/artistSubdomain/MobileLayout';
 import { generateColorTheme } from '@/utils/colorExtraction';
 import { useAppMode } from '@/contexts/AppModeContext';
 import { useScrollPosition } from '@/contexts/ScrollPositionContext';
+import { logger } from '@/utils/logger';
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
@@ -18,6 +19,18 @@ const ArtistSubdomain = () => {
   const { isPWA } = useAppMode();
   const navigate = useNavigate();
   const { saveScrollPosition, getScrollPosition } = useScrollPosition();
+
+  useEffect(() => {
+    // Log detailed information to help diagnose issues
+    logger.info(`ArtistSubdomain component mounted for artist: ${artistName}`);
+    logger.info(`Loading state: ${loading}`);
+    if (artist) {
+      logger.info(`Artist data loaded: ${artist.name}, ID: ${artist.id}`);
+      logger.info(`Artist has ${artist.artworks ? (Array.isArray(artist.artworks) ? artist.artworks.length : 0) : 0} artworks`);
+    } else {
+      logger.info('No artist data loaded yet');
+    }
+  }, [artistName, artist, loading]);
 
   // Custom back handler that takes into account the app mode
   const handleBack = () => {
