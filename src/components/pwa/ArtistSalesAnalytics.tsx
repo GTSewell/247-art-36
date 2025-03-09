@@ -14,9 +14,9 @@ interface ArtistSalesAnalyticsProps {
 const ArtistSalesAnalytics: React.FC<ArtistSalesAnalyticsProps> = ({ artistId }) => {
   return (
     <div className="space-y-6">
+      <STPSetsCard />
       <SalesBreakdownCard />
       <SalesAnalyticsCard />
-      <STPSetsCard />
       <ProfileViewsCard />
       <SalesConversionsCard />
       <ActionButtons />
