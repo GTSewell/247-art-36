@@ -32,11 +32,15 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const isMobile = useIsMobile();
 
-  useEffect(() => {
-    setOpenAccordions(isMobile ? [] : ['details']);
-  }, [isMobile]);
+  const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
-  const [openAccordions, setOpenAccordions] = useState<string[]>(isMobile ? [] : ['details']);
+  useEffect(() => {
+    if (!isMobile) {
+      setOpenAccordions(['details']);
+    } else {
+      setOpenAccordions([]);
+    }
+  }, [isMobile, isOpen]);
 
   const handleAddToCart = () => {
     toast.success("Added to cart!", {
@@ -105,8 +109,8 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
               </AnimatePresence>
             </div>
           </div>
-          <div className="w-full md:w-1/2 border-l border-border/40 p-6 overflow-y-auto">
-            <div className="space-y-6">
+          <div className="w-full md:w-1/2 border-l border-border/40 p-6 flex flex-col h-full overflow-y-auto">
+            <div className="flex-grow space-y-4">
               <div className="flex items-start justify-between">
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight">{product?.name}</h2>
@@ -125,20 +129,17 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
               <Accordion 
                 type="multiple" 
                 value={openAccordions} 
-                onValueChange={(values) => setOpenAccordions(values)} 
+                onValueChange={setOpenAccordions} 
                 className="w-full"
               >
                 <AccordionItem value="details">
-                  <AccordionTrigger className={isMobile ? "text-lg font-semibold" : "sr-only"}>
+                  <AccordionTrigger className="text-lg font-semibold">
                     Details
                   </AccordionTrigger>
-                  <AccordionContent forceMount className={isMobile ? undefined : "!mt-0 !pt-0"}>
-                    <div className={isMobile ? "pt-2" : ""}>
-                      <h3 className={isMobile ? "sr-only" : "text-lg font-semibold mb-2"}>Details</h3>
-                      <p className="text-muted-foreground">
-                        {product?.description || "Discover this exclusive limited edition print, meticulously crafted to capture the essence of contemporary artistry. Each piece is individually numbered and personally signed by the artist, making it a unique addition to any collection."}
-                      </p>
-                    </div>
+                  <AccordionContent>
+                    <p className="text-muted-foreground">
+                      {product?.description || "Discover this exclusive limited edition print, meticulously crafted to capture the essence of contemporary artistry. Each piece is individually numbered and personally signed by the artist, making it a unique addition to any collection."}
+                    </p>
                   </AccordionContent>
                 </AccordionItem>
                 
@@ -179,7 +180,9 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-              
+            </div>
+            
+            <div className="mt-6 pt-4 border-t border-border/40">
               <Button 
                 className="w-full bg-zap-red hover:bg-zap-blue text-white"
                 onClick={handleAddToCart}
