@@ -18,7 +18,7 @@ const ArtistDomainLink: React.FC<ArtistDomainLinkProps> = ({
         onClick={handleDomainClick}
         className="text-black/70 hover:text-black font-mono truncate"
       >
-        247.art/{artistDomain}
+        247.art/artists/{artistDomain}
       </button>
     </div>
   );

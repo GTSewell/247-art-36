@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
@@ -56,13 +57,13 @@ const PWAArtists = () => {
     }
   };
 
-  // Updated navigation function to handle artist profile routing better
+  // Updated navigation function to correctly navigate to the artist profile page
   const navigateToArtistPage = (artist: Artist) => {
     // Keep artist name as-is for the URL, instead of changing the format
     // This ensures it matches exactly how it's stored in the database
     const formattedName = artist.name;
     logger.info(`Navigating to artist page: ${formattedName}`);
-    navigate(`/artist/${formattedName}`);
+    navigate(`/artists/${formattedName}`);
   };
 
   return (
