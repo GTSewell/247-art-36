@@ -1,12 +1,12 @@
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { User, LogIn, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LogOut, User } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useAppMode } from "@/contexts/AppModeContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
 
 interface MobileUserMenuProps {
   user: any | null;
@@ -15,79 +15,70 @@ interface MobileUserMenuProps {
 
 const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
   const navigate = useNavigate();
-  const { isPWA } = useAppMode();
 
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      toast.success("Signed out successfully");
       navigate("/");
+      toast.success("Signed out successfully");
     } catch (error: any) {
       toast.error(`Error signing out: ${error.message}`);
     }
   };
 
   if (isLoading) {
-    return null;
-  }
-
-  // If in PWA mode, use the original buttons
-  if (isPWA) {
-    if (user) {
-      return (
-        <Button
-          variant="outline"
-          className="w-full justify-start mt-4"
-          onClick={handleSignOut}
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </Button>
-      );
-    }
-
     return (
-      <Button
-        variant="outline"
-        className="w-full justify-start mt-4"
-        onClick={() => navigate("/auth")}
-      >
-        <User className="h-4 w-4 mr-2" />
-        Sign In
-      </Button>
+      <div className="py-2">
+        <Button variant="ghost" disabled className="w-full justify-start">
+          <User className="mr-2 h-4 w-4" />
+          Loading...
+        </Button>
+      </div>
     );
   }
 
-  // For regular website mode
-  if (user) {
+  if (!user) {
     return (
-      <Button
-        variant="outline"
-        className="w-full justify-start mt-4"
-        onClick={handleSignOut}
-      >
-        <Avatar className="h-5 w-5 mr-2">
-          <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-          <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
-        </Avatar>
-        Sign Out
-      </Button>
+      <div className="py-2">
+        <Button 
+          variant="outline" 
+          className="w-full justify-start"
+          onClick={() => navigate("/auth")}
+        >
+          <LogIn className="mr-2 h-4 w-4" />
+          Sign In
+        </Button>
+      </div>
     );
   }
 
   return (
-    <Button
-      variant="outline"
-      className="w-full justify-start mt-4"
-      onClick={() => navigate("/auth")}
-    >
-      <Avatar className="h-5 w-5 mr-2">
-        <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-        <AvatarFallback><User className="h-3 w-3" /></AvatarFallback>
-      </Avatar>
-      Sign In
-    </Button>
+    <div className="py-2 space-y-2">
+      <div className="px-3 text-sm font-medium">{user.email || "My Account"}</div>
+      <Separator />
+      <Link to="/dashboard/artist" className="block">
+        <Button variant="ghost" className="w-full justify-start">
+          <Settings className="mr-2 h-4 w-4" />
+          Artist Dashboard
+        </Button>
+      </Link>
+      <Link to="/dashboard/collector" className="block">
+        <Button variant="ghost" className="w-full justify-start">
+          <Settings className="mr-2 h-4 w-4" />
+          Collector Dashboard
+        </Button>
+      </Link>
+      <Separator />
+      <Button 
+        variant="ghost" 
+        className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50"
+        onClick={handleSignOut}
+      >
+        <LogOut className="mr-2 h-4 w-4" />
+        Sign Out
+      </Button>
+    </div>
   );
 };
 

@@ -1,17 +1,19 @@
+
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { User, LogIn, LogOut, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAppMode } from "@/contexts/AppModeContext";
+import { useNavigate } from "react-router-dom";
 
 interface UserMenuProps {
   user: any | null;
@@ -20,107 +22,68 @@ interface UserMenuProps {
 
 const UserMenu = ({ user, isLoading }: UserMenuProps) => {
   const navigate = useNavigate();
-  const { isPWA } = useAppMode();
 
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      toast.success("Signed out successfully");
       navigate("/");
+      toast.success("Signed out successfully");
     } catch (error: any) {
       toast.error(`Error signing out: ${error.message}`);
     }
   };
 
   if (isLoading) {
-    return null;
-  }
-
-  if (isPWA) {
-    if (user) {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="ml-4 flex items-center gap-2"
-            >
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">Account</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={handleSignOut}
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    }
-
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        className="ml-4 flex items-center gap-2"
-        onClick={() => navigate("/auth")}
-      >
-        <User className="h-4 w-4" />
-        <span className="hidden sm:inline">Sign In</span>
+      <Button variant="ghost" size="sm" disabled>
+        <User className="mr-2 h-4 w-4" />
+        Loading...
       </Button>
     );
   }
 
-  if (user) {
+  if (!user) {
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="ml-4 rounded-full"
-          >
-            <Avatar>
-              <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-              <AvatarFallback>
-                <User className="h-5 w-5" />
-              </AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={handleSignOut}
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign Out
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Button variant="outline" size="sm" onClick={() => navigate("/auth")}>
+        <LogIn className="mr-2 h-4 w-4" />
+        Sign In
+      </Button>
     );
   }
 
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="ml-4 rounded-full"
-      onClick={() => navigate("/auth")}
-    >
-      <Avatar>
-        <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-        <AvatarFallback>
-          <User className="h-5 w-5" />
-        </AvatarFallback>
-      </Avatar>
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm">
+          <User className="mr-2 h-4 w-4" />
+          Account
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>
+          {user.email || "My Account"}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard/artist">
+            <Settings className="mr-2 h-4 w-4" />
+            Artist Dashboard
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard/collector">
+            <Settings className="mr-2 h-4 w-4" />
+            Collector Dashboard
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleSignOut}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Sign Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
