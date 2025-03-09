@@ -123,14 +123,33 @@ export const useArtistProfile = (userId: string | null) => {
         
         toast.success("Profile updated successfully");
       } else {
-        // Create new artist profile
+        // Create new artist profile - we need to generate a numeric ID
+        // First, get the next available ID by checking the max ID in the table
+        const { data: maxIdData, error: maxIdError } = await supabase
+          .from('artists')
+          .select('id')
+          .order('id', { ascending: false })
+          .limit(1)
+          .single();
+          
+        if (maxIdError && !maxIdError.message.includes('No rows found')) {
+          throw maxIdError;
+        }
+        
+        // Set the new ID as max + 1, or start at 1 if no records exist
+        const newId = maxIdData ? maxIdData.id + 1 : 1;
+        
+        // Create new artist profile with the ID
         const { error } = await supabase
           .from('artists')
-          .insert([processedData]);
+          .insert([{ ...processedData, id: newId }]);
         
         if (error) throw error;
         
         toast.success("Profile created successfully");
+        
+        // Fetch the newly created profile to update the UI
+        fetchArtistProfile();
       }
     } catch (error: any) {
       console.error("Error updating artist profile:", error);
