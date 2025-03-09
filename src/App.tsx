@@ -46,8 +46,9 @@ function AppWrapper() {
 }
 
 function AppContent() {
+  // Reset to using just localStorage for normal environments, and only auto-pass in preview
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(
-    localStorage.getItem("isPasswordCorrect") === "true" || isLovablePreview()
+    localStorage.getItem("isPasswordCorrect") === "true"
   );
   const [appReady, setAppReady] = useState(false);
   const { isPWA, isPreview } = useAppMode();
@@ -56,11 +57,13 @@ function AppContent() {
     try {
       logger.info("App component mounted", { isPWA, isPreview, isPasswordCorrect });
       
-      // Always bypass password in preview mode
-      if (isPreview && !isPasswordCorrect) {
-        logger.info("Bypassing password in preview mode");
-        setIsPasswordCorrect(true);
+      // Handle preview mode differently - only bypass password in preview
+      if (isPreview) {
+        logger.info("Running in preview mode - bypassing password check");
+        setIsPasswordCorrect(true); // Auto-pass in preview only
       } else {
+        // For normal environments, respect the localStorage setting
+        logger.info("Running in normal mode - using password protection");
         localStorage.setItem("isPasswordCorrect", String(isPasswordCorrect));
       }
       
