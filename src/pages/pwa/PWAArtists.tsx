@@ -21,14 +21,13 @@ const PWAArtists = () => {
   const { 
     loading: isLoading, 
     artists, 
-    featuredArtists, 
     favoriteArtists, 
     toggleFavorite: handleFavoriteToggle,
     refreshArtists 
   } = useArtists();
 
-  // All artists - combine featured and other artists and ensure no duplicates
-  const allArtists = [...(artists || [])];
+  // All artists from both sections
+  const allArtists = artists || [];
   
   // Filter artists based on search term and favorites
   const filteredArtists = allArtists.filter(artist => {

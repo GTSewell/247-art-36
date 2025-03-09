@@ -112,6 +112,10 @@ const Artists = () => {
     favoriteArtists
   });
 
+  console.log("Artists count:", safeArtists.length);
+  console.log("Featured artists count:", safeFeaturedArtists.length);
+  console.log("Filtered all artists count:", filteredAllArtists.length);
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">

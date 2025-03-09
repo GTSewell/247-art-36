@@ -21,7 +21,7 @@ export function useArtists() {
       let query = supabase
         .from('artists')
         .select('*')
-        .is('published', true); // Only get published artists
+        .eq('published', true); // Only get published artists
       
       // If artistId is provided, only fetch that specific artist
       if (artistId) {
@@ -47,16 +47,16 @@ export function useArtists() {
           country: artist.country || '',
           // Convert Json[] to string[] for these fields
           techniques: Array.isArray(artist.techniques) 
-            ? artist.techniques.map(item => String(item)) 
+            ? artist.techniques.map((item: any) => String(item)) 
             : [],
           styles: Array.isArray(artist.styles) 
-            ? artist.styles.map(item => String(item)) 
+            ? artist.styles.map((item: any) => String(item)) 
             : [],
           social_platforms: Array.isArray(artist.social_platforms) 
-            ? artist.social_platforms.map(item => String(item)) 
+            ? artist.social_platforms.map((item: any) => String(item)) 
             : [],
           artworks: Array.isArray(artist.artworks) 
-            ? artist.artworks.map(item => String(item)) 
+            ? artist.artworks.map((item: any) => String(item)) 
             : [],
           locked_artworks: artist.locked_artworks || false
         }));
@@ -75,9 +75,8 @@ export function useArtists() {
           // Otherwise update the full list
           setArtists(processedArtists);
           
-          // IMPORTANT: We're no longer using hardcoded featuredArtistIds
-          // Instead, we'll keep the featured artists section empty
-          // All published artists will go to "All Artists" section
+          // Set featured artists - for now we're not using this but keeping the functionality
+          // In case we want to feature specific artists in the future
           setFeaturedArtists([]);
         }
       }
