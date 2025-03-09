@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -46,8 +47,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Keep the original name with spaces
-    navigate(`/artists/${artist.name}`);
+    const formattedName = artist.name.replace(/\s+/g, '');
+    navigate(`/artists/${formattedName}`);
   };
   
   const handleReturnToArtists = () => {

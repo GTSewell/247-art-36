@@ -23,12 +23,36 @@ export function useArtistData(artistName: string | undefined) {
         
         logger.info(`Fetching artist data for: ${artistName}`);
         
-        const { data: artistData, error: artistError } = await supabase
+        // First try exact match (for no spaces)
+        let { data: artistData, error: artistError } = await supabase
           .from('artists')
           .select('*')
-          .eq('name', artistName)  // Use exact match instead of ilike for more precision
+          .eq('name', artistName)
           .eq('published', true)
           .maybeSingle();
+        
+        // If not found, try with spaces re-added (for backward compatibility)
+        if (!artistData && artistName) {
+          // Try adding spaces in common positions (before uppercase letters)
+          const nameWithPossibleSpaces = artistName.replace(/([a-z])([A-Z])/g, '$1 $2');
+          
+          ({ data: artistData, error: artistError } = await supabase
+            .from('artists')
+            .select('*')
+            .eq('name', nameWithPossibleSpaces)
+            .eq('published', true)
+            .maybeSingle());
+            
+          if (!artistData) {
+            // If still not found, try a more flexible search
+            ({ data: artistData, error: artistError } = await supabase
+              .from('artists')
+              .select('*')
+              .ilike('name', `%${artistName}%`) 
+              .eq('published', true)
+              .maybeSingle());
+          }
+        }
         
         if (artistError) {
           logger.error("Error fetching artist data:", artistError);

@@ -10,7 +10,7 @@ import MobileLayout from '@/components/artistSubdomain/MobileLayout';
 import { generateColorTheme } from '@/utils/colorExtraction';
 
 const ArtistSubdomain = () => {
-  // The artistName parameter will contain spaces as they appear in the URL
+  // The artistName parameter will have no spaces - it's directly from URL
   const { artistName } = useParams<{ artistName: string }>();
   const { artist, profile, loading, getArtistData } = useArtistData(artistName);
   const isMobile = useIsMobile();

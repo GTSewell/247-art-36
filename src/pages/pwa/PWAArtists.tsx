@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";
@@ -55,8 +56,9 @@ const PWAArtists = () => {
   };
 
   const navigateToArtistPage = (artist: Artist) => {
-    logger.info(`Navigating to artist page: ${artist.name}`);
-    navigate(`/artists/${artist.name}`);
+    const formattedName = artist.name.replace(/\s+/g, '');
+    logger.info(`Navigating to artist page: ${formattedName}`);
+    navigate(`/artists/${formattedName}`);
   };
 
   return (
