@@ -11,11 +11,12 @@ export const useCollectorExport = (collectors: Collector[]) => {
     const rows = collectors.map(collector => {
       const itemsList = collector.itemsPurchased.join("; ");
       const socialList = Object.keys(collector.social).join("; ");
-      const totalSales = collector.sales.reduce((sum, sale) => sum + sale, 0);
+      const salesList = collector.sales.map(sale => `$${sale}`).join("; ");
+      
       return [
         collector.name,
         itemsList,
-        `$${totalSales}`,
+        salesList,
         collector.collectorName || "Not available",
         socialList || "Not available",
         collector.email || "Not available"

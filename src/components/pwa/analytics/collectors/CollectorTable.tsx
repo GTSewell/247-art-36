@@ -9,7 +9,7 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
   return (
     <div className="min-w-[900px]">
       <table className="w-full">
-        <thead className="sticky top-0 bg-white z-10">
+        <thead className="sticky top-0 bg-white z-10 border-b">
           <tr className="bg-muted text-left">
             <th className="py-2 px-4 font-semibold">Name</th>
             <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
@@ -40,16 +40,18 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
                 </div>
               </td>
               <td className="py-3 px-4">
-                <div className="flex items-center text-zap-green">
-                  <DollarSign className="h-4 w-4 mr-1" />
-                  <span>
-                    {collector.sales.reduce((sum, sale) => sum + sale, 0).toLocaleString('en-US', { 
-                      style: 'currency', 
-                      currency: 'USD',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0
-                    })}
-                  </span>
+                <div className="flex flex-col space-y-1">
+                  {collector.sales.map((sale, idx) => (
+                    <div key={idx} className="flex items-center text-zap-green">
+                      <DollarSign className="h-4 w-4 mr-1" />
+                      <span>
+                        {sale.toLocaleString('en-US', { 
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0
+                        })}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </td>
               <td className="py-3 px-4">

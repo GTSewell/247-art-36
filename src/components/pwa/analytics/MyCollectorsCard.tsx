@@ -31,12 +31,13 @@ const MyCollectorsCard: React.FC = () => {
         </Button>
       </CardHeader>
       <CardContent className="p-0">
-        <div className={cn(
-          "h-[350px] relative",
-          isMobile ? "overflow-x-auto" : ""
-        )}>
-          <ScrollArea className="h-full">
-            <CollectorTable collectors={collectors} />
+        <div className="h-[350px] relative overflow-hidden">
+          <ScrollArea className="h-full w-full">
+            <div className={cn(
+              isMobile ? "overflow-x-auto" : ""
+            )}>
+              <CollectorTable collectors={collectors} />
+            </div>
           </ScrollArea>
         </div>
       </CardContent>
