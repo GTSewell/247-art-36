@@ -16,7 +16,7 @@ const MyCollectorsCard: React.FC = () => {
 
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-row items-center justify-between sticky top-0 z-20 bg-white">
         <CardTitle className="flex items-center">
           <Users className="mr-2 h-5 w-5" />
           My Collectors
