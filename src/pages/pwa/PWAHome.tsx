@@ -74,8 +74,8 @@ const PWAHome = () => {
               />
             )}
 
-            {/* Timed Edition Drops Section - removed mt-4 to eliminate space */}
-            <div className={`${isPWA ? 'mb-16' : 'mb-12'}`}>
+            {/* Timed Edition Drops Section - no margin to eliminate space */}
+            <div className={`${isPWA ? 'mb-16' : 'mb-12'} mt-0`}>
               <PWATimedEditions
                 isLoading={isLoading}
               />

@@ -43,8 +43,8 @@ body[data-pwa="true"] .timed-editions-carousel {
   -webkit-overflow-scrolling: touch;
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 48px; /* Increased bottom padding to prevent cutoff */
-  margin-bottom: 24px; /* Increased margin to add more space before footer */
+  padding-bottom: 24px; /* Reduced bottom padding */
+  margin-bottom: 0; /* Removed margin between sections */
 }
 
 body[data-pwa="true"] .embla__viewport {

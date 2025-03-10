@@ -61,7 +61,7 @@ const PWATimedEditions: React.FC<PWATimedEditionsProps> = ({ isLoading }) => {
 
   return (
     <>
-      <div className="w-full timed-editions-carousel">
+      <div className="w-full timed-editions-carousel mt-0">
         <div className="flex justify-center mb-1">
           <img 
             src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 

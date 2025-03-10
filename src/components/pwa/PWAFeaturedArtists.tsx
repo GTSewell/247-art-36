@@ -38,7 +38,7 @@ const PWAFeaturedArtists: React.FC<PWAFeaturedArtistsProps> = ({
 
   return (
     <>
-      <div className="mb-4 w-full">
+      <div className="mb-0 w-full">
         <div className="flex justify-center mb-1">
           <img 
             src="/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png" 
