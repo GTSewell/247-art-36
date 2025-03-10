@@ -5,6 +5,8 @@ import ArtistGrid from "@/components/artists/ArtistGrid";
 import { Button } from "@/components/ui/button";
 import { Heart, RotateCw, Search } from "lucide-react";
 import PWANavigation from "@/components/pwa/PWANavigation";
+import Navigation from "@/components/navigation/Navigation";
+import { useAppMode } from "@/contexts/AppModeContext";
 import { Input } from "@/components/ui/input";
 import { Artist } from "@/data/types/artist";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +20,7 @@ const PWAArtists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+  const { isPWA } = useAppMode();
   
   const { 
     featuredArtists, 
@@ -64,7 +67,7 @@ const PWAArtists = () => {
 
   return (
     <div className="pb-20 pt-16">
-      <PWANavigation />
+      {isPWA ? <PWANavigation /> : <Navigation />}
       
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center gap-2 mb-4">

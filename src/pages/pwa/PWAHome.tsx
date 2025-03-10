@@ -6,11 +6,14 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import PWAFeaturedArtists from "@/components/pwa/PWAFeaturedArtists";
 import PWATimedEditions from "@/components/pwa/PWATimedEditions";
 import { logger } from "@/utils/logger";
+import Navigation from "@/components/navigation/Navigation";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 const PWAHome = () => {
   const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isPWA } = useAppMode();
 
   useEffect(() => {
     // Set loading to false after artists have been loaded
@@ -35,7 +38,7 @@ const PWAHome = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-zap-yellow">
-        <PWANavigation />
+        {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button
@@ -52,9 +55,9 @@ const PWAHome = () => {
   return (
     <TimerProvider>
       <div className="min-h-screen bg-zap-yellow pb-20">
-        <PWANavigation />
+        {isPWA ? <PWANavigation /> : <Navigation />}
 
-        <main className="container mx-auto px-4 pt-16">
+        <main className={`container mx-auto px-4 ${isPWA ? 'pt-16' : 'pt-24'}`}>
           {/* Featured Artists Section */}
           {isLoading ? (
             <div className="flex justify-center items-center h-24">

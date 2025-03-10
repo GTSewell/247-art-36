@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserRound } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useAppMode } from "@/contexts/AppModeContext";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 
@@ -11,6 +12,12 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { user, isLoading } = useAuth();
+  const { isPWA } = useAppMode();
+
+  // Return null if in PWA mode to hide navigation
+  if (isPWA) {
+    return null;
+  }
 
   // Close mobile menu when route changes
   useEffect(() => {

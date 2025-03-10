@@ -7,17 +7,20 @@ import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import Navigation from "@/components/navigation/Navigation";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 type TabType = "profile" | "artworks" | "analytics";
 
 const ArtistDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
   const { user, isLoading } = useAuth();
+  const { isPWA } = useAppMode();
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black">
-        <PWANavigation />
+        {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20">
           <div className="animate-pulse">Loading dashboard...</div>
         </div>
@@ -28,7 +31,7 @@ const ArtistDashboard: React.FC = () => {
   if (!user) {
     return (
       <div className="min-h-screen bg-black">
-        <PWANavigation />
+        {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
           <p className="text-xl text-white mb-4">Please sign in to access your artist dashboard</p>
           <Button 
@@ -47,7 +50,7 @@ const ArtistDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      <PWANavigation />
+      {isPWA ? <PWANavigation /> : <Navigation />}
       <div className="container mx-auto px-4 pt-20 pb-20">
         <h1 className="text-2xl font-bold text-white mb-6">Artist Dashboard</h1>
         

@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import PWANavigation from "@/components/pwa/PWANavigation";
+import Navigation from "@/components/navigation/Navigation";
+import { useAppMode } from "@/contexts/AppModeContext";
 import { toast } from "sonner";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import StoreCategories from "@/components/pwa/StoreCategories";
@@ -22,6 +23,7 @@ const PWAStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
+  const { isPWA } = useAppMode();
   
   const {
     data: products,
@@ -125,9 +127,9 @@ const PWAStore = () => {
   return (
     <TimerProvider>
       <div className="min-h-screen bg-zap-red">
-        <PWANavigation />
+        {isPWA ? <PWANavigation /> : <Navigation />}
         
-        <main className="container mx-auto px-4 pt-16 pb-24">
+        <main className={`container mx-auto px-4 ${isPWA ? 'pt-16' : 'pt-24'} pb-24`}>
           {selectedCategory ? (
             <div>
               <div className="flex items-center justify-between mb-4">

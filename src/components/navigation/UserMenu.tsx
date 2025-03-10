@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { User, LogIn, LogOut, Settings } from "lucide-react";
+import { UserRound, LogIn, LogOut, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,18 +36,18 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
 
   if (isLoading) {
     return (
-      <Button variant="ghost" size="sm" disabled>
-        <User className="mr-2 h-4 w-4" />
-        Loading...
+      <Button variant="ghost" size="icon" disabled>
+        <UserRound className="h-5 w-5" />
+        <span className="sr-only">Loading</span>
       </Button>
     );
   }
 
   if (!user) {
     return (
-      <Button variant="outline" size="sm" onClick={() => navigate("/auth")}>
-        <LogIn className="mr-2 h-4 w-4" />
-        Sign In
+      <Button variant="outline" size="icon" onClick={() => navigate("/auth")} title="Sign In">
+        <LogIn className="h-5 w-5" />
+        <span className="sr-only">Sign In</span>
       </Button>
     );
   }
@@ -55,9 +55,9 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          <User className="mr-2 h-4 w-4" />
-          Account
+        <Button variant="outline" size="icon" title="Account">
+          <UserRound className="h-5 w-5" />
+          <span className="sr-only">Account</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

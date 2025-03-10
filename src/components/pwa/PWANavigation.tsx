@@ -6,11 +6,18 @@ import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 const PWANavigation = () => {
   const location = useLocation();
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isPWA } = useAppMode();
+
+  // Don't render the navigation if not in PWA mode
+  if (!isPWA) {
+    return null;
+  }
 
   // Close menu when route changes
   useEffect(() => {

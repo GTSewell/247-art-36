@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import PWANavigation from "@/components/pwa/PWANavigation";
+import Navigation from "@/components/navigation/Navigation";
+import { useAppMode } from "@/contexts/AppModeContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import CollectorFavorites from "@/components/pwa/CollectorFavorites";
@@ -14,6 +16,7 @@ const CollectorDashboard = () => {
   const navigate = useNavigate();
   const { user, isLoading } = useAuth();
   const [loading, setLoading] = useState(true);
+  const { isPWA } = useAppMode();
   
   useEffect(() => {
     if (!isLoading && !user) {
@@ -27,7 +30,7 @@ const CollectorDashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-zap-yellow">
-        <PWANavigation />
+        {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20 flex items-center justify-center">
           <p>Loading collector dashboard...</p>
         </div>
@@ -37,7 +40,7 @@ const CollectorDashboard = () => {
   
   return (
     <div className="min-h-screen bg-gray-50">
-      <PWANavigation />
+      {isPWA ? <PWANavigation /> : <Navigation />}
       
       <main className="container mx-auto px-4 pt-20 pb-20">
         <h1 className="text-2xl font-bold mb-6">Collector Dashboard</h1>

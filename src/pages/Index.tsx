@@ -5,11 +5,15 @@ import VirtualTourSection from "@/components/sections/VirtualTourSection";
 import CallToAction from "@/components/sections/CallToAction";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
+import { useAppMode } from "@/contexts/AppModeContext";
+import PWANavigation from "@/components/pwa/PWANavigation";
 
 const Index = () => {
+  const { isPWA } = useAppMode();
+
   return (
     <main className="min-h-screen">
-      <Navigation />
+      {isPWA ? <PWANavigation /> : <Navigation />}
       <Hero />
       <WhatIsZap />
       <JoinUndergroundSection />
