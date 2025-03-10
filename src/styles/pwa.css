@@ -1,0 +1,76 @@
+
+/* PWA specific styles to prevent scrolling issues */
+body[data-pwa="true"] {
+  overscroll-behavior: none;
+  touch-action: pan-y;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body[data-pwa="true"] #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+body[data-pwa="true"] main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: calc(100% - 110px); /* Account for header and footer */
+  width: 100%;
+  padding-bottom: 60px; /* Footer height */
+}
+
+/* PWA specific carousel styles */
+body[data-pwa="true"] .carousel-container {
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+}
+
+body[data-pwa="true"] .embla__container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body[data-pwa="true"] .embla__slide {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Enhanced carousel experience for PWA */
+body[data-pwa="true"] .embla {
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  touch-action: pan-x;
+}
+
+body[data-pwa="true"] .CarouselContent {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+body[data-pwa="true"] .CarouselItem {
+  min-width: 75%;
+  padding-left: 8px;
+}
+
+/* PWA header styles */
+body[data-pwa="true"] .pwa-header {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
