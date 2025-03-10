@@ -73,7 +73,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
   }
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Carousel
         setApi={setApi}
         opts={{

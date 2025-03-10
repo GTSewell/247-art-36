@@ -42,29 +42,27 @@ const PWANavigation = () => {
 
   return (
     <>
-      {/* Fixed header with logo and account button */}
-      <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 h-16 z-50">
-        <div className="flex items-center justify-between h-full px-4">
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" 
-              alt="247art" 
-              className="h-8"
-            />
-          </Link>
-          
-          <button 
-            onClick={() => setIsMenuOpen(true)}
-            className="flex items-center justify-center"
-          >
-            <Avatar className="h-10 w-10">
-              <AvatarImage src="/lovable-uploads/e53d8dc1-883b-4535-9c59-532b21c3e93b.png" alt="Profile" />
-              <AvatarFallback className="bg-gray-200">
-                {user?.email ? user.email.charAt(0).toUpperCase() : "?"}
-              </AvatarFallback>
-            </Avatar>
-          </button>
-        </div>
+      {/* Fixed header with logo and account button - no background or border */}
+      <header className="fixed top-0 left-0 right-0 h-16 z-50 flex items-center justify-between px-4">
+        <Link to="/" className="flex items-center">
+          <img 
+            src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" 
+            alt="247art" 
+            className="h-8"
+          />
+        </Link>
+        
+        <button 
+          onClick={() => setIsMenuOpen(true)}
+          className="flex items-center justify-center"
+        >
+          <Avatar className="h-10 w-10">
+            <AvatarImage src="/lovable-uploads/08710ff8-94bd-4d10-b8eb-aaf1dbc23f07.png" alt="Profile" />
+            <AvatarFallback className="bg-gray-200 rounded-full">
+              {user?.email ? user.email.charAt(0).toUpperCase() : "?"}
+            </AvatarFallback>
+          </Avatar>
+        </button>
       </header>
 
       {/* Fixed bottom navigation bar */}

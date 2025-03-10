@@ -4,6 +4,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { useIsMobile } from "@/hooks/use-mobile";
 import ProductItem from "./ProductItem";
 import CarouselNavigation from "./CarouselNavigation";
+import { useAppMode } from '@/contexts/AppModeContext';
 
 interface TimerState {
   hours: number;
@@ -38,6 +39,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
   const [api, setApi] = useState<any>(null);
   const isMobile = useIsMobile();
+  const { isPWA } = useAppMode();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -84,9 +86,9 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   };
 
   return (
-    <section className="mb-8">
+    <section className="mb-8 w-full">
       <div 
-        className="relative" 
+        className="relative w-full" 
         onTouchStart={handleInteraction}
         onMouseMove={handleInteraction}
       >
@@ -100,11 +102,11 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             dragFree: false
           }}
         >
-          <CarouselContent className="ml-0">
+          <CarouselContent className={`ml-0 ${isPWA ? 'pl-0' : ''}`}>
             {products.map((product, index) => {
               const initialTime = getInitialTime(index);
               return (
-                <CarouselItem key={product.id} className="basis-4/5 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 pl-4">
+                <CarouselItem key={product.id} className={`basis-4/5 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 ${isPWA ? 'pl-2 pr-2' : 'pl-4'}`}>
                   <ProductItem 
                     product={product} 
                     initialTime={initialTime}

@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import GalleryImagePanel from './GalleryImagePanel';
 import GalleryDetailsPanel from './GalleryDetailsPanel';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAppMode } from '@/contexts/AppModeContext';
 
 interface FeaturedGalleriesProps {
   galleries: Gallery[];
@@ -29,6 +30,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
   const [interactionTimeout, setInteractionTimeout] = useState<NodeJS.Timeout | null>(null);
   const [api, setApi] = useState<any>(null);
   const isMobile = useIsMobile();
+  const { isPWA } = useAppMode();
 
   useEffect(() => {
     if (!isMobile) return;
@@ -74,7 +76,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
 
   return (
     <div 
-      className="relative focus:outline-none w-full" 
+      className={`relative focus:outline-none w-full ${isPWA ? 'px-0' : ''}`}
       onTouchStart={handleInteraction}
       onMouseMove={handleInteraction}
       onKeyDown={handleKeyDown}
@@ -91,7 +93,7 @@ const FeaturedGalleries: React.FC<FeaturedGalleriesProps> = ({
         <CarouselContent>
           {galleries.map((gallery) => (
             <CarouselItem key={gallery.id}>
-              <div className="px-4 py-8">
+              <div className={`py-8 ${isPWA ? 'px-0' : 'px-4'}`}>
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

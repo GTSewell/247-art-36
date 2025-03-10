@@ -12,7 +12,7 @@ const Index = () => {
   const { isPWA } = useAppMode();
 
   return (
-    <main className="min-h-screen">
+    <main className={`min-h-screen ${isPWA ? 'overflow-hidden' : ''}`}>
       {isPWA ? <PWANavigation /> : <Navigation />}
       <Hero />
       <WhatIsZap />

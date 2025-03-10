@@ -37,7 +37,7 @@ const PWAHome = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-zap-yellow">
+      <div className="min-h-screen bg-zap-yellow overflow-hidden">
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
           <p className="text-red-600 mb-4">{error}</p>
@@ -54,10 +54,10 @@ const PWAHome = () => {
 
   return (
     <TimerProvider>
-      <div className="min-h-screen bg-zap-yellow pb-20">
+      <div className="min-h-screen bg-zap-yellow overflow-hidden pb-20">
         {isPWA ? <PWANavigation /> : <Navigation />}
 
-        <main className={`container mx-auto px-4 ${isPWA ? 'pt-16' : 'pt-24'}`}>
+        <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'}`}>
           {/* Featured Artists Section */}
           {isLoading ? (
             <div className="flex justify-center items-center h-24">
