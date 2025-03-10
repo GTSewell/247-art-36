@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, ShoppingBag, User, Menu, X } from "lucide-react";
+import { Home, Users, ShoppingBag, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useAppMode } from "@/contexts/AppModeContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const PWANavigation = () => {
   const location = useLocation();
@@ -34,48 +35,57 @@ const PWANavigation = () => {
     }
   };
 
+  // Determine active route
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
     <>
-      {/* Fixed bottom navigation bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
-        <div className="flex justify-around items-center h-16">
-          <Link to="/" className="flex flex-col items-center justify-center text-gray-500 hover:text-zap-red">
-            <Home className="h-6 w-6" />
-            <span className="text-xs mt-1">Home</span>
-          </Link>
-          
-          <Link to="/artists" className="flex flex-col items-center justify-center text-gray-500 hover:text-zap-red">
-            <Search className="h-6 w-6" />
-            <span className="text-xs mt-1">Artists</span>
-          </Link>
-          
-          <Link to="/store" className="flex flex-col items-center justify-center text-gray-500 hover:text-zap-red">
-            <ShoppingBag className="h-6 w-6" />
-            <span className="text-xs mt-1">Store</span>
-          </Link>
-          
-          <button 
-            onClick={() => setIsMenuOpen(true)}
-            className="flex flex-col items-center justify-center text-gray-500 hover:text-zap-red"
-          >
-            <User className="h-6 w-6" />
-            <span className="text-xs mt-1">Account</span>
-          </button>
-        </div>
-      </nav>
-
-      {/* Fixed header with logo */}
+      {/* Fixed header with logo and account button */}
       <header className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 h-16 z-50">
-        <div className="flex items-center justify-center h-full">
-          <Link to="/">
+        <div className="flex items-center justify-between h-full px-4">
+          <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" 
               alt="247art" 
               className="h-8"
             />
           </Link>
+          
+          <button 
+            onClick={() => setIsMenuOpen(true)}
+            className="flex items-center justify-center"
+          >
+            <Avatar className="h-10 w-10">
+              <AvatarImage src="/lovable-uploads/e53d8dc1-883b-4535-9c59-532b21c3e93b.png" alt="Profile" />
+              <AvatarFallback className="bg-gray-200">
+                {user?.email ? user.email.charAt(0).toUpperCase() : "?"}
+              </AvatarFallback>
+            </Avatar>
+          </button>
         </div>
       </header>
+
+      {/* Fixed bottom navigation bar */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+        <div className="flex justify-around items-center h-16">
+          <Link to="/" className="flex flex-col items-center justify-center text-gray-500">
+            <Home className={cn("h-6 w-6", isActive("/") && "text-[#FEF7CD]")} />
+            <span className={cn("text-xs mt-1", isActive("/") && "text-[#FEF7CD]")}>Home</span>
+          </Link>
+          
+          <Link to="/artists" className="flex flex-col items-center justify-center text-gray-500">
+            <Users className={cn("h-6 w-6", isActive("/artists") && "text-[#0EA5E9]")} />
+            <span className={cn("text-xs mt-1", isActive("/artists") && "text-[#0EA5E9]")}>Artists</span>
+          </Link>
+          
+          <Link to="/store" className="flex flex-col items-center justify-center text-gray-500">
+            <ShoppingBag className={cn("h-6 w-6", isActive("/store") && "text-[#ea384c]")} />
+            <span className={cn("text-xs mt-1", isActive("/store") && "text-[#ea384c]")}>Store</span>
+          </Link>
+        </div>
+      </nav>
 
       {/* Sliding account menu */}
       <div 
