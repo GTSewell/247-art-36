@@ -35,6 +35,11 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [swiping, setSwiping] = useState(false);
   const [swipeOffset, setSwipeOffset] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+  
+  // Animation states
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [nextArtistIndex, setNextArtistIndex] = useState<number | null>(null);
   
   // Minimum swipe distance required (in pixels)
   const minSwipeDistance = 50;
@@ -55,15 +60,57 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   
   // Create handlers for next and previous that implement looping
   const handlePrevious = () => {
+    if (isAnimating) return;
+    
     const newIndex = selectedArtistIndex === 0 ? artists.length - 1 : selectedArtistIndex - 1;
     logger.info(`Navigating to previous artist, new index: ${newIndex}`);
-    onArtistChange(newIndex);
+    
+    if (isMobile) {
+      // Start animation
+      setSwipeDirection('right');
+      setNextArtistIndex(newIndex);
+      setIsAnimating(true);
+      
+      // Apply animation and then change artist
+      setTimeout(() => {
+        onArtistChange(newIndex);
+        // Reset animation states after changing artist
+        setTimeout(() => {
+          setIsAnimating(false);
+          setSwipeDirection(null);
+          setNextArtistIndex(null);
+        }, 50);
+      }, 300);
+    } else {
+      onArtistChange(newIndex);
+    }
   };
   
   const handleNext = () => {
+    if (isAnimating) return;
+    
     const newIndex = selectedArtistIndex === artists.length - 1 ? 0 : selectedArtistIndex + 1;
     logger.info(`Navigating to next artist, new index: ${newIndex}`);
-    onArtistChange(newIndex);
+    
+    if (isMobile) {
+      // Start animation
+      setSwipeDirection('left');
+      setNextArtistIndex(newIndex);
+      setIsAnimating(true);
+      
+      // Apply animation and then change artist
+      setTimeout(() => {
+        onArtistChange(newIndex);
+        // Reset animation states after changing artist
+        setTimeout(() => {
+          setIsAnimating(false);
+          setSwipeDirection(null);
+          setNextArtistIndex(null);
+        }, 50);
+      }, 300);
+    } else {
+      onArtistChange(newIndex);
+    }
   };
 
   // Touch event handlers for swipe navigation
@@ -76,17 +123,28 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    if (!isMobile || touchStart === null) return;
+    if (!isMobile || touchStart === null || isAnimating) return;
     const currentTouch = e.targetTouches[0].clientX;
     setTouchEnd(currentTouch);
     
     // Calculate and set the swipe offset for visual feedback
     const offset = currentTouch - touchStart;
     setSwipeOffset(offset);
+    
+    // Determine swipe direction for visual feedback
+    if (offset > 0) {
+      setSwipeDirection('right');
+      const newIndex = selectedArtistIndex === 0 ? artists.length - 1 : selectedArtistIndex - 1;
+      setNextArtistIndex(newIndex);
+    } else if (offset < 0) {
+      setSwipeDirection('left');
+      const newIndex = selectedArtistIndex === artists.length - 1 ? 0 : selectedArtistIndex + 1;
+      setNextArtistIndex(newIndex);
+    }
   };
 
   const onTouchEnd = () => {
-    if (!isMobile || !touchStart || !touchEnd) {
+    if (!isMobile || !touchStart || !touchEnd || isAnimating) {
       setSwiping(false);
       setSwipeOffset(0);
       return;
@@ -102,6 +160,10 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
       handleNext();
     } else if (isRightSwipe) {
       handlePrevious();
+    } else {
+      // Reset if swipe wasn't significant
+      setSwipeDirection(null);
+      setNextArtistIndex(null);
     }
 
     // Reset touch states
@@ -113,51 +175,93 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   
   // Apply dynamic styles for swipe animation
   const getSwipeStyles = () => {
-    if (!swiping || swipeOffset === 0) return {};
+    if (isAnimating) {
+      // During transition animation
+      return {
+        transform: swipeDirection === 'left' 
+          ? 'translateX(-100%)' 
+          : swipeDirection === 'right' 
+            ? 'translateX(100%)' 
+            : 'translateX(0)',
+        transition: 'transform 0.3s ease-out'
+      };
+    }
     
+    if (swiping && swipeOffset !== 0) {
+      // During active swiping
+      return {
+        transform: `translateX(${swipeOffset}px)`,
+        transition: 'none'
+      };
+    }
+    
+    // Default state
     return {
-      transform: `translateX(${swipeOffset * 0.2}px)`,
-      transition: swiping ? 'none' : 'transform 0.3s ease-out'
+      transform: 'translateX(0)',
+      transition: 'transform 0.3s ease-out'
+    };
+  };
+  
+  // Get styles for the indicator dots
+  const getDotStyle = (index: number) => {
+    return {
+      width: index === selectedArtistIndex ? '10px' : '8px',
+      height: index === selectedArtistIndex ? '10px' : '8px',
+      backgroundColor: index === selectedArtistIndex ? '#FFFFFF' : '#AAAAAA',
+      borderRadius: '50%',
+      margin: '0 4px',
+      transition: 'all 0.3s ease'
     };
   };
   
   return (
-    <div 
-      ref={contentRef}
-      className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-      style={getSwipeStyles()}
-    >
-      <div className="lg:w-1/2 overflow-hidden relative">
-        <ArtistImagePanel
-          artist={selectedArtist}
-          onFavoriteToggle={onFavoriteToggle}
-          isFavorite={isFavorite}
-          refreshArtists={refreshArtists}
-        />
+    <div className="relative overflow-hidden">
+      {/* Main content with swipe animation */}
+      <div 
+        ref={contentRef}
+        className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        style={getSwipeStyles()}
+      >
+        <div className="lg:w-1/2 overflow-hidden relative">
+          <ArtistImagePanel
+            artist={selectedArtist}
+            onFavoriteToggle={onFavoriteToggle}
+            isFavorite={isFavorite}
+            refreshArtists={refreshArtists}
+          />
+        </div>
+        
+        <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto">
+          <ArtistDetailsPanel
+            artist={selectedArtist}
+            onFavoriteToggle={onFavoriteToggle}
+            isFavorite={isFavorite}
+            onSelect={handleSelect}
+          />
+        </div>
       </div>
       
-      <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto">
-        <ArtistDetailsPanel
-          artist={selectedArtist}
-          onFavoriteToggle={onFavoriteToggle}
-          isFavorite={isFavorite}
-          onSelect={handleSelect}
-        />
-      </div>
-      
+      {/* Desktop navigation arrows */}
       <ArtistCarouselNavigation 
         isMobile={isMobile} 
         onPrevious={handlePrevious} 
         onNext={handleNext} 
       />
       
+      {/* Pagination indicator dots for mobile */}
       {isMobile && (
-        <div className="fixed bottom-24 left-0 right-0 flex justify-center pointer-events-none">
-          <div className="bg-black/75 text-white px-4 py-2 rounded-full text-sm">
-            Swipe to navigate artists {selectedArtistIndex + 1}/{artists.length}
+        <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center">
+          <div className="flex items-center bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
+            {artists.map((_, index) => (
+              <div 
+                key={index} 
+                style={getDotStyle(index)}
+                onClick={() => onArtistChange(index)}
+              />
+            ))}
           </div>
         </div>
       )}
