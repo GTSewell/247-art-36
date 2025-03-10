@@ -66,10 +66,10 @@ const PWAArtists = () => {
   };
 
   return (
-    <div className="pb-20 pt-16">
+    <div className="pb-20 pt-8">
       {isPWA ? <PWANavigation /> : <Navigation />}
       
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex items-center gap-2 mb-4">
           <Input
             type="text"

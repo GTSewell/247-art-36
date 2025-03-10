@@ -6,10 +6,8 @@ import { Home, Users, ShoppingBag, User } from 'lucide-react';
 const PWANavigation = () => {
   return (
     <>
-      {/* Top transparent header */}
-      <header className="fixed top-0 left-0 right-0 z-10 bg-black bg-opacity-0 pwa-header">
-        {/* Header content can be added here if needed */}
-      </header>
+      {/* Top transparent header - Height reduced */}
+      <header className="fixed top-0 left-0 right-0 z-10 bg-black bg-opacity-0 pwa-header h-1"></header>
       
       {/* Bottom navigation bar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-black text-white shadow-lg z-50 pwa-footer h-16">

@@ -62,11 +62,14 @@ body[data-pwa="true"] .CarouselItem {
   padding-right: 8px;
 }
 
-/* PWA header styles */
+/* PWA header styles - Updated to remove extra spacing */
 body[data-pwa="true"] .pwa-header {
   background: transparent;
   border: none;
   box-shadow: none;
+  height: 8px; /* Reduced from default height */
+  min-height: 8px; /* Added minimum height */
+  padding: 0; /* Removed any padding */
 }
 
 /* Fix for Artist Dashboard scrolling */
@@ -137,4 +140,15 @@ body[data-pwa="true"] .timed-editions-carousel .add-to-cart-btn {
 body[data-pwa="true"] main {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain; /* Enable pull-to-refresh */
+}
+
+/* Remove top spacing from PWA pages */
+body[data-pwa="true"] .container {
+  padding-top: 0;
+}
+
+/* Adjust content spacing for better layout */
+body[data-pwa="true"] .container .py-4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }

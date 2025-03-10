@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -129,7 +130,7 @@ const PWAStore = () => {
       <div className="min-h-screen bg-zap-red">
         {isPWA ? <PWANavigation /> : <Navigation />}
         
-        <main className={`container mx-auto px-4 ${isPWA ? 'pt-16' : 'pt-24'} pb-24`}>
+        <main className={`container mx-auto px-4 ${isPWA ? 'pt-8' : 'pt-24'} pb-24`}>
           {selectedCategory ? (
             <div>
               <div className="flex items-center justify-between mb-4">
@@ -152,8 +153,8 @@ const PWAStore = () => {
           ) : (
             <>
               {/* Timed Edition Drops Section */}
-              <div className="mb-6">
-                <div className="flex justify-center mb-3">
+              <div className="mb-6 mt-0">
+                <div className="flex justify-center mb-2">
                   <img 
                     src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
                     alt="Timed Editions" 

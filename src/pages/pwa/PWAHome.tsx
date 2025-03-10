@@ -108,7 +108,7 @@ const PWAHome = () => {
       <div className={`min-h-screen bg-zap-yellow ${isPWA ? 'h-screen' : ''}`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
 
-        <main className={`w-full ${isPWA ? 'pt-2 pb-16' : 'pt-24 pb-20'} ${isPWA ? 'h-[calc(100vh-64px)] overflow-y-auto' : ''}`}>
+        <main className={`w-full ${isPWA ? 'pt-0 pb-16' : 'pt-24 pb-20'} ${isPWA ? 'h-[calc(100vh-64px)] overflow-y-auto' : ''}`}>
           {isRefreshing && (
             <div className="absolute top-0 left-0 right-0 flex justify-center items-center py-2 bg-zap-yellow z-10">
               <div className="animate-spin mr-2 h-5 w-5 border-2 border-zap-red border-t-transparent rounded-full"></div>
