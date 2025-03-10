@@ -1,12 +1,13 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { User, LogIn, LogOut, Settings } from "lucide-react";
+import { LogIn, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface MobileUserMenuProps {
   user: any | null;
@@ -31,7 +32,9 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
     return (
       <div className="py-2">
         <Button variant="ghost" disabled className="w-full justify-start">
-          <User className="mr-2 h-4 w-4" />
+          <Avatar className="h-6 w-6 mr-2">
+            <AvatarFallback className="bg-gray-200">...</AvatarFallback>
+          </Avatar>
           Loading...
         </Button>
       </div>
@@ -46,7 +49,12 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
           className="w-full justify-start"
           onClick={() => navigate("/auth")}
         >
-          <LogIn className="mr-2 h-4 w-4" />
+          <Avatar className="h-6 w-6 mr-2">
+            <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
+            <AvatarFallback className="bg-gray-200">
+              <LogIn className="h-4 w-4" />
+            </AvatarFallback>
+          </Avatar>
           Sign In
         </Button>
       </div>
@@ -55,7 +63,15 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
 
   return (
     <div className="py-2 space-y-2">
-      <div className="px-3 text-sm font-medium">{user.email || "My Account"}</div>
+      <div className="px-3 flex items-center">
+        <Avatar className="h-6 w-6 mr-2">
+          <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
+          <AvatarFallback className="bg-gray-200">
+            {user.email ? user.email.charAt(0).toUpperCase() : "U"}
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-sm font-medium">{user.email || "My Account"}</span>
+      </div>
       <Separator />
       <Link to="/dashboard/artist" className="block">
         <Button variant="ghost" className="w-full justify-start">
