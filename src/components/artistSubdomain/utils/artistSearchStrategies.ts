@@ -1,6 +1,6 @@
 
-import { basicSearch } from './searchStrategies/basicSearch';
-import { advancedSearch } from './searchStrategies/advancedSearch';
+import { searchArtistBasic } from './searchStrategies/basicSearch';
+import { searchArtistAdvanced } from './searchStrategies/advancedSearch';
 import { logger } from '@/utils/logger';
 
 /**
@@ -15,7 +15,7 @@ export const findArtistByName = async (artistName: string | undefined) => {
     }
     
     // First try a basic search (exact match)
-    const { data: basicData, error: basicError } = await basicSearch(artistName);
+    const { artistData: basicData, artistError: basicError } = await searchArtistBasic(artistName);
     
     if (basicData && !basicError) {
       logger.info(`Artist found with basic search: ${artistName}`);
@@ -23,7 +23,7 @@ export const findArtistByName = async (artistName: string | undefined) => {
     }
     
     // If basic search fails, try advanced search (fuzzy match)
-    const { data: advancedData, error: advancedError } = await advancedSearch(artistName);
+    const { artistData: advancedData, artistError: advancedError } = await searchArtistAdvanced(artistName);
     
     if (advancedData && !advancedError) {
       logger.info(`Artist found with advanced search: ${artistName}`);
