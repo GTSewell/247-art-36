@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import CollectorTable from "./collectors/CollectorTable";
 import CollectorMessageModal from "./collectors/CollectorMessageModal";
-import { collectors } from "./collectors/mockData";
+import { collectors as initialCollectors } from "./collectors/mockData";
 import { useCollectorExport } from "./collectors/useCollectorExport";
 import { Collector } from "./collectors/types";
 
 const MyCollectorsCard: React.FC = () => {
   const isMobile = useIsMobile();
+  const [collectors, setCollectors] = useState<Collector[]>(initialCollectors);
   const { handleDownload } = useCollectorExport(collectors);
   const [selectedCollectorIds, setSelectedCollectorIds] = useState<string[]>([]);
   const [messageModalOpen, setMessageModalOpen] = useState(false);
@@ -23,6 +24,16 @@ const MyCollectorsCard: React.FC = () => {
       prev.includes(id) 
         ? prev.filter(collectorId => collectorId !== id) 
         : [...prev, id]
+    );
+  };
+
+  const handleMessageSent = (collectorIds: string[]) => {
+    setCollectors(prevCollectors => 
+      prevCollectors.map(collector => 
+        collectorIds.includes(collector.id) 
+          ? { ...collector, messageSent: true } 
+          : collector
+      )
     );
   };
 
@@ -82,6 +93,7 @@ const MyCollectorsCard: React.FC = () => {
         open={messageModalOpen}
         onOpenChange={setMessageModalOpen}
         selectedCollectors={selectedCollectors}
+        onMessageSent={handleMessageSent}
       />
     </Card>
   );

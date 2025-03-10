@@ -1,5 +1,6 @@
+
 import React from "react";
-import { Users, MessageSquare, Mail, DollarSign } from "lucide-react";
+import { Users, MessageSquare, Mail, DollarSign, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CollectorAvatar from "./CollectorAvatar";
 import { CollectorTableProps } from "./types";
@@ -18,6 +19,7 @@ const CollectorTable: React.FC<CollectorTableProps> = ({
             <th className="py-2 px-4 font-semibold">
               <span className="sr-only">Select</span>
             </th>
+            <th className="py-2 px-4 font-semibold">Sent</th>
             <th className="py-2 px-4 font-semibold">Name</th>
             <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
             <th className="py-2 px-4 font-semibold">Sales</th>
@@ -34,6 +36,13 @@ const CollectorTable: React.FC<CollectorTableProps> = ({
                   checked={selectedCollectors.includes(collector.id)}
                   onCheckedChange={() => onSelectCollector && onSelectCollector(collector.id)}
                 />
+              </td>
+              <td className="py-3 px-4">
+                {collector.messageSent ? (
+                  <Check className="h-5 w-5 text-zap-green" />
+                ) : (
+                  <X className="h-5 w-5 text-zap-red" />
+                )}
               </td>
               <td className="py-3 px-4">
                 <div className="flex items-center space-x-2">

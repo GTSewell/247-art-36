@@ -7,6 +7,7 @@ export interface Collector {
   sales: number[];
   collectorName: string;
   email: string;
+  messageSent?: boolean;
   social: {
     instagram?: string;
     facebook?: string;

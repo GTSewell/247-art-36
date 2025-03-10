@@ -11,12 +11,14 @@ interface CollectorMessageModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   selectedCollectors: Collector[];
+  onMessageSent: (collectorIds: string[]) => void;
 }
 
 const CollectorMessageModal: React.FC<CollectorMessageModalProps> = ({
   open,
   onOpenChange,
   selectedCollectors,
+  onMessageSent,
 }) => {
   const { toast } = useToast();
   const [message, setMessage] = useState(
@@ -29,6 +31,10 @@ const CollectorMessageModal: React.FC<CollectorMessageModalProps> = ({
       title: "Messages Sent",
       description: `Your message has been sent to ${selectedCollectors.length} collector(s).`,
     });
+    
+    // Mark these collectors as messaged
+    onMessageSent(selectedCollectors.map(collector => collector.id));
+    
     onOpenChange(false);
   };
 
