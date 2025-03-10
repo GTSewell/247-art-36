@@ -125,7 +125,7 @@ const MyCollectorsCard: React.FC = () => {
           <ScrollArea className={cn(
             "h-[350px]",
             isMobile ? "w-full overflow-x-auto" : "w-full"
-          )} orientation="both">
+          )}>
             <div className="min-w-[800px]">
               <table className="w-full">
                 <thead>
