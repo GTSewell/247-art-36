@@ -57,27 +57,30 @@ const PWAHome = () => {
       <div className="min-h-screen max-h-screen bg-zap-yellow overflow-hidden">
         {isPWA ? <PWANavigation /> : <Navigation />}
 
-        <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'} pb-24 overflow-y-auto`}>
-          {/* Featured Artists Section */}
-          {isLoading ? (
-            <div className="flex justify-center items-center h-24">
-              <p className="text-lg">Loading artists...</p>
-            </div>
-          ) : (
-            <PWAFeaturedArtists
-              featuredArtists={featuredArtists}
-              favoriteArtists={favoriteArtists}
-              handleFavoriteToggle={handleFavoriteToggle}
-              refreshArtists={refreshArtists}
-              refreshArtist={refreshArtist}
-            />
-          )}
+        {/* Updated main container with proper spacing and overflow control */}
+        <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'} pb-24 overflow-y-auto h-[calc(100vh-80px)]`}>
+          <div className="pb-20"> {/* Added container with bottom padding to prevent footer overlap */}
+            {/* Featured Artists Section */}
+            {isLoading ? (
+              <div className="flex justify-center items-center h-24">
+                <p className="text-lg">Loading artists...</p>
+              </div>
+            ) : (
+              <PWAFeaturedArtists
+                featuredArtists={featuredArtists}
+                favoriteArtists={favoriteArtists}
+                handleFavoriteToggle={handleFavoriteToggle}
+                refreshArtists={refreshArtists}
+                refreshArtist={refreshArtist}
+              />
+            )}
 
-          {/* Timed Edition Drops Section - Added extra spacing */}
-          <div className="mb-20"> {/* Added extra bottom margin to prevent footer overlap */}
-            <PWATimedEditions
-              isLoading={isLoading}
-            />
+            {/* Timed Edition Drops Section */}
+            <div className="mt-4">
+              <PWATimedEditions
+                isLoading={isLoading}
+              />
+            </div>
           </div>
         </main>
       </div>

@@ -6,6 +6,7 @@ import ArtistCard from '@/components/artists/ArtistCard';
 import ArtistCarouselNavigation from '@/components/artists/ArtistCarouselNavigation';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ArtistDetailModal from '@/components/artists/ArtistDetailModal';
+import { logger } from '@/utils/logger';
 
 interface PWAArtistCarouselProps {
   artists: Artist[];
@@ -58,6 +59,7 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
       const timer = setTimeout(() => {
         // Scroll to the first item and center it
         api.scrollTo(0, { immediate: true });
+        logger.info("Artist carousel initialized and scrolled to first item");
       }, 100);
       
       return () => clearTimeout(timer);
@@ -79,18 +81,18 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
         opts={{
           align: "center",
           loop: true,
-          dragFree: true, // Changed to true for smoother dragging
+          dragFree: true,
           containScroll: "trimSnaps",
           slidesToScroll: 1,
           // Improved touch settings for mobile
-          dragThreshold: 5, // Lower threshold for easier dragging
+          dragThreshold: 10, // Lower threshold for easier dragging
         }}
         className="w-full"
       >
         <CarouselContent className="-ml-2 md:ml-0">
           {artists.map((artist) => (
             <CarouselItem key={artist.id} className="basis-3/4 sm:basis-1/2 md:basis-1/3 pl-2 md:pl-4">
-              <div className="h-150">
+              <div className="h-auto">
                 <ArtistCard
                   id={artist.id}
                   name={artist.name}

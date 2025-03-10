@@ -69,8 +69,8 @@ const PWANavigation = () => {
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
         <div className="flex justify-around items-center h-16">
           <Link to="/" className="flex flex-col items-center justify-center text-gray-500">
-            <Home className={cn("h-6 w-6", isActive("/") && "text-[#FEF7CD]")} />
-            <span className={cn("text-xs mt-1", isActive("/") && "text-[#FEF7CD]")}>Home</span>
+            <Home className={cn("h-6 w-6", isActive("/") && "text-[#ea384c]")} />
+            <span className={cn("text-xs mt-1", isActive("/") && "text-[#ea384c]")}>Home</span>
           </Link>
           
           <Link to="/artists" className="flex flex-col items-center justify-center text-gray-500">

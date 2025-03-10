@@ -28,34 +28,37 @@ body[data-pwa="true"] main {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  height: calc(100% - 110px); /* Account for header and footer */
+  height: calc(100% - 80px); /* Account for footer only since header is transparent */
   width: 100%;
-  padding-bottom: 80px; /* Increased footer clearance */
+  padding-bottom: 100px; /* Increased footer clearance */
 }
 
 /* PWA specific carousel styles */
 body[data-pwa="true"] .carousel-container {
-  width: 100vw;
+  width: 100%;
   padding: 0;
   margin: 0;
 }
 
-body[data-pwa="true"] .embla__container {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-body[data-pwa="true"] .embla__slide {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
 /* Enhanced carousel experience for PWA */
 body[data-pwa="true"] .embla {
-  overflow: hidden;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
+  overflow: visible;
   touch-action: pan-x;
+}
+
+/* Artist and Product Carousels */
+body[data-pwa="true"] .artist-carousel,
+body[data-pwa="true"] .timed-editions-carousel {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+body[data-pwa="true"] .embla__viewport {
+  overflow: visible;
 }
 
 body[data-pwa="true"] .CarouselContent {
@@ -64,8 +67,9 @@ body[data-pwa="true"] .CarouselContent {
 }
 
 body[data-pwa="true"] .CarouselItem {
-  min-width: 75%;
+  min-width: 70%;
   padding-left: 8px;
+  padding-right: 8px;
 }
 
 /* PWA header styles */
@@ -82,18 +86,21 @@ body[data-pwa="true"] .dashboard-content {
   padding-bottom: 100px;
 }
 
-/* Improved touch handling for carousels */
-body[data-pwa="true"] .artist-carousel,
-body[data-pwa="true"] .timed-editions-carousel {
-  touch-action: pan-x;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 16px; /* Add space above footer */
-}
-
 /* Ensure the footer navbar doesn't overlap content */
 body[data-pwa="true"] .pwa-footer {
   z-index: 50;
   background-color: white;
+}
+
+/* Override embla carousel styles for PWA */
+body[data-pwa="true"] .embla__container {
+  display: flex;
+  will-change: transform;
+}
+
+/* Make sure carousel items don't get squished */
+body[data-pwa="true"] .embla__slide {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: none;
 }

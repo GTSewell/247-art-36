@@ -5,6 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import ProductItem from "./ProductItem";
 import CarouselNavigation from "./CarouselNavigation";
 import { useAppMode } from '@/contexts/AppModeContext';
+import { logger } from '@/utils/logger';
 
 interface TimerState {
   hours: number;
@@ -57,6 +58,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
       const timer = setTimeout(() => {
         // Scroll to the first item and center it
         api.scrollTo(0, { immediate: true });
+        logger.info("Product carousel initialized and scrolled to first item");
       }, 100);
       
       return () => clearTimeout(timer);
@@ -86,7 +88,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   };
 
   return (
-    <section className="mb-8 w-full">
+    <section className="mb-4 w-full">
       <div 
         className="relative w-full" 
         onTouchStart={handleInteraction}
@@ -99,15 +101,15 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             align: "center",
             loop: true,
             skipSnaps: false,
-            dragFree: true, // Changed to true for smoother swipe
-            dragThreshold: 5 // Lower threshold for easier dragging
+            dragFree: true,
+            dragThreshold: 10, // Lower threshold for easier dragging
           }}
         >
-          <CarouselContent className={`ml-0 ${isPWA ? 'pl-0' : ''}`}>
+          <CarouselContent className={`${isPWA ? 'ml-0 pl-0' : 'ml-4'}`}>
             {products.map((product, index) => {
               const initialTime = getInitialTime(index);
               return (
-                <CarouselItem key={product.id} className={`basis-4/5 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 ${isPWA ? 'pl-2 pr-2' : 'pl-4'}`}>
+                <CarouselItem key={product.id} className={`${isPWA ? 'basis-3/4 pl-2 pr-2' : 'basis-4/5 pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4'}`}>
                   <ProductItem 
                     product={product} 
                     initialTime={initialTime}
