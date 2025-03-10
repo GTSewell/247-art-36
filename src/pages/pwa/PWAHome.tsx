@@ -54,11 +54,11 @@ const PWAHome = () => {
 
   return (
     <TimerProvider>
-      <div className="min-h-screen bg-zap-yellow">
+      <div className={`min-h-screen bg-zap-yellow ${isPWA ? 'h-screen' : ''}`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
 
-        <main className={`w-full ${isPWA ? 'pt-4' : 'pt-24'} pb-20`}>
-          <div className="pb-64">
+        <main className={`w-full ${isPWA ? 'pt-2 pb-16' : 'pt-24 pb-20'} ${isPWA ? 'h-[calc(100vh-64px)] overflow-y-auto' : ''}`}>
+          <div className={`${isPWA ? 'pb-20' : 'pb-64'}`}>
             {/* Featured Artists Section */}
             {isLoading ? (
               <div className="flex justify-center items-center h-24">
@@ -75,7 +75,7 @@ const PWAHome = () => {
             )}
 
             {/* Timed Edition Drops Section - removed mt-4 to eliminate space */}
-            <div className="mb-12">
+            <div className={`${isPWA ? 'mb-16' : 'mb-12'}`}>
               <PWATimedEditions
                 isLoading={isLoading}
               />

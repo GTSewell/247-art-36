@@ -3,17 +3,15 @@
 body[data-pwa="true"] {
   overscroll-behavior: none;
   touch-action: pan-y;
-  /* Removed position:fixed to allow proper scrolling */
   width: 100vw;
-  min-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: hidden;
 }
 
 body[data-pwa="true"] #root {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto; /* Allow vertical scrolling */
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 body[data-pwa="true"] main {
@@ -21,7 +19,8 @@ body[data-pwa="true"] main {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   width: 100%;
-  padding-bottom: 160px; /* Significantly increased footer clearance */
+  height: calc(100vh - 64px);
+  padding-bottom: 80px; /* Significantly increased footer clearance */
 }
 
 /* PWA specific carousel styles */
@@ -44,8 +43,8 @@ body[data-pwa="true"] .timed-editions-carousel {
   -webkit-overflow-scrolling: touch;
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 48px; /* Further increased bottom padding to prevent cutoff */
-  margin-bottom: 32px; /* Further increased margin to add more space before footer */
+  padding-bottom: 48px; /* Increased bottom padding to prevent cutoff */
+  margin-bottom: 24px; /* Increased margin to add more space before footer */
 }
 
 body[data-pwa="true"] .embla__viewport {
@@ -82,6 +81,10 @@ body[data-pwa="true"] .pwa-footer {
   z-index: 50;
   background-color: black;
   height: 64px; /* Ensure consistent footer height */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 /* Override embla carousel styles for PWA */

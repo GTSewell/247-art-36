@@ -88,7 +88,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   };
 
   return (
-    <section className="mb-16 w-full"> {/* Significantly increased bottom margin */}
+    <section className={`${isPWA ? 'mb-20' : 'mb-16'} w-full`}> {/* Significantly increased bottom margin for PWA */}
       <div 
         className="relative w-full" 
         onTouchStart={handleInteraction}
