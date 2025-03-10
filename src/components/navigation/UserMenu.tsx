@@ -37,7 +37,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
 
   if (isLoading) {
     return (
-      <Button variant="ghost" size="icon" disabled>
+      <Button variant="ghost" size="icon" disabled className="p-0">
         <Avatar className="h-8 w-8">
           <AvatarFallback className="bg-gray-200">...</AvatarFallback>
         </Avatar>
@@ -48,7 +48,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
 
   if (!user) {
     return (
-      <Button variant="outline" size="icon" onClick={() => navigate("/auth")} title="Sign In">
+      <Button variant="ghost" size="icon" onClick={() => navigate("/auth")} title="Sign In" className="p-0">
         <Avatar className="h-8 w-8">
           <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
           <AvatarFallback className="bg-gray-200">
@@ -63,7 +63,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" title="Account">
+        <Button variant="ghost" size="icon" title="Account" className="p-0">
           <Avatar className="h-8 w-8">
             <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
             <AvatarFallback className="bg-gray-200">

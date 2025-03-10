@@ -51,6 +51,7 @@ const Navigation = () => {
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
+              className="p-0" /* Removed padding to eliminate the button outline */
             >
               {isOpen ? (
                 <X className="h-6 w-6" />

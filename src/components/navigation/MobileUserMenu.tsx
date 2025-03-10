@@ -31,7 +31,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
   if (isLoading) {
     return (
       <div className="py-2">
-        <Button variant="ghost" disabled className="w-full justify-start">
+        <Button variant="ghost" disabled className="w-full justify-start p-0">
           <Avatar className="h-6 w-6 mr-2">
             <AvatarFallback className="bg-gray-200">...</AvatarFallback>
           </Avatar>
@@ -45,8 +45,8 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
     return (
       <div className="py-2">
         <Button 
-          variant="outline" 
-          className="w-full justify-start"
+          variant="ghost" 
+          className="w-full justify-start p-0"
           onClick={() => navigate("/auth")}
         >
           <Avatar className="h-6 w-6 mr-2">

@@ -76,7 +76,7 @@ const PWANavigation = () => {
             <img 
               src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
               alt="Account" 
-              className="h-8 w-8" 
+              className="h-10 w-10" /* Increased from h-8 w-8 (30% larger) */
             />
           </NavLink>
         </div>
