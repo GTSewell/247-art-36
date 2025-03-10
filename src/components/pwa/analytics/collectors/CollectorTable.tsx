@@ -41,7 +41,9 @@ const CollectorTable: React.FC<CollectorTableProps> = ({
                   checked={selectedCollectors.includes(collector.id)}
                   onCheckedChange={() => onSelectCollector && onSelectCollector(collector.id)}
                   disabled={!canContactCollector(collector)}
-                  className={!canContactCollector(collector) ? "opacity-50 cursor-not-allowed" : ""}
+                  className={cn(
+                    !canContactCollector(collector) ? "opacity-50 cursor-not-allowed bg-[#C8C8C9]" : ""
+                  )}
                 />
               </td>
               <td className="py-3 px-4">
