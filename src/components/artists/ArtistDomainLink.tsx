@@ -11,9 +11,9 @@ const ArtistDomainLink: React.FC<ArtistDomainLinkProps> = ({
   artistDomain, 
   handleDomainClick 
 }) => {
-  // Remove spaces from the display version of the domain
+  // Remove spaces and special characters from the display version of the domain
   // This ensures what's displayed matches what's in the URL
-  const displayDomain = artistDomain.replace(/\s+/g, '');
+  const displayDomain = artistDomain?.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') || '';
   
   return (
     <div className="flex-none mb-3 flex items-center text-sm">

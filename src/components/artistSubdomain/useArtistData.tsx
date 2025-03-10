@@ -17,8 +17,8 @@ export function useArtistData(artistName: string | undefined) {
       try {
         setLoading(true);
         
-        if (!artistName) {
-          logger.warn("Artist name is undefined, cannot fetch artist data");
+        if (!artistName || artistName.trim() === '') {
+          logger.warn("Artist name is undefined or empty, cannot fetch artist data");
           setLoading(false);
           return;
         }

@@ -12,35 +12,28 @@ import { logger } from '@/utils/logger';
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
+  const navigate = useNavigate();
   const { artist, profile, loading, getArtistData } = useArtistData(artistName);
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (artistName) {
       logger.info(`ArtistSubdomain mounted for artist: ${artistName}`);
     } else {
       logger.error('ArtistSubdomain mounted without an artist name');
+      // If no artist name is provided, redirect to artists page
+      navigate('/artists');
     }
-  }, [artistName]);
+  }, [artistName, navigate]);
 
-  useEffect(() => {
-    if (!loading && !artist && artistName) {
-      logger.error(`Artist not found: ${artistName}`);
-    }
-  }, [loading, artist, artistName]);
-
-  // Show not found state if there's no artist name or no artist found
-  if (!artistName || (!loading && !artist)) {
-    return <NotFoundState />;
-  }
-
+  // Show loading state while data is being fetched
   if (loading) {
     return <LoadingState backgroundColor={profile?.background_color || '#f7cf1e'} />;
   }
 
-  if (!artist) {
-    return <NotFoundState />;
+  // Show not found state if there's no artist name or no artist found
+  if (!artistName || !artist) {
+    return <NotFoundState artistName={artistName} />;
   }
 
   const { techniques, styles, socialPlatforms, artworks } = getArtistData();

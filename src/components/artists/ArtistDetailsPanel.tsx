@@ -8,6 +8,7 @@ import ArtistActions from './ArtistActions';
 import ArtistReturnButton from './ArtistReturnButton';
 import ArtistDomainLink from './ArtistDomainLink';
 import ArtistInfoContainer from './ArtistInfoContainer';
+import { logger } from '@/utils/logger';
 
 interface ArtistDetailsPanelProps {
   artist: Artist;
@@ -47,7 +48,15 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const formattedName = artist.name.replace(/\s+/g, '');
+    
+    if (!artist || !artist.name) {
+      logger.error('Cannot navigate to artist profile: Artist name is missing');
+      return;
+    }
+    
+    // Format name by removing spaces and special characters
+    const formattedName = artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
+    logger.info(`Navigating to artist profile: ${formattedName}`);
     navigate(`/artists/${formattedName}`);
   };
   
@@ -55,8 +64,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     navigate('/artists');
   };
 
-  // Create a formatted domain name for display
-  const artistDomain = artist.name.replace(/\s+/g, '');
+  // Create a formatted domain name for display - remove special characters too
+  const artistDomain = artist.name ? artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
   
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0">

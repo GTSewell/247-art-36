@@ -1,57 +1,41 @@
 
-import { Artist } from '@/data/types/artist';
-import { logger } from "@/utils/logger";
-import { ArtistSearchResult } from './types';
-import { searchArtistBasic } from './searchStrategies/basicSearch';
-import { searchArtistAdvanced } from './searchStrategies/advancedSearch';
+import { basicSearch } from './searchStrategies/basicSearch';
+import { advancedSearch } from './searchStrategies/advancedSearch';
+import { logger } from '@/utils/logger';
 
 /**
- * Strategy for finding an artist by name
- * Tries multiple search strategies in sequence until one succeeds
+ * Finds an artist by name using multiple search strategies
  */
-export async function findArtistByName(artistName: string | undefined): Promise<ArtistSearchResult> {
+export const findArtistByName = async (artistName: string | undefined) => {
   try {
-    // Check if artistName is undefined or empty
-    if (!artistName) {
-      logger.error("Error in findArtistByName: Artist name is undefined or empty");
-      return { 
-        artistData: null, 
-        artistError: new Error(`Artist name is missing or empty`) 
-      };
+    // Return early if the artist name is undefined or empty
+    if (!artistName || artistName.trim() === '') {
+      logger.error('Cannot search for artist: name is undefined or empty');
+      return { artistData: null, artistError: new Error('Artist name is undefined or empty') };
     }
     
-    logger.info(`Finding artist by name: ${artistName}`);
+    // First try a basic search (exact match)
+    const { data: basicData, error: basicError } = await basicSearch(artistName);
     
-    // Remove any spaces in the artist name to match URL format
-    const formattedName = artistName.replace(/\s+/g, '');
-    
-    // Strategy 1: Basic search - exact match on formatted name
-    let result = await searchArtistBasic(formattedName);
-    
-    if (result.artistData) {
-      logger.info(`Found artist using basic search: ${result.artistData.name}`);
-      return result;
+    if (basicData && !basicError) {
+      logger.info(`Artist found with basic search: ${artistName}`);
+      return { artistData: basicData, artistError: null };
     }
     
-    // Strategy 2: Advanced search - try more complex matching
-    result = await searchArtistAdvanced(formattedName);
+    // If basic search fails, try advanced search (fuzzy match)
+    const { data: advancedData, error: advancedError } = await advancedSearch(artistName);
     
-    if (result.artistData) {
-      logger.info(`Found artist using advanced search: ${result.artistData.name}`);
-      return result;
+    if (advancedData && !advancedError) {
+      logger.info(`Artist found with advanced search: ${artistName}`);
+      return { artistData: advancedData, artistError: null };
     }
     
-    // If both strategies fail, return error
+    // If both searches fail, return null data
     logger.warn(`No artist found with name: ${artistName}`);
-    return { 
-      artistData: null, 
-      artistError: new Error(`Artist not found: ${artistName}`) 
-    };
+    return { artistData: null, artistError: null };
+    
   } catch (error: any) {
-    logger.error("Error in findArtistByName:", error);
-    return { 
-      artistData: null, 
-      artistError: error 
-    };
+    logger.error(`Error searching for artist: ${error.message}`);
+    return { artistData: null, artistError: error };
   }
-}
+};
