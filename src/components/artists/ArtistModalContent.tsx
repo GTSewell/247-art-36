@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
@@ -28,6 +28,16 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const selectedArtist = artists[selectedArtistIndex];
+  const contentRef = useRef<HTMLDivElement>(null);
+  
+  // Touch handling states
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [swiping, setSwiping] = useState(false);
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  
+  // Minimum swipe distance required (in pixels)
+  const minSwipeDistance = 50;
   
   // Log when the modal content is rendered
   React.useEffect(() => {
@@ -55,9 +65,71 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     logger.info(`Navigating to next artist, new index: ${newIndex}`);
     onArtistChange(newIndex);
   };
+
+  // Touch event handlers for swipe navigation
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+    setTouchStart(e.targetTouches[0].clientX);
+    setTouchEnd(null);
+    setSwiping(true);
+    setSwipeOffset(0);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile || touchStart === null) return;
+    const currentTouch = e.targetTouches[0].clientX;
+    setTouchEnd(currentTouch);
+    
+    // Calculate and set the swipe offset for visual feedback
+    const offset = currentTouch - touchStart;
+    setSwipeOffset(offset);
+  };
+
+  const onTouchEnd = () => {
+    if (!isMobile || !touchStart || !touchEnd) {
+      setSwiping(false);
+      setSwipeOffset(0);
+      return;
+    }
+
+    // Calculate swipe distance
+    const distance = touchEnd - touchStart;
+    const isLeftSwipe = distance < -minSwipeDistance;
+    const isRightSwipe = distance > minSwipeDistance;
+    
+    // Execute swipe actions based on direction
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrevious();
+    }
+
+    // Reset touch states
+    setTouchStart(null);
+    setTouchEnd(null);
+    setSwiping(false);
+    setSwipeOffset(0);
+  };
+  
+  // Apply dynamic styles for swipe animation
+  const getSwipeStyles = () => {
+    if (!swiping || swipeOffset === 0) return {};
+    
+    return {
+      transform: `translateX(${swipeOffset * 0.2}px)`,
+      transition: swiping ? 'none' : 'transform 0.3s ease-out'
+    };
+  };
   
   return (
-    <div className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}>
+    <div 
+      ref={contentRef}
+      className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      style={getSwipeStyles()}
+    >
       <div className="lg:w-1/2 overflow-hidden relative">
         <ArtistImagePanel
           artist={selectedArtist}
@@ -81,6 +153,14 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         onPrevious={handlePrevious} 
         onNext={handleNext} 
       />
+      
+      {isMobile && (
+        <div className="fixed bottom-24 left-0 right-0 flex justify-center pointer-events-none">
+          <div className="bg-black/75 text-white px-4 py-2 rounded-full text-sm">
+            Swipe to navigate artists {selectedArtistIndex + 1}/{artists.length}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
