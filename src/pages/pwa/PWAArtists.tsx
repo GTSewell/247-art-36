@@ -66,10 +66,10 @@ const PWAArtists = () => {
   };
 
   return (
-    <div className="pb-20 pt-8">
+    <div className={`${isPWA ? 'min-h-screen pb-20 pt-8 overflow-y-auto' : 'pb-20 pt-8'}`}>
       {isPWA ? <PWANavigation /> : <Navigation />}
       
-      <div className="container mx-auto px-4 py-2">
+      <div className="container mx-auto px-4 py-2 pb-24">
         <div className="flex items-center gap-2 mb-4">
           <Input
             type="text"
@@ -102,7 +102,7 @@ const PWAArtists = () => {
             <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 pb-20">
             {filteredArtists.map((artist) => (
               <ArtistGrid
                 key={artist.id}

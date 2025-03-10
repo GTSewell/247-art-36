@@ -152,3 +152,16 @@ body[data-pwa="true"] .container .py-4 {
   padding-top: 4px;
   padding-bottom: 4px;
 }
+
+/* Fix PWA artists page scrolling issue */
+body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto"] {
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 80px;
+}
+
+/* Make sure the grid of artists is fully scrollable */
+body[data-pwa="true"] .grid.grid-cols-2.gap-4.pb-20 {
+  padding-bottom: 100px;
+}
