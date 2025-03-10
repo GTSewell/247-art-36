@@ -80,9 +80,10 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
               startIndex: selectedArtistIndex,
             }}
             className="w-full"
-            onSelect={(api) => {
-              if (api) {
-                handleCarouselChange(api.selectedScrollSnap());
+            onSelect={(currentApi) => {
+              if (currentApi) {
+                const selectedIndex = currentApi.selectedScrollSnap();
+                handleCarouselChange(selectedIndex);
               }
             }}
           >
