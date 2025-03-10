@@ -1,0 +1,97 @@
+
+import React from "react";
+import { Users, MessageSquare, Mail, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
+import CollectorAvatar from "./CollectorAvatar";
+import { CollectorTableProps } from "./types";
+
+const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
+  return (
+    <div className="min-w-[800px]">
+      <table className="w-full">
+        <thead>
+          <tr className="bg-muted text-left">
+            <th className="py-2 px-4 font-semibold">Name</th>
+            <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
+            <th className="py-2 px-4 font-semibold">Connect</th>
+            <th className="py-2 px-4 font-semibold">Social</th>
+            <th className="py-2 px-4 font-semibold">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {collectors.map((collector) => (
+            <tr key={collector.id} className="border-t">
+              <td className="py-3 px-4">
+                <div className="flex items-center space-x-2">
+                  <CollectorAvatar name={collector.name} avatarUrl={collector.avatarUrl} />
+                  <span>{collector.name}</span>
+                </div>
+              </td>
+              <td className="py-3 px-4">
+                <div className="max-w-[200px]">
+                  <ul className="list-disc pl-4 space-y-1">
+                    {collector.itemsPurchased.map((item, idx) => (
+                      <li key={idx} className="text-sm truncate" title={item}>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </td>
+              <td className="py-3 px-4">
+                {collector.collectorName ? (
+                  <button 
+                    className="inline-flex items-center text-zap-blue hover:text-zap-red transition-colors"
+                    title="Connect with collector"
+                  >
+                    <MessageSquare className="h-4 w-4 mr-1" />
+                    <span className="text-sm">{collector.collectorName}</span>
+                  </button>
+                ) : (
+                  <span className="text-gray-400 text-sm">Not available</span>
+                )}
+              </td>
+              <td className="py-3 px-4">
+                <div className="flex space-x-2">
+                  {Object.keys(collector.social).length > 0 ? (
+                    <>
+                      {collector.social.instagram && (
+                        <button className="text-zap-blue hover:text-zap-red" title="Instagram">
+                          <ExternalLink className="h-4 w-4" />
+                        </button>
+                      )}
+                      {collector.social.facebook && (
+                        <button className="text-zap-blue hover:text-zap-red" title="Facebook">
+                          <ExternalLink className="h-4 w-4" />
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-gray-400 text-sm">Not available</span>
+                  )}
+                </div>
+              </td>
+              <td className="py-3 px-4">
+                {collector.email ? (
+                  <button 
+                    className="inline-flex items-center text-zap-blue hover:text-zap-red transition-colors"
+                    title={`Email: ${collector.email}`}
+                  >
+                    <Mail className="h-4 w-4 mr-1" />
+                    <span className="text-sm truncate max-w-[120px] inline-block">
+                      {collector.email}
+                    </span>
+                  </button>
+                ) : (
+                  <span className="text-gray-400 text-sm">Not available</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default CollectorTable;
