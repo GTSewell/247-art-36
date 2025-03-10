@@ -57,6 +57,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     // Format name by removing spaces and special characters
     const formattedName = artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
     logger.info(`Navigating to artist profile: ${formattedName}`);
+    
+    // Use the navigate function to go to the artist profile page
+    // We're using the full path to ensure consistency
     navigate(`/artists/${formattedName}`);
   };
   

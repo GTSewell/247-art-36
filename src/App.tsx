@@ -69,8 +69,8 @@ function App() {
         <Route path="/dashboard/artist" element={<ArtistDashboard />} />
         <Route path="/dashboard/collector" element={<CollectorDashboard />} />
         
-        {/* Artist subdomain route */}
-        <Route path="/artists/:slug" element={<ArtistSubdomain />} />
+        {/* Artist subdomain route - using artistName as parameter name for consistency */}
+        <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
         
         {/* 404 route */}
         <Route path="*" element={<NotFound />} />

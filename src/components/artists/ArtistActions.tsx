@@ -3,6 +3,7 @@ import React from 'react';
 import { Zap, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { logger } from '@/utils/logger';
 
 interface ArtistActionsProps {
   domainName: string;
@@ -57,6 +58,13 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     }
   };
 
+  const handleVisitClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    logger.info(`Visit artist button clicked: ${displayDomain}`);
+    handleDomainClick(e);
+  };
+
   return (
     <div className="flex justify-between w-full gap-2">
       {onFavoriteToggle && (
@@ -92,7 +100,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
         variant="default"
         className="flex-grow"
         style={visitButtonStyles}
-        onClick={handleDomainClick}
+        onClick={handleVisitClick}
         onMouseOver={(e) => {
           if (buttonHoverColor) {
             e.currentTarget.style.backgroundColor = buttonHoverColor;

@@ -9,20 +9,30 @@ import DesktopLayout from '@/components/artistSubdomain/DesktopLayout';
 import MobileLayout from '@/components/artistSubdomain/MobileLayout';
 import { generateColorTheme } from '@/utils/colorExtraction';
 import { logger } from '@/utils/logger';
+import { toast } from 'sonner';
 
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
   const navigate = useNavigate();
-  const { artist, profile, loading, getArtistData } = useArtistData(artistName);
   const isMobile = useIsMobile();
+  
+  // Only proceed with getArtistData if artistName exists
+  const { artist, profile, loading, getArtistData } = useArtistData(
+    artistName && artistName.trim() !== '' ? artistName : undefined
+  );
 
   useEffect(() => {
-    if (artistName) {
+    // Check if artistName exists and is not empty
+    if (artistName && artistName.trim() !== '') {
       logger.info(`ArtistSubdomain mounted for artist: ${artistName}`);
     } else {
       logger.error('ArtistSubdomain mounted without an artist name');
-      // If no artist name is provided, redirect to artists page
-      navigate('/artists');
+      toast.error('No artist name provided');
+      // If no artist name is provided, redirect to artists page with a short delay
+      const timeout = setTimeout(() => {
+        navigate('/artists');
+      }, 100);
+      return () => clearTimeout(timeout);
     }
   }, [artistName, navigate]);
 
