@@ -1,20 +1,11 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ArtistProfileFormData, ArtistProfileHookReturn } from "./types";
+import { fetchArtistProfile, saveArtistProfile } from "./api/artistProfileAPI";
+import { mapArtistToFormData } from "./utils/formDataMapper";
 
-interface ArtistProfileFormData {
-  name: string;
-  specialty: string;
-  bio: string;
-  city: string;
-  country: string;
-  techniques: string;
-  styles: string;
-  social_platforms: string;
-}
-
-export const useArtistProfile = (artistId: string | null) => {
+export const useArtistProfile = (artistId: string | null): ArtistProfileHookReturn => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [artist, setArtist] = useState<any>(null);
@@ -31,63 +22,30 @@ export const useArtistProfile = (artistId: string | null) => {
   
   useEffect(() => {
     if (artistId) {
-      fetchArtistProfile();
+      fetchArtistProfileData();
     }
   }, [artistId]);
   
-  const fetchArtistProfile = async () => {
+  const fetchArtistProfileData = async () => {
     try {
       setLoading(true);
       
-      // First check if user already has an artist profile
-      const { data, error } = await supabase
-        .from('artists')
-        .select('*')
-        .eq('user_id', artistId)
-        .maybeSingle();
+      if (!artistId) {
+        throw new Error("User ID not found");
+      }
+      
+      const { data, error } = await fetchArtistProfile(artistId);
       
       if (error) {
-        // If no profile exists with user_id, we'll create one later
-        console.log("No existing artist profile found, will create a new one if needed");
+        throw error;
       }
       
       if (data) {
         // If artist profile exists, load it
         setArtist(data);
         
-        // Format social platforms to prevent duplication
-        let formattedSocialPlatforms = "";
-        if (Array.isArray(data.social_platforms)) {
-          formattedSocialPlatforms = data.social_platforms
-            .map((platform: string) => {
-              // Clean up formats to prevent duplications
-              if (platform.includes('instagram.com/instagram.com/')) {
-                return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
-              }
-              if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
-                return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
-              }
-              return platform;
-            })
-            .join(', ');
-        } else if (typeof data.social_platforms === 'string') {
-          formattedSocialPlatforms = data.social_platforms;
-        }
-        
-        setFormData({
-          name: data.name || "",
-          specialty: data.specialty || "",
-          bio: data.bio || "",
-          city: data.city || "",
-          country: data.country || "",
-          techniques: Array.isArray(data.techniques) 
-            ? data.techniques.join(', ') 
-            : typeof data.techniques === 'string' ? data.techniques : "",
-          styles: Array.isArray(data.styles) 
-            ? data.styles.join(', ') 
-            : typeof data.styles === 'string' ? data.styles : "",
-          social_platforms: formattedSocialPlatforms
-        });
+        // Map API data to form data
+        setFormData(mapArtistToFormData(data));
       }
     } catch (error: any) {
       console.error("Error fetching artist profile:", error);
@@ -105,35 +63,6 @@ export const useArtistProfile = (artistId: string | null) => {
     }));
   };
   
-  const processSocialPlatforms = (platforms: string): string[] => {
-    if (!platforms) return [];
-    
-    return platforms.split(',')
-      .map(platform => platform.trim())
-      .filter(platform => platform) // Remove empty strings
-      .map(platform => {
-        // Clean up formats to prevent duplications
-        if (platform.includes('instagram.com/instagram.com/')) {
-          return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
-        }
-        if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
-          return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
-        }
-        
-        // Ensure @ handles are properly formatted
-        if (platform.startsWith('@') && !platform.includes('.com')) {
-          return platform; // Keep as is, will be processed when displayed
-        }
-        
-        // Add https:// protocol if not present and not an @ handle
-        if (!platform.startsWith('http://') && !platform.startsWith('https://') && !platform.startsWith('@')) {
-          return `https://${platform}`;
-        }
-        
-        return platform;
-      });
-  };
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -145,57 +74,17 @@ export const useArtistProfile = (artistId: string | null) => {
     try {
       setSaving(true);
       
-      // Process array values
-      const processedData = {
-        ...formData,
-        user_id: artistId,
-        techniques: formData.techniques.split(',').map(item => item.trim()).filter(item => item),
-        styles: formData.styles.split(',').map(item => item.trim()).filter(item => item),
-        social_platforms: processSocialPlatforms(formData.social_platforms)
-      };
+      const result = await saveArtistProfile(formData, artistId, artist);
       
-      if (artist) {
-        // Update existing artist profile
-        const { error } = await supabase
-          .from('artists')
-          .update(processedData)
-          .eq('id', artist.id);
+      if (result.success) {
+        toast.success(result.message);
         
-        if (error) throw error;
-        
-        toast.success("Profile updated successfully");
-      } else {
-        // For new artist profiles, we need to get a new ID from the sequence
-        // First, query to get the next available ID
-        const { data: maxIdData, error: maxIdError } = await supabase
-          .from('artists')
-          .select('id')
-          .order('id', { ascending: false })
-          .limit(1)
-          .single();
-          
-        if (maxIdError && !maxIdError.message.includes('No rows found')) {
-          throw maxIdError;
+        // If we created a new profile, fetch it to update the state
+        if (!artist) {
+          fetchArtistProfileData();
         }
-        
-        // Calculate next ID (either increment max ID or start at 1)
-        const nextId = maxIdData ? maxIdData.id + 1 : 1;
-        
-        // Create new artist profile with the new ID
-        const { error } = await supabase
-          .from('artists')
-          .insert([{
-            id: nextId,
-            ...processedData,
-            published: true // Set published to true by default
-          }]);
-        
-        if (error) throw error;
-        
-        toast.success("Profile created successfully");
-        
-        // Fetch the newly created profile to update the state
-        fetchArtistProfile();
+      } else {
+        throw new Error(result.message);
       }
     } catch (error: any) {
       console.error("Error updating artist profile:", error);
