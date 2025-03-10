@@ -4,6 +4,7 @@ import { Artist } from "@/data/types/artist";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import ArtistModalContent from "./ArtistModalContent";
 import { logger } from "@/utils/logger";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ArtistDetailModalProps {
   artists: Artist[];
@@ -30,6 +31,8 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   refreshArtists,
   onSelect
 }) => {
+  const isMobile = useIsMobile();
+  
   // Add debug logging
   React.useEffect(() => {
     if (selectedArtist) {
@@ -39,7 +42,9 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-5xl p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]">
+      <DialogContent 
+        className={`${isMobile ? 'w-[95%] mx-auto' : 'max-w-5xl'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]`}
+      >
         <DialogTitle className="sr-only">Artist Details</DialogTitle>
         <DialogDescription className="sr-only">Detailed information about the artist</DialogDescription>
         {selectedArtist && (
