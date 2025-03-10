@@ -9,8 +9,17 @@ import { searchArtistAdvanced } from './searchStrategies/advancedSearch';
  * Strategy for finding an artist by name
  * Tries multiple search strategies in sequence until one succeeds
  */
-export async function findArtistByName(artistName: string): Promise<ArtistSearchResult> {
+export async function findArtistByName(artistName: string | undefined): Promise<ArtistSearchResult> {
   try {
+    // Check if artistName is undefined or empty
+    if (!artistName) {
+      logger.error("Error in findArtistByName: Artist name is undefined or empty");
+      return { 
+        artistData: null, 
+        artistError: new Error(`Artist name is missing or empty`) 
+      };
+    }
+    
     logger.info(`Finding artist by name: ${artistName}`);
     
     // Remove any spaces in the artist name to match URL format

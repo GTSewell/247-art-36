@@ -18,6 +18,7 @@ export function useArtistData(artistName: string | undefined) {
         setLoading(true);
         
         if (!artistName) {
+          logger.warn("Artist name is undefined, cannot fetch artist data");
           setLoading(false);
           return;
         }
@@ -45,7 +46,7 @@ export function useArtistData(artistName: string | undefined) {
           }
         } else {
           logger.warn(`No artist found with name: ${artistName}`);
-          logger.error(`Artist not found: ${artistName}`);
+          toast.error(`Artist not found: ${artistName}`);
         }
       } catch (error: any) {
         logger.error('Error fetching artist data:', error);
@@ -55,11 +56,7 @@ export function useArtistData(artistName: string | undefined) {
       }
     };
 
-    if (artistName) {
-      fetchArtistData();
-    } else {
-      setLoading(false);
-    }
+    fetchArtistData();
   }, [artistName]);
 
   // Helper function to parse artist data

@@ -21,7 +21,11 @@ const NotFoundState: React.FC = () => {
         </div>
         <h2 className="text-xl font-semibold text-center mb-4">Artist Not Found</h2>
         <p className="text-gray-600 text-center mb-6">
-          We couldn't find the artist "{artistName}". They may have been removed or the URL might be incorrect.
+          {artistName ? (
+            `We couldn't find the artist "${artistName}". They may have been removed or the URL might be incorrect.`
+          ) : (
+            "No artist was specified in the URL. Please check the URL and try again."
+          )}
         </p>
         <Button 
           onClick={() => navigate('/artists')}

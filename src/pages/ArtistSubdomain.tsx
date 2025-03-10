@@ -19,14 +19,21 @@ const ArtistSubdomain = () => {
   useEffect(() => {
     if (artistName) {
       logger.info(`ArtistSubdomain mounted for artist: ${artistName}`);
+    } else {
+      logger.error('ArtistSubdomain mounted without an artist name');
     }
   }, [artistName]);
 
   useEffect(() => {
-    if (!loading && !artist) {
+    if (!loading && !artist && artistName) {
       logger.error(`Artist not found: ${artistName}`);
     }
   }, [loading, artist, artistName]);
+
+  // Show not found state if there's no artist name or no artist found
+  if (!artistName || (!loading && !artist)) {
+    return <NotFoundState />;
+  }
 
   if (loading) {
     return <LoadingState backgroundColor={profile?.background_color || '#f7cf1e'} />;
