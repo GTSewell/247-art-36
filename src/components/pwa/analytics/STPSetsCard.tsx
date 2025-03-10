@@ -9,7 +9,7 @@ const STPSetsCard: React.FC = () => {
   const isMobile = useIsMobile();
   
   // Mock data - in a real app this would come from an API
-  const stpPacksSold = 10;
+  const stpPacksSold = 11;
   const initialCommissionRate = 25;
   const commissionReductionPerPack = 1;
   const totalSegments = 25;
