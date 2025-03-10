@@ -13,6 +13,7 @@ const PWAHome = () => {
   const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { isPWA } = useAppMode();
 
   useEffect(() => {
@@ -34,6 +35,56 @@ const PWAHome = () => {
       return undefined;
     }
   };
+
+  // Handle manual refresh when user pulls down
+  const handleManualRefresh = async () => {
+    try {
+      setIsRefreshing(true);
+      logger.info("Manual refresh initiated");
+      await refreshArtists();
+      logger.info("Manual refresh completed successfully");
+    } catch (err) {
+      logger.error("Error during manual refresh:", err);
+      setError("Failed to refresh content");
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Add touch event listeners for pull-to-refresh
+  useEffect(() => {
+    if (!isPWA) return;
+
+    let startY = 0;
+    let mainElement: HTMLElement | null = null;
+    
+    const handleTouchStart = (e: TouchEvent) => {
+      startY = e.touches[0].clientY;
+      mainElement = document.querySelector('main');
+    };
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!mainElement) return;
+      
+      const currentY = e.touches[0].clientY;
+      const isAtTop = mainElement.scrollTop === 0;
+      const pullDistance = currentY - startY;
+      
+      // If we're at the top and pulling down
+      if (isAtTop && pullDistance > 70 && !isRefreshing) {
+        e.preventDefault(); // Prevent default only when we want to refresh
+        handleManualRefresh();
+      }
+    };
+    
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [isPWA, isRefreshing, refreshArtists]);
 
   if (error) {
     return (
@@ -58,6 +109,12 @@ const PWAHome = () => {
         {isPWA ? <PWANavigation /> : <Navigation />}
 
         <main className={`w-full ${isPWA ? 'pt-2 pb-16' : 'pt-24 pb-20'} ${isPWA ? 'h-[calc(100vh-64px)] overflow-y-auto' : ''}`}>
+          {isRefreshing && (
+            <div className="absolute top-0 left-0 right-0 flex justify-center items-center py-2 bg-zap-yellow z-10">
+              <div className="animate-spin mr-2 h-5 w-5 border-2 border-zap-red border-t-transparent rounded-full"></div>
+              <span className="text-sm">Refreshing...</span>
+            </div>
+          )}
           <div className={`${isPWA ? 'pb-20' : 'pb-64'}`}>
             {/* Featured Artists Section */}
             {isLoading ? (

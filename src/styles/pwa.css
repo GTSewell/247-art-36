@@ -1,7 +1,7 @@
 
 /* PWA specific styles to prevent scrolling issues */
 body[data-pwa="true"] {
-  overscroll-behavior: none;
+  overscroll-behavior: contain; /* Changed from 'none' to 'contain' to allow pull-to-refresh */
   touch-action: pan-y;
   width: 100vw;
   height: 100vh;
@@ -131,4 +131,10 @@ body[data-pwa="true"] .timed-editions-carousel .product-price,
 body[data-pwa="true"] .timed-editions-carousel .add-to-cart-btn {
   margin-bottom: 8px;
   visibility: visible !important;
+}
+
+/* Enable pull-to-refresh functionality */
+body[data-pwa="true"] main {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain; /* Enable pull-to-refresh */
 }
