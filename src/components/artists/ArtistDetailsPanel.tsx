@@ -71,14 +71,14 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const artistDomain = artist.name ? artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
   
   return (
-    <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0 overflow-hidden w-full">
+    <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0 overflow-hidden w-full min-w-0">
       <ArtistReturnButton 
         onReturn={handleReturnToArtists} 
         colorTheme={colorTheme} 
         showReturnButton={showReturnButton} 
       />
       
-      <div className="flex-none mb-2">
+      <div className="flex-none mb-2 min-w-0">
         <ArtistHeaderInfo 
           name={artist.name} 
           specialty={artist.specialty} 
@@ -96,7 +96,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       )}
 
       {isMobile && (
-        <div className="flex-none mb-4 mt-2">
+        <div className="flex-none mb-4 mt-2 min-w-0">
           <ArtistActions 
             domainName={artistDomain} 
             artistId={artist.id} 
@@ -127,7 +127,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       />
 
       {!isMobile && (
-        <div className="flex-none mt-auto pt-4">
+        <div className="flex-none mt-auto pt-4 min-w-0">
           <ArtistActions 
             domainName={artistDomain} 
             artistId={artist.id} 

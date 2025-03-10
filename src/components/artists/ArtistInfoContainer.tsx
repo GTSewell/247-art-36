@@ -29,7 +29,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
 }) => {
   return (
     <ScrollArea 
-      className="flex-grow overflow-y-auto pr-3 mb-6 w-full" 
+      className="flex-grow overflow-y-auto pr-3 mb-6 w-full min-w-0" 
       style={{ 
         height: isMobile ? 'calc(100vh - 350px)' : 'calc(80vh - 180px)',
         minHeight: isMobile ? '300px' : 'auto',
@@ -37,7 +37,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
         maxWidth: '100%'
       }}
     >
-      <div className="space-y-6 pb-10 w-full max-w-full overflow-hidden">
+      <div className="space-y-6 pb-10 w-full max-w-full overflow-hidden min-w-0">
         <ArtistBio 
           bio={bio} 
           isMobile={isMobile} 

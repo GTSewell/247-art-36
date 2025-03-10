@@ -62,10 +62,10 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
       {/* Main content */}
       <div 
         ref={contentRef}
-        className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[80vh]'}`}
+        className={`flex flex-col lg:flex-row w-full min-w-0 ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[80vh]'}`}
         style={isMobile ? { width: '100%', maxWidth: '100%', overflowX: 'hidden' } : undefined}
       >
-        <div className="lg:w-1/2 overflow-hidden relative">
+        <div className="lg:w-1/2 overflow-hidden relative min-w-0">
           <ArtistImagePanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
@@ -74,7 +74,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           />
         </div>
         
-        <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto overflow-x-hidden">
+        <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto overflow-x-hidden min-w-0">
           <ArtistDetailsPanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
