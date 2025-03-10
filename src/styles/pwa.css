@@ -165,3 +165,15 @@ body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto"] {
 body[data-pwa="true"] .grid.grid-cols-2.gap-4.pb-20 {
   padding-bottom: 100px;
 }
+
+/* Account page specific styles */
+body[data-pwa="true"] .account-page-container {
+  padding-top: 16px;
+  padding-bottom: 72px;
+}
+
+/* Ensure auth page has proper spacing in PWA mode */
+body[data-pwa="true"] .auth-container {
+  padding-top: 16px;
+  padding-bottom: 72px;
+}

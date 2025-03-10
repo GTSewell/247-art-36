@@ -22,6 +22,7 @@ import PWAArtists from "@/pages/pwa/PWAArtists";
 import PWAStore from "@/pages/pwa/PWAStore";
 import ArtistDashboard from "@/pages/pwa/ArtistDashboard";
 import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
+import AccountPage from "@/pages/pwa/AccountPage";
 
 import "./App.css";
 
@@ -65,7 +66,8 @@ function App() {
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/submit" element={<ArtistSubmission />} />
         
-        {/* Dashboard routes */}
+        {/* Account and Dashboard routes */}
+        <Route path="/account" element={<AccountPage />} />
         <Route path="/dashboard/artist" element={<ArtistDashboard />} />
         <Route path="/dashboard/collector" element={<CollectorDashboard />} />
         
