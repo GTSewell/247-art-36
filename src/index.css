@@ -98,9 +98,22 @@
 
   body[data-pwa="true"] #root {
     height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  body[data-pwa="true"] main {
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    height: calc(100% - 110px); /* Account for header and footer */
+    width: 100%;
+    padding-bottom: 60px; /* Footer height */
   }
 }
 
@@ -110,6 +123,7 @@
   padding: 0;
 }
 
+/* Hidden elements */
 button, a {
   &:has(svg[data-lucide="download"]),
   &:has(span:contains("Fix Image")),
@@ -159,4 +173,28 @@ a svg[class*="download"] {
 :has(> button:contains("Download")),
 :has(> a:contains("Download")) {
   position: relative !important;
+}
+
+/* PWA specific carousel styles */
+body[data-pwa="true"] .carousel-container {
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+}
+
+body[data-pwa="true"] .embla__container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body[data-pwa="true"] .embla__slide {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* PWA header styles */
+body[data-pwa="true"] .pwa-header {
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }

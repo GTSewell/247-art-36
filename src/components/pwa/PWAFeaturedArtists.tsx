@@ -47,13 +47,15 @@ const PWAFeaturedArtists: React.FC<PWAFeaturedArtistsProps> = ({
           />
         </div>
 
-        <PWAArtistCarousel
-          artists={featuredArtists}
-          onSelect={handleArtistSelect}
-          onFavoriteToggle={handleFavoriteToggle}
-          favoriteArtists={favoriteArtists}
-          refreshArtist={refreshArtist}
-        />
+        <div className="w-full overflow-hidden">
+          <PWAArtistCarousel
+            artists={featuredArtists}
+            onSelect={handleArtistSelect}
+            onFavoriteToggle={handleFavoriteToggle}
+            favoriteArtists={favoriteArtists}
+            refreshArtist={refreshArtist}
+          />
+        </div>
       </div>
 
       {/* Artist Detail Modal */}

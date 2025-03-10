@@ -1,8 +1,22 @@
 
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import React from 'react'
 import App from './App.tsx'
 import './index.css'
 import { registerServiceWorker } from './registerServiceWorker'
+import { AppModeProvider } from './contexts/AppModeContext'
+
+// Create a client for React Query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Log essential startup information
 console.log('Application starting...');
@@ -22,7 +36,17 @@ const renderApp = () => {
   console.log("Root element found, rendering app...");
   
   try {
-    createRoot(rootElement).render(<App />);
+    createRoot(rootElement).render(
+      <React.StrictMode>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
+            <AppModeProvider>
+              <App />
+            </AppModeProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
+      </React.StrictMode>
+    );
     console.log("App rendered successfully");
   } catch (error) {
     console.error("Error rendering app:", error);
