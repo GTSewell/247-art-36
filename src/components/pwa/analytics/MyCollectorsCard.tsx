@@ -15,7 +15,7 @@ import { Collector } from "./collectors/types";
 const MyCollectorsCard: React.FC = () => {
   const isMobile = useIsMobile();
   const [collectors, setCollectors] = useState<Collector[]>(initialCollectors);
-  const { handleDownload } = useCollectorExport(collectors);
+  const { handleExport } = useCollectorExport(collectors);
   const [selectedCollectorIds, setSelectedCollectorIds] = useState<string[]>([]);
   const [messageModalOpen, setMessageModalOpen] = useState(false);
 
@@ -66,7 +66,7 @@ const MyCollectorsCard: React.FC = () => {
           <Button 
             variant="outline" 
             className="bg-zap-green text-white hover:bg-zap-green/90 border-none flex items-center gap-2"
-            onClick={handleDownload}
+            onClick={handleExport}
           >
             <Download className="h-4 w-4" />
             Download List
