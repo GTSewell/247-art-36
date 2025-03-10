@@ -192,6 +192,24 @@ body[data-pwa="true"] .embla__slide {
   padding-right: 0.5rem;
 }
 
+/* Enhanced carousel experience for PWA */
+body[data-pwa="true"] .embla {
+  overflow: hidden;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  touch-action: pan-x;
+}
+
+body[data-pwa="true"] .CarouselContent {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+body[data-pwa="true"] .CarouselItem {
+  min-width: 75%;
+  padding-left: 8px;
+}
+
 /* PWA header styles */
 body[data-pwa="true"] .pwa-header {
   background: transparent;

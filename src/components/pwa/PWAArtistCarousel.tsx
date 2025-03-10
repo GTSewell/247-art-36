@@ -78,13 +78,18 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
         setApi={setApi}
         opts={{
           align: "center",
-          loop: true
+          loop: true,
+          dragFree: false,
+          containScroll: "trimSnaps",
+          slidesToScroll: 1,
+          // Improved touch settings for mobile
+          dragThreshold: 10,
         }}
         className="w-full"
       >
-        <CarouselContent className="ml-0">
+        <CarouselContent className="-ml-2 md:ml-0">
           {artists.map((artist) => (
-            <CarouselItem key={artist.id} className="basis-2/3 sm:basis-1/2 md:basis-1/3 pl-4">
+            <CarouselItem key={artist.id} className="basis-3/4 sm:basis-1/2 md:basis-1/3 pl-2 md:pl-4">
               <div className="h-150">
                 <ArtistCard
                   id={artist.id}

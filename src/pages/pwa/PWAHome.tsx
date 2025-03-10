@@ -57,7 +57,7 @@ const PWAHome = () => {
       <div className="min-h-screen max-h-screen bg-zap-yellow overflow-hidden">
         {isPWA ? <PWANavigation /> : <Navigation />}
 
-        <main className={`w-full h-full ${isPWA ? 'pt-16' : 'pt-24'} pb-16 overflow-y-auto`}>
+        <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'} pb-16 overflow-y-auto`}>
           {/* Featured Artists Section */}
           {isLoading ? (
             <div className="flex justify-center items-center h-24">

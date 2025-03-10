@@ -59,7 +59,7 @@ const PWATimedEditions: React.FC<PWATimedEditionsProps> = ({ isLoading }) => {
 
   return (
     <>
-      <div>
+      <div className="w-full">
         <div className="flex justify-center mb-1">
           <img 
             src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
@@ -69,10 +69,12 @@ const PWATimedEditions: React.FC<PWATimedEditionsProps> = ({ isLoading }) => {
         </div>
 
         {!isLoading && products.length > 0 ? (
-          <FeaturedProducts
-            products={products}
-            onProductSelect={handleProductSelect}
-          />
+          <div className="overflow-hidden w-full">
+            <FeaturedProducts
+              products={products}
+              onProductSelect={handleProductSelect}
+            />
+          </div>
         ) : (
           <div className="flex justify-center items-center h-24">
             <p className="text-lg">
