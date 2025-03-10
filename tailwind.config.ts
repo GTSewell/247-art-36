@@ -19,6 +19,9 @@ export default {
       },
     },
     extend: {
+      gridTemplateColumns: {
+        '25': 'repeat(25, minmax(0, 1fr))',
+      },
       fontFamily: {
         'digital': ['Digital Clock', 'monospace'],
         'nove': ['nove', 'sans-serif'],
@@ -28,6 +31,7 @@ export default {
           yellow: "#f7cf1e",
           red: "#ef3f36",
           blue: "#00baef",
+          green: "#05a732",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
