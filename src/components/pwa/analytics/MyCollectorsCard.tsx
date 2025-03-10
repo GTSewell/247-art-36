@@ -121,11 +121,12 @@ const MyCollectorsCard: React.FC = () => {
         </Button>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="w-full overflow-auto">
-          <ScrollArea className={cn(
-            "h-[350px]",
-            isMobile ? "w-full overflow-x-auto" : "w-full"
-          )}>
+        {/* The key change is in this container structure to enable proper horizontal scrolling */}
+        <div className={cn(
+          "h-[350px] relative",
+          isMobile ? "overflow-x-auto" : ""
+        )}>
+          <ScrollArea className="h-full">
             <div className="min-w-[800px]">
               <table className="w-full">
                 <thead>
