@@ -37,7 +37,7 @@ const PWAHome = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-zap-yellow overflow-hidden">
+      <div className="min-h-screen bg-zap-yellow">
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
           <p className="text-red-600 mb-4">{error}</p>
@@ -54,12 +54,14 @@ const PWAHome = () => {
 
   return (
     <TimerProvider>
-      <div className="min-h-screen max-h-screen bg-zap-yellow overflow-hidden">
+      {/* Removed max-h-screen and overflow-hidden from the container */}
+      <div className="min-h-screen bg-zap-yellow">
         {isPWA ? <PWANavigation /> : <Navigation />}
 
-        {/* Updated main container with proper spacing and overflow control */}
-        <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'} pb-24 overflow-y-auto h-[calc(100vh-80px)]`}>
-          <div className="pb-40"> {/* Increased bottom padding to prevent footer overlap */}
+        {/* Updated main container with proper spacing and padding */}
+        <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'} pb-20`}>
+          {/* Added even more bottom padding to prevent footer overlap */}
+          <div className="pb-64">
             {/* Featured Artists Section */}
             {isLoading ? (
               <div className="flex justify-center items-center h-24">
@@ -76,7 +78,7 @@ const PWAHome = () => {
             )}
 
             {/* Timed Edition Drops Section */}
-            <div className="mt-4 mb-8"> {/* Added bottom margin */}
+            <div className="mt-4 mb-12"> {/* Increased bottom margin */}
               <PWATimedEditions
                 isLoading={isLoading}
               />

@@ -3,34 +3,25 @@
 body[data-pwa="true"] {
   overscroll-behavior: none;
   touch-action: pan-y;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  /* Removed position:fixed to allow proper scrolling */
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 body[data-pwa="true"] #root {
   height: 100%;
   width: 100%;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto; /* Allow vertical scrolling */
 }
 
 body[data-pwa="true"] main {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  height: calc(100% - 80px); /* Account for footer only since header is transparent */
   width: 100%;
-  padding-bottom: 120px; /* Increased footer clearance */
+  padding-bottom: 160px; /* Significantly increased footer clearance */
 }
 
 /* PWA specific carousel styles */
@@ -53,8 +44,8 @@ body[data-pwa="true"] .timed-editions-carousel {
   -webkit-overflow-scrolling: touch;
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 32px; /* Increased bottom padding to prevent cutoff */
-  margin-bottom: 24px; /* Increased margin to add more space before footer */
+  padding-bottom: 48px; /* Further increased bottom padding to prevent cutoff */
+  margin-bottom: 32px; /* Further increased margin to add more space before footer */
 }
 
 body[data-pwa="true"] .embla__viewport {
@@ -83,7 +74,7 @@ body[data-pwa="true"] .pwa-header {
 body[data-pwa="true"] .dashboard-content {
   overflow-y: auto;
   height: calc(100vh - 180px);
-  padding-bottom: 100px;
+  padding-bottom: 120px;
 }
 
 /* Ensure the footer navbar doesn't overlap content */
@@ -122,19 +113,19 @@ body[data-pwa="true"] .CarouselViewport {
 
 /* Fix for product cards to ensure they're fully visible */
 body[data-pwa="true"] .timed-editions-carousel .CarouselItem {
-  padding-bottom: 16px; /* Add padding at the bottom of each item */
+  padding-bottom: 24px; /* Increased padding at the bottom of each item */
 }
 
 /* Ensure product details are visible */
 body[data-pwa="true"] .timed-editions-carousel .product-details {
   margin-top: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
   visibility: visible !important;
 }
 
 /* Ensure "Add to Cart" button and price are visible */
 body[data-pwa="true"] .timed-editions-carousel .product-price,
 body[data-pwa="true"] .timed-editions-carousel .add-to-cart-btn {
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   visibility: visible !important;
 }

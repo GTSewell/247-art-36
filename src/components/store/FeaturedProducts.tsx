@@ -88,7 +88,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
   };
 
   return (
-    <section className="mb-8 w-full"> {/* Increased bottom margin */}
+    <section className="mb-16 w-full"> {/* Significantly increased bottom margin */}
       <div 
         className="relative w-full" 
         onTouchStart={handleInteraction}
@@ -109,7 +109,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             {products.map((product, index) => {
               const initialTime = getInitialTime(index);
               return (
-                <CarouselItem key={product.id} className={`${isPWA ? 'basis-3/4 pl-2 pr-2 pb-4' : 'basis-4/5 pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4'}`}>
+                <CarouselItem key={product.id} className={`${isPWA ? 'basis-3/4 pl-2 pr-2 pb-8' : 'basis-4/5 pl-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4'}`}>
                   <ProductItem 
                     product={product} 
                     initialTime={initialTime}
