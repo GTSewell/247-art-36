@@ -15,4 +15,6 @@ export interface Collector {
 
 export interface CollectorTableProps {
   collectors: Collector[];
+  selectedCollectors?: string[];
+  onSelectCollector?: (id: string) => void;
 }

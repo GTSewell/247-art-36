@@ -1,16 +1,23 @@
-
 import React from "react";
-import { Users, MessageSquare, Mail, ExternalLink, DollarSign } from "lucide-react";
+import { Users, MessageSquare, Mail, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CollectorAvatar from "./CollectorAvatar";
 import { CollectorTableProps } from "./types";
+import { Checkbox } from "@/components/ui/checkbox";
 
-const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
+const CollectorTable: React.FC<CollectorTableProps> = ({ 
+  collectors, 
+  selectedCollectors = [], 
+  onSelectCollector 
+}) => {
   return (
     <div className="min-w-[900px]">
       <table className="w-full">
         <thead className="sticky top-0 bg-white z-30 border-b shadow-lg">
           <tr className="bg-muted text-left">
+            <th className="py-2 px-4 font-semibold">
+              <span className="sr-only">Select</span>
+            </th>
             <th className="py-2 px-4 font-semibold">Name</th>
             <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
             <th className="py-2 px-4 font-semibold">Sales</th>
@@ -21,6 +28,13 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
         <tbody>
           {collectors.map((collector) => (
             <tr key={collector.id} className="border-t">
+              <td className="py-3 px-4">
+                <Checkbox
+                  id={`select-collector-${collector.id}`}
+                  checked={selectedCollectors.includes(collector.id)}
+                  onCheckedChange={() => onSelectCollector && onSelectCollector(collector.id)}
+                />
+              </td>
               <td className="py-3 px-4">
                 <div className="flex items-center space-x-2">
                   <CollectorAvatar name={collector.name} avatarUrl={collector.avatarUrl} />
