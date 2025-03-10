@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Artist } from "@/data/types/artist";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import ArtistModalContent from "./ArtistModalContent";
@@ -12,6 +12,7 @@ import {
   CarouselPrevious, 
   CarouselNext 
 } from "@/components/ui/carousel";
+import type { CarouselApi } from "embla-carousel-react";
 
 interface ArtistDetailModalProps {
   artists: Artist[];
@@ -39,7 +40,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   onSelect
 }) => {
   const isMobile = useIsMobile();
-  const [api, setApi] = useState<any>(null);
+  const [api, setApi] = useState<CarouselApi | null>(null);
   
   // Add debug logging
   React.useEffect(() => {
@@ -56,11 +57,16 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   }, [api, selectedArtistIndex, open]);
 
   // Handle carousel changes
-  const handleCarouselChange = React.useCallback((index: number) => {
+  const handleCarouselChange = useCallback((index: number) => {
     if (index !== selectedArtistIndex) {
       onArtistChange(index);
     }
   }, [onArtistChange, selectedArtistIndex]);
+
+  const handleSelect = useCallback((api: CarouselApi) => {
+    const selectedIndex = api.selectedScrollSnap();
+    handleCarouselChange(selectedIndex);
+  }, [handleCarouselChange]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -80,12 +86,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
               startIndex: selectedArtistIndex,
             }}
             className="w-full"
-            onSelect={(currentApi) => {
-              if (currentApi) {
-                const selectedIndex = currentApi.selectedScrollSnap();
-                handleCarouselChange(selectedIndex);
-              }
-            }}
+            onSelect={handleSelect}
           >
             <CarouselContent className="-ml-1">
               {artists.map((artist, index) => (

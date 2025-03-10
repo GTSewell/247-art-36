@@ -66,7 +66,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   };
 
   return (
-    <div className="flex justify-between w-full gap-2">
+    <div className={`flex ${isMobile ? 'justify-start' : 'justify-between'} w-full gap-2`}>
       {onFavoriteToggle && (
         <Button
           variant="default"
@@ -98,7 +98,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
       
       <Button
         variant="default"
-        className="flex-grow"
+        className={`${isMobile ? 'flex-none' : 'flex-grow'}`}
         style={visitButtonStyles}
         onClick={handleVisitClick}
         onMouseOver={(e) => {
