@@ -73,17 +73,17 @@ const PWAArtistCarousel: React.FC<PWAArtistCarouselProps> = ({
   }
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full artist-carousel">
       <Carousel
         setApi={setApi}
         opts={{
           align: "center",
           loop: true,
-          dragFree: false,
+          dragFree: true, // Changed to true for smoother dragging
           containScroll: "trimSnaps",
           slidesToScroll: 1,
           // Improved touch settings for mobile
-          dragThreshold: 10,
+          dragThreshold: 5, // Lower threshold for easier dragging
         }}
         className="w-full"
       >

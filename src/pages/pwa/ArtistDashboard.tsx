@@ -51,27 +51,29 @@ const ArtistDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-black">
       {isPWA ? <PWANavigation /> : <Navigation />}
-      <div className="container mx-auto px-4 pt-20 pb-20">
+      <div className="container mx-auto px-4 pt-20 pb-24">
         <h1 className="text-2xl font-bold text-white mb-6">Artist Dashboard</h1>
         
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="space-y-4">
-          <TabsList className="grid grid-cols-3 h-14">
+          <TabsList className="grid grid-cols-3 h-14 sticky top-0 z-10 bg-black">
             <TabsTrigger value="profile" className="text-sm">Profile</TabsTrigger>
             <TabsTrigger value="artworks" className="text-sm">Artworks</TabsTrigger>
             <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="profile" className="space-y-4">
-            <ArtistProfileSettings artistId={artistId} />
-          </TabsContent>
-          
-          <TabsContent value="artworks" className="space-y-4">
-            <ArtistArtworkManager artistId={artistId} />
-          </TabsContent>
-          
-          <TabsContent value="analytics" className="space-y-4">
-            <ArtistSalesAnalytics artistId={artistId} />
-          </TabsContent>
+          <div className={`dashboard-content ${isPWA ? 'overflow-y-auto' : ''}`}>
+            <TabsContent value="profile" className="space-y-4 pb-20">
+              <ArtistProfileSettings artistId={artistId} />
+            </TabsContent>
+            
+            <TabsContent value="artworks" className="space-y-4 pb-20">
+              <ArtistArtworkManager artistId={artistId} />
+            </TabsContent>
+            
+            <TabsContent value="analytics" className="space-y-4 pb-20">
+              <ArtistSalesAnalytics artistId={artistId} />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </div>

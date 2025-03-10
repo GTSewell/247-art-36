@@ -99,7 +99,8 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             align: "center",
             loop: true,
             skipSnaps: false,
-            dragFree: false
+            dragFree: true, // Changed to true for smoother swipe
+            dragThreshold: 5 // Lower threshold for easier dragging
           }}
         >
           <CarouselContent className={`ml-0 ${isPWA ? 'pl-0' : ''}`}>

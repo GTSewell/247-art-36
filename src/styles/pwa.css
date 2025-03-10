@@ -30,7 +30,7 @@ body[data-pwa="true"] main {
   -webkit-overflow-scrolling: touch;
   height: calc(100% - 110px); /* Account for header and footer */
   width: 100%;
-  padding-bottom: 60px; /* Footer height */
+  padding-bottom: 80px; /* Increased footer clearance */
 }
 
 /* PWA specific carousel styles */
@@ -73,4 +73,27 @@ body[data-pwa="true"] .pwa-header {
   background: transparent;
   border: none;
   box-shadow: none;
+}
+
+/* Fix for Artist Dashboard scrolling */
+body[data-pwa="true"] .dashboard-content {
+  overflow-y: auto;
+  height: calc(100vh - 180px);
+  padding-bottom: 100px;
+}
+
+/* Improved touch handling for carousels */
+body[data-pwa="true"] .artist-carousel,
+body[data-pwa="true"] .timed-editions-carousel {
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 16px; /* Add space above footer */
+}
+
+/* Ensure the footer navbar doesn't overlap content */
+body[data-pwa="true"] .pwa-footer {
+  z-index: 50;
+  background-color: white;
 }
