@@ -11,6 +11,11 @@ const CollectorTable: React.FC<CollectorTableProps> = ({
   selectedCollectors = [], 
   onSelectCollector 
 }) => {
+  // Function to determine if collector can be messaged (has email)
+  const canContactCollector = (collector: any) => {
+    return Boolean(collector.email);
+  };
+
   return (
     <div className="min-w-[900px]">
       <table className="w-full">
@@ -35,6 +40,8 @@ const CollectorTable: React.FC<CollectorTableProps> = ({
                   id={`select-collector-${collector.id}`}
                   checked={selectedCollectors.includes(collector.id)}
                   onCheckedChange={() => onSelectCollector && onSelectCollector(collector.id)}
+                  disabled={!canContactCollector(collector)}
+                  className={!canContactCollector(collector) ? "opacity-50 cursor-not-allowed" : ""}
                 />
               </td>
               <td className="py-3 px-4">
