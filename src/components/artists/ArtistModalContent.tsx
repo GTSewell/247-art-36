@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
@@ -30,20 +30,6 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   const selectedArtist = artists[selectedArtistIndex];
   const contentRef = useRef<HTMLDivElement>(null);
   
-  // Touch handling states
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [swiping, setSwiping] = useState(false);
-  const [swipeOffset, setSwipeOffset] = useState(0);
-  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
-  
-  // Animation states
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [nextArtistIndex, setNextArtistIndex] = useState<number | null>(null);
-  
-  // Minimum swipe distance required (in pixels)
-  const minSwipeDistance = 50;
-  
   // Log when the modal content is rendered
   React.useEffect(() => {
     logger.info(`Modal content rendered for artist: ${selectedArtist.name} (ID: ${selectedArtist.id})`);
@@ -60,170 +46,23 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   
   // Create handlers for next and previous that implement looping
   const handlePrevious = () => {
-    if (isAnimating) return;
-    
     const newIndex = selectedArtistIndex === 0 ? artists.length - 1 : selectedArtistIndex - 1;
     logger.info(`Navigating to previous artist, new index: ${newIndex}`);
-    
-    if (isMobile) {
-      // Start animation - coming from left (previous)
-      setSwipeDirection('right');
-      setNextArtistIndex(newIndex);
-      setIsAnimating(true);
-      
-      // Apply animation and then change artist
-      setTimeout(() => {
-        onArtistChange(newIndex);
-        // Reset animation states after changing artist
-        setTimeout(() => {
-          setIsAnimating(false);
-          setSwipeDirection(null);
-          setNextArtistIndex(null);
-        }, 50);
-      }, 300);
-    } else {
-      onArtistChange(newIndex);
-    }
+    onArtistChange(newIndex);
   };
   
   const handleNext = () => {
-    if (isAnimating) return;
-    
     const newIndex = selectedArtistIndex === artists.length - 1 ? 0 : selectedArtistIndex + 1;
     logger.info(`Navigating to next artist, new index: ${newIndex}`);
-    
-    if (isMobile) {
-      // Start animation - coming from right (next)
-      setSwipeDirection('left');
-      setNextArtistIndex(newIndex);
-      setIsAnimating(true);
-      
-      // Apply animation and then change artist
-      setTimeout(() => {
-        onArtistChange(newIndex);
-        // Reset animation states after changing artist
-        setTimeout(() => {
-          setIsAnimating(false);
-          setSwipeDirection(null);
-          setNextArtistIndex(null);
-        }, 50);
-      }, 300);
-    } else {
-      onArtistChange(newIndex);
-    }
-  };
-
-  // Touch event handlers for swipe navigation
-  const onTouchStart = (e: React.TouchEvent) => {
-    if (!isMobile) return;
-    setTouchStart(e.targetTouches[0].clientX);
-    setTouchEnd(null);
-    setSwiping(true);
-    setSwipeOffset(0);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    if (!isMobile || touchStart === null || isAnimating) return;
-    const currentTouch = e.targetTouches[0].clientX;
-    setTouchEnd(currentTouch);
-    
-    // Calculate and set the swipe offset for visual feedback
-    const offset = currentTouch - touchStart;
-    setSwipeOffset(offset);
-    
-    // Determine swipe direction for visual feedback
-    if (offset > 0) {
-      setSwipeDirection('right');
-      const newIndex = selectedArtistIndex === 0 ? artists.length - 1 : selectedArtistIndex - 1;
-      setNextArtistIndex(newIndex);
-    } else if (offset < 0) {
-      setSwipeDirection('left');
-      const newIndex = selectedArtistIndex === artists.length - 1 ? 0 : selectedArtistIndex + 1;
-      setNextArtistIndex(newIndex);
-    }
-  };
-
-  const onTouchEnd = () => {
-    if (!isMobile || !touchStart || !touchEnd || isAnimating) {
-      setSwiping(false);
-      setSwipeOffset(0);
-      return;
-    }
-
-    // Calculate swipe distance
-    const distance = touchEnd - touchStart;
-    const isLeftSwipe = distance < -minSwipeDistance;
-    const isRightSwipe = distance > minSwipeDistance;
-    
-    // Execute swipe actions based on direction
-    if (isLeftSwipe) {
-      handleNext();
-    } else if (isRightSwipe) {
-      handlePrevious();
-    } else {
-      // Reset if swipe wasn't significant
-      setSwipeDirection(null);
-      setNextArtistIndex(null);
-    }
-
-    // Reset touch states
-    setTouchStart(null);
-    setTouchEnd(null);
-    setSwiping(false);
-    setSwipeOffset(0);
-  };
-  
-  // Apply dynamic styles for swipe animation - key changes here for correct carousel feel
-  const getSwipeStyles = () => {
-    if (isAnimating) {
-      // During transition animation - reverse animation direction for carousel feel
-      return {
-        transform: swipeDirection === 'left' 
-          ? 'translateX(-100%)' // When swiping left, current content moves left (off-screen)
-          : swipeDirection === 'right' 
-            ? 'translateX(100%)' // When swiping right, current content moves right (off-screen)
-            : 'translateX(0)',
-        transition: 'transform 0.3s ease-out'
-      };
-    }
-    
-    if (swiping && swipeOffset !== 0) {
-      // During active swiping - direct 1:1 tracking with finger
-      return {
-        transform: `translateX(${swipeOffset}px)`,
-        transition: 'none'
-      };
-    }
-    
-    // Default state
-    return {
-      transform: 'translateX(0)',
-      transition: 'transform 0.3s ease-out'
-    };
-  };
-  
-  // Get styles for the indicator dots
-  const getDotStyle = (index: number) => {
-    return {
-      width: index === selectedArtistIndex ? '10px' : '8px',
-      height: index === selectedArtistIndex ? '10px' : '8px',
-      backgroundColor: index === selectedArtistIndex ? '#FFFFFF' : '#AAAAAA',
-      borderRadius: '50%',
-      margin: '0 4px',
-      transition: 'all 0.3s ease'
-    };
+    onArtistChange(newIndex);
   };
   
   return (
     <div className="relative overflow-hidden">
-      {/* Main content with swipe animation */}
+      {/* Main content */}
       <div 
         ref={contentRef}
-        className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll px-2' : 'max-h-[80vh]'}`}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-        style={getSwipeStyles()}
+        className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll px-4' : 'max-h-[80vh]'}`}
       >
         <div className="lg:w-1/2 overflow-hidden relative">
           <ArtistImagePanel
@@ -244,26 +83,13 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         </div>
       </div>
       
-      {/* Desktop navigation arrows */}
-      <ArtistCarouselNavigation 
-        isMobile={isMobile} 
-        onPrevious={handlePrevious} 
-        onNext={handleNext} 
-      />
-      
-      {/* Pagination indicator dots for mobile */}
-      {isMobile && (
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center">
-          <div className="flex items-center bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
-            {artists.map((_, index) => (
-              <div 
-                key={index} 
-                style={getDotStyle(index)}
-                onClick={() => onArtistChange(index)}
-              />
-            ))}
-          </div>
-        </div>
+      {/* Desktop navigation arrows - only shown in desktop mode */}
+      {!isMobile && (
+        <ArtistCarouselNavigation 
+          isMobile={isMobile} 
+          onPrevious={handlePrevious} 
+          onNext={handleNext} 
+        />
       )}
     </div>
   );
