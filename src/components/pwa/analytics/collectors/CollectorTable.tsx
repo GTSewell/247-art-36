@@ -1,18 +1,19 @@
 
 import React from "react";
-import { Users, MessageSquare, Mail, ExternalLink } from "lucide-react";
+import { Users, MessageSquare, Mail, ExternalLink, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CollectorAvatar from "./CollectorAvatar";
 import { CollectorTableProps } from "./types";
 
 const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
   return (
-    <div className="min-w-[800px]">
+    <div className="min-w-[900px]">
       <table className="w-full">
-        <thead>
+        <thead className="sticky top-0 bg-white z-10">
           <tr className="bg-muted text-left">
             <th className="py-2 px-4 font-semibold">Name</th>
             <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
+            <th className="py-2 px-4 font-semibold">Sales</th>
             <th className="py-2 px-4 font-semibold">Connect</th>
             <th className="py-2 px-4 font-semibold">Social</th>
             <th className="py-2 px-4 font-semibold">Email</th>
@@ -36,6 +37,19 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
                       </li>
                     ))}
                   </ul>
+                </div>
+              </td>
+              <td className="py-3 px-4">
+                <div className="flex items-center text-zap-green">
+                  <DollarSign className="h-4 w-4 mr-1" />
+                  <span>
+                    {collector.sales.reduce((sum, sale) => sum + sale, 0).toLocaleString('en-US', { 
+                      style: 'currency', 
+                      currency: 'USD',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0
+                    })}
+                  </span>
                 </div>
               </td>
               <td className="py-3 px-4">

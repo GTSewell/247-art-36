@@ -4,6 +4,7 @@ export interface Collector {
   name: string;
   avatarUrl: string;
   itemsPurchased: string[];
+  sales: number[];
   collectorName: string;
   email: string;
   social: {
