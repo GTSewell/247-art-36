@@ -10,9 +10,9 @@ import {
   CarouselContent, 
   CarouselItem, 
   CarouselPrevious, 
-  CarouselNext 
+  CarouselNext,
+  type CarouselApi
 } from "@/components/ui/carousel";
-import type Embla from "embla-carousel";
 
 interface ArtistDetailModalProps {
   artists: Artist[];
@@ -40,7 +40,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   onSelect
 }) => {
   const isMobile = useIsMobile();
-  const [api, setApi] = useState<Embla | null>(null);
+  const [api, setApi] = useState<CarouselApi | null>(null);
   
   // Add debug logging
   React.useEffect(() => {
