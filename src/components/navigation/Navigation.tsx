@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, UserRound } from "lucide-react";
+import { X, UserRound } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useAppMode } from "@/contexts/AppModeContext";
 import DesktopNav from "./DesktopNav";
@@ -44,7 +44,7 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
 
-          {/* Mobile menu button */}
+          {/* Mobile menu button - replaced hamburger with profile icon */}
           <div className="md:hidden">
             <Button
               variant="ghost"
@@ -55,7 +55,11 @@ const Navigation = () => {
               {isOpen ? (
                 <X className="h-6 w-6" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <img 
+                  src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
+                  alt="Menu" 
+                  className="h-8 w-8" 
+                />
               )}
             </Button>
           </div>

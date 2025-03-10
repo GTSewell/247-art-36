@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Users, ShoppingBag, User } from 'lucide-react';
+import { Home, Users, ShoppingBag } from 'lucide-react';
 import { useAuth } from "@/hooks/use-auth";
 
 const PWANavigation = () => {
@@ -63,7 +63,7 @@ const PWANavigation = () => {
             <span className="text-xs mt-1">Store</span>
           </NavLink>
           
-          {/* Account icon */}
+          {/* Account icon - replaced with custom profile icon */}
           <NavLink 
             to="/account" 
             className={({ isActive }) => 
@@ -73,8 +73,11 @@ const PWANavigation = () => {
             }
             onClick={handleAccountClick}
           >
-            <User className="h-6 w-6" />
-            <span className="text-xs mt-1">Account</span>
+            <img 
+              src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
+              alt="Account" 
+              className="h-8 w-8" 
+            />
           </NavLink>
         </div>
       </nav>
