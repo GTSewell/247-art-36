@@ -9,7 +9,7 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
   return (
     <div className="min-w-[900px]">
       <table className="w-full">
-        <thead className="sticky top-0 bg-white z-10 border-b shadow-md">
+        <thead className="sticky top-0 bg-white z-30 border-b shadow-lg">
           <tr className="bg-muted text-left">
             <th className="py-2 px-4 font-semibold">Name</th>
             <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
