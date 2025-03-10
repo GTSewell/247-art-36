@@ -43,7 +43,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className={`${isMobile ? 'w-[95%] mx-auto' : 'max-w-5xl'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]`}
+        className={`${isMobile ? 'w-[90%] mx-auto' : 'max-w-5xl'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[90vh]`}
       >
         <DialogTitle className="sr-only">Artist Details</DialogTitle>
         <DialogDescription className="sr-only">Detailed information about the artist</DialogDescription>

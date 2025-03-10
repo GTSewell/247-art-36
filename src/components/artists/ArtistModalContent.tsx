@@ -66,7 +66,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     logger.info(`Navigating to previous artist, new index: ${newIndex}`);
     
     if (isMobile) {
-      // Start animation
+      // Start animation - coming from left (previous)
       setSwipeDirection('right');
       setNextArtistIndex(newIndex);
       setIsAnimating(true);
@@ -93,7 +93,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     logger.info(`Navigating to next artist, new index: ${newIndex}`);
     
     if (isMobile) {
-      // Start animation
+      // Start animation - coming from right (next)
       setSwipeDirection('left');
       setNextArtistIndex(newIndex);
       setIsAnimating(true);
@@ -173,22 +173,22 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     setSwipeOffset(0);
   };
   
-  // Apply dynamic styles for swipe animation
+  // Apply dynamic styles for swipe animation - key changes here for correct carousel feel
   const getSwipeStyles = () => {
     if (isAnimating) {
-      // During transition animation
+      // During transition animation - reverse animation direction for carousel feel
       return {
         transform: swipeDirection === 'left' 
-          ? 'translateX(-100%)' 
+          ? 'translateX(-100%)' // When swiping left, current content moves left (off-screen)
           : swipeDirection === 'right' 
-            ? 'translateX(100%)' 
+            ? 'translateX(100%)' // When swiping right, current content moves right (off-screen)
             : 'translateX(0)',
         transition: 'transform 0.3s ease-out'
       };
     }
     
     if (swiping && swipeOffset !== 0) {
-      // During active swiping
+      // During active swiping - direct 1:1 tracking with finger
       return {
         transform: `translateX(${swipeOffset}px)`,
         transition: 'none'
@@ -219,7 +219,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
       {/* Main content with swipe animation */}
       <div 
         ref={contentRef}
-        className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll' : 'max-h-[80vh]'}`}
+        className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-scroll px-2' : 'max-h-[80vh]'}`}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
