@@ -51,16 +51,16 @@ const STPSetsCard: React.FC = () => {
           <span className="font-bold">0%</span>
         </div>
         
-        {/* Segmented progress bar container */}
-        <div className="relative h-12 w-full overflow-hidden rounded-lg border border-gray-300">
+        {/* Segmented progress bar container - increase height to accommodate indicator */}
+        <div className="relative h-12 w-full overflow-hidden rounded-lg border border-gray-300 mb-6">
           {/* Segments grid */}
           <div className="absolute inset-0 grid grid-cols-25 gap-1 p-1">
             {segments}
           </div>
           
-          {/* Commission indicator */}
+          {/* Commission indicator - positioned in the middle of the bar */}
           <div 
-            className="absolute top-full left-0 transform -translate-y-1/2 bg-[#00baef] text-white font-bold rounded px-2 py-1 text-xs"
+            className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-zap-blue text-white font-bold rounded px-2 py-0.5 text-xs whitespace-nowrap"
             style={{ 
               left: `${(stpPacksSold / totalSegments) * 100}%`, 
               transform: `translateX(-50%) translateY(-50%)` 
@@ -70,7 +70,7 @@ const STPSetsCard: React.FC = () => {
           </div>
         </div>
         
-        <div className="text-sm text-gray-500 mt-4">
+        <div className="text-sm text-gray-500">
           For every STP Collector Pack sold, your gallery commission decreases by 1%.
         </div>
       </CardContent>
