@@ -71,7 +71,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const artistDomain = artist.name ? artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
   
   return (
-    <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0">
+    <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0 overflow-hidden w-full">
       <ArtistReturnButton 
         onReturn={handleReturnToArtists} 
         colorTheme={colorTheme} 

@@ -33,10 +33,11 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
       style={{ 
         height: isMobile ? 'calc(100vh - 350px)' : 'calc(80vh - 180px)',
         minHeight: isMobile ? '300px' : 'auto',
-        maxHeight: isMobile ? '400px' : undefined
+        maxHeight: isMobile ? '400px' : undefined,
+        maxWidth: '100%'
       }}
     >
-      <div className="space-y-6 pb-10 w-full max-w-full">
+      <div className="space-y-6 pb-10 w-full max-w-full overflow-hidden">
         <ArtistBio 
           bio={bio} 
           isMobile={isMobile} 
