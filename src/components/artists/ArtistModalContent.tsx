@@ -63,6 +63,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
       <div 
         ref={contentRef}
         className={`flex flex-col lg:flex-row w-full ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[80vh]'}`}
+        style={isMobile ? { width: '100%', maxWidth: '100%', overflowX: 'hidden' } : undefined}
       >
         <div className="lg:w-1/2 overflow-hidden relative">
           <ArtistImagePanel

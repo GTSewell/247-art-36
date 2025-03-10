@@ -22,7 +22,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
     return (
       <div className="mb-4 w-full">
         <h3 className="font-bold text-base mb-2">Bio</h3>
-        <div className="text-gray-700 leading-relaxed break-words w-full overflow-hidden text-wrap">
+        <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full">
           {bio}
         </div>
       </div>
@@ -37,7 +37,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
           <span className="font-bold text-base">{isMobile ? "Bio" : bioPreview}</span>
         </div>
       </div>
-      <div className="text-gray-700 leading-relaxed break-words w-full overflow-hidden text-wrap">
+      <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full">
         {bio}
       </div>
     </div>
