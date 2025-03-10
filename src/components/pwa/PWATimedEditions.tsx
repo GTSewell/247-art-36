@@ -4,6 +4,7 @@ import FeaturedProducts from "@/components/store/FeaturedProducts";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 interface TimerState {
   hours: number;
@@ -20,6 +21,7 @@ const PWATimedEditions: React.FC<PWATimedEditionsProps> = ({ isLoading }) => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [timerState, setTimerState] = useState<TimerState | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { isPWA } = useAppMode();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -60,16 +62,18 @@ const PWATimedEditions: React.FC<PWATimedEditionsProps> = ({ isLoading }) => {
   return (
     <>
       <div className="w-full timed-editions-carousel">
-        <div className="flex justify-center mb-1">
-          <img 
-            src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
-            alt="Timed Editions" 
-            className="h-14 object-contain"
-          />
-        </div>
+        {!isPWA && (
+          <div className="flex justify-center mb-1">
+            <img 
+              src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
+              alt="Timed Editions" 
+              className="h-14 object-contain"
+            />
+          </div>
+        )}
 
         {!isLoading && products.length > 0 ? (
-          <div className="overflow-hidden w-full pb-8"> {/* Increased bottom padding */}
+          <div className="overflow-hidden w-full pb-8">
             <FeaturedProducts
               products={products}
               onProductSelect={handleProductSelect}
