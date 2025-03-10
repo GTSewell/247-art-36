@@ -38,7 +38,7 @@ const PWAHome = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-zap-yellow">
-        {isPWA ? null : <Navigation />}
+        {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-20 pb-20 flex flex-col items-center justify-center">
           <p className="text-red-600 mb-4">{error}</p>
           <button
@@ -55,7 +55,7 @@ const PWAHome = () => {
   return (
     <TimerProvider>
       <div className="min-h-screen bg-zap-yellow">
-        {isPWA ? null : <Navigation />}
+        {isPWA ? <PWANavigation /> : <Navigation />}
 
         <main className={`w-full ${isPWA ? 'pt-4' : 'pt-24'} pb-20`}>
           <div className="pb-64">
