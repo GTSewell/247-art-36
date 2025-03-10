@@ -46,32 +46,46 @@ const STPSetsCard: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex justify-between">
-          <span className="font-bold">{initialCommissionRate}%</span>
-          <span className="font-bold">0%</span>
+        {/* Commission percentage indicator at top */}
+        <div className="relative w-full mb-1">
+          <div className="flex justify-between mb-1">
+            <span className="font-bold">{initialCommissionRate}%</span>
+            <span className="font-bold">0%</span>
+          </div>
+          
+          {/* Horizontal line with percentage indicator */}
+          <div className="relative w-full h-0.5 bg-gray-300 my-2">
+            {/* Current commission percentage marker */}
+            <div 
+              className="absolute top-1/2 transform -translate-y-1/2 w-auto"
+              style={{ 
+                left: `${(stpPacksSold / totalSegments) * 100}%`,
+              }}
+            >
+              <div className="bg-zap-blue text-white text-xs font-bold px-2 py-0.5 rounded transform -translate-x-1/2 whitespace-nowrap">
+                {currentCommissionRate}%
+              </div>
+            </div>
+          </div>
         </div>
         
-        {/* Segmented progress bar container - increase height to accommodate indicator */}
-        <div className="relative h-12 w-full overflow-hidden rounded-lg border border-gray-300 mb-6">
+        {/* Segmented progress bar container */}
+        <div className="relative h-10 w-full overflow-hidden rounded-lg border border-gray-300 mb-2">
           {/* Segments grid */}
           <div className="absolute inset-0 grid grid-cols-25 gap-1 p-1">
             {segments}
           </div>
-          
-          {/* Commission indicator - positioned in the middle of the bar */}
-          <div 
-            className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-zap-blue text-white font-bold rounded px-2 py-0.5 text-xs whitespace-nowrap"
-            style={{ 
-              left: `${(stpPacksSold / totalSegments) * 100}%`, 
-              transform: `translateX(-50%) translateY(-50%)` 
-            }}
-          >
-            {currentCommissionRate}%
-          </div>
         </div>
         
-        <div className="text-sm text-gray-500">
-          For every STP Collector Pack sold, your gallery commission decreases by 1%.
+        <div className="flex justify-between items-center">
+          <div className="text-sm text-gray-500">
+            For every STP Collector Pack sold, your gallery commission decreases by 1%.
+          </div>
+          
+          {/* Current gallery commission label */}
+          <div className="bg-zap-blue text-white text-xs font-bold px-3 py-1.5 rounded whitespace-nowrap">
+            Current gallery commission
+          </div>
         </div>
       </CardContent>
     </Card>
