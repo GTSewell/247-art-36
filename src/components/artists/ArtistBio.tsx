@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface ArtistBioProps {
@@ -19,9 +20,11 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
   // If not using accordion, just return the bio text directly
   if (!useAccordion) {
     return (
-      <div className="mb-4">
+      <div className="mb-4 w-full">
         <h3 className="font-bold text-base mb-2">Bio</h3>
-        <div className="text-gray-700 leading-relaxed">{bio}</div>
+        <div className="text-gray-700 leading-relaxed break-words w-full overflow-x-hidden">
+          {bio}
+        </div>
       </div>
     );
   }
@@ -34,7 +37,9 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
           <span className="font-bold text-base">{isMobile ? "Bio" : bioPreview}</span>
         </div>
       </div>
-      <div className="text-gray-700 leading-relaxed">{bio}</div>
+      <div className="text-gray-700 leading-relaxed break-words w-full overflow-x-hidden">
+        {bio}
+      </div>
     </div>
   );
 };
