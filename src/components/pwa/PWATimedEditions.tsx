@@ -69,7 +69,7 @@ const PWATimedEditions: React.FC<PWATimedEditionsProps> = ({ isLoading }) => {
         </div>
 
         {!isLoading && products.length > 0 ? (
-          <div className="overflow-hidden w-full">
+          <div className="overflow-hidden w-full pb-4"> {/* Added bottom padding */}
             <FeaturedProducts
               products={products}
               onProductSelect={handleProductSelect}

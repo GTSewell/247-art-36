@@ -59,7 +59,7 @@ const PWAHome = () => {
 
         {/* Updated main container with proper spacing and overflow control */}
         <main className={`w-full ${isPWA ? 'pt-16' : 'pt-24'} pb-24 overflow-y-auto h-[calc(100vh-80px)]`}>
-          <div className="pb-28"> {/* Increased bottom padding to prevent footer overlap */}
+          <div className="pb-40"> {/* Increased bottom padding to prevent footer overlap */}
             {/* Featured Artists Section */}
             {isLoading ? (
               <div className="flex justify-center items-center h-24">
@@ -76,7 +76,7 @@ const PWAHome = () => {
             )}
 
             {/* Timed Edition Drops Section */}
-            <div className="mt-4">
+            <div className="mt-4 mb-8"> {/* Added bottom margin */}
               <PWATimedEditions
                 isLoading={isLoading}
               />
