@@ -16,7 +16,7 @@ const MyCollectorsCard: React.FC = () => {
 
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="flex flex-row items-center justify-between sticky top-0 z-20 bg-white">
+      <CardHeader className="sticky top-0 z-40 bg-white border-b shadow-lg">
         <CardTitle className="flex items-center">
           <Users className="mr-2 h-5 w-5" />
           My Collectors
@@ -31,7 +31,7 @@ const MyCollectorsCard: React.FC = () => {
         </Button>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="h-[350px] relative overflow-hidden">
+        <div className="h-[350px] relative">
           <ScrollArea className="h-full w-full">
             <div className={cn(
               isMobile ? "overflow-x-auto" : ""
