@@ -15,7 +15,7 @@ interface TimerContextType {
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
 
-export function TimerProvider({ children }: { children: React.ReactNode }) {
+export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [timerStates, setTimerStates] = useState<Record<string, TimerState>>({});
 
   const updateTimerState = (productId: string, state: TimerState) => {
@@ -30,7 +30,7 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
       {children}
     </TimerContext.Provider>
   );
-}
+};
 
 export function useTimer() {
   const context = useContext(TimerContext);

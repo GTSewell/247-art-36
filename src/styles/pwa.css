@@ -30,7 +30,7 @@ body[data-pwa="true"] main {
   -webkit-overflow-scrolling: touch;
   height: calc(100% - 80px); /* Account for footer only since header is transparent */
   width: 100%;
-  padding-bottom: 100px; /* Increased footer clearance */
+  padding-bottom: 120px; /* Increased footer clearance */
 }
 
 /* PWA specific carousel styles */
@@ -89,7 +89,8 @@ body[data-pwa="true"] .dashboard-content {
 /* Ensure the footer navbar doesn't overlap content */
 body[data-pwa="true"] .pwa-footer {
   z-index: 50;
-  background-color: white;
+  background-color: black;
+  height: 64px; /* Ensure consistent footer height */
 }
 
 /* Override embla carousel styles for PWA */
@@ -103,4 +104,18 @@ body[data-pwa="true"] .embla__slide {
   flex: 0 0 auto;
   min-width: 0;
   max-width: none;
+}
+
+/* Ensure carousels have proper touch handling */
+body[data-pwa="true"] .CarouselContent,
+body[data-pwa="true"] .CarouselItem {
+  touch-action: pan-x;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Improve drag sensitivity for PWA carousels */
+body[data-pwa="true"] .CarouselViewport {
+  overflow: visible;
+  touch-action: pan-x;
 }

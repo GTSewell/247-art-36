@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { useTimer } from '@/contexts/TimerContext';
+import { logger } from '@/utils/logger';
 
 interface CountdownTimerProps {
   initialHours: number;
@@ -20,6 +20,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   useEffect(() => {
     if (!isInitialized && !timerStates[productId]) {
+      logger.info(`Initializing timer for product: ${productId}`);
       updateTimerState(productId, {
         hours: initialHours,
         minutes: initialMinutes,
@@ -28,7 +29,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
       });
       setIsInitialized(true);
     }
-  }, [initialHours, initialMinutes, initialSeconds, productId, isInitialized]);
+  }, [initialHours, initialMinutes, initialSeconds, productId, isInitialized, timerStates, updateTimerState]);
 
   useEffect(() => {
     if (!timerStates[productId]) return;
@@ -70,7 +71,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [productId, timerStates[productId]]);
+  }, [productId, timerStates, updateTimerState]);
 
   const currentState = timerStates[productId];
   if (!currentState) return null;

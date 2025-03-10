@@ -102,7 +102,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ products, onProduct
             loop: true,
             skipSnaps: false,
             dragFree: true,
-            dragThreshold: 10, // Lower threshold for easier dragging
+            dragThreshold: 5, // Lower threshold for easier dragging
           }}
         >
           <CarouselContent className={`${isPWA ? 'ml-0 pl-0' : 'ml-4'}`}>
