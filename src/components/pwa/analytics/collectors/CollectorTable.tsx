@@ -15,7 +15,6 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
             <th className="py-2 px-4 font-semibold">Item/s Purchased</th>
             <th className="py-2 px-4 font-semibold">Sales</th>
             <th className="py-2 px-4 font-semibold">Connect</th>
-            <th className="py-2 px-4 font-semibold">Social</th>
             <th className="py-2 px-4 font-semibold">Email</th>
           </tr>
         </thead>
@@ -66,26 +65,6 @@ const CollectorTable: React.FC<CollectorTableProps> = ({ collectors }) => {
                 ) : (
                   <span className="text-gray-400 text-sm">Not available</span>
                 )}
-              </td>
-              <td className="py-3 px-4">
-                <div className="flex space-x-2">
-                  {Object.keys(collector.social).length > 0 ? (
-                    <>
-                      {collector.social.instagram && (
-                        <button className="text-zap-blue hover:text-zap-red" title="Instagram">
-                          <ExternalLink className="h-4 w-4" />
-                        </button>
-                      )}
-                      {collector.social.facebook && (
-                        <button className="text-zap-blue hover:text-zap-red" title="Facebook">
-                          <ExternalLink className="h-4 w-4" />
-                        </button>
-                      )}
-                    </>
-                  ) : (
-                    <span className="text-gray-400 text-sm">Not available</span>
-                  )}
-                </div>
               </td>
               <td className="py-3 px-4">
                 {collector.email ? (

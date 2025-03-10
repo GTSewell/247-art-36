@@ -5,12 +5,11 @@ export const useCollectorExport = (collectors: Collector[]) => {
   // Function to download collector data as CSV
   const handleDownload = () => {
     // Headers for CSV
-    const headers = ["Name", "Items Purchased", "Sales", "Collector Name", "Social", "Email"];
+    const headers = ["Name", "Items Purchased", "Sales", "Collector Name", "Email"];
     
     // Map collector data to CSV rows
     const rows = collectors.map(collector => {
       const itemsList = collector.itemsPurchased.join("; ");
-      const socialList = Object.keys(collector.social).join("; ");
       const salesList = collector.sales.map(sale => `$${sale}`).join("; ");
       
       return [
@@ -18,7 +17,6 @@ export const useCollectorExport = (collectors: Collector[]) => {
         itemsList,
         salesList,
         collector.collectorName || "Not available",
-        socialList || "Not available",
         collector.email || "Not available"
       ];
     });
