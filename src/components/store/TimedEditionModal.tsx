@@ -6,6 +6,7 @@ import ProductImageGallery from './ProductImageGallery';
 import ProductHeader from './ProductHeader';
 import ProductInfoAccordion from './ProductInfoAccordion';
 import AddToCartButton from './AddToCartButton';
+import { X } from 'lucide-react';
 
 interface TimerState {
   hours: number;
@@ -30,6 +31,9 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
   const isMobile = useIsMobile();
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
+  // Determine if the timer has expired
+  const isExpired = timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0;
+
   useEffect(() => {
     if (!isMobile) {
       setOpenAccordions(['details']);
@@ -50,20 +54,36 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+      <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 rounded-xl shadow-lg border border-gray-100">
         <DialogTitle className="sr-only">Product Details</DialogTitle>
+        
+        {/* Close button with improved positioning */}
+        <button 
+          onClick={onClose}
+          className="absolute right-4 top-4 p-1 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:bg-white transition-colors z-50"
+          aria-label="Close dialog"
+        >
+          <X className="h-4 w-4 text-gray-700" />
+        </button>
+        
         <div className="flex flex-col md:flex-row max-h-[90vh]">
-          <div className="w-full md:w-1/2 p-3 md:p-8">
+          <div className="w-full md:w-1/2 p-3 md:p-6">
             <ProductImageGallery images={variations} />
           </div>
-          <div className="w-full md:w-1/2 border-l border-border/40 p-2 md:p-6 flex flex-col h-full overflow-y-auto">
-            <div className="flex-grow space-y-2 md:space-y-4">
+          <div className="w-full md:w-1/2 border-l border-gray-100 p-4 md:p-6 flex flex-col h-full overflow-y-auto">
+            <div className="flex-grow space-y-3 md:space-y-4">
               <ProductHeader 
                 name={product.name} 
                 artistName={product.artists?.name} 
                 productId={product.id}
                 timeLeft={timeLeft}
               />
+              
+              {isExpired && (
+                <div className="bg-black/90 text-white py-3 px-4 rounded-md flex items-center justify-center mt-3 mb-1">
+                  <span className="text-lg font-medium tracking-wide uppercase">CLOSED</span>
+                </div>
+              )}
               
               <ProductInfoAccordion 
                 description={product.description}
@@ -72,8 +92,8 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
               />
             </div>
             
-            <div className="mt-3 md:mt-6 pt-2 md:pt-4 border-t border-border/40 sticky bottom-0 bg-white/95">
-              <AddToCartButton />
+            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-gray-100 sticky bottom-0 bg-white/95 backdrop-blur-sm">
+              <AddToCartButton isDisabled={isExpired} />
             </div>
           </div>
         </div>
