@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { LogIn, LogOut, Settings } from "lucide-react";
@@ -8,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 interface MobileUserMenuProps {
   user: any | null;
@@ -74,13 +74,25 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
       </div>
       <Separator />
       <Link to="/dashboard/artist" className="block">
-        <Button variant="ghost" className="w-full justify-start">
+        <Button 
+          variant="ghost" 
+          className={cn(
+            "w-full justify-start",
+            "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+          )}
+        >
           <Settings className="mr-2 h-4 w-4" />
           Artist Dashboard
         </Button>
       </Link>
       <Link to="/dashboard/collector" className="block">
-        <Button variant="ghost" className="w-full justify-start">
+        <Button 
+          variant="ghost" 
+          className={cn(
+            "w-full justify-start",
+            "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+          )}
+        >
           <Settings className="mr-2 h-4 w-4" />
           Collector Dashboard
         </Button>
