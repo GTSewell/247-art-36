@@ -22,6 +22,7 @@ const MatterportViewer: React.FC<MatterportViewerProps> = ({
         allowFullScreen
         allow="xr-spatial-tracking"
         className="w-full h-full"
+        title="Matterport Virtual Tour"
       />
     </div>
   );

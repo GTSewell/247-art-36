@@ -63,6 +63,7 @@ function App() {
         <Route path="/details" element={<Details />} />
         <Route path="/services" element={<Services />} />
         <Route path="/tour" element={<VirtualTour />} />
+        <Route path="/virtual-tour" element={<VirtualTour />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/submit" element={<ArtistSubmission />} />
         
