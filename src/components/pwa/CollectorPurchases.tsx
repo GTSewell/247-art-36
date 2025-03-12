@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, MessageCircle, Package, ShoppingBag } from "lucide-react";
+import { ExternalLink, MessageCircle, Package, ShoppingBag, Truck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -82,11 +82,20 @@ const CollectorPurchases: React.FC = () => {
     setSelectedPurchase(null);
   };
   
-  // Function to handle messaging the artist
+  // Function to handle messaging 247
   const handleMessage = () => {
     if (selectedPurchase) {
-      toast.success(`Message sent to ${selectedPurchase.artist} about "${selectedPurchase.title}"`);
+      toast.success(`Message sent to 247 about "${selectedPurchase.title}"`);
       closeDetails();
+    }
+  };
+  
+  // Function to handle tracking shipment
+  const handleTrackShipment = () => {
+    if (selectedPurchase) {
+      toast.success(`Tracking information for order #${selectedPurchase.id} opened`);
+      // In a real app, this would open tracking information
+      // For demo purposes, we'll just show a success toast
     }
   };
   
@@ -219,20 +228,31 @@ const CollectorPurchases: React.FC = () => {
               </div>
             </div>
             
-            <DialogFooter className="sm:justify-between">
+            <DialogFooter className="sm:justify-between flex-col sm:flex-row gap-2">
               <Button
                 variant="outline"
                 onClick={closeDetails}
               >
                 Close
               </Button>
-              <Button 
-                onClick={handleMessage}
-                className="bg-blue-500 hover:bg-blue-600"
-              >
-                <MessageCircle className="mr-2 h-4 w-4" />
-                Message Artist
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-2">
+                {selectedPurchase.status === "shipped" && (
+                  <Button 
+                    onClick={handleTrackShipment}
+                    className="bg-amber-500 hover:bg-amber-600"
+                  >
+                    <Truck className="mr-2 h-4 w-4" />
+                    Track Shipping
+                  </Button>
+                )}
+                <Button 
+                  onClick={handleMessage}
+                  className="bg-blue-500 hover:bg-blue-600"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  Message 247
+                </Button>
+              </div>
             </DialogFooter>
           </DialogContent>
         )}
