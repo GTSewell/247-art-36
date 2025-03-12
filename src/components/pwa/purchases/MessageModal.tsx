@@ -13,7 +13,7 @@ import { Send } from "lucide-react";
 import { toast } from "sonner";
 
 interface MessageFormValues {
-  inquiryType: InquiryType;
+  inquiryType: InquiryType | "";
   message: string;
 }
 
@@ -26,13 +26,17 @@ interface MessageModalProps {
 const MessageModal: React.FC<MessageModalProps> = ({ isOpen, onClose, purchase }) => {
   const form = useForm<MessageFormValues>({
     defaultValues: {
-      inquiryType: "shipping",
+      inquiryType: "",
       message: purchase ? `Hello, I have a question about my order #${purchase.id} - ${purchase.title}.` : "",
     },
   });
 
   const handleSubmit = (values: MessageFormValues) => {
     if (!purchase) return;
+    if (!values.inquiryType) {
+      toast.error("Please select an inquiry type");
+      return;
+    }
     
     toast.success(`Message sent regarding order #${purchase.id} (${values.inquiryType})`);
     console.log("Message submitted:", values);
