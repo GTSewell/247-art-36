@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SalesBreakdownCard from "./analytics/SalesBreakdownCard";
 import SalesAnalyticsCard from "./analytics/SalesAnalyticsCard";
 import STPSetsCard from "./analytics/STPSetsCard";
@@ -13,25 +13,38 @@ interface ArtistSalesAnalyticsProps {
   artistId: string | null;
 }
 
+// Mock data for the demo account
+const DEMO_STP_DATA = {
+  completionPercentage: 85,
+  packCount: 2,
+  productCount: 12,
+  nextAction: "Add a new limited edition"
+};
+
 const ArtistSalesAnalytics: React.FC<ArtistSalesAnalyticsProps> = ({ artistId }) => {
-  // Disable actions in demo mode
-  const demoMode = localStorage.getItem('demoSession') === 'active';
-  const handleDemoAction = () => {
+  const [demoMode] = useState(localStorage.getItem('demoSession') === 'active');
+  
+  // This function will handle demo actions - it will show toasts but allow interactions
+  const handleDemoAction = (actionName?: string) => {
     if (demoMode) {
-      toast.info('This action is disabled in the demo account');
-      return true;
+      toast.info(`Demo mode: ${actionName || 'Action'} would be performed in live mode`);
+      return false; // Return false to allow the action to continue
     }
     return false;
   };
   
   return (
     <div className="space-y-6">
-      <STPSetsCard onAction={handleDemoAction} />
+      <STPSetsCard 
+        onAction={handleDemoAction} 
+        demoMode={demoMode}
+        demoData={DEMO_STP_DATA}
+      />
       <MyCollectorsCard onAction={handleDemoAction} />
-      <SalesBreakdownCard />
-      <SalesAnalyticsCard />
-      <ProfileViewsCard />
-      <SalesConversionsCard />
+      <SalesBreakdownCard demoMode={demoMode} />
+      <SalesAnalyticsCard demoMode={demoMode} />
+      <ProfileViewsCard demoMode={demoMode} />
+      <SalesConversionsCard demoMode={demoMode} />
       <ActionButtons onAction={handleDemoAction} />
     </div>
   );

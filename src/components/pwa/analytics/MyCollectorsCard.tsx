@@ -1,79 +1,89 @@
 
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Download, MessageSquare } from "lucide-react";
+import { MessageSquare, Eye, Download } from "lucide-react";
 import CollectorTable from "./collectors/CollectorTable";
+import CollectorMessageModal from "./collectors/CollectorMessageModal";
 import { collectors } from "./collectors/mockData";
+import { useCollectorExport } from "./collectors/useCollectorExport";
 
 interface MyCollectorsCardProps {
-  onAction?: () => boolean;
+  onAction: (actionName?: string) => boolean;
 }
 
 const MyCollectorsCard: React.FC<MyCollectorsCardProps> = ({ onAction }) => {
-  const handleExport = () => {
-    if (onAction && onAction()) return;
-    // Normal export logic would go here
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [selectedCollector, setSelectedCollector] = useState<any>(null);
+  const { exportCollectors, exportInProgress } = useCollectorExport();
+  
+  const handleMessageClick = (collector?: any) => {
+    // Check if we should block the action
+    if (onAction("Message collector")) {
+      return; // Action was blocked
+    }
+    
+    if (collector) {
+      setSelectedCollector(collector);
+    }
+    setMessageModalOpen(true);
   };
-
-  const handleMessageAll = () => {
-    if (onAction && onAction()) return;
-    // Normal message all logic would go here
+  
+  const handleViewClick = (collector: any) => {
+    // Check if we should block the action
+    if (onAction("View collector profile")) {
+      return; // Action was blocked
+    }
+    
+    console.log("View collector:", collector);
+    // Add actual navigation or modal to view collector profile
   };
-
-  // Demo mode always has collectors
-  const demoMode = localStorage.getItem('demoSession') === 'active';
-  const hasCollectors = demoMode;
-
-  if (!hasCollectors) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Users className="mr-2 h-5 w-5" />
-            My Collectors
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-center py-8">
-            <Users className="mx-auto h-12 w-12 mb-4 text-gray-400" />
-            <p className="text-gray-500">You don't have any collectors yet</p>
-            <p className="text-sm text-gray-400 mt-2">
-              When people purchase your art, they'll appear here
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  
+  const handleExportClick = () => {
+    // Check if we should block the action
+    if (onAction("Export collectors")) {
+      return; // Action was blocked
+    }
+    
+    exportCollectors(collectors);
+  };
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="pb-2">
         <div className="flex justify-between items-center">
-          <CardTitle className="flex items-center">
-            <Users className="mr-2 h-5 w-5" />
-            My Collectors
-          </CardTitle>
-          <div className="flex space-x-2">
-            <Button variant="outline" size="sm" onClick={handleMessageAll}>
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Message All
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleExport}>
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button>
+          <div>
+            <CardTitle className="text-base font-medium">My Collectors</CardTitle>
+            <CardDescription>
+              People who have purchased your art
+            </CardDescription>
           </div>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleExportClick}
+            disabled={exportInProgress}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
-        <CollectorTable 
-          collectors={collectors} 
-          selectedCollectors={[]} 
-          onSelectCollector={() => {}} 
-        />
+        <div className="space-y-4">
+          <CollectorTable 
+            collectors={collectors}
+            onMessageClick={handleMessageClick}
+            onViewClick={handleViewClick}
+          />
+        </div>
       </CardContent>
+      
+      <CollectorMessageModal
+        open={messageModalOpen}
+        onOpenChange={setMessageModalOpen}
+        collector={selectedCollector}
+      />
     </Card>
   );
 };

@@ -1,45 +1,59 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const SalesConversionsCard: React.FC = () => {
-  const salesData = [
-    { source: "247.art", sales: 12, conversion: "18.5%" },
-    { source: "Instagram", sales: 18, conversion: "17.6%" },
-    { source: "Facebook", sales: 3, conversion: "20.0%" },
-    { source: "X", sales: 0, conversion: "0.0%" },
-    { source: "Other", sales: 2, conversion: "12.5%" },
+interface SalesConversionsCardProps {
+  demoMode?: boolean;
+}
+
+const SalesConversionsCard: React.FC<SalesConversionsCardProps> = ({ demoMode }) => {
+  // Demo data with more realistic values
+  const data = demoMode ? [
+    { date: "Jan 1", rate: 25 },
+    { date: "Jan 15", rate: 30 },
+    { date: "Feb 1", rate: 28 },
+    { date: "Feb 15", rate: 32 },
+    { date: "Mar 1", rate: 38 },
+    { date: "Mar 15", rate: 42 },
+    { date: "Apr 1", rate: 45 }
+  ] : [
+    { date: "Jan 1", rate: 5 },
+    { date: "Jan 15", rate: 10 },
+    { date: "Feb 1", rate: 8 },
+    { date: "Feb 15", rate: 12 },
+    { date: "Mar 1", rate: 18 },
+    { date: "Mar 15", rate: 22 },
+    { date: "Apr 1", rate: 25 }
   ];
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <Users className="mr-2 h-5 w-5" />
-          Sales Conversions
-        </CardTitle>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base font-medium">View to Purchase Conversion</CardTitle>
+        <CardDescription>
+          Percentage of profile views that result in a purchase
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b">
-                <th className="text-left py-2 font-semibold">Source</th>
-                <th className="text-right py-2 font-semibold">Sales</th>
-                <th className="text-right py-2 font-semibold">Conversion %</th>
-              </tr>
-            </thead>
-            <tbody>
-              {salesData.map((item, index) => (
-                <tr key={index} className="border-b last:border-b-0">
-                  <td className="py-3 font-medium">{item.source}</td>
-                  <td className="py-3 text-right">{item.sales}</td>
-                  <td className="py-3 text-right">{item.conversion}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="h-48">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={data}
+              margin={{
+                top: 10,
+                right: 10,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip formatter={(value) => [`${value}%`, 'Conversion Rate']} />
+              <Line type="monotone" dataKey="rate" stroke="#FF5733" />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </CardContent>
     </Card>

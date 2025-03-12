@@ -1,68 +1,78 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  Download, 
-  FileText, 
-  Mail, 
-  Share2 
-} from "lucide-react";
+import { Download, FileText, MessageCircle } from "lucide-react";
+import InvoiceModal from "./InvoiceModal";
 
 interface ActionButtonsProps {
-  onAction?: () => boolean;
+  onAction: (actionName?: string) => boolean;
 }
 
 const ActionButtons: React.FC<ActionButtonsProps> = ({ onAction }) => {
-  const handleButtonClick = () => {
-    if (onAction && onAction()) return;
-    // Normal action logic would go here
+  const [invoiceModalOpen, setInvoiceModalOpen] = useState(false);
+  
+  const handleCreateInvoice = () => {
+    // Check if we should block the action
+    if (onAction("Create invoice")) {
+      return; // Action was blocked
+    }
+    
+    setInvoiceModalOpen(true);
+  };
+  
+  const handleExportReports = () => {
+    // Check if we should block the action
+    if (onAction("Export reports")) {
+      return; // Action was blocked
+    }
+    
+    console.log("Export reports clicked");
+    // Implement the export functionality here
+  };
+  
+  const handleSupportChat = () => {
+    // Check if we should block the action
+    if (onAction("Contact support")) {
+      return; // Action was blocked
+    }
+    
+    console.log("Support chat clicked");
+    // Implement support chat functionality here
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 mt-6">
+    <div className="grid grid-cols-3 gap-2">
       <Button 
-        onClick={handleButtonClick}
         variant="outline" 
-        className="flex items-center justify-center h-20"
+        className="flex flex-col items-center justify-center h-20"
+        onClick={handleCreateInvoice}
       >
-        <div className="flex flex-col items-center">
-          <Download className="h-6 w-6 mb-2" />
-          <span>Export Data</span>
-        </div>
+        <FileText className="h-5 w-5 mb-1" />
+        <span className="text-xs">Create Invoice</span>
       </Button>
       
       <Button 
-        onClick={handleButtonClick}
         variant="outline" 
-        className="flex items-center justify-center h-20"
+        className="flex flex-col items-center justify-center h-20"
+        onClick={handleExportReports}
       >
-        <div className="flex flex-col items-center">
-          <FileText className="h-6 w-6 mb-2" />
-          <span>Create Invoice</span>
-        </div>
+        <Download className="h-5 w-5 mb-1" />
+        <span className="text-xs">Export Reports</span>
       </Button>
       
       <Button 
-        onClick={handleButtonClick}
         variant="outline" 
-        className="flex items-center justify-center h-20"
+        className="flex flex-col items-center justify-center h-20"
+        onClick={handleSupportChat}
       >
-        <div className="flex flex-col items-center">
-          <Mail className="h-6 w-6 mb-2" />
-          <span>Email Campaign</span>
-        </div>
+        <MessageCircle className="h-5 w-5 mb-1" />
+        <span className="text-xs">Contact Support</span>
       </Button>
       
-      <Button 
-        onClick={handleButtonClick}
-        variant="outline" 
-        className="flex items-center justify-center h-20"
-      >
-        <div className="flex flex-col items-center">
-          <Share2 className="h-6 w-6 mb-2" />
-          <span>Share Report</span>
-        </div>
-      </Button>
+      <InvoiceModal
+        open={invoiceModalOpen}
+        onOpenChange={setInvoiceModalOpen}
+      />
     </div>
   );
 };

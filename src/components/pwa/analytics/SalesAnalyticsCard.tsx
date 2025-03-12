@@ -1,77 +1,58 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { TrendingUp } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-// Sample data for the chart
-const data = [
-  {
-    name: "Jan",
-    sales: 4000,
-    revenue: 2400,
-  },
-  {
-    name: "Feb",
-    sales: 3000,
-    revenue: 1398,
-  },
-  {
-    name: "Mar",
-    sales: 2000,
-    revenue: 9800,
-  },
-  {
-    name: "Apr",
-    sales: 2780,
-    revenue: 3908,
-  },
-  {
-    name: "May",
-    sales: 1890,
-    revenue: 4800,
-  },
-  {
-    name: "Jun",
-    sales: 2390,
-    revenue: 3800,
-  },
-];
+interface SalesAnalyticsCardProps {
+  demoMode?: boolean;
+}
 
-const SalesAnalyticsCard: React.FC = () => {
+const SalesAnalyticsCard: React.FC<SalesAnalyticsCardProps> = ({ demoMode }) => {
+  // Demo data with more realistic values and trends
+  const data = demoMode ? [
+    { month: "Jan", sales: 2400, orders: 24 },
+    { month: "Feb", sales: 1398, orders: 13 },
+    { month: "Mar", sales: 9800, orders: 98 },
+    { month: "Apr", sales: 3908, orders: 39 },
+    { month: "May", sales: 4800, orders: 48 },
+    { month: "Jun", sales: 3800, orders: 38 },
+    { month: "Jul", sales: 4300, orders: 43 }
+  ] : [
+    { month: "Jan", sales: 900, orders: 9 },
+    { month: "Feb", sales: 1200, orders: 12 },
+    { month: "Mar", sales: 1100, orders: 11 },
+    { month: "Apr", sales: 1300, orders: 13 },
+    { month: "May", sales: 800, orders: 8 },
+    { month: "Jun", sales: 1600, orders: 16 },
+    { month: "Jul", sales: 1750, orders: 17 }
+  ];
+
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <TrendingUp className="mr-2 h-5 w-5" />
-          Sales Analytics
-        </CardTitle>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base font-medium">Sales Analytics</CardTitle>
+        <CardDescription>
+          Your sales over time
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px] w-full">
+        <div className="h-48">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart
+            <AreaChart
               data={data}
               margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
+                top: 10,
+                right: 10,
+                left: 0,
+                bottom: 0,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="month" />
               <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey="sales"
-                stroke="#8884d8"
-                activeDot={{ r: 8 }}
-              />
-              <Line type="monotone" dataKey="revenue" stroke="#82ca9d" />
-            </LineChart>
+              <Tooltip formatter={(value) => [`$${value}`, 'Sales']} />
+              <Area type="monotone" dataKey="sales" stroke="#8884d8" fill="#8884d8" />
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </CardContent>

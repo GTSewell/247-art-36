@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import BasicInfoForm from "./artist-settings/BasicInfoForm";
@@ -13,7 +12,23 @@ interface ArtistProfileSettingsProps {
   artistId: string | null;
 }
 
-// Add a check at the beginning of the component to return mock data if it's a demo account
+// Demo artist profile with generic information
+const DEMO_ARTIST_PROFILE: ArtistProfileFormData = {
+  name: 'Demo Artist',
+  specialty: 'Digital Art, Mixed Media',
+  bio: 'This is a demo artist profile showcasing the features of the 247.art platform. As a demonstration account, you can explore the interface and functionality without making permanent changes.',
+  location: 'New York, NY',
+  city: 'New York',
+  country: 'United States',
+  techniques: 'Digital, Mixed Media, Photography',
+  styles: 'Contemporary, Abstract, Modern',
+  social_platforms: [
+    { platform: 'instagram', username: 'demoartist' },
+    { platform: 'twitter', username: 'demoartistofficial' },
+    { platform: 'facebook', username: 'DemoArtistPage' }
+  ]
+};
+
 const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
   const [formData, setFormData] = useState<ArtistProfileFormData>({
     name: '',
@@ -28,10 +43,14 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
   });
   const [existingArtist, setExistingArtist] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const debouncedFormData = useDebounce(formData, 500);
 
   useEffect(() => {
     if (localStorage.getItem('demoSession') === 'active') {
+      setFormData(DEMO_ARTIST_PROFILE);
+      setIsLoading(false);
+      setInitialLoadComplete(true);
       return;
     }
     
@@ -63,18 +82,20 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
       }
     } finally {
       setIsLoading(false);
+      setInitialLoadComplete(true);
     }
   }, [artistId]);
 
   useEffect(() => {
-    if (localStorage.getItem('demoSession') === 'active') {
-      return;
-    }
-    
-    if (artistId && !isLoading) {
+    if (
+      localStorage.getItem('demoSession') !== 'active' && 
+      initialLoadComplete && 
+      !isLoading && 
+      artistId
+    ) {
       handleAutoSave();
     }
-  }, [debouncedFormData, artistId, isLoading]);
+  }, [debouncedFormData, artistId, isLoading, initialLoadComplete]);
 
   const handleAutoSave = async () => {
     if (!artistId) return;
@@ -82,32 +103,17 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
     const { success, message } = await saveArtistProfile(debouncedFormData, artistId, existingArtist);
     if (success) {
       toast.success(message);
-      await fetchData();
     } else {
       toast.error(message);
     }
   };
 
-  // If this is the demo artist account, show mock data
+  // If this is the demo artist account, show demo data
   if (localStorage.getItem('demoSession') === 'active') {
     return (
       <div className="space-y-6">
         <BasicInfoForm
-          formData={{
-            name: 'GT Sewell',
-            specialty: 'Contemporary Abstract, Geometric Abstraction',
-            bio: 'GT Sewell is a contemporary artist specializing in geometric abstraction. With over 15 years of experience, his work explores the intersection of color theory and structured compositions. His pieces have been exhibited in galleries across Europe and North America.',
-            location: 'Los Angeles, CA',
-            city: 'Los Angeles',
-            country: 'United States',
-            techniques: 'Acrylic, Digital, Oil',
-            styles: 'Abstract, Contemporary, Minimalist',
-            social_platforms: [
-              { platform: 'instagram', username: 'gtsewell_art' },
-              { platform: 'twitter', username: 'gtsewellart' },
-              { platform: 'facebook', username: 'GTSewellArtist' }
-            ]
-          }}
+          formData={DEMO_ARTIST_PROFILE}
           onChange={() => {
             toast.info('Changes are disabled in the demo account');
           }}
@@ -116,9 +122,9 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
         
         <LocationForm
           formData={{
-            location: 'Los Angeles, CA',
-            city: 'Los Angeles',
-            country: 'United States'
+            location: DEMO_ARTIST_PROFILE.location,
+            city: DEMO_ARTIST_PROFILE.city,
+            country: DEMO_ARTIST_PROFILE.country
           }}
           onChange={() => {
             toast.info('Changes are disabled in the demo account');
@@ -128,7 +134,7 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
         
         <ArtistTags
           label="Techniques"
-          tags={['Acrylic', 'Digital', 'Oil']}
+          tags={DEMO_ARTIST_PROFILE.techniques.split(',').map(tag => tag.trim())}
           onTagsChange={() => {
             toast.info('Changes are disabled in the demo account');
           }}
@@ -138,7 +144,7 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
         
         <ArtistTags
           label="Styles"
-          tags={['Abstract', 'Contemporary', 'Minimalist']}
+          tags={DEMO_ARTIST_PROFILE.styles.split(',').map(tag => tag.trim())}
           onTagsChange={() => {
             toast.info('Changes are disabled in the demo account');
           }}
@@ -217,7 +223,6 @@ const ArtistProfileSettings = ({ artistId }: ArtistProfileSettingsProps) => {
     const { success, message } = await saveArtistProfile(formData, artistId, existingArtist);
     if (success) {
       toast.success(message);
-      await fetchData();
     } else {
       toast.error(message);
     }
