@@ -90,3 +90,16 @@
   margin: 0;
   padding: 0;
 }
+
+/* Add rounded corners to modal images */
+.dialog-content img, 
+.dialog-content .img-container img {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Ensure modal images maintain aspect ratio with rounded corners */
+.dialog-content .image-container {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
