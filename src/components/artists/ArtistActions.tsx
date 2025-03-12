@@ -41,20 +41,21 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     borderColor: isFavorite ? '#000000' : buttonBorderColor || 'transparent'
   } : {};
 
-  const visitButtonStyles = buttonColor ? {
-    backgroundColor: buttonColor,
-    color: buttonTextColor || 'white',
-    borderColor: buttonBorderColor || 'transparent'
-  } : {};
+  // Set zap blue for the artist profile button (visit button)
+  const visitButtonStyles = {
+    backgroundColor: '#00baef', // Use zap blue from the theme
+    color: 'white',
+    borderColor: 'transparent'
+  };
 
   // Generate the domain display text based on screen size
   const getDomainText = () => {
     if (isMobile) {
       // On mobile, we'll show just the domain name without "Visit"
-      return displayDomain;
+      return "Artist Profile";
     } else {
-      // On desktop, we'll always show the subdomain format for display
-      return `Visit ${displayDomain}.247.art`;
+      // On desktop, we'll always show "Artist Profile"
+      return "Artist Profile";
     }
   };
 
@@ -102,20 +103,16 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
         style={visitButtonStyles}
         onClick={handleVisitClick}
         onMouseOver={(e) => {
-          if (buttonHoverColor) {
-            e.currentTarget.style.backgroundColor = buttonHoverColor;
-          }
+          e.currentTarget.style.backgroundColor = '#0095c0'; // Darker shade of zap blue for hover
         }}
         onMouseOut={(e) => {
-          if (buttonColor) {
-            e.currentTarget.style.backgroundColor = buttonColor;
-          }
+          e.currentTarget.style.backgroundColor = '#00baef'; // Reset to zap blue
         }}
       >
         {isMobile ? (
           <>
             <ExternalLink size={16} className="mr-1" />
-            <span className="text-sm">{`${displayDomain}.247.art`}</span>
+            <span className="text-sm">Artist Profile</span>
           </>
         ) : (
           <>{getDomainText()}</>
