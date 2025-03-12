@@ -80,6 +80,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
             onFavoriteToggle={onFavoriteToggle}
             isFavorite={isFavorite}
             onSelect={handleSelect}
+            isModalView={true}
           />
         </div>
       </div>

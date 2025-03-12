@@ -8,6 +8,7 @@ import ArtistActions from './ArtistActions';
 import ArtistReturnButton from './ArtistReturnButton';
 import ArtistDomainLink from './ArtistDomainLink';
 import ArtistInfoContainer from './ArtistInfoContainer';
+import { ArtistArtworksView } from './ArtistArtworksView';
 import { logger } from '@/utils/logger';
 
 interface ArtistDetailsPanelProps {
@@ -26,6 +27,7 @@ interface ArtistDetailsPanelProps {
     badgeBg: string;
   };
   showReturnButton?: boolean;
+  isModalView?: boolean;
 }
 
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
@@ -35,10 +37,13 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   isFavorite = false,
   onClose,
   colorTheme,
-  showReturnButton = false
+  showReturnButton = false,
+  isModalView = false
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [isGeneratingArtworks, setIsGeneratingArtworks] = React.useState(false);
+  const [artworkErrors, setArtworkErrors] = React.useState<Record<number, boolean>>({});
 
   // Parse techniques, styles, and social_platforms if they're strings
   const techniques = Array.isArray(artist.techniques) ? artist.techniques : typeof artist.techniques === 'string' && artist.techniques ? JSON.parse(artist.techniques) : [];
@@ -67,8 +72,15 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     navigate('/artists');
   };
 
+  const handleArtworkImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
+    setArtworkErrors(prev => ({ ...prev, [index]: true }));
+  };
+
   // Create a formatted domain name for display - remove special characters too
   const artistDomain = artist.name ? artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
+  
+  // Show artworks in modal view on mobile, otherwise show full artist info
+  const showArtworksOnly = isMobile && isModalView;
   
   return (
     <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0 overflow-hidden w-full min-w-0">
@@ -95,53 +107,46 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       )}
 
-      {isMobile && (
-        <div className="flex-none mb-4 mt-2 min-w-0">
-          <ArtistActions 
-            domainName={artistDomain} 
-            artistId={artist.id} 
-            isFavorite={isFavorite} 
-            onFavoriteToggle={onFavoriteToggle} 
-            handleDomainClick={handleDomainClick} 
-            buttonColor={colorTheme?.button} 
-            buttonTextColor={colorTheme?.buttonText} 
-            buttonHoverColor={colorTheme?.buttonHover} 
-            buttonBorderColor={colorTheme?.buttonBorder}
-            useSubPath={false} 
-          />
-        </div>
+      {/* Show either artworks grid (mobile modal) or artist info (desktop or profile page) */}
+      {showArtworksOnly ? (
+        <ArtistArtworksView
+          artist={artist}
+          isGeneratingArtworks={isGeneratingArtworks}
+          setIsGeneratingArtworks={setIsGeneratingArtworks}
+          artworkErrors={artworkErrors}
+          handleArtworkImageError={handleArtworkImageError}
+        />
+      ) : (
+        <ArtistInfoContainer 
+          bio={artist.bio} 
+          techniques={techniques} 
+          styles={styles} 
+          socialPlatforms={socialPlatforms}
+          isMobile={isMobile}
+          colorTheme={{
+            badgeBg: colorTheme?.badgeBg,
+            button: colorTheme?.button,
+            buttonTextColor: colorTheme?.buttonText,
+            buttonHoverColor: colorTheme?.buttonHover
+          }} 
+        />
       )}
 
-      <ArtistInfoContainer 
-        bio={artist.bio} 
-        techniques={techniques} 
-        styles={styles} 
-        socialPlatforms={socialPlatforms}
-        isMobile={isMobile}
-        colorTheme={{
-          badgeBg: colorTheme?.badgeBg,
-          button: colorTheme?.button,
-          buttonTextColor: colorTheme?.buttonText,
-          buttonHoverColor: colorTheme?.buttonHover
-        }} 
-      />
-
-      {!isMobile && (
-        <div className="flex-none mt-auto pt-4 min-w-0">
-          <ArtistActions 
-            domainName={artistDomain} 
-            artistId={artist.id} 
-            isFavorite={isFavorite} 
-            onFavoriteToggle={onFavoriteToggle} 
-            handleDomainClick={handleDomainClick} 
-            buttonColor={colorTheme?.button} 
-            buttonTextColor={colorTheme?.buttonText} 
-            buttonHoverColor={colorTheme?.buttonHover} 
-            buttonBorderColor={colorTheme?.buttonBorder}
-            useSubPath={false} 
-          />
-        </div>
-      )}
+      {/* Action buttons at the bottom */}
+      <div className={`flex-none ${isMobile ? 'mt-2' : 'mt-auto'} pt-4 min-w-0`}>
+        <ArtistActions 
+          domainName={artistDomain} 
+          artistId={artist.id} 
+          isFavorite={isFavorite} 
+          onFavoriteToggle={onFavoriteToggle} 
+          handleDomainClick={handleDomainClick} 
+          buttonColor={colorTheme?.button} 
+          buttonTextColor={colorTheme?.buttonText} 
+          buttonHoverColor={colorTheme?.buttonHover} 
+          buttonBorderColor={colorTheme?.buttonBorder}
+          useSubPath={false} 
+        />
+      </div>
     </div>
   );
 };
