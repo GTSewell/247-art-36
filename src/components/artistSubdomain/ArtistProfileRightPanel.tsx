@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,7 +12,7 @@ import {
   DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 interface ArtworkDetails {
   image: string;
@@ -33,7 +34,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   panelColor
 }) => {
   const isMobile = useIsMobile();
-  const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkDetails | null>(null);
   
@@ -56,13 +56,14 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     setIsModalOpen(true);
   };
 
-  const handleAddToCart = () => {
-    setIsModalOpen(false);
+  const handleAddToCart = (e: React.MouseEvent) => {
+    // Prevent the dialog from closing
+    e.preventDefault();
+    e.stopPropagation();
     
-    toast({
-      title: "Added to cart",
-      description: `${selectedArtwork?.title} has been added to your cart.`,
-      duration: 3000,
+    // Show toast notification
+    toast.success("Added to art!", {
+      description: `${selectedArtwork?.title} has been added to your collection.`
     });
   };
   
