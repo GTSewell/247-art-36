@@ -7,21 +7,32 @@ import ProfileViewsCard from "./analytics/ProfileViewsCard";
 import SalesConversionsCard from "./analytics/SalesConversionsCard";
 import MyCollectorsCard from "./analytics/MyCollectorsCard";
 import ActionButtons from "./analytics/ActionButtons";
+import { toast } from "sonner";
 
 interface ArtistSalesAnalyticsProps {
   artistId: string | null;
 }
 
 const ArtistSalesAnalytics: React.FC<ArtistSalesAnalyticsProps> = ({ artistId }) => {
+  // Disable actions in demo mode
+  const demoMode = localStorage.getItem('demoSession') === 'active';
+  const handleDemoAction = () => {
+    if (demoMode) {
+      toast.info('This action is disabled in the demo account');
+      return true;
+    }
+    return false;
+  };
+  
   return (
     <div className="space-y-6">
-      <STPSetsCard />
-      <MyCollectorsCard />
+      <STPSetsCard onAction={handleDemoAction} />
+      <MyCollectorsCard onAction={handleDemoAction} />
       <SalesBreakdownCard />
       <SalesAnalyticsCard />
       <ProfileViewsCard />
       <SalesConversionsCard />
-      <ActionButtons />
+      <ActionButtons onAction={handleDemoAction} />
     </div>
   );
 };

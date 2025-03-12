@@ -1,91 +1,88 @@
 
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart3 } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Package, Plus } from "lucide-react";
 
-const STPSetsCard: React.FC = () => {
-  const isMobile = useIsMobile();
-  
-  // Mock data - in a real app this would come from an API
-  const stpPacksSold = 16;
-  const initialCommissionRate = 25;
-  const commissionReductionPerPack = 1;
-  const totalSegments = 25;
-  
-  // Calculate current commission rate
-  const commissionReduction = Math.min(stpPacksSold * commissionReductionPerPack, initialCommissionRate);
-  const currentCommissionRate = initialCommissionRate - commissionReduction;
-  
-  // Function to determine segment color based on index
-  const getSegmentColor = (index: number): string => {
-    if (index >= stpPacksSold) return "bg-gray-300"; // Unsold segments are gray
-    if (index < 7) return "bg-zap-red"; // First 7 segments red
-    if (index < 15) return "bg-zap-yellow"; // Next 8 segments yellow
-    return "bg-[#05a732]"; // Remaining segments green (Zap Green)
+interface STPSetsCardProps {
+  onAction?: () => boolean;
+}
+
+const STPSetsCard: React.FC<STPSetsCardProps> = ({ onAction }) => {
+  const handleAddSet = () => {
+    if (onAction && onAction()) return;
+    // Normal add set logic would go here
   };
-  
-  // Generate all 25 segments
-  const segments = Array.from({ length: totalSegments }, (_, i) => (
-    <div 
-      key={i} 
-      className={cn(
-        "h-full rounded-sm transition-colors duration-300",
-        getSegmentColor(i)
-      )}
-    />
-  ));
-  
+
+  // Demo account has 2 STP sets
+  const demoMode = localStorage.getItem('demoSession') === 'active';
+  const setCount = demoMode ? 2 : 0;
+
+  if (setCount === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Package className="mr-2 h-5 w-5" />
+            STP Sets
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-8">
+            <Package className="mx-auto h-12 w-12 mb-4 text-gray-400" />
+            <p className="text-gray-500">You haven't created any STP sets yet</p>
+            <Button onClick={handleAddSet} className="mt-4">
+              <Plus className="mr-2 h-4 w-4" />
+              Create STP Set
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center">
-          <BarChart3 className="mr-2 h-5 w-5" />
-          STP Collecter Packs Sold: {stpPacksSold}
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Package className="mr-2 h-5 w-5" />
+            STP Sets
+          </div>
+          <Button size="sm" onClick={handleAddSet}>
+            <Plus className="mr-2 h-4 w-4" />
+            Create New
+          </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Commission percentage indicator at top */}
-        <div className="relative w-full mb-1">
-          <div className="flex justify-between mb-1">
-            <span className="font-bold">{initialCommissionRate}%</span>
-            <span className="font-bold">0%</span>
-          </div>
-          
-          {/* Horizontal line with percentage indicator */}
-          <div className="relative w-full h-0.5 bg-gray-300 my-2">
-            {/* Current commission percentage marker */}
-            <div 
-              className="absolute top-1/2 transform -translate-y-1/2 w-auto"
-              style={{ 
-                left: `${(stpPacksSold / totalSegments) * 100}%`,
-              }}
-            >
-              <div className="bg-zap-blue text-white text-xs font-bold px-2 py-0.5 rounded transform -translate-x-1/2 whitespace-nowrap">
-                {currentCommissionRate}%
+      <CardContent>
+        <div className="space-y-4">
+          {demoMode && (
+            <>
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold">Abstract Collection</h3>
+                  <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded">Live</span>
+                </div>
+                <p className="text-sm text-gray-600 mt-1">5 products, $770 revenue</p>
+                <div className="flex justify-end mt-2 space-x-2">
+                  <Button variant="outline" size="sm" onClick={handleAddSet}>View</Button>
+                  <Button variant="outline" size="sm" onClick={handleAddSet}>Edit</Button>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Segmented progress bar container */}
-        <div className="relative h-10 w-full overflow-hidden rounded-lg border border-gray-300 mb-2">
-          {/* Segments grid */}
-          <div className="absolute inset-0 grid grid-cols-25 gap-1 p-1">
-            {segments}
-          </div>
-        </div>
-        
-        <div className="flex justify-between items-center">
-          <div className="text-sm text-gray-500">
-            For every STP Collector Pack sold, your gallery commission decreases by 1%.
-          </div>
-          
-          {/* Current gallery commission label */}
-          <div className="bg-zap-blue text-white text-xs font-bold px-3 py-1.5 rounded whitespace-nowrap">
-            Current gallery commission
-          </div>
+              <div className="border rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold">Limited Edition Prints</h3>
+                  <span className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Draft</span>
+                </div>
+                <p className="text-sm text-gray-600 mt-1">3 products, Not published</p>
+                <div className="flex justify-end mt-2 space-x-2">
+                  <Button variant="outline" size="sm" onClick={handleAddSet}>View</Button>
+                  <Button variant="outline" size="sm" onClick={handleAddSet}>Edit</Button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>

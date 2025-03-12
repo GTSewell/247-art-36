@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
+import { useAuth } from "@/hooks/use-auth";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Auth = () => {
   const [username, setUsername] = useState("");
   const [activeTab, setActiveTab] = useState("signin");
   const { isPWA } = useAppMode();
+  const { handleFakeLogin } = useAuth();
 
   useEffect(() => {
     // Parse the query parameter to set the initial tab
@@ -39,6 +41,11 @@ const Auth = () => {
         navigate("/account");
       }
     });
+
+    // Check for demo session
+    if (localStorage.getItem('demoSession') === 'active') {
+      navigate("/account");
+    }
 
     // Listen for auth changes
     const {
@@ -86,9 +93,16 @@ const Auth = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const {
-        error
-      } = await supabase.auth.signInWithPassword({
+      
+      // Check for demo account first
+      if (handleFakeLogin(email, password)) {
+        toast.success("Logged in as demo artist");
+        navigate("/account");
+        return;
+      }
+      
+      // Proceed with normal authentication
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
@@ -138,7 +152,7 @@ const Auth = () => {
           
           <TabsContent value="signin">
             <form onSubmit={handleEmailSignIn} className="space-y-4">
-              <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+              <Input type="text" placeholder="Email or Username" value={email} onChange={e => setEmail(e.target.value)} required />
               <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing in..." : "Sign In"}

@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { LogIn, LogOut, Settings } from "lucide-react";
@@ -8,6 +9,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/use-auth";
 
 interface MobileUserMenuProps {
   user: any | null;
@@ -16,9 +18,18 @@ interface MobileUserMenuProps {
 
 const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
   const navigate = useNavigate();
+  const { handleFakeLogout } = useAuth();
 
   const handleSignOut = async () => {
     try {
+      // Check if this is a demo user first
+      if (handleFakeLogout()) {
+        navigate("/");
+        toast.success("Signed out of demo account");
+        return;
+      }
+      
+      // Normal sign out process
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       navigate("/");
@@ -70,7 +81,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
             {user.email ? user.email.charAt(0).toUpperCase() : "U"}
           </AvatarFallback>
         </Avatar>
-        <span className="text-sm font-medium">{user.email || "My Account"}</span>
+        <span className="text-sm font-medium">{user.email || "GT Sewell"}</span>
       </div>
       <Separator />
       <Link to="/dashboard/artist" className="block">

@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/use-auth";
 
 interface UserMenuProps {
   user: any | null;
@@ -23,9 +24,18 @@ interface UserMenuProps {
 
 const UserMenu = ({ user, isLoading }: UserMenuProps) => {
   const navigate = useNavigate();
+  const { handleFakeLogout } = useAuth();
 
   const handleSignOut = async () => {
     try {
+      // Check if this is a demo user first
+      if (handleFakeLogout()) {
+        navigate("/");
+        toast.success("Signed out of demo account");
+        return;
+      }
+      
+      // Normal sign out process
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       navigate("/");
@@ -67,7 +77,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
           <Avatar className="h-8 w-8">
             <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
             <AvatarFallback className="bg-gray-200">
-              {user.email ? user.email.charAt(0).toUpperCase() : "U"}
+              {user.email ? user.email.charAt(0).toUpperCase() : "G"}
             </AvatarFallback>
           </Avatar>
           <span className="sr-only">Account</span>
@@ -75,7 +85,7 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>
-          {user.email || "My Account"}
+          {user.email || "GT Sewell"}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
