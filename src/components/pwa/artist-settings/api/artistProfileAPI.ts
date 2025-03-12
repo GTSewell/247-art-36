@@ -34,12 +34,18 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
   try {
     // Process array values
     const processedData = {
-      ...formData,
       user_id: artistId,
+      name: formData.name,
+      specialty: formData.specialty,
+      bio: formData.bio,
+      city: formData.city,
+      country: formData.country,
       techniques: formData.techniques.split(',').map(item => item.trim()).filter(item => item),
       styles: formData.styles.split(',').map(item => item.trim()).filter(item => item),
       social_platforms: processSocialPlatforms(formData.social_platforms)
     };
+    
+    console.log("Saving artist profile with data:", processedData);
     
     if (existingArtist) {
       // Update existing artist profile
@@ -48,7 +54,10 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
         .update(processedData)
         .eq('id', existingArtist.id);
       
-      if (error) throw error;
+      if (error) {
+        console.error("Update error:", error);
+        throw error;
+      }
       
       return { success: true, message: "Profile updated successfully" };
     } else {
@@ -76,7 +85,10 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
           published: true // Set published to true by default
         }]);
       
-      if (error) throw error;
+      if (error) {
+        console.error("Insert error:", error);
+        throw error;
+      }
       
       return { success: true, message: "Profile created successfully" };
     }

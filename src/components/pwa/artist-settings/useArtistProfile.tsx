@@ -23,6 +23,8 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   useEffect(() => {
     if (artistId) {
       fetchArtistProfileData();
+    } else {
+      setLoading(false);
     }
   }, [artistId]);
   
@@ -34,6 +36,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
         throw new Error("User ID not found");
       }
       
+      console.log("Fetching artist profile for user ID:", artistId);
       const { data, error } = await fetchArtistProfile(artistId);
       
       if (error) {
@@ -41,11 +44,14 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       }
       
       if (data) {
+        console.log("Artist profile data retrieved:", data);
         // If artist profile exists, load it
         setArtist(data);
         
         // Map API data to form data
-        setFormData(mapArtistToFormData(data));
+        const mappedFormData = mapArtistToFormData(data);
+        console.log("Mapped form data:", mappedFormData);
+        setFormData(mappedFormData);
       }
     } catch (error: any) {
       console.error("Error fetching artist profile:", error);
@@ -73,16 +79,15 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     
     try {
       setSaving(true);
+      console.log("Submitting artist profile form data:", formData);
       
       const result = await saveArtistProfile(formData, artistId, artist);
       
       if (result.success) {
         toast.success(result.message);
         
-        // If we created a new profile, fetch it to update the state
-        if (!artist) {
-          fetchArtistProfileData();
-        }
+        // If we created a new profile or updated an existing one, refresh data
+        fetchArtistProfileData();
       } else {
         throw new Error(result.message);
       }

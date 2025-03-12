@@ -1,62 +1,33 @@
 
 /**
- * Utility functions for handling artist social platforms
+ * Process social platforms from form data to database format
  */
-
-/**
- * Process social platforms string into a formatted array
- */
-export const processSocialPlatforms = (platforms: string): string[] => {
-  if (!platforms) return [];
+export const processSocialPlatforms = (socialPlatformsString: string): string[] => {
+  if (!socialPlatformsString) return [];
   
-  return platforms.split(',')
+  // Split the string by comma and trim each item
+  return socialPlatformsString
+    .split(',')
     .map(platform => platform.trim())
-    .filter(platform => platform) // Remove empty strings
-    .map(platform => {
-      // Clean up formats to prevent duplications
-      if (platform.includes('instagram.com/instagram.com/')) {
-        return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
-      }
-      if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
-        return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
-      }
-      
-      // Ensure @ handles are properly formatted
-      if (platform.startsWith('@') && !platform.includes('.com')) {
-        return platform; // Keep as is, will be processed when displayed
-      }
-      
-      // Add https:// protocol if not present and not an @ handle
-      if (!platform.startsWith('http://') && !platform.startsWith('https://') && !platform.startsWith('@')) {
-        return `https://${platform}`;
-      }
-      
-      return platform;
-    });
+    .filter(platform => platform !== ''); // Filter out empty strings
 };
 
 /**
- * Formats social platforms to prevent duplication
+ * Format social platforms from database to form data format
  */
-export const formatSocialPlatforms = (data: any): string => {
-  let formattedSocialPlatforms = "";
+export const formatSocialPlatforms = (artistData: any): string => {
+  if (!artistData || !artistData.social_platforms) return '';
   
-  if (Array.isArray(data.social_platforms)) {
-    formattedSocialPlatforms = data.social_platforms
-      .map((platform: string) => {
-        // Clean up formats to prevent duplications
-        if (platform.includes('instagram.com/instagram.com/')) {
-          return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
-        }
-        if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
-          return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
-        }
-        return platform;
-      })
-      .join(', ');
-  } else if (typeof data.social_platforms === 'string') {
-    formattedSocialPlatforms = data.social_platforms;
+  // Check if social_platforms is an array
+  if (Array.isArray(artistData.social_platforms)) {
+    return artistData.social_platforms.join(', ');
   }
   
-  return formattedSocialPlatforms;
+  // If it's a string, return it directly
+  if (typeof artistData.social_platforms === 'string') {
+    return artistData.social_platforms;
+  }
+  
+  // If it's an object or something else, convert to string
+  return JSON.stringify(artistData.social_platforms);
 };
