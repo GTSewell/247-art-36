@@ -15,9 +15,9 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
 
   if (!artistId) {
     return (
-      <Card className="bg-card/60 backdrop-blur-sm border-0">
+      <Card>
         <CardContent className="pt-6">
-          <p className="text-white">No artist profile found.</p>
+          <p>No artist profile found.</p>
         </CardContent>
       </Card>
     );
@@ -25,9 +25,9 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
 
   return (
     <div className="space-y-4">
-      <Card className="bg-card/60 backdrop-blur-sm border-0">
+      <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl text-white">Trade Management</CardTitle>
+          <CardTitle className="text-xl">Trade Management</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs 

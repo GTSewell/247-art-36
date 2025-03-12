@@ -20,12 +20,12 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
       try {
         // Simulating API call
         setTimeout(() => {
-          // Mock data
+          // Mock data with artwork images
           const mockArtworks: ArtworkTradeItem[] = [
             {
               id: "1",
               title: "Neon Dreams",
-              image: "/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png",
+              image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png",
               artist: "You",
               price: 120,
               productionCost: 40,
@@ -35,7 +35,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             {
               id: "2",
               title: "Urban Vibes",
-              image: "/lovable-uploads/35c806e4-6bf2-4984-9996-9c61c1d74879.png",
+              image: "/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png",
               artist: "You",
               price: 85,
               productionCost: 30,
@@ -45,7 +45,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             {
               id: "3",
               title: "Abstract Fusion",
-              image: "/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png",
+              image: "/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png",
               artist: "You",
               price: 150,
               productionCost: 50,
@@ -84,7 +84,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
     return (
       <div className="space-y-2">
         {[1, 2, 3].map(i => (
-          <Card key={i} className="bg-card/40 backdrop-blur-sm animate-pulse">
+          <Card key={i} className="animate-pulse">
             <CardContent className="p-4 h-24"></CardContent>
           </Card>
         ))}
@@ -94,20 +94,20 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-white/80">
+      <p className="text-sm text-muted-foreground">
         Enable trade options for your artworks to allow other artists to trade with you at production cost.
       </p>
       
       {artworks.length === 0 ? (
-        <Card className="bg-card/40 backdrop-blur-sm">
-          <CardContent className="p-4 text-center text-white/70">
+        <Card>
+          <CardContent className="p-4 text-center text-muted-foreground">
             You don't have any artworks yet.
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-3">
           {artworks.map(artwork => (
-            <Card key={artwork.id} className="bg-card/40 backdrop-blur-sm hover:bg-card/60 transition-colors">
+            <Card key={artwork.id} className="transition-colors">
               <CardContent className="p-4 flex items-center space-x-4">
                 <img 
                   src={artwork.image} 
@@ -115,8 +115,8 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
                   className="w-16 h-16 object-cover rounded-md"
                 />
                 <div className="flex-grow">
-                  <h3 className="text-white font-medium">{artwork.title}</h3>
-                  <p className="text-xs text-white/70">
+                  <h3 className="font-medium">{artwork.title}</h3>
+                  <p className="text-xs text-muted-foreground">
                     Retail: ${artwork.price} • Production: ${artwork.productionCost}
                   </p>
                 </div>
@@ -128,7 +128,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
                   />
                   <Label 
                     htmlFor={`trade-switch-${artwork.id}`}
-                    className="text-sm text-white/80"
+                    className="text-sm text-muted-foreground"
                   >
                     {artwork.isTradeEnabled ? "On" : "Off"}
                   </Label>

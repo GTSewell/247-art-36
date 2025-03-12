@@ -23,12 +23,12 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
       try {
         // Simulating API call
         setTimeout(() => {
-          // Mock data
+          // Mock data with artwork images
           const mockArtworks: ArtworkTradeItem[] = [
             {
               id: "101",
               title: "City Lights",
-              image: "/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png",
+              image: "/lovable-uploads/eb0e5b8f-33d9-472f-957d-e4173c92a46f.png",
               artist: "Jane Doe",
               price: 110,
               productionCost: 35,
@@ -38,7 +38,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "102",
               title: "Ocean Breeze",
-              image: "/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png",
+              image: "/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png",
               artist: "Mike Smith",
               price: 95,
               productionCost: 30,
@@ -48,7 +48,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "103",
               title: "Forest Dreams",
-              image: "/lovable-uploads/feaf3c11-b562-453d-b538-e05a75a839a4.png",
+              image: "/lovable-uploads/c1aa52df-209a-44c5-9706-d2209db8a011.png",
               artist: "Alex Johnson",
               price: 135,
               productionCost: 45,
@@ -58,7 +58,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "104",
               title: "Desert Storm",
-              image: "/lovable-uploads/fbba846a-cd1a-49f7-9772-3d4da9f82b33.png",
+              image: "/lovable-uploads/ca741392-a31d-4a40-bd39-801c53aede57.png",
               artist: "Sarah Williams",
               price: 120,
               productionCost: 40,
@@ -101,7 +101,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
     return (
       <div className="space-y-2">
         {[1, 2, 3].map(i => (
-          <Card key={i} className="bg-card/40 backdrop-blur-sm animate-pulse">
+          <Card key={i} className="animate-pulse">
             <CardContent className="p-4 h-24"></CardContent>
           </Card>
         ))}
@@ -113,30 +113,30 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
     <div className="space-y-4">
       <div className="flex items-center space-x-2 mb-4">
         <div className="relative flex-grow">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-white/50" />
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search artists or artworks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 bg-card/40 border-0 text-white placeholder:text-white/50"
+            className="pl-8"
           />
         </div>
       </div>
       
-      <p className="text-sm text-white/80 mb-2">
+      <p className="text-sm text-muted-foreground mb-2">
         Browse artworks available for trade from other artists.
       </p>
       
       {filteredArtworks.length === 0 ? (
-        <Card className="bg-card/40 backdrop-blur-sm">
-          <CardContent className="p-4 text-center text-white/70">
+        <Card>
+          <CardContent className="p-4 text-center text-muted-foreground">
             No tradeable artworks found matching your criteria.
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-3">
           {filteredArtworks.map(artwork => (
-            <Card key={artwork.id} className="bg-card/40 backdrop-blur-sm hover:bg-card/60 transition-colors">
+            <Card key={artwork.id} className="transition-colors">
               <CardContent className="p-4 flex items-center space-x-4">
                 <img 
                   src={artwork.image} 
@@ -144,17 +144,17 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
                   className="w-16 h-16 object-cover rounded-md"
                 />
                 <div className="flex-grow">
-                  <h3 className="text-white font-medium">{artwork.title}</h3>
-                  <p className="text-xs text-white/70">
+                  <h3 className="font-medium">{artwork.title}</h3>
+                  <p className="text-xs text-muted-foreground">
                     Artist: {artwork.artist}
                   </p>
-                  <p className="text-xs text-white/70">
+                  <p className="text-xs text-muted-foreground">
                     Trade Cost: ${artwork.productionCost} (Retail: ${artwork.price})
                   </p>
                 </div>
                 <Button 
                   size="sm" 
-                  className="bg-white/10 hover:bg-white/20 text-white"
+                  variant="outline"
                   onClick={() => handleRequestTrade(artwork.id, artwork.artist)}
                 >
                   Request <ArrowRight className="ml-1 h-3 w-3" />
