@@ -66,6 +66,14 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     handleDomainClick(e);
   };
 
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onFavoriteToggle) {
+      logger.info(`Toggling favorite for artist ID ${artistId}, current state: ${isFavorite}`);
+      onFavoriteToggle(artistId, isFavorite);
+    }
+  };
+
   return (
     <div className={`flex ${isMobile ? 'flex-col' : 'justify-between'} w-full gap-2`}>
       {onFavoriteToggle && (
@@ -75,12 +83,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
             isFavorite ? 'bg-zap-yellow text-black' : ''
           } ${isMobile ? 'w-full' : ''}`}
           style={favoriteButtonStyles}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (onFavoriteToggle) {
-              onFavoriteToggle(artistId, !isFavorite);
-            }
-          }}
+          onClick={handleFavoriteClick}
           onMouseOver={(e) => {
             if (buttonHoverColor && !isFavorite) {
               e.currentTarget.style.backgroundColor = buttonHoverColor;

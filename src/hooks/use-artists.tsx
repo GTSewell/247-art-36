@@ -162,6 +162,7 @@ export const useArtists = () => {
     } else {
       // Refresh all artists
       await fetchArtists();
+      await fetchFavorites();
     }
   };
 

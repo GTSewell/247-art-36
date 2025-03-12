@@ -8,6 +8,7 @@ import { ArrowRight, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Artist } from "@/data/types/artist";
+import { logger } from "@/utils/logger";
 
 const CollectorFavorites: React.FC = () => {
   const { user } = useAuth();
@@ -18,12 +19,15 @@ const CollectorFavorites: React.FC = () => {
   useEffect(() => {
     if (user) {
       fetchFavoriteArtists();
+    } else {
+      setLoading(false);
     }
   }, [user]);
   
   const fetchFavoriteArtists = async () => {
     try {
       setLoading(true);
+      logger.info("Fetching favorite artists for user:", user?.id);
       
       // Get favorite artist IDs
       const { data: favoriteIds, error: favError } = await supabase
@@ -34,6 +38,7 @@ const CollectorFavorites: React.FC = () => {
       if (favError) throw favError;
       
       if (favoriteIds && favoriteIds.length > 0) {
+        logger.info(`Found ${favoriteIds.length} favorite artists`);
         // Get artist details for each favorite
         const artistIds = favoriteIds.map(fav => fav.artist_id);
         
@@ -45,6 +50,7 @@ const CollectorFavorites: React.FC = () => {
         if (artistsError) throw artistsError;
         
         if (artistsData) {
+          logger.info(`Retrieved ${artistsData.length} artist details`);
           // Transform the data to match the Artist type
           const transformedArtists: Artist[] = artistsData.map(data => ({
             id: data.id,
@@ -83,10 +89,11 @@ const CollectorFavorites: React.FC = () => {
           setFavorites([]);
         }
       } else {
+        logger.info("No favorite artists found");
         setFavorites([]);
       }
     } catch (error: any) {
-      console.error("Error fetching favorite artists:", error);
+      logger.error("Error fetching favorite artists:", error);
       toast.error(`Failed to load favorites: ${error.message}`);
     } finally {
       setLoading(false);
@@ -94,11 +101,28 @@ const CollectorFavorites: React.FC = () => {
   };
   
   const navigateToArtist = (artist: Artist) => {
-    navigate(`/artist/${artist.name.replace(/\s+/g, '')}`);
+    const formattedName = artist.name.replace(/\s+/g, '');
+    logger.info(`Navigating to artist page: ${formattedName}`);
+    navigate(`/artists/${formattedName}`);
   };
   
   if (loading) {
-    return <div className="p-8 text-center">Loading favorites...</div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Heart className="mr-2 h-5 w-5" />
+            Your Favorite Artists
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="p-8 text-center">
+            <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full mx-auto"></div>
+            <p className="mt-4">Loading your favorites...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
   
   return (
