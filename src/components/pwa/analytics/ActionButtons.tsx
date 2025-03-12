@@ -9,7 +9,7 @@ import {
   Share2,
   PlusCircle,
 } from "lucide-react";
-import { InvoiceModal } from "./InvoiceModal";
+import InvoiceModal from "./InvoiceModal";
 import { toast } from "sonner";
 
 interface ActionButtonsProps {
