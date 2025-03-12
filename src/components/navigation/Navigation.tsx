@@ -7,12 +7,14 @@ import { useAuth } from "@/hooks/use-auth";
 import { useAppMode } from "@/contexts/AppModeContext";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { user, isLoading } = useAuth();
   const { isPWA } = useAppMode();
+  const isMobile = useIsMobile();
 
   // Return null if in PWA mode to hide navigation
   if (isPWA) {
@@ -27,11 +29,15 @@ const Navigation = () => {
   const isActive = (path: string) => {
     return location.pathname === path;
   };
+  
+  // Add extra padding class for specific pages on mobile
+  const isWhoAreYouPage = location.pathname === "/who-are-you";
+  const navExtraClass = isMobile && isWhoAreYouPage ? "h-20" : "h-16";
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/20 bg-transparent w-full">
+    <nav className={`fixed top-0 left-0 right-0 z-50 border-b border-border/20 bg-transparent w-full`}>
       <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
-        <div className="flex justify-between items-center h-16 w-full">
+        <div className={`flex justify-between items-center ${navExtraClass} w-full`}>
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 

@@ -60,7 +60,7 @@ const WhoAreYou = () => {
 
   return <div className="min-h-screen bg-zap-blue pb-[50px] relative">
       <Navigation />
-      <div className="pt-16 relative">
+      <div className={`pt-16 ${isMobile ? 'pt-20' : 'pt-16'} relative`}>
         <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/247-art-Jane%26GT-Halftone-white-soft%20edge-short.png" alt="Jane & GT Halftone" className="w-full h-auto" onError={(e) => e.currentTarget.src = '/placeholder.svg'} />
         {isJaneActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/janesolo-hover-5.png" alt="Jane Solo Hover" className="absolute top-[55px] -left-[3px] w-full h-auto opacity-100 transition-opacity duration-300" onError={(e) => e.currentTarget.src = '/placeholder.svg'} />}
         {isGTActive && <img src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/gtsolo-hover-2.png?v=2" alt="GT Solo Hover" className="absolute top-[62px] -left-[1px] w-full h-auto opacity-100 transition-opacity duration-300" onError={(e) => e.currentTarget.src = '/placeholder.svg'} />}
@@ -70,7 +70,7 @@ const WhoAreYou = () => {
             width: isMobile ? '9rem' : '18rem',
             height: isMobile ? '9rem' : '18rem',
             left: isMobile ? '50px' : '20%',
-            top: isMobile ? '2rem' : '50px'
+            top: isMobile ? '3.5rem' : '50px'  /* Increased top position for mobile */
           }} onMouseEnter={() => setIsGTActive(true)} onMouseLeave={() => setIsGTActive(false)}>
               <img src={isGTActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsgt-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsGT.png"} alt="That's GT" className="w-full h-full" onError={(e) => e.currentTarget.src = '/placeholder.svg'} />
             </a>
@@ -78,7 +78,7 @@ const WhoAreYou = () => {
             width: isMobile ? '6rem' : '12rem',
             height: isMobile ? '6rem' : '12rem',
             right: isMobile ? '35px' : '20%',
-            top: isMobile ? '15px' : '50px'
+            top: isMobile ? '2.5rem' : '50px'  /* Increased top position for mobile */
           }} onMouseEnter={() => setIsJaneActive(true)} onMouseLeave={() => setIsJaneActive(false)}>
               <img src={isJaneActive ? "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-hover.png" : "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/patterns/thatsJane-1.png"} alt="That's Jane" className="w-full h-full" onError={(e) => e.currentTarget.src = '/placeholder.svg'} />
             </a>

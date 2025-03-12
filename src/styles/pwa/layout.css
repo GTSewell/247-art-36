@@ -27,3 +27,11 @@ body[data-pwa="true"] .container .py-4 {
   padding-top: 4px;
   padding-bottom: 4px;
 }
+
+/* Add extra space for mobile headers */
+@media (max-width: 768px) {
+  body[data-pwa="true"] .pwa-header {
+    height: 16px;
+    min-height: 16px;
+  }
+}
