@@ -277,6 +277,7 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string | null
+          ID: string | null
           site_password: string | null
           unique_ip_count: number | null
           usage_count: number | null
@@ -284,6 +285,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: string | null
+          ID?: string | null
           site_password?: string | null
           unique_ip_count?: number | null
           usage_count?: number | null
@@ -291,6 +293,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: string | null
+          ID?: string | null
           site_password?: string | null
           unique_ip_count?: number | null
           usage_count?: number | null

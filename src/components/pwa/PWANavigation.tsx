@@ -24,42 +24,42 @@ const PWANavigation = () => {
       {/* Bottom navigation bar */}
       <nav className="fixed bottom-0 left-0 right-0 bg-black text-white shadow-lg z-50 pwa-footer h-16">
         <div className="flex justify-around items-center h-full px-2">
-          {/* Home icon */}
+          {/* Home icon - zap yellow */}
           <NavLink 
             to="/" 
+            className={({ isActive }) => 
+              `flex flex-col items-center justify-center w-1/4 h-full ${
+                isActive ? 'text-zap-yellow' : 'text-gray-400'
+              }`
+            }
+          >
+            <Home className="h-6 w-6" color={window.location.pathname === '/' ? '#f7cf1e' : '#9ca3af'} />
+            <span className="text-xs mt-1">Home</span>
+          </NavLink>
+          
+          {/* Artists icon - zap blue */}
+          <NavLink 
+            to="/artists" 
+            className={({ isActive }) => 
+              `flex flex-col items-center justify-center w-1/4 h-full ${
+                isActive ? 'text-zap-blue' : 'text-gray-400'
+              }`
+            }
+          >
+            <Users className="h-6 w-6" color={window.location.pathname === '/artists' ? '#00baef' : '#9ca3af'} />
+            <span className="text-xs mt-1">Artists</span>
+          </NavLink>
+          
+          {/* Store icon - zap red */}
+          <NavLink 
+            to="/store" 
             className={({ isActive }) => 
               `flex flex-col items-center justify-center w-1/4 h-full ${
                 isActive ? 'text-zap-red' : 'text-gray-400'
               }`
             }
           >
-            <Home className="h-6 w-6" />
-            <span className="text-xs mt-1">Home</span>
-          </NavLink>
-          
-          {/* Artists icon */}
-          <NavLink 
-            to="/artists" 
-            className={({ isActive }) => 
-              `flex flex-col items-center justify-center w-1/4 h-full ${
-                isActive ? 'text-zap-yellow' : 'text-gray-400'
-              }`
-            }
-          >
-            <Users className="h-6 w-6" />
-            <span className="text-xs mt-1">Artists</span>
-          </NavLink>
-          
-          {/* Store icon */}
-          <NavLink 
-            to="/store" 
-            className={({ isActive }) => 
-              `flex flex-col items-center justify-center w-1/4 h-full ${
-                isActive ? 'text-zap-yellow' : 'text-gray-400'
-              }`
-            }
-          >
-            <ShoppingBag className="h-6 w-6" />
+            <ShoppingBag className="h-6 w-6" color={window.location.pathname === '/store' ? '#ef3f36' : '#9ca3af'} />
             <span className="text-xs mt-1">Store</span>
           </NavLink>
           
