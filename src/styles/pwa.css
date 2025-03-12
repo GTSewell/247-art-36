@@ -1,4 +1,3 @@
-
 /* PWA specific styles to prevent scrolling issues */
 body[data-pwa="true"] {
   overscroll-behavior: contain; /* Changed from 'none' to 'contain' to allow pull-to-refresh */
@@ -43,8 +42,8 @@ body[data-pwa="true"] .timed-editions-carousel {
   -webkit-overflow-scrolling: touch;
   width: 100%;
   overflow-x: auto;
-  padding-bottom: 24px; /* Reduced bottom padding */
-  margin-bottom: 0; /* Removed margin between sections */
+  padding-bottom: 12px; /* Reduced bottom padding */
+  margin-bottom: 0;
 }
 
 body[data-pwa="true"] .embla__viewport {
@@ -119,7 +118,7 @@ body[data-pwa="true"] .CarouselViewport {
 
 /* Fix for product cards to ensure they're fully visible */
 body[data-pwa="true"] .timed-editions-carousel .CarouselItem {
-  padding-bottom: 24px; /* Increased padding at the bottom of each item */
+  padding-bottom: 12px; /* Reduced bottom padding */
 }
 
 /* Ensure product details are visible */
@@ -198,3 +197,6 @@ body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto bg-[#0
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+body[data-pwa="true"] .bg-zap-red main {
+  padding-bottom: 80px; /* Ensure enough padding at bottom for footer */
+}

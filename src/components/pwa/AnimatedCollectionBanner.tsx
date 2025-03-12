@@ -1,7 +1,9 @@
 
 import React from 'react';
+import { useAppMode } from '@/contexts/AppModeContext';
 
 const AnimatedCollectionBanner: React.FC = () => {
+  const { isPWA } = useAppMode();
   const categories = [
     'ORIGINAL ARTWORK',
     'SIGNED & NUMBERED',
@@ -12,7 +14,7 @@ const AnimatedCollectionBanner: React.FC = () => {
   ];
 
   return (
-    <div className="relative w-full overflow-hidden bg-white text-zap-red py-1 my-6 border-y-2 border-black">
+    <div className={`relative w-full overflow-hidden bg-white text-zap-red py-1 ${isPWA ? 'my-2' : 'my-6'} border-y-2 border-black`}>
       <div className="animate-marquee whitespace-nowrap inline-block">
         {[...Array(3)].map((_, i) => (
           <React.Fragment key={i}>
