@@ -66,7 +66,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const displayArtworks = fixedArtworks.slice(0, 4);
 
   return (
-    <div className="w-full h-full px-4 py-8">
+    <div className="w-full h-full px-2 py-2">
       <div className="grid grid-cols-2 gap-2 h-full">
         {displayArtworks.map((artwork, index) => (
           <div 

@@ -109,25 +109,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
               ))}
             </CarouselContent>
             
-            {/* Pagination indicator dots */}
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center items-center">
-              <div className="flex items-center bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full">
-                {artists.map((_, index) => (
-                  <div 
-                    key={index} 
-                    style={{
-                      width: index === selectedArtistIndex ? '10px' : '8px',
-                      height: index === selectedArtistIndex ? '10px' : '8px',
-                      backgroundColor: index === selectedArtistIndex ? '#FFFFFF' : '#AAAAAA',
-                      borderRadius: '50%',
-                      margin: '0 4px',
-                      transition: 'all 0.3s ease'
-                    }}
-                    onClick={() => api?.scrollTo(index)}
-                  />
-                ))}
-              </div>
-            </div>
+            {/* Removed pagination indicator dots */}
           </Carousel>
         ) : (
           selectedArtist && (

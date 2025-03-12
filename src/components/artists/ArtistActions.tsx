@@ -66,13 +66,13 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   };
 
   return (
-    <div className={`flex ${isMobile ? 'justify-start' : 'justify-between'} w-full gap-2`}>
+    <div className={`flex ${isMobile ? 'flex-col' : 'justify-between'} w-full gap-2`}>
       {onFavoriteToggle && (
         <Button
           variant="default"
           className={`${
             isFavorite ? 'bg-zap-yellow text-black' : ''
-          } ${isMobile ? 'px-3' : ''}`}
+          } ${isMobile ? 'w-full' : ''}`}
           style={favoriteButtonStyles}
           onClick={(e) => {
             e.stopPropagation();
@@ -92,13 +92,13 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           }}
         >
           <Zap size={18} />
-          {!isMobile && <span className="ml-1">{isFavorite ? 'Favorited' : 'Favorite'}</span>}
+          <span className="ml-1">{isFavorite ? 'Favorited' : 'Favorite'}</span>
         </Button>
       )}
       
       <Button
         variant="default"
-        className={`${isMobile ? 'flex-none' : 'flex-grow'}`}
+        className="w-full"
         style={visitButtonStyles}
         onClick={handleVisitClick}
         onMouseOver={(e) => {
@@ -115,7 +115,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
         {isMobile ? (
           <>
             <ExternalLink size={16} className="mr-1" />
-            <span className="text-sm truncate">{`${displayDomain}.247.art`}</span>
+            <span className="text-sm">{`${displayDomain}.247.art`}</span>
           </>
         ) : (
           <>{getDomainText()}</>
