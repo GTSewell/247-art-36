@@ -6,13 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
+import ArtistTradeManager from "@/components/pwa/ArtistTradeManager"; // New component
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Navigation from "@/components/navigation/Navigation";
 import { useAppMode } from "@/contexts/AppModeContext";
 
-type TabType = "profile" | "artworks" | "analytics";
+type TabType = "profile" | "artworks" | "trade" | "analytics"; // Added "trade" tab type
 
 const ArtistDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
@@ -25,7 +26,7 @@ const ArtistDashboard: React.FC = () => {
     // Parse the query parameter to set the initial tab
     const searchParams = new URLSearchParams(location.search);
     const tab = searchParams.get("tab");
-    if (tab === "artworks" || tab === "analytics") {
+    if (tab === "artworks" || tab === "analytics" || tab === "trade") {
       setActiveTab(tab as TabType);
     }
   }, [location.search]);
@@ -81,9 +82,10 @@ const ArtistDashboard: React.FC = () => {
         </div>
         
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="space-y-4">
-          <TabsList className="grid grid-cols-3 h-14 sticky top-0 z-10 bg-black">
+          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black"> {/* Changed from grid-cols-3 to grid-cols-4 */}
             <TabsTrigger value="profile" className="text-sm">Profile</TabsTrigger>
             <TabsTrigger value="artworks" className="text-sm">Artworks</TabsTrigger>
+            <TabsTrigger value="trade" className="text-sm">Trade</TabsTrigger> {/* New tab */}
             <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
           </TabsList>
           
@@ -94,6 +96,10 @@ const ArtistDashboard: React.FC = () => {
             
             <TabsContent value="artworks" className="space-y-4 pb-20">
               <ArtistArtworkManager artistId={artistId} />
+            </TabsContent>
+            
+            <TabsContent value="trade" className="space-y-4 pb-20">
+              <ArtistTradeManager artistId={artistId} />
             </TabsContent>
             
             <TabsContent value="analytics" className="space-y-4 pb-20">
