@@ -10,8 +10,8 @@ interface AddToCartButtonProps {
 
 const AddToCartButton: React.FC<AddToCartButtonProps> = ({ isDisabled = false }) => {
   const handleAddToCart = () => {
-    toast.success("Added to cart!", {
-      description: "This item has been added to your cart."
+    toast.success("Added to art!", {
+      description: "This item has been added to your collection."
     });
   };
 
@@ -20,13 +20,13 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({ isDisabled = false })
       className={`w-full py-3 flex items-center justify-center space-x-2 rounded-lg ${
         isDisabled 
           ? 'bg-gray-400 hover:bg-gray-400 cursor-not-allowed' 
-          : 'bg-zap-red hover:bg-red-600 transition-colors'
+          : 'bg-[#ea384c] hover:bg-red-600 transition-colors'
       }`}
       onClick={handleAddToCart}
       disabled={isDisabled}
     >
       <ShoppingCart size={18} />
-      <span>{isDisabled ? 'Edition Closed' : 'Add to Cart'}</span>
+      <span>{isDisabled ? 'Edition Closed' : 'Add to Art'}</span>
     </Button>
   );
 };

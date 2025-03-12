@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -38,12 +37,10 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkDetails | null>(null);
   
-  // If no artworks are provided, display placeholder images
   const displayArtworks = artworks.length > 0 
     ? artworks 
     : Array(4).fill('/placeholder.svg');
   
-  // Mock artwork details - in a real app, these would come from the database
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
     return {
       image: artworkUrl,
@@ -62,7 +59,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const handleAddToCart = () => {
     setIsModalOpen(false);
     
-    // Display toast notification
     toast({
       title: "Added to cart",
       description: `${selectedArtwork?.title} has been added to your cart.`,
@@ -72,7 +68,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
-      {/* Only show the header section on mobile */}
       {isMobile && (
         <div className="flex items-start mb-4">
           <div className="mr-4">
@@ -94,7 +89,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         </div>
       )}
       
-      {/* Artworks Section with ScrollArea */}
       <div className="flex-grow overflow-hidden">
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
@@ -113,7 +107,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                   className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
                   onClick={() => handleArtworkClick(artwork, index)}
                 >
-                  {/* Cart icon button that's always visible but becomes more prominent on hover */}
                   <div className="absolute bottom-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity">
                     <Button 
                       size="icon"
@@ -134,7 +127,6 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         </ScrollArea>
       </div>
 
-      {/* Artwork Details Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="sm:max-w-md" style={{ backgroundColor: panelColor }}>
           <DialogHeader>
@@ -162,9 +154,12 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
             
             <div className="flex items-center justify-between mt-4">
               <span className="font-bold text-lg">{selectedArtwork?.price}</span>
-              <Button onClick={handleAddToCart}>
+              <Button 
+                onClick={handleAddToCart}
+                className="bg-[#ea384c] hover:bg-red-600 transition-colors rounded-lg"
+              >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Cart
+                Add to Art
               </Button>
             </div>
           </div>
