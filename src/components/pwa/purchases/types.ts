@@ -10,6 +10,8 @@ export interface PurchaseItem {
   description?: string;
 }
 
+export type InquiryType = "damaged" | "faulty" | "shipping" | "other";
+
 export const getStatusColor = (status: PurchaseItem["status"]) => {
   switch (status) {
     case "delivered":
