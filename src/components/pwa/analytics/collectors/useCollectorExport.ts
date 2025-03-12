@@ -1,19 +1,25 @@
 
-import { Collector } from "./types";
+import { useState } from 'react';
 
-export const useCollectorExport = (collectors: Collector[]) => {
-  // Function to send collector data to the server
+export const useCollectorExport = () => {
+  const [exportInProgress, setExportInProgress] = useState(false);
+  
   const handleExport = () => {
-    // This would typically download a CSV, but we're disabling downloads
-    // and would replace with server-side processing in a real app
-    console.log("Export collectors data:", collectors);
+    setExportInProgress(true);
     
-    // Instead of download, we could show a success message
+    // Simulate export process
+    setTimeout(() => {
+      setExportInProgress(false);
+    }, 1000);
+    
     return {
       success: true,
-      message: "Data has been processed successfully."
+      message: "Collector data exported successfully"
     };
   };
-
-  return { handleExport };
+  
+  return {
+    handleExport,
+    exportInProgress
+  };
 };

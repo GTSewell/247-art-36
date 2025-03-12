@@ -1,64 +1,58 @@
 
 import React from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Eye } from "lucide-react";
+import { Mail } from "lucide-react";
 import CollectorAvatar from "./CollectorAvatar";
 import { Collector } from "./types";
+import { format } from "date-fns";
 
-export interface CollectorTableProps {
+interface CollectorTableProps {
   collectors: Collector[];
   onMessageClick: (collector: Collector) => void;
-  onViewClick: (collector: Collector) => void;
 }
 
-const CollectorTable: React.FC<CollectorTableProps> = ({ 
-  collectors, 
-  onMessageClick, 
-  onViewClick 
-}) => {
+const CollectorTable: React.FC<CollectorTableProps> = ({ collectors, onMessageClick }) => {
   return (
-    <div className="rounded-md border overflow-hidden">
+    <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Collector</TableHead>
+            <TableHead className="w-[80px]">Collector</TableHead>
+            <TableHead>Name</TableHead>
             <TableHead>Purchases</TableHead>
-            <TableHead>Value</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>Last Purchase</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {collectors.map((collector) => (
             <TableRow key={collector.id}>
               <TableCell>
-                <div className="flex items-center gap-2">
-                  <CollectorAvatar collector={collector} />
-                  <div>
-                    <p className="font-medium">{collector.name}</p>
-                    <p className="text-xs text-muted-foreground">{collector.email}</p>
-                  </div>
-                </div>
+                <CollectorAvatar collector={collector} />
               </TableCell>
-              <TableCell>{collector.purchaseCount}</TableCell>
-              <TableCell>${collector.totalValue.toLocaleString()}</TableCell>
+              <TableCell className="font-medium">{collector.name}</TableCell>
               <TableCell>
-                <div className="flex space-x-1">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => onMessageClick(collector)}
-                  >
-                    <MessageSquare className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => onViewClick(collector)}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                </div>
+                {collector.purchaseCount} (${collector.totalValue})
+              </TableCell>
+              <TableCell>
+                {format(new Date(collector.lastPurchase), 'MMM d, yyyy')}
+              </TableCell>
+              <TableCell className="text-right">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onMessageClick(collector)}
+                >
+                  <Mail className="h-4 w-4" />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
