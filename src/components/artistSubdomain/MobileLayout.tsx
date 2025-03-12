@@ -103,6 +103,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
             activeTab={activeTab}
             handleTabChange={handleTabChange}
             handleReturnToArtists={handleReturnToArtists}
+            colorTheme={colorTheme}
           />
           
           <div className="flex-grow overflow-hidden">
