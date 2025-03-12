@@ -1,0 +1,26 @@
+
+/* PWA base styles */
+body[data-pwa="true"] {
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body[data-pwa="true"] #root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+body[data-pwa="true"] main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  height: calc(100vh - 64px);
+  padding-bottom: 80px;
+  padding-left: 0;
+  padding-right: 0;
+}

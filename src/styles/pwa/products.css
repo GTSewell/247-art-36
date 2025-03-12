@@ -1,0 +1,35 @@
+
+/* PWA product related styles */
+body[data-pwa="true"] .timed-editions-carousel .CarouselItem {
+  padding-bottom: 12px;
+}
+
+body[data-pwa="true"] .timed-editions-carousel .product-details {
+  margin-top: 8px;
+  padding-bottom: 12px;
+  visibility: visible !important;
+}
+
+body[data-pwa="true"] .timed-editions-carousel .product-price,
+body[data-pwa="true"] .timed-editions-carousel .add-to-cart-btn {
+  margin-bottom: 8px;
+  visibility: visible !important;
+}
+
+body[data-pwa="true"] .bg-zap-red main {
+  padding-bottom: 80px;
+  width: 100vw;
+}
+
+body[data-pwa="true"] .bg-zap-red main > div {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body[data-pwa="true"] .bg-zap-red main section {
+  width: 100vw;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
