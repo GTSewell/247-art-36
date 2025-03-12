@@ -128,9 +128,9 @@ const PWAStore = () => {
       <div className="min-h-screen bg-zap-red">
         {isPWA ? <PWANavigation /> : <Navigation />}
         
-        <main className={`container mx-auto px-4 ${isPWA ? 'pt-4' : 'pt-24'} pb-20`}> {/* Reduced padding top and bottom */}
+        <main className={`${isPWA ? 'pt-4 pb-20' : 'container mx-auto px-4 pt-24 pb-20'}`}>
           {selectedCategory ? (
-            <div>
+            <div className={isPWA ? 'px-4' : ''}>
               <div className="flex items-center justify-between mb-4">
                 <button 
                   onClick={handleBack}
@@ -141,7 +141,7 @@ const PWAStore = () => {
                 <h1 className="text-2xl font-nove text-white text-center uppercase tracking-wide">
                   {getCategoryDisplayName(selectedCategory)}
                 </h1>
-                <div className="w-10"></div> {/* Empty div for alignment */}
+                <div className="w-10"></div>
               </div>
               <CategoryProducts 
                 products={categoryProducts} 
@@ -151,21 +151,23 @@ const PWAStore = () => {
           ) : (
             <>
               <div className="mb-0 mt-0">
-                <div className="flex justify-center mb-1"> {/* Reduced bottom margin */}
+                <div className="flex justify-center mb-1">
                   <img 
                     src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
                     alt="Timed Editions" 
-                    className="h-12 object-contain" {/* Reduced height */}
+                    className="h-12 object-contain"
                   />
                 </div>
 
                 {!isLoading && featuredProducts.length > 0 ? (
-                  <FeaturedProducts
-                    products={featuredProducts}
-                    onProductSelect={handleProductSelect}
-                  />
+                  <div className={`${isPWA ? 'w-full' : ''}`}>
+                    <FeaturedProducts
+                      products={featuredProducts}
+                      onProductSelect={handleProductSelect}
+                    />
+                  </div>
                 ) : (
-                  <div className="flex justify-center items-center h-16"> {/* Reduced height */}
+                  <div className="flex justify-center items-center h-16">
                     <p className="text-lg text-white">
                       {isLoading ? "Loading products..." : "No timed editions available"}
                     </p>
@@ -173,9 +175,12 @@ const PWAStore = () => {
                 )}
               </div>
 
-              <AnimatedCollectionBanner />
-
-              <StoreCategories onCategorySelect={handleCategorySelect} />
+              <div className={`${isPWA ? 'px-0' : 'px-4'}`}>
+                <AnimatedCollectionBanner />
+                <div className={isPWA ? 'px-4' : ''}>
+                  <StoreCategories onCategorySelect={handleCategorySelect} />
+                </div>
+              </div>
             </>
           )}
         </main>
