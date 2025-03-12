@@ -18,4 +18,6 @@ export interface CollectorTableProps {
   collectors: Collector[];
   selectedCollectors?: string[];
   onSelectCollector?: (id: string) => void;
+  onMessageClick?: (id: string) => void;
+  onViewClick?: (id: string) => void;
 }

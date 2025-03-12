@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, Download, MessageSquare } from "lucide-react";
 import CollectorTable from "./collectors/CollectorTable";
-import { mockCollectors } from "./collectors/mockData";
+import { collectors } from "./collectors/mockData";
 
 interface MyCollectorsCardProps {
   onAction?: () => boolean;
@@ -68,7 +68,11 @@ const MyCollectorsCard: React.FC<MyCollectorsCardProps> = ({ onAction }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <CollectorTable collectors={mockCollectors} onMessageClick={handleMessageAll} onViewClick={handleMessageAll} />
+        <CollectorTable 
+          collectors={collectors} 
+          selectedCollectors={[]} 
+          onSelectCollector={() => {}} 
+        />
       </CardContent>
     </Card>
   );

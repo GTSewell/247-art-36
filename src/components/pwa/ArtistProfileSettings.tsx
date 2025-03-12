@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
-import { BasicInfoForm } from "./artist-settings/BasicInfoForm";
-import { LocationForm } from "./artist-settings/LocationForm";
-import { ArtistTags } from "./artist-settings/ArtistTags";
+import BasicInfoForm from "./artist-settings/BasicInfoForm";
+import LocationForm from "./artist-settings/LocationForm";
+import ArtistTags from "./artist-settings/ArtistTags";
 import { Button } from "@/components/ui/button";
 import { ArtistProfileFormData } from "./artist-settings/types";
 import { fetchArtistProfile, saveArtistProfile } from "./artist-settings/api/artistProfileAPI";
