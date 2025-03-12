@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +12,7 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import { logger } from "@/utils/logger";
 import { ChevronLeft } from "lucide-react";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
+import AnimatedCollectionBanner from "@/components/pwa/AnimatedCollectionBanner";
 
 interface TimerState {
   hours: number;
@@ -58,11 +58,9 @@ const PWAStore = () => {
     logger.error("Query error:", error);
   }
 
-  // Generate sample products if there are none for the selected category
   const getProductsForCategory = (categoryId: string) => {
     const categoryProducts = products?.filter(p => p.category === categoryId) || [];
     
-    // If no products exist for this category, generate sample ones
     if (categoryProducts.length === 0 && !isLoading) {
       const sampleProducts = [];
       const categoryNames = {
@@ -74,7 +72,6 @@ const PWAStore = () => {
         'collection': '247 Collection'
       };
       
-      // Generate 6 sample products
       for (let i = 1; i <= 6; i++) {
         sampleProducts.push({
           id: `sample-${categoryId}-${i}`,
@@ -152,8 +149,7 @@ const PWAStore = () => {
             </div>
           ) : (
             <>
-              {/* Timed Edition Drops Section */}
-              <div className="mb-6 mt-0">
+              <div className="mb-0 mt-0">
                 <div className="flex justify-center mb-2">
                   <img 
                     src="/lovable-uploads/24a9187e-656c-4725-8828-f68864f96228.png" 
@@ -176,13 +172,13 @@ const PWAStore = () => {
                 )}
               </div>
 
-              {/* Categories Section with reduced height */}
+              <AnimatedCollectionBanner />
+
               <StoreCategories onCategorySelect={handleCategorySelect} />
             </>
           )}
         </main>
 
-        {/* Timed Edition Modal */}
         <TimedEditionModal
           isOpen={!!selectedProduct}
           onClose={() => {
