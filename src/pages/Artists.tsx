@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
@@ -98,8 +97,7 @@ const Artists = () => {
         <Navigation />
         
         <div className="container mx-auto pt-20 px-4 pb-16">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold">Artists</h1>
+          <div className="flex justify-end mb-4">
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
