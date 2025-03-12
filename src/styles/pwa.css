@@ -49,23 +49,6 @@ body[data-pwa="true"] .timed-editions-carousel {
   margin-bottom: 0;
 }
 
-body[data-pwa="true"] .embla__viewport {
-  overflow: visible;
-  width: 100vw;
-}
-
-body[data-pwa="true"] .CarouselContent {
-  margin-left: 0;
-  padding-left: 0;
-  width: 100%;
-}
-
-body[data-pwa="true"] .CarouselItem {
-  min-width: 70%;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
 /* PWA header styles - Updated to remove extra spacing */
 body[data-pwa="true"] .pwa-header {
   background: transparent;
@@ -221,3 +204,30 @@ body[data-pwa="true"] [class*="embla__viewport"] {
   max-width: 100vw;
   width: 100vw;
 }
+
+/* Full width for featured products carousel in PWA mode */
+body[data-pwa="true"] .bg-zap-red main {
+  padding-bottom: 80px; /* Ensure enough padding at bottom for footer */
+  width: 100vw;
+}
+
+/* Remove horizontal padding in PWA mode */
+body[data-pwa="true"] .bg-zap-red main > div {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body[data-pwa="true"] .bg-zap-red main section {
+  width: 100vw;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Ensure carousel is full width in PWA mode */
+body[data-pwa="true"] .CarouselContent {
+  margin-left: 0;
+  padding-left: 0;
+}
+
