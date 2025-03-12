@@ -183,3 +183,18 @@ body[data-pwa="true"] .store-category-container {
   height: calc(100vh - 130px);
   padding-bottom: 16px;
 }
+
+/* PWA Artists page specific styling */
+body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto bg-[#00baef]"] .container {
+  background-color: white;
+  border-radius: 8px;
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+/* Ensure text and form elements on blue background have good contrast */
+body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto bg-[#00baef]"] input,
+body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto bg-[#00baef]"] button {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+

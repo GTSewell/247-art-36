@@ -66,7 +66,7 @@ const PWAArtists = () => {
   };
 
   return (
-    <div className={`${isPWA ? 'min-h-screen pb-20 pt-8 overflow-y-auto' : 'pb-20 pt-8'}`}>
+    <div className={`${isPWA ? 'min-h-screen pb-20 pt-8 overflow-y-auto bg-[#00baef]' : 'pb-20 pt-8'}`}>
       {isPWA ? <PWANavigation /> : <Navigation />}
       
       <div className="container mx-auto px-4 py-2 pb-24">
