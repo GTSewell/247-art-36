@@ -9,6 +9,13 @@ const VirtualTour = () => {
       <Navigation />
       <div className="container mx-auto pt-20 px-4 pb-8">
         <h1 className="text-4xl font-bold text-white mb-8">Virtual Tour</h1>
+        
+        <div className="bg-zap-yellow text-black p-4 rounded-lg mb-6 shadow-md">
+          <p className="font-semibold">
+            This is an older 3D scan of our gallery space. We will be making BIG changes to take it to the next level in preparation for the new home of 247⚡ART!
+          </p>
+        </div>
+        
         <div className="aspect-video w-full bg-white rounded-lg overflow-hidden shadow-xl">
           <MatterportViewer 
             modelId="BNNRoZpfMt6"
