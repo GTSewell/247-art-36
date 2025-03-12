@@ -1,7 +1,6 @@
 
 /* PWA artist specific styles */
 body[data-pwa="true"] div[class*="min-h-screen pb-20 pt-8 overflow-y-auto bg-[#00baef]"] .container {
-  background-color: white;
   border-radius: 8px;
   margin-top: 8px;
   padding-top: 12px;
