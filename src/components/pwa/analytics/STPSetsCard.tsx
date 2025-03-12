@@ -1,80 +1,91 @@
 
 import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart3 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
-interface STPSetsCardProps {
-  onAction: (actionName?: string) => boolean;
-  demoMode?: boolean;
-  demoData?: {
-    completionPercentage: number;
-    packCount: number;
-    productCount: number;
-    nextAction: string;
+const STPSetsCard: React.FC = () => {
+  const isMobile = useIsMobile();
+  
+  // Mock data - in a real app this would come from an API
+  const stpPacksSold = 16;
+  const initialCommissionRate = 25;
+  const commissionReductionPerPack = 1;
+  const totalSegments = 25;
+  
+  // Calculate current commission rate
+  const commissionReduction = Math.min(stpPacksSold * commissionReductionPerPack, initialCommissionRate);
+  const currentCommissionRate = initialCommissionRate - commissionReduction;
+  
+  // Function to determine segment color based on index
+  const getSegmentColor = (index: number): string => {
+    if (index >= stpPacksSold) return "bg-gray-300"; // Unsold segments are gray
+    if (index < 7) return "bg-zap-red"; // First 7 segments red
+    if (index < 15) return "bg-zap-yellow"; // Next 8 segments yellow
+    return "bg-[#05a732]"; // Remaining segments green (Zap Green)
   };
-}
-
-const STPSetsCard: React.FC<STPSetsCardProps> = ({ onAction, demoMode, demoData }) => {
-  // Use demo data when in demo mode, otherwise use default values
-  const completionPercentage = demoMode && demoData ? demoData.completionPercentage : 25;
-  const packCount = demoMode && demoData ? demoData.packCount : 1;
-  const productCount = demoMode && demoData ? demoData.productCount : 4;
-  const nextAction = demoMode && demoData ? demoData.nextAction : "Set up your first STP pack";
-
-  const handleCreateSTPClick = () => {
-    // Check if we should block the action
-    if (onAction("Create new STP pack")) {
-      return; // Action was blocked
-    }
-    
-    // If we get here, the action is allowed
-    console.log("Create new STP pack clicked");
-    // Add actual functionality here
-  };
-
+  
+  // Generate all 25 segments
+  const segments = Array.from({ length: totalSegments }, (_, i) => (
+    <div 
+      key={i} 
+      className={cn(
+        "h-full rounded-sm transition-colors duration-300",
+        getSegmentColor(i)
+      )}
+    />
+  ));
+  
   return (
     <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-medium">STP Sets</CardTitle>
-        <CardDescription>
-          Your Straight-To-Print sets progress
-        </CardDescription>
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <BarChart3 className="mr-2 h-5 w-5" />
+          STP Collecter Packs Sold: {stpPacksSold}
+        </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <Progress value={completionPercentage} className="h-2" />
-            <p className="text-xs text-muted-foreground mt-1">
-              Your STP sets are {completionPercentage}% complete
-            </p>
+      <CardContent className="space-y-4">
+        {/* Commission percentage indicator at top */}
+        <div className="relative w-full mb-1">
+          <div className="flex justify-between mb-1">
+            <span className="font-bold">{initialCommissionRate}%</span>
+            <span className="font-bold">0%</span>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="font-semibold">{packCount}</p>
-              <p className="text-muted-foreground">STP Packs</p>
+          {/* Horizontal line with percentage indicator */}
+          <div className="relative w-full h-0.5 bg-gray-300 my-2">
+            {/* Current commission percentage marker */}
+            <div 
+              className="absolute top-1/2 transform -translate-y-1/2 w-auto"
+              style={{ 
+                left: `${(stpPacksSold / totalSegments) * 100}%`,
+              }}
+            >
+              <div className="bg-zap-blue text-white text-xs font-bold px-2 py-0.5 rounded transform -translate-x-1/2 whitespace-nowrap">
+                {currentCommissionRate}%
+              </div>
             </div>
-            <div>
-              <p className="font-semibold">{productCount}</p>
-              <p className="text-muted-foreground">Total Products</p>
-            </div>
+          </div>
+        </div>
+        
+        {/* Segmented progress bar container */}
+        <div className="relative h-10 w-full overflow-hidden rounded-lg border border-gray-300 mb-2">
+          {/* Segments grid */}
+          <div className="absolute inset-0 grid grid-cols-25 gap-1 p-1">
+            {segments}
+          </div>
+        </div>
+        
+        <div className="flex justify-between items-center">
+          <div className="text-sm text-gray-500">
+            For every STP Collector Pack sold, your gallery commission decreases by 1%.
           </div>
           
-          <div>
-            <p className="text-sm font-medium">Next action</p>
-            <p className="text-sm text-muted-foreground">{nextAction}</p>
+          {/* Current gallery commission label */}
+          <div className="bg-zap-blue text-white text-xs font-bold px-3 py-1.5 rounded whitespace-nowrap">
+            Current gallery commission
           </div>
-          
-          <Button 
-            variant="outline" 
-            className="w-full" 
-            onClick={handleCreateSTPClick}
-          >
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Create New STP Pack
-          </Button>
         </div>
       </CardContent>
     </Card>

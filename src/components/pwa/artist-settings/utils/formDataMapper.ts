@@ -1,6 +1,6 @@
 
-import { ArtistProfileFormData, SocialPlatform } from "../types";
-import { parseSocialPlatforms } from "./socialPlatformUtils";
+import { ArtistProfileFormData } from "../types";
+import { formatSocialPlatforms } from "./socialPlatformUtils";
 
 /**
  * Map artist data from API to form data format
@@ -11,12 +11,11 @@ export const mapArtistToFormData = (data: any): ArtistProfileFormData => {
       name: "",
       specialty: "",
       bio: "",
-      location: "",
       city: "",
       country: "",
       techniques: "",
       styles: "",
-      social_platforms: []
+      social_platforms: ""
     };
   }
   
@@ -24,7 +23,6 @@ export const mapArtistToFormData = (data: any): ArtistProfileFormData => {
     name: data.name || "",
     specialty: data.specialty || "",
     bio: data.bio || "",
-    location: data.location || "",
     city: data.city || "",
     country: data.country || "",
     techniques: Array.isArray(data.techniques) 
@@ -33,8 +31,6 @@ export const mapArtistToFormData = (data: any): ArtistProfileFormData => {
     styles: Array.isArray(data.styles) 
       ? data.styles.join(', ') 
       : typeof data.styles === 'string' ? data.styles : "",
-    social_platforms: Array.isArray(data.social_platforms) 
-      ? parseSocialPlatforms(data.social_platforms)
-      : []
+    social_platforms: formatSocialPlatforms(data)
   };
 };

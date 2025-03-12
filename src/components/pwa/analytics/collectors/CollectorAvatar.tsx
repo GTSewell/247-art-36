@@ -1,32 +1,22 @@
 
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Collector } from "./types";
+import { cn } from "@/lib/utils";
 
-export interface CollectorAvatarProps {
-  collector: Collector;
+interface CollectorAvatarProps {
+  name: string;
+  avatarUrl: string;
 }
 
-const CollectorAvatar: React.FC<CollectorAvatarProps> = ({ collector }) => {
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
-  };
-
+const CollectorAvatar: React.FC<CollectorAvatarProps> = ({ name, avatarUrl }) => {
   return (
-    <Avatar className="h-9 w-9">
-      {collector.avatarUrl && (
-        <AvatarImage 
-          src={collector.avatarUrl} 
-          alt={collector.name} 
-        />
-      )}
-      <AvatarFallback>
-        {getInitials(collector.name)}
+    <Avatar className="h-8 w-8">
+      <AvatarImage src={avatarUrl} alt={name} />
+      <AvatarFallback className={cn(
+        name === "Anon" ? "bg-gray-300" : "bg-zap-blue",
+        "text-white"
+      )}>
+        {name.substring(0, 2)}
       </AvatarFallback>
     </Avatar>
   );

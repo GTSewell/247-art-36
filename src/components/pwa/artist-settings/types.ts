@@ -1,19 +1,13 @@
 
-export interface SocialPlatform {
-  platform: string;
-  username: string;
-}
-
 export interface ArtistProfileFormData {
   name: string;
   specialty: string;
   bio: string;
-  location: string;
   city: string;
   country: string;
   techniques: string;
   styles: string;
-  social_platforms: SocialPlatform[];
+  social_platforms: string;
 }
 
 export interface ArtistProfileHookReturn {

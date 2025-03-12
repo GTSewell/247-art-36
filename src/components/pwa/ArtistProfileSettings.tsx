@@ -1,8 +1,12 @@
 
 import React from "react";
-import { useProfileForm } from "./artist-settings/hooks/useProfileForm";
-import DemoProfileForm from "./artist-settings/DemoProfileForm";
-import LiveProfileForm from "./artist-settings/LiveProfileForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
+import BasicInfoForm from "./artist-settings/BasicInfoForm";
+import LocationForm from "./artist-settings/LocationForm";
+import ArtistTags from "./artist-settings/ArtistTags";
+import { useArtistProfile } from "./artist-settings/useArtistProfile";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
@@ -10,36 +14,48 @@ interface ArtistProfileSettingsProps {
 
 const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId }) => {
   const {
+    loading,
+    saving,
     formData,
-    isLoading,
-    demoMode,
     handleChange,
-    handleSubmit,
-    handleSocialPlatformChange,
-    handleAddSocialPlatform,
-    handleRemoveSocialPlatform,
-    handleTagsChange
-  } = useProfileForm(artistId);
-
-  if (isLoading) {
-    return <p>Loading profile...</p>;
+    handleSubmit
+  } = useArtistProfile(artistId);
+  
+  if (loading) {
+    return <div className="p-8 text-center">Loading artist profile...</div>;
   }
-
-  // If this is the demo artist account, show demo data
-  if (demoMode) {
-    return <DemoProfileForm formData={formData} />;
-  }
-
+  
   return (
-    <LiveProfileForm
-      formData={formData}
-      onChange={handleChange}
-      onSocialPlatformChange={handleSocialPlatformChange}
-      onAddSocialPlatform={handleAddSocialPlatform}
-      onRemoveSocialPlatform={handleRemoveSocialPlatform}
-      onTagsChange={handleTagsChange}
-      onSubmit={handleSubmit}
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <User className="mr-2 h-5 w-5" />
+          Profile Settings
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <BasicInfoForm 
+            formData={formData} 
+            handleChange={handleChange} 
+          />
+          
+          <LocationForm 
+            formData={formData}
+            handleChange={handleChange}
+          />
+          
+          <ArtistTags 
+            formData={formData}
+            handleChange={handleChange}
+          />
+          
+          <Button type="submit" className="w-full" disabled={saving}>
+            {saving ? "Saving..." : "Save Changes"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

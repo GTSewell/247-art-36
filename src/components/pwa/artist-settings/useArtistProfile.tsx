@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "./types";
 import { fetchArtistProfile, saveArtistProfile } from "./api/artistProfileAPI";
 import { mapArtistToFormData } from "./utils/formDataMapper";
-import { parseSocialPlatforms } from "./utils/socialPlatformUtils";
 
 export const useArtistProfile = (artistId: string | null): ArtistProfileHookReturn => {
   const [loading, setLoading] = useState(true);
@@ -14,12 +13,11 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     name: "",
     specialty: "",
     bio: "",
-    location: "",
     city: "",
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: []
+    social_platforms: ""
   });
   
   useEffect(() => {

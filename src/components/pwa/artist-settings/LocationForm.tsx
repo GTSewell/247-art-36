@@ -5,15 +5,13 @@ import { Input } from "@/components/ui/input";
 
 interface LocationFormProps {
   formData: {
-    location?: string;
     city: string;
     country: string;
   };
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  disabled?: boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const LocationForm: React.FC<LocationFormProps> = ({ formData, onChange, disabled }) => {
+const LocationForm: React.FC<LocationFormProps> = ({ formData, handleChange }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="space-y-2">
@@ -22,9 +20,8 @@ const LocationForm: React.FC<LocationFormProps> = ({ formData, onChange, disable
           id="city"
           name="city"
           value={formData.city}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Your city"
-          disabled={disabled}
         />
       </div>
       
@@ -34,9 +31,8 @@ const LocationForm: React.FC<LocationFormProps> = ({ formData, onChange, disable
           id="country"
           name="country"
           value={formData.country}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Your country"
-          disabled={disabled}
         />
       </div>
     </div>

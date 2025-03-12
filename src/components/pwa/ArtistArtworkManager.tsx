@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -195,88 +196,6 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
   
   if (loading && artworks.length === 0) {
     return <div className="p-8 text-center">Loading artworks...</div>;
-  }
-  
-  // If this is the demo artist account, show mock data
-  if (localStorage.getItem('demoSession') === 'active') {
-    const mockArtworks = [
-      {
-        id: 'art-1',
-        title: 'Geometric Abstraction #1',
-        image: '/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png',
-        description: 'Acrylic on canvas, 36" x 48"',
-        year: '2023'
-      },
-      {
-        id: 'art-2', 
-        title: 'Color Study #4',
-        image: '/lovable-uploads/43f5719e-a69d-483e-aeda-bc85b9c5deba.png',
-        description: 'Oil on canvas, 24" x 36"',
-        year: '2022'
-      },
-      {
-        id: 'art-3',
-        title: 'Urban Fragments',
-        image: '/lovable-uploads/59a6f684-31db-4ac2-a157-a94968384f00.png',
-        description: 'Mixed media, 40" x 40"',
-        year: '2023'
-      }
-    ];
-
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Your Artworks</h2>
-          <Button 
-            size="sm"
-            onClick={() => {
-              toast.info('Adding artworks is disabled in the demo account');
-            }}
-          >
-            Add Artwork
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {mockArtworks.map((artwork) => (
-            <div key={artwork.id} className="border rounded-lg overflow-hidden bg-white">
-              <div className="aspect-square relative overflow-hidden">
-                <img 
-                  src={artwork.image} 
-                  alt={artwork.title} 
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <div className="p-3">
-                <h3 className="font-bold">{artwork.title}</h3>
-                <p className="text-sm text-gray-600">{artwork.description}</p>
-                <p className="text-xs text-gray-500">{artwork.year}</p>
-                <div className="flex justify-end mt-2 space-x-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => {
-                      toast.info('Editing is disabled in the demo account');
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button 
-                    variant="destructive" 
-                    size="sm"
-                    onClick={() => {
-                      toast.info('Deletion is disabled in the demo account');
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
   }
   
   return (

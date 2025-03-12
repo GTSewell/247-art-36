@@ -3,25 +3,17 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArtistProfileFormData } from "./types";
 
 interface BasicInfoFormProps {
-  formData: ArtistProfileFormData;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onSocialPlatformChange?: (platform: string, username: string) => void;
-  onAddSocialPlatform?: (platform: string) => void;
-  onRemoveSocialPlatform?: (platform: string) => void;
-  disabled?: boolean;
+  formData: {
+    name: string;
+    specialty: string;
+    bio: string;
+  };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-const BasicInfoForm: React.FC<BasicInfoFormProps> = ({ 
-  formData, 
-  onChange,
-  onSocialPlatformChange,
-  onAddSocialPlatform,
-  onRemoveSocialPlatform,
-  disabled
-}) => {
+const BasicInfoForm: React.FC<BasicInfoFormProps> = ({ formData, handleChange }) => {
   return (
     <>
       <div className="space-y-2">
@@ -30,9 +22,8 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
           id="name"
           name="name"
           value={formData.name}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Your artist name"
-          disabled={disabled}
         />
       </div>
       
@@ -42,9 +33,8 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
           id="specialty"
           name="specialty"
           value={formData.specialty}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Your specialty"
-          disabled={disabled}
         />
       </div>
       
@@ -54,10 +44,9 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
           id="bio"
           name="bio"
           value={formData.bio}
-          onChange={onChange}
+          onChange={handleChange}
           placeholder="Tell us about yourself"
           rows={5}
-          disabled={disabled}
         />
       </div>
     </>

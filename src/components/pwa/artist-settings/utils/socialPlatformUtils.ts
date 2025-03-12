@@ -1,84 +1,62 @@
 
-import { SocialPlatform } from "../types";
-
 /**
  * Utility functions for handling artist social platforms
  */
 
 /**
- * Process social platforms for saving to database
+ * Process social platforms string into a formatted array
  */
-export const processSocialPlatforms = (platforms: SocialPlatform[]): string[] => {
-  if (!platforms || !platforms.length) return [];
+export const processSocialPlatforms = (platforms: string): string[] => {
+  if (!platforms) return [];
   
-  return platforms.map(platform => {
-    const { platform: platformName, username } = platform;
-    let formattedPlatform = '';
-    
-    // Handle different platform formats
-    if (platformName === 'instagram') {
-      formattedPlatform = `instagram.com/${username}`;
-    } else if (platformName === 'twitter' || platformName === 'x') {
-      formattedPlatform = `twitter.com/${username}`;
-    } else if (platformName === 'facebook') {
-      formattedPlatform = `facebook.com/${username}`;
-    } else {
-      // Generic format for other platforms
-      formattedPlatform = `${platformName}.com/${username}`;
-    }
-    
-    // Clean up formats to prevent duplications
-    if (formattedPlatform.includes('instagram.com/instagram.com/')) {
-      return formattedPlatform.replace('instagram.com/instagram.com/', 'instagram.com/');
-    }
-    if (formattedPlatform.includes('twitter.com/twitter.com/') || formattedPlatform.includes('x.com/x.com/')) {
-      return formattedPlatform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
-    }
-    
-    // Add https:// protocol if not present
-    if (!formattedPlatform.startsWith('http://') && !formattedPlatform.startsWith('https://')) {
-      return `https://${formattedPlatform}`;
-    }
-    
-    return formattedPlatform;
-  });
+  return platforms.split(',')
+    .map(platform => platform.trim())
+    .filter(platform => platform) // Remove empty strings
+    .map(platform => {
+      // Clean up formats to prevent duplications
+      if (platform.includes('instagram.com/instagram.com/')) {
+        return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
+      }
+      if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
+        return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
+      }
+      
+      // Ensure @ handles are properly formatted
+      if (platform.startsWith('@') && !platform.includes('.com')) {
+        return platform; // Keep as is, will be processed when displayed
+      }
+      
+      // Add https:// protocol if not present and not an @ handle
+      if (!platform.startsWith('http://') && !platform.startsWith('https://') && !platform.startsWith('@')) {
+        return `https://${platform}`;
+      }
+      
+      return platform;
+    });
 };
 
 /**
- * Parse social platform strings from database to SocialPlatform objects
+ * Formats social platforms to prevent duplication
  */
-export const parseSocialPlatforms = (platformStrings: string[]): SocialPlatform[] => {
-  if (!platformStrings || !platformStrings.length) return [];
+export const formatSocialPlatforms = (data: any): string => {
+  let formattedSocialPlatforms = "";
   
-  return platformStrings.map(url => {
-    // Remove protocol
-    let cleanUrl = url.replace(/^https?:\/\//, '');
-    
-    // Extract platform and username
-    let platform = '';
-    let username = '';
-    
-    if (cleanUrl.includes('instagram.com/')) {
-      platform = 'instagram';
-      username = cleanUrl.split('instagram.com/')[1];
-    } else if (cleanUrl.includes('twitter.com/')) {
-      platform = 'twitter';
-      username = cleanUrl.split('twitter.com/')[1];
-    } else if (cleanUrl.includes('facebook.com/')) {
-      platform = 'facebook';
-      username = cleanUrl.split('facebook.com/')[1];
-    } else {
-      // Try to extract from generic format
-      const parts = cleanUrl.split('.');
-      if (parts.length > 1) {
-        platform = parts[0];
-        const subParts = cleanUrl.split('/');
-        if (subParts.length > 1) {
-          username = subParts[subParts.length - 1];
+  if (Array.isArray(data.social_platforms)) {
+    formattedSocialPlatforms = data.social_platforms
+      .map((platform: string) => {
+        // Clean up formats to prevent duplications
+        if (platform.includes('instagram.com/instagram.com/')) {
+          return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
         }
-      }
-    }
-    
-    return { platform, username };
-  });
+        if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
+          return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
+        }
+        return platform;
+      })
+      .join(', ');
+  } else if (typeof data.social_platforms === 'string') {
+    formattedSocialPlatforms = data.social_platforms;
+  }
+  
+  return formattedSocialPlatforms;
 };

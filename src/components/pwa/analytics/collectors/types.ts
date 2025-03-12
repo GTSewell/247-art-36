@@ -1,19 +1,21 @@
 
 export interface Collector {
-  id: number;
+  id: string;
   name: string;
-  email: string;
   avatarUrl: string;
-  lastPurchase: string;
-  purchaseCount: number;
-  totalValue: number;
+  itemsPurchased: string[];
+  sales: number[];
+  collectorName: string;
+  email: string;
+  messageSent?: boolean;
+  social: {
+    instagram?: string;
+    facebook?: string;
+  }
 }
 
-export interface CollectorExport {
-  id: number;
-  name: string;
-  email: string;
-  purchaseCount: number;
-  totalValue: number;
-  lastPurchase: string;
+export interface CollectorTableProps {
+  collectors: Collector[];
+  selectedCollectors?: string[];
+  onSelectCollector?: (id: string) => void;
 }
