@@ -9,7 +9,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 87%;  /* Changed from 48 96% 90% (pale yellow) to 0 0% 87% (pale grey #dddddd) */
+    --background: 0 0% 100%;  /* Changed to pure white */
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -41,7 +41,7 @@
   }
 
   .dark {
-    --background: 0 0% 21%;  /* Changed from 240 10% 3.9% (near black) to 0 0% 21% (#353535) */
+    --background: 0 0% 13%;  /* Changed to a cleaner dark color */
     --foreground: 0 0% 98%;
 
     --card: 222.2 84% 4.9%;

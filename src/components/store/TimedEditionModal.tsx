@@ -54,7 +54,7 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 rounded-xl shadow-lg border border-gray-100">
+      <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white rounded-xl shadow-lg border border-gray-100">
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
         {/* Close button with improved positioning */}
@@ -92,7 +92,7 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
               />
             </div>
             
-            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-gray-100 sticky bottom-0 bg-white/95 backdrop-blur-sm">
+            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-gray-100">
               <AddToCartButton isDisabled={isExpired} />
             </div>
           </div>
