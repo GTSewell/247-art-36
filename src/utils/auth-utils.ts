@@ -70,6 +70,8 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
         console.log("Demo account login failed due to invalid credentials");
         toast.error("Demo account login failed. Please check Supabase Authentication settings.");
         
+        toast.error("Important: Update the demo account password in Supabase to '123456'");
+        
         if (userError.message.includes("Email not confirmed")) {
           console.log("Email confirmation required for demo account");
           toast.error("Demo account email needs to be confirmed in Supabase Authentication dashboard");
