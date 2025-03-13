@@ -25,7 +25,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             {
               id: "1",
               title: "Mountain Sunset",
-              image: "/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png",
+              image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png",
               artist: "You",
               price: 120,
               productionCost: 40,
@@ -35,7 +35,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             {
               id: "2",
               title: "Ocean Waves",
-              image: "/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png",
+              image: "/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png",
               artist: "You",
               price: 85,
               productionCost: 30,
@@ -45,7 +45,7 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             {
               id: "3",
               title: "Abstract Dreams",
-              image: "/lovable-uploads/7f423372-44dd-4846-bb28-98f6d2afeda9.png",
+              image: "/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png",
               artist: "You",
               price: 150,
               productionCost: 50,

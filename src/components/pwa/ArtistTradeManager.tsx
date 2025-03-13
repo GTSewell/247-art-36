@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import MyTrades from "./trade/MyTrades";
 import ArtistTrades from "./trade/ArtistTrades";
 import TradedHistory from "./trade/TradedHistory";
@@ -27,16 +27,13 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl">Trade Management</CardTitle>
-        </CardHeader>
         <CardContent>
           <Tabs 
             value={activeSection} 
             onValueChange={setActiveSection} 
             className="space-y-4"
           >
-            <TabsList className="grid grid-cols-4 gap-2 mb-4">
+            <TabsList className="grid grid-cols-2 gap-2 mb-4">
               <TabsTrigger value="my-trades">My Trades</TabsTrigger>
               <TabsTrigger value="artist-trades">Artist Trades</TabsTrigger>
               <TabsTrigger value="requests">Requests</TabsTrigger>

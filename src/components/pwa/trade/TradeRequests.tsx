@@ -43,13 +43,13 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
               fromArtwork: {
                 id: "a101",
                 title: "Desert Dreams",
-                image: "/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png",
+                image: "/lovable-uploads/81ef7ddd-20a1-4d19-b586-27ac2f6afe2b.png",
                 productionCost: 35
               },
               toArtwork: {
                 id: "a1",
                 title: "Mountain Sunset",
-                image: "/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png",
+                image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png",
                 productionCost: 40
               },
               message: "I love your Mountain Sunset piece and would like to trade with my Desert Dreams. Let me know if you're interested!",
@@ -71,13 +71,13 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
               fromArtwork: {
                 id: "a102",
                 title: "Forest Fantasy",
-                image: "/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png",
+                image: "/lovable-uploads/ddc18b16-629a-42e8-a97e-af21acb3e67a.png",
                 productionCost: 30
               },
               toArtwork: {
                 id: "a3",
                 title: "Abstract Dreams",
-                image: "/lovable-uploads/7f423372-44dd-4846-bb28-98f6d2afeda9.png",
+                image: "/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png",
                 productionCost: 50
               },
               message: "Your Abstract Dreams artwork would be perfect for my collection. Would you consider trading?",
@@ -99,13 +99,13 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
               fromArtwork: {
                 id: "a1",
                 title: "Mountain Sunset",
-                image: "/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png",
+                image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png",
                 productionCost: 40
               },
               toArtwork: {
                 id: "a104",
                 title: "Urban Landscape",
-                image: "/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png",
+                image: "/lovable-uploads/44037d7b-42de-43f6-86ef-1eb4983e970b.png",
                 productionCost: 40
               },
               message: "I'd love to trade my Mountain Sunset for your Urban Landscape. Let me know what you think!",
@@ -281,19 +281,18 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
                       </Button>
                       
                       {request.status === 'pending' && (
-                        <div className="space-x-2">
+                        <div className="flex space-x-2">
                           <Button 
-                            variant="outline" 
                             size="sm"
-                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                            variant="destructive"
                             onClick={() => handleDeclineTrade(request.id)}
                           >
                             <X className="h-4 w-4 mr-1" /> Decline
                           </Button>
                           <Button 
-                            variant="outline" 
                             size="sm"
-                            className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                            variant="default"
+                            className="bg-green-500 hover:bg-green-600"
                             onClick={() => handleAcceptTrade(request.id)}
                           >
                             <Check className="h-4 w-4 mr-1" /> Accept
@@ -452,17 +451,15 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
                 </div>
                 
                 {selectedRequest.type === 'received' && selectedRequest.status === 'pending' && (
-                  <div className="space-x-2">
+                  <div className="flex space-x-2">
                     <Button 
-                      variant="outline" 
-                      className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+                      variant="destructive"
                       onClick={() => handleDeclineTrade(selectedRequest.id)}
                     >
                       <X className="h-4 w-4 mr-1" /> Decline
                     </Button>
                     <Button 
-                      variant="outline" 
-                      className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white"
+                      className="bg-green-500 hover:bg-green-600"
                       onClick={() => handleAcceptTrade(selectedRequest.id)}
                     >
                       <Check className="h-4 w-4 mr-1" /> Accept

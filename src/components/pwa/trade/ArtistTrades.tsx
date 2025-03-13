@@ -28,7 +28,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "101",
               title: "Desert Dreams",
-              image: "/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png",
+              image: "/lovable-uploads/81ef7ddd-20a1-4d19-b586-27ac2f6afe2b.png",
               artist: "Jane Doe",
               price: 110,
               productionCost: 35,
@@ -38,7 +38,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "102",
               title: "Forest Fantasy",
-              image: "/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png",
+              image: "/lovable-uploads/ddc18b16-629a-42e8-a97e-af21acb3e67a.png",
               artist: "Mike Smith",
               price: 95,
               productionCost: 30,
@@ -48,7 +48,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "103",
               title: "Starry Night",
-              image: "/lovable-uploads/3ee38748-01eb-40cf-9d48-f01c3757620a.png",
+              image: "/lovable-uploads/c1aa52df-209a-44c5-9706-d2209db8a011.png",
               artist: "Alex Johnson",
               price: 135,
               productionCost: 45,
@@ -58,7 +58,7 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             {
               id: "104",
               title: "Urban Landscape",
-              image: "/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png",
+              image: "/lovable-uploads/44037d7b-42de-43f6-86ef-1eb4983e970b.png",
               artist: "Sarah Williams",
               price: 120,
               productionCost: 40,
