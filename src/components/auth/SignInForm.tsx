@@ -11,7 +11,7 @@ interface SignInFormProps {
 }
 
 const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
-  const [email, setEmail] = useState("demo@example.com");
+  const [email, setEmail] = useState("demo@247.art");
   const [password, setPassword] = useState("1234");
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
@@ -51,7 +51,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
           onChange={e => setEmail(e.target.value)} 
           required 
         />
-        <p className="text-xs text-gray-500 mt-1">Demo: demo@example.com</p>
+        <p className="text-xs text-gray-500 mt-1">Demo: demo@247.art</p>
       </div>
       <div>
         <Input 

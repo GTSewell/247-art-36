@@ -58,7 +58,7 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
     await supabase.auth.signOut();
     
     const { data, error } = await supabase.auth.signInWithPassword({
-      email: 'demo@example.com',
+      email: 'demo@247.art',
       password: '1234'
     });
     

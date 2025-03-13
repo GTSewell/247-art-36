@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -99,7 +100,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               After entering the password, you'll be automatically logged in with:
             </p>
             <p className="text-xs text-center text-gray-700 mt-1">
-              Email: demo@example.com | Password: 1234
+              Email: demo@247.art | Password: 1234
             </p>
           </div>
         </div>
