@@ -13,6 +13,7 @@ interface PricingPackageProps {
     percentage?: string;
     isIncluded?: boolean;
     isBoldUrl?: boolean;
+    isHeader?: boolean;
   }>;
   animationDirection: "left" | "right";
   className?: string;
@@ -62,6 +63,7 @@ const PricingPackage = ({
               color={iconColor} 
               isIncluded={feature.isIncluded} 
               isBoldUrl={feature.isBoldUrl}
+              isHeader={feature.isHeader}
             />
           ))}
         </ul>

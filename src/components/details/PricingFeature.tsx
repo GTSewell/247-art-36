@@ -8,11 +8,28 @@ interface PricingFeatureProps {
   color: string;
   isIncluded?: boolean;
   isBoldUrl?: boolean;
+  isHeader?: boolean;
 }
 
-const PricingFeature = ({ icon: Icon, text, percentage, color, isIncluded = true, isBoldUrl = false }: PricingFeatureProps) => {
+const PricingFeature = ({ 
+  icon: Icon, 
+  text, 
+  percentage, 
+  color, 
+  isIncluded = true, 
+  isBoldUrl = false,
+  isHeader = false 
+}: PricingFeatureProps) => {
   if (!isIncluded) {
     return null;
+  }
+
+  if (isHeader) {
+    return (
+      <li className="font-bold text-gray-800 mb-2 italic">
+        {text}
+      </li>
+    );
   }
 
   if (percentage) {

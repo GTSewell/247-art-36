@@ -18,6 +18,7 @@ const studioArtistFeatures = [
 ];
 
 const featureArtistExclusiveFeatures = [
+  { text: "Everything in the Studio Artist package plus," isHeader: true },
   { text: "Gallery Commission on Original Artwork", percentage: "0%" },
   { text: "Artist Commission of RRP on Retail Sales", percentage: "40%" },
   { text: "Priority Art Hanging" },
@@ -73,7 +74,7 @@ const Details = () => {
             price="$995"
             priceColor="zap-blue"
             iconColor="zap-yellow"
-            imageSrc="/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png"
+            imageSrc="/lovable-uploads/a550ea7f-48f9-4a07-b026-eb1e74f3d31d.png"
             features={studioArtistFeatures}
             animationDirection="left"
           />
@@ -97,7 +98,7 @@ const Details = () => {
             price="$1,495"
             priceColor="zap-red"
             iconColor="zap-blue"
-            imageSrc="/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png"
+            imageSrc="/lovable-uploads/76e20a37-89c0-48dc-bc0f-fe0bc589ed9f.png"
             features={featureArtistExclusiveFeatures}
             animationDirection="right"
           />
