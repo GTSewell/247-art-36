@@ -29,6 +29,15 @@ body[data-pwa="true"] .container .py-4 {
   padding-bottom: 4px;
 }
 
+/* Increase spacing for tab navigation in trade sections */
+body[data-pwa="true"] .tabs-container .tabs-list {
+  margin-bottom: 1.5rem;
+}
+
+body[data-pwa="true"] .tabs-content {
+  padding-top: 0.5rem;
+}
+
 /* Add extra space for mobile headers */
 @media (max-width: 768px) {
   body[data-pwa="true"] .pwa-header {
@@ -36,3 +45,4 @@ body[data-pwa="true"] .container .py-4 {
     min-height: 16px;
   }
 }
+

@@ -31,9 +31,9 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
   }
 
   return (
-    <div className="space-y-2">
+    <div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-2">
+        <TabsList className="grid w-full grid-cols-2 mb-3">
           <TabsTrigger value="received">
             Received 
             {unreadCount > 0 && (
@@ -46,7 +46,7 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
         </TabsList>
 
         <TabsContent value="received">
-          <p className="text-sm text-muted-foreground mb-2">
+          <p className="text-sm text-muted-foreground mb-3">
             Trade requests from other artists.
           </p>
           
@@ -68,7 +68,7 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
         </TabsContent>
 
         <TabsContent value="sent">
-          <p className="text-sm text-muted-foreground mb-2">
+          <p className="text-sm text-muted-foreground mb-3">
             Trade requests you've sent to other artists.
           </p>
           
