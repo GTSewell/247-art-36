@@ -20,22 +20,57 @@ import PWAStore from './pages/pwa/PWAStore'
 import ArtistDashboard from './pages/pwa/ArtistDashboard'
 import CollectorDashboard from './pages/pwa/CollectorDashboard'
 import GeneralStore from './pages/GeneralStore'
+import { supabase } from '@/integrations/supabase/client'
 import './App.css'
 
 const App = () => {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
   const location = useLocation();
 
-  // Check if password is already verified in localStorage
+  // Check if password is already verified in localStorage and if user is authenticated
   useEffect(() => {
-    const storedPasswordState = localStorage.getItem("isPasswordCorrect");
-    if (storedPasswordState === "true") {
-      setIsPasswordCorrect(true);
-    }
+    const checkAuthAndPassword = async () => {
+      setIsCheckingAuth(true);
+      
+      // Check stored password state
+      const storedPasswordState = localStorage.getItem("isPasswordCorrect");
+      
+      if (storedPasswordState === "true") {
+        setIsPasswordCorrect(true);
+        
+        // If password is correct, ensure user is logged in
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          // If no session but password is correct, try to sign in as demo
+          try {
+            await supabase.auth.signInWithPassword({
+              email: 'demo@247.art',
+              password: 'demo247account'
+            });
+            console.log('Auto-signed in as demo user on app load');
+          } catch (error) {
+            console.error('Error auto-signing in:', error);
+          }
+        }
+      }
+      
+      setIsCheckingAuth(false);
+    };
+    
+    checkAuthAndPassword();
   }, []);
 
   // If the current path is /auth/callback, skip password check
   const isAuthCallback = location.pathname.startsWith('/auth/callback');
+
+  if (isCheckingAuth) {
+    // Show loading state while checking authentication
+    return <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
+    </div>;
+  }
 
   if (!isPasswordCorrect && !isAuthCallback) {
     return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;

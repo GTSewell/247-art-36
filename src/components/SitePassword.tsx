@@ -52,6 +52,8 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
+        console.log('Attempting to sign in as demo user...');
+        
         // Sign in with demo account credentials
         const { error } = await supabase.auth.signInWithPassword({
           email: 'demo@247.art',
@@ -62,7 +64,11 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
           console.log('Demo account not found, creating one...');
           // If demo account doesn't exist yet, create it
           await createDemoAccountIfNeeded();
+        } else {
+          console.log('Successfully signed in as demo user');
         }
+      } else {
+        console.log('Already signed in as:', session.user.email);
       }
     } catch (error) {
       console.error('Error signing in as demo user:', error);
@@ -72,8 +78,9 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   
   const createDemoAccountIfNeeded = async () => {
     try {
+      console.log('Creating demo account...');
       // First try to sign up the demo user
-      const { error } = await supabase.auth.signUp({
+      const { error: signUpError } = await supabase.auth.signUp({
         email: 'demo@247.art',
         password: 'demo247account',
         options: {
@@ -83,14 +90,21 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         }
       });
       
-      if (error) {
-        console.error('Could not create demo account:', error);
+      if (signUpError) {
+        console.error('Could not create demo account:', signUpError);
       } else {
+        console.log('Demo account created successfully, signing in...');
         // Try to sign in immediately after creating
-        await supabase.auth.signInWithPassword({
+        const { error: signInError } = await supabase.auth.signInWithPassword({
           email: 'demo@247.art',
           password: 'demo247account'
         });
+        
+        if (signInError) {
+          console.error('Could not sign in to newly created demo account:', signInError);
+        } else {
+          console.log('Successfully signed in to newly created demo account');
+        }
       }
     } catch (error) {
       console.error('Error creating demo account:', error);
