@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
+import { validateSitePassword, signInWithDemoAccount } from "@/utils/auth-utils";
 
 interface PasswordGateProps {
   onAuthenticated: () => void;
@@ -15,32 +14,6 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Function to sign in with demo account
-  const signInWithDemoAccount = async () => {
-    try {
-      logger.info("Attempting to sign in with demo account");
-      
-      // First sign out any existing session to avoid conflicts
-      await supabase.auth.signOut();
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'demo@example.com',
-        password: '1234'
-      });
-      
-      if (error) {
-        logger.error('Demo login error:', error);
-        return false;
-      }
-      
-      logger.info('Successfully logged in with demo account', data);
-      return true;
-    } catch (error) {
-      logger.error('Unexpected error during demo login:', error);
-      return false;
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -49,25 +22,11 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       const lowerPassword = password.toLowerCase().trim();
       logger.info('Attempting login with password:', lowerPassword);
 
-      // First check if password exists
-      const { data: passwordData, error: passwordError } = await supabase
-        .from('site_settings')
-        .select('*')
-        .eq('site_password', lowerPassword)
-        .maybeSingle();
+      const isValid = await validateSitePassword(lowerPassword);
+      logger.info('Password validation result:', isValid);
 
-      logger.info('Password check result:', { passwordData });
-
-      if (passwordError) {
-        logger.error('Password check error:', passwordError);
-        throw passwordError;
-      }
-      
-      if (passwordData) {
+      if (isValid) {
         logger.info('Valid password found, proceeding with authentication');
-        
-        // For debugging, log the full password data
-        logger.info('Password data:', passwordData);
         
         // Try to sign in with demo account
         const signedIn = await signInWithDemoAccount();
@@ -80,22 +39,6 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         
         // If password matches, authenticate user
         onAuthenticated();
-        
-        // After authentication, perform the update in the background
-        const updatePromise = supabase
-          .from('site_settings')
-          .update({
-            created_at: new Date().toISOString()
-          })
-          .eq('site_password', lowerPassword);
-          
-        // Don't await this, let it happen in the background
-        updatePromise.then(({ error }) => {
-          if (error) {
-            logger.error('Background update error:', error);
-          }
-        });
-        
       } else {
         logger.info('Invalid password attempt');
         toast({

@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
-import { supabase } from "@/integrations/supabase/client";
+import { validateSitePassword, signInWithDemoAccount } from '@/utils/auth-utils';
 
 interface SitePasswordProps {
   setIsPasswordCorrect: (isCorrect: boolean) => void;
@@ -13,46 +12,12 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // Function to sign in with demo account
-  const signInWithDemoAccount = async () => {
-    try {
-      console.log("Attempting to sign in with demo account");
-      
-      // First sign out any existing session to avoid conflicts
-      await supabase.auth.signOut();
-      
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'demo@example.com',
-        password: '1234'
-      });
-      
-      if (error) {
-        console.error('Demo login error:', error);
-        return false;
-      }
-      
-      console.log('Successfully logged in with demo account', data);
-      return true;
-    } catch (error) {
-      console.error('Unexpected error during demo login:', error);
-      return false;
-    }
-  };
-  
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      // Get all site passwords
-      const { data, error } = await supabase
-        .from('site_settings')
-        .select('site_password');
-      
-      if (error) throw error;
-      
-      // Check if entered password matches any of the passwords in the database
-      const isCorrect = data && data.some(row => password === row.site_password);
+      const isCorrect = await validateSitePassword(password);
       
       if (isCorrect) {
         // Try to sign in with demo account automatically
@@ -80,7 +45,6 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-zap-yellow relative overflow-hidden">
-      {/* Blue halftone background overlay */}
       <div 
         className="absolute inset-0 z-0 opacity-80" 
         style={{ 
