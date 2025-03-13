@@ -21,7 +21,7 @@ const studioArtistFeatures = [
 
 // Feature Artist exclusive features (not in Studio Artist)
 const featureArtistExclusiveFeatures = [
-  { text: "Everything in the Studio Artist package plus," isHeader: true },
+  { text: "Everything in the Studio Artist package plus,", isHeader: true },
   { text: "Gallery Commission on Original Artwork", percentage: "0%" },
   { text: "Artist Commission of RRP on Retail Sales", percentage: "40%" },
   { text: "Priority Art Hanging" },
