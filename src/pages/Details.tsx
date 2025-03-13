@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import PricingPackage from "@/components/details/PricingPackage";
@@ -72,11 +73,11 @@ const Details = () => {
         {/* Images and tiers section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           <PricingPackage
-            title="Launchpad Package"
+            title="Studio Artist"
             price="$995"
             priceColor="zap-blue"
             iconColor="zap-yellow"
-            imageSrc="/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png"
+            imageSrc="/lovable-uploads/eba2b57e-00f5-43ed-96ec-f1e0e9e1a071.png"
             features={launchpadFeatures}
             animationDirection="left"
           />
@@ -96,11 +97,11 @@ const Details = () => {
           </motion.div>
 
           <PricingPackage
-            title="Rocket Package"
+            title="Feature Artist"
             price="$1,495"
             priceColor="zap-red"
             iconColor="zap-blue"
-            imageSrc="/lovable-uploads/ca741392-a31d-4a40-bd39-801c53aede57.png"
+            imageSrc="/lovable-uploads/5300d0e3-167f-4c3c-aee4-2d1fdd611486.png"
             features={rocketFeatures}
             animationDirection="right"
           />
