@@ -30,3 +30,32 @@ export interface TradeTransaction {
   dateCreated: string;
   dateUpdated: string;
 }
+
+export interface TradeRequestItem {
+  id: string;
+  type: 'sent' | 'received';
+  status: 'pending' | 'accepted' | 'declined';
+  fromArtist: {
+    id: string;
+    name: string;
+  };
+  toArtist: {
+    id: string;
+    name: string;
+  };
+  fromArtwork: {
+    id: string;
+    title: string;
+    image: string;
+    productionCost: number;
+  };
+  toArtwork: {
+    id: string;
+    title: string;
+    image: string;
+    productionCost: number;
+  };
+  message: string;
+  dateCreated: string;
+  isRead: boolean;
+}

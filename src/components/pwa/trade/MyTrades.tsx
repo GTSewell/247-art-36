@@ -24,8 +24,8 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
           const mockArtworks: ArtworkTradeItem[] = [
             {
               id: "1",
-              title: "Neon Dreams",
-              image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png",
+              title: "Mountain Sunset",
+              image: "/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png",
               artist: "You",
               price: 120,
               productionCost: 40,
@@ -34,8 +34,8 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             },
             {
               id: "2",
-              title: "Urban Vibes",
-              image: "/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png",
+              title: "Ocean Waves",
+              image: "/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png",
               artist: "You",
               price: 85,
               productionCost: 30,
@@ -44,8 +44,8 @@ const MyTrades: React.FC<MyTradesProps> = ({ artistId }) => {
             },
             {
               id: "3",
-              title: "Abstract Fusion",
-              image: "/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png",
+              title: "Abstract Dreams",
+              image: "/lovable-uploads/7f423372-44dd-4846-bb28-98f6d2afeda9.png",
               artist: "You",
               price: 150,
               productionCost: 50,

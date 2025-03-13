@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import MyTrades from "./trade/MyTrades";
 import ArtistTrades from "./trade/ArtistTrades";
 import TradedHistory from "./trade/TradedHistory";
+import TradeRequests from "./trade/TradeRequests";
 
 interface ArtistTradeManagerProps {
   artistId: string | null;
@@ -35,9 +36,10 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
             onValueChange={setActiveSection} 
             className="space-y-4"
           >
-            <TabsList className="grid grid-cols-3 gap-2 mb-4">
+            <TabsList className="grid grid-cols-4 gap-2 mb-4">
               <TabsTrigger value="my-trades">My Trades</TabsTrigger>
               <TabsTrigger value="artist-trades">Artist Trades</TabsTrigger>
+              <TabsTrigger value="requests">Requests</TabsTrigger>
               <TabsTrigger value="traded">Traded</TabsTrigger>
             </TabsList>
             
@@ -47,6 +49,10 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
             
             <TabsContent value="artist-trades" className="space-y-4">
               <ArtistTrades artistId={artistId} />
+            </TabsContent>
+            
+            <TabsContent value="requests" className="space-y-4">
+              <TradeRequests artistId={artistId} />
             </TabsContent>
             
             <TabsContent value="traded" className="space-y-4">

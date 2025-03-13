@@ -27,8 +27,8 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
           const mockArtworks: ArtworkTradeItem[] = [
             {
               id: "101",
-              title: "City Lights",
-              image: "/lovable-uploads/eb0e5b8f-33d9-472f-957d-e4173c92a46f.png",
+              title: "Desert Dreams",
+              image: "/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png",
               artist: "Jane Doe",
               price: 110,
               productionCost: 35,
@@ -37,8 +37,8 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             },
             {
               id: "102",
-              title: "Ocean Breeze",
-              image: "/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png",
+              title: "Forest Fantasy",
+              image: "/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png",
               artist: "Mike Smith",
               price: 95,
               productionCost: 30,
@@ -47,8 +47,8 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             },
             {
               id: "103",
-              title: "Forest Dreams",
-              image: "/lovable-uploads/c1aa52df-209a-44c5-9706-d2209db8a011.png",
+              title: "Starry Night",
+              image: "/lovable-uploads/3ee38748-01eb-40cf-9d48-f01c3757620a.png",
               artist: "Alex Johnson",
               price: 135,
               productionCost: 45,
@@ -57,8 +57,8 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
             },
             {
               id: "104",
-              title: "Desert Storm",
-              image: "/lovable-uploads/ca741392-a31d-4a40-bd39-801c53aede57.png",
+              title: "Urban Landscape",
+              image: "/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png",
               artist: "Sarah Williams",
               price: 120,
               productionCost: 40,

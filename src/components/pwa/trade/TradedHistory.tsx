@@ -29,13 +29,13 @@ const TradedHistory: React.FC<TradedHistoryProps> = ({ artistId }) => {
               artistNameTo: "Jane Doe",
               artworkFrom: {
                 id: "1",
-                title: "Neon Dreams",
-                image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png"
+                title: "Mountain Sunset",
+                image: "/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png"
               },
               artworkTo: {
                 id: "101",
-                title: "City Lights",
-                image: "/lovable-uploads/eb0e5b8f-33d9-472f-957d-e4173c92a46f.png"
+                title: "Desert Dreams",
+                image: "/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png"
               },
               status: "completed",
               dateCreated: "2023-11-05",
@@ -49,13 +49,13 @@ const TradedHistory: React.FC<TradedHistoryProps> = ({ artistId }) => {
               artistNameTo: "You",
               artworkFrom: {
                 id: "102",
-                title: "Ocean Breeze",
-                image: "/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png"
+                title: "Forest Fantasy",
+                image: "/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png"
               },
               artworkTo: {
                 id: "3",
-                title: "Abstract Fusion",
-                image: "/lovable-uploads/80e835f2-8b6b-4f56-9044-26de67cd3903.png"
+                title: "Abstract Dreams",
+                image: "/lovable-uploads/7f423372-44dd-4846-bb28-98f6d2afeda9.png"
               },
               status: "pending",
               dateCreated: "2023-12-01",
