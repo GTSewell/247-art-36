@@ -27,13 +27,13 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
   return (
     <div className="space-y-4">
       <Card>
-        <CardContent>
+        <CardContent className="p-4">
           <Tabs 
             value={activeSection} 
             onValueChange={setActiveSection} 
             className="space-y-4"
           >
-            <TabsList className="grid grid-cols-2 gap-2 mb-4">
+            <TabsList className="grid w-full grid-cols-2 gap-2 mb-4">
               <TabsTrigger value="my-trades">My Trades</TabsTrigger>
               <TabsTrigger value="artist-trades">Artist Trades</TabsTrigger>
               <TabsTrigger value="requests">Requests</TabsTrigger>

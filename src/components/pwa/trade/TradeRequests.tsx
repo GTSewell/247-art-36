@@ -31,9 +31,9 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-4">
+        <TabsList className="grid w-full grid-cols-2 mb-2">
           <TabsTrigger value="received">
             Received 
             {unreadCount > 0 && (

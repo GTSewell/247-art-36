@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TradeRequestItem } from "../types";
-import { Mail, MailOpen } from "lucide-react";
+import { Mail, MailOpen, Check, X, Eye } from "lucide-react";
 
 interface RequestListItemProps {
   request: TradeRequestItem;
@@ -92,8 +92,9 @@ const RequestListItem: React.FC<RequestListItemProps> = ({
             variant="outline" 
             size="sm"
             onClick={() => onViewDetails(request)}
+            className="text-xs px-2 flex items-center gap-1"
           >
-            View Details
+            <Eye className="h-3 w-3" /> Details
           </Button>
           
           {request.type === 'received' && request.status === 'pending' && (
@@ -102,16 +103,17 @@ const RequestListItem: React.FC<RequestListItemProps> = ({
                 size="sm"
                 variant="destructive"
                 onClick={() => onDecline(request.id)}
+                className="text-xs px-2 flex items-center gap-1"
               >
-                Decline
+                <X className="h-3 w-3" /> Decline
               </Button>
               <Button 
                 size="sm"
                 variant="default"
-                className="bg-green-500 hover:bg-green-600"
+                className="bg-green-500 hover:bg-green-600 text-xs px-2 flex items-center gap-1"
                 onClick={() => onAccept(request.id)}
               >
-                Accept
+                <Check className="h-3 w-3" /> Accept
               </Button>
             </div>
           )}

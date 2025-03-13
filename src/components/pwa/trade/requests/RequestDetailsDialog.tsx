@@ -106,12 +106,15 @@ const RequestDetailsDialog: React.FC<RequestDetailsDialogProps> = ({
             <div className="flex space-x-2">
               <Button 
                 variant="destructive"
+                size="sm"
                 onClick={() => onDecline(selectedRequest.id)}
+                className="h-8 px-3 text-sm"
               >
                 <X className="h-4 w-4 mr-1" /> Decline
               </Button>
               <Button 
-                className="bg-green-500 hover:bg-green-600"
+                size="sm"
+                className="bg-green-500 hover:bg-green-600 h-8 px-3 text-sm"
                 onClick={() => onAccept(selectedRequest.id)}
               >
                 <Check className="h-4 w-4 mr-1" /> Accept
