@@ -13,14 +13,18 @@ interface SignInFormProps {
 const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
   const [email, setEmail] = useState("demo@247.art");
   const [password, setPassword] = useState("1234");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
+    
     try {
       setLoading(true);
       console.log("Attempting to sign in with:", email, password);
       
       const {
+        data,
         error
       } = await supabase.auth.signInWithPassword({
         email,
@@ -29,12 +33,20 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
       
       if (error) {
         console.error("Sign in error:", error);
-        throw error;
+        if (error.message === "Invalid login credentials") {
+          setErrorMessage("The email or password you entered is incorrect. Please try again.");
+        } else {
+          setErrorMessage(error.message);
+        }
+        toast.error(error.message);
+        return;
       }
       
-      console.log("Sign in successful");
+      console.log("Sign in successful", data);
+      toast.success("Signed in successfully!");
     } catch (error: any) {
       console.error("Sign in error detail:", error);
+      setErrorMessage(error.message);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -63,6 +75,11 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
         />
         <p className="text-xs text-gray-500 mt-1">Demo: 1234</p>
       </div>
+      {errorMessage && (
+        <div className="text-sm text-red-500 font-medium">
+          {errorMessage}
+        </div>
+      )}
       <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
         {loading ? "Signing in..." : "Sign In"}
       </Button>
