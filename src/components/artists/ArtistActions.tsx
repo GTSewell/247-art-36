@@ -70,7 +70,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     e.stopPropagation();
     if (onFavoriteToggle) {
       logger.info(`Toggling favorite for artist ID ${artistId}, current state: ${isFavorite}`);
-      onFavoriteToggle(artistId, isFavorite);
+      onFavoriteToggle(artistId, !isFavorite);
     }
   };
 
