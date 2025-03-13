@@ -128,7 +128,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             <h3 className="font-bold text-gray-800 mb-2">Demo Account</h3>
             <p className="text-sm text-gray-600">After entering the site password, you'll be automatically logged in as:</p>
             <p className="text-sm text-gray-600 font-semibold mt-2">Email: demo@247.art</p>
-            <p className="text-sm text-gray-600 font-semibold">Password: 1234</p>
+            <p className="text-sm text-gray-600 font-semibold">Password: 123456</p>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ interface SignInFormProps {
 
 const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
   const [email, setEmail] = useState("demo@247.art");
-  const [password, setPassword] = useState("1234");
+  const [password, setPassword] = useState("123456");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAdminHint, setShowAdminHint] = useState(false);
 
@@ -86,7 +86,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
           onChange={e => setPassword(e.target.value)} 
           required 
         />
-        <p className="text-xs text-gray-500 mt-1">Demo: 1234</p>
+        <p className="text-xs text-gray-500 mt-1">Demo: 123456</p>
       </div>
       
       {errorMessage && (

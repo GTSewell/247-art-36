@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -59,7 +60,7 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
     // Check if the demo account exists
     const { data: userData, error: userError } = await supabase.auth.signInWithPassword({
       email: 'demo@247.art',
-      password: '1234'
+      password: '123456'
     });
     
     if (userError) {
