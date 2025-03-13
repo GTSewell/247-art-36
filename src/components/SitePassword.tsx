@@ -29,20 +29,9 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       const isCorrect = data && data.some(row => password === row.site_password);
       
       if (isCorrect) {
-        // Set password correct first
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
-        
-        // Password is correct, now sign in as demo user
-        const success = await signInAsDemoUser();
-        
-        if (success) {
-          toast.success('Welcome to 247.art!');
-        } else {
-          // Still show the site even if auto-login fails
-          toast.error('Auto-login failed, but you can still browse the site');
-          console.error('Failed to auto-login as demo user');
-        }
+        toast.success('Welcome to 247.art!');
       } else {
         toast.error('Incorrect password');
       }
@@ -51,77 +40,6 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       console.error('Error checking password:', error);
     } finally {
       setIsLoading(false);
-    }
-  };
-  
-  const signInAsDemoUser = async (): Promise<boolean> => {
-    try {
-      console.log('Attempting to sign in as demo user...');
-      
-      // Check if we're already signed in
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session) {
-        console.log('Already signed in as:', session.user.email);
-        return true;
-      }
-      
-      // Try to sign in with demo account credentials
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'demo@example.com',
-        password: 'demo247account'
-      });
-      
-      if (error) {
-        console.log('Demo account not found, creating one...');
-        // If demo account doesn't exist yet, create it
-        return await createDemoAccountIfNeeded();
-      } else {
-        console.log('Successfully signed in as demo user:', data.user?.email);
-        return true;
-      }
-    } catch (error) {
-      console.error('Error signing in as demo user:', error);
-      return false; // Continue anyway - we still want to show the site even if auto-login fails
-    }
-  };
-  
-  const createDemoAccountIfNeeded = async (): Promise<boolean> => {
-    try {
-      console.log('Creating demo account...');
-      // First try to sign up the demo user
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: 'demo@example.com',
-        password: 'demo247account',
-        options: {
-          data: {
-            username: 'DemoUser'
-          }
-        }
-      });
-      
-      if (signUpError) {
-        console.error('Could not create demo account:', signUpError);
-        return false;
-      }
-      
-      console.log('Demo account created successfully, signing in...');
-      // Try to sign in immediately after creating
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: 'demo@example.com',
-        password: 'demo247account'
-      });
-      
-      if (signInError) {
-        console.error('Could not sign in to newly created demo account:', signInError);
-        return false;
-      } else {
-        console.log('Successfully signed in to newly created demo account');
-        return true;
-      }
-    } catch (error) {
-      console.error('Error in createDemoAccountIfNeeded:', error);
-      return false;
     }
   };
   

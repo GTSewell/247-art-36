@@ -1,122 +1,87 @@
 
-import { useState, useEffect } from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
-import { SitePassword } from './components/SitePassword'
-import { Toaster } from './components/ui/sonner'
-import Index from './pages/Index'
-import Auth from './pages/Auth'
-import NotFound from './pages/NotFound'
-import VirtualTour from './pages/VirtualTour'
-import Services from './pages/Services'
-import Details from './pages/Details'
-import ArtistSubmission from './pages/ArtistSubmission'
-import Artists from './pages/Artists'
-import WhoAreYou from './pages/WhoAreYou'
-import ArtistSubdomain from './pages/ArtistSubdomain'
-import AccountPage from './pages/pwa/AccountPage'
-import PWAHome from './pages/pwa/PWAHome'
-import PWAArtists from './pages/pwa/PWAArtists'
-import PWAStore from './pages/pwa/PWAStore'
-import ArtistDashboard from './pages/pwa/ArtistDashboard'
-import CollectorDashboard from './pages/pwa/CollectorDashboard'
-import GeneralStore from './pages/GeneralStore'
-import { supabase } from '@/integrations/supabase/client'
-import './App.css'
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
+import { useAppMode } from "@/contexts/AppModeContext";
 
-const App = () => {
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false);
-  const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
-  const [authChecked, setAuthChecked] = useState<boolean>(false);
+import Index from "@/pages/Index";
+import Artists from "@/pages/Artists";
+import Auth from "@/pages/Auth";
+import Details from "@/pages/Details";
+import Services from "@/pages/Services";
+import WhoAreYou from "@/pages/WhoAreYou";
+import VirtualTour from "@/pages/VirtualTour";
+import GeneralStore from "@/pages/GeneralStore";
+import ArtistSubdomain from "@/pages/ArtistSubdomain";
+import NotFound from "@/pages/NotFound";
+import ArtistSubmission from "@/pages/ArtistSubmission";
+
+// PWA specific pages
+import PWAHome from "@/pages/pwa/PWAHome";
+import PWAArtists from "@/pages/pwa/PWAArtists";
+import PWAStore from "@/pages/pwa/PWAStore";
+import ArtistDashboard from "@/pages/pwa/ArtistDashboard";
+import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
+import AccountPage from "@/pages/pwa/AccountPage";
+
+import "./App.css";
+
+function App() {
   const location = useLocation();
-
-  // Check if password is already verified in localStorage and if user is authenticated
+  const { isPWA } = useAppMode();
+  
+  // Add data-pwa attribute to body when in PWA mode
   useEffect(() => {
-    const checkAuthAndPassword = async () => {
-      setIsCheckingAuth(true);
-      
-      try {
-        // Check stored password state
-        const storedPasswordState = localStorage.getItem("isPasswordCorrect");
-        
-        if (storedPasswordState === "true") {
-          setIsPasswordCorrect(true);
-          
-          // If password is correct, ensure user is logged in
-          const { data: { session } } = await supabase.auth.getSession();
-          
-          if (!session) {
-            console.log('No active session found, attempting to sign in as demo user');
-            // If no session but password is correct, try to sign in as demo
-            try {
-              const { error } = await supabase.auth.signInWithPassword({
-                email: 'demo@example.com',
-                password: 'demo247account'
-              });
-              
-              if (error) {
-                console.error('Error signing in as demo user:', error);
-              } else {
-                console.log('Auto-signed in as demo user on app load');
-              }
-            } catch (error) {
-              console.error('Error auto-signing in:', error);
-            }
-          } else {
-            console.log('Active session found for:', session.user.email);
-          }
-        }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-      } finally {
-        setIsCheckingAuth(false);
-        setAuthChecked(true);
-      }
-    };
-    
-    checkAuthAndPassword();
-  }, []);
+    if (isPWA) {
+      document.body.setAttribute('data-pwa', 'true');
+    } else {
+      document.body.removeAttribute('data-pwa');
+    }
+  }, [isPWA]);
 
-  // If the current path is /auth/callback, skip password check
-  const isAuthCallback = location.pathname.startsWith('/auth/callback');
-
-  if (isCheckingAuth) {
-    // Show loading state while checking authentication
-    return (
-      <div className="h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
-      </div>
-    );
-  }
-
-  if (!isPasswordCorrect && !isAuthCallback && authChecked) {
-    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
-  }
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <>
-      <Toaster position="top-center" />
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route 
+          path="/" 
+          element={isPWA ? <PWAHome /> : <Index />} 
+        />
+        <Route 
+          path="/artists" 
+          element={isPWA ? <PWAArtists /> : <Artists />} 
+        />
+        <Route 
+          path="/store" 
+          element={isPWA ? <PWAStore /> : <GeneralStore />} 
+        />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/auth/callback" element={<Navigate to="/account" replace />} />
-        <Route path="/virtual-tour" element={<VirtualTour />} />
-        <Route path="/services" element={<Services />} />
         <Route path="/details" element={<Details />} />
-        <Route path="/artists" element={<Artists />} />
-        <Route path="/artist-submission" element={<ArtistSubmission />} />
-        <Route path="/artist/:subdomainId" element={<ArtistSubdomain />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/tour" element={<VirtualTour />} />
+        <Route path="/virtual-tour" element={<VirtualTour />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
+        <Route path="/submit" element={<ArtistSubmission />} />
+        
+        {/* Account and Dashboard routes */}
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/pwa" element={<PWAHome />} />
-        <Route path="/pwa/artists" element={<PWAArtists />} />
-        <Route path="/pwa/store" element={<PWAStore />} />
-        <Route path="/pwa/artist-dashboard" element={<ArtistDashboard />} />
-        <Route path="/pwa/collector-dashboard" element={<CollectorDashboard />} />
-        <Route path="/store" element={<GeneralStore />} />
+        <Route path="/dashboard/artist" element={<ArtistDashboard />} />
+        <Route path="/dashboard/collector" element={<CollectorDashboard />} />
+        
+        {/* Artist subdomain route - using artistName as parameter name for consistency */}
+        <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
+        
+        {/* 404 route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      
+      <Toaster position="bottom-center" />
     </>
   );
-};
+}
 
 export default App;

@@ -40,13 +40,11 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       if (passwordData) {
         logger.info('Valid password found, proceeding with authentication');
         
-        // Auto-login with demo account
-        await signInAsDemoUser();
-        
         // For debugging, log the full password data
         logger.info('Password data:', passwordData);
         
-        // Authenticate the user for the site
+        // If password matches, just authenticate without updating
+        // We'll let the trigger handle the usage count
         onAuthenticated();
         
         // After authentication, perform the update in the background
@@ -81,71 +79,6 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       });
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const signInAsDemoUser = async () => {
-    try {
-      // Check if we're already signed in
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        logger.info('No active session, attempting to sign in as demo user');
-        
-        // Sign in with demo account credentials
-        const { error } = await supabase.auth.signInWithPassword({
-          email: 'demo@247.art',
-          password: 'demo247account'
-        });
-        
-        if (error) {
-          logger.info('Demo account not found, creating one...');
-          // If demo account doesn't exist yet, create it
-          await createDemoAccountIfNeeded();
-        } else {
-          logger.info('Successfully signed in as demo user');
-        }
-      } else {
-        logger.info('Already signed in, session:', session.user.email);
-      }
-    } catch (error) {
-      logger.error('Error signing in as demo user:', error);
-      // Continue anyway - we still want to show the site even if auto-login fails
-    }
-  };
-  
-  const createDemoAccountIfNeeded = async () => {
-    try {
-      logger.info('Attempting to create demo account');
-      // First try to sign up the demo user
-      const { data, error } = await supabase.auth.signUp({
-        email: 'demo@247.art',
-        password: 'demo247account',
-        options: {
-          data: {
-            username: 'DemoUser'
-          }
-        }
-      });
-      
-      if (error) {
-        logger.error('Could not create demo account:', error);
-      } else {
-        logger.info('Demo account created successfully');
-        // Try to sign in immediately after creating
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: 'demo@247.art',
-          password: 'demo247account'
-        });
-        
-        if (signInError) {
-          logger.error('Could not sign in to newly created demo account:', signInError);
-        } else {
-          logger.info('Successfully signed in to newly created demo account');
-        }
-      }
-    } catch (error) {
-      logger.error('Error in createDemoAccountIfNeeded:', error);
     }
   };
 
