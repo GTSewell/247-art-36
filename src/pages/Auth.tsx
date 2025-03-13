@@ -13,8 +13,8 @@ const Auth = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("demo@example.com");
+  const [password, setPassword] = useState("1234");
   const [username, setUsername] = useState("");
   const [activeTab, setActiveTab] = useState("signin");
   const { isPWA } = useAppMode();
@@ -138,8 +138,26 @@ const Auth = () => {
           
           <TabsContent value="signin">
             <form onSubmit={handleEmailSignIn} className="space-y-4">
-              <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-              <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+              <div>
+                <Input 
+                  type="email" 
+                  placeholder="Email" 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  required 
+                />
+                <p className="text-xs text-gray-500 mt-1">Demo: demo@example.com</p>
+              </div>
+              <div>
+                <Input 
+                  type="password" 
+                  placeholder="Password" 
+                  value={password} 
+                  onChange={e => setPassword(e.target.value)} 
+                  required 
+                />
+                <p className="text-xs text-gray-500 mt-1">Demo: 1234</p>
+              </div>
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing in..." : "Sign In"}
               </Button>
@@ -154,6 +172,9 @@ const Auth = () => {
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing up..." : "Sign Up"}
               </Button>
+              <p className="text-xs text-gray-500 text-center">
+                For demo, use email: demo@example.com and password: 1234
+              </p>
             </form>
           </TabsContent>
         </Tabs>
@@ -176,6 +197,12 @@ const Auth = () => {
           </svg>
           Continue with Google
         </Button>
+        
+        <div className="text-center mt-4 pt-4 border-t border-gray-100">
+          <p className="text-sm text-gray-600 font-bold">Demo Account:</p>
+          <p className="text-xs text-gray-500">Email: demo@example.com</p>
+          <p className="text-xs text-gray-500">Password: 1234</p>
+        </div>
       </div>
     </div>
   );

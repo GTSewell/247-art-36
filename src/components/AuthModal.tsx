@@ -14,8 +14,8 @@ interface AuthModalProps {
 
 const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("demo@example.com");
+  const [password, setPassword] = useState("1234");
   const [username, setUsername] = useState("");
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
@@ -97,8 +97,26 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
           
           <TabsContent value="signin">
             <form onSubmit={handleEmailSignIn} className="space-y-4">
-              <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-              <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+              <div>
+                <Input 
+                  type="email" 
+                  placeholder="Email" 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  required 
+                />
+                <p className="text-xs text-gray-500 mt-1">Demo: demo@example.com</p>
+              </div>
+              <div>
+                <Input 
+                  type="password" 
+                  placeholder="Password" 
+                  value={password} 
+                  onChange={e => setPassword(e.target.value)} 
+                  required 
+                />
+                <p className="text-xs text-gray-500 mt-1">Demo: 1234</p>
+              </div>
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing in..." : "Sign In"}
               </Button>
@@ -113,6 +131,9 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing up..." : "Sign Up"}
               </Button>
+              <p className="text-xs text-gray-500 text-center">
+                For demo, use email: demo@example.com and password: 1234
+              </p>
             </form>
           </TabsContent>
         </Tabs>

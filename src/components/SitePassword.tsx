@@ -13,6 +13,27 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
+  // Function to sign in with demo account
+  const signInWithDemoAccount = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: 'demo@example.com',
+        password: '1234'
+      });
+      
+      if (error) {
+        console.error('Demo login error:', error);
+        return false;
+      }
+      
+      console.log('Successfully logged in with demo account');
+      return true;
+    } catch (error) {
+      console.error('Unexpected error during demo login:', error);
+      return false;
+    }
+  };
+  
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -29,6 +50,9 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       const isCorrect = data && data.some(row => password === row.site_password);
       
       if (isCorrect) {
+        // Try to sign in with demo account automatically
+        await signInWithDemoAccount();
+        
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
         toast.success('Welcome to 247.art!');
@@ -78,6 +102,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               className="w-full"
               required
             />
+            <p className="text-xs text-gray-500 mt-1">Try: zap2024</p>
           </div>
           
           <Button 
@@ -93,6 +118,15 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
           <p className="text-xs text-center text-gray-500 italic">
             Note: This site is purely in prototype mode solely for reference purposes only.
           </p>
+          
+          <div className="mt-4 p-3 bg-gray-50 rounded-md">
+            <p className="text-xs text-center text-gray-700 font-medium">
+              After entering the password, you'll be automatically logged in with:
+            </p>
+            <p className="text-xs text-center text-gray-700 mt-1">
+              Email: demo@example.com | Password: 1234
+            </p>
+          </div>
         </div>
       </div>
     </div>

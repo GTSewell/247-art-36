@@ -15,6 +15,27 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // Function to sign in with demo account
+  const signInWithDemoAccount = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: 'demo@example.com',
+        password: '1234'
+      });
+      
+      if (error) {
+        logger.error('Demo login error:', error);
+        return false;
+      }
+      
+      logger.info('Successfully logged in with demo account');
+      return true;
+    } catch (error) {
+      logger.error('Unexpected error during demo login:', error);
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -43,8 +64,16 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         // For debugging, log the full password data
         logger.info('Password data:', passwordData);
         
-        // If password matches, just authenticate without updating
-        // We'll let the trigger handle the usage count
+        // Try to sign in with demo account
+        const signedIn = await signInWithDemoAccount();
+        
+        if (signedIn) {
+          logger.info('Auto-signed in with demo account');
+        } else {
+          logger.warn('Could not auto-sign in with demo account');
+        }
+        
+        // If password matches, authenticate user
         onAuthenticated();
         
         // After authentication, perform the update in the background
@@ -126,6 +155,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
           >
             {isLoading ? "Checking..." : "Enter"}
           </Button>
+          <p className="text-xs text-center text-gray-600">Try password: zap2024</p>
         </form>
 
         {/* Site info in white box with red text */}
@@ -141,6 +171,15 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             <p className="font-bold">
               Please consider anything and everything you see and read as confidential and purely placeholder information as we beta test, and refine our offering.
             </p>
+          </div>
+        </div>
+        
+        <div className="bg-white p-4 rounded-lg shadow-md mt-4">
+          <div className="text-center">
+            <h3 className="font-bold text-gray-800 mb-2">Demo Account</h3>
+            <p className="text-sm text-gray-600">After entering the site password, you'll be automatically logged in as:</p>
+            <p className="text-sm text-gray-600 font-semibold mt-2">Email: demo@example.com</p>
+            <p className="text-sm text-gray-600 font-semibold">Password: 1234</p>
           </div>
         </div>
       </div>
