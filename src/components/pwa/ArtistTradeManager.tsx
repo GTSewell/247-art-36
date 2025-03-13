@@ -33,48 +33,48 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
             onValueChange={setActiveSection} 
             className="trade-tabs-container"
           >
-            <div className="sticky top-0 bg-background z-20 pb-6">
-              <TabsList className="w-full mb-8 grid grid-cols-2 gap-4">
+            <div className="sticky top-0 bg-background z-30 pb-6">
+              <TabsList className="w-full mb-10 grid grid-cols-2 gap-4">
                 <TabsTrigger 
                   value="my-trades" 
-                  className="h-16 text-sm md:text-base font-medium rounded-xl trade-tab-button"
+                  className="trade-main-tab h-16 text-sm md:text-base font-medium"
                 >
                   My Trades
                 </TabsTrigger>
                 <TabsTrigger 
                   value="artist-trades" 
-                  className="h-16 text-sm md:text-base font-medium rounded-xl trade-tab-button"
+                  className="trade-main-tab h-16 text-sm md:text-base font-medium"
                 >
                   Artist Trades
                 </TabsTrigger>
                 <TabsTrigger 
                   value="requests" 
-                  className="h-16 text-sm md:text-base font-medium rounded-xl trade-tab-button"
+                  className="trade-main-tab h-16 text-sm md:text-base font-medium"
                 >
                   Requests
                 </TabsTrigger>
                 <TabsTrigger 
                   value="traded" 
-                  className="h-16 text-sm md:text-base font-medium rounded-xl trade-tab-button"
+                  className="trade-main-tab h-16 text-sm md:text-base font-medium"
                 >
                   Traded
                 </TabsTrigger>
               </TabsList>
             </div>
             
-            <TabsContent value="my-trades" className="space-y-4 pt-2 mt-6">
+            <TabsContent value="my-trades" className="space-y-4 mt-10 pt-6">
               <MyTrades artistId={artistId} />
             </TabsContent>
             
-            <TabsContent value="artist-trades" className="space-y-4 pt-2 mt-6">
+            <TabsContent value="artist-trades" className="space-y-4 mt-10 pt-6">
               <ArtistTrades artistId={artistId} />
             </TabsContent>
             
-            <TabsContent value="requests" className="space-y-4 pt-2 mt-6">
+            <TabsContent value="requests" className="space-y-4 mt-10 pt-6">
               <TradeRequests artistId={artistId} />
             </TabsContent>
             
-            <TabsContent value="traded" className="space-y-4 pt-2 mt-6">
+            <TabsContent value="traded" className="space-y-4 mt-10 pt-6">
               <TradedHistory artistId={artistId} />
             </TabsContent>
           </Tabs>
