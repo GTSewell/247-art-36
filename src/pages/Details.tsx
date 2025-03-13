@@ -3,7 +3,7 @@ import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import PricingPackage from "@/components/details/PricingPackage";
 
-const launchpadFeatures = [
+const studioArtistFeatures = [
   { text: "100 Days Exhibition (3 months+)" },
   { text: "Gallery Commission on Original Artwork", percentage: "25%" },
   { text: "Artist Commission of RRP on Retail Sales", percentage: "30%" },
@@ -17,18 +17,14 @@ const launchpadFeatures = [
   { text: "No Priority Art Hanging", isIncluded: false },
 ];
 
-const rocketFeatures = [
-  { text: "100 Days Exhibition (3 months+)" },
+const featureArtistExclusiveFeatures = [
   { text: "Gallery Commission on Original Artwork", percentage: "0%" },
   { text: "Artist Commission of RRP on Retail Sales", percentage: "40%" },
-  { text: "1 sqm Artwork Space" },
   { text: "Priority Art Hanging" },
   { text: "Unlimited Artwork Changes (within reason)" },
   { text: "Up to 4 Artworks per sqm" },
   { text: "Video Wall Profile (2 rotations every 3)" },
   { text: "Sculpture Display (40cm x 40cm plinth)" },
-  { text: "24hr Timed Edition Drops Available" },
-  { text: "Custom 247 Artist Profile [yournamehere].247.art", isBoldUrl: true },
   { text: "Retail 'STP' Merch Pack (Choose any artist)" },
   { text: "247 Artist ATLAS Book + 3 Card Packs" },
   { text: "Shop-front Feature Display" },
@@ -78,7 +74,7 @@ const Details = () => {
             priceColor="zap-blue"
             iconColor="zap-yellow"
             imageSrc="/lovable-uploads/eba2b57e-00f5-43ed-96ec-f1e0e9e1a071.png"
-            features={launchpadFeatures}
+            features={studioArtistFeatures}
             animationDirection="left"
           />
 
@@ -102,7 +98,7 @@ const Details = () => {
             priceColor="zap-red"
             iconColor="zap-blue"
             imageSrc="/lovable-uploads/5300d0e3-167f-4c3c-aee4-2d1fdd611486.png"
-            features={rocketFeatures}
+            features={featureArtistExclusiveFeatures}
             animationDirection="right"
           />
         </div>
