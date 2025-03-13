@@ -16,7 +16,12 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   // Function to sign in with demo account
   const signInWithDemoAccount = async () => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log("Attempting to sign in with demo account");
+      
+      // First sign out any existing session to avoid conflicts
+      await supabase.auth.signOut();
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: 'demo@example.com',
         password: '1234'
       });
@@ -26,7 +31,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         return false;
       }
       
-      console.log('Successfully logged in with demo account');
+      console.log('Successfully logged in with demo account', data);
       return true;
     } catch (error) {
       console.error('Unexpected error during demo login:', error);
@@ -51,7 +56,13 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       
       if (isCorrect) {
         // Try to sign in with demo account automatically
-        await signInWithDemoAccount();
+        const signedIn = await signInWithDemoAccount();
+        
+        if (signedIn) {
+          console.log("Demo account sign-in successful after password entry");
+        } else {
+          console.warn("Demo account sign-in failed after password entry");
+        }
         
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");

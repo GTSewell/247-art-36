@@ -76,6 +76,7 @@ const Auth = () => {
       if (error) throw error;
       toast.success("Check your email for the confirmation link!");
     } catch (error: any) {
+      console.error("Sign up error:", error);
       toast.error(error.message);
     } finally {
       setLoading(false);
@@ -86,14 +87,23 @@ const Auth = () => {
     e.preventDefault();
     try {
       setLoading(true);
+      console.log("Attempting to sign in with:", email, password);
+      
       const {
         error
       } = await supabase.auth.signInWithPassword({
         email,
         password
       });
-      if (error) throw error;
+      
+      if (error) {
+        console.error("Sign in error:", error);
+        throw error;
+      }
+      
+      console.log("Sign in successful");
     } catch (error: any) {
+      console.error("Sign in error detail:", error);
       toast.error(error.message);
     } finally {
       setLoading(false);

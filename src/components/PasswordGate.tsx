@@ -18,7 +18,12 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   // Function to sign in with demo account
   const signInWithDemoAccount = async () => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      logger.info("Attempting to sign in with demo account");
+      
+      // First sign out any existing session to avoid conflicts
+      await supabase.auth.signOut();
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: 'demo@example.com',
         password: '1234'
       });
@@ -28,7 +33,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         return false;
       }
       
-      logger.info('Successfully logged in with demo account');
+      logger.info('Successfully logged in with demo account', data);
       return true;
     } catch (error) {
       logger.error('Unexpected error during demo login:', error);
