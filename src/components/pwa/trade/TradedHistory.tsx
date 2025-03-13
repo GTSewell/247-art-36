@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,12 +29,12 @@ const TradedHistory: React.FC<TradedHistoryProps> = ({ artistId }) => {
               artworkFrom: {
                 id: "1",
                 title: "Mountain Sunset",
-                image: "/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png"
+                image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png"
               },
               artworkTo: {
                 id: "101",
                 title: "Desert Dreams",
-                image: "/lovable-uploads/9884fa85-9b3c-4add-9873-d6f92fc2d673.png"
+                image: "/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png"
               },
               status: "completed",
               dateCreated: "2023-11-05",
@@ -50,12 +49,12 @@ const TradedHistory: React.FC<TradedHistoryProps> = ({ artistId }) => {
               artworkFrom: {
                 id: "102",
                 title: "Forest Fantasy",
-                image: "/lovable-uploads/d0e2f0f5-3e1b-4aca-ba46-dd13f40890ce.png"
+                image: "/lovable-uploads/ddc18b16-629a-42e8-a97e-af21acb3e67a.png"
               },
               artworkTo: {
                 id: "3",
                 title: "Abstract Dreams",
-                image: "/lovable-uploads/7f423372-44dd-4846-bb28-98f6d2afeda9.png"
+                image: "/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png"
               },
               status: "pending",
               dateCreated: "2023-12-01",

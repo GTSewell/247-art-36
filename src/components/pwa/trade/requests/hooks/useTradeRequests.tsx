@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { TradeRequestItem } from "../../types";
 import { toast } from "sonner";
@@ -33,7 +32,7 @@ export const useTradeRequests = (artistId: string) => {
               fromArtwork: {
                 id: "a101",
                 title: "Desert Dreams",
-                image: "/lovable-uploads/81ef7ddd-20a1-4d19-b586-27ac2f6afe2b.png",
+                image: "/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png",
                 productionCost: 35
               },
               toArtwork: {

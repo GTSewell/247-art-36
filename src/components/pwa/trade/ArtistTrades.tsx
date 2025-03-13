@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,12 +22,12 @@ const ArtistTrades: React.FC<ArtistTradesProps> = ({ artistId }) => {
       try {
         // Simulating API call
         setTimeout(() => {
-          // Mock data with artwork images
+          // Mock data with artwork images from actual artist uploads
           const mockArtworks: ArtworkTradeItem[] = [
             {
               id: "101",
               title: "Desert Dreams",
-              image: "/lovable-uploads/81ef7ddd-20a1-4d19-b586-27ac2f6afe2b.png",
+              image: "/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png",
               artist: "Jane Doe",
               price: 110,
               productionCost: 35,
