@@ -29,13 +29,33 @@ body[data-pwa="true"] .container .py-4 {
   padding-bottom: 4px;
 }
 
-/* Increase spacing for tab navigation in trade sections */
-body[data-pwa="true"] .tabs-container .tabs-list {
-  margin-bottom: 1.5rem;
+/* Trade section specific styles */
+body[data-pwa="true"] .trade-tabs-container .sticky {
+  background-color: white;
+  z-index: 20;
+  padding-bottom: 1rem;
 }
 
-body[data-pwa="true"] .tabs-content {
+body[data-pwa="true"] [data-state="active"][data-orientation="horizontal"] {
+  font-weight: 600;
+}
+
+/* Make tab buttons taller and more clickable */
+body[data-pwa="true"] [role="tab"] {
+  min-height: 48px;
+  font-weight: 500;
+}
+
+/* Add spacing between tabs and content */
+body[data-pwa="true"] [role="tabpanel"] {
+  margin-top: 1rem;
   padding-top: 0.5rem;
+}
+
+/* Increase contrast for active tabs */
+body[data-pwa="true"] [data-state="active"][data-orientation="horizontal"] {
+  background-color: #f8f9fa;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* Add extra space for mobile headers */
@@ -44,5 +64,13 @@ body[data-pwa="true"] .tabs-content {
     height: 16px;
     min-height: 16px;
   }
+  
+  /* Fix dark theme support */
+  body[data-pwa="true"][data-theme="dark"] .trade-tabs-container .sticky {
+    background-color: black;
+  }
+  
+  body[data-pwa="true"][data-theme="dark"] [data-state="active"][data-orientation="horizontal"] {
+    background-color: #1a1a1a;
+  }
 }
-
