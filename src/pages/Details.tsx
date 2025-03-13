@@ -73,7 +73,7 @@ const Details = () => {
             price="$995"
             priceColor="zap-blue"
             iconColor="zap-yellow"
-            imageSrc="/lovable-uploads/eba2b57e-00f5-43ed-96ec-f1e0e9e1a071.png"
+            imageSrc="/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png"
             features={studioArtistFeatures}
             animationDirection="left"
           />
@@ -97,7 +97,7 @@ const Details = () => {
             price="$1,495"
             priceColor="zap-red"
             iconColor="zap-blue"
-            imageSrc="/lovable-uploads/5300d0e3-167f-4c3c-aee4-2d1fdd611486.png"
+            imageSrc="/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png"
             features={featureArtistExclusiveFeatures}
             animationDirection="right"
           />

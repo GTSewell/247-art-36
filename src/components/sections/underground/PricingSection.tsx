@@ -55,7 +55,7 @@ const PricingSection = () => {
           price="$995"
           priceColor="zap-blue"
           iconColor="zap-yellow"
-          imageSrc="/lovable-uploads/5329932b-8518-4f59-82db-4062cd39f9f1.png"
+          imageSrc="/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png"
           features={studioArtistFeatures}
           animationDirection="left"
         />
@@ -79,7 +79,7 @@ const PricingSection = () => {
           price="$1,495"
           priceColor="zap-red"
           iconColor="zap-blue"
-          imageSrc="/lovable-uploads/54a6a4ac-14da-4fd9-9656-9c2f2366744b.png"
+          imageSrc="/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png"
           features={featureArtistExclusiveFeatures}
           animationDirection="right"
         />
