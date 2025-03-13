@@ -26,6 +26,7 @@ import './App.css'
 const App = () => {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState<boolean>(true);
+  const [authChecked, setAuthChecked] = useState<boolean>(false);
   const location = useLocation();
 
   // Check if password is already verified in localStorage and if user is authenticated
@@ -33,30 +34,43 @@ const App = () => {
     const checkAuthAndPassword = async () => {
       setIsCheckingAuth(true);
       
-      // Check stored password state
-      const storedPasswordState = localStorage.getItem("isPasswordCorrect");
-      
-      if (storedPasswordState === "true") {
-        setIsPasswordCorrect(true);
+      try {
+        // Check stored password state
+        const storedPasswordState = localStorage.getItem("isPasswordCorrect");
         
-        // If password is correct, ensure user is logged in
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          // If no session but password is correct, try to sign in as demo
-          try {
-            await supabase.auth.signInWithPassword({
-              email: 'demo@247.art',
-              password: 'demo247account'
-            });
-            console.log('Auto-signed in as demo user on app load');
-          } catch (error) {
-            console.error('Error auto-signing in:', error);
+        if (storedPasswordState === "true") {
+          setIsPasswordCorrect(true);
+          
+          // If password is correct, ensure user is logged in
+          const { data: { session } } = await supabase.auth.getSession();
+          
+          if (!session) {
+            console.log('No active session found, attempting to sign in as demo user');
+            // If no session but password is correct, try to sign in as demo
+            try {
+              const { error } = await supabase.auth.signInWithPassword({
+                email: 'demo@247.art',
+                password: 'demo247account'
+              });
+              
+              if (error) {
+                console.error('Error signing in as demo user:', error);
+              } else {
+                console.log('Auto-signed in as demo user on app load');
+              }
+            } catch (error) {
+              console.error('Error auto-signing in:', error);
+            }
+          } else {
+            console.log('Active session found for:', session.user.email);
           }
         }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+      } finally {
+        setIsCheckingAuth(false);
+        setAuthChecked(true);
       }
-      
-      setIsCheckingAuth(false);
     };
     
     checkAuthAndPassword();
@@ -67,12 +81,14 @@ const App = () => {
 
   if (isCheckingAuth) {
     // Show loading state while checking authentication
-    return <div className="h-screen flex items-center justify-center bg-gray-100">
-      <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
-    </div>;
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-100">
+        <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
+      </div>
+    );
   }
 
-  if (!isPasswordCorrect && !isAuthCallback) {
+  if (!isPasswordCorrect && !isAuthCallback && authChecked) {
     return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
   }
 
