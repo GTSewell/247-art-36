@@ -33,21 +33,21 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
   return (
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="sticky top-0 bg-background z-10 pb-4">
-          <TabsList className="grid w-full grid-cols-2 gap-3 mb-4">
-            <TabsTrigger value="received" className="h-12 rounded-lg font-medium">
+        <div className="sticky top-0 bg-background z-10 pb-6">
+          <TabsList className="grid w-full grid-cols-2 gap-4 mb-6">
+            <TabsTrigger value="received" className="h-14 rounded-xl font-medium trade-inner-tab">
               Received 
               {unreadCount > 0 && (
-                <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-500 rounded-full">
+                <span className="ml-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-blue-500 rounded-full">
                   {unreadCount}
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="sent" className="h-12 rounded-lg font-medium">Sent</TabsTrigger>
+            <TabsTrigger value="sent" className="h-14 rounded-xl font-medium trade-inner-tab">Sent</TabsTrigger>
           </TabsList>
         </div>
 
-        <TabsContent value="received" className="mt-4">
+        <TabsContent value="received" className="mt-6">
           <p className="text-sm text-muted-foreground mb-4">
             Trade requests from other artists.
           </p>
@@ -69,7 +69,7 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
           )}
         </TabsContent>
 
-        <TabsContent value="sent" className="mt-4">
+        <TabsContent value="sent" className="mt-6">
           <p className="text-sm text-muted-foreground mb-4">
             Trade requests you've sent to other artists.
           </p>

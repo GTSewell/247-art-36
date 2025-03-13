@@ -38,30 +38,65 @@ body[data-pwa="true"] .trade-tabs-container .sticky {
 
 /* Trade tab button styling */
 body[data-pwa="true"] .trade-tab-button {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  background-color: #f5f5f7;
-  border: 1px solid #eaeaea;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: #f8f9fa;
+  border: 2px solid #e9ecef;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+body[data-pwa="true"] .trade-tab-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: transparent;
+  transition: background 0.2s ease;
 }
 
 /* Active trade tab styling */
 body[data-pwa="true"] [data-state="active"].trade-tab-button {
   background-color: white;
+  border-color: #c5c7ca;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  font-weight: 700;
+  transform: translateY(-2px);
+}
+
+body[data-pwa="true"] [data-state="active"].trade-tab-button:before {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+}
+
+/* Inner tab buttons styling */
+body[data-pwa="true"] .trade-inner-tab {
+  background-color: #f0f2f5;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+body[data-pwa="true"] [data-state="active"].trade-inner-tab {
+  background-color: white;
   border-color: #d1d5db;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.07);
   font-weight: 600;
-  transform: translateY(-1px);
 }
 
 /* Make tab buttons taller and more clickable */
 body[data-pwa="true"] [role="tab"] {
-  min-height: 48px;
+  min-height: 52px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Add spacing between tabs and content */
 body[data-pwa="true"] [role="tabpanel"] {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   padding-top: 0.5rem;
 }
 
@@ -80,8 +115,8 @@ body[data-pwa="true"] [data-state="active"][data-orientation="horizontal"] {
   
   /* Ensure tabs have proper spacing and clickable area */
   body[data-pwa="true"] .trade-tabs-container [role="tablist"] {
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 24px;
   }
   
   /* Fix dark theme support */
@@ -91,12 +126,26 @@ body[data-pwa="true"] [data-state="active"][data-orientation="horizontal"] {
   
   body[data-pwa="true"][data-theme="dark"] .trade-tab-button {
     background-color: #1e1e1e;
-    border-color: #333;
+    border-color: #2d2d2d;
   }
   
   body[data-pwa="true"][data-theme="dark"] [data-state="active"].trade-tab-button {
     background-color: #2a2a2a;
-    border-color: #444;
+    border-color: #3a3a3a;
+  }
+  
+  body[data-pwa="true"][data-theme="dark"] [data-state="active"].trade-tab-button:before {
+    background: linear-gradient(to right, #3b82f6, #60a5fa);
+  }
+  
+  body[data-pwa="true"][data-theme="dark"] .trade-inner-tab {
+    background-color: #1a1a1a;
+    border-color: #2d2d2d;
+  }
+  
+  body[data-pwa="true"][data-theme="dark"] [data-state="active"].trade-inner-tab {
+    background-color: #2a2a2a;
+    border-color: #3a3a3a;
   }
   
   body[data-pwa="true"][data-theme="dark"] [data-state="active"][data-orientation="horizontal"] {
