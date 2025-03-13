@@ -29,6 +29,9 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       const isCorrect = data && data.some(row => password === row.site_password);
       
       if (isCorrect) {
+        // Password is correct, now automatically sign in as demo user
+        await signInAsDemoUser();
+        
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
         toast.success('Welcome to 247.art!');
@@ -40,6 +43,57 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       console.error('Error checking password:', error);
     } finally {
       setIsLoading(false);
+    }
+  };
+  
+  const signInAsDemoUser = async () => {
+    try {
+      // Check if we're already signed in
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        // Sign in with demo account credentials
+        const { error } = await supabase.auth.signInWithPassword({
+          email: 'demo@247.art',
+          password: 'demo247account'
+        });
+        
+        if (error) {
+          console.log('Demo account not found, creating one...');
+          // If demo account doesn't exist yet, create it
+          await createDemoAccountIfNeeded();
+        }
+      }
+    } catch (error) {
+      console.error('Error signing in as demo user:', error);
+      // Continue anyway - we still want to show the site even if auto-login fails
+    }
+  };
+  
+  const createDemoAccountIfNeeded = async () => {
+    try {
+      // First try to sign up the demo user
+      const { error } = await supabase.auth.signUp({
+        email: 'demo@247.art',
+        password: 'demo247account',
+        options: {
+          data: {
+            username: 'DemoUser'
+          }
+        }
+      });
+      
+      if (error) {
+        console.error('Could not create demo account:', error);
+      } else {
+        // Try to sign in immediately after creating
+        await supabase.auth.signInWithPassword({
+          email: 'demo@247.art',
+          password: 'demo247account'
+        });
+      }
+    } catch (error) {
+      console.error('Error creating demo account:', error);
     }
   };
   
