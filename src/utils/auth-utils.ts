@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -67,28 +66,18 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
       console.error('Demo login error:', userError);
       
       if (userError.message.includes("Invalid login credentials")) {
-        console.log("Demo account doesn't exist or password is wrong. Attempting to create it...");
-        toast.error("Demo account login credentials are invalid. Please check the Supabase database.");
+        console.log("Demo account login failed due to invalid credentials");
+        toast.error("Demo account login failed. Please check Supabase Authentication settings.");
         
-        // You can optionally try to create the demo account here, but this requires admin privileges
-        // This is commented out since it requires a special admin key which we don't have in the client
-        /*
-        const { data: signUpData, error: signUpError } = await supabase.auth.admin.createUser({
-          email: 'demo@247.art',
-          password: '1234',
-          email_confirm: true
-        });
-        
-        if (signUpError) {
-          console.error('Failed to create demo account:', signUpError);
-          return false;
+        if (userError.message.includes("Email not confirmed")) {
+          console.log("Email confirmation required for demo account");
+          toast.error("Demo account email needs to be confirmed in Supabase Authentication dashboard");
         }
         
-        console.log('Successfully created demo account', signUpData);
-        return true;
-        */
+        return false;
       }
       
+      toast.error(`Login error: ${userError.message}`);
       return false;
     }
     
