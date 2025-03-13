@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useArtists } from "@/hooks/use-artists";
 import ArtistGrid from "@/components/artists/ArtistGrid";

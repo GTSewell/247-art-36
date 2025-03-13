@@ -58,7 +58,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   };
   
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden bg-[#f7cf1e]">
       {/* Main content */}
       <div 
         ref={contentRef}
