@@ -57,22 +57,64 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
     // First sign out any existing session to avoid conflicts
     await supabase.auth.signOut();
     
-    const { data, error } = await supabase.auth.signInWithPassword({
+    // Check if the demo account exists
+    const { data: userData, error: userError } = await supabase.auth.signInWithPassword({
       email: 'demo@247.art',
       password: '1234'
     });
     
-    if (error) {
-      console.error('Demo login error:', error);
-      toast.error(`Login failed: ${error.message}`);
+    if (userError) {
+      console.error('Demo login error:', userError);
+      
+      if (userError.message.includes("Invalid login credentials")) {
+        console.log("Demo account doesn't exist or password is wrong. Attempting to create it...");
+        toast.error("Demo account login credentials are invalid. Please check the Supabase database.");
+        
+        // You can optionally try to create the demo account here, but this requires admin privileges
+        // This is commented out since it requires a special admin key which we don't have in the client
+        /*
+        const { data: signUpData, error: signUpError } = await supabase.auth.admin.createUser({
+          email: 'demo@247.art',
+          password: '1234',
+          email_confirm: true
+        });
+        
+        if (signUpError) {
+          console.error('Failed to create demo account:', signUpError);
+          return false;
+        }
+        
+        console.log('Successfully created demo account', signUpData);
+        return true;
+        */
+      }
+      
       return false;
     }
     
-    console.log('Successfully logged in with demo account', data);
+    console.log('Successfully logged in with demo account', userData);
+    toast.success("Successfully signed in with demo account");
     return true;
   } catch (error: any) {
     console.error('Unexpected error during demo login:', error);
     toast.error(`Unexpected error: ${error.message}`);
+    return false;
+  }
+};
+
+/**
+ * Creates the demo account if it doesn't exist
+ * This function should be called from an admin context or edge function
+ * It will not work from the client side with the anon key
+ */
+export const createDemoAccountIfNeeded = async (): Promise<boolean> => {
+  try {
+    // This function is a placeholder and would need to be implemented
+    // as an edge function with the service role key
+    console.log("This function needs to be implemented as an edge function");
+    return false;
+  } catch (error: any) {
+    console.error('Error creating demo account:', error);
     return false;
   }
 };

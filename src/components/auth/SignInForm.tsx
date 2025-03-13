@@ -35,6 +35,8 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
         console.error("Sign in error:", error);
         if (error.message === "Invalid login credentials") {
           setErrorMessage("The email or password you entered is incorrect. Please try again.");
+          console.log("Login failed with demo credentials. The demo account may not exist in Supabase.");
+          console.log("You may need to create this account in Supabase with email: demo@247.art and password: 1234");
         } else {
           setErrorMessage(error.message);
         }
