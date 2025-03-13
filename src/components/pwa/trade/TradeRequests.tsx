@@ -6,6 +6,7 @@ import RequestDetailsDialog from "./requests/RequestDetailsDialog";
 import EmptyRequestState from "./requests/EmptyRequestState";
 import RequestsLoading from "./requests/RequestsLoading";
 import { useTradeRequests } from "./requests/hooks/useTradeRequests";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 interface TradeRequestsProps {
   artistId: string;
@@ -25,6 +26,7 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
     handleDeclineTrade,
     handleViewDetails
   } = useTradeRequests(artistId);
+  const { isPWA } = useAppMode();
 
   if (loading) {
     return <RequestsLoading />;
@@ -33,8 +35,8 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
   return (
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="sticky top-0 bg-background z-10 pb-6">
-          <TabsList className="grid w-full grid-cols-2 gap-4 mb-8">
+        <div className={`sticky top-0 ${isPWA ? 'bg-background' : 'bg-transparent'} z-10 pb-6`}>
+          <TabsList className="grid w-full grid-cols-2 gap-4 mb-8 bg-transparent">
             <TabsTrigger value="received" className="trade-inner-tab h-14 font-medium">
               Received 
               {unreadCount > 0 && (

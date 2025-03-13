@@ -29,106 +29,14 @@ body[data-pwa="true"] .container .py-4 {
   padding-bottom: 4px;
 }
 
-/* Trade section specific styles */
-body[data-pwa="true"] .trade-tabs-container .sticky {
-  background-color: hsl(var(--background));
-  z-index: 30;
-  padding-bottom: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Main trade tab button styling */
-body[data-pwa="true"] .trade-main-tab {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  background-color: hsl(var(--muted));
-  border: 2px solid rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  border-radius: 16px;
-  position: relative;
-  overflow: hidden;
-  transform: translateY(0);
-}
-
-body[data-pwa="true"] .trade-main-tab:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 5px;
-  background: transparent;
-  transition: background 0.3s ease;
-}
-
-/* Active main trade tab styling */
-body[data-pwa="true"] [data-state="active"].trade-main-tab {
-  background-color: hsl(var(--background));
-  border-color: rgba(0,0,0,0.2);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-  font-weight: 700;
-  transform: translateY(-2px);
-}
-
-body[data-pwa="true"] [data-state="active"].trade-main-tab:before {
-  background: linear-gradient(to right, #3b82f6, #60a5fa);
-}
-
-/* Inner tab buttons styling */
-body[data-pwa="true"] .trade-inner-tab {
-  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-  background-color: hsl(var(--muted));
-  border: 2px solid rgba(0,0,0,0.08);
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  transform: translateY(0);
-}
-
-body[data-pwa="true"] [data-state="active"].trade-inner-tab {
-  background-color: hsl(var(--background));
-  border-color: rgba(0,0,0,0.15);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-  font-weight: 600;
-  transform: translateY(-2px);
-}
-
-body[data-pwa="true"] [data-state="active"].trade-inner-tab:before {
-  background: linear-gradient(to right, #3b82f6, #60a5fa);
-}
-
-/* Make tab buttons more clearly interactive */
-body[data-pwa="true"] [role="tab"] {
-  min-height: 54px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* Add hover effects for better interactivity */
-body[data-pwa="true"] [role="tab"]:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
-}
-
-/* Add spacing between tabs and content */
-body[data-pwa="true"] [role="tabpanel"] {
-  margin-top: 2.5rem;
-  padding-top: 1rem;
-}
+/* Trade section specific styles - moved to index.css for universal application */
+/* PWA-specific tab styling moved to index.css */
 
 /* Fix for mobile views specifically */
 @media (max-width: 768px) {
   body[data-pwa="true"] .pwa-header {
     height: 16px;
     min-height: 16px;
-  }
-  
-  /* Ensure tabs have proper spacing and clickable area */
-  body[data-pwa="true"] .trade-tabs-container [role="tablist"] {
-    gap: 12px;
-    margin-bottom: 24px;
   }
   
   /* Fix content overlap */
@@ -140,95 +48,5 @@ body[data-pwa="true"] [role="tabpanel"] {
   /* Fix dark theme support */
   body[data-pwa="true"][data-theme="dark"] .trade-tabs-container .sticky {
     background-color: hsl(var(--background));
-  }
-  
-  body[data-pwa="true"][data-theme="dark"] .trade-main-tab {
-    background-color: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.12);
-  }
-  
-  body[data-pwa="true"][data-theme="dark"] [data-state="active"].trade-main-tab {
-    background-color: rgba(255,255,255,0.12);
-    border-color: rgba(255,255,255,0.2);
-  }
-  
-  body[data-pwa="true"][data-theme="dark"] .trade-inner-tab {
-    background-color: rgba(255,255,255,0.06);
-    border-color: rgba(255,255,255,0.1);
-  }
-  
-  body[data-pwa="true"][data-theme="dark"] [data-state="active"].trade-inner-tab {
-    background-color: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.18);
-  }
-}
-
-/* Fix for non-PWA mobile view */
-@media (max-width: 768px) {
-  /* Apply the same styling to non-PWA view */
-  .trade-main-tab {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    background-color: hsl(var(--muted));
-    border: 2px solid rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-    transform: translateY(0);
-  }
-  
-  .trade-main-tab:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: transparent;
-    transition: background 0.3s ease;
-  }
-  
-  [data-state="active"].trade-main-tab {
-    background-color: hsl(var(--background));
-    border-color: rgba(0,0,0,0.2);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
-    font-weight: 700;
-    transform: translateY(-2px);
-  }
-  
-  [data-state="active"].trade-main-tab:before {
-    background: linear-gradient(to right, #3b82f6, #60a5fa);
-  }
-  
-  .trade-inner-tab {
-    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-    background-color: hsl(var(--muted));
-    border: 2px solid rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border-radius: 12px;
-    transform: translateY(0);
-  }
-  
-  [data-state="active"].trade-inner-tab {
-    background-color: hsl(var(--background));
-    border-color: rgba(0,0,0,0.15);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-    font-weight: 600;
-    transform: translateY(-2px);
-  }
-  
-  [data-state="active"].trade-inner-tab:before {
-    background: linear-gradient(to right, #3b82f6, #60a5fa);
-  }
-  
-  .trade-tabs-container .sticky {
-    z-index: 30;
-    padding-bottom: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .trade-tabs-container [role="tabpanel"] {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
   }
 }

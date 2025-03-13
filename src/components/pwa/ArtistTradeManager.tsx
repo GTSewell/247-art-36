@@ -6,6 +6,7 @@ import MyTrades from "./trade/MyTrades";
 import ArtistTrades from "./trade/ArtistTrades";
 import TradedHistory from "./trade/TradedHistory";
 import TradeRequests from "./trade/TradeRequests";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 interface ArtistTradeManagerProps {
   artistId: string | null;
@@ -13,6 +14,7 @@ interface ArtistTradeManagerProps {
 
 const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => {
   const [activeSection, setActiveSection] = useState("my-trades");
+  const { isPWA } = useAppMode();
 
   if (!artistId) {
     return (
@@ -33,8 +35,8 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
             onValueChange={setActiveSection} 
             className="trade-tabs-container"
           >
-            <div className="sticky top-0 bg-background z-30 pb-6">
-              <TabsList className="w-full mb-10 grid grid-cols-2 gap-4">
+            <div className={`sticky top-0 ${isPWA ? 'bg-background' : 'bg-transparent'} z-30 pb-6`}>
+              <TabsList className="w-full mb-10 grid grid-cols-2 gap-4 bg-transparent">
                 <TabsTrigger 
                   value="my-trades" 
                   className="trade-main-tab h-16 text-sm md:text-base font-medium"

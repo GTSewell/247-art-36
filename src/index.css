@@ -76,6 +76,90 @@
   animation: float 4s ease-in-out infinite;
 }
 
+/* Custom styles for the trade tab buttons - applied to all views */
+.trade-main-tab {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background-color: hsl(var(--muted));
+  border: 2px solid rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(0);
+}
+
+.trade-main-tab:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+[data-state="active"].trade-main-tab {
+  background-color: hsl(var(--background));
+  border-color: rgba(0,0,0,0.2);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+  font-weight: 700;
+  transform: translateY(-2px);
+}
+
+[data-state="active"].trade-main-tab:before {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+}
+
+.trade-inner-tab {
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  background-color: hsl(var(--muted));
+  border: 2px solid rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  transform: translateY(0);
+}
+
+[data-state="active"].trade-inner-tab {
+  background-color: hsl(var(--background));
+  border-color: rgba(0,0,0,0.15);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  font-weight: 600;
+  transform: translateY(-2px);
+}
+
+[data-state="active"].trade-inner-tab:before {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+}
+
+/* Fix tabs background */
+.trade-tabs-container [role="tablist"] {
+  background-color: transparent !important;
+}
+
+/* Make tab buttons more clearly interactive */
+[role="tab"] {
+  min-height: 54px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Add hover effects for better interactivity */
+[role="tab"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+/* Add spacing between tabs and content */
+[role="tabpanel"] {
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+
 @import './fonts.css';
 @import './styles/hidden-elements.css';
 @import './styles/pwa.css';
