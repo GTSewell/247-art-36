@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { InfoCircle } from "lucide-react";
+import { Info } from "lucide-react";
 
 interface SignInFormProps {
   loading: boolean;
@@ -97,9 +97,9 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
       
       {showAdminHint && (
         <Alert className="bg-amber-50 border-amber-200">
-          <InfoCircle className="h-4 w-4 text-amber-500 mr-2" />
+          <Info className="h-4 w-4 text-amber-500 mr-2" />
           <AlertDescription className="text-xs">
-            Admin Action Required: The demo account exists but needs email confirmation. In Supabase Dashboard, go to Authentication → Users, find demo@247.art, and click "Confirm User" or enable "Auto-confirm" in Authentication → Email Templates.
+            Admin Action Required: The demo account exists but needs email confirmation. In Supabase Dashboard, go to Authentication → Users, find demo@247.art, and click "Confirm Email" or enable "Auto-confirm" in Authentication → Email Templates → Confirm signup.
           </AlertDescription>
         </Alert>
       )}
