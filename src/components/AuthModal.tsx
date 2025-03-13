@@ -5,6 +5,9 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import SignInForm from "@/components/auth/SignInForm";
 import SignUpForm from "@/components/auth/SignUpForm";
 import SocialLogin from "@/components/auth/SocialLogin";
+import DemoAccountInfo from "@/components/auth/DemoAccountInfo";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
 interface AuthModalProps {
   open: boolean;
@@ -22,6 +25,13 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
           <h2 className="text-2xl font-bold">Welcome!</h2>
           <p className="text-gray-600">Sign in or create an account</p>
         </div>
+        
+        <Alert className="bg-blue-50 border-blue-200 mt-2">
+          <Info className="h-4 w-4 text-blue-500 mr-2" />
+          <AlertDescription className="text-xs">
+            <strong>Important:</strong> The demo account must be confirmed in Supabase before it will work.
+          </AlertDescription>
+        </Alert>
 
         <Tabs defaultValue="signin" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
@@ -39,6 +49,8 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
         </Tabs>
 
         <SocialLogin loading={loading} setLoading={setLoading} />
+        
+        <DemoAccountInfo />
       </DialogContent>
     </Dialog>
   );

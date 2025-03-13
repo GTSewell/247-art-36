@@ -9,6 +9,8 @@ import SignInForm from "@/components/auth/SignInForm";
 import SignUpForm from "@/components/auth/SignUpForm";
 import SocialLogin from "@/components/auth/SocialLogin";
 import DemoAccountInfo from "@/components/auth/DemoAccountInfo";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -61,6 +63,14 @@ const Auth = () => {
           <h2 className="text-2xl font-bold">Welcome!</h2>
           <p className="text-gray-600">Sign in or create an account</p>
         </div>
+        
+        <Alert className="bg-blue-50 border-blue-200">
+          <Info className="h-4 w-4 text-blue-500 mr-2" />
+          <AlertDescription className="text-xs">
+            <strong>Important:</strong> The demo account must be confirmed in Supabase before it will work. 
+            Go to Authentication → Users in the Supabase dashboard, find demo@247.art, and click "Confirm Email".
+          </AlertDescription>
+        </Alert>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
