@@ -33,9 +33,9 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
   return (
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="sticky top-0 bg-background z-10 pb-2">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
-            <TabsTrigger value="received" className="h-10">
+        <div className="sticky top-0 bg-background z-10 pb-4">
+          <TabsList className="grid w-full grid-cols-2 gap-3 mb-4">
+            <TabsTrigger value="received" className="h-12 rounded-lg font-medium">
               Received 
               {unreadCount > 0 && (
                 <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-500 rounded-full">
@@ -43,7 +43,7 @@ const TradeRequests: React.FC<TradeRequestsProps> = ({ artistId }) => {
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="sent" className="h-10">Sent</TabsTrigger>
+            <TabsTrigger value="sent" className="h-12 rounded-lg font-medium">Sent</TabsTrigger>
           </TabsList>
         </div>
 
