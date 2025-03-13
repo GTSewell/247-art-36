@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { X } from "lucide-react";
 
 interface AuthModalProps {
   open: boolean;
@@ -83,6 +84,17 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-full max-w-md bg-white/80 backdrop-blur-xl p-6 rounded-xl shadow-lg">
+        <div className="absolute right-4 top-4">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => onOpenChange(false)}
+            className="h-8 w-8 rounded-full"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+        
         <div className="text-center">
           <img alt="247/ART" src="/lovable-uploads/d8aafbad-7e01-4cec-9fba-67f66a7e7952.png" className="h-8 mx-auto mb-4" />
           <h2 className="text-2xl font-bold">Welcome!</h2>
@@ -90,9 +102,19 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 mb-4 bg-transparent p-0 gap-2">
+            <TabsTrigger 
+              value="signin" 
+              className="data-[state=active]:bg-zap-red data-[state=active]:text-white rounded-md"
+            >
+              Sign In
+            </TabsTrigger>
+            <TabsTrigger 
+              value="signup" 
+              className="data-[state=active]:bg-zap-red data-[state=active]:text-white rounded-md"
+            >
+              Sign Up
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="signin">
