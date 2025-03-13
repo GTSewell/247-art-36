@@ -119,7 +119,18 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
           
           <TabsContent value="signin">
             <form onSubmit={handleEmailSignIn} className="space-y-4">
-              <Input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+              <div className="relative">
+                <Input 
+                  type="email" 
+                  placeholder="Email" 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  required 
+                />
+                <div className="text-xs text-gray-500 absolute right-3 top-3">
+                  demo@example.com
+                </div>
+              </div>
               <Input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
               <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
                 {loading ? "Signing in..." : "Sign In"}

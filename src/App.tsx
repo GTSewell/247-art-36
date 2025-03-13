@@ -49,7 +49,7 @@ const App = () => {
             // If no session but password is correct, try to sign in as demo
             try {
               const { error } = await supabase.auth.signInWithPassword({
-                email: 'demo@247.art',
+                email: 'demo@example.com',
                 password: 'demo247account'
               });
               

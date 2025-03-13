@@ -68,7 +68,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       
       // Try to sign in with demo account credentials
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'demo@247.art',
+        email: 'demo@example.com',
         password: 'demo247account'
       });
       
@@ -91,7 +91,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       console.log('Creating demo account...');
       // First try to sign up the demo user
       const { error: signUpError } = await supabase.auth.signUp({
-        email: 'demo@247.art',
+        email: 'demo@example.com',
         password: 'demo247account',
         options: {
           data: {
@@ -108,7 +108,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       console.log('Demo account created successfully, signing in...');
       // Try to sign in immediately after creating
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: 'demo@247.art',
+        email: 'demo@example.com',
         password: 'demo247account'
       });
       
