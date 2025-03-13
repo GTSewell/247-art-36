@@ -1,87 +1,71 @@
 
-import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
-import { useAppMode } from "@/contexts/AppModeContext";
+import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { SitePassword } from './components/SitePassword'
+import { Toaster } from './components/ui/sonner'
+import Index from './pages/Index'
+import Auth from './pages/Auth'
+import NotFound from './pages/NotFound'
+import VirtualTour from './pages/VirtualTour'
+import Services from './pages/Services'
+import Details from './pages/Details'
+import ArtistSubmission from './pages/ArtistSubmission'
+import Artists from './pages/Artists'
+import WhoAreYou from './pages/WhoAreYou'
+import ArtistSubdomain from './pages/ArtistSubdomain'
+import AccountPage from './pages/pwa/AccountPage'
+import PWAHome from './pages/pwa/PWAHome'
+import PWAArtists from './pages/pwa/PWAArtists'
+import PWAStore from './pages/pwa/PWAStore'
+import ArtistDashboard from './pages/pwa/ArtistDashboard'
+import CollectorDashboard from './pages/pwa/CollectorDashboard'
+import GeneralStore from './pages/GeneralStore'
+import './App.css'
 
-import Index from "@/pages/Index";
-import Artists from "@/pages/Artists";
-import Auth from "@/pages/Auth";
-import Details from "@/pages/Details";
-import Services from "@/pages/Services";
-import WhoAreYou from "@/pages/WhoAreYou";
-import VirtualTour from "@/pages/VirtualTour";
-import GeneralStore from "@/pages/GeneralStore";
-import ArtistSubdomain from "@/pages/ArtistSubdomain";
-import NotFound from "@/pages/NotFound";
-import ArtistSubmission from "@/pages/ArtistSubmission";
-
-// PWA specific pages
-import PWAHome from "@/pages/pwa/PWAHome";
-import PWAArtists from "@/pages/pwa/PWAArtists";
-import PWAStore from "@/pages/pwa/PWAStore";
-import ArtistDashboard from "@/pages/pwa/ArtistDashboard";
-import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
-import AccountPage from "@/pages/pwa/AccountPage";
-
-import "./App.css";
-
-function App() {
+const App = () => {
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false);
   const location = useLocation();
-  const { isPWA } = useAppMode();
-  
-  // Add data-pwa attribute to body when in PWA mode
-  useEffect(() => {
-    if (isPWA) {
-      document.body.setAttribute('data-pwa', 'true');
-    } else {
-      document.body.removeAttribute('data-pwa');
-    }
-  }, [isPWA]);
 
-  // Scroll to top on route change
+  // Check if password is already verified in localStorage
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    const storedPasswordState = localStorage.getItem("isPasswordCorrect");
+    if (storedPasswordState === "true") {
+      setIsPasswordCorrect(true);
+    }
+  }, []);
+
+  // If the current path is /auth/callback, skip password check
+  const isAuthCallback = location.pathname.startsWith('/auth/callback');
+
+  if (!isPasswordCorrect && !isAuthCallback) {
+    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
+  }
 
   return (
     <>
+      <Toaster position="top-center" />
       <Routes>
-        <Route 
-          path="/" 
-          element={isPWA ? <PWAHome /> : <Index />} 
-        />
-        <Route 
-          path="/artists" 
-          element={isPWA ? <PWAArtists /> : <Artists />} 
-        />
-        <Route 
-          path="/store" 
-          element={isPWA ? <PWAStore /> : <GeneralStore />} 
-        />
+        <Route path="/" element={<Index />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/details" element={<Details />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/tour" element={<VirtualTour />} />
+        <Route path="/auth/callback" element={<Navigate to="/account" replace />} />
         <Route path="/virtual-tour" element={<VirtualTour />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/details" element={<Details />} />
+        <Route path="/artists" element={<Artists />} />
+        <Route path="/artist-submission" element={<ArtistSubmission />} />
+        <Route path="/artist/:subdomainId" element={<ArtistSubdomain />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
-        <Route path="/submit" element={<ArtistSubmission />} />
-        
-        {/* Account and Dashboard routes */}
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/dashboard/artist" element={<ArtistDashboard />} />
-        <Route path="/dashboard/collector" element={<CollectorDashboard />} />
-        
-        {/* Artist subdomain route - using artistName as parameter name for consistency */}
-        <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
-        
-        {/* 404 route */}
+        <Route path="/pwa" element={<PWAHome />} />
+        <Route path="/pwa/artists" element={<PWAArtists />} />
+        <Route path="/pwa/store" element={<PWAStore />} />
+        <Route path="/pwa/artist-dashboard" element={<ArtistDashboard />} />
+        <Route path="/pwa/collector-dashboard" element={<CollectorDashboard />} />
+        <Route path="/store" element={<GeneralStore />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      
-      <Toaster position="bottom-center" />
     </>
   );
-}
+};
 
 export default App;
