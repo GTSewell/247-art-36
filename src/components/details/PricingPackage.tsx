@@ -12,8 +12,10 @@ interface PricingPackageProps {
     text: string;
     percentage?: string;
     isIncluded?: boolean;
+    isBoldUrl?: boolean;
   }>;
   animationDirection: "left" | "right";
+  className?: string;
 }
 
 const PricingPackage = ({
@@ -23,7 +25,8 @@ const PricingPackage = ({
   iconColor,
   imageSrc,
   features,
-  animationDirection
+  animationDirection,
+  className = ""
 }: PricingPackageProps) => {
   return (
     <motion.div 
@@ -31,14 +34,14 @@ const PricingPackage = ({
         opacity: 0,
         x: animationDirection === "left" ? -20 : 20
       }} 
-      animate={{
+      whileInView={{
         opacity: 1,
         x: 0
       }} 
       transition={{
         duration: 0.5
       }} 
-      className="space-y-6"
+      className={`space-y-6 ${className}`}
     >
       <img 
         src={imageSrc} 
@@ -58,6 +61,7 @@ const PricingPackage = ({
               percentage={feature.percentage} 
               color={iconColor} 
               isIncluded={feature.isIncluded} 
+              isBoldUrl={feature.isBoldUrl}
             />
           ))}
         </ul>
