@@ -26,55 +26,72 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
   colorTheme
 }) => {
   // Define dynamic styles based on the artist's color theme
-  const tabListStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+  const tabsContainerStyle = {
+    background: 'rgba(255, 255, 255, 0.9)', 
+    borderRadius: '8px',
+    overflow: 'hidden'
   };
   
   const activeTabStyle = {
     backgroundColor: colorTheme?.button || '#f7cf1e',
     color: colorTheme?.buttonText || '#000000',
+    fontWeight: 600,
+    borderRadius: 0
+  };
+  
+  const inactiveTabStyle = {
+    backgroundColor: 'transparent',
+    color: '#4a5568',
+    fontWeight: 500,
+    borderRadius: 0
   };
   
   const returnButtonStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)'
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '8px'
   };
 
   return (
-    <div className="flex items-center justify-between mb-4">
-      <TabsList 
-        className="grid grid-cols-3 flex-1 backdrop-blur-sm" 
-        style={tabListStyle}
+    <div className="flex items-center justify-between mb-4 gap-2">
+      <div 
+        className="flex-1 overflow-hidden backdrop-blur-sm" 
+        style={tabsContainerStyle}
       >
-        <TabsTrigger 
-          value="about" 
-          className="data-[state=active]:font-medium transition-all duration-200"
-          style={activeTab === "about" ? activeTabStyle : undefined}
-        >
-          About
-        </TabsTrigger>
-        <TabsTrigger 
-          value="links" 
-          className="data-[state=active]:font-medium transition-all duration-200"
-          style={activeTab === "links" ? activeTabStyle : undefined}
-        >
-          Links
-        </TabsTrigger>
-        <TabsTrigger 
-          value="artwork" 
-          className="data-[state=active]:font-medium transition-all duration-200"
-          style={activeTab === "artwork" ? activeTabStyle : undefined}
-        >
-          Artwork
-        </TabsTrigger>
-      </TabsList>
+        <TabsList className="w-full h-14 p-0 bg-transparent flex rounded-none">
+          <TabsTrigger 
+            value="about" 
+            onClick={() => handleTabChange("about")}
+            className="flex-1 h-full text-lg transition-all duration-200 rounded-none"
+            style={activeTab === "about" ? activeTabStyle : inactiveTabStyle}
+          >
+            About
+          </TabsTrigger>
+          <TabsTrigger 
+            value="links" 
+            onClick={() => handleTabChange("links")}
+            className="flex-1 h-full text-lg transition-all duration-200 rounded-none"
+            style={activeTab === "links" ? activeTabStyle : inactiveTabStyle}
+          >
+            Links
+          </TabsTrigger>
+          <TabsTrigger 
+            value="artwork" 
+            onClick={() => handleTabChange("artwork")}
+            className="flex-1 h-full text-lg transition-all duration-200 rounded-none"
+            style={activeTab === "artwork" ? activeTabStyle : inactiveTabStyle}
+          >
+            Artwork
+          </TabsTrigger>
+        </TabsList>
+      </div>
       <Button 
         variant="outline" 
         size="icon" 
         onClick={handleReturnToArtists}
-        className="ml-2 hover:bg-white backdrop-blur-sm h-9 w-9"
+        className="h-14 w-14 flex items-center justify-center backdrop-blur-sm"
         style={returnButtonStyle}
       >
-        <ArrowLeftCircle size={18} />
+        <ArrowLeftCircle size={24} />
         <span className="sr-only">Return to Artists</span>
       </Button>
     </div>

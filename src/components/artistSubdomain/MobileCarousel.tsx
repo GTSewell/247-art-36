@@ -1,10 +1,5 @@
 
 import React from 'react';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem
-} from '@/components/ui/carousel';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
 import ArtistProfileCenterPanel from './ArtistProfileCenterPanel';
 import ArtistProfileRightPanel from './ArtistProfileRightPanel';
@@ -47,7 +42,7 @@ const MobileCarousel: React.FC<MobileCarouselProps> = ({
   colorTheme
 }) => {
   return (
-    <div className="h-full overflow-hidden">
+    <div className="h-full overflow-hidden rounded-lg">
       <div ref={emblaRef} className="h-full overflow-hidden">
         <div className="h-full flex">
           {/* About Panel */}

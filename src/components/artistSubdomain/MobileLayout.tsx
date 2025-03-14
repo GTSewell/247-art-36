@@ -40,7 +40,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
-    loop: true,
+    loop: false,
     dragFree: false,
     containScroll: "trimSnaps",
     slidesToScroll: 1
@@ -79,7 +79,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
     navigate('/artists');
   };
 
-  const panelHeight = "calc(100vh - 6rem)";
+  const panelHeight = "calc(100vh - 7rem)";
 
   return (
     <div 
