@@ -35,16 +35,20 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   // Remove spaces from the display version of the domain only
   const displayDomain = domainName.replace(/\s+/g, '');
   
-  // Use zap yellow for the favorite button
+  // Define zap yellow for favorite button
+  const zapYellow = '#f7cf1e';
+  
+  // Use zap yellow for the favorite button, regardless of customizations
   const favoriteButtonStyles = {
-    backgroundColor: isFavorite ? '#f7cf1e' : buttonColor || '#f7cf1e',
+    backgroundColor: isFavorite ? zapYellow : buttonColor || zapYellow,
     color: isFavorite ? '#000000' : buttonTextColor || '#000000',
     borderColor: isFavorite ? '#000000' : buttonBorderColor || 'transparent'
   };
 
-  // Set zap blue for the artist profile button (visit button)
+  // Set zap blue for the artist profile button (visit button) - always blue
+  const zapBlue = '#00baef';
   const visitButtonStyles = {
-    backgroundColor: '#00baef', // Use zap blue from the theme
+    backgroundColor: zapBlue,
     color: 'white',
     borderColor: 'transparent'
   };
@@ -98,7 +102,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
               e.currentTarget.style.backgroundColor = buttonColor;
             } else if (!isFavorite) {
               // Reset to zap yellow if not favorite
-              e.currentTarget.style.backgroundColor = '#f7cf1e';
+              e.currentTarget.style.backgroundColor = zapYellow;
             }
           }}
         >
@@ -116,7 +120,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           e.currentTarget.style.backgroundColor = '#0095c0'; // Darker shade of zap blue for hover
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.backgroundColor = '#00baef'; // Reset to zap blue
+          e.currentTarget.style.backgroundColor = zapBlue; // Reset to zap blue
         }}
       >
         {isMobile ? (
