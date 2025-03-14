@@ -13,8 +13,8 @@ interface SignInFormProps {
 }
 
 const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
-  const [email, setEmail] = useState("demo@247.art");
-  const [password, setPassword] = useState("123456");
+  const [email, setEmail] = useState("demo247artist@gmail.com");
+  const [password, setPassword] = useState("12341234");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAdminHint, setShowAdminHint] = useState(false);
 
@@ -76,7 +76,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
           onChange={e => setEmail(e.target.value)} 
           required 
         />
-        <p className="text-xs text-gray-500 mt-1">Demo: demo@247.art</p>
+        <p className="text-xs text-gray-500 mt-1">Demo: demo247artist@gmail.com</p>
       </div>
       <div>
         <Input 
@@ -86,7 +86,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
           onChange={e => setPassword(e.target.value)} 
           required 
         />
-        <p className="text-xs text-gray-500 mt-1">Demo: 123456</p>
+        <p className="text-xs text-gray-500 mt-1">Demo: 12341234</p>
       </div>
       
       {errorMessage && (
@@ -99,7 +99,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
         <Alert className="bg-amber-50 border-amber-200">
           <Info className="h-4 w-4 text-amber-500 mr-2" />
           <AlertDescription className="text-xs">
-            Admin Action Required: The demo account exists but needs email confirmation. In Supabase Dashboard, go to Authentication → Users, find demo@247.art, and click "Confirm Email" or enable "Auto-confirm" in Authentication → Email Templates → Confirm signup.
+            Admin Action Required: The demo account exists but needs email confirmation. In Supabase Dashboard, go to Authentication → Users, find demo247artist@gmail.com, and click "Confirm Email" or enable "Auto-confirm" in Authentication → Email Templates → Confirm signup.
           </AlertDescription>
         </Alert>
       )}

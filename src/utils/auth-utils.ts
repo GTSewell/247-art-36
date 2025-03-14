@@ -59,8 +59,8 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
     
     // Check if the demo account exists
     const { data: userData, error: userError } = await supabase.auth.signInWithPassword({
-      email: 'demo@247.art',
-      password: '123456'
+      email: 'demo247artist@gmail.com',
+      password: '12341234'
     });
     
     if (userError) {
@@ -70,7 +70,7 @@ export const signInWithDemoAccount = async (): Promise<boolean> => {
         console.log("Demo account login failed due to invalid credentials");
         toast.error("Demo account login failed. Please check Supabase Authentication settings.");
         
-        toast.error("Important: Update the demo account password in Supabase to '123456'");
+        toast.error("Important: Update the demo account password in Supabase to '12341234'");
         
         if (userError.message.includes("Email not confirmed")) {
           console.log("Email confirmation required for demo account");

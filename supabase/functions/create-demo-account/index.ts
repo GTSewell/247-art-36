@@ -27,8 +27,8 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     // Define demo account details
-    const email = 'demo@247.art';
-    const password = '123456';
+    const email = 'demo247artist@gmail.com';
+    const password = '12341234';
     const userMetadata = { name: 'Demo User' };
 
     console.log('Checking if demo account exists...');
