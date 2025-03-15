@@ -40,8 +40,13 @@ export default defineConfig(({ mode }) => ({
           ]
         }
       },
-      // Make sure zod and other essential packages are properly included in the build
+      // Ensure all packages are properly bundled (not externalized)
       external: []
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+      // Explicitly include zod to make sure it's properly resolved
+      esmExternals: false
     }
   }
 }));

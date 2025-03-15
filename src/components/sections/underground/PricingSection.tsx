@@ -39,7 +39,7 @@ const PricingSection = () => {
       <div className="text-center mt-8">
         <Link 
           to="/details" 
-          className="text-zap-yellow hover:text-white transition-colors inline-flex items-center gap-2"
+          className="text-yellow-400 hover:text-white transition-colors inline-flex items-center gap-2"
         >
           <span>View more details</span>
           <ArrowRight className="w-4 h-4" />

@@ -47,13 +47,13 @@ const ArtistPackageTable = () => {
               <TableHead className="text-center text-white">
                 <div className="flex flex-col items-center justify-center">
                   <span className="font-bold text-lg">Studio Artist</span>
-                  <span className="text-zap-yellow font-bold">$995</span>
+                  <span className="text-yellow-400 font-bold">$995</span>
                 </div>
               </TableHead>
               <TableHead className="text-center text-white">
                 <div className="flex flex-col items-center justify-center">
                   <span className="font-bold text-lg">Feature Artist</span>
-                  <span className="text-zap-yellow font-bold">$1,495</span>
+                  <span className="text-yellow-400 font-bold">$1,495</span>
                 </div>
               </TableHead>
             </TableRow>
