@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { LogIn, LogOut, Settings } from "lucide-react";
@@ -8,6 +9,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface MobileUserMenuProps {
   user: any | null;
@@ -31,12 +33,10 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
   if (isLoading) {
     return (
       <div className="py-2">
-        <Button variant="ghost" disabled className="w-full justify-start p-0">
-          <Avatar className="h-6 w-6 mr-2">
-            <AvatarFallback className="bg-gray-200">...</AvatarFallback>
-          </Avatar>
-          Loading...
-        </Button>
+        <div className="px-3 flex items-center gap-2">
+          <Skeleton className="h-6 w-6 rounded-full" />
+          <Skeleton className="h-4 w-24" />
+        </div>
       </div>
     );
   }
