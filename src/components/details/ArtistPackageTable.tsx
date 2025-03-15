@@ -65,9 +65,9 @@ const ArtistPackageTable = () => {
                 <TableCell className="text-center">
                   {typeof feature.studioArtist === "boolean" ? (
                     feature.studioArtist ? (
-                      <Check className="mx-auto text-zap-yellow" />
+                      <Check className="mx-auto text-green-500" />
                     ) : (
-                      <X className="mx-auto text-gray-400" />
+                      <X className="mx-auto text-red-500" />
                     )
                   ) : (
                     <span>{feature.studioArtist}</span>
@@ -76,9 +76,9 @@ const ArtistPackageTable = () => {
                 <TableCell className="text-center">
                   {typeof feature.featureArtist === "boolean" ? (
                     feature.featureArtist ? (
-                      <Check className="mx-auto text-zap-blue" />
+                      <Check className="mx-auto text-green-500" />
                     ) : (
-                      <X className="mx-auto text-gray-400" />
+                      <X className="mx-auto text-red-500" />
                     )
                   ) : (
                     <span>{feature.featureArtist}</span>

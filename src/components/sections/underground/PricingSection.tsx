@@ -16,20 +16,6 @@ const PricingSection = () => {
         Ok. So what's the cost?
       </h2>
       
-      {/* Mobile Logo */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="md:hidden flex justify-center items-center mb-8"
-      >
-        <img 
-          src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
-          alt="Rocket Icon"
-          className="w-full max-w-[220px] animate-float"
-        />
-      </motion.div>
-      
       {/* Comparison Table */}
       <div className="max-w-4xl mx-auto">
         <ArtistPackageTable />
@@ -40,7 +26,7 @@ const PricingSection = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="hidden md:flex justify-center items-center my-8"
+        className="flex justify-center items-center my-8"
       >
         <img 
           src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"

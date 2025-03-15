@@ -30,7 +30,8 @@ export default defineConfig(({ mode }) => ({
             'react',
             'react-dom',
             'react-router-dom',
-            '@supabase/supabase-js'
+            '@supabase/supabase-js',
+            'zod'
           ],
           'form-utils': [
             'zod',
@@ -38,9 +39,7 @@ export default defineConfig(({ mode }) => ({
             '@hookform/resolvers/zod'
           ]
         }
-      },
-      // Explicitly mark problematic packages as external if needed
-      external: mode === 'production' ? [] : ['zod']
+      }
     }
   }
 }));
