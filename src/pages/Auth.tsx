@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -68,7 +67,7 @@ const Auth = () => {
           <Info className="h-4 w-4 text-blue-500 mr-2" />
           <AlertDescription className="text-xs">
             <strong>Important:</strong> The demo account must be confirmed in Supabase before it will work. 
-            Go to Authentication → Users in the Supabase dashboard, find demo@247.art, and click "Confirm Email".
+            Go to Authentication → Users in the Supabase dashboard, find demo247artist@gmail.com, and click "Confirm Email".
           </AlertDescription>
         </Alert>
 
