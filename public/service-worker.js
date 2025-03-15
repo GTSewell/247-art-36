@@ -1,6 +1,6 @@
 
 // Cache name version - increased to force refresh
-const CACHE_NAME = '247-art-v4';
+const CACHE_NAME = '247-art-v5'; // Bumped version to force cache refresh
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [
@@ -61,12 +61,12 @@ self.addEventListener('fetch', event => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
 
-  // For PWA critical resources (manifest and icons), never use cache
+  // For PWA critical resources (manifest and icons), use network-first approach
   if (url.pathname.includes('/icons/') || 
       url.pathname.includes('favicon.ico') || 
       url.pathname.includes('manifest.json')) {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: 'no-cache' })
         .then(response => {
           // Clone the response
           const responseToCache = response.clone();
@@ -85,10 +85,10 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // For navigation requests, try network first
+  // For navigation requests, always try network first with no cache
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
+      fetch(event.request, { cache: 'no-cache' })
         .catch(() => {
           return caches.match('/index.html');
         })
@@ -96,36 +96,34 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // For other requests, use cache-first strategy
+  // For other requests, use network-first strategy with cache fallback
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request, { cache: 'no-cache' })
       .then(response => {
-        // Cache hit - return response
-        if (response) {
+        // Check if we received a valid response
+        if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
         }
         
-        // Clone the request
-        const fetchRequest = event.request.clone();
+        // Clone the response
+        const responseToCache = response.clone();
         
-        return fetch(fetchRequest)
-          .then(response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+          
+        return response;
+      })
+      .catch(() => {
+        // If network fetch fails, try the cache
+        return caches.match(event.request)
+          .then(cachedResponse => {
+            if (cachedResponse) {
+              return cachedResponse;
             }
             
-            // Clone the response
-            const responseToCache = response.clone();
-            
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-              
-            return response;
-          })
-          .catch(() => {
+            // Handle fallbacks for images
             if (event.request.destination === 'image') {
               return caches.match('/placeholder.svg');
             }
@@ -139,12 +137,25 @@ self.addEventListener('fetch', event => {
             });
           });
       })
-    );
+  );
 });
 
 // Handle messages from clients
 self.addEventListener('message', event => {
   if (event.data === 'skipWaiting') {
     self.skipWaiting();
+  } else if (event.data === 'clearCache') {
+    // New handler for manually clearing the cache
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => caches.delete(cacheName))
+      );
+    }).then(() => {
+      console.log('All caches cleared');
+      // Notify the client that caches have been cleared
+      if (event.source) {
+        event.source.postMessage('cacheCleared');
+      }
+    });
   }
 });

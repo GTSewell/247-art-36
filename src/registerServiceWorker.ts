@@ -53,6 +53,50 @@ export const registerServiceWorker = () => {
   }
 };
 
+// Add function to manually clear the cache and reload
+export const clearCacheAndReload = async () => {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      
+      if (registrations.length > 0) {
+        console.log('Clearing cache via service worker...');
+        // Try to send message to service worker to clear cache
+        if (navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage('clearCache');
+        }
+        
+        // Also attempt to clear browser caches
+        if ('caches' in window) {
+          console.log('Clearing browser caches...');
+          const cacheNames = await caches.keys();
+          await Promise.all(cacheNames.map(name => caches.delete(name)));
+        }
+        
+        // Unregister all workers
+        await Promise.all(registrations.map(reg => reg.unregister()));
+        console.log('Service workers unregistered');
+        
+        // Give a moment for cache clearing to complete
+        setTimeout(() => {
+          console.log('Reloading page...');
+          window.location.reload(true);
+        }, 1000);
+      } else {
+        // No service worker, just reload
+        window.location.reload(true);
+      }
+    } catch (error) {
+      console.error('Error clearing cache:', error);
+      // Fallback to simple reload
+      window.location.reload(true);
+    }
+  } else {
+    // No service worker support, just reload
+    window.location.reload(true);
+  }
+};
+
 // Add event listener for PWA lifecycle events
 window.addEventListener('load', () => {
   // Add this to diagnose PWA startup issues
