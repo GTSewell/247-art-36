@@ -39,7 +39,9 @@ export default defineConfig(({ mode }) => ({
             '@hookform/resolvers/zod'
           ]
         }
-      }
+      },
+      // Make sure zod and other essential packages are properly included in the build
+      external: []
     }
   }
 }));
