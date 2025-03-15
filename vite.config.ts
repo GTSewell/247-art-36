@@ -31,6 +31,11 @@ export default defineConfig(({ mode }) => ({
             'react-dom',
             'react-router-dom',
             '@supabase/supabase-js'
+          ],
+          'form-utils': [
+            'zod',
+            'react-hook-form',
+            '@hookform/resolvers/zod'
           ]
         }
       }

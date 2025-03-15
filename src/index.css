@@ -1,4 +1,14 @@
 
+@import './fonts.css';
+@import './styles/hidden-elements.css';
+@import './styles/pwa.css';
+@import './styles/pwa/base.css';
+@import './styles/pwa/artists.css';
+@import './styles/pwa/carousel.css';
+@import './styles/pwa/layout.css';
+@import './styles/pwa/pages.css';
+@import './styles/pwa/products.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -159,13 +169,3 @@
   margin-top: 2rem;
   padding-top: 1rem;
 }
-
-@import './fonts.css';
-@import './styles/hidden-elements.css';
-@import './styles/pwa.css';
-@import './styles/pwa/base.css';
-@import './styles/pwa/artists.css';
-@import './styles/pwa/carousel.css';
-@import './styles/pwa/layout.css';
-@import './styles/pwa/pages.css';
-@import './styles/pwa/products.css';
