@@ -52,7 +52,7 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
       <div className="flex items-center gap-2 self-center md:self-auto">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="default" size="sm" className="flex items-center gap-1 px-2 sm:px-4 sm:gap-2">
+            <Button variant="default" size="sm" className="flex items-center gap-1 px-2 sm:px-4 sm:gap-2 bg-zap-yellow text-black">
               <Filter size={16} className="sm:size-5" />
               <span className="text-sm sm:text-base">ATLAS</span>
             </Button>

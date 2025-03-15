@@ -20,6 +20,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         artistProfile: "bg-[#95B3D2] text-white hover:bg-[#7A9CC2] flex items-center justify-between w-full",
+        zapActive: "bg-zap-yellow text-black hover:bg-zap-yellow/90", // Added specific variant for nav buttons
       },
       size: {
         default: "h-10 px-4 py-2",
