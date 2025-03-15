@@ -30,38 +30,10 @@ serve(async (req) => {
     const email = 'demo247artist@gmail.com';
     const password = '12341234';
     const userMetadata = { name: 'Demo User' };
-    const oldDemoEmail = 'demo@247.art';
 
-    console.log('Handling demo account setup...');
-
-    // First, check if the old demo account exists
-    const { data: oldDemoUsers, error: oldDemoError } = await supabase.auth.admin.listUsers({
-      search: oldDemoEmail
-    });
-
-    if (!oldDemoError && oldDemoUsers && oldDemoUsers.users && oldDemoUsers.users.some(user => user.email === oldDemoEmail)) {
-      console.log('Old demo account exists, need to delete it first');
-      
-      // Find the user ID for the old demo account
-      const oldDemoUserId = oldDemoUsers.users.find(user => user.email === oldDemoEmail)?.id;
-      
-      if (oldDemoUserId) {
-        console.log(`Deleting old demo account (${oldDemoUserId})...`);
-        
-        // Delete the old demo account
-        const { error: deleteError } = await supabase.auth.admin.deleteUser(oldDemoUserId);
-        
-        if (deleteError) {
-          console.error('Error deleting old demo account:', deleteError);
-          // Continue with the process even if deletion fails
-        } else {
-          console.log('Old demo account deleted successfully');
-        }
-      }
-    }
-
-    // Now check if the new demo account exists
-    console.log('Checking if new demo account exists...');
+    console.log('Checking if demo account exists...');
+    
+    // Check if the demo account exists
     const { data: users, error: getUserError } = await supabase.auth.admin.listUsers({
       search: email
     });
@@ -74,7 +46,7 @@ serve(async (req) => {
     const userExists = users && users.users && users.users.some(user => user.email === email);
 
     if (userExists) {
-      console.log('New demo account exists, updating password...');
+      console.log('Demo account exists, updating password...');
       
       // Find the user ID
       const userId = users.users.find(user => user.email === email)?.id;
