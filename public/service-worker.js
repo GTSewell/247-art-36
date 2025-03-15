@@ -1,6 +1,6 @@
 
 // Cache name version - increased to force refresh
-const CACHE_NAME = '247-art-v5'; // Bumped version to force cache refresh
+const CACHE_NAME = '247-art-v6'; // Bumped version to force cache refresh
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [

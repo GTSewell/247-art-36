@@ -80,20 +80,20 @@ export const clearCacheAndReload = async () => {
         // Give a moment for cache clearing to complete
         setTimeout(() => {
           console.log('Reloading page...');
-          window.location.reload(true);
+          window.location.reload();
         }, 1000);
       } else {
         // No service worker, just reload
-        window.location.reload(true);
+        window.location.reload();
       }
     } catch (error) {
       console.error('Error clearing cache:', error);
       // Fallback to simple reload
-      window.location.reload(true);
+      window.location.reload();
     }
   } else {
     // No service worker support, just reload
-    window.location.reload(true);
+    window.location.reload();
   }
 };
 
