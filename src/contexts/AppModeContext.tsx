@@ -1,55 +1,67 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-type AppMode = 'pwa' | 'browser';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
 interface AppModeContextType {
-  mode: AppMode;
   isPWA: boolean;
+  setIsPWA: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const defaultContext: AppModeContextType = {
-  mode: 'browser',
-  isPWA: false,
+const AppModeContext = createContext<AppModeContextType | undefined>(undefined);
+
+export const useAppMode = (): AppModeContextType => {
+  const context = useContext(AppModeContext);
+  if (!context) {
+    throw new Error("useAppMode must be used within an AppModeProvider");
+  }
+  return context;
 };
 
-const AppModeContext = createContext<AppModeContextType>(defaultContext);
+interface AppModeProviderProps {
+  children: ReactNode;
+}
 
-export const useAppMode = () => useContext(AppModeContext);
-
-export const AppModeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [mode, setMode] = useState<AppMode>('browser');
-  const [isInitialized, setIsInitialized] = useState(false);
+export const AppModeProvider: React.FC<AppModeProviderProps> = ({ children }) => {
+  const [isPWA, setIsPWA] = useState<boolean>(false);
 
   useEffect(() => {
-    const checkPWAMode = () => {
-      const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-      setMode(isPWA ? 'pwa' : 'browser');
-      setIsInitialized(true);
+    // Check if the app is running in standalone mode (PWA)
+    const isStandalone = 
+      window.matchMedia('(display-mode: standalone)').matches || 
+      (window.navigator as any).standalone || 
+      document.referrer.includes('android-app://');
+    
+    setIsPWA(isStandalone);
+    
+    // Listen for changes in display mode
+    const mediaQueryList = window.matchMedia('(display-mode: standalone)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsPWA(e.matches);
     };
-
-    checkPWAMode();
-
-    const handleDisplayModeChange = (evt: MediaQueryListEvent) => {
-      setMode(evt.matches ? 'pwa' : 'browser');
-    };
-
-    const displayModeMediaQuery = window.matchMedia('(display-mode: standalone)');
-    displayModeMediaQuery.addEventListener('change', handleDisplayModeChange);
-
+    
+    // Use the correct event listener based on browser support
+    if (mediaQueryList.addEventListener) {
+      mediaQueryList.addEventListener('change', handleChange);
+    } else {
+      // For older browsers
+      mediaQueryList.addListener(handleChange);
+    }
+    
     return () => {
-      displayModeMediaQuery.removeEventListener('change', handleDisplayModeChange);
+      // Clean up the event listener
+      if (mediaQueryList.removeEventListener) {
+        mediaQueryList.removeEventListener('change', handleChange);
+      } else {
+        // For older browsers
+        mediaQueryList.removeListener(handleChange);
+      }
     };
   }, []);
 
-  // Don't render children until we've determined the mode
-  if (!isInitialized) {
-    return null;
-  }
-
   return (
-    <AppModeContext.Provider value={{ mode, isPWA: mode === 'pwa' }}>
+    <AppModeContext.Provider value={{ isPWA, setIsPWA }}>
       {children}
     </AppModeContext.Provider>
   );
 };
+
+export default AppModeProvider;
