@@ -2,6 +2,11 @@
 import React from "react";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
+import { Button } from "@/components/ui/button";
+import { ShoppingCart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 interface DesktopNavProps {
   isActive: (path: string) => boolean;
@@ -10,6 +15,8 @@ interface DesktopNavProps {
 }
 
 const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
+  const { itemCount } = useCart();
+
   return (
     <div className="hidden md:flex items-center space-x-4 w-full justify-end">
       <NavLink to="/artists" isActive={isActive("/artists")}>
@@ -27,6 +34,21 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
       <NavLink to="/virtual-tour" isActive={isActive("/virtual-tour")}>
         Virtual Tour
       </NavLink>
+      
+      {/* Cart Icon */}
+      <Link to="/cart" className="relative">
+        <Button variant="ghost" size="icon" className="p-0" title="Shopping Cart">
+          <ShoppingCart className="h-5 w-5" />
+          {itemCount > 0 && (
+            <Badge 
+              className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-zap-red text-white rounded-full"
+            >
+              {itemCount}
+            </Badge>
+          )}
+        </Button>
+      </Link>
+      
       <UserMenu user={user} isLoading={isLoading} />
     </div>
   );

@@ -3,16 +3,33 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 interface AddToCartButtonProps {
   isDisabled?: boolean;
+  product?: any;
 }
 
-const AddToCartButton: React.FC<AddToCartButtonProps> = ({ isDisabled = false }) => {
+const AddToCartButton: React.FC<AddToCartButtonProps> = ({ 
+  isDisabled = false,
+  product 
+}) => {
+  const { addItem } = useCart();
+
   const handleAddToCart = () => {
-    toast.success("Added to art!", {
-      description: "This item has been added to your collection."
-    });
+    if (product) {
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image_url: product.image_url,
+        artist: product.artists
+      });
+    } else {
+      toast.success("Added to art!", {
+        description: "This item has been added to your collection."
+      });
+    }
   };
 
   return (

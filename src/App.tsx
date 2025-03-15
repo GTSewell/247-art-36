@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { useAppMode } from "@/contexts/AppModeContext";
+import { CartProvider } from "@/contexts/CartContext";
 
 import Index from "@/pages/Index";
 import Artists from "@/pages/Artists";
@@ -12,6 +13,7 @@ import Services from "@/pages/Services";
 import WhoAreYou from "@/pages/WhoAreYou";
 import VirtualTour from "@/pages/VirtualTour";
 import GeneralStore from "@/pages/GeneralStore";
+import Cart from "@/pages/Cart";
 import ArtistSubdomain from "@/pages/ArtistSubdomain";
 import NotFound from "@/pages/NotFound";
 import ArtistSubmission from "@/pages/ArtistSubmission";
@@ -45,7 +47,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <>
+    <CartProvider>
       <Routes>
         <Route 
           path="/" 
@@ -59,6 +61,7 @@ function App() {
           path="/store" 
           element={isPWA ? <PWAStore /> : <GeneralStore />} 
         />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/details" element={<Details />} />
         <Route path="/services" element={<Services />} />
@@ -80,7 +83,7 @@ function App() {
       </Routes>
       
       <Toaster position="bottom-center" />
-    </>
+    </CartProvider>
   );
 }
 
