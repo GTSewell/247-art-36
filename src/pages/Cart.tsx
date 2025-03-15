@@ -1,70 +1,19 @@
 
 import React from "react";
 import Navigation from "@/components/navigation/Navigation";
-import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  image_url: string;
-  quantity: number;
-  artist?: { name: string } | null;
-}
-
-// For now, we'll use localStorage to manage the cart
-const useCart = () => {
-  const getCartItems = () => {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
-  };
-
-  const { data: cartItems = [], refetch } = useQuery({
-    queryKey: ['cart'],
-    queryFn: getCartItems,
-    initialData: getCartItems,
-  });
-
-  const removeFromCart = (id: string) => {
-    const cart = getCartItems();
-    const newCart = cart.filter((item: CartItem) => item.id !== id);
-    localStorage.setItem('cart', JSON.stringify(newCart));
-    refetch();
-    toast.success("Item removed from cart");
-  };
-
-  const updateQuantity = (id: string, quantity: number) => {
-    if (quantity < 1) return;
-    
-    const cart = getCartItems();
-    const newCart = cart.map((item: CartItem) => 
-      item.id === id ? { ...item, quantity } : item
-    );
-    localStorage.setItem('cart', JSON.stringify(newCart));
-    refetch();
-  };
-
-  const clearCart = () => {
-    localStorage.setItem('cart', JSON.stringify([]));
-    refetch();
-    toast.success("Cart cleared");
-  };
-
-  return { cartItems, removeFromCart, updateQuantity, clearCart };
-};
+import { useCart } from "@/contexts/CartContext";
 
 const Cart = () => {
-  const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { items, removeItem, updateQuantity, clearCart } = useCart();
   
   const calculateTotal = () => {
-    return cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
+    return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   };
 
-  if (cartItems.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="min-h-screen bg-white">
         <Navigation />
@@ -101,7 +50,7 @@ const Cart = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            {cartItems.map((item: CartItem) => (
+            {items.map((item) => (
               <div key={item.id} className="flex border-b border-gray-200 py-4">
                 <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-md">
                   <img 
@@ -138,7 +87,7 @@ const Cart = () => {
                     </div>
                     <button
                       className="text-red-500 hover:text-red-700"
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeItem(item.id)}
                     >
                       <Trash2 size={18} />
                     </button>
@@ -153,7 +102,7 @@ const Cart = () => {
               <h2 className="text-lg font-medium mb-4">Order Summary</h2>
               <div className="space-y-4">
                 <div className="flex justify-between">
-                  <span>Items ({cartItems.length})</span>
+                  <span>Items ({items.length})</span>
                   <span>${calculateTotal().toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">

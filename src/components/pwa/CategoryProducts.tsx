@@ -3,6 +3,8 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Zap } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useCart } from "@/contexts/CartContext";
+import { toast } from "sonner";
 
 interface CategoryProductsProps {
   products: any[];
@@ -13,8 +15,23 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
   products, 
   categoryName 
 }) => {
+  const { addItem } = useCart();
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
+  };
+  
+  const handleAddToCart = (product: any) => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+      artist: product.artists
+    });
+    toast.success("Added to cart!", {
+      description: `${product.name} has been added to your cart.`
+    });
   };
 
   // If no products found, display a message
@@ -70,6 +87,7 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
                   <Button 
                     size="icon" 
                     className="bg-zap-red hover:bg-zap-blue h-8 w-8"
+                    onClick={() => handleAddToCart(product)}
                   >
                     <ShoppingCart className="h-4 w-4" />
                   </Button>

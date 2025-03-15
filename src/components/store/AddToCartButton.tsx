@@ -25,9 +25,12 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
         image_url: product.image_url,
         artist: product.artists
       });
+      toast.success("Added to cart!", {
+        description: "This item has been added to your cart."
+      });
     } else {
-      toast.success("Added to art!", {
-        description: "This item has been added to your collection."
+      toast.error("Unable to add to cart", {
+        description: "Product information is missing."
       });
     }
   };
@@ -43,7 +46,7 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       disabled={isDisabled}
     >
       <ShoppingCart size={18} />
-      <span>{isDisabled ? 'Edition Closed' : 'Add to Art'}</span>
+      <span>{isDisabled ? 'Edition Closed' : 'Add to Cart'}</span>
     </Button>
   );
 };

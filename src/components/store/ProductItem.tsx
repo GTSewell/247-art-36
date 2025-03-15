@@ -3,6 +3,8 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import CountdownTimer from "./CountdownTimer";
+import { ShoppingCart } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 
 interface TimerState {
   hours: number;
@@ -17,8 +19,21 @@ interface ProductItemProps {
 }
 
 const ProductItem: React.FC<ProductItemProps> = ({ product, initialTime, onSelect }) => {
+  const { addItem } = useCart();
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
+  };
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering the card's onClick
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+      artist: product.artists
+    });
   };
 
   return (
@@ -50,7 +65,11 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, initialTime, onSelec
         <div className="absolute bottom-1 left-1 right-1">
           <h3 className="text-white text-sm font-bold">{product.name}</h3>
           <p className="text-white/90 text-xs">${product.price}</p>
-          <Button className="w-full mt-1 bg-zap-red hover:bg-zap-blue text-xs py-0.5" size="sm">
+          <Button 
+            className="w-full mt-1 bg-zap-red hover:bg-zap-blue text-xs py-0.5" 
+            size="sm"
+            onClick={handleAddToCart}
+          >
             Add to Cart
           </Button>
         </div>
