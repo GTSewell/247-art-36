@@ -30,13 +30,14 @@ export default defineConfig(({ mode }) => ({
             'react',
             'react-dom',
             'react-router-dom',
-            '@supabase/supabase-js',
-            'zod'
+            '@supabase/supabase-js'
           ],
           'form-utils': [
-            'zod',
             'react-hook-form',
             '@hookform/resolvers/zod'
+          ],
+          'zod': [
+            'zod'
           ]
         }
       },
@@ -45,7 +46,6 @@ export default defineConfig(({ mode }) => ({
     },
     commonjsOptions: {
       include: [/node_modules/],
-      // Explicitly include zod to make sure it's properly resolved
       esmExternals: false
     }
   }
