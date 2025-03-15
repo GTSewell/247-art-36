@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Avatar } from "@/components/ui/avatar";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ArtistProfileCenterPanelProps {
   artist: Artist;
@@ -43,6 +45,8 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
   buttonHoverColor,
   buttonBorderColor
 }) => {
+  const isMobile = useIsMobile();
+  
   // Sample links for demo purposes
   const sampleLinks = [
     { type: 'website', title: 'Portfolio Website', url: '#' },
@@ -159,6 +163,34 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
       <ScrollArea className="h-full pr-4">
         <div className="space-y-6 pb-6">
+          {/* Artist Profile Header - Only show on mobile/PWA */}
+          {isMobile && (
+            <div className="flex items-center gap-3 mb-4">
+              <Avatar className="h-16 w-16 rounded-md border">
+                {artist.image ? (
+                  <img 
+                    src={artist.image} 
+                    alt={artist.name} 
+                    className="object-cover h-full w-full"
+                  />
+                ) : (
+                  <div className="h-full w-full bg-gray-200 flex items-center justify-center text-gray-400">
+                    {artist.name?.substring(0, 2).toUpperCase() || "NA"}
+                  </div>
+                )}
+              </Avatar>
+              <div>
+                <h2 className="font-bold text-lg">{artist.name}</h2>
+                <p className="text-sm text-gray-600">{artist.specialty}</p>
+                {(artist.city || artist.country) && (
+                  <p className="text-xs text-gray-500">
+                    {[artist.city, artist.country].filter(Boolean).join(", ")}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Connect Section */}
           {normalizedPlatforms.length > 0 && (
             <div className="space-y-2">
