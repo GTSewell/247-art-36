@@ -38,7 +38,7 @@ const ArtistSubdomain = () => {
 
   // Show loading state while data is being fetched
   if (loading) {
-    return <LoadingState backgroundColor={profile?.background_color || '#f7cf1e'} />;
+    return <LoadingState backgroundColor={profile?.background_color || '#e5d0b9'} />;
   }
 
   // Show not found state if there's no artist name or no artist found
@@ -48,8 +48,16 @@ const ArtistSubdomain = () => {
 
   const { techniques, styles, socialPlatforms, artworks } = getArtistData();
   
-  // Generate color theme based on artist and artworks
-  const colorTheme = generateColorTheme(artist, profile, artworks);
+  // Use custom color theme for Demo Artist
+  const customColorTheme = artistName.toLowerCase() === 'demo artist' ? {
+    background: '#e5d0b9', // Beige/tan background
+    panel: '#FEF9F4',      // Off-white panel
+    button: '#95B3D2',     // Blue button
+    buttonText: '#ffffff', // White text
+    buttonHover: '#7A9CC2',// Darker blue on hover
+    buttonBorder: '#95B3D2',// Blue border
+    badgeBg: '#f7f4f0'     // Light beige badge
+  } : generateColorTheme(artist, profile, artworks);
 
   return isMobile ? (
     <MobileLayout
@@ -59,7 +67,7 @@ const ArtistSubdomain = () => {
       styles={styles}
       socialPlatforms={socialPlatforms}
       artworks={artworks}
-      colorTheme={colorTheme}
+      colorTheme={customColorTheme}
     />
   ) : (
     <DesktopLayout
@@ -69,7 +77,7 @@ const ArtistSubdomain = () => {
       styles={styles}
       socialPlatforms={socialPlatforms}
       artworks={artworks}
-      colorTheme={colorTheme}
+      colorTheme={customColorTheme}
     />
   );
 };

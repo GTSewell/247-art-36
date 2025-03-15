@@ -37,9 +37,19 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkDetails | null>(null);
   
+  // For Demo Artist, use placeholder artworks if none exist
+  const placeholderArtworks = artist.name === "Demo Artist" ? [
+    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png",
+    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png",
+    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png",
+    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png"
+  ] : [];
+  
   const displayArtworks = artworks.length > 0 
     ? artworks 
-    : Array(4).fill('/placeholder.svg');
+    : placeholderArtworks.length > 0
+      ? placeholderArtworks
+      : Array(4).fill('/placeholder.svg');
   
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
     return {
@@ -157,7 +167,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
               <span className="font-bold text-lg">{selectedArtwork?.price}</span>
               <Button 
                 onClick={handleAddToCart}
-                className="bg-[#ea384c] hover:bg-red-600 transition-colors rounded-lg"
+                className="bg-[#95B3D2] hover:bg-[#7A9CC2] text-white transition-colors rounded-lg"
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Add to Art
