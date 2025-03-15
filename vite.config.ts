@@ -25,20 +25,24 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode !== 'production',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor': [
-            'react',
-            'react-dom',
-            'react-router-dom',
-            '@supabase/supabase-js'
-          ],
-          'form-utils': [
-            'react-hook-form',
-            '@hookform/resolvers/zod'
-          ],
-          'zod': [
-            'zod'
-          ]
+        manualChunks: (id) => {
+          // Handle zod and related packages
+          if (id.includes('node_modules/zod')) {
+            return 'zod';
+          }
+          // Handle React and related core packages
+          if (id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/') || 
+              id.includes('node_modules/react-router-dom/') ||
+              id.includes('node_modules/@supabase/supabase-js')) {
+            return 'vendor';
+          }
+          // Handle form related packages
+          if (id.includes('node_modules/react-hook-form') || 
+              id.includes('node_modules/@hookform/resolvers')) {
+            return 'form-utils';
+          }
+          return null;
         }
       },
       // Ensure all packages are properly bundled (not externalized)
