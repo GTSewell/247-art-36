@@ -1,16 +1,7 @@
 
 import React from 'react';
-import { 
-  Instagram,
-  Twitter, 
-  Facebook, 
-  Youtube, 
-  Dribbble, 
-  Github, 
-  Linkedin,
-  ExternalLink
-} from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { normalizeSocialPlatforms, getSocialIcon } from './utils/socialPlatformUtils';
 
 interface ArtistConnectSectionProps {
   socialPlatforms: string[];
@@ -32,76 +23,8 @@ const ArtistConnectSection: React.FC<ArtistConnectSectionProps> = ({
     return null;
   }
 
-  // Normalize social platform data to handle different formats
-  const normalizedPlatforms = socialPlatforms.map((platform) => {
-    // Trim the platform string
-    const trimmed = platform.trim();
-    
-    // Handle @username format for social media
-    if (trimmed.startsWith('@')) {
-      const username = trimmed.substring(1);
-      // Default to Instagram for @ handles, as that's the most common usage
-      return { 
-        type: 'instagram',
-        url: `https://instagram.com/${username}`, 
-        original: trimmed 
-      };
-    }
-    
-    // Extract platform type from URL or text
-    let type = 'external';
-    let url = trimmed;
-    
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      // If it doesn't have a protocol, add https://
-      url = `https://${url}`;
-    }
-    
-    try {
-      const urlObj = new URL(url);
-      const hostname = urlObj.hostname.toLowerCase();
-      
-      // Determine platform type from hostname
-      if (hostname.includes('instagram')) {
-        type = 'instagram';
-      } else if (hostname.includes('twitter') || hostname.includes('x.com')) {
-        type = 'twitter';
-      } else if (hostname.includes('facebook')) {
-        type = 'facebook';
-      } else if (hostname.includes('linkedin')) {
-        type = 'linkedin';
-      } else if (hostname.includes('youtube')) {
-        type = 'youtube';
-      }
-      
-      return { type, url, original: trimmed };
-    } catch (error) {
-      console.error("Invalid URL format:", url);
-      return { type: 'external', url, original: trimmed };
-    }
-  });
-
-  // Get icon based on platform type
-  const getLinkIcon = (type: string) => {
-    switch (type.toLowerCase()) {
-      case 'instagram':
-        return <Instagram />;
-      case 'twitter':
-        return <Twitter />;
-      case 'facebook':
-        return <Facebook />;
-      case 'youtube':
-        return <Youtube />;
-      case 'dribbble':
-        return <Dribbble />;
-      case 'github':
-        return <Github />;
-      case 'linkedin':
-        return <Linkedin />;
-      default:
-        return <ExternalLink />;
-    }
-  };
+  // Normalize social platform data using the shared utility
+  const normalizedPlatforms = normalizeSocialPlatforms(socialPlatforms);
 
   return (
     <div className="space-y-2">
@@ -130,7 +53,7 @@ const ArtistConnectSection: React.FC<ArtistConnectSectionProps> = ({
               }
             }}
           >
-            {getLinkIcon(platform.type)}
+            {getSocialIcon(platform.type)}
           </Button>
         ))}
       </div>
