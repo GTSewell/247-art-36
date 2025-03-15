@@ -17,7 +17,7 @@ const features: Feature[] = [
   { name: "Artist Commission of RRP on Retail Sales", studioArtist: "30%", featureArtist: "40%" },
   { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Unlimited (within reason)" },
-  { name: "Artworks per sqm", studioArtist: "1", featureArtist: "Up to 4" },
+  { name: "Artworks per sqm", studioArtist: "Up to 4", featureArtist: "Up to 4" },
   { name: "Video Wall Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3" },
   { name: "Priority Art Hanging", studioArtist: false, featureArtist: true },
   { name: "Sculpture Display (40cm x 40cm plinth)", studioArtist: false, featureArtist: true },
