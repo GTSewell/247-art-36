@@ -17,7 +17,8 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: ""
+    social_platforms: "",
+    image: null
   });
   
   useEffect(() => {
@@ -69,6 +70,13 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     }));
   };
   
+  const handleImageChange = (imageUrl: string | null) => {
+    setFormData(prev => ({
+      ...prev,
+      image: imageUrl
+    }));
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -105,6 +113,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     artist,
     formData,
     handleChange,
+    handleImageChange,
     handleSubmit
   };
 };

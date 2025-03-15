@@ -18,6 +18,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     saving,
     formData,
     handleChange,
+    handleImageChange,
     handleSubmit
   } = useArtistProfile(artistId);
   
@@ -37,7 +38,8 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         <form onSubmit={handleSubmit} className="space-y-4">
           <BasicInfoForm 
             formData={formData} 
-            handleChange={handleChange} 
+            handleChange={handleChange}
+            handleImageChange={handleImageChange}
           />
           
           <LocationForm 

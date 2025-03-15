@@ -42,7 +42,8 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       country: formData.country,
       techniques: formData.techniques.split(',').map(item => item.trim()).filter(item => item),
       styles: formData.styles.split(',').map(item => item.trim()).filter(item => item),
-      social_platforms: processSocialPlatforms(formData.social_platforms)
+      social_platforms: processSocialPlatforms(formData.social_platforms),
+      image: formData.image
     };
     
     console.log("Saving artist profile with data:", processedData);

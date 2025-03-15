@@ -15,7 +15,8 @@ export const mapArtistToFormData = (data: any): ArtistProfileFormData => {
       country: "",
       techniques: "",
       styles: "",
-      social_platforms: ""
+      social_platforms: "",
+      image: null
     };
   }
   
@@ -31,6 +32,7 @@ export const mapArtistToFormData = (data: any): ArtistProfileFormData => {
     styles: Array.isArray(data.styles) 
       ? data.styles.join(', ') 
       : typeof data.styles === 'string' ? data.styles : "",
-    social_platforms: formatSocialPlatforms(data)
+    social_platforms: formatSocialPlatforms(data),
+    image: data.image || null
   };
 };
