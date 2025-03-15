@@ -41,7 +41,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
           setErrorMessage("The email or password you entered is incorrect. Please try again.");
           
           // If it's the demo account, show additional guidance
-          if (email === "demo@247.art") {
+          if (email === "demo247artist@gmail.com") {
             console.log("Login failed with demo credentials. The demo account may not exist in Supabase or email confirmation is required.");
             setShowAdminHint(true);
           }
