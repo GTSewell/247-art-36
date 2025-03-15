@@ -69,7 +69,7 @@ const SignUpForm = ({ loading, setLoading }: SignUpFormProps) => {
         required 
         minLength={2} 
       />
-      <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
+      <Button type="submit" className="w-full bg-zap-yellow text-black hover:bg-zap-yellow/90" disabled={loading}>
         {loading ? "Signing up..." : "Sign Up"}
       </Button>
       <p className="text-xs text-gray-500 text-center">

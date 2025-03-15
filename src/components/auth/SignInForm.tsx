@@ -104,7 +104,7 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
         </Alert>
       )}
       
-      <Button type="submit" className="w-full bg-zap-red hover:bg-zap-blue" disabled={loading}>
+      <Button type="submit" className="w-full bg-zap-yellow text-black hover:bg-zap-yellow/90" disabled={loading}>
         {loading ? "Signing in..." : "Sign In"}
       </Button>
     </form>
