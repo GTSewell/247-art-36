@@ -38,7 +38,9 @@ export default defineConfig(({ mode }) => ({
             '@hookform/resolvers/zod'
           ]
         }
-      }
+      },
+      // Explicitly mark problematic packages as external if needed
+      external: mode === 'production' ? [] : ['zod']
     }
   }
 }));
