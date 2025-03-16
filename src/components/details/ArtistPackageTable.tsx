@@ -18,6 +18,7 @@ const features: Feature[] = [
   { name: "Artist Commission (Retail Production)", studioArtist: "100%", featureArtist: "100%", signatureArtist: "100%" },
   { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm", signatureArtist: "1.2 sqm" },
   { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 2", signatureArtist: "Up to 4" },
+  { name: "Stockroom", studioArtist: "1", featureArtist: "2", signatureArtist: "4" },
   { name: "Apparel Options", studioArtist: "Full Range", featureArtist: "Full Range", signatureArtist: "Full Range" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Up to 4 per month", signatureArtist: "Unlimited" },
   { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 6", featureArtist: "2 rotations every 6", signatureArtist: "3 rotations every 6" },
