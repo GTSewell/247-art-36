@@ -18,7 +18,6 @@ const features: Feature[] = [
   { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm" },
   { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 4" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Unlimited (within reason)" },
-  { name: "Artworks per space", studioArtist: "1", featureArtist: "Up to 4" },
   { name: "T-shirt Options", studioArtist: "Black or White only", featureArtist: "Full Color Range" },
   { name: "Video Wall Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3" },
   { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true },
