@@ -13,27 +13,29 @@ interface Feature {
 }
 
 const features: Feature[] = [
-  { name: "Exhibition Duration", studioArtist: "100 Days (3 months)", featureArtist: "100 Days (3 months)", signatureArtist: "100 Days (3 months)" },
+  { name: "Price", studioArtist: "$995", featureArtist: "$1495", signatureArtist: "$1995" },
+  { name: "Limited", studioArtist: "48 Artists", featureArtist: "36 Artists", signatureArtist: "12  Artists" },
+  { name: "Exhibition Duration", studioArtist: "~100 Days (3 months)", featureArtist: "~100 Days (3 months)", signatureArtist: "~100 Days (3 months)" },
   { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "10%", signatureArtist: "0%" },
+  { name: "STP Collector Packs = 0% commission", studioArtist: "25", featureArtist: "10", signatureArtist: "0" },
   { name: "Artist Commission (Retail Production)", studioArtist: "100%", featureArtist: "100%", signatureArtist: "100%" },
   { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm", signatureArtist: "1.2 sqm" },
   { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 2", signatureArtist: "Up to 4" },
-  { name: "Stockroom Artworks", studioArtist: "1", featureArtist: "2", signatureArtist: "4" },
   { name: "Apparel Options", studioArtist: "Full Range", featureArtist: "Full Range", signatureArtist: "Full Range" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Up to 4 per month", signatureArtist: "Unlimited" },
   { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 6", featureArtist: "2 rotations every 6", signatureArtist: "3 rotations every 6" },
+  { name: "Genesis Artist 'ATLAS' Book", studioArtist: "Single Page", featureArtist: "Double Page", signatureArtist: "4 Page Feature" },
+  { name: "Additional Artworks x2 (Stockroom)", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "Custom Artist Profile URL", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "Priority Art Hanging", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Sculpture Display (40cm x 40cm plinth)", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Retail 'STP' Merch Pack", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "247 Artist ATLAS Book + 3 Card Packs", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Shop-front Feature Display", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Sculpture Display Option (40cm x 40cm plinth)", studioArtist: false, featureArtist: true, signatureArtist: true },
   { name: "Custom Embosser for Prints", studioArtist: false, featureArtist: true, signatureArtist: true },
   { name: "Specialty Sticker Options", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Opening & Closing week Feature Wall", studioArtist: false, featureArtist: false, signatureArtist: true },
-  { name: "1 week Solo Feature Wall Exhibition", studioArtist: false, featureArtist: false, signatureArtist: true },
-  { name: "Solo Exhibition Launch Night", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Shop-front Feature Display", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Solo Exhibition - Feature Wall (1 Week)", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Solo Exhibition - Launch Night", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Solo Exhibition - Custom Prints/Merch", studioArtist: false, featureArtist: false, signatureArtist: true },
 ];
 
 const ArtistPackageTable = () => {
