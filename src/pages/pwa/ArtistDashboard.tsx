@@ -82,10 +82,10 @@ const ArtistDashboard: React.FC = () => {
         </div>
         
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="space-y-4">
-          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black"> {/* Changed from grid-cols-3 to grid-cols-4 */}
+          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black text-white"> {/* Added text-white class */}
             <TabsTrigger value="profile" className="text-sm">Profile</TabsTrigger>
             <TabsTrigger value="artworks" className="text-sm">Artworks</TabsTrigger>
-            <TabsTrigger value="trade" className="text-sm">Trade</TabsTrigger> {/* New tab */}
+            <TabsTrigger value="trade" className="text-sm">Trade</TabsTrigger>
             <TabsTrigger value="analytics" className="text-sm">Analytics</TabsTrigger>
           </TabsList>
           
