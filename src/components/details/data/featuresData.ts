@@ -31,8 +31,8 @@ export const features: Feature[] = [
   },
   { 
     name: "Gallery Commission (Original Artwork)", 
-    studioArtist: "25%", 
-    featureArtist: "10%", 
+    studioArtist: "25% to 0%", 
+    featureArtist: "10% to 0%", 
     signatureArtist: "0%",
     description: "Commission percentage taken by the gallery on sales of original artworks. Lower percentages mean more profit for you as an artist."
   },
