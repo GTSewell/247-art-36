@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
+import PWANavigation from "@/components/pwa/PWANavigation"; // Import PWA navigation
 
 const AccountPage = () => {
   const { user, isLoading } = useAuth();
@@ -32,7 +33,7 @@ const AccountPage = () => {
   }
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-8 pt-20">
+    <div className="container max-w-md mx-auto px-4 py-8 pt-20 pb-24"> {/* Added pb-24 for footer spacing */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center mb-6">
           <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mr-4">
@@ -138,6 +139,9 @@ const AccountPage = () => {
           </Button>
         </div>
       </div>
+      
+      {/* Add PWA Navigation */}
+      <PWANavigation />
     </div>
   );
 };
