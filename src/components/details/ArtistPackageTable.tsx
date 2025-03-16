@@ -48,7 +48,7 @@ const ArtistPackageTable = () => {
       <div className="overflow-x-auto">
         <Table className="w-full">
           <TableHeader>
-            <TableRow className="bg-gray-800">
+            <TableRow className="bg-black">
               <TableHead className="text-white">Features</TableHead>
               <TableHead className="text-center">
                 <div className="flex flex-col items-center justify-center">
@@ -107,11 +107,11 @@ const ArtistPackageTable = () => {
               </TableRow>
             ))}
             {/* Secure Your Spot Row with Purchase Buttons */}
-            <TableRow className="bg-gray-100 border-t-2 border-gray-300">
-              <TableCell className="font-bold text-lg py-4">Secure your spot</TableCell>
+            <TableRow className="bg-black border-t-2 border-gray-700">
+              <TableCell className="font-bold text-lg py-4 text-white">Secure your spot</TableCell>
               <TableCell className="text-center py-4">
                 <Button 
-                  className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors"
+                  className="bg-zap-yellow text-black hover:bg-zap-yellow transition-colors"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Purchase
@@ -119,7 +119,7 @@ const ArtistPackageTable = () => {
               </TableCell>
               <TableCell className="text-center py-4">
                 <Button 
-                  className="bg-zap-blue text-white hover:bg-zap-blue/80 transition-colors"
+                  className="bg-zap-blue text-white hover:bg-zap-blue transition-colors"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Purchase
@@ -127,7 +127,7 @@ const ArtistPackageTable = () => {
               </TableCell>
               <TableCell className="text-center py-4">
                 <Button 
-                  className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
+                  className="bg-zap-red text-white hover:bg-zap-red transition-colors"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Purchase
