@@ -30,9 +30,9 @@ const features: Feature[] = [
   { name: "Shop-front Feature Display", studioArtist: false, featureArtist: true, signatureArtist: true },
   { name: "Custom Embosser for Prints", studioArtist: false, featureArtist: true, signatureArtist: true },
   { name: "Specialty Sticker Options", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Exclusive Opening Night Event", studioArtist: false, featureArtist: false, signatureArtist: true },
-  { name: "Custom Digital Promotion Campaign", studioArtist: false, featureArtist: false, signatureArtist: true },
-  { name: "Dedicated Exhibition Curator", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Opening & Closing week Feature Wall", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "1 week Solo Feature Wall Exhibition", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Solo Exhibition Launch Night", studioArtist: false, featureArtist: false, signatureArtist: true },
 ];
 
 const ArtistPackageTable = () => {
