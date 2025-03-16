@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { normalizeSocialPlatforms, getSocialIcon } from '@/components/artistSubdomain/utils/socialPlatformUtils';
+import { normalizeSocialPlatforms, getSocialIcon } from '@/components/artistSubdomain/utils/socialPlatformUtils.tsx';
 
 interface ArtistSocialLinksProps {
   socialPlatforms: string[];

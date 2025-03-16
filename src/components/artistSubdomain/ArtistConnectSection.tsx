@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { normalizeSocialPlatforms, getSocialIcon } from './utils/socialPlatformUtils';
+import { normalizeSocialPlatforms, getSocialIcon } from './utils/socialPlatformUtils.tsx';
 
 interface ArtistConnectSectionProps {
   socialPlatforms: string[];
