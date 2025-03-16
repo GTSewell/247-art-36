@@ -16,6 +16,7 @@ const features: Feature[] = [
   { name: "Gallery Commission on Original Artwork", studioArtist: "25%", featureArtist: "0%" },
   { name: "Artist Commission of RRP on Retail Sales", studioArtist: "30%", featureArtist: "40%" },
   { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm" },
+  { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 4" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Unlimited (within reason)" },
   { name: "Artworks per space", studioArtist: "1", featureArtist: "Up to 4" },
   { name: "T-shirt Options", studioArtist: "Black or White only", featureArtist: "Full Color Range" },
