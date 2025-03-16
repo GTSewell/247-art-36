@@ -11,6 +11,7 @@ import SocialLogin from "@/components/auth/SocialLogin";
 import DemoAccountInfo from "@/components/auth/DemoAccountInfo";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Info } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("signin");
   const { isPWA } = useAppMode();
+  const isMobile = useIsMobile();
+  
+  // Determine if we should use mobile-friendly UI
+  const useMobileUI = isPWA || isMobile;
 
   useEffect(() => {
     // Parse the query parameter to set the initial tab
@@ -36,7 +41,12 @@ const Auth = () => {
       }
     }) => {
       if (session) {
-        navigate("/account");
+        // Redirect to home page or account page based on device type
+        if (isPWA) {
+          navigate("/account");
+        } else {
+          navigate("/");
+        }
       }
     });
 
@@ -47,14 +57,19 @@ const Auth = () => {
       }
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) {
-        navigate("/account");
+        // Redirect to home page or account page based on device type
+        if (isPWA) {
+          navigate("/account");
+        } else {
+          navigate("/");
+        }
       }
     });
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, isPWA]);
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-zap-yellow p-4 ${isPWA ? 'pt-16' : ''}`}>
+    <div className={`min-h-screen flex items-center justify-center bg-zap-yellow p-4 ${useMobileUI ? 'pt-16' : ''}`}>
       {isPWA && <PWANavigation />}
       
       <div className="w-full max-w-md space-y-8 bg-white p-6 rounded-xl shadow-lg">

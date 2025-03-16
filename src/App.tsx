@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import Index from "@/pages/Index";
 import Artists from "@/pages/Artists";
@@ -31,6 +32,10 @@ import "./App.css";
 function App() {
   const location = useLocation();
   const { isPWA } = useAppMode();
+  const isMobile = useIsMobile();
+  
+  // Use PWA UI for mobile devices, but only if it's actually installed as a PWA
+  const usePWAUI = isPWA;
   
   // Add data-pwa attribute to body when in PWA mode
   useEffect(() => {
@@ -51,15 +56,15 @@ function App() {
       <Routes>
         <Route 
           path="/" 
-          element={isPWA ? <PWAHome /> : <Index />} 
+          element={usePWAUI ? <PWAHome /> : <Index />} 
         />
         <Route 
           path="/artists" 
-          element={isPWA ? <PWAArtists /> : <Artists />} 
+          element={usePWAUI ? <PWAArtists /> : <Artists />} 
         />
         <Route 
           path="/store" 
-          element={isPWA ? <PWAStore /> : <GeneralStore />} 
+          element={usePWAUI ? <PWAStore /> : <GeneralStore />} 
         />
         <Route path="/cart" element={<Cart />} />
         <Route path="/auth" element={<Auth />} />

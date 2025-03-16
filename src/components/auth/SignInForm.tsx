@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 interface SignInFormProps {
   loading: boolean;
@@ -17,6 +19,8 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
   const [password, setPassword] = useState("12341234");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAdminHint, setShowAdminHint] = useState(false);
+  const navigate = useNavigate();
+  const { isPWA } = useAppMode();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +61,13 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
       
       console.log("Sign in successful", data);
       toast.success("Signed in successfully!");
+      
+      // Redirect based on device/PWA status
+      if (isPWA) {
+        navigate('/account');
+      } else {
+        navigate('/');
+      }
     } catch (error: any) {
       console.error("Sign in error detail:", error);
       setErrorMessage(error.message);

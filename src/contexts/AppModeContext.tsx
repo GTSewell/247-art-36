@@ -25,17 +25,23 @@ export const AppModeProvider: React.FC<AppModeProviderProps> = ({ children }) =>
 
   useEffect(() => {
     // Check if the app is running in standalone mode (PWA)
+    // We explicitly check user agent for mobile devices to ensure desktop browsers don't trigger PWA mode
     const isStandalone = 
-      window.matchMedia('(display-mode: standalone)').matches || 
+      (window.matchMedia('(display-mode: standalone)').matches || 
       (window.navigator as any).standalone || 
-      document.referrer.includes('android-app://');
+      document.referrer.includes('android-app://'));
     
-    setIsPWA(isStandalone);
+    // Check if it's a mobile device
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Set PWA mode only if it's both standalone AND mobile, or if it was explicitly set
+    setIsPWA(isStandalone && isMobileDevice);
     
     // Listen for changes in display mode
     const mediaQueryList = window.matchMedia('(display-mode: standalone)');
     const handleChange = (e: MediaQueryListEvent) => {
-      setIsPWA(e.matches);
+      // Only enable PWA mode if it's a mobile device
+      setIsPWA(e.matches && isMobileDevice);
     };
     
     // Use the correct event listener based on browser support
