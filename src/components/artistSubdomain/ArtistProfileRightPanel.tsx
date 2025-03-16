@@ -12,7 +12,7 @@ import {
   DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
 
 interface ArtworkDetails {
   image: string;
@@ -36,6 +36,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const isMobile = useIsMobile();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkDetails | null>(null);
+  const { addItem } = useCart();
   
   // For Demo Artist, use placeholder artworks if none exist
   const placeholderArtworks = artist.name === "Demo Artist" ? [
@@ -66,15 +67,22 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     setIsModalOpen(true);
   };
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    // Prevent the dialog from closing
-    e.preventDefault();
-    e.stopPropagation();
-    
-    // Show toast notification
-    toast.success("Added to art!", {
-      description: `${selectedArtwork?.title} has been added to your collection.`
-    });
+  const handleAddToCart = () => {
+    if (selectedArtwork) {
+      // Convert price string (e.g. "$1500") to number
+      const price = parseFloat(selectedArtwork.price.replace('$', ''));
+      
+      addItem({
+        id: `${artist.id || 'artwork'}-${Date.now()}`,
+        name: selectedArtwork.title,
+        price: price,
+        image_url: selectedArtwork.image,
+        artist: { name: artist.name }
+      });
+      
+      // Close the modal after adding to cart
+      setIsModalOpen(false);
+    }
   };
   
   return (
@@ -170,7 +178,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                 className="bg-[#95B3D2] hover:bg-[#7A9CC2] text-white transition-colors rounded-lg"
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Art
+                Add to Cart
               </Button>
             </div>
           </div>

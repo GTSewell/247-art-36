@@ -25,7 +25,7 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
     addItem({
       id: product.id,
       name: product.name,
-      price: product.price,
+      price: parseFloat(product.price),
       image_url: product.image_url,
       artist: product.artists
     });
@@ -83,7 +83,7 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
                 </div>
                 <h3 className="font-medium mb-1 text-sm font-nove truncate">{product.name}</h3>
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-800 text-base font-bold">${product.price}</p>
+                  <p className="text-gray-800 text-base font-bold">${typeof product.price === 'string' ? product.price : product.price.toFixed(2)}</p>
                   <Button 
                     size="icon" 
                     className="bg-zap-red hover:bg-zap-blue h-8 w-8"
