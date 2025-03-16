@@ -48,7 +48,7 @@ const ArtistPackageTable = () => {
       <div className="overflow-x-auto">
         <Table className="w-full">
           <TableHeader>
-            <TableRow className="bg-black">
+            <TableRow className="bg-black hover:bg-black" style={{ transition: 'none' }}>
               <TableHead className="text-white">Features</TableHead>
               <TableHead className="text-center">
                 <div className="flex flex-col items-center justify-center">
@@ -107,7 +107,7 @@ const ArtistPackageTable = () => {
               </TableRow>
             ))}
             {/* Secure Your Spot Row with Purchase Buttons */}
-            <TableRow className="bg-black border-t-2 border-gray-700">
+            <TableRow className="bg-black hover:bg-black border-t-2 border-gray-700" style={{ transition: 'none' }}>
               <TableCell className="font-bold text-lg py-4 text-white">Secure your spot</TableCell>
               <TableCell className="text-center py-4">
                 <Button 
