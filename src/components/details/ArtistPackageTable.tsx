@@ -12,14 +12,14 @@ interface Feature {
 }
 
 const features: Feature[] = [
-  { name: "Exhibition Duration", studioArtist: "100 Days (3 months+)", featureArtist: "100 Days (3 months+)" },
-  { name: "Gallery Commission on Original Artwork", studioArtist: "25%", featureArtist: "0%" },
-  { name: "Artist Commission of RRP on Retail Sales", studioArtist: "30%", featureArtist: "40%" },
+  { name: "Exhibition Duration", studioArtist: "100 Days (3 months)", featureArtist: "100 Days (3 months)" },
+  { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "0%" },
+  { name: "Artist Commission (Retail Production)", studioArtist: "100%", featureArtist: "100%" },
   { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm" },
   { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 4" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Unlimited (within reason)" },
-  { name: "T-shirt Options", studioArtist: "Black or White only", featureArtist: "Full Color Range" },
-  { name: "Video Wall Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3" },
+  { name: "Apparel Options", studioArtist: "Black & White garments", featureArtist: "Full Color Range Garments" },
+  { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3" },
   { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true },
   { name: "Custom Artist Profile URL", studioArtist: true, featureArtist: true },
   { name: "Priority Art Hanging", studioArtist: false, featureArtist: true },
