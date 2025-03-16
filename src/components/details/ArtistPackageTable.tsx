@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Check, X, ShoppingCart, ChevronDown, ChevronUp } from "lucide-react";
@@ -216,19 +215,17 @@ const ArtistPackageTable = () => {
                   style={{ transition: 'none' }}
                 >
                   <TableCell className="font-medium">
-                    <Collapsible open={expandedRows.includes(index)}>
-                      <CollapsibleTrigger 
-                        className="flex items-center justify-between w-full"
-                        onClick={() => toggleRow(index)}
-                      >
-                        <span>{feature.name}</span>
-                        {expandedRows.includes(index) ? (
-                          <ChevronUp className="h-4 w-4 text-gray-500" />
-                        ) : (
-                          <ChevronDown className="h-4 w-4 text-gray-500" />
-                        )}
-                      </CollapsibleTrigger>
-                    </Collapsible>
+                    <div 
+                      className="flex items-center justify-between w-full cursor-pointer"
+                      onClick={() => toggleRow(index)}
+                    >
+                      <span>{feature.name}</span>
+                      {expandedRows.includes(index) ? (
+                        <ChevronUp className="h-4 w-4 text-gray-500" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 text-gray-500" />
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell className="text-center">
                     {typeof feature.studioArtist === "boolean" ? (
@@ -271,9 +268,9 @@ const ArtistPackageTable = () => {
                     style={{ transition: 'none' }}
                   >
                     <TableCell colSpan={4} className="p-4 pt-0">
-                      <CollapsibleContent className="text-gray-600 text-sm italic pl-4 pb-2">
+                      <div className="text-gray-600 text-sm italic pl-4 pb-2">
                         {feature.description}
-                      </CollapsibleContent>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}
@@ -315,3 +312,4 @@ const ArtistPackageTable = () => {
 };
 
 export default ArtistPackageTable;
+
