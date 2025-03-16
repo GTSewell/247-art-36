@@ -1,8 +1,10 @@
+
 import React from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Check, X } from "lucide-react";
+import { Check, X, ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface Feature {
   name: string;
@@ -104,6 +106,34 @@ const ArtistPackageTable = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {/* Secure Your Spot Row with Purchase Buttons */}
+            <TableRow className="bg-gray-100 border-t-2 border-gray-300">
+              <TableCell className="font-bold text-lg py-4">Secure your spot</TableCell>
+              <TableCell className="text-center py-4">
+                <Button 
+                  className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors"
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Purchase
+                </Button>
+              </TableCell>
+              <TableCell className="text-center py-4">
+                <Button 
+                  className="bg-zap-blue text-white hover:bg-zap-blue/80 transition-colors"
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Purchase
+                </Button>
+              </TableCell>
+              <TableCell className="text-center py-4">
+                <Button 
+                  className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
+                >
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Purchase
+                </Button>
+              </TableCell>
+            </TableRow>
           </TableBody>
         </Table>
       </div>
