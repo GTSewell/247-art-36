@@ -9,26 +9,30 @@ interface Feature {
   name: string;
   studioArtist: boolean | string;
   featureArtist: boolean | string;
+  signatureArtist: boolean | string;
 }
 
 const features: Feature[] = [
-  { name: "Exhibition Duration", studioArtist: "100 Days (3 months)", featureArtist: "100 Days (3 months)" },
-  { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "0%" },
-  { name: "Artist Commission (Retail Production)", studioArtist: "100%", featureArtist: "100%" },
-  { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm" },
-  { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 4" },
-  { name: "Apparel Options", studioArtist: "Black & White garments", featureArtist: "Full Color Range Garments" },
-  { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Up to 4 per month" },
-  { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3" },
-  { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true },
-  { name: "Custom Artist Profile URL", studioArtist: true, featureArtist: true },
-  { name: "Priority Art Hanging", studioArtist: false, featureArtist: true },
-  { name: "Sculpture Display (40cm x 40cm plinth)", studioArtist: false, featureArtist: true },
-  { name: "Retail 'STP' Merch Pack", studioArtist: false, featureArtist: true },
-  { name: "247 Artist ATLAS Book + 3 Card Packs", studioArtist: false, featureArtist: true },
-  { name: "Shop-front Feature Display", studioArtist: false, featureArtist: true },
-  { name: "Custom Embosser for Prints", studioArtist: false, featureArtist: true },
-  { name: "Specialty Sticker Options", studioArtist: false, featureArtist: true },
+  { name: "Exhibition Duration", studioArtist: "100 Days (3 months)", featureArtist: "100 Days (3 months)", signatureArtist: "100 Days (3 months)" },
+  { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "0%", signatureArtist: "0%" },
+  { name: "Artist Commission (Retail Production)", studioArtist: "100%", featureArtist: "100%", signatureArtist: "100%" },
+  { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm", signatureArtist: "1.5 sqm" },
+  { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 4", signatureArtist: "Up to 6" },
+  { name: "Apparel Options", studioArtist: "Black & White garments", featureArtist: "Full Color Range Garments", signatureArtist: "Full Color Range + Premium Garments" },
+  { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Up to 4 per month", signatureArtist: "Unlimited" },
+  { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3", signatureArtist: "3 rotations every 3" },
+  { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true, signatureArtist: true },
+  { name: "Custom Artist Profile URL", studioArtist: true, featureArtist: true, signatureArtist: true },
+  { name: "Priority Art Hanging", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Sculpture Display (40cm x 40cm plinth)", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Retail 'STP' Merch Pack", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "247 Artist ATLAS Book + 3 Card Packs", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Shop-front Feature Display", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Custom Embosser for Prints", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Specialty Sticker Options", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Exclusive Opening Night Event", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Custom Digital Promotion Campaign", studioArtist: false, featureArtist: false, signatureArtist: true },
+  { name: "Dedicated Exhibition Curator", studioArtist: false, featureArtist: false, signatureArtist: true },
 ];
 
 const ArtistPackageTable = () => {
@@ -54,6 +58,12 @@ const ArtistPackageTable = () => {
                 <div className="flex flex-col items-center justify-center">
                   <span className="font-bold text-lg">Feature Artist</span>
                   <span className="text-yellow-400 font-bold">$1,495</span>
+                </div>
+              </TableHead>
+              <TableHead className="text-center text-white">
+                <div className="flex flex-col items-center justify-center">
+                  <span className="font-bold text-lg">Signature Artist</span>
+                  <span className="text-yellow-400 font-bold">$1,995</span>
                 </div>
               </TableHead>
             </TableRow>
@@ -82,6 +92,17 @@ const ArtistPackageTable = () => {
                     )
                   ) : (
                     <span>{feature.featureArtist}</span>
+                  )}
+                </TableCell>
+                <TableCell className="text-center">
+                  {typeof feature.signatureArtist === "boolean" ? (
+                    feature.signatureArtist ? (
+                      <Check className="mx-auto text-green-500" />
+                    ) : (
+                      <X className="mx-auto text-red-500" />
+                    )
+                  ) : (
+                    <span>{feature.signatureArtist}</span>
                   )}
                 </TableCell>
               </TableRow>
