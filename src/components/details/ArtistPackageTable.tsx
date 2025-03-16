@@ -14,7 +14,7 @@ interface Feature {
 
 const features: Feature[] = [
   { name: "Price", studioArtist: "$995", featureArtist: "$1495", signatureArtist: "$1995" },
-  { name: "Limited", studioArtist: "48 Artists", featureArtist: "36 Artists", signatureArtist: "12  Artists" },
+  { name: "Limited Spaces", studioArtist: "48 Artists", featureArtist: "36 Artists", signatureArtist: "12  Artists" },
   { name: "Exhibition Duration", studioArtist: "~100 Days (3 months)", featureArtist: "~100 Days (3 months)", signatureArtist: "~100 Days (3 months)" },
   { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "10%", signatureArtist: "0%" },
   { name: "STP Collector Packs = 0% commission", studioArtist: "25", featureArtist: "10", signatureArtist: "0" },
@@ -29,9 +29,7 @@ const features: Feature[] = [
   { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "Custom Artist Profile URL", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "Priority Art Hanging", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Sculpture Display Option (40cm x 40cm plinth)", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Custom Embosser for Prints", studioArtist: false, featureArtist: true, signatureArtist: true },
-  { name: "Specialty Sticker Options", studioArtist: false, featureArtist: true, signatureArtist: true },
+  { name: "Sculpture Display Option (TBD)", studioArtist: false, featureArtist: true, signatureArtist: true },
   { name: "Shop-front Feature Display", studioArtist: false, featureArtist: false, signatureArtist: true },
   { name: "Solo Exhibition - Feature Wall (1 Week)", studioArtist: false, featureArtist: false, signatureArtist: true },
   { name: "Solo Exhibition - Launch Night", studioArtist: false, featureArtist: false, signatureArtist: true },
