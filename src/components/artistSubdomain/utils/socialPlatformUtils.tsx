@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { 
   Instagram,
   Twitter, 
@@ -9,7 +10,6 @@ import {
   Linkedin,
   ExternalLink
 } from 'lucide-react';
-import React from 'react';
 
 export interface NormalizedPlatform {
   type: string;
