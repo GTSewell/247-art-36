@@ -69,7 +69,7 @@ const ArtistPackageTable = () => {
           </TableHeader>
           <TableBody>
             {features.map((feature, index) => (
-              <TableRow key={index} className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")}>
+              <TableRow key={index} className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} style={{ transition: 'none' }}>
                 <TableCell className="font-medium">{feature.name}</TableCell>
                 <TableCell className="text-center">
                   {typeof feature.studioArtist === "boolean" ? (
@@ -111,7 +111,7 @@ const ArtistPackageTable = () => {
               <TableCell className="font-bold text-lg py-4 text-white">Secure your spot</TableCell>
               <TableCell className="text-center py-4">
                 <Button 
-                  className="bg-zap-yellow text-black hover:bg-zap-yellow transition-colors"
+                  className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Purchase
@@ -119,7 +119,7 @@ const ArtistPackageTable = () => {
               </TableCell>
               <TableCell className="text-center py-4">
                 <Button 
-                  className="bg-zap-blue text-white hover:bg-zap-blue transition-colors"
+                  className="bg-zap-blue text-white hover:bg-zap-blue/80 transition-colors"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Purchase
@@ -127,7 +127,7 @@ const ArtistPackageTable = () => {
               </TableCell>
               <TableCell className="text-center py-4">
                 <Button 
-                  className="bg-zap-red text-white hover:bg-zap-red transition-colors"
+                  className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
                 >
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Purchase
