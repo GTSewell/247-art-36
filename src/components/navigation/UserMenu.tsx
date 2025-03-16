@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { User, LogIn, LogOut, Settings } from "lucide-react";
+import { LogIn, LogOut, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -62,7 +62,11 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
           className="ml-2 relative"
           title="User Menu"
         >
-          <User className="h-5 w-5" />
+          <img 
+            src="/lovable-uploads/77d6eca3-c8ee-469f-8975-11645265224b.png" 
+            alt="User Profile" 
+            className="h-7 w-7"
+          />
           {showCartBadge && (
             <Badge className="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs bg-zap-red text-white">
               {itemCount}
