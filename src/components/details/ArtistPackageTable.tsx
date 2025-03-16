@@ -14,13 +14,13 @@ interface Feature {
 
 const features: Feature[] = [
   { name: "Exhibition Duration", studioArtist: "100 Days (3 months)", featureArtist: "100 Days (3 months)", signatureArtist: "100 Days (3 months)" },
-  { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "0%", signatureArtist: "0%" },
+  { name: "Gallery Commission (Original Artwork)", studioArtist: "25%", featureArtist: "10%", signatureArtist: "0%" },
   { name: "Artist Commission (Retail Production)", studioArtist: "100%", featureArtist: "100%", signatureArtist: "100%" },
-  { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm", signatureArtist: "1.5 sqm" },
-  { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 4", signatureArtist: "Up to 6" },
-  { name: "Apparel Options", studioArtist: "Black & White garments", featureArtist: "Full Color Range Garments", signatureArtist: "Full Color Range + Premium Garments" },
+  { name: "Artwork Space", studioArtist: "0.75 sqm", featureArtist: "1 sqm", signatureArtist: "1.2 sqm" },
+  { name: "Artworks Per Space", studioArtist: "1", featureArtist: "Up to 2", signatureArtist: "Up to 4" },
+  { name: "Apparel Options", studioArtist: "Full Range", featureArtist: "Full Range", signatureArtist: "Full Range" },
   { name: "Artwork Changes", studioArtist: "1 per Month", featureArtist: "Up to 4 per month", signatureArtist: "Unlimited" },
-  { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 3", featureArtist: "2 rotations every 3", signatureArtist: "3 rotations every 3" },
+  { name: "24/7 Video Wall & Projection Profile", studioArtist: "1 rotation every 6", featureArtist: "2 rotations every 6", signatureArtist: "3 rotations every 6" },
   { name: "24hr Timed Edition Drops", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "Custom Artist Profile URL", studioArtist: true, featureArtist: true, signatureArtist: true },
   { name: "Priority Art Hanging", studioArtist: false, featureArtist: true, signatureArtist: true },
