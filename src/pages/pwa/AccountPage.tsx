@@ -1,153 +1,143 @@
 
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
 import { useAuth } from "@/hooks/use-auth";
-import PWANavigation from "@/components/pwa/PWANavigation";
-import Navigation from "@/components/navigation/Navigation";
-import { useAppMode } from "@/contexts/AppModeContext";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Brush, Heart, Package, Settings, UserRound, LogIn } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button"; 
+import { ShoppingCart, LogOut, Settings, User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useCart } from "@/contexts/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 const AccountPage = () => {
-  const navigate = useNavigate();
   const { user, isLoading } = useAuth();
-  const { isPWA } = useAppMode();
+  const navigate = useNavigate();
+  const { items, itemCount } = useCart();
 
-  const navigateTo = (path: string) => {
-    navigate(path);
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      navigate('/');
+      toast.success("Signed out successfully");
+    } catch (error: any) {
+      toast.error(`Error signing out: ${error.message}`);
+    }
   };
 
-  const renderAuthenticatedContent = () => (
-    <div className="space-y-4">
-      <div className="flex items-center space-x-4 mb-6">
-        <Avatar className="h-16 w-16">
-          <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-          <AvatarFallback><UserRound className="h-8 w-8" /></AvatarFallback>
-        </Avatar>
-        <div>
-          <h2 className="text-xl font-semibold">
-            {user?.email?.split('@')[0] || 'User'}
-          </h2>
-          <p className="text-sm text-gray-500">{user?.email}</p>
-        </div>
-      </div>
-
-      <Card className="border border-gray-200 hover:border-gray-300 transition-colors">
-        <CardContent className="p-0">
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start p-4 h-auto" 
-            onClick={() => navigateTo('/dashboard/collector')}
-          >
-            <Heart className="h-5 w-5 mr-3 text-zap-red" />
-            <div className="text-left">
-              <div className="font-medium">Collector Dashboard</div>
-              <div className="text-sm text-gray-500">View your favorites and purchases</div>
-            </div>
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card className="border border-gray-200 hover:border-gray-300 transition-colors">
-        <CardContent className="p-0">
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start p-4 h-auto" 
-            onClick={() => navigateTo('/dashboard/artist')}
-          >
-            <Brush className="h-5 w-5 mr-3 text-zap-yellow" />
-            <div className="text-left">
-              <div className="font-medium">Artist Dashboard</div>
-              <div className="text-sm text-gray-500">Manage your artworks and profile</div>
-            </div>
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card className="border border-gray-200 hover:border-gray-300 transition-colors">
-        <CardContent className="p-0">
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start p-4 h-auto" 
-            onClick={() => navigateTo('/dashboard/collector?tab=purchases')}
-          >
-            <Package className="h-5 w-5 mr-3 text-zap-blue" />
-            <div className="text-left">
-              <div className="font-medium">Orders & Purchases</div>
-              <div className="text-sm text-gray-500">View your order history</div>
-            </div>
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card className="border border-gray-200 hover:border-gray-300 transition-colors">
-        <CardContent className="p-0">
-          <Button 
-            variant="ghost" 
-            className="w-full justify-start p-4 h-auto" 
-            onClick={() => navigateTo('/dashboard/collector?tab=settings')}
-          >
-            <Settings className="h-5 w-5 mr-3" />
-            <div className="text-left">
-              <div className="font-medium">Account Settings</div>
-              <div className="text-sm text-gray-500">Manage your profile and preferences</div>
-            </div>
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-
-  const renderUnauthenticatedContent = () => (
-    <div className="flex flex-col items-center justify-center space-y-6 py-8">
-      <Avatar className="h-24 w-24">
-        <AvatarFallback><UserRound className="h-12 w-12" /></AvatarFallback>
-      </Avatar>
-      
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">Welcome!</h2>
-        <p className="text-gray-500">Sign in to access your account</p>
-      </div>
-      
-      <div className="flex flex-col w-full space-y-4 max-w-xs mt-4">
-        <Button 
-          onClick={() => navigateTo('/auth')}
-          size="lg"
-          className="bg-zap-red hover:bg-zap-blue"
-        >
-          <LogIn className="mr-2 h-5 w-5" /> Sign In
-        </Button>
-        
-        <Button 
-          variant="outline" 
-          onClick={() => navigateTo('/auth?tab=signup')}
-          size="lg"
-        >
-          Create an Account
-        </Button>
-      </div>
-    </div>
-  );
+  // If not authenticated, redirect to auth page
+  if (!isLoading && !user) {
+    navigate('/auth');
+    return null;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {isPWA ? <PWANavigation /> : <Navigation />}
-      
-      <main className="container mx-auto px-4 pt-16 pb-24">
-        <h1 className="text-2xl font-bold mb-6">Account</h1>
-        
-        {isLoading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
+    <div className="container max-w-md mx-auto px-4 py-8 pt-20">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <div className="flex items-center mb-6">
+          <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mr-4">
+            {user?.user_metadata?.avatar_url ? (
+              <img 
+                src={user.user_metadata.avatar_url} 
+                alt="Profile" 
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <User className="h-8 w-8 text-gray-500" />
+            )}
           </div>
-        ) : (
-          <>
-            {user ? renderAuthenticatedContent() : renderUnauthenticatedContent()}
-          </>
-        )}
-      </main>
+          <div>
+            <h1 className="text-xl font-bold">{user?.user_metadata?.full_name || 'User'}</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
+          </div>
+        </div>
+
+        {/* Cart section */}
+        <div className="mb-6">
+          <Button 
+            variant="outline" 
+            className="w-full justify-between mb-2" 
+            onClick={() => navigate('/cart')}
+          >
+            <div className="flex items-center">
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              <span>Cart</span>
+            </div>
+            {itemCount > 0 && (
+              <Badge className="bg-zap-red text-white">
+                {itemCount}
+              </Badge>
+            )}
+          </Button>
+          
+          {items.length > 0 && (
+            <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded-md">
+              <h3 className="text-sm font-medium mb-2">Items in your cart:</h3>
+              <ul className="space-y-2">
+                {items.slice(0, 3).map((item) => (
+                  <li key={item.id} className="text-sm flex items-center">
+                    <div className="w-8 h-8 bg-gray-200 rounded mr-2 overflow-hidden">
+                      <img 
+                        src={item.image_url || '/placeholder.svg'} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/placeholder.svg';
+                        }}
+                      />
+                    </div>
+                    <div className="flex-1 truncate">{item.name}</div>
+                    <div className="text-xs font-medium">x{item.quantity}</div>
+                  </li>
+                ))}
+                {items.length > 3 && (
+                  <li className="text-xs text-center text-gray-500">
+                    +{items.length - 3} more items
+                  </li>
+                )}
+              </ul>
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="w-full mt-2 bg-zap-red hover:bg-zap-red/90"
+                onClick={() => navigate('/cart')}
+              >
+                View Full Cart
+              </Button>
+            </div>
+          )}
+        </div>
+
+        {/* Navigation buttons */}
+        <div className="space-y-2">
+          <Button 
+            variant="outline" 
+            className="w-full justify-start"
+            onClick={() => navigate('/dashboard/collector')}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Collector Dashboard
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            className="w-full justify-start"
+            onClick={() => navigate('/dashboard/artist')}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Artist Dashboard
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            className="w-full justify-start text-red-500" 
+            onClick={handleSignOut}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

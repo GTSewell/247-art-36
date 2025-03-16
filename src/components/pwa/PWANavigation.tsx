@@ -3,10 +3,13 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Users, ShoppingBag } from 'lucide-react';
 import { useAuth } from "@/hooks/use-auth";
+import { useCart } from "@/contexts/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 const PWANavigation = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { itemCount } = useCart();
 
   // Handle account navigation based on authentication status
   const handleAccountClick = (e: React.MouseEvent) => {
@@ -63,21 +66,30 @@ const PWANavigation = () => {
             <span className="text-xs mt-1">Store</span>
           </NavLink>
           
-          {/* Account icon - replaced with custom profile icon */}
+          {/* Account icon - with cart badge overlay */}
           <NavLink 
             to="/account" 
             className={({ isActive }) => 
-              `flex flex-col items-center justify-center w-1/4 h-full ${
+              `flex flex-col items-center justify-center w-1/4 h-full relative ${
                 isActive ? 'text-zap-yellow' : 'text-gray-400'
               }`
             }
             onClick={handleAccountClick}
           >
-            <img 
-              src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
-              alt="Account" 
-              className="h-10 w-10" /* Increased from h-8 w-8 (30% larger) */
-            />
+            <div className="relative">
+              <img 
+                src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
+                alt="Account" 
+                className="h-10 w-10" 
+              />
+              {itemCount > 0 && (
+                <Badge 
+                  className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {itemCount}
+                </Badge>
+              )}
+            </div>
           </NavLink>
         </div>
       </nav>

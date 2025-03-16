@@ -8,6 +8,8 @@ import { useAppMode } from "@/contexts/AppModeContext";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useCart } from "@/contexts/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +17,7 @@ const Navigation = () => {
   const { user, isLoading } = useAuth();
   const { isPWA } = useAppMode();
   const isMobile = useIsMobile();
+  const { itemCount } = useCart();
 
   // Return null if in PWA mode to hide navigation
   if (isPWA) {
@@ -50,8 +53,8 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
 
-          {/* Mobile menu button - replaced hamburger with profile icon */}
-          <div className="md:hidden">
+          {/* Mobile menu button - with cart badge */}
+          <div className="md:hidden relative">
             <Button
               variant="ghost"
               size="icon"
@@ -62,11 +65,20 @@ const Navigation = () => {
               {isOpen ? (
                 <X className="h-6 w-6" />
               ) : (
-                <img 
-                  src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
-                  alt="Menu" 
-                  className="h-8 w-8" 
-                />
+                <div className="relative">
+                  <img 
+                    src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
+                    alt="Menu" 
+                    className="h-8 w-8" 
+                  />
+                  {itemCount > 0 && (
+                    <Badge 
+                      className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
+                    >
+                      {itemCount}
+                    </Badge>
+                  )}
+                </div>
               )}
             </Button>
           </div>

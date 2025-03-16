@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { LogIn, LogOut, Settings } from "lucide-react";
+import { LogIn, LogOut, Settings, ShoppingCart } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useCart } from "@/contexts/CartContext";
+import { Badge } from "@/components/ui/badge";
 
 interface UserMenuProps {
   user: any | null;
@@ -23,6 +25,7 @@ interface UserMenuProps {
 
 const UserMenu = ({ user, isLoading }: UserMenuProps) => {
   const navigate = useNavigate();
+  const { itemCount } = useCart();
 
   const handleSignOut = async () => {
     try {
@@ -49,12 +52,21 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
   if (!user) {
     return (
       <Button variant="ghost" size="icon" onClick={() => navigate("/auth")} title="Sign In" className="p-0">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
-          <AvatarFallback className="bg-gray-200">
-            <LogIn className="h-5 w-5" />
-          </AvatarFallback>
-        </Avatar>
+        <div className="relative">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
+            <AvatarFallback className="bg-gray-200">
+              <LogIn className="h-5 w-5" />
+            </AvatarFallback>
+          </Avatar>
+          {itemCount > 0 && (
+            <Badge 
+              className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
+            >
+              {itemCount}
+            </Badge>
+          )}
+        </div>
         <span className="sr-only">Sign In</span>
       </Button>
     );
@@ -64,12 +76,21 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" title="Account" className="p-0">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
-            <AvatarFallback className="bg-gray-200">
-              {user.email ? user.email.charAt(0).toUpperCase() : "U"}
-            </AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src="/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png" alt="Profile" />
+              <AvatarFallback className="bg-gray-200">
+                {user.email ? user.email.charAt(0).toUpperCase() : "U"}
+              </AvatarFallback>
+            </Avatar>
+            {itemCount > 0 && (
+              <Badge 
+                className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
+              >
+                {itemCount}
+              </Badge>
+            )}
+          </div>
           <span className="sr-only">Account</span>
         </Button>
       </DropdownMenuTrigger>
@@ -77,6 +98,13 @@ const UserMenu = ({ user, isLoading }: UserMenuProps) => {
         <DropdownMenuLabel>
           {user.email || "My Account"}
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to="/cart">
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Cart {itemCount > 0 && `(${itemCount})`}
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link to="/dashboard/artist">
