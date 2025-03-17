@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { logger } from "@/utils/logger";
 
 interface ArtworkGridProps {
   artworks: string[];
@@ -20,6 +21,11 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({ artworks, onRemove }) => {
     );
   }
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
+    logger.error(`Failed to load artwork image at index ${index}:`, artworks[index]);
+    e.currentTarget.src = "/placeholder.svg";
+  };
+
   return (
     <div className={`grid gap-4 mt-4 ${isMobile ? 'grid-cols-2' : 'grid-cols-4'}`}>
       {artworks.map((artwork, index) => (
@@ -29,9 +35,7 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({ artworks, onRemove }) => {
               src={artwork} 
               alt={`Artwork ${index + 1}`} 
               className="w-full h-full object-cover transition-transform group-hover:scale-105"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "/placeholder.svg";
-              }}
+              onError={(e) => handleImageError(e, index)}
             />
           </div>
           <Button 
