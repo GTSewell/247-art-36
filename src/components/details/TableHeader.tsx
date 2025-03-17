@@ -6,7 +6,7 @@ const TableHeaderComponent = () => {
   return (
     <TableHeader>
       <TableRow className="bg-black hover:bg-black" style={{ transition: 'none' }}>
-        <TableHead className="font-bold text-lg text-white">Features</TableHead>
+        <TableHead className="font-bold text-lg text-white">Features: Select to expand details</TableHead>
         <TableHead className="text-center">
           <div className="flex flex-col items-center justify-center">
             <span className="font-bold text-lg text-zap-yellow">Studio Artist</span>
