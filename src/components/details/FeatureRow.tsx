@@ -26,13 +26,13 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         onClick={() => toggleRow(index)}
       >
         <TableCell className="font-medium">
-          <div className="flex items-center justify-between w-full">
-            <span>{feature.name}</span>
+          <div className="flex items-center w-full">
             {isExpanded ? (
-              <ChevronUp className="h-4 w-4 text-gray-500" />
+              <ChevronUp className="h-4 w-4 text-gray-500 mr-2 flex-shrink-0" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-gray-500" />
+              <ChevronDown className="h-4 w-4 text-gray-500 mr-2 flex-shrink-0" />
             )}
+            <span>{feature.name}</span>
           </div>
         </TableCell>
         <FeatureCell value={feature.studioArtist} />
