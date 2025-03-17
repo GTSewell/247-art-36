@@ -7,7 +7,7 @@ import { ShoppingCart } from "lucide-react";
 const TableFooterComponent = () => {
   return (
     <TableRow className="bg-black hover:bg-black border-t-2 border-gray-700" style={{ transition: 'none' }}>
-      <TableCell className="font-bold text-lg py-4 text-white">Secure your spot</TableCell>
+      <TableCell className="font-bold text-lg py-4 text-white">Secure your spot with a 10% deposit</TableCell>
       <TableCell className="text-center py-4">
         <Button 
           className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors w-full sm:w-auto justify-center"
