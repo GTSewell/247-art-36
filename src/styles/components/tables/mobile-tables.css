@@ -1,0 +1,48 @@
+
+/* Mobile-specific table styles */
+@media (max-width: 640px) {
+  /* Ensure table takes full width on mobile */
+  .overflow-x-auto table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  /* Set column widths for better balance on mobile */
+  .overflow-x-auto table th:first-child,
+  .overflow-x-auto table td:first-child {
+    width: 40%;
+  }
+  
+  .overflow-x-auto table th:not(:first-child),
+  .overflow-x-auto table td:not(:first-child) {
+    width: 30%;
+  }
+  
+  /* Ensure text is properly contained in cells */
+  .overflow-x-auto table td, 
+  .overflow-x-auto table th {
+    word-break: break-word;
+    white-space: normal;
+    padding: 8px 4px;
+    font-size: 0.875rem;
+  }
+  
+  /* Make sure the feature name doesn't overflow */
+  .overflow-x-auto table td .flex span {
+    word-break: break-word;
+  }
+  
+  /* Fix button width and padding in table footer */
+  .overflow-x-auto table tfoot button,
+  .overflow-x-auto table tr:last-child button {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Add more padding to the footer row */
+  .overflow-x-auto table tr:last-child td {
+    padding: 12px 4px;
+  }
+}
