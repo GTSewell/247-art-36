@@ -1,7 +1,6 @@
 
 import { motion } from "framer-motion";
 import FaqAccordion from "./underground/FaqAccordion";
-import PricingSection from "./underground/PricingSection";
 import InterestForm from "./underground/InterestForm";
 import { faqItems, introText, outroText } from "./underground/faqData";
 
@@ -23,9 +22,6 @@ const JoinUndergroundSection = () => {
 
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
-
-          {/* Pricing Section */}
-          <PricingSection />
 
           {/* Interest Form */}
           <InterestForm introText={outroText} />
