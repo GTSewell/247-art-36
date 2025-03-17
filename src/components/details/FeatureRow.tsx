@@ -39,7 +39,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         <FeatureCell value={feature.featureArtist} />
       </TableRow>
       
-      {/* Expanded content */}
+      {/* Expanded content - no hover effect */}
       {isExpanded && feature.description && (
         <TableRow 
           className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} 
