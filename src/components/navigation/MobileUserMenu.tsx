@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { User, LogIn, LogOut, ShoppingCart, Settings } from "lucide-react";
@@ -7,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 interface MobileUserMenuProps {
   user: any | null;
