@@ -11,6 +11,9 @@
 @import './styles/components/tailwind-base.css';
 @import './styles/components/tables.css';
 @import './styles/components/tabs.css';
+@import './styles/components/tabs/common-tabs.css';
+@import './styles/components/tabs/main-tabs.css';
+@import './styles/components/tabs/inner-tabs.css';
 @import './styles/components/animations.css';
 
 @tailwind base;

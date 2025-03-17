@@ -1,0 +1,22 @@
+
+/* Custom styles for the inner tab buttons - applied to all views */
+.trade-inner-tab {
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+  background-color: hsl(var(--muted));
+  border: 2px solid rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  transform: translateY(0);
+}
+
+[data-state="active"].trade-inner-tab {
+  background-color: hsl(var(--background));
+  border-color: rgba(0,0,0,0.15);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  font-weight: 600;
+  transform: translateY(-2px);
+}
+
+[data-state="active"].trade-inner-tab:before {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+}

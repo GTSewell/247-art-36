@@ -1,0 +1,35 @@
+
+/* Common styles for all tabs */
+
+/* Make tab buttons more clearly interactive */
+[role="tab"] {
+  min-height: 54px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Set white text color for main dashboard tabs only (on black background) */
+.bg-black [role="tab"] {
+  color: white;
+}
+
+/* Set black text color for trade tabs specifically */
+.trade-tabs-container [role="tab"] {
+  color: black;
+}
+
+/* Add hover effects for better interactivity */
+[role="tab"]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+/* Add spacing between tabs and content */
+[role="tabpanel"] {
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
