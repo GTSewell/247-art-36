@@ -1,3 +1,8 @@
 
-/* This file is intentionally left empty as all imports are now in index.css */
-/* All PWA style modules are imported in the index.css file */
+/* Import all PWA-specific stylesheet modules */
+@import './pwa/base.css';
+@import './pwa/artists.css';
+@import './pwa/carousel.css';
+@import './pwa/layout.css';
+@import './pwa/pages.css'; 
+@import './pwa/products.css';
