@@ -156,7 +156,16 @@
   justify-content: center;
   position: relative;
   transition: all 0.3s ease;
-  color: black; /* Changed from white to black for better contrast */
+}
+
+/* Set white text color for main dashboard tabs only (on black background) */
+.bg-black [role="tab"] {
+  color: white;
+}
+
+/* Set black text color for trade tabs specifically */
+.trade-tabs-container [role="tab"] {
+  color: black;
 }
 
 /* Add hover effects for better interactivity */

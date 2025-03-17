@@ -82,7 +82,7 @@ const ArtistDashboard: React.FC = () => {
         </div>
         
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="space-y-4">
-          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black"> {/* Removed text-white class */}
+          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black">
             <TabsTrigger value="profile" className="text-sm">Profile</TabsTrigger>
             <TabsTrigger value="artworks" className="text-sm">Artworks</TabsTrigger>
             <TabsTrigger value="trade" className="text-sm">Trade</TabsTrigger>
