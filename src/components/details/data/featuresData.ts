@@ -12,7 +12,7 @@ export const features: Feature[] = [
     studioArtist: "$995", 
     featureArtist: "$1495", 
     signatureArtist: "$1995",
-    description: "One-time payment to join our exclusive artist community. This includes all of your retail print & merch production stocked in our space, gallery sales staffing, customer relations etc. We will take care of everything for you, including the 5 P's, Print | Pack | Post | Payments | Problems. You focus on creating art, we will take care of the rest."
+    description: "One-time payment to join our exclusive artist community. This includes all of your retail print & merch production and stocked in our space, gallery sales staffing, customer relations etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course any Problems. You focus on creating art, we will take care of the rest."
   },
   { 
     name: "Limited Spaces", 
@@ -26,7 +26,7 @@ export const features: Feature[] = [
     studioArtist: "~100 Days (3 months)", 
     featureArtist: "~100 Days (3 months)", 
     signatureArtist: "~100 Days (3 months)",
-    description: "We believe standard exhibition lengths are too short for maximum impact. You don't see the NGV launch 1 week pop-ups, why? Becuase the cultural/financial impact to cost is not worth it. Your work will be displayed in our gallery for approximately 100 days, providing maximum exposure to collectors and art enthusiasts."
+    description: "We believe standard exhibition lengths are too short for maximum impact. You don't see the NGV launch 1 week pop-ups, why? Because the cultural and financial impact in most cases is not worth it. Your work will be displayed in our gallery for approximately 100 days, providing maximum exposure to collectors and art enthusiasts."
   },
   { 
     name: "Gallery Commission (Original Artwork)", 
@@ -47,21 +47,21 @@ export const features: Feature[] = [
     studioArtist: "100%", 
     featureArtist: "100%", 
     signatureArtist: "100%",
-    description: "After retail production costs, you receive 100% of the profits on all retail production items featuring your artwork. Artists will also receive 100% profits in the Artist ATLAS Genesis book sales"
+    description: "After retail production costs, you receive 100% of the profits on all retail production items featuring your artwork. Artists will also receive a distributed share of 100% profits in the Artist ATLAS Genesis book sales"
   },
   { 
     name: "Artwork Space", 
     studioArtist: "0.75 sqm area", 
     featureArtist: "1 sqm area", 
     signatureArtist: "1 sqm area",
-    description: "Your wall space is calculated by the size of your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9m. This fits with the 1 sqm space.  Dedicated wall space in our gallery for displaying your artwork. More space means more visibility and opportunity to showcase your talent."
+    description: "Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. "
   },
   { 
     name: "Artworks Per Space", 
     studioArtist: "Up to 2", 
     featureArtist: "Up to 4", 
     signatureArtist: "Up to 4",
-    description: "Number of different artworks you can display in your allocated space. More artworks means greater variety and exposure for your portfolio. If you are a Feature Artist, you can fit up to 4 artworks into your space, as long as it fits with the 1 sqm area. Note: Additional artworks will need to allow spacing. See our artwork calculator 'HERE'."
+    description: "Number of different artworks you can display in your allocated space. More artworks means greater variety and exposure for your portfolio. If you are a Feature Artist, you can fit up to 4 artworks into your space, as long as it fits with the 1 sqm area. Note: Additional artworks will need to allow spacing. See our artwork size calculator on the Details page."
   },
   { 
     name: "Apparel Options", 
@@ -103,7 +103,7 @@ export const features: Feature[] = [
     studioArtist: true, 
     featureArtist: true, 
     signatureArtist: true,
-    description: "Participate in exclusive 24-hour limited edition releases, creating scarcity and demand for your work."
+    description: "Participate in exclusive 24-hour limited edition releases, a fun and exciting way to let the market decide the edition size."
   },
   { 
     name: "Custom Artist 'Link in BIO' Profile URL", 
@@ -131,14 +131,14 @@ export const features: Feature[] = [
     studioArtist: false, 
     featureArtist: true, 
     signatureArtist: true,
-    description: "Your artwork will be prominently displayed in our shop window, visible to street traffic and passersby."
+    description: "Each week 4x Feature Artists will have printed graphics displayed on our shopfront windows, visible to the 50,000 daily passersby on Smith Street each day."
   },
   { 
-    name: "Feature Exhibition - Feature Wall (1 Week)", 
+    name: "Featured Display (1 Week)", 
     studioArtist: false, 
     featureArtist: true, 
     signatureArtist: true,
-    description: "Exclusive opportunity on our dedicated feature wall showcasing your work for one week. A total of 4 feature artists per week will share our gallery Feature Wall"
+    description: "Exclusive opportunity on our dedicated feature wall showcasing your work for one week alongside 3 other Feature Artists on our gallery Feature Wall"
   },
   
 ];
