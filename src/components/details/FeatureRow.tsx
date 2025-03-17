@@ -19,15 +19,14 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
       <TableRow 
         className={cn(
           index % 2 === 0 ? "bg-white" : "bg-gray-50",
-          isExpanded ? "border-b-0" : ""
+          isExpanded ? "border-b-0" : "",
+          "cursor-pointer hover:bg-gray-100"
         )} 
         style={{ transition: 'none' }}
+        onClick={() => toggleRow(index)}
       >
         <TableCell className="font-medium">
-          <div 
-            className="flex items-center justify-between w-full cursor-pointer"
-            onClick={() => toggleRow(index)}
-          >
+          <div className="flex items-center justify-between w-full">
             <span>{feature.name}</span>
             {isExpanded ? (
               <ChevronUp className="h-4 w-4 text-gray-500" />
