@@ -6,14 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ArtistProfileSettings from "@/components/pwa/ArtistProfileSettings";
 import ArtistArtworkManager from "@/components/pwa/ArtistArtworkManager";
 import ArtistSalesAnalytics from "@/components/pwa/ArtistSalesAnalytics";
-import ArtistTradeManager from "@/components/pwa/ArtistTradeManager"; // New component
+import ArtistTradeManager from "@/components/pwa/ArtistTradeManager"; 
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Navigation from "@/components/navigation/Navigation";
 import { useAppMode } from "@/contexts/AppModeContext";
 
-type TabType = "profile" | "artworks" | "trade" | "analytics"; // Added "trade" tab type
+type TabType = "profile" | "artworks" | "trade" | "analytics";
 
 const ArtistDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
@@ -82,7 +82,7 @@ const ArtistDashboard: React.FC = () => {
         </div>
         
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="space-y-4">
-          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black text-white"> {/* Added text-white class */}
+          <TabsList className="grid grid-cols-4 h-14 sticky top-0 z-10 bg-black"> {/* Removed text-white class */}
             <TabsTrigger value="profile" className="text-sm">Profile</TabsTrigger>
             <TabsTrigger value="artworks" className="text-sm">Artworks</TabsTrigger>
             <TabsTrigger value="trade" className="text-sm">Trade</TabsTrigger>

@@ -156,7 +156,7 @@
   justify-content: center;
   position: relative;
   transition: all 0.3s ease;
-  color: white; /* Changed from medium grey to white for better contrast */
+  color: black; /* Changed from white to black for better contrast */
 }
 
 /* Add hover effects for better interactivity */

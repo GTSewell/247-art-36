@@ -36,7 +36,7 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
             className="trade-tabs-container"
           >
             <div className={`sticky top-0 ${isPWA ? 'bg-background' : 'bg-transparent'} z-30 pb-6`}>
-              <TabsList className="w-full mb-10 grid grid-cols-2 gap-4 bg-transparent text-white"> {/* Added text-white class */}
+              <TabsList className="w-full mb-10 grid grid-cols-2 gap-4 bg-transparent"> {/* Removed text-white class */}
                 <TabsTrigger 
                   value="my-trades" 
                   className="trade-main-tab h-16 text-sm md:text-base font-medium"
