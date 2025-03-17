@@ -18,7 +18,7 @@ const TableFooterComponent = () => {
       </TableCell>
       <TableCell className="text-center py-4">
         <Button 
-          className="bg-zap-blue text-white hover:bg-zap-blue/80 transition-colors"
+          className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Purchase
