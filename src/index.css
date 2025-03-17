@@ -1,3 +1,4 @@
+
 @import './fonts.css';
 @import './styles/hidden-elements.css';
 @import './styles/pwa.css';
@@ -210,5 +211,19 @@
   /* Make sure the feature name doesn't overflow */
   .overflow-x-auto table td .flex span {
     word-break: break-word;
+  }
+  
+  /* Fix button width and padding in table footer */
+  .overflow-x-auto table tfoot button,
+  .overflow-x-auto table tr:last-child button {
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Add more padding to the footer row */
+  .overflow-x-auto table tr:last-child td {
+    padding: 12px 4px;
   }
 }

@@ -10,7 +10,7 @@ const TableFooterComponent = () => {
       <TableCell className="font-bold text-lg py-4 text-white">Secure your spot</TableCell>
       <TableCell className="text-center py-4">
         <Button 
-          className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors"
+          className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors w-full sm:w-auto justify-center"
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Purchase
@@ -18,7 +18,7 @@ const TableFooterComponent = () => {
       </TableCell>
       <TableCell className="text-center py-4">
         <Button 
-          className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
+          className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors w-full sm:w-auto justify-center"
         >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Purchase
