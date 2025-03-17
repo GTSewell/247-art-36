@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Table, TableBody } from "@/components/ui/table";
 import { motion } from "framer-motion";
@@ -8,14 +7,10 @@ import FeatureRow from "./FeatureRow";
 import TableFooterComponent from "./TableFooter";
 
 const ArtistPackageTable = () => {
-  const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
 
   const toggleRow = (index: number) => {
-    setExpandedRows(prev => 
-      prev.includes(index) 
-        ? prev.filter(item => item !== index) 
-        : [...prev, index]
-    );
+    setExpandedRow(prev => prev === index ? null : index);
   };
 
   return (
@@ -34,7 +29,7 @@ const ArtistPackageTable = () => {
                 key={index}
                 feature={feature}
                 index={index}
-                isExpanded={expandedRows.includes(index)}
+                isExpanded={expandedRow === index}
                 toggleRow={toggleRow}
               />
             ))}
