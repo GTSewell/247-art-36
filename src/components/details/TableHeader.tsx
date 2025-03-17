@@ -17,11 +17,6 @@ const TableHeaderComponent = () => {
             <span className="font-bold text-lg text-zap-blue">Feature Artist</span>
           </div>
         </TableHead>
-        <TableHead className="text-center">
-          <div className="flex flex-col items-center justify-center">
-            <span className="font-bold text-lg text-zap-red">Signature Artist</span>
-          </div>
-        </TableHead>
       </TableRow>
     </TableHeader>
   );

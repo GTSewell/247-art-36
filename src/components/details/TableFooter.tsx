@@ -24,14 +24,6 @@ const TableFooterComponent = () => {
           Purchase
         </Button>
       </TableCell>
-      <TableCell className="text-center py-4">
-        <Button 
-          className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
-        >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Purchase
-        </Button>
-      </TableCell>
     </TableRow>
   );
 };

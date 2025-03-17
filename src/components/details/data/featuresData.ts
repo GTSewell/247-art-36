@@ -1,9 +1,8 @@
-
 interface Feature {
   name: string;
   studioArtist: boolean | string;
   featureArtist: boolean | string;
-  signatureArtist: boolean | string;
+  signatureArtist?: boolean | string;
   description?: string;
 }
 
