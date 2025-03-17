@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { User, LogIn, LogOut, ShoppingCart } from "lucide-react";
+import { User, LogIn, LogOut, ShoppingCart, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -27,12 +27,15 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
     }
   };
 
-  // Display cart link with badge
   return (
     <>
+      {/* Cart Link */}
       <Link
         to="/cart"
-        className="flex items-center justify-between px-3 py-2 rounded-md text-base font-medium bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+        className={cn(
+          "flex items-center justify-between px-3 py-2 rounded-md text-base font-medium",
+          "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+        )}
       >
         <div className="flex items-center">
           <ShoppingCart className="mr-2 h-5 w-5" />
@@ -45,6 +48,30 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
         )}
       </Link>
       
+      {/* Only show dashboard links if user is logged in */}
+      {!isLoading && user && (
+        <>
+          <Button 
+            variant="outline" 
+            className="w-full justify-start mt-2 text-left"
+            onClick={() => navigate("/dashboard/collector")}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Collector Dashboard
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            className="w-full justify-start mt-2 text-left"
+            onClick={() => navigate("/dashboard/artist")}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Artist Dashboard
+          </Button>
+        </>
+      )}
+      
+      {/* Sign in/out button */}
       {!isLoading && (
         user ? (
           <Button 
