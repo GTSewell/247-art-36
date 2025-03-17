@@ -14,7 +14,7 @@
   "categories": ["art", "music", "lifestyle", "social"],
   "icons": [
     {
-      "src": "/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png",
+      "src": "/lovable-uploads/052b5fb6-9f6b-4dcf-aba3-145e9e52c42a.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -26,7 +26,7 @@
       "url": "/artists",
       "icons": [
         {
-          "src": "/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png",
+          "src": "/lovable-uploads/052b5fb6-9f6b-4dcf-aba3-145e9e52c42a.png",
           "sizes": "192x192"
         }
       ]
@@ -36,7 +36,7 @@
       "url": "/store",
       "icons": [
         {
-          "src": "/lovable-uploads/0a46328d-bced-45e2-8877-d5c6914ff44c.png",
+          "src": "/lovable-uploads/052b5fb6-9f6b-4dcf-aba3-145e9e52c42a.png",
           "sizes": "192x192"
         }
       ]

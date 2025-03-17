@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Zap } from "lucide-react";
 
 const VirtualTourSection = () => {
   return (
@@ -19,7 +20,8 @@ const VirtualTourSection = () => {
           Take a virtual tour of our innovative art space and see where the magic happens.
         </p>
         <Link to="/virtual-tour">
-          <Button size="lg" className="bg-[#ea384c] hover:bg-[#c62c3d] text-white font-bold">
+          <Button size="lg" className="bg-[#ea384c] hover:bg-[#c62c3d] text-white font-bold flex items-center gap-2">
+            <Zap className="h-5 w-5" />
             Take the Virtual Tour
           </Button>
         </Link>

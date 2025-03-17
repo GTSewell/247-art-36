@@ -7,19 +7,26 @@ import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
 import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
+import { Helmet } from "react-helmet";
 
 const Index = () => {
   const { isPWA } = useAppMode();
 
   return (
-    <main className={`min-h-screen ${isPWA ? 'overflow-hidden' : ''}`}>
-      {isPWA ? <PWANavigation /> : <Navigation />}
-      <Hero />
-      <WhatIsZap />
-      <JoinUndergroundSection />
-      <VirtualTourSection />
-      <CallToAction />
-    </main>
+    <>
+      <Helmet>
+        <meta property="og:image" content="/lovable-uploads/052b5fb6-9f6b-4dcf-aba3-145e9e52c42a.png" />
+        <link rel="icon" href="/lovable-uploads/052b5fb6-9f6b-4dcf-aba3-145e9e52c42a.png" />
+      </Helmet>
+      <main className={`min-h-screen ${isPWA ? 'overflow-hidden' : ''}`}>
+        {isPWA ? <PWANavigation /> : <Navigation />}
+        <Hero />
+        <WhatIsZap />
+        <JoinUndergroundSection />
+        <VirtualTourSection />
+        <CallToAction />
+      </main>
+    </>
   );
 };
 
