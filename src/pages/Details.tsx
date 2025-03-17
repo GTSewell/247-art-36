@@ -16,9 +16,9 @@ const Details = () => {
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-          <h1 className="text-4xl font-bold mb-6 text-gray-800">Choose Your Launch Path</h1>
+          <h1 className="text-4xl font-bold mb-6 text-gray-800">Artist Exhibition Packages</h1>
           <p className="text-lg text-gray-800">
-            Whether you're ready to take off or just starting your journey, we have the perfect package for you. Select between our Studio and Feature Artist options to get started.
+            Whether you're just starting your journey, or, a full-time artist, we have the perfect package for you. Select between our Studio and Feature Artist options to get started.
           </p>
         </motion.div>
 
