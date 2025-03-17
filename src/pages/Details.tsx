@@ -18,7 +18,7 @@ const Details = () => {
         >
           <h1 className="text-4xl font-bold mb-6 text-gray-800">Choose Your Launch Path</h1>
           <p className="text-lg text-gray-800">
-            Whether you're ready to take off or just starting your journey, we have the perfect package for you. Select between our Launchpad and Rocket options to begin your artistic ascent.
+            Whether you're ready to take off or just starting your journey, we have the perfect package for you. Select between our Studio and Feature Artist options to get started on a fresh journey.
           </p>
         </motion.div>
 
