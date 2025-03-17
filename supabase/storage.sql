@@ -13,3 +13,13 @@ CREATE POLICY "Public Access for artist-images" ON storage.objects
 CREATE POLICY "Authenticated users can upload images" ON storage.objects
     FOR INSERT
     WITH CHECK (bucket_id = 'artist-images' AND auth.role() = 'authenticated');
+
+-- Create a policy to allow authenticated users to update their own images
+CREATE POLICY "Users can update own images" ON storage.objects
+    FOR UPDATE
+    USING (bucket_id = 'artist-images' AND auth.role() = 'authenticated');
+
+-- Create a policy to allow authenticated users to delete their own images
+CREATE POLICY "Users can delete own images" ON storage.objects
+    FOR DELETE
+    USING (bucket_id = 'artist-images' AND auth.role() = 'authenticated');

@@ -66,7 +66,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
           for (const filePath of fileArray) {
             const { data: { publicUrl } } = supabase
               .storage
-              .from('artist_artworks')
+              .from('artist-images')
               .getPublicUrl(filePath);
             
             combinedArtworks.push(publicUrl);
@@ -104,7 +104,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       // Upload file to Supabase storage
       const { error: uploadError } = await supabase
         .storage
-        .from('artist_artworks')
+        .from('artist-images')
         .upload(filePath, file);
       
       if (uploadError) throw uploadError;
@@ -112,7 +112,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       // Get the public URL
       const { data: { publicUrl } } = supabase
         .storage
-        .from('artist_artworks')
+        .from('artist-images')
         .getPublicUrl(filePath);
       
       // Update the artworks list in state
@@ -164,7 +164,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
         // Remove file from storage
         const { error: storageError } = await supabase
           .storage
-          .from('artist_artworks')
+          .from('artist-images')
           .remove([filePath]);
         
         if (storageError) {
