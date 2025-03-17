@@ -9,8 +9,8 @@ import SignInForm from "@/components/auth/SignInForm";
 import SignUpForm from "@/components/auth/SignUpForm";
 import SocialLogin from "@/components/auth/SocialLogin";
 import DemoAccountInfo from "@/components/auth/DemoAccountInfo";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Auth = () => {
@@ -68,24 +68,29 @@ const Auth = () => {
     return () => subscription.unsubscribe();
   }, [navigate, isPWA]);
 
+  const handleReturn = () => {
+    navigate("/");
+  };
+
   return (
     <div className={`min-h-screen flex items-center justify-center bg-zap-yellow p-4 ${useMobileUI ? 'pt-16' : ''}`}>
       {isPWA && <PWANavigation />}
       
-      <div className="w-full max-w-md space-y-8 bg-white p-6 rounded-xl shadow-lg">
+      <div className="w-full max-w-md space-y-6 bg-white p-6 rounded-xl shadow-lg">
         <div className="text-center">
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="absolute top-4 left-4" 
+            onClick={handleReturn}
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Return
+          </Button>
           <img alt="ZAP!" src="/lovable-uploads/a6580086-e06f-4c81-a4f2-f866f6726959.png" className="h-12 mx-auto mb-4 rounded-none" />
           <h2 className="text-2xl font-bold">Welcome!</h2>
           <p className="text-gray-600">Sign in or create an account</p>
         </div>
-        
-        <Alert className="bg-blue-50 border-blue-200">
-          <Info className="h-4 w-4 text-blue-500 mr-2" />
-          <AlertDescription className="text-xs">
-            <strong>Important:</strong> The demo account must be confirmed in Supabase before it will work. 
-            Go to Authentication → Users in the Supabase dashboard, find demo247artist@gmail.com, and click "Confirm Email".
-          </AlertDescription>
-        </Alert>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">

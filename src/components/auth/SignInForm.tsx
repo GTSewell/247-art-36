@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAppMode } from "@/contexts/AppModeContext";
 
@@ -18,14 +16,12 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
   const [email, setEmail] = useState("demo247artist@gmail.com");
   const [password, setPassword] = useState("12341234");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showAdminHint, setShowAdminHint] = useState(false);
   const navigate = useNavigate();
   const { isPWA } = useAppMode();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
-    setShowAdminHint(false);
     
     try {
       setLoading(true);
@@ -43,15 +39,8 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
         console.error("Sign in error:", error);
         if (error.message === "Invalid login credentials") {
           setErrorMessage("The email or password you entered is incorrect. Please try again.");
-          
-          // If it's the demo account, show additional guidance
-          if (email === "demo247artist@gmail.com") {
-            console.log("Login failed with demo credentials. The demo account may not exist in Supabase or email confirmation is required.");
-            setShowAdminHint(true);
-          }
         } else if (error.message.includes("Email not confirmed")) {
           setErrorMessage("Your email has not been confirmed. Please check your inbox or contact an administrator.");
-          setShowAdminHint(true);
         } else {
           setErrorMessage(error.message);
         }
@@ -104,15 +93,6 @@ const SignInForm = ({ loading, setLoading }: SignInFormProps) => {
         <div className="text-sm text-red-500 font-medium">
           {errorMessage}
         </div>
-      )}
-      
-      {showAdminHint && (
-        <Alert className="bg-amber-50 border-amber-200">
-          <Info className="h-4 w-4 text-amber-500 mr-2" />
-          <AlertDescription className="text-xs">
-            Admin Action Required: The demo account exists but needs email confirmation. In Supabase Dashboard, go to Authentication → Users, find demo247artist@gmail.com, and click "Confirm Email" or enable "Auto-confirm" in Authentication → Email Templates → Confirm signup.
-          </AlertDescription>
-        </Alert>
       )}
       
       <Button type="submit" className="w-full bg-zap-yellow text-black hover:bg-zap-yellow/90" disabled={loading}>
