@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "@/utils/uuid";
 import { logger } from "@/utils/logger";
+import { Json } from "@/integrations/supabase/types";
 
 export interface ArtworkData {
   publicUrl: string;
@@ -51,10 +52,18 @@ export const useArtistArtworks = (artistId: string | null) => {
           let artworkArray: string[] = [];
           
           if (Array.isArray(data.artworks)) {
-            artworkArray = data.artworks;
+            // Convert each item to string to ensure type safety
+            artworkArray = (data.artworks as Json[]).map(item => 
+              typeof item === 'string' ? item : String(item)
+            );
           } else if (typeof data.artworks === 'string') {
             try {
-              artworkArray = JSON.parse(data.artworks);
+              const parsed = JSON.parse(data.artworks);
+              if (Array.isArray(parsed)) {
+                artworkArray = parsed.map(item => 
+                  typeof item === 'string' ? item : String(item)
+                );
+              }
             } catch (e) {
               logger.error("Error parsing artworks JSON:", e);
               artworkArray = [];
@@ -76,10 +85,18 @@ export const useArtistArtworks = (artistId: string | null) => {
           let fileArray: string[] = [];
           
           if (Array.isArray(data.artwork_files)) {
-            fileArray = data.artwork_files;
+            // Convert each item to string to ensure type safety
+            fileArray = (data.artwork_files as Json[]).map(item => 
+              typeof item === 'string' ? item : String(item)
+            );
           } else if (typeof data.artwork_files === 'string') {
             try {
-              fileArray = JSON.parse(data.artwork_files);
+              const parsed = JSON.parse(data.artwork_files);
+              if (Array.isArray(parsed)) {
+                fileArray = parsed.map(item => 
+                  typeof item === 'string' ? item : String(item)
+                );
+              }
             } catch (e) {
               logger.error("Error parsing artwork_files JSON:", e);
               fileArray = [];
