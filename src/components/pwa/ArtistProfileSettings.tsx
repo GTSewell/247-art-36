@@ -6,7 +6,7 @@ import { User } from "lucide-react";
 import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
-import { useArtistProfile } from "./artist-settings/useArtistProfile";
+import { useArtistProfile } from "./artist-settings/hooks/useArtistProfile";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
