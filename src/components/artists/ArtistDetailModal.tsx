@@ -108,8 +108,6 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                 </CarouselItem>
               ))}
             </CarouselContent>
-            
-            {/* Removed pagination indicator dots */}
           </Carousel>
         ) : (
           selectedArtist && (

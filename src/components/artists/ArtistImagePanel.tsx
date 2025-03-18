@@ -10,6 +10,7 @@ import { useArtistData } from './hooks/useArtistData';
 import { useCardFlip } from './hooks/useCardFlip';
 import { useImageErrors } from './hooks/useImageErrors';
 import { logger } from '@/utils/logger';
+import { ArtistArtworksView } from './ArtistArtworksView';
 
 interface ArtistImagePanelProps {
   artist: Artist;
@@ -27,6 +28,7 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const [isHovered, setIsHovered] = useState(false);
   const [isGeneratingArtworks, setIsGeneratingArtworks] = useState(false);
   const isMobile = useIsMobile();
+  const isModalView = true; // Always show artworks in modal view
   
   // Custom hooks
   const { currentArtist, refreshArtist } = useArtistData(artist, refreshArtists);
@@ -50,7 +52,23 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  // Add debug logging for handleCardClick
+  // If in modal view, just show the artworks grid
+  if (isModalView) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <ArtistArtworksView 
+          artist={currentArtist}
+          isGeneratingArtworks={isGeneratingArtworks}
+          setIsGeneratingArtworks={setIsGeneratingArtworks}
+          artworkErrors={artworkErrors}
+          handleArtworkImageError={handleArtworkImageError}
+          refreshArtworks={refreshArtist}
+        />
+      </div>
+    );
+  }
+
+  // Fallback to the flippable card for non-modal views
   const handleCardClick = (e: React.MouseEvent) => {
     // Prevent event propagation to parent elements
     e.stopPropagation();

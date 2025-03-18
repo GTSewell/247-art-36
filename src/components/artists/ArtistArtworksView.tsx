@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ArtistArtworksViewProps {
   artist: Artist;
@@ -22,6 +23,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 }) => {
   // State to track processed artworks
   const [processedArtworks, setProcessedArtworks] = useState<string[]>([]);
+  const isMobile = useIsMobile();
 
   // Process artist artworks with strict limitation to exactly 4
   useEffect(() => {
@@ -66,7 +68,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const displayArtworks = fixedArtworks.slice(0, 4);
 
   return (
-    <div className="w-full h-full px-2 py-2">
+    <div className="w-full h-full p-2">
       <div className="grid grid-cols-2 gap-2 h-full">
         {displayArtworks.map((artwork, index) => (
           <div 

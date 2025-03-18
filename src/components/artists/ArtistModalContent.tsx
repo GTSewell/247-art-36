@@ -56,6 +56,12 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     logger.info(`Navigating to next artist, new index: ${newIndex}`);
     onArtistChange(newIndex);
   };
+
+  // For desktop view, adjust the height to accommodate the artworks grid
+  const desktopImagePanelStyle = {
+    minHeight: '320px', // Ensure minimum height for artwork grid
+    maxHeight: '400px'  // Limit maximum height 
+  };
   
   return (
     <div className="relative overflow-hidden bg-white">
@@ -65,7 +71,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         className={`flex flex-col lg:flex-row w-full min-w-0 ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[80vh]'}`}
         style={isMobile ? { width: '100%', maxWidth: '100%', overflowX: 'hidden', background: 'white' } : { background: 'white' }}
       >
-        <div className="lg:w-1/2 overflow-hidden relative min-w-0">
+        <div className="lg:w-1/2 overflow-hidden relative min-w-0" style={!isMobile ? desktopImagePanelStyle : {}}>
           <ArtistImagePanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
