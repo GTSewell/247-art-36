@@ -3,6 +3,8 @@ import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import ArtistPackageTable from "@/components/details/ArtistPackageTable";
 import ArtworkSizeCalculator from "@/components/details/ArtworkSizeCalculator";
+import InterestForm from "@/components/sections/underground/InterestForm";
+import { outroText } from "@/components/sections/underground/faqData";
 
 const Details = () => {
   return (
@@ -37,6 +39,17 @@ const Details = () => {
         >
           <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Calculate Your Artwork Space</h2>
           <ArtworkSizeCalculator />
+        </motion.div>
+
+        {/* Interest Form */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="max-w-4xl mx-auto mt-16"
+        >
+          <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Express Your Interest</h2>
+          <InterestForm introText={outroText} />
         </motion.div>
 
         {/* Center Rocket Icon for Desktop */}
