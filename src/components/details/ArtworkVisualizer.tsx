@@ -1,14 +1,7 @@
 
 import React from 'react';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-
-interface Artwork {
-  id: number;
-  width: number;
-  height: number;
-  fits: boolean;
-  area: number;
-}
+import { Artwork } from "./types/artwork-types";
 
 interface ArtworkVisualizerProps {
   artworks: Artwork[];
