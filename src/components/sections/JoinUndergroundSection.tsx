@@ -1,7 +1,8 @@
+
 import { motion } from "framer-motion";
 import FaqAccordion from "./underground/FaqAccordion";
-import InterestForm from "./underground/InterestForm";
-import { faqItems, introText, outroText } from "./underground/faqData";
+import { faqItems } from "./underground/faqData";
+
 const JoinUndergroundSection = () => {
   return <section className="py-24 px-4 bg-zap-blue relative">
       <motion.div initial={{
@@ -18,13 +19,8 @@ const JoinUndergroundSection = () => {
             This is not just a gallery, a print shop, or a retail space ... THIS IS A MOVEMENT!
           </h1>
 
-          <p className="text-xl text-white/90 whitespace-pre-wrap">{introText}</p>
-
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
-
-          {/* Interest Form */}
-          <InterestForm introText={outroText} />
         </div>
       </motion.div>
     </section>;
