@@ -35,6 +35,31 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
   const { isFlipped, showClickIndicator, handleFlip, hideClickIndicator, setFlipState } = useCardFlip(artist.id);
   const { mainImageError, artworkErrors, handleMainImageError, handleArtworkImageError } = useImageErrors(artist.id, artist.name);
 
+  // Log artist and artworks data
+  useEffect(() => {
+    logger.info(`ArtistImagePanel - Artist "${currentArtist.name}" (ID: ${currentArtist.id})`);
+    logger.info(`ArtistImagePanel - Artist image: ${currentArtist.image || 'No image'}`);
+    
+    if (currentArtist.artworks) {
+      const artworksCount = Array.isArray(currentArtist.artworks) 
+        ? currentArtist.artworks.length 
+        : typeof currentArtist.artworks === 'string' 
+          ? 'String format, needs parsing' 
+          : 'Unknown format';
+      
+      logger.info(`ArtistImagePanel - Artworks: ${artworksCount}`);
+      
+      // Log individual artworks
+      if (Array.isArray(currentArtist.artworks)) {
+        currentArtist.artworks.forEach((artwork, index) => {
+          logger.info(`ArtistImagePanel - Artwork ${index}: ${artwork || 'Empty'}`);
+        });
+      }
+    } else {
+      logger.info('ArtistImagePanel - No artworks available');
+    }
+  }, [currentArtist]);
+
   // Reset flip state when artist changes
   useEffect(() => {
     logger.info(`Artist changed to ${artist.id}, resetting flip state to front`);

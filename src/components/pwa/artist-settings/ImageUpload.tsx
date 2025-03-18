@@ -4,6 +4,7 @@ import { Upload, XCircle, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { uploadImage } from './api/imageUploadAPI';
+import { logger } from '@/utils/logger';
 
 interface ImageUploadProps {
   currentImage: string | null;
@@ -13,6 +14,7 @@ interface ImageUploadProps {
 const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }) => {
   const [preview, setPreview] = useState<string | null>(currentImage);
   const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle file selection
@@ -37,6 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }
       const reader = new FileReader();
       reader.onload = (event) => {
         setPreview(event.target?.result as string);
+        setImageError(false);
       };
       reader.readAsDataURL(file);
 
@@ -46,15 +49,19 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }
       
       if (imageUrl) {
         onImageChange(imageUrl);
+        setPreview(imageUrl);
+        logger.info(`Image uploaded successfully: ${imageUrl}`);
         toast.success("Profile image uploaded successfully");
       } else {
         throw new Error("Failed to upload image");
       }
     } catch (error: any) {
-      console.error("Error uploading image:", error);
+      logger.error("Error uploading image:", error);
       toast.error(`Upload failed: ${error.message}`);
-      // Reset preview to previous state
-      setPreview(currentImage);
+      // Reset preview to previous state if there was a previous image
+      if (currentImage) {
+        setPreview(currentImage);
+      }
     } finally {
       setIsUploading(false);
       // Clear the input
@@ -62,6 +69,12 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  // Handle image load error
+  const handleImageError = () => {
+    setImageError(true);
+    logger.error(`Failed to load image: ${preview}`);
   };
 
   // Trigger file input click
@@ -72,18 +85,20 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }
   // Remove current image
   const handleRemoveImage = () => {
     setPreview(null);
+    setImageError(false);
     onImageChange(null);
   };
 
   return (
     <div className="flex flex-col items-center">
       <div className="relative mb-4">
-        {preview ? (
+        {preview && !imageError ? (
           <div className="relative group">
             <img 
               src={preview} 
               alt="Profile" 
               className="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
+              onError={handleImageError}
             />
             <button
               type="button"
@@ -124,7 +139,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }
         className="flex items-center gap-2"
       >
         <Upload className="h-4 w-4" />
-        {preview ? 'Change Image' : 'Upload Image'}
+        {preview && !imageError ? 'Change Image' : 'Upload Image'}
       </Button>
     </div>
   );

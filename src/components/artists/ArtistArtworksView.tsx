@@ -44,6 +44,9 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
         artworks = artist.artworks;
       }
       
+      // Filter out empty or invalid URLs
+      artworks = artworks.filter(url => url && typeof url === 'string' && url.trim() !== '');
+      
       // Strictly limit to maximum 4 artworks
       artworks = artworks.slice(0, 4);
       
@@ -78,7 +81,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
             data-artwork-cell={`cell-${index}`}
           >
             <AspectRatio ratio={1} className="w-full">
-              {artwork && (
+              {artwork ? (
                 <img
                   src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                   alt={`Artwork ${index + 1} by ${artist.name}`}
@@ -86,6 +89,10 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                   onError={(e) => handleArtworkImageError(e, index)}
                   data-artwork-image={`image-${index}`}
                 />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                  <span className="text-gray-400 text-sm">No artwork</span>
+                </div>
               )}
             </AspectRatio>
           </div>

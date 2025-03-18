@@ -24,12 +24,18 @@ const GalleryImagePanel: React.FC<GalleryImagePanelProps> = ({
 
   return (
     <div className="relative aspect-square rounded-lg overflow-hidden">
-      <img
-        src={imageError ? '/placeholder.svg' : gallery.image}
-        alt={gallery.name}
-        className="w-full h-full object-cover"
-        onError={handleImageError}
-      />
+      {gallery.image ? (
+        <img
+          src={imageError ? '/placeholder.svg' : gallery.image}
+          alt={gallery.name}
+          className="w-full h-full object-cover"
+          onError={handleImageError}
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center bg-gray-200">
+          <span className="text-gray-500">No image</span>
+        </div>
+      )}
       <button
         onClick={(e) => {
           e.stopPropagation();
