@@ -63,14 +63,7 @@ const WhatIsZap = () => {
           mixBlendMode: 'normal'
         }}
       >
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-          className="text-5xl md:text-6xl font-bold text-white text-center absolute bottom-8 w-full"
-        >
-          THERE&apos;S PLENTY MORE TO COME!
-        </motion.h1>
+        {/* Removed the h1 element that was here */}
       </div>
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
