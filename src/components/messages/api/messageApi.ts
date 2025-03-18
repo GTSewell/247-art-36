@@ -29,7 +29,7 @@ export async function fetchArtistById(artistId: string): Promise<{ name: string,
   const { data, error } = await supabase
     .from('artists')
     .select('name, image')
-    .eq('id', artistId)
+    .eq('id', Number(artistId))
     .single();
     
   if (error) {
@@ -48,7 +48,9 @@ export async function fetchArtistByUserId(userId: string): Promise<{ id: string 
     .single();
     
   if (error) throw error;
-  return data as { id: string };
+  
+  // Convert numeric id to string to ensure consistent type
+  return { id: String(data.id) };
 }
 
 export async function createMessageReply(

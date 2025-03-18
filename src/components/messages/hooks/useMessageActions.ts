@@ -19,8 +19,8 @@ export function useMessageActions(userId: string | undefined) {
       // First get the artist ID for the current user
       const artistData = await fetchArtistByUserId(userId);
       
-      // Make sure artistData.id is treated as a string
-      const artistId = String(artistData.id);
+      // The artistData.id is already a string from our updated fetchArtistByUserId function
+      const artistId = artistData.id;
       
       // Insert the reply
       await createMessageReply(messageId, replyText, userId, artistId);
