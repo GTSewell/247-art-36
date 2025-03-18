@@ -52,20 +52,30 @@ const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({
     }
   };
 
-  // If in modal view, just show the artworks grid
+  // If in modal view and desktop, show the artworks grid
+  // For mobile modal view, we don't render anything here as the artworks are shown in the ArtistDetailsPanel
   if (isModalView) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <ArtistArtworksView 
-          artist={currentArtist}
-          isGeneratingArtworks={isGeneratingArtworks}
-          setIsGeneratingArtworks={setIsGeneratingArtworks}
-          artworkErrors={artworkErrors}
-          handleArtworkImageError={handleArtworkImageError}
-          refreshArtworks={refreshArtist}
-        />
-      </div>
-    );
+    if (!isMobile) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <ArtistArtworksView 
+            artist={currentArtist}
+            isGeneratingArtworks={isGeneratingArtworks}
+            setIsGeneratingArtworks={setIsGeneratingArtworks}
+            artworkErrors={artworkErrors}
+            handleArtworkImageError={handleArtworkImageError}
+            refreshArtworks={refreshArtist}
+          />
+        </div>
+      );
+    } else {
+      // For mobile, return an empty div since artworks will be shown in DetailsPanel
+      return (
+        <div className="hidden">
+          {/* Artwork grid is shown in the details panel for mobile */}
+        </div>
+      );
+    }
   }
 
   // Fallback to the flippable card for non-modal views
