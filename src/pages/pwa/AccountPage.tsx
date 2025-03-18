@@ -3,7 +3,7 @@ import React from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button"; 
-import { ShoppingCart, LogOut, Settings, User } from "lucide-react";
+import { ShoppingCart, LogOut, Settings, User, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
@@ -69,6 +69,16 @@ const AccountPage = () => {
                 {itemCount}
               </Badge>
             )}
+          </Button>
+          
+          {/* 247 Messages Button */}
+          <Button 
+            variant="outline" 
+            className="w-full justify-start mb-2" 
+            onClick={() => navigate('/messages247')}
+          >
+            <MessageSquare className="h-4 w-4 mr-2" />
+            <span>247 Messages</span>
           </Button>
           
           {items.length > 0 && (

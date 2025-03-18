@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, Settings, ShoppingCart } from "lucide-react";
+import { LogOut, Settings, ShoppingCart, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
@@ -65,6 +65,22 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
           </Badge>
         )}
       </Link>
+      
+      {/* 247 Messages Link - Only show if user is logged in */}
+      {!isLoading && user && (
+        <Link
+          to="/messages247"
+          className={cn(
+            "flex items-center justify-between px-3 py-2 mt-2 rounded-md text-base font-medium",
+            "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+          )}
+        >
+          <div className="flex items-center">
+            <MessageSquare className="mr-2 h-5 w-5" />
+            <span>247 Messages</span>
+          </div>
+        </Link>
+      )}
       
       {/* Only show dashboard links if user is logged in */}
       {!isLoading && user && (

@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/use-auth';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ArtistMessageModalProps {
   open: boolean;
@@ -17,11 +20,76 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
   onOpenChange,
   artist
 }) => {
-  const handleSendMessage = () => {
-    toast.success(`Your $5 will be sent to ${artist.name}`, {
-      description: "If they reply within 24 hours, you'll get $5 credit towards their art"
-    });
-    onOpenChange(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [message, setMessage] = React.useState('');
+  const [isSending, setIsSending] = React.useState(false);
+
+  const handleSendMessage = async () => {
+    if (!user) {
+      toast.error("Please sign in to send a message");
+      onOpenChange(false);
+      navigate('/auth');
+      return;
+    }
+
+    if (!message.trim()) {
+      toast.error("Please enter a message");
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      // Get artist user ID from the name (in a real app, you would have proper mapping)
+      // For now, we'll simulate by using the artist name
+      const artistUserId = artist.user_id || artist.id.toString();
+
+      // Create expiration date (24 hours from now)
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + 24);
+
+      // Insert message
+      const { data: messageData, error: messageError } = await supabase
+        .from('messages_247')
+        .insert({
+          sender_id: user.id,
+          artist_id: artistUserId,
+          message: message,
+        })
+        .select()
+        .single();
+
+      if (messageError) throw messageError;
+
+      // Create credit
+      const { error: creditError } = await supabase
+        .from('message_credits')
+        .insert({
+          user_id: user.id,
+          artist_id: artistUserId,
+          expires_at: expiresAt.toISOString(),
+          message_id: messageData.id
+        });
+
+      if (creditError) throw creditError;
+
+      toast.success(`Your $5 will be sent to ${artist.name}`, {
+        description: "If they reply within 24 hours, you'll get $5 credit towards their art"
+      });
+      
+      setMessage('');
+      onOpenChange(false);
+      
+      // Optionally redirect to the messages page
+      navigate('/messages247');
+      
+    } catch (error: any) {
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message. Please try again.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -51,6 +119,8 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
           <textarea 
             className="w-full p-3 border rounded-md h-32 resize-none"
             placeholder="Type your message here..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </div>
         
@@ -58,8 +128,12 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSendMessage} className="bg-blue-500 hover:bg-blue-600 text-white">
-            Pay $5 & Send Message
+          <Button 
+            onClick={handleSendMessage} 
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+            disabled={isSending}
+          >
+            {isSending ? 'Sending...' : 'Pay $5 & Send Message'}
           </Button>
         </DialogFooter>
       </DialogContent>

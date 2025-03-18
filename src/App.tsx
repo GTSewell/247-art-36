@@ -1,101 +1,51 @@
-import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
-import { useAppMode } from "@/contexts/AppModeContext";
-import { CartProvider } from "@/contexts/CartContext";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { SitePassword } from "@/components/SitePassword";
-import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
-
-import Index from "@/pages/Index";
-import Artists from "@/pages/Artists";
-import Auth from "@/pages/Auth";
-import Details from "@/pages/Details";
-import Services from "@/pages/Services";
-import WhoAreYou from "@/pages/WhoAreYou";
-import VirtualTour from "@/pages/VirtualTour";
-import GeneralStore from "@/pages/GeneralStore";
-import Cart from "@/pages/Cart";
-import ArtistSubdomain from "@/pages/ArtistSubdomain";
-import NotFound from "@/pages/NotFound";
-import ArtistSubmission from "@/pages/ArtistSubmission";
-
-// PWA specific pages
-import PWAHome from "@/pages/pwa/PWAHome";
-import PWAArtists from "@/pages/pwa/PWAArtists";
-import PWAStore from "@/pages/pwa/PWAStore";
-import ArtistDashboard from "@/pages/pwa/ArtistDashboard";
-import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
-import AccountPage from "@/pages/pwa/AccountPage";
-
-import "./App.css";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ArtistsPage from './pages/ArtistsPage';
+import ArtistSubdomain from './pages/ArtistSubdomain';
+import Auth from './pages/Auth';
+import Cart from './pages/Cart';
+import CollectorDashboard from './pages/dashboard/CollectorDashboard';
+import ArtistDashboard from './pages/dashboard/ArtistDashboard';
+import PasswordPage from './pages/PasswordPage';
+import WhoAreYou from './pages/WhoAreYou';
+import Services from './pages/Services';
+import Store from './pages/Store';
+import VirtualTour from './pages/VirtualTour';
+import { PasswordProtectionProvider } from './contexts/PasswordProtectionContext';
+import { CartProvider } from './contexts/CartContext';
+import { Toaster } from "@/components/ui/sonner"
+import AccountPage from './pages/pwa/AccountPage';
+import Messages247 from './pages/Messages247';
 
 function App() {
-  const location = useLocation();
-  const { isPWA } = useAppMode();
-  const isMobile = useIsMobile();
-  const { isPasswordCorrect, setIsPasswordCorrect } = usePasswordProtection();
-  
-  // Use PWA UI for mobile devices, but only if it's actually installed as a PWA
-  const usePWAUI = isPWA;
-  
-  // Add data-pwa attribute to body when in PWA mode
-  useEffect(() => {
-    if (isPWA) {
-      document.body.setAttribute('data-pwa', 'true');
-    } else {
-      document.body.removeAttribute('data-pwa');
-    }
-  }, [isPWA]);
-
-  // Scroll to top on route change
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
-
-  // If password not correct, show password screen
-  if (!isPasswordCorrect) {
-    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
-  }
-
   return (
-    <CartProvider>
-      <Routes>
-        <Route 
-          path="/" 
-          element={usePWAUI ? <PWAHome /> : <Index />} 
-        />
-        <Route 
-          path="/artists" 
-          element={usePWAUI ? <PWAArtists /> : <Artists />} 
-        />
-        <Route 
-          path="/store" 
-          element={usePWAUI ? <PWAStore /> : <GeneralStore />} 
-        />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/details" element={<Details />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/tour" element={<VirtualTour />} />
-        <Route path="/virtual-tour" element={<VirtualTour />} />
-        <Route path="/who-are-you" element={<WhoAreYou />} />
-        <Route path="/submit" element={<ArtistSubmission />} />
-        
-        {/* Account and Dashboard routes */}
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/dashboard/artist" element={<ArtistDashboard />} />
-        <Route path="/dashboard/collector" element={<CollectorDashboard />} />
-        
-        {/* Artist subdomain route - using artistName as parameter name for consistency */}
-        <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
-        
-        {/* 404 route */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      
-      <Toaster position="bottom-center" />
-    </CartProvider>
+    <PasswordProtectionProvider>
+      <CartProvider>
+        <Router>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/artists" element={<ArtistsPage />} />
+            <Route path="/artist/:artistId" element={<ArtistSubdomain />} />
+            <Route path="/who-are-you" element={<WhoAreYou />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/store" element={<Store />} />
+            <Route path="/virtual-tour" element={<VirtualTour />} />
+            <Route path="/password" element={<PasswordPage />} />
+            <Route path="/account" element={<AccountPage />} />
+
+            {/* User Routes */}
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/messages247" element={<Messages247 />} />
+            <Route path="/dashboard/collector" element={<CollectorDashboard />} />
+            <Route path="/dashboard/artist" element={<ArtistDashboard />} />
+          </Routes>
+          <Toaster />
+        </Router>
+      </CartProvider>
+    </PasswordProtectionProvider>
   );
 }
 
