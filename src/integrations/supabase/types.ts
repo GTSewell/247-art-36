@@ -192,6 +192,80 @@ export type Database = {
         }
         Relationships: []
       }
+      message_credits: {
+        Row: {
+          amount: number
+          artist_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          message_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          artist_id: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          message_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          artist_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          message_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_credits_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "messages_247"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages_247: {
+        Row: {
+          artist_id: string
+          created_at: string
+          credit_amount: number
+          id: string
+          message: string
+          replied_at: string | null
+          sender_id: string
+          status: string
+        }
+        Insert: {
+          artist_id: string
+          created_at?: string
+          credit_amount?: number
+          id?: string
+          message: string
+          replied_at?: string | null
+          sender_id: string
+          status?: string
+        }
+        Update: {
+          artist_id?: string
+          created_at?: string
+          credit_amount?: number
+          id?: string
+          message?: string
+          replied_at?: string | null
+          sender_id?: string
+          status?: string
+        }
+        Relationships: []
+      }
       password_access_logs: {
         Row: {
           created_at: string

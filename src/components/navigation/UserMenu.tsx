@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { LogOut, Settings, ShoppingCart } from "lucide-react";
+import { LogOut, MessageSquare, Settings, ShoppingCart } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -76,6 +76,13 @@ export function UserMenu({ isCartPage = false }: UserMenuProps) {
             }} className="flex items-center">
               <ShoppingCart className="mr-2 h-4 w-4" />
               Cart
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              setIsUserMenuOpen(false);
+              navigate("/messages");
+            }} className="flex items-center">
+              <MessageSquare className="mr-2 h-4 w-4" />
+              Messages
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
               setIsUserMenuOpen(false);

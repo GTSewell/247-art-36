@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -16,6 +17,7 @@ import WhoAreYou from "@/pages/WhoAreYou";
 import VirtualTour from "@/pages/VirtualTour";
 import GeneralStore from "@/pages/GeneralStore";
 import Cart from "@/pages/Cart";
+import Messages from "@/pages/Messages";
 import ArtistSubdomain from "@/pages/ArtistSubdomain";
 import NotFound from "@/pages/NotFound";
 import ArtistSubmission from "@/pages/ArtistSubmission";
@@ -74,6 +76,7 @@ function App() {
           element={usePWAUI ? <PWAStore /> : <GeneralStore />} 
         />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/messages" element={<Messages />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/details" element={<Details />} />
         <Route path="/services" element={<Services />} />
