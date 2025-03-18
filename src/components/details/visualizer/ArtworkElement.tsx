@@ -8,9 +8,7 @@ interface ArtworkElementProps {
   index: number;
   scale: number;
   spacing: number;
-  multipleArtworks: boolean;
-  totalArea: number;
-  maxArea: number;
+  totalArtworks?: number;
 }
 
 const ArtworkElement: React.FC<ArtworkElementProps> = ({ 
@@ -18,9 +16,7 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
   index, 
   scale, 
   spacing,
-  multipleArtworks,
-  totalArea,
-  maxArea
+  totalArtworks = 0
 }) => {
   // Handle empty string values
   const width = artwork.width === '' ? 0 : Number(artwork.width);
@@ -30,11 +26,11 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
   const visualWidth = width * scale;
   const visualHeight = height * scale;
   
-  // Check if the total artworks are within 5% over the limit
-  const slightlyOver = totalArea > maxArea && totalArea <= maxArea * 1.05;
+  // Determine if there are multiple artworks
+  const multipleArtworks = totalArtworks > 1;
   
-  // Determine border color based on conditions
-  let borderColor = artwork.fits ? 'border-green-500' : (slightlyOver ? 'border-orange-500' : 'border-red-500');
+  // Determine border color based on fits property
+  const borderColor = artwork.fits ? 'border-green-500' : 'border-red-500';
 
   // Calculate base area
   const baseArea = width * height;
