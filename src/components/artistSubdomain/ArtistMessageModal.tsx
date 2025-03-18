@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { MessageSquare } from 'lucide-react';
@@ -23,6 +23,27 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
     });
     onOpenChange(false);
   };
+
+  // Add event handler to stop keyboard events from propagating when modal is open
+  useEffect(() => {
+    if (!open) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Prevent arrow keys from propagating outside the modal
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || 
+          e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.stopPropagation();
+      }
+    };
+    
+    // Add the event listener to the document
+    document.addEventListener('keydown', handleKeyDown, true); // true for capture phase
+    
+    // Clean up when component unmounts or modal closes
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown, true);
+    };
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -51,6 +72,13 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
           <textarea 
             className="w-full p-3 border rounded-md h-32 resize-none"
             placeholder="Type your message here..."
+            // Stop propagation of keydown events directly on the textarea
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || 
+                  e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                e.stopPropagation();
+              }
+            }}
           />
         </div>
         

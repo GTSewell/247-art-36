@@ -2,7 +2,8 @@
 import { supabase } from "@/integrations/supabase/client";
 import { Message, RawMessage } from '../types';
 
-export async function fetchMessageById(messageId: string) {
+// Define explicit return types to avoid deep type instantiation
+export async function fetchMessageById(messageId: string): Promise<RawMessage> {
   const { data, error } = await supabase
     .from('messages_247')
     .select('*')
@@ -13,7 +14,7 @@ export async function fetchMessageById(messageId: string) {
   return data as RawMessage;
 }
 
-export async function fetchMessageReplies(messageId: string) {
+export async function fetchMessageReplies(messageId: string): Promise<RawMessage[]> {
   const { data, error } = await supabase
     .from('messages_247')
     .select('*')
@@ -24,7 +25,7 @@ export async function fetchMessageReplies(messageId: string) {
   return data as RawMessage[];
 }
 
-export async function fetchArtistById(artistId: string) {
+export async function fetchArtistById(artistId: string): Promise<{ name: string, image: string } | null> {
   const { data, error } = await supabase
     .from('artists')
     .select('name, image')
@@ -39,7 +40,7 @@ export async function fetchArtistById(artistId: string) {
   return data;
 }
 
-export async function fetchArtistByUserId(userId: string) {
+export async function fetchArtistByUserId(userId: string): Promise<{ id: string }> {
   const { data, error } = await supabase
     .from('artists')
     .select('id')
@@ -47,7 +48,7 @@ export async function fetchArtistByUserId(userId: string) {
     .single();
     
   if (error) throw error;
-  return data;
+  return data as { id: string };
 }
 
 export async function createMessageReply(
@@ -55,7 +56,7 @@ export async function createMessageReply(
   replyText: string, 
   userId: string, 
   artistId: string
-) {
+): Promise<void> {
   const { error } = await supabase
     .from('messages_247')
     .insert({
@@ -69,7 +70,7 @@ export async function createMessageReply(
   if (error) throw error;
 }
 
-export async function updateMessageStatus(messageId: string) {
+export async function updateMessageStatus(messageId: string): Promise<void> {
   const { error } = await supabase
     .from('messages_247')
     .update({ 
@@ -81,7 +82,7 @@ export async function updateMessageStatus(messageId: string) {
   if (error) throw error;
 }
 
-export async function deleteMessage(messageId: string) {
+export async function deleteMessage(messageId: string): Promise<void> {
   const { error } = await supabase
     .from('messages_247')
     .delete()
