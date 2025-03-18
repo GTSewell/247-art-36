@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,6 +33,18 @@ interface Message {
   };
 }
 
+// Raw message type from database before processing
+interface RawMessage {
+  id: string;
+  message: string;
+  created_at: string;
+  status: string;
+  sender_id: string;
+  artist_id: string;
+  replied_at: string | null;
+  credit_amount: number;
+}
+
 const Messages = () => {
   const { user, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<string>("sent");
@@ -59,7 +70,7 @@ const Messages = () => {
       
       // Now process each message to add artist info
       const messagesWithArtists: Message[] = await Promise.all(
-        sentMessagesData.map(async (message) => {
+        (sentMessagesData as RawMessage[]).map(async (message) => {
           // Convert from numeric string to number for the lookup
           const artistIdAsNumber = typeof message.artist_id === 'string' 
             ? parseInt(message.artist_id, 10) 
@@ -68,6 +79,7 @@ const Messages = () => {
           if (isNaN(artistIdAsNumber)) {
             return {
               ...message,
+              status: message.status as MessageStatus,
               artist: { name: 'Unknown Artist', image: '' }
             };
           }
@@ -80,6 +92,7 @@ const Messages = () => {
             
           return {
             ...message,
+            status: message.status as MessageStatus,
             artist: artistData || { name: 'Unknown Artist', image: '' }
           };
         })
@@ -126,21 +139,15 @@ const Messages = () => {
         throw error;
       }
       
-      // Get sender emails
-      const messagesWithSenders: Message[] = await Promise.all(
-        receivedMessagesData.map(async (message) => {
-          const { data: userData } = await supabase
-            .from('auth.users')
-            .select('email')
-            .eq('id', message.sender_id)
-            .single();
-            
-          return {
-            ...message,
-            sender: userData || { email: 'Unknown User' }
-          };
-        })
-      );
+      // Get sender emails - we can't query auth.users directly
+      // Instead, we'll just use the sender_id and keep the UI simple
+      const messagesWithSenders: Message[] = (receivedMessagesData as RawMessage[]).map(message => {
+        return {
+          ...message,
+          status: message.status as MessageStatus,
+          sender: { email: `User ${message.sender_id.substring(0, 8)}` }
+        };
+      });
       
       return messagesWithSenders;
     },
