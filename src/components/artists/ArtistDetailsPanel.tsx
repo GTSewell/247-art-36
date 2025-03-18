@@ -82,8 +82,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   // Show artworks in modal view on mobile, otherwise show full artist info
   const showArtworksOnly = isMobile && isModalView;
   
+  // For modal view, use smaller text and tighter spacing
+  const modalTextClass = isModalView && !isMobile ? "text-sm" : "";
+  
   return (
-    <div className="relative flex flex-col h-full p-5 md:p-8 px-0 py-0 overflow-hidden w-full min-w-0">
+    <div className="relative flex flex-col h-full p-5 md:p-4 px-0 py-0 overflow-hidden w-full min-w-0">
       <ArtistReturnButton 
         onReturn={handleReturnToArtists} 
         colorTheme={colorTheme} 
@@ -123,6 +126,8 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           styles={styles} 
           socialPlatforms={socialPlatforms}
           isMobile={isMobile}
+          isModalView={isModalView}
+          modalTextClass={modalTextClass}
           colorTheme={{
             badgeBg: colorTheme?.badgeBg,
             button: colorTheme?.button,
@@ -133,7 +138,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       )}
 
       {/* Action buttons at the bottom */}
-      <div className={`flex-none ${isMobile ? 'mt-2' : 'mt-auto'} pt-4 min-w-0`}>
+      <div className={`flex-none ${isMobile ? 'mt-2' : 'mt-auto'} pt-2 min-w-0`}>
         <ArtistActions 
           domainName={artistDomain} 
           artistId={artist.id} 

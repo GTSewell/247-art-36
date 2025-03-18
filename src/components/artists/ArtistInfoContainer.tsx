@@ -11,6 +11,8 @@ interface ArtistInfoContainerProps {
   styles: string[];
   socialPlatforms: string[];
   isMobile: boolean;
+  isModalView?: boolean;
+  modalTextClass?: string;
   colorTheme?: {
     badgeBg?: string;
     button?: string;
@@ -25,19 +27,32 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
   styles, 
   socialPlatforms, 
   isMobile, 
+  isModalView = false,
+  modalTextClass = "",
   colorTheme 
 }) => {
+  // Calculate appropriate height based on view type
+  const getScrollHeight = () => {
+    if (isMobile) {
+      return 'calc(100vh - 350px)';
+    } else if (isModalView) {
+      return 'calc(70vh - 180px)'; // Shorter height for modal view
+    } else {
+      return 'calc(80vh - 180px)';
+    }
+  };
+
   return (
     <ScrollArea 
-      className="flex-grow overflow-y-auto pr-3 mb-6 w-full min-w-0" 
+      className={`flex-grow overflow-y-auto pr-3 mb-4 w-full min-w-0 ${modalTextClass}`}
       style={{ 
-        height: isMobile ? 'calc(100vh - 350px)' : 'calc(80vh - 180px)',
-        minHeight: isMobile ? '300px' : 'auto',
-        maxHeight: isMobile ? '400px' : undefined,
+        height: getScrollHeight(),
+        minHeight: isMobile ? '300px' : isModalView ? '280px' : 'auto',
+        maxHeight: isMobile ? '400px' : isModalView ? '350px' : undefined,
         maxWidth: '100%'
       }}
     >
-      <div className="space-y-6 pb-10 w-full max-w-full overflow-hidden min-w-0">
+      <div className="space-y-4 pb-6 w-full max-w-full overflow-hidden min-w-0">
         <ArtistBio 
           bio={bio} 
           isMobile={isMobile} 

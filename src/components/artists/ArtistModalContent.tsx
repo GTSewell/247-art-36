@@ -57,21 +57,15 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     onArtistChange(newIndex);
   };
 
-  // For desktop view, adjust the height to accommodate the artworks grid
-  const desktopImagePanelStyle = {
-    minHeight: '320px', // Ensure minimum height for artwork grid
-    maxHeight: '400px'  // Limit maximum height 
-  };
-  
   return (
     <div className="relative overflow-hidden bg-white">
       {/* Main content */}
       <div 
         ref={contentRef}
-        className={`flex flex-col lg:flex-row w-full min-w-0 ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[80vh]'}`}
+        className={`flex flex-col lg:flex-row w-full min-w-0 ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[70vh]'}`}
         style={isMobile ? { width: '100%', maxWidth: '100%', overflowX: 'hidden', background: 'white' } : { background: 'white' }}
       >
-        <div className="lg:w-1/2 overflow-hidden relative min-w-0" style={!isMobile ? desktopImagePanelStyle : {}}>
+        <div className="lg:w-3/5 overflow-hidden relative min-w-0 flex items-center justify-center">
           <ArtistImagePanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
@@ -80,7 +74,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           />
         </div>
         
-        <div className="lg:w-1/2 p-4 lg:p-8 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto overflow-x-hidden min-w-0 bg-white">
+        <div className="lg:w-2/5 p-3 lg:p-4 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto overflow-x-hidden min-w-0 bg-white">
           <ArtistDetailsPanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}

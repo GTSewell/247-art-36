@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 interface ArtistArtworksViewProps {
   artist: Artist;
@@ -68,23 +69,25 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   const displayArtworks = fixedArtworks.slice(0, 4);
 
   return (
-    <div className="w-full h-full p-2">
-      <div className="grid grid-cols-2 gap-2 h-full">
+    <div className="w-full h-full p-3">
+      <div className="grid grid-cols-2 gap-3 h-full">
         {displayArtworks.map((artwork, index) => (
           <div 
             key={index} 
-            className="relative aspect-square rounded overflow-hidden"
+            className="relative rounded-md overflow-hidden bg-gray-100"
             data-artwork-cell={`cell-${index}`}
           >
-            {artwork && (
-              <img
-                src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-cover"
-                onError={(e) => handleArtworkImageError(e, index)}
-                data-artwork-image={`image-${index}`}
-              />
-            )}
+            <AspectRatio ratio={1} className="w-full">
+              {artwork && (
+                <img
+                  src={artworkErrors[index] ? '/placeholder.svg' : artwork}
+                  alt={`Artwork ${index + 1} by ${artist.name}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => handleArtworkImageError(e, index)}
+                  data-artwork-image={`image-${index}`}
+                />
+              )}
+            </AspectRatio>
           </div>
         ))}
       </div>
