@@ -36,7 +36,13 @@ const ArtworkVisualizer: React.FC<ArtworkVisualizerProps> = ({
       <SpaceUsageIndicator totalArea={totalArea} maxArea={maxArea} />
 
       {/* Artworks visualization */}
-      <ArtworksContainer artworks={artworks} scale={scale} spacing={spacing} />
+      <ArtworksContainer 
+        artworks={artworks} 
+        scale={scale} 
+        spacing={spacing} 
+        totalArea={totalArea} 
+        maxArea={maxArea} 
+      />
       
       {/* Information about spacing */}
       <SpacingNote showNote={artworks.length > 1} spacing={spacing} />

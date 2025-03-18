@@ -7,12 +7,16 @@ interface ArtworksContainerProps {
   artworks: Artwork[];
   scale: number;
   spacing: number;
+  totalArea: number;
+  maxArea: number;
 }
 
 const ArtworksContainer: React.FC<ArtworksContainerProps> = ({ 
   artworks, 
   scale, 
-  spacing 
+  spacing,
+  totalArea,
+  maxArea
 }) => {
   const multipleArtworks = artworks.length > 1;
 
@@ -26,6 +30,8 @@ const ArtworksContainer: React.FC<ArtworksContainerProps> = ({
           scale={scale}
           spacing={spacing}
           multipleArtworks={multipleArtworks}
+          totalArea={totalArea}
+          maxArea={maxArea}
         />
       ))}
     </div>

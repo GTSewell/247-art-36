@@ -9,6 +9,8 @@ interface ArtworkElementProps {
   scale: number;
   spacing: number;
   multipleArtworks: boolean;
+  totalArea: number;
+  maxArea: number;
 }
 
 const ArtworkElement: React.FC<ArtworkElementProps> = ({ 
@@ -16,17 +18,25 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
   index, 
   scale, 
   spacing,
-  multipleArtworks
+  multipleArtworks,
+  totalArea,
+  maxArea
 }) => {
   // Calculate the visual width and height for this element
   const visualWidth = artwork.width * scale;
   const visualHeight = artwork.height * scale;
+  
+  // Check if the total artworks are within 5% over the limit
+  const slightlyOver = totalArea > maxArea && totalArea <= maxArea * 1.05;
+  
+  // Determine border color based on conditions
+  let borderColor = artwork.fits ? 'border-green-500' : (slightlyOver ? 'border-orange-500' : 'border-red-500');
 
   return (
     <div className="text-center">
       <div className="mb-2 text-sm font-medium">Artwork {index + 1}</div>
       <div 
-        className={`relative border-2 ${artwork.fits ? 'border-green-500' : 'border-red-500'}`}
+        className={`relative border-2 ${borderColor}`}
         style={{ 
           width: `${visualWidth}px`, 
           height: `${visualHeight}px`,
