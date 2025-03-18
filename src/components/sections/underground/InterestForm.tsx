@@ -20,6 +20,7 @@ const InterestForm = ({ introText }: InterestFormProps) => {
           marginWidth={0}
           title="Expression of Interest"
           className="rounded-lg w-full"
+          style={{ minHeight: "700px" }}
         ></iframe>
       </div>
     </div>

@@ -48,7 +48,7 @@ const Details = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="max-w-4xl mx-auto mt-16"
         >
-          <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Express Your Interest</h2>
+          <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">I'd like to know more...</h2>
           <InterestForm introText={outroText} />
         </motion.div>
 
