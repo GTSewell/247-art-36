@@ -2,6 +2,7 @@
 import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import ArtistPackageTable from "@/components/details/ArtistPackageTable";
+import ArtworkSizeCalculator from "@/components/details/ArtworkSizeCalculator";
 
 const Details = () => {
   return (
@@ -26,6 +27,17 @@ const Details = () => {
         <div className="max-w-4xl mx-auto">
           <ArtistPackageTable />
         </div>
+        
+        {/* Artwork Size Calculator */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="max-w-4xl mx-auto mt-16"
+        >
+          <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Calculate Your Artwork Space</h2>
+          <ArtworkSizeCalculator />
+        </motion.div>
 
         {/* Center Rocket Icon for Desktop */}
         <motion.div 

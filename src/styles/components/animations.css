@@ -1,5 +1,5 @@
 
-/* Add float animation for the rocket image */
+/* Animation styles */
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -13,5 +13,5 @@
 }
 
 .animate-float {
-  animation: float 4s ease-in-out infinite;
+  animation: float 3s ease-in-out infinite;
 }
