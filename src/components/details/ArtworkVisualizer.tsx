@@ -21,7 +21,9 @@ const ArtworkVisualizer: React.FC<ArtworkVisualizerProps> = ({
   // Calculate a reasonable scale for visualization
   // Find the largest artwork dimension to use as a reference
   const maxDimension = artworks.reduce((max, artwork) => {
-    return Math.max(max, artwork.width, artwork.height);
+    const width = artwork.width === '' ? 0 : Number(artwork.width);
+    const height = artwork.height === '' ? 0 : Number(artwork.height);
+    return Math.max(max, width, height);
   }, 0);
 
   // Set a maximum visualization width
