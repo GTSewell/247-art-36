@@ -1,10 +1,11 @@
-
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { SitePassword } from "@/components/SitePassword";
+import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
 
 import Index from "@/pages/Index";
 import Artists from "@/pages/Artists";
@@ -33,6 +34,7 @@ function App() {
   const location = useLocation();
   const { isPWA } = useAppMode();
   const isMobile = useIsMobile();
+  const { isPasswordCorrect, setIsPasswordCorrect } = usePasswordProtection();
   
   // Use PWA UI for mobile devices, but only if it's actually installed as a PWA
   const usePWAUI = isPWA;
@@ -50,6 +52,11 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  // If password not correct, show password screen
+  if (!isPasswordCorrect) {
+    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
+  }
 
   return (
     <CartProvider>

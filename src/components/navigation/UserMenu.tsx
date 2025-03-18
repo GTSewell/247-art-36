@@ -1,110 +1,86 @@
 
-import React from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { LogIn, LogOut, Settings } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { useCart } from "@/contexts/CartContext";
-import { Badge } from "@/components/ui/badge";
-import { useAppMode } from "@/contexts/AppModeContext";
+import { supabase } from "@/integrations/supabase/client";
+import { ChevronDown, LogOut, User } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
 
-interface UserMenuProps {
-  user: any | null;
-  isLoading: boolean;
-}
-
-const UserMenu = ({ user, isLoading }: UserMenuProps) => {
+export function UserMenu() {
   const navigate = useNavigate();
-  const { itemCount } = useCart();
-  const { isPWA } = useAppMode();
-
+  const { user, session } = useAuth();
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { clearPasswordStatus } = usePasswordProtection();
+  
   const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      toast.success("Signed out successfully");
-      navigate("/");
-    } catch (error: any) {
-      console.error("Error signing out:", error.message);
-      toast.error(`Error signing out: ${error.message}`);
-    }
+    await supabase.auth.signOut();
+    setIsUserMenuOpen(false);
+    navigate("/auth");
   };
 
-  if (isLoading) {
-    return <Button variant="ghost" size="icon" disabled className="ml-2" />;
-  }
-
-  if (!user) {
-    return (
-      <Button 
-        variant="ghost"
-        size="icon"
-        onClick={() => navigate("/auth")}
-        className="ml-2"
-        title="Sign In"
-      >
-        <LogIn className="h-5 w-5" />
-      </Button>
-    );
-  }
-
-  // Only show the cart badge on mobile/PWA view
-  const showCartBadge = isPWA && itemCount > 0;
-
+  const handleLockSite = () => {
+    clearPasswordStatus();
+    setIsUserMenuOpen(false);
+  };
+  
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon"
-          className="ml-2 relative"
-          title="User Menu"
-        >
-          <img 
-            src="/lovable-uploads/77d6eca3-c8ee-469f-8975-11645265224b.png" 
-            alt="User Profile" 
-            className="h-7 w-7"
-          />
-          {showCartBadge && (
-            <Badge className="absolute -top-1 -right-1 px-1.5 py-0.5 text-xs bg-zap-red text-white">
-              {itemCount}
-            </Badge>
-          )}
+        <Button variant="ghost" className="flex items-center gap-1 px-3 hover:bg-black/5">
+          <User size={18} />
+          <span className="hidden md:inline-block">
+            {user ? user.email?.split('@')[0] : 'Account'}
+          </span>
+          <ChevronDown size={16} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem
-          onClick={() => navigate("/account")}
-          className="cursor-pointer"
-        >
-          Account
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => navigate('/dashboard/collector')}
-          className="cursor-pointer"
-        >
-          <Settings className="h-4 w-4 mr-2" />
-          Collector Dashboard
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => navigate('/dashboard/artist')}
-          className="cursor-pointer"
-        >
-          <Settings className="h-4 w-4 mr-2" />
-          Artist Dashboard
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={handleSignOut}
-          className="cursor-pointer text-red-500"
-        >
-          <LogOut className="h-4 w-4 mr-2" />
-          Sign Out
-        </DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-56">
+        {user ? (
+          <>
+            <DropdownMenuLabel>
+              {user.email}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => {
+              setIsUserMenuOpen(false);
+              navigate("/account");
+            }}>
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut}>
+              Sign out
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLockSite} className="text-red-500">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Lock Site</span>
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <>
+            <DropdownMenuItem onClick={() => {
+              setIsUserMenuOpen(false);
+              navigate("/auth");
+            }}>
+              Sign in
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLockSite} className="text-red-500">
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Lock Site</span>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
-
-export default UserMenu;
+}

@@ -7,6 +7,7 @@ import App from './App.tsx'
 import './index.css'
 import { registerServiceWorker } from './registerServiceWorker'
 import { AppModeProvider } from './contexts/AppModeContext'
+import { PasswordProtectionProvider } from './contexts/PasswordProtectionContext'
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -41,7 +42,9 @@ const renderApp = () => {
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
             <AppModeProvider>
-              <App />
+              <PasswordProtectionProvider>
+                <App />
+              </PasswordProtectionProvider>
             </AppModeProvider>
           </QueryClientProvider>
         </BrowserRouter>
