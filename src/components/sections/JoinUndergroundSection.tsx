@@ -13,7 +13,7 @@ const JoinUndergroundSection = () => {
     }} transition={{
       duration: 0.5
     }} className="container mx-auto max-w-4xl">
-        <div className="space-y-8 text-center my-0 px-0 mx-[181px]">
+        <div className="space-y-8 mx-0">
           <h1 className="text-4xl font-bold text-white">
             This is not just a gallery, a print shop, or a retail space ... THIS IS A MOVEMENT!
           </h1>
