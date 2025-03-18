@@ -41,8 +41,8 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
     setIsSending(true);
 
     try {
-      // Get artist user ID from the name (in a real app, you would have proper mapping)
-      // For now, we'll simulate by using the artist name
+      // Get artist user ID from the artist object
+      // Use the user_id if available, otherwise fallback to the id as string
       const artistUserId = artist.user_id || artist.id.toString();
 
       // Create expiration date (24 hours from now)
