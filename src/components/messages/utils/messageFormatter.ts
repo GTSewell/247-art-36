@@ -7,7 +7,8 @@ export async function formatMessage(rawMessage: RawMessage): Promise<Message> {
   let artistData = null;
   
   if (rawMessage.artist_id) {
-    artistData = await fetchArtistById(rawMessage.artist_id);
+    // Ensure artist_id is treated as a string
+    artistData = await fetchArtistById(String(rawMessage.artist_id));
   }
   
   return {
