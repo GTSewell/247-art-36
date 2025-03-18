@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -10,9 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ChevronDown, LogOut, User } from "lucide-react";
+import { LogOut, Settings, ShoppingCart } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function UserMenu() {
   const navigate = useNavigate();
@@ -35,33 +37,57 @@ export function UserMenu() {
     <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-1 px-3 hover:bg-black/5">
-          <User size={18} />
-          <span className="hidden md:inline-block">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
+            <AvatarFallback className="bg-gray-200">
+              {user?.email?.substring(0, 2).toUpperCase() || 'U'}
+            </AvatarFallback>
+          </Avatar>
+          <span className="hidden md:inline-block ml-1">
             {user ? user.email?.split('@')[0] : 'Account'}
           </span>
-          <ChevronDown size={16} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         {user ? (
           <>
-            <DropdownMenuLabel>
-              {user.email}
+            <DropdownMenuLabel className="flex items-center">
+              <Avatar className="h-6 w-6 mr-2">
+                <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
+                <AvatarFallback className="bg-gray-200 text-xs">
+                  {user?.email?.substring(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="truncate">
+                {user.email}
+              </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => {
               setIsUserMenuOpen(false);
-              navigate("/account");
-            }}>
-              Profile
+              navigate("/cart");
+            }} className="flex items-center">
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Cart
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleSignOut}>
-              Sign out
+            <DropdownMenuItem onClick={() => {
+              setIsUserMenuOpen(false);
+              navigate("/dashboard/collector");
+            }} className="flex items-center">
+              <Settings className="mr-2 h-4 w-4" />
+              Collector Dashboard
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              setIsUserMenuOpen(false);
+              navigate("/dashboard/artist");
+            }} className="flex items-center">
+              <Settings className="mr-2 h-4 w-4" />
+              Artist Dashboard
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLockSite} className="text-red-500">
+            <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
               <LogOut className="mr-2 h-4 w-4" />
-              <span>Lock Site</span>
+              Sign Out
             </DropdownMenuItem>
           </>
         ) : (

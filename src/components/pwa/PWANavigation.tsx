@@ -5,6 +5,7 @@ import { Home, Users, ShoppingBag } from 'lucide-react';
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const PWANavigation = () => {
   const { user } = useAuth();
@@ -77,11 +78,15 @@ const PWANavigation = () => {
             onClick={handleAccountClick}
           >
             <div className="relative">
-              <img 
-                src="/lovable-uploads/4fe6bfa5-5bff-4a18-853b-305aa52002c5.png" 
-                alt="Account" 
-                className="h-10 w-10" 
-              />
+              <Avatar className="h-10 w-10">
+                <AvatarImage 
+                  src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
+                  alt="Account" 
+                />
+                <AvatarFallback className="bg-gray-700 text-white">
+                  {user?.email?.substring(0, 2).toUpperCase() || 'A'}
+                </AvatarFallback>
+              </Avatar>
               {itemCount > 0 && (
                 <Badge 
                   className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
@@ -90,6 +95,7 @@ const PWANavigation = () => {
                 </Badge>
               )}
             </div>
+            <span className="text-xs mt-1">Account</span>
           </NavLink>
         </div>
       </nav>
