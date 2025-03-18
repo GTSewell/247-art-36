@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { normalizeSocialPlatforms, getSocialIcon } from '@/components/artistSubdomain/utils/socialPlatformUtils.tsx';
-
 interface ArtistSocialLinksProps {
   socialPlatforms: string[];
   buttonColor?: string;
@@ -9,8 +7,7 @@ interface ArtistSocialLinksProps {
   buttonHoverColor?: string;
   useAccordion?: boolean;
 }
-
-const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({ 
+const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
   socialPlatforms,
   buttonColor,
   buttonTextColor,
@@ -19,48 +16,30 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
 }) => {
   // Normalize social platform data using the shared utility
   const normalizedPlatforms = normalizeSocialPlatforms(socialPlatforms);
-
   if (normalizedPlatforms.length === 0) {
     return null;
   }
-
   const buttonStyle = buttonColor ? {
     backgroundColor: buttonColor,
-    color: buttonTextColor || 'currentColor',
+    color: buttonTextColor || 'currentColor'
   } : {};
-
-  return (
-    <div className="mb-4">
+  return <div className="mb-4 py-0 px-0 my-[7px]">
       <h3 className="font-bold text-base mb-2">Social Media</h3>
       <div className="flex gap-3">
         {normalizedPlatforms.map((platform, index) => {
-          return (
-            <a
-              key={index}
-              href={platform.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full"
-              style={buttonStyle}
-              onMouseOver={(e) => {
-                if (buttonHoverColor) {
-                  e.currentTarget.style.backgroundColor = buttonHoverColor;
-                }
-              }}
-              onMouseOut={(e) => {
-                if (buttonColor) {
-                  e.currentTarget.style.backgroundColor = buttonColor;
-                }
-              }}
-              aria-label={`Visit ${platform.original}`}
-            >
+        return <a key={index} href={platform.url} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full" style={buttonStyle} onMouseOver={e => {
+          if (buttonHoverColor) {
+            e.currentTarget.style.backgroundColor = buttonHoverColor;
+          }
+        }} onMouseOut={e => {
+          if (buttonColor) {
+            e.currentTarget.style.backgroundColor = buttonColor;
+          }
+        }} aria-label={`Visit ${platform.original}`}>
               {getSocialIcon(platform.type)}
-            </a>
-          );
-        })}
+            </a>;
+      })}
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ArtistSocialLinks;
