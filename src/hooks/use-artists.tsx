@@ -73,6 +73,7 @@ export const useArtists = () => {
       if (data) {
         const favoriteIds = new Set(data.map(fav => fav.artist_id));
         setFavoriteArtists(favoriteIds);
+        logger.info(`Fetched favorites: ${Array.from(favoriteIds).join(', ')}`);
       }
     } catch (error: any) {
       logger.error('Error fetching favorites:', error);
@@ -93,8 +94,26 @@ export const useArtists = () => {
         return;
       }
       
+      logger.info(`Toggling favorite: artistId=${artistId}, isFavorite=${isFavorite}, current favorites=${Array.from(favoriteArtists).join(',')}`);
+      
       if (isFavorite) {
-        // Remove from favorites
+        // Add to favorites (parameter represents the NEW state we want)
+        const { error } = await supabase
+          .from('favorite_artists')
+          .insert({ user_id: user.id, artist_id: artistId });
+        
+        if (error) throw error;
+        
+        setFavoriteArtists(prev => {
+          const newSet = new Set(prev);
+          newSet.add(artistId);
+          return newSet;
+        });
+        
+        toast.success('Added to favorites');
+        logger.info(`Added artist ${artistId} to favorites`);
+      } else {
+        // Remove from favorites (parameter represents the NEW state we want)
         const { error } = await supabase
           .from('favorite_artists')
           .delete()
@@ -110,21 +129,7 @@ export const useArtists = () => {
         });
         
         toast.success('Removed from favorites');
-      } else {
-        // Add to favorites
-        const { error } = await supabase
-          .from('favorite_artists')
-          .insert({ user_id: user.id, artist_id: artistId });
-        
-        if (error) throw error;
-        
-        setFavoriteArtists(prev => {
-          const newSet = new Set(prev);
-          newSet.add(artistId);
-          return newSet;
-        });
-        
-        toast.success('Added to favorites');
+        logger.info(`Removed artist ${artistId} from favorites`);
       }
     } catch (error: any) {
       logger.error('Error toggling favorite:', error);

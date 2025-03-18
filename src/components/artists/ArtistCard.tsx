@@ -59,6 +59,12 @@ const ArtistCard = ({
     e.stopPropagation();
   };
 
+  const handleFavoriteToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    logger.info(`ArtistCard: Toggling favorite for artist ID ${id}, current state: ${isFavorite}`);
+    onFavoriteToggle(!isFavorite);
+  };
+
   return (
     <div className="relative">
       <div 
@@ -87,10 +93,8 @@ const ArtistCard = ({
                         ? 'bg-yellow-300 text-black' 
                         : 'bg-black/20 text-white'
                     }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onFavoriteToggle(!isFavorite);
-                    }}
+                    onClick={handleFavoriteToggle}
+                    aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
                   >
                     <Zap size={16} />
                   </Button>
@@ -124,11 +128,9 @@ const ArtistCard = ({
                     ? 'bg-zap-yellow text-black hover:bg-zap-yellow/90' 
                     : 'bg-black/20 hover:bg-black/40 backdrop-blur-sm text-white border border-white/10 hover:border-white/30'
                 }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onFavoriteToggle(!isFavorite);
-                }}
+                onClick={handleFavoriteToggle}
                 title={isFavorite ? "Favorited" : "Favorite"}
+                aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
               >
                 <Zap size={isFeatured ? 24 : 20} />
               </Button>
