@@ -8,6 +8,10 @@ const videoUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/sig
 
 export const faqItems = [
   {
+    title: "The 5P's : 'Print | Package | Postage | Payments | PROBLEMS",
+    content: <span key="The 5P's"><strong className="font-bold">WE TAKE CARE OF IT ALL, SO YOU DON'T HAVE TO!</strong> This is all pretty simple for us, as we've spent over a decade helping 100's of artists with all of the above. We understand that dealing with a full-time or part-time job, as well as trying create new artworks (or even just catch up with fam), only to spend half a day running around to sort out some fresh print or art sales, only to rock up at a post office that just closed ... then you miss the 86 tram home and shit just gets wild from here on. Let us deal with it. We got you. </span>
+  },
+  {
     title: "Exhibition Opportunity",
     content: <span key="exhibition"><strong className="font-bold">A MASSIVE 3-MONTH EXHIBITION</strong> in the heart of Melbourne's arts precinct on the world famous <strong className="font-bold">Smith St, Collingwood</strong>. Think of it like an Art Fair, but running for 3 months, not 3 days. Oh, and we'll handle sales and the 5P's with our professional team and legendary art curator & gallerist, Jane who loves nothing more than learning everything she can about YOU, the artist. We want you to focus on your art and creative ideas. We are here to help fulfil them. How it should be!<br /><br />Also, did you know it was voted 'Coolest Street' in the world by <a href="https://www.timeout.com/melbourne/news/smith-street-has-been-named-the-coolest-street-in-the-world-060921" target="_blank" rel="noopener noreferrer" className="text-zap-yellow hover:underline">Timeout</a> in 2021? Ok. It was a different time then. We believe it's time for us all to shine again, and bring back, actually, create the new vibe we lost after that bat sneezed on a human in 2020!</span>
   },
