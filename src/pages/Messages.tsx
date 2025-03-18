@@ -2,13 +2,15 @@
 import React from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { Loader2 } from "lucide-react";
-import Navigation from "@/components/Navigation";
 import AuthRequiredState from "@/components/messages/AuthRequiredState";
 import MessagesContent from "@/components/messages/MessagesContent";
 import { useMessages } from "@/components/messages/useMessages";
+import { useNavigate } from "react-router-dom";
+import { Navigation } from "@/components/navigation/Navigation";
 
 const Messages = () => {
   const { user, isLoading: authLoading } = useAuth();
+  const navigate = useNavigate();
   
   const {
     activeTab,
