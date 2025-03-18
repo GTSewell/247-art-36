@@ -6,10 +6,10 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 const benefits = [
   "3+ month Exhibition\non always vibing\nSmith St, Collingwood",
   "25% commission?\nHow about .. 10%??\nEven better ... 0%???",
-  "Exclusive print deals\n... FOR EVER!",
-  "Stickers,Tees, Prints + \nCustom book with all\ngenesis exhibition artists!",
-  "Your very own kick ass\ncustom artist profile\n[artistname].247.art",
-  "Events & Workshops:\nLet's level-up and have\nsome fun!"
+  "Exclusive print deals\n...\n Long after the show is over!",
+  "Retail Merch & Prints\n ATLAS artist book\n We take care of it all!",
+  "Your very own kick ass\n online artist profile\n [artistname].247.art",
+  "Exclusive Events\n Workshops &\n Partner discounts"
 ];
 
 const cardStyles = [{
