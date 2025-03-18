@@ -1,7 +1,7 @@
 
 import React from "react";
 import NavLink from "./NavLink";
-import UserMenu from "./UserMenu";
+import { UserMenu } from "./UserMenu";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
