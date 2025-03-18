@@ -37,9 +37,9 @@ export function UserMenu() {
     <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="flex items-center gap-1 px-3 hover:bg-black/5">
-          <Avatar className="h-8 w-8">
+          <Avatar className="h-8 w-8 bg-gray-200 border border-gray-300">
             <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className="bg-gray-200">
+            <AvatarFallback className="bg-gray-200 text-gray-700">
               {user?.email?.substring(0, 2).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>

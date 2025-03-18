@@ -78,7 +78,7 @@ const PWANavigation = () => {
             onClick={handleAccountClick}
           >
             <div className="relative">
-              <Avatar className="h-10 w-10">
+              <Avatar className="h-10 w-10 border border-gray-700">
                 <AvatarImage 
                   src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
                   alt="Account" 

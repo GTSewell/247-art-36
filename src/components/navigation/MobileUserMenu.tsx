@@ -34,9 +34,9 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
       {/* User Avatar and info if logged in */}
       {!isLoading && user && (
         <div className="flex items-center gap-2 px-3 py-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-md">
-          <Avatar className="h-10 w-10">
+          <Avatar className="h-10 w-10 border border-gray-300">
             <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className="bg-gray-200">
+            <AvatarFallback className="bg-gray-200 text-gray-700">
               {user?.email?.substring(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>

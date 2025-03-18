@@ -21,7 +21,7 @@ const Cart = () => {
     <div className="min-h-screen bg-black">
       {isPWA ? <PWANavigation /> : <Navigation />}
       
-      <div className="container mx-auto px-4 py-6 pb-24">
+      <div className="container mx-auto px-4 pt-24 pb-24"> {/* Changed py-6 to pt-24 to add more top padding */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-white">Your Cart</h1>
           {items.length > 0 && (
