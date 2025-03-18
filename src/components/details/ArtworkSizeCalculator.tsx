@@ -1,14 +1,12 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { X, PlusCircle, Trash2, SquareAlertIcon } from "lucide-react";
+import { X, PlusCircle, Trash2, AlertCircle } from "lucide-react";
 import ArtworkVisualizer from "./ArtworkVisualizer";
 
-// Define constants
 const STUDIO_ARTIST_SQCM = 5625; // 5,625 sq cm
 const FEATURE_ARTIST_SQCM = 10000; // 10,000 sq cm
 const SPACING_CM = 5; // 5 cm spacing on all sides when multiple artworks
@@ -30,7 +28,6 @@ const ArtworkSizeCalculator: React.FC = () => {
   const [maxAllowedArea, setMaxAllowedArea] = useState<number>(STUDIO_ARTIST_SQCM);
   const [maxArtworks, setMaxArtworks] = useState<number>(2);
 
-  // Update max allowed area and max artworks when package type changes
   useEffect(() => {
     if (selectedPackage === 'studio') {
       setMaxAllowedArea(STUDIO_ARTIST_SQCM);
@@ -40,20 +37,15 @@ const ArtworkSizeCalculator: React.FC = () => {
       setMaxArtworks(4);
     }
     
-    // Recalculate to check if existing artworks still fit
     calculateTotalArea(artworks);
   }, [selectedPackage]);
 
-  // Generate a new unique ID for artworks
   const generateId = (): number => {
     return Date.now();
   };
 
-  // Calculate artwork area including spacing
   const calculateArtworkArea = (artwork: Artwork, artworksCount: number): number => {
-    // Only add spacing if there is more than one artwork
     if (artworksCount > 1) {
-      // Add spacing to all sides of each artwork
       const adjustedWidth = artwork.width + (SPACING_CM * 2);
       const adjustedHeight = artwork.height + (SPACING_CM * 2);
       return adjustedWidth * adjustedHeight;
@@ -61,7 +53,6 @@ const ArtworkSizeCalculator: React.FC = () => {
     return artwork.width * artwork.height;
   };
 
-  // Calculate total area and update fits status for all artworks
   const calculateTotalArea = (updatedArtworks: Artwork[]) => {
     const artworksCount = updatedArtworks.length;
     
@@ -72,7 +63,6 @@ const ArtworkSizeCalculator: React.FC = () => {
       return { ...artwork, area };
     });
 
-    // Update fits status after calculating the total area
     const finalArtworks = updatedWithFits.map(artwork => ({
       ...artwork,
       fits: calculatedTotalArea <= maxAllowedArea
@@ -82,7 +72,6 @@ const ArtworkSizeCalculator: React.FC = () => {
     setArtworks(finalArtworks);
   };
 
-  // Add a new artwork
   const addArtwork = () => {
     if (artworks.length < maxArtworks) {
       const newArtworks = [
@@ -94,16 +83,13 @@ const ArtworkSizeCalculator: React.FC = () => {
     }
   };
 
-  // Remove an artwork
   const removeArtwork = (id: number) => {
     const filteredArtworks = artworks.filter(artwork => artwork.id !== id);
     setArtworks(filteredArtworks);
     calculateTotalArea(filteredArtworks);
   };
 
-  // Handle artwork dimension changes
   const handleDimensionChange = (id: number, dimension: 'width' | 'height', value: string) => {
-    // Convert to number and ensure it's not negative
     const numValue = Math.max(0, Number(value) || 0);
     
     const updatedArtworks = artworks.map(artwork => 
@@ -122,7 +108,6 @@ const ArtworkSizeCalculator: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {/* Package Selection */}
             <div className="space-y-2">
               <Label htmlFor="package-select">Select Package Type</Label>
               <Select 
@@ -139,7 +124,6 @@ const ArtworkSizeCalculator: React.FC = () => {
               </Select>
             </div>
 
-            {/* Artwork Inputs */}
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-medium">Your Artworks</h3>
@@ -208,7 +192,7 @@ const ArtworkSizeCalculator: React.FC = () => {
                         <span>Fits ✓</span>
                       ) : (
                         <span className="flex items-center">
-                          <SquareAlertIcon className="h-4 w-4 mr-1" />
+                          <AlertCircle className="h-4 w-4 mr-1" />
                           Too large
                         </span>
                       )}
@@ -217,7 +201,6 @@ const ArtworkSizeCalculator: React.FC = () => {
                 </div>
               ))}
 
-              {/* Add Artwork Button */}
               {artworks.length < maxArtworks && (
                 <Button
                   onClick={addArtwork}
@@ -230,7 +213,6 @@ const ArtworkSizeCalculator: React.FC = () => {
               )}
             </div>
 
-            {/* Visual Representation */}
             <div className="mt-6">
               <h3 className="text-lg font-medium mb-4">Visual Representation</h3>
               <ArtworkVisualizer 
