@@ -31,16 +31,19 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
   modalTextClass = "",
   colorTheme 
 }) => {
-  // Calculate appropriate height based on view type
+  // Calculate appropriate height and determine if we should use accordion
   const getScrollHeight = () => {
     if (isMobile) {
       return 'calc(100vh - 350px)';
     } else if (isModalView) {
-      return 'calc(70vh - 180px)'; // Shorter height for modal view
+      return 'calc(70vh - 180px)';
     } else {
       return 'calc(80vh - 180px)';
     }
   };
+
+  // Use accordion in desktop modal view, but not on mobile
+  const useAccordionForBio = isModalView && !isMobile;
 
   return (
     <ScrollArea 
@@ -55,8 +58,8 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
       <div className="space-y-4 pb-6 w-full max-w-full overflow-hidden min-w-0">
         <ArtistBio 
           bio={bio} 
-          isMobile={isMobile} 
-          useAccordion={false}
+          isMobile={isMobile}
+          useAccordion={useAccordionForBio}
         />
 
         <ArtistTechniquesStyles 

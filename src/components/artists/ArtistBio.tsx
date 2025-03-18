@@ -1,5 +1,11 @@
-
-import React from 'react';
+import React, { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from '@/components/ui/accordion';
 
 interface ArtistBioProps {
   bio: string;
@@ -8,35 +14,42 @@ interface ArtistBioProps {
 }
 
 const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = false }) => {
+  const [expanded, setExpanded] = useState(false);
+  
   if (!bio) {
     return null;
   }
 
-  // Create a bio preview for mobile view
-  const bioPreview = bio.length > 120 
+  // Create a bio preview for long bios
+  const isBioLong = bio.length > 120;
+  const bioPreview = isBioLong 
     ? `${bio.substring(0, 120)}...` 
     : bio;
 
-  // If not using accordion, just return the bio text directly
-  if (!useAccordion) {
+  // If using accordion and bio is long, render with accordion
+  if (useAccordion && isBioLong) {
     return (
       <div className="mb-4 w-full min-w-0">
-        <h3 className="font-bold text-base mb-1">Bio</h3>
-        <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full min-w-0">
-          {bio}
-        </div>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="bio" className="border-0">
+            <AccordionTrigger className="py-0 hover:no-underline">
+              <h3 className="font-bold text-base">Bio</h3>
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full min-w-0">
+                {bio}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     );
   }
 
-  // Otherwise use the accordion (for space-constrained views)
+  // Otherwise use the standard view
   return (
-    <div className="w-full mb-4 min-w-0">
-      <div className="border-b pb-1 mb-1">
-        <div className="flex justify-between items-center">
-          <span className="font-bold text-base">{isMobile ? "Bio" : bioPreview}</span>
-        </div>
-      </div>
+    <div className="mb-4 w-full min-w-0">
+      <h3 className="font-bold text-base mb-1">Bio</h3>
       <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full min-w-0">
         {bio}
       </div>

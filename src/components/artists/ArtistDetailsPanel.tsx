@@ -9,6 +9,7 @@ import ArtistDomainLink from './ArtistDomainLink';
 import ArtistInfoContainer from './ArtistInfoContainer';
 import { ArtistArtworksView } from './ArtistArtworksView';
 import { logger } from '@/utils/logger';
+
 interface ArtistDetailsPanelProps {
   artist: Artist;
   onSelect: (e: React.MouseEvent) => void;
@@ -27,6 +28,7 @@ interface ArtistDetailsPanelProps {
   showReturnButton?: boolean;
   isModalView?: boolean;
 }
+
 const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   artist,
   onSelect,
@@ -46,6 +48,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   const techniques = Array.isArray(artist.techniques) ? artist.techniques : typeof artist.techniques === 'string' && artist.techniques ? JSON.parse(artist.techniques) : [];
   const styles = Array.isArray(artist.styles) ? artist.styles : typeof artist.styles === 'string' && artist.styles ? JSON.parse(artist.styles) : [];
   const socialPlatforms = Array.isArray(artist.social_platforms) ? artist.social_platforms : typeof artist.social_platforms === 'string' && artist.social_platforms ? JSON.parse(artist.social_platforms) : [];
+
   const handleDomainClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -62,9 +65,11 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     // We're using the full path to ensure consistency
     navigate(`/artists/${formattedName}`);
   };
+
   const handleReturnToArtists = () => {
     navigate('/artists');
   };
+
   const handleArtworkImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => {
     setArtworkErrors(prev => ({
       ...prev,
@@ -80,28 +85,71 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
 
   // For modal view, use smaller text and tighter spacing
   const modalTextClass = isModalView && !isMobile ? "text-sm" : "";
-  return <div className="relative flex flex-col h-full p-5 md:p-4 px-0 py-0 overflow-hidden w-full min-w-0 mx-0">
-      <ArtistReturnButton onReturn={handleReturnToArtists} colorTheme={colorTheme} showReturnButton={showReturnButton} />
+
+  return (
+    <div className="relative flex flex-col h-full p-5 md:p-4 px-0 py-0 overflow-hidden w-full min-w-0 mx-0">
+      <ArtistReturnButton 
+        onReturn={handleReturnToArtists} 
+        colorTheme={colorTheme} 
+        showReturnButton={showReturnButton} 
+      />
       
       <div className="flex-none mb-2 min-w-0">
-        <ArtistHeaderInfo name={artist.name} specialty={artist.specialty} city={artist.city} country={artist.country} />
+        <ArtistHeaderInfo 
+          name={artist.name} 
+          specialty={artist.specialty} 
+          city={artist.city} 
+          country={artist.country} 
+        />
       </div>
 
       {/* For mobile, show a mini domain link at the top for better visibility */}
       {isMobile && <ArtistDomainLink artistDomain={artistDomain} handleDomainClick={handleDomainClick} />}
 
       {/* Show either artworks grid (mobile modal) or artist info (desktop or profile page) */}
-      {showArtworksOnly ? <ArtistArtworksView artist={artist} isGeneratingArtworks={isGeneratingArtworks} setIsGeneratingArtworks={setIsGeneratingArtworks} artworkErrors={artworkErrors} handleArtworkImageError={handleArtworkImageError} /> : <ArtistInfoContainer bio={artist.bio} techniques={techniques} styles={styles} socialPlatforms={socialPlatforms} isMobile={isMobile} isModalView={isModalView} modalTextClass={modalTextClass} colorTheme={{
-      badgeBg: colorTheme?.badgeBg,
-      button: colorTheme?.button,
-      buttonTextColor: colorTheme?.buttonText,
-      buttonHoverColor: colorTheme?.buttonHover
-    }} />}
+      {showArtworksOnly ? (
+        <ArtistArtworksView 
+          artist={artist} 
+          isGeneratingArtworks={isGeneratingArtworks} 
+          setIsGeneratingArtworks={setIsGeneratingArtworks}
+          artworkErrors={artworkErrors}
+          handleArtworkImageError={handleArtworkImageError}
+        />
+      ) : (
+        <ArtistInfoContainer 
+          bio={artist.bio} 
+          techniques={techniques} 
+          styles={styles} 
+          socialPlatforms={socialPlatforms}
+          isMobile={isMobile}
+          isModalView={isModalView}
+          modalTextClass={modalTextClass}
+          colorTheme={{
+            badgeBg: colorTheme?.badgeBg,
+            button: colorTheme?.button,
+            buttonTextColor: colorTheme?.buttonText,
+            buttonHoverColor: colorTheme?.buttonHover
+          }}
+        />
+      )}
 
       {/* Action buttons at the bottom */}
       <div className={`flex-none ${isMobile ? 'mt-2' : 'mt-auto'} pt-2 min-w-0`}>
-        <ArtistActions domainName={artistDomain} artistId={artist.id} isFavorite={isFavorite} onFavoriteToggle={onFavoriteToggle} handleDomainClick={handleDomainClick} buttonColor={colorTheme?.button} buttonTextColor={colorTheme?.buttonText} buttonHoverColor={colorTheme?.buttonHover} buttonBorderColor={colorTheme?.buttonBorder} useSubPath={false} />
+        <ArtistActions 
+          domainName={artistDomain} 
+          artistId={artist.id} 
+          isFavorite={isFavorite}
+          onFavoriteToggle={onFavoriteToggle}
+          handleDomainClick={handleDomainClick}
+          buttonColor={colorTheme?.button}
+          buttonTextColor={colorTheme?.buttonText}
+          buttonHoverColor={colorTheme?.buttonHover}
+          buttonBorderColor={colorTheme?.buttonBorder}
+          useSubPath={false}
+        />
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default ArtistDetailsPanel;
