@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 // Types for messages
 type MessageStatus = 'pending' | 'replied' | 'expired';
@@ -36,6 +37,7 @@ interface Message {
 const Messages = () => {
   const { user, isLoading: authLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<string>("sent");
+  const navigate = useNavigate();
 
   // Fetch messages sent by the current user
   const { data: sentMessages, isLoading: sentLoading, refetch: refetchSent } = useQuery({
@@ -43,21 +45,47 @@ const Messages = () => {
     queryFn: async () => {
       if (!user) return [];
       
-      const { data, error } = await supabase
+      // First we need to get the artist details separately
+      const { data: sentMessagesData, error: messagesError } = await supabase
         .from('messages_247')
-        .select(`
-          *,
-          artist:artists(name, image)
-        `)
+        .select('*')
         .eq('sender_id', user.id)
         .order('created_at', { ascending: false });
         
-      if (error) {
-        console.error('Error fetching sent messages:', error);
-        throw error;
+      if (messagesError) {
+        console.error('Error fetching sent messages:', messagesError);
+        throw messagesError;
       }
       
-      return data as Message[];
+      // Now process each message to add artist info
+      const messagesWithArtists: Message[] = await Promise.all(
+        sentMessagesData.map(async (message) => {
+          // Convert from numeric string to number for the lookup
+          const artistIdAsNumber = typeof message.artist_id === 'string' 
+            ? parseInt(message.artist_id, 10) 
+            : message.artist_id;
+          
+          if (isNaN(artistIdAsNumber)) {
+            return {
+              ...message,
+              artist: { name: 'Unknown Artist', image: '' }
+            };
+          }
+          
+          const { data: artistData } = await supabase
+            .from('artists')
+            .select('name, image')
+            .eq('id', artistIdAsNumber)
+            .single();
+            
+          return {
+            ...message,
+            artist: artistData || { name: 'Unknown Artist', image: '' }
+          };
+        })
+      );
+      
+      return messagesWithArtists;
     },
     enabled: !!user,
   });
@@ -87,13 +115,10 @@ const Messages = () => {
       if (!artistData) return [];
       
       // Then get messages sent to this artist
-      const { data, error } = await supabase
+      const { data: receivedMessagesData, error } = await supabase
         .from('messages_247')
-        .select(`
-          *,
-          sender:auth.users(email)
-        `)
-        .eq('artist_id', artistData.id)
+        .select('*')
+        .eq('artist_id', artistData.id.toString())
         .order('created_at', { ascending: false });
         
       if (error) {
@@ -101,7 +126,23 @@ const Messages = () => {
         throw error;
       }
       
-      return data as Message[];
+      // Get sender emails
+      const messagesWithSenders: Message[] = await Promise.all(
+        receivedMessagesData.map(async (message) => {
+          const { data: userData } = await supabase
+            .from('auth.users')
+            .select('email')
+            .eq('id', message.sender_id)
+            .single();
+            
+          return {
+            ...message,
+            sender: userData || { email: 'Unknown User' }
+          };
+        })
+      );
+      
+      return messagesWithSenders;
     },
     enabled: !!user,
   });
@@ -148,13 +189,12 @@ const Messages = () => {
 
   // Redirect to login if not authenticated
   if (!user) {
-    // You can use navigate here if needed, for now just show a message
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
         <MessageSquare className="h-16 w-16 text-primary mb-4" />
         <h1 className="text-2xl font-bold mb-2">Sign in to access messages</h1>
         <p className="text-center mb-4">You need to be signed in to view your messages.</p>
-        <Button href="/auth">Sign In</Button>
+        <Button onClick={() => navigate("/auth")}>Sign In</Button>
       </div>
     );
   }
