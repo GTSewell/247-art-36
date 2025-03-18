@@ -13,11 +13,17 @@ const Messages = () => {
   const {
     activeTab,
     setActiveTab,
+    messageFilter,
+    setMessageFilter,
     sentMessages,
     sentLoading,
     receivedMessages,
     receivedLoading,
-    handleReply
+    sentPagination,
+    receivedPagination,
+    handleReply,
+    handleDelete,
+    handlePageChange
   } = useMessages(user?.id);
 
   // Display loading state while auth is being checked
@@ -44,11 +50,17 @@ const Messages = () => {
         <MessagesContent
           activeTab={activeTab}
           setActiveTab={setActiveTab}
+          messageFilter={messageFilter}
+          setMessageFilter={setMessageFilter}
           sentMessages={sentMessages}
           sentLoading={sentLoading}
           receivedMessages={receivedMessages}
           receivedLoading={receivedLoading}
+          sentPagination={sentPagination}
+          receivedPagination={receivedPagination}
           handleReply={handleReply}
+          handleDelete={handleDelete}
+          handlePageChange={handlePageChange}
         />
       </main>
     </div>

@@ -2,16 +2,19 @@
 import React from 'react';
 import { Message } from './types';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
 
 interface SentMessageCardProps {
   message: Message;
+  onDelete: (messageId: string) => Promise<void>;
 }
 
-const SentMessageCard = ({ message }: SentMessageCardProps) => {
+const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   return (
-    <div key={message.id} className="border rounded-lg p-4 bg-card">
+    <div className="border rounded-lg p-4 bg-card">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
           <AvatarImage src={message.artist?.image || ''} alt={message.artist?.name || 'Artist'} />
@@ -46,6 +49,15 @@ const SentMessageCard = ({ message }: SentMessageCardProps) => {
             <p className="text-sm">
               Credit: ${message.credit_amount?.toFixed(2)}
             </p>
+            
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-destructive hover:bg-destructive/10"
+              onClick={() => onDelete(message.id)}
+            >
+              <Trash2 className="h-4 w-4 mr-1" /> Delete
+            </Button>
           </div>
         </div>
       </div>

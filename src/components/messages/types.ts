@@ -29,3 +29,12 @@ export interface RawMessage {
   replied_at: string | null;
   credit_amount: number;
 }
+
+export interface PaginationState {
+  currentPage: number;
+  pageSize: number;
+  totalCount: number;
+}
+
+export type MessageFilter = 'all' | 'pending' | 'replied' | 'expired';
+

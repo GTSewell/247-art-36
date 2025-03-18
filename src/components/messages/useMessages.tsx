@@ -1,24 +1,128 @@
+
 import { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Message, RawMessage } from './types';
+import { Message, RawMessage, PaginationState, MessageFilter } from './types';
 
 export const useMessages = (userId: string | undefined) => {
   const [activeTab, setActiveTab] = useState<string>("sent");
+  const [messageFilter, setMessageFilter] = useState<MessageFilter>("all");
+  
+  // Pagination state for sent messages
+  const [sentPagination, setSentPagination] = useState<PaginationState>({
+    currentPage: 1,
+    pageSize: 5,
+    totalCount: 0
+  });
+  
+  // Pagination state for received messages
+  const [receivedPagination, setReceivedPagination] = useState<PaginationState>({
+    currentPage: 1,
+    pageSize: 5,
+    totalCount: 0
+  });
 
-  // Fetch messages sent by the current user
+  // Calculate pagination ranges
+  const sentRange = {
+    from: (sentPagination.currentPage - 1) * sentPagination.pageSize,
+    to: sentPagination.currentPage * sentPagination.pageSize - 1
+  };
+  
+  const receivedRange = {
+    from: (receivedPagination.currentPage - 1) * receivedPagination.pageSize,
+    to: receivedPagination.currentPage * receivedPagination.pageSize - 1
+  };
+
+  // Count total sent messages for pagination
+  const fetchSentMessageCount = async () => {
+    if (!userId) return 0;
+    
+    let query = supabase
+      .from('messages_247')
+      .select('id', { count: 'exact', head: true })
+      .eq('sender_id', userId);
+      
+    // Apply filters if not showing all
+    if (messageFilter !== 'all') {
+      query = query.eq('status', messageFilter);
+    }
+    
+    const { count, error } = await query;
+    
+    if (error) {
+      console.error('Error counting sent messages:', error);
+      return 0;
+    }
+    
+    return count || 0;
+  };
+  
+  // Count total received messages for pagination
+  const fetchReceivedMessageCount = async () => {
+    if (!userId) return 0;
+    
+    // First get the artist ID for the current user
+    const { data: artistData, error: artistError } = await supabase
+      .from('artists')
+      .select('id')
+      .eq('user_id', userId)
+      .single();
+      
+    if (artistError) {
+      if (artistError.code === 'PGRST116') {
+        return 0;
+      }
+      console.error('Error fetching artist profile:', artistError);
+      return 0;
+    }
+    
+    if (!artistData) return 0;
+    
+    let query = supabase
+      .from('messages_247')
+      .select('id', { count: 'exact', head: true })
+      .eq('artist_id', artistData.id.toString());
+      
+    // Apply filters if not showing all
+    if (messageFilter !== 'all') {
+      query = query.eq('status', messageFilter);
+    }
+    
+    const { count, error } = await query;
+    
+    if (error) {
+      console.error('Error counting received messages:', error);
+      return 0;
+    }
+    
+    return count || 0;
+  };
+
+  // Fetch messages sent by the current user with pagination
   const { data: sentMessages, isLoading: sentLoading, refetch: refetchSent } = useQuery({
-    queryKey: ['sentMessages', userId],
+    queryKey: ['sentMessages', userId, sentRange, messageFilter],
     queryFn: async () => {
       if (!userId) return [];
       
-      // First we need to get the artist details separately
-      const { data: sentMessagesData, error: messagesError } = await supabase
+      // First fetch message count for pagination
+      const count = await fetchSentMessageCount();
+      setSentPagination(prev => ({ ...prev, totalCount: count }));
+      
+      // Build the query with filters and pagination
+      let query = supabase
         .from('messages_247')
         .select('*')
         .eq('sender_id', userId)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(sentRange.from, sentRange.to);
+        
+      // Apply filters if not showing all
+      if (messageFilter !== 'all') {
+        query = query.eq('status', messageFilter);
+      }
+      
+      const { data: sentMessagesData, error: messagesError } = await query;
         
       if (messagesError) {
         console.error('Error fetching sent messages:', messagesError);
@@ -60,9 +164,9 @@ export const useMessages = (userId: string | undefined) => {
     enabled: !!userId,
   });
 
-  // Fetch messages received by the current user (as an artist)
+  // Fetch messages received by the current user (as an artist) with pagination
   const { data: receivedMessages, isLoading: receivedLoading, refetch: refetchReceived } = useQuery({
-    queryKey: ['receivedMessages', userId],
+    queryKey: ['receivedMessages', userId, receivedRange, messageFilter],
     queryFn: async () => {
       if (!userId) return [];
       
@@ -84,12 +188,24 @@ export const useMessages = (userId: string | undefined) => {
       
       if (!artistData) return [];
       
-      // Then get messages sent to this artist
-      const { data: receivedMessagesData, error } = await supabase
+      // Fetch message count for pagination
+      const count = await fetchReceivedMessageCount();
+      setReceivedPagination(prev => ({ ...prev, totalCount: count }));
+      
+      // Build the query with filters and pagination
+      let query = supabase
         .from('messages_247')
         .select('*')
         .eq('artist_id', artistData.id.toString())
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(receivedRange.from, receivedRange.to);
+        
+      // Apply filters if not showing all
+      if (messageFilter !== 'all') {
+        query = query.eq('status', messageFilter);
+      }
+      
+      const { data: receivedMessagesData, error } = await query;
         
       if (error) {
         console.error('Error fetching received messages:', error);
@@ -142,14 +258,53 @@ export const useMessages = (userId: string | undefined) => {
     }
   };
   
+  // Handle message deletion
+  const handleDelete = async (messageId: string) => {
+    try {
+      const { error } = await supabase
+        .from('messages_247')
+        .delete()
+        .eq('id', messageId);
+        
+      if (error) throw error;
+      
+      toast.success("Message deleted successfully");
+      
+      // Refetch to update the UI
+      if (activeTab === 'sent') {
+        refetchSent();
+      } else {
+        refetchReceived();
+      }
+    } catch (error) {
+      console.error('Error deleting message:', error);
+      toast.error("Failed to delete message");
+    }
+  };
+  
+  // Handle page change for pagination
+  const handlePageChange = (tab: 'sent' | 'received', page: number) => {
+    if (tab === 'sent') {
+      setSentPagination(prev => ({ ...prev, currentPage: page }));
+    } else {
+      setReceivedPagination(prev => ({ ...prev, currentPage: page }));
+    }
+  };
+  
   return {
     activeTab,
     setActiveTab,
+    messageFilter,
+    setMessageFilter,
     sentMessages,
     sentLoading,
     receivedMessages,
     receivedLoading,
+    sentPagination,
+    receivedPagination,
     handleReply,
+    handleDelete,
+    handlePageChange,
     refetchSent,
     refetchReceived
   };
