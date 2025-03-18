@@ -19,12 +19,14 @@ const VirtualTourSection = () => {
         <p className="text-lg mb-8 max-w-2xl mx-auto">
           Take a virtual tour of our innovative art space and see where the magic happens.
         </p>
-        <Link to="/virtual-tour">
-          <Button size="lg" className="bg-[#ea384c] hover:bg-[#c62c3d] text-white font-bold flex items-center gap-2">
-            <Zap className="h-5 w-5" />
-            Take the Virtual Tour
-          </Button>
-        </Link>
+        <div className="flex justify-center">
+          <Link to="/virtual-tour">
+            <Button size="lg" className="bg-[#ea384c] hover:bg-[#c62c3d] text-white font-bold flex items-center gap-2">
+              <Zap className="h-5 w-5" />
+              Take the Virtual Tour
+            </Button>
+          </Link>
+        </div>
       </motion.div>
     </section>
   );
