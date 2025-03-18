@@ -10,7 +10,7 @@ export async function fetchMessageById(messageId: string) {
     .single();
     
   if (error) throw error;
-  return data;
+  return data as RawMessage;
 }
 
 export async function fetchMessageReplies(messageId: string) {
