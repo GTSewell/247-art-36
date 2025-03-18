@@ -10,6 +10,7 @@ export interface Message {
   artist_id: string;
   replied_at: string | null;
   credit_amount: number;
+  parent_message_id?: string | null;
   artist?: {
     name: string;
     image: string;
@@ -28,6 +29,7 @@ export interface RawMessage {
   artist_id: string;
   replied_at: string | null;
   credit_amount: number;
+  parent_message_id?: string | null;
 }
 
 export interface PaginationState {
@@ -37,4 +39,3 @@ export interface PaginationState {
 }
 
 export type MessageFilter = 'all' | 'pending' | 'replied' | 'expired';
-

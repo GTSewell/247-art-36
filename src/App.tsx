@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -7,6 +6,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SitePassword } from "@/components/SitePassword";
 import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
+import MessageDetails from "@/pages/MessageDetails";
 
 import Index from "@/pages/Index";
 import Artists from "@/pages/Artists";
@@ -32,7 +32,7 @@ import AccountPage from "@/pages/pwa/AccountPage";
 
 import "./App.css";
 
-function App() {
+const App = () => {
   const location = useLocation();
   const { isPWA } = useAppMode();
   const isMobile = useIsMobile();
@@ -77,6 +77,7 @@ function App() {
         />
         <Route path="/cart" element={<Cart />} />
         <Route path="/messages" element={<Messages />} />
+        <Route path="/messages/:messageId" element={<MessageDetails />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/details" element={<Details />} />
         <Route path="/services" element={<Services />} />
@@ -100,6 +101,6 @@ function App() {
       <Toaster position="bottom-center" />
     </CartProvider>
   );
-}
+};
 
 export default App;

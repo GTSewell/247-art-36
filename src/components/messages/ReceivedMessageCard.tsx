@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Message } from './types';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Send, Trash2 } from "lucide-react";
+import { Send, Trash2, MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
 
@@ -14,6 +15,7 @@ interface ReceivedMessageCardProps {
 }
 
 const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCardProps) => {
+  const navigate = useNavigate();
   const [replyText, setReplyText] = useState('');
   
   const handleSubmit = (e: React.FormEvent) => {
@@ -69,6 +71,13 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
                     >
                       <Trash2 className="h-4 w-4 mr-1" /> Delete
                     </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => navigate(`/messages/${message.id}`)}
+                    >
+                      <MessageSquare className="h-4 w-4 mr-1" /> View Thread
+                    </Button>
                     <Button type="submit" className="flex gap-2 items-center">
                       <Send className="h-4 w-4" />
                       Send Reply
@@ -83,14 +92,23 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
                 <p className="text-sm text-muted-foreground">
                   You replied on {format(new Date(message.replied_at), 'PPP p')}
                 </p>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-destructive hover:bg-destructive/10"
-                  onClick={() => onDelete(message.id)}
-                >
-                  <Trash2 className="h-4 w-4 mr-1" /> Delete
-                </Button>
+                <div className="space-x-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="text-destructive hover:bg-destructive/10"
+                    onClick={() => onDelete(message.id)}
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" /> Delete
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => navigate(`/messages/${message.id}`)}
+                  >
+                    <MessageSquare className="h-4 w-4 mr-1" /> View Thread
+                  </Button>
+                </div>
               </div>
             </div>
           )}

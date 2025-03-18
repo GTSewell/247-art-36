@@ -1,9 +1,10 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Message } from './types';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
 
@@ -13,6 +14,8 @@ interface SentMessageCardProps {
 }
 
 const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
+  const navigate = useNavigate();
+  
   return (
     <div className="border rounded-lg p-4 bg-card">
       <div className="flex items-start gap-4">
@@ -50,14 +53,24 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
               Credit: ${message.credit_amount?.toFixed(2)}
             </p>
             
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="text-destructive hover:bg-destructive/10"
-              onClick={() => onDelete(message.id)}
-            >
-              <Trash2 className="h-4 w-4 mr-1" /> Delete
-            </Button>
+            <div className="space-x-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-destructive hover:bg-destructive/10"
+                onClick={() => onDelete(message.id)}
+              >
+                <Trash2 className="h-4 w-4 mr-1" /> Delete
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => navigate(`/messages/${message.id}`)}
+              >
+                <MessageSquare className="h-4 w-4 mr-1" /> View Thread
+              </Button>
+            </div>
           </div>
         </div>
       </div>
