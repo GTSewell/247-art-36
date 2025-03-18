@@ -1,13 +1,17 @@
 
 /* Mobile-specific table styles */
 @media (max-width: 640px) {
-  /* Ensure table takes full width on mobile */
+  /* Ensure table takes full width on mobile without horizontal scroll */
+  .overflow-x-auto {
+    overflow-x: visible;
+  }
+  
   .overflow-x-auto table {
     width: 100%;
     table-layout: fixed;
   }
   
-  /* Set column widths for better balance on mobile */
+  /* Adjust column widths for better fit on mobile */
   .overflow-x-auto table th:first-child,
   .overflow-x-auto table td:first-child {
     width: 40%;
@@ -18,7 +22,7 @@
     width: 30%;
   }
   
-  /* Ensure text is properly contained in cells */
+  /* Make text smaller and adjust padding */
   .overflow-x-auto table td, 
   .overflow-x-auto table th {
     word-break: break-word;
@@ -27,12 +31,12 @@
     font-size: 0.875rem;
   }
   
-  /* Make sure the feature name doesn't overflow */
+  /* Make feature names wrap properly */
   .overflow-x-auto table td .flex span {
     word-break: break-word;
   }
   
-  /* Fix button width and padding in table footer */
+  /* Adjust buttons in footer to fit width */
   .overflow-x-auto table tfoot button,
   .overflow-x-auto table tr:last-child button {
     width: 100%;
