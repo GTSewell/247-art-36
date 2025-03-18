@@ -1,8 +1,7 @@
 
 import { motion } from "framer-motion";
 import FaqAccordion from "./underground/FaqAccordion";
-import InterestForm from "./underground/InterestForm";
-import { faqItems, introText, outroText } from "./underground/faqData";
+import { faqItems, introText } from "./underground/faqData";
 
 const JoinUndergroundSection = () => {
   return (
@@ -22,9 +21,6 @@ const JoinUndergroundSection = () => {
 
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
-
-          {/* Interest Form */}
-          <InterestForm introText={outroText} />
         </div>
       </motion.div>
     </section>
