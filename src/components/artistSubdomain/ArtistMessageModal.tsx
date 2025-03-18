@@ -42,9 +42,9 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
             <h3 className="font-medium text-sm mb-2">How 247 Messaging works:</h3>
             <ul className="text-sm space-y-2 list-disc pl-5">
               <li>Pay $5 to send a message to this artist</li>
-              <li>If they respond within 24 hours, you'll get $5 credit toward any purchase from them</li>
-              <li>If they don't respond in time, you'll get a full refund</li>
-              <li>Guaranteed artist response or your money back</li>
+              <li>Get a reply in 24 hours, you get $5 credit on their art/prints</li>
+              <li>No reply? You can spend your credit on any artist</li>
+              <li>Credit must be spent before end of current exhibition</li>
             </ul>
           </div>
           
