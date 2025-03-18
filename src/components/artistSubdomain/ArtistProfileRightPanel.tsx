@@ -175,7 +175,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
               <span className="font-bold text-lg">{selectedArtwork?.price}</span>
               <Button 
                 onClick={handleAddToCart}
-                className="bg-[#95B3D2] hover:bg-[#7A9CC2] text-white transition-colors rounded-lg"
+                className="bg-[#ea384c] hover:bg-[#d41f33] text-white transition-colors rounded-lg"
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 Add to Cart
