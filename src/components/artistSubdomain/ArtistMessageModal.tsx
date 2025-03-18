@@ -18,8 +18,8 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
   artist
 }) => {
   const handleSendMessage = () => {
-    toast.success(`Your $5 message will be sent to ${artist.name}`, {
-      description: "If they reply within 24 hours, you'll get $5 off your next purchase"
+    toast.success(`Your $5 will be sent to ${artist.name}`, {
+      description: "If they reply within 24 hours, you'll get $5 credit towards their art"
     });
     onOpenChange(false);
   };
@@ -33,7 +33,7 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
             Message {artist.name}
           </DialogTitle>
           <DialogDescription>
-            Send a direct message to this artist with guaranteed 24-hour response
+            Send a direct message to this artist for a 24-hour response. See details below on how 247 messaging works.
           </DialogDescription>
         </DialogHeader>
         
