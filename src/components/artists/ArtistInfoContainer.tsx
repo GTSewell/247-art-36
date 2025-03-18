@@ -4,6 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import ArtistBio from './ArtistBio';
 import ArtistTechniquesStyles from './ArtistTechniquesStyles';
 import ArtistSocialLinks from './ArtistSocialLinks';
+import { Artist } from '@/data/types/artist';
 
 interface ArtistInfoContainerProps {
   bio: string;
@@ -13,6 +14,7 @@ interface ArtistInfoContainerProps {
   isMobile: boolean;
   isModalView?: boolean;
   modalTextClass?: string;
+  artist?: Artist;
   colorTheme?: {
     badgeBg?: string;
     button?: string;
@@ -29,6 +31,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
   isMobile, 
   isModalView = false,
   modalTextClass = "",
+  artist,
   colorTheme 
 }) => {
   // Calculate appropriate height and determine if we should use accordion
@@ -75,6 +78,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
           buttonTextColor={colorTheme?.buttonTextColor}
           buttonHoverColor={colorTheme?.buttonHoverColor}
           useAccordion={false}
+          artist={artist}
         />
       </div>
     </ScrollArea>

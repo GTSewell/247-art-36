@@ -40,6 +40,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
 
           {/* Connect Section */}
           <ArtistConnectSection 
+            artist={artist}
             socialPlatforms={socialPlatforms}
             buttonColor={buttonColor}
             buttonTextColor={buttonTextColor}

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -124,6 +125,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           isMobile={isMobile}
           isModalView={isModalView}
           modalTextClass={modalTextClass}
+          artist={artist}
           colorTheme={{
             badgeBg: colorTheme?.badgeBg,
             button: colorTheme?.button,
