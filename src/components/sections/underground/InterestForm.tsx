@@ -15,13 +15,11 @@ const InterestForm = ({ introText }: InterestFormProps) => {
         <iframe
           src="https://tally.so/embed/3X8q5Y?hideTitle=1&transparentBackground=1&dynamicHeight=1"
           width="100%"
-          height="500"
           frameBorder="0"
           marginHeight={0}
           marginWidth={0}
           title="Expression of Interest"
-          style={{ minHeight: "500px" }}
-          className="rounded-lg"
+          className="rounded-lg w-full"
         ></iframe>
       </div>
     </div>
