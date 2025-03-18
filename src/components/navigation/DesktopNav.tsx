@@ -38,9 +38,14 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         Virtual Tour
       </NavLink>
       
-      {/* Cart Icon with contrasting color to ensure visibility */}
+      {/* Cart Icon with proper contrast in both light and dark modes */}
       <Link to="/cart" className="relative">
-        <Button variant="ghost" size="icon" className="p-0 text-white hover:bg-white/20" title="Shopping Cart">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="p-0 text-foreground hover:bg-accent/20" 
+          title="Shopping Cart"
+        >
           <ShoppingCart className="h-5 w-5" />
           {itemCount > 0 && (
             <Badge 

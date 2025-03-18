@@ -24,9 +24,9 @@ const GalleryImagePanel: React.FC<GalleryImagePanelProps> = ({
 
   return (
     <div className="relative aspect-square rounded-lg overflow-hidden">
-      {gallery.image ? (
+      {gallery.image && !imageError ? (
         <img
-          src={imageError ? '/placeholder.svg' : gallery.image}
+          src={gallery.image}
           alt={gallery.name}
           className="w-full h-full object-cover"
           onError={handleImageError}
