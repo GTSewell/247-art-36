@@ -101,7 +101,7 @@ const ArtworkSizeCalculator: React.FC = () => {
                 <Button
                   onClick={addArtwork}
                   variant="outline"
-                  className="w-full mt-2"
+                  className="w-full mt-2 border-2 border-gray-300 hover:border-gray-500 shadow-sm"
                 >
                   <PlusCircle className="h-4 w-4 mr-2" />
                   Add Artwork ({artworks.length}/{maxArtworks})

@@ -16,7 +16,10 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({ value, onChange }) =>
         value={value} 
         onValueChange={(value: 'studio' | 'feature') => onChange(value)}
       >
-        <SelectTrigger id="package-select">
+        <SelectTrigger 
+          id="package-select" 
+          className="border-2 border-gray-300 focus:border-gray-500 focus:ring-gray-500 shadow-sm"
+        >
           <SelectValue placeholder="Select package" />
         </SelectTrigger>
         <SelectContent>
