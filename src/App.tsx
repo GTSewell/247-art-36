@@ -8,14 +8,14 @@ import Auth from './pages/Auth';
 import Cart from './pages/Cart';
 import CollectorDashboard from './pages/pwa/CollectorDashboard';
 import ArtistDashboard from './pages/pwa/ArtistDashboard';
-import PasswordPage from './pages/NotFound';  // Assuming we're using NotFound as a fallback for PasswordPage
+import PasswordPage from './pages/NotFound';  // Using NotFound as a fallback for PasswordPage
 import WhoAreYou from './pages/WhoAreYou';
 import Services from './pages/Services';
 import Store from './pages/GeneralStore';
 import VirtualTour from './pages/VirtualTour';
 import { PasswordProtectionProvider } from './contexts/PasswordProtectionContext';
 import { CartProvider } from './contexts/CartContext';
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 import AccountPage from './pages/pwa/AccountPage';
 import Messages247 from './pages/Messages247';
 
