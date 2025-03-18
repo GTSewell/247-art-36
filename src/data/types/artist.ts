@@ -13,5 +13,4 @@ export interface Artist {
   social_platforms?: string[];
   artworks?: string[];
   locked_artworks?: boolean;
-  user_id?: string;  // Added user_id property
 }
