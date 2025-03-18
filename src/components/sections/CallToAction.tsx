@@ -23,7 +23,7 @@ const CallToAction = () => {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="text-black font-extrabold text-10xl"
+              className="text-black font-extrabold text-3xl"
             >
               ARTISTS
             </motion.div>
