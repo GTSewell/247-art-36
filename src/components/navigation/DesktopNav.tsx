@@ -52,7 +52,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         </Button>
       </Link>
       
-      <UserMenu user={user} isLoading={isLoading} />
+      <UserMenu />
     </div>
   );
 };
