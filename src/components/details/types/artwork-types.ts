@@ -1,8 +1,8 @@
 
 export interface Artwork {
   id: number;
-  width: number; // in cm
-  height: number; // in cm
+  width: number | string; // in cm, can be empty string
+  height: number | string; // in cm, can be empty string
   fits: boolean;
   area: number; // in sq cm
   inBuffer?: boolean; // indicates if artwork is within 5% buffer

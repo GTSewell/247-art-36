@@ -6,12 +6,16 @@ export const generateId = (): number => {
 };
 
 export const calculateArtworkArea = (artwork: Artwork, artworksCount: number): number => {
+  // Handle empty string values
+  const width = artwork.width === '' ? 0 : Number(artwork.width);
+  const height = artwork.height === '' ? 0 : Number(artwork.height);
+  
   if (artworksCount > 1) {
-    const adjustedWidth = artwork.width + (SPACING_CM * 2);
-    const adjustedHeight = artwork.height + (SPACING_CM * 2);
+    const adjustedWidth = width + (SPACING_CM * 2);
+    const adjustedHeight = height + (SPACING_CM * 2);
     return adjustedWidth * adjustedHeight;
   }
-  return artwork.width * artwork.height;
+  return width * height;
 };
 
 export const calculateTotalAreaWithFits = (

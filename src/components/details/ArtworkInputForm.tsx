@@ -31,6 +31,11 @@ const ArtworkInputForm: React.FC<ArtworkInputFormProps> = ({
     statusClass = slightlyOver ? "text-orange-500 text-xs" : "text-red-500 text-xs";
   }
 
+  // Calculate base area based on dimensions (handle empty strings)
+  const width = artwork.width === '' ? 0 : Number(artwork.width);
+  const height = artwork.height === '' ? 0 : Number(artwork.height);
+  const baseArea = width * height;
+
   return (
     <div className={`p-4 rounded-lg border-2 ${artwork.fits ? 'border-green-200' : (slightlyOver ? 'border-orange-200' : 'border-red-200')} bg-gray-50`}>
       <div className="flex justify-between items-center mb-3">
@@ -81,8 +86,8 @@ const ArtworkInputForm: React.FC<ArtworkInputFormProps> = ({
       </div>
       
       <div className="mt-2 text-sm text-gray-500">
-        Base Area: {artwork.width * artwork.height} sq cm
-        {artwork.area !== artwork.width * artwork.height && (
+        Base Area: {baseArea} sq cm
+        {artwork.area !== baseArea && baseArea > 0 && (
           <span className="block">
             With spacing: {artwork.area} sq cm
           </span>

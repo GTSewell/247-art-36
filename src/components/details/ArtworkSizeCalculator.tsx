@@ -12,9 +12,9 @@ import { generateId, calculateTotalAreaWithFits } from "./utils/artwork-calculat
 const ArtworkSizeCalculator: React.FC = () => {
   const [selectedPackage, setSelectedPackage] = useState<'studio' | 'feature'>('studio');
   const [artworks, setArtworks] = useState<Artwork[]>([
-    { id: 1, width: 50, height: 50, fits: true, area: 2500 }
+    { id: 1, width: '', height: '', fits: true, area: 0 }
   ]);
-  const [totalArea, setTotalArea] = useState<number>(2500);
+  const [totalArea, setTotalArea] = useState<number>(0);
   const [maxAllowedArea, setMaxAllowedArea] = useState<number>(STUDIO_ARTIST_SQCM);
   const [maxArtworks, setMaxArtworks] = useState<number>(2);
 
@@ -42,7 +42,7 @@ const ArtworkSizeCalculator: React.FC = () => {
     if (artworks.length < maxArtworks) {
       const newArtworks = [
         ...artworks,
-        { id: generateId(), width: 50, height: 50, fits: true, area: 2500 }
+        { id: generateId(), width: '', height: '', fits: true, area: 0 }
       ];
       updateCalculations(newArtworks);
     }
@@ -54,7 +54,7 @@ const ArtworkSizeCalculator: React.FC = () => {
   };
 
   const handleDimensionChange = (id: number, dimension: 'width' | 'height', value: string) => {
-    const numValue = Math.max(0, Number(value) || 0);
+    const numValue = value === '' ? '' : Math.max(0, Number(value) || 0);
     
     const updatedArtworks = artworks.map(artwork => 
       artwork.id === id ? { ...artwork, [dimension]: numValue } : artwork
