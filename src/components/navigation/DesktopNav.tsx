@@ -7,6 +7,7 @@ import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
+import { useLocation } from "react-router-dom";
 
 interface DesktopNavProps {
   isActive: (path: string) => boolean;
@@ -16,7 +17,11 @@ interface DesktopNavProps {
 
 const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const { itemCount } = useCart();
-
+  const location = useLocation();
+  
+  // Check if we're on the cart page which has a dark background
+  const isCartPage = location.pathname === "/cart";
+  
   return (
     <div className="hidden md:flex items-center space-x-4 w-full justify-end">
       <NavLink to="/artists" isActive={isActive("/artists")}>
@@ -38,12 +43,12 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         Virtual Tour
       </NavLink>
       
-      {/* Cart Icon with proper contrast in both light and dark modes */}
+      {/* Cart Icon with proper contrast based on current page */}
       <Link to="/cart" className="relative">
         <Button 
           variant="ghost" 
           size="icon" 
-          className="p-0 text-foreground hover:bg-accent/20" 
+          className={`p-0 hover:bg-accent/20 ${isCartPage ? "text-white" : "text-foreground"}`}
           title="Shopping Cart"
         >
           <ShoppingCart className="h-5 w-5" />
@@ -57,7 +62,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         </Button>
       </Link>
       
-      <UserMenu />
+      <UserMenu isCartPage={isCartPage} />
     </div>
   );
 };

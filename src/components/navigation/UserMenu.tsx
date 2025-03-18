@@ -16,7 +16,11 @@ import { useAuth } from "@/hooks/use-auth";
 import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function UserMenu() {
+interface UserMenuProps {
+  isCartPage?: boolean;
+}
+
+export function UserMenu({ isCartPage = false }: UserMenuProps) {
   const navigate = useNavigate();
   const { user, session } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -36,14 +40,17 @@ export function UserMenu() {
   return (
     <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-1 px-3 hover:bg-accent/20 text-foreground">
-          <Avatar className="h-8 w-8 bg-primary border border-primary/30">
+        <Button 
+          variant="ghost" 
+          className={`flex items-center gap-1 px-3 hover:bg-accent/20 ${isCartPage ? "text-white" : "text-foreground"}`}
+        >
+          <Avatar className={`h-8 w-8 ${isCartPage ? "bg-white border-white/30" : "bg-primary border-primary/30"}`}>
             <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className="bg-primary text-primary-foreground">
+            <AvatarFallback className={isCartPage ? "bg-white text-black" : "bg-primary text-primary-foreground"}>
               {user?.email?.substring(0, 2).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
-          <span className="hidden md:inline-block ml-1 text-foreground">
+          <span className={`hidden md:inline-block ml-1 ${isCartPage ? "text-white" : "text-foreground"}`}>
             {user ? user.email?.split('@')[0] : 'Account'}
           </span>
         </Button>
@@ -108,4 +115,4 @@ export function UserMenu() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
