@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 import FaqAccordion from "./underground/FaqAccordion";
-import { faqItems, introText } from "./underground/faqData";
+import { faqItems } from "./underground/faqData";
 
 const JoinUndergroundSection = () => {
   return (
@@ -16,8 +16,6 @@ const JoinUndergroundSection = () => {
           <h1 className="text-4xl font-bold text-white">
             This is not just a gallery, a print shop, or a retail space ... THIS IS A MOVEMENT!
           </h1>
-
-          <p className="text-xl text-white/90 whitespace-pre-wrap">{introText}</p>
 
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
