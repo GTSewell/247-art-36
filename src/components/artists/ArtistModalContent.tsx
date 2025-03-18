@@ -1,5 +1,5 @@
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
 import ArtistImagePanel from "./ArtistImagePanel";
@@ -56,6 +56,30 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     logger.info(`Navigating to next artist, new index: ${newIndex}`);
     onArtistChange(newIndex);
   };
+
+  // Add keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle keyboard navigation if modal is visible
+      if (contentRef.current) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          handlePrevious();
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          handleNext();
+        }
+      }
+    };
+
+    // Add event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedArtistIndex, artists.length]);
 
   return (
     <div className="relative overflow-hidden bg-white">

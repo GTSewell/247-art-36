@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import ArtistModalContent from "./ArtistModalContent";
@@ -69,6 +69,26 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
       handleCarouselChange(selectedIndex);
     }
   }, [api, handleCarouselChange]);
+
+  // Add keyboard navigation for mobile carousel
+  useEffect(() => {
+    if (!isMobile || !open || !api) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        api.scrollPrev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        api.scrollNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [api, isMobile, open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
