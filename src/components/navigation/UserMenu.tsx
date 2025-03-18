@@ -36,14 +36,14 @@ export function UserMenu() {
   return (
     <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-1 px-3 hover:bg-black/5">
-          <Avatar className="h-8 w-8 bg-gray-200 border border-gray-300">
+        <Button variant="ghost" className="flex items-center gap-1 px-3 hover:bg-white/20 text-white">
+          <Avatar className="h-8 w-8 bg-white border border-white/30">
             <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className="bg-gray-200 text-gray-700">
+            <AvatarFallback className="bg-white text-black">
               {user?.email?.substring(0, 2).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
-          <span className="hidden md:inline-block ml-1">
+          <span className="hidden md:inline-block ml-1 text-white">
             {user ? user.email?.split('@')[0] : 'Account'}
           </span>
         </Button>

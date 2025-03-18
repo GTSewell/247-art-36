@@ -7,12 +7,12 @@ import { Separator } from "@/components/ui/separator";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import Navigation from "@/components/navigation/Navigation";
-import PWANavigation from "@/components/pwa/PWANavigation"; // Import PWA navigation
-import { useAppMode } from "@/contexts/AppModeContext"; // Import AppMode context
+import PWANavigation from "@/components/pwa/PWANavigation";
+import { useAppMode } from "@/contexts/AppModeContext";
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, clearCart } = useCart();
-  const { isPWA } = useAppMode(); // Use the AppMode context to detect PWA mode
+  const { isPWA } = useAppMode();
   
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const totalItems = items.reduce((count, item) => count + item.quantity, 0);
@@ -21,7 +21,7 @@ const Cart = () => {
     <div className="min-h-screen bg-black">
       {isPWA ? <PWANavigation /> : <Navigation />}
       
-      <div className="container mx-auto px-4 pt-24 pb-24"> {/* Changed py-6 to pt-24 to add more top padding */}
+      <div className="container mx-auto px-4 pt-28 pb-24"> {/* Increased top padding to avoid navbar overlap */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-white">Your Cart</h1>
           {items.length > 0 && (

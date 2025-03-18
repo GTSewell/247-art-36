@@ -78,12 +78,12 @@ const PWANavigation = () => {
             onClick={handleAccountClick}
           >
             <div className="relative">
-              <Avatar className="h-10 w-10 border border-gray-700">
+              <Avatar className="h-10 w-10 border border-white/30 bg-gray-800">
                 <AvatarImage 
                   src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
                   alt="Account" 
                 />
-                <AvatarFallback className="bg-gray-700 text-white">
+                <AvatarFallback className="bg-gray-600 text-white">
                   {user?.email?.substring(0, 2).toUpperCase() || 'A'}
                 </AvatarFallback>
               </Avatar>

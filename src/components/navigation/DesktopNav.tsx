@@ -40,7 +40,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
       
       {/* Cart Icon */}
       <Link to="/cart" className="relative">
-        <Button variant="ghost" size="icon" className="p-0" title="Shopping Cart">
+        <Button variant="ghost" size="icon" className="p-0 text-white" title="Shopping Cart">
           <ShoppingCart className="h-5 w-5" />
           {itemCount > 0 && (
             <Badge 
