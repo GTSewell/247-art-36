@@ -9,7 +9,7 @@ const videoUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/sig
 export const faqItems = [
   {
     title: "The 5P's : 'Print | Package | Postage | Payments | PROBLEMS",
-    content: <span key="The 5P's"><strong className="font-bold">WE TAKE CARE OF IT ALL, SO YOU DON'T HAVE TO!</strong> This is all pretty simple for us, as we've spent over a decade helping 100's of artists with all of the above. We understand that dealing with a full-time or part-time job, as well as trying create new artworks (or even just catch up with fam), only to spend half a day running around to sort out some fresh print or art sales, only to rock up at a post office that just closed ... then you miss the 86 tram home and shit just gets wild from here on. Let us deal with it. We got you. </span>
+    content: <span key="The 5P's"><strong className="font-bold">WE TAKE CARE OF IT ALL, SO YOU DON'T HAVE TO!</strong> This is all pretty simple for us, as we've spent over a decade helping 100's of artists with all of the above. We understand that dealing with a full-time or part-time job, as well as trying create new artworks (or even just catch up with fam), and then you spend half the day running around to sort out some fresh print/art sales, all to rock up at a post office that just closed. Add salt ... then you miss the 86 tram home and shit just gets wild from here on. Let us deal with it (Not the Tram, that's on you), otherwise, we got you. </span>
   },
   {
     title: "Exhibition Opportunity",
