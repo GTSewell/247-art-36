@@ -78,7 +78,6 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               className="w-full"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">Try: zap2024</p>
           </div>
           
           <Button 
@@ -91,16 +90,13 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         </form>
         
         <div className="mt-6 pt-4 border-t border-gray-100">
-          <p className="text-xs text-center text-gray-500 italic">
+          <p className="text-center text-[#ea384c] font-bold italic">
             Note: This site is purely in prototype mode solely for reference purposes only.
           </p>
           
           <div className="mt-4 p-3 bg-gray-50 rounded-md">
             <p className="text-xs text-center text-gray-700 font-medium">
-              After entering the password, you'll be automatically logged in with:
-            </p>
-            <p className="text-xs text-center text-gray-700 mt-1">
-              Email: demo247artist@gmail.com | Password: 12341234
+              After entering the password, you'll be automatically logged in to our artist demo account
             </p>
           </div>
         </div>
