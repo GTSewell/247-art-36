@@ -1,5 +1,5 @@
 
-import { Artwork, SPACING_CM } from "../types/artwork-types";
+import { Artwork, SPACING_CM, BUFFER_PERCENTAGE } from "../types/artwork-types";
 
 export const generateId = (): number => {
   return Date.now();
@@ -27,10 +27,20 @@ export const calculateTotalAreaWithFits = (
     return { ...artwork, area };
   });
 
-  const finalArtworks = updatedWithAreas.map(artwork => ({
-    ...artwork,
-    fits: calculatedTotalArea <= maxAllowedArea
-  }));
+  // Calculate buffer threshold
+  const bufferThreshold = maxAllowedArea * (1 + BUFFER_PERCENTAGE / 100);
+  
+  const finalArtworks = updatedWithAreas.map(artwork => {
+    const fits = calculatedTotalArea <= maxAllowedArea;
+    // Artwork is in buffer if total area exceeds max but is within buffer threshold
+    const inBuffer = !fits && calculatedTotalArea <= bufferThreshold;
+    
+    return {
+      ...artwork,
+      fits,
+      inBuffer
+    };
+  });
 
   return {
     artworks: finalArtworks,

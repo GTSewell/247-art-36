@@ -20,17 +20,24 @@ const ArtworkInputForm: React.FC<ArtworkInputFormProps> = ({
   onRemove,
   canRemove
 }) => {
-  const fitStatus = artwork.fits 
-    ? "text-green-600 text-xs" 
-    : "text-red-500 text-xs";
+  // Check if the artwork is slightly over (within 5% buffer)
+  const slightlyOver = !artwork.fits && artwork.inBuffer;
+  
+  let statusText = "Fits ✓";
+  let statusClass = "text-green-600 text-xs";
+  
+  if (!artwork.fits) {
+    statusText = slightlyOver ? "Sneaked through" : "Too large ✗";
+    statusClass = slightlyOver ? "text-orange-500 text-xs" : "text-red-500 text-xs";
+  }
 
   return (
-    <div className={`p-4 rounded-lg border-2 ${artwork.fits ? 'border-green-200' : 'border-red-200'} bg-gray-50`}>
+    <div className={`p-4 rounded-lg border-2 ${artwork.fits ? 'border-green-200' : (slightlyOver ? 'border-orange-200' : 'border-red-200')} bg-gray-50`}>
       <div className="flex justify-between items-center mb-3">
         <h4 className="font-medium">Artwork {index + 1}</h4>
         <div className="flex items-center gap-2">
-          <span className={fitStatus}>
-            {artwork.fits ? "Fits ✓" : "Too large ✗"}
+          <span className={statusClass}>
+            {statusText}
           </span>
           {canRemove && (
             <Button 
