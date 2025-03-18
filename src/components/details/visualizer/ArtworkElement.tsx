@@ -9,6 +9,8 @@ interface ArtworkElementProps {
   scale: number;
   spacing: number;
   totalArtworks?: number;
+  totalArea?: number;
+  maxArea?: number;
 }
 
 const ArtworkElement: React.FC<ArtworkElementProps> = ({ 
@@ -16,7 +18,9 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
   index, 
   scale, 
   spacing,
-  totalArtworks = 0
+  totalArtworks = 0,
+  totalArea = 0,
+  maxArea = 0
 }) => {
   // Handle empty string values
   const width = artwork.width === '' ? 0 : Number(artwork.width);
@@ -29,15 +33,19 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
   // Determine if there are multiple artworks
   const multipleArtworks = totalArtworks > 1;
   
-  // Determine border color based on fits property
-  const borderColor = artwork.fits ? 'border-green-500' : 'border-red-500';
+  // Check if artwork is slightly over (within buffer zone)
+  const slightlyOver = artwork.inBuffer || (totalArea > maxArea && totalArea <= maxArea * 1.05);
+  
+  // Determine border color based on conditions
+  let borderColor = artwork.fits ? 'border-green-500' : (slightlyOver ? 'border-orange-500' : 'border-red-500');
 
   // Calculate base area
   const baseArea = width * height;
 
   return (
-    <div className="text-center">
-      <div className="mb-2 text-sm font-medium">Artwork {index + 1}</div>
+    <div className="text-center relative mx-2">
+      {/* Position the title above the artwork with more spacing */}
+      <div className="mb-4 text-sm font-medium">Artwork {index + 1}</div>
       <div 
         className={`relative border-2 ${borderColor}`}
         style={{ 
@@ -56,7 +64,8 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
           <SpacingIndicator scale={scale} spacing={spacing} />
         )}
       </div>
-      <div className="mt-1 text-xs">
+      {/* Move the area info below with more spacing */}
+      <div className="mt-4 text-xs">
         Base Area: {baseArea} sq cm
         {artwork.area !== baseArea && baseArea > 0 && (
           <div className="text-gray-500">

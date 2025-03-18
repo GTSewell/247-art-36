@@ -30,7 +30,7 @@ const ArtworkVisualizer: React.FC<ArtworkVisualizerProps> = ({
   const visualizationWidth = 400;
   
   // Scale factor based on the largest dimension
-  const scale = maxDimension > 0 ? visualizationWidth / (maxDimension * 2) : 0.5;
+  const scale = maxDimension > 0 ? visualizationWidth / (maxDimension * 2.5) : 0.5;
 
   return (
     <div className="space-y-4">

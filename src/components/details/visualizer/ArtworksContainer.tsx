@@ -40,6 +40,8 @@ const ArtworksContainer: React.FC<ArtworksContainerProps> = ({
                 scale={scale}
                 spacing={spacing}
                 totalArtworks={artworks.length}
+                totalArea={totalArea}
+                maxArea={maxArea}
                 index={index}
               />
             ))}
