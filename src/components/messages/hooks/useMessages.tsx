@@ -21,14 +21,6 @@ export const useMessages = (userId: string | undefined) => {
     handlePageChange
   } = usePagination();
 
-  // Define refetch functions
-  const forceRefetch = useCallback(() => {
-    // Force a refetch by temporarily changing the query keys
-    const dummyTimeStamp = Date.now();
-    refetchSent({ queryKey: ['sentMessages', userId, sentRange, messageFilter, dummyTimeStamp] });
-    refetchReceived({ queryKey: ['receivedMessages', userId, receivedRange, messageFilter, dummyTimeStamp] });
-  }, [userId, sentRange, receivedRange, messageFilter]);
-
   // Fetch sent messages
   const { 
     data: sentMessages, 
@@ -42,6 +34,16 @@ export const useMessages = (userId: string | undefined) => {
     isLoading: receivedLoading, 
     refetch: refetchReceived 
   } = useReceivedMessages(userId, receivedRange, messageFilter, setReceivedPagination);
+
+  // Define a function to force refetch
+  const forceRefetch = useCallback(() => {
+    // Force a refetch by invoking both refetch functions
+    // Add a small timeout to ensure DB operations complete
+    setTimeout(() => {
+      refetchSent();
+      refetchReceived();
+    }, 100);
+  }, [refetchSent, refetchReceived]);
 
   // Use thread actions with appropriate refetch function
   const { handleReply, handleDelete } = useThreadActions(
