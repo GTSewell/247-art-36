@@ -13,7 +13,16 @@ interface FeatureRowProps {
   toggleRow: (index: number) => void;
 }
 
+// Features that need text stacking on mobile
+const stackableFeatures = [
+  "Exhibition Duration",
+  "Gallery Commission (Original Artwork)",
+  "24/7 Video Wall & Projection Profile"
+];
+
 const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) => {
+  const needsStacking = stackableFeatures.includes(feature.name);
+  
   return (
     <React.Fragment>
       <TableRow 
@@ -39,11 +48,13 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           value={feature.studioArtist} 
           hasDiscount={feature.hasDiscount} 
           type="studioArtist"
+          stackText={needsStacking}
         />
         <FeatureCell 
           value={feature.featureArtist} 
           hasDiscount={feature.hasDiscount}
           type="featureArtist" 
+          stackText={needsStacking}
         />
       </TableRow>
       
@@ -53,8 +64,8 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} 
           style={{ transition: 'none' }}
         >
-          <TableCell colSpan={3} className="p-4 pt-0 sm:p-4 sm:pt-0">
-            <div className="text-gray-600 text-xs sm:text-sm italic pl-2 sm:pl-4 pb-2">
+          <TableCell colSpan={3} className="p-2 pt-0 sm:p-4 sm:pt-0">
+            <div className="text-gray-600 text-xs sm:text-sm italic pl-1 sm:pl-4 pb-1">
               {feature.description}
             </div>
           </TableCell>

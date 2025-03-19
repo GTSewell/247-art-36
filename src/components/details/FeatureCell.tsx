@@ -7,9 +7,10 @@ interface FeatureCellProps {
   value: boolean | string;
   hasDiscount?: boolean;
   type?: 'studioArtist' | 'featureArtist' | 'signatureArtist';
+  stackText?: boolean;
 }
 
-const FeatureCell = ({ value, hasDiscount, type }: FeatureCellProps) => {
+const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) => {
   if (hasDiscount && typeof value === 'string') {
     let originalPrice = '';
     if (type === 'studioArtist') {
@@ -19,7 +20,7 @@ const FeatureCell = ({ value, hasDiscount, type }: FeatureCellProps) => {
     }
     
     return (
-      <TableCell className="text-center p-1 sm:p-4">
+      <TableCell className="text-center p-1">
         <div className="flex flex-col items-center justify-center">
           <span className="line-through text-gray-500 text-xs sm:text-sm">{originalPrice}</span>
           <span className="text-xs sm:text-base">{value}</span>
@@ -28,8 +29,41 @@ const FeatureCell = ({ value, hasDiscount, type }: FeatureCellProps) => {
     );
   }
   
+  // Handle stacked text (like converting "100 Days (3 months)" to stacked format)
+  if (stackText && typeof value === 'string') {
+    // Look for patterns like "X (Y)" or "X to Y"
+    let parts;
+    
+    if (value.includes(' (')) {
+      parts = value.split(' (');
+      parts[1] = parts[1].replace(')', ''); // Remove closing parenthesis
+      
+      return (
+        <TableCell className="text-center p-1">
+          <div className="stacked-text items-center">
+            <span>{parts[0]}</span>
+            <span>({parts[1]})</span>
+          </div>
+        </TableCell>
+      );
+    }
+    
+    if (value.includes(' to ')) {
+      parts = value.split(' to ');
+      
+      return (
+        <TableCell className="text-center p-1">
+          <div className="stacked-text items-center">
+            <span>{parts[0]}</span>
+            <span>to {parts[1]}</span>
+          </div>
+        </TableCell>
+      );
+    }
+  }
+  
   return (
-    <TableCell className="text-center p-1 sm:p-4">
+    <TableCell className="text-center p-1">
       {typeof value === "boolean" ? (
         value ? (
           <Check className="mx-auto text-green-500 h-4 w-4 sm:h-5 sm:w-5" />

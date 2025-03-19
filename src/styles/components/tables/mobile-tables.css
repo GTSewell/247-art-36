@@ -9,77 +9,99 @@
   .overflow-x-auto table {
     width: 100%;
     table-layout: fixed;
+    margin: 0;
+    padding: 0;
   }
   
-  /* Adjust column widths for better mobile display */
+  /* Optimize column widths for mobile */
   .overflow-x-auto table th:first-child,
   .overflow-x-auto table td:first-child {
-    width: 40%;
-    padding-left: 2px;
+    width: 36%;
+    padding-left: 1px;
+    padding-right: 1px;
   }
   
   .overflow-x-auto table th:not(:first-child),
   .overflow-x-auto table td:not(:first-child) {
-    width: 30%;
-    padding-left: 2px;
-    padding-right: 2px;
+    width: 32%;
+    padding-left: 1px;
+    padding-right: 1px;
   }
   
-  /* Make text smaller and reduce padding */
+  /* Extremely compact text and padding */
   .overflow-x-auto table td, 
   .overflow-x-auto table th {
     word-break: break-word;
     white-space: normal;
-    padding: 6px 2px;
-    font-size: 0.8rem;
+    padding: 4px 1px;
+    font-size: 0.75rem;
   }
   
-  /* Ensure feature names wrap properly */
+  /* Optimize feature names */
   .overflow-x-auto table td .flex span {
     word-break: break-word;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    line-height: 1.1;
   }
   
-  /* Make icons smaller on mobile */
+  /* Minimize icon sizes */
   .overflow-x-auto table td .flex svg {
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
   }
   
-  /* Reduce spacing between icon and text */
+  /* Minimize icon spacing */
   .overflow-x-auto table td .flex svg.mr-2 {
-    margin-right: 4px;
+    margin-right: 2px;
   }
   
-  /* Adjust buttons in footer to fit width */
+  /* Super compact buttons */
   .overflow-x-auto table tfoot button,
   .overflow-x-auto table tr:last-child button {
     width: 100%;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-    font-size: 0.8rem;
+    padding: 4px 2px;
+    font-size: 0.7rem;
   }
   
-  /* Add more compact padding to the footer row */
+  /* Compact footer */
   .overflow-x-auto table tr:last-child td {
-    padding: 8px 2px;
+    padding: 4px 1px;
   }
   
-  /* Make checkmarks and X smaller on mobile */
+  /* Smaller checkmarks and X icons */
   .overflow-x-auto table td svg.mx-auto {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
   }
   
-  /* Adjust header text size */
+  /* Smaller header text */
   .overflow-x-auto table th .font-bold.text-lg {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    line-height: 1.1;
   }
   
-  /* Make expanded description text more compact */
+  /* Compact description text */
   .overflow-x-auto table td .text-gray-600.text-sm {
+    font-size: 0.7rem;
+    padding-left: 1px;
+    line-height: 1.1;
+  }
+  
+  /* Stack text in cells with line breaks */
+  .overflow-x-auto table td .stacked-text {
+    display: flex;
+    flex-direction: column;
     font-size: 0.75rem;
-    padding-left: 2px;
+    line-height: 1.1;
+  }
+  
+  /* Adjust pricing display */
+  .overflow-x-auto table td .flex-col .line-through {
+    font-size: 0.7rem;
+  }
+  
+  .overflow-x-auto table td .flex-col span:not(.line-through) {
+    font-size: 0.75rem;
   }
 }
