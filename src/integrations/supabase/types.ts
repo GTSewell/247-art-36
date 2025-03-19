@@ -240,6 +240,7 @@ export type Database = {
           credit_amount: number
           id: string
           message: string
+          parent_message_id: string | null
           replied_at: string | null
           sender_id: string
           status: string
@@ -250,6 +251,7 @@ export type Database = {
           credit_amount?: number
           id?: string
           message: string
+          parent_message_id?: string | null
           replied_at?: string | null
           sender_id: string
           status?: string
@@ -260,11 +262,20 @@ export type Database = {
           credit_amount?: number
           id?: string
           message?: string
+          parent_message_id?: string | null
           replied_at?: string | null
           sender_id?: string
           status?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "messages_247_parent_message_id_fkey"
+            columns: ["parent_message_id"]
+            isOneToOne: false
+            referencedRelation: "messages_247"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       password_access_logs: {
         Row: {
