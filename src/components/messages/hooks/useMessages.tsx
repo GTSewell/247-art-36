@@ -4,7 +4,7 @@ import { MessageFilter } from '../types';
 import { usePagination } from './usePagination';
 import { useSentMessages } from './useSentMessages';
 import { useReceivedMessages } from './useReceivedMessages';
-import { useMessageActions } from './useMessageActions';
+import { useThreadActions } from './useThreadActions';
 
 export const useMessages = (userId: string | undefined) => {
   const [activeTab, setActiveTab] = useState<string>("sent");
@@ -35,11 +35,15 @@ export const useMessages = (userId: string | undefined) => {
     refetch: refetchReceived 
   } = useReceivedMessages(userId, receivedRange, messageFilter, setReceivedPagination);
 
-  // Get message action handlers
-  const { handleReply, handleDelete } = useMessageActions(
-    refetchSent,
-    refetchReceived,
-    activeTab
+  // Use thread actions with appropriate refetch function based on active tab
+  const refetchAll = () => {
+    refetchSent();
+    refetchReceived();
+  };
+
+  const { handleReply, handleDelete } = useThreadActions(
+    userId,
+    refetchAll
   );
   
   return {

@@ -144,10 +144,30 @@ export async function updateMessageStatus(messageId: string): Promise<void> {
 }
 
 export async function deleteMessage(messageId: string): Promise<void> {
-  const { error } = await supabase
-    .from('messages_247')
-    .delete()
-    .eq('id', messageId);
+  try {
+    // First, delete any replies to this message
+    const { error: repliesError } = await supabase
+      .from('messages_247')
+      .delete()
+      .eq('parent_message_id', messageId);
+      
+    if (repliesError) {
+      console.error("Error deleting message replies:", repliesError);
+      throw repliesError;
+    }
     
-  if (error) throw error;
+    // Then delete the message itself
+    const { error } = await supabase
+      .from('messages_247')
+      .delete()
+      .eq('id', messageId);
+      
+    if (error) {
+      console.error("Error deleting message:", error);
+      throw error;
+    }
+  } catch (error) {
+    console.error("Error in deleteMessage:", error);
+    throw error;
+  }
 }
