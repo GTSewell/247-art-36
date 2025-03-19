@@ -17,7 +17,7 @@ export function useThreadActions(userId: string | undefined, refetch: () => void
       setIsReplying(true);
       
       // Create the reply
-      await createMessageReply(messageId, replyText, userId, "0"); // We don't need artistId here as it's fetched in the API
+      await createMessageReply(messageId, replyText, userId, userId);
       
       // Update the status of the original message
       await updateMessageStatus(messageId);

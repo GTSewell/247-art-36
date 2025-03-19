@@ -17,6 +17,11 @@ export function useMessageData(messageId: string | undefined, userId: string | u
       try {
         // Fetch the original message
         const messageData = await fetchMessageById(messageId);
+        if (!messageData) {
+          console.error("Message not found:", messageId);
+          return null;
+        }
+        
         const formattedMessage = await formatMessage(messageData);
 
         // Fetch related replies

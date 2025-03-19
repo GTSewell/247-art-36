@@ -32,7 +32,7 @@ export const fetchReceivedMessageCount = async (userId: string | undefined, mess
   if (!userId) return 0;
   
   try {
-    // Try to directly count messages where artist_id equals the user's ID
+    // Count messages where artist_id equals the user ID 
     let query = supabase
       .from('messages_247')
       .select('id', { count: 'exact', head: true })

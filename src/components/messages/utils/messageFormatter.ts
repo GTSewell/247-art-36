@@ -4,19 +4,22 @@ import { fetchArtistById } from "../api/messageApi";
 
 export async function formatMessage(rawMessage: RawMessage): Promise<Message> {
   try {
-    // Convert artist_id to string for consistent handling
-    const artistId = rawMessage.artist_id.toString();
-    
-    // Fetch artist data
-    const artistData = await fetchArtistById(artistId);
+    // Fetch artist data using artist_id
+    const artistData = await fetchArtistById(rawMessage.artist_id);
     
     // Determine if this message is from the artist or from the user
-    const isFromArtist = rawMessage.sender_id === artistId;
+    const isFromArtist = rawMessage.sender_id === rawMessage.artist_id;
     
     return {
       ...rawMessage,
       status: rawMessage.status as Message['status'],
-      artist: artistData || { name: 'Unknown Artist', image: '' },
+      artist: artistData ? { 
+        name: artistData.name || 'Unknown Artist', 
+        image: artistData.image || '' 
+      } : { 
+        name: 'Unknown Artist', 
+        image: '' 
+      },
       // Don't expose email addresses in UI
       sender: { email: isFromArtist ? artistData?.name || 'Artist' : 'You' }
     };
