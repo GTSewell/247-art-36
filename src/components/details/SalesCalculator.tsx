@@ -54,8 +54,8 @@ const SalesCalculator = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       packageType: "studio",
-      stpPacks: 0,
-      artworkSales: 0,
+      stpPacks: undefined,
+      artworkSales: undefined,
     },
   });
 
@@ -72,17 +72,17 @@ const SalesCalculator = () => {
     const packageCost = PACKAGE_COSTS[packageType];
     
     // STP packs revenue
-    const stpRevenue = stpPacks * STP_REVENUE_PER_PACK;
+    const stpRevenue = (stpPacks || 0) * STP_REVENUE_PER_PACK;
     
     // Base commission rate
     const baseCommissionRate = BASE_COMMISSION_RATES[packageType];
     
     // Effective commission rate after STP packs
-    let effectiveCommissionRate = Math.max(0, baseCommissionRate - (stpPacks * STP_COMMISSION_REDUCTION_PER_PACK));
+    let effectiveCommissionRate = Math.max(0, baseCommissionRate - ((stpPacks || 0) * STP_COMMISSION_REDUCTION_PER_PACK));
     
     // Original artwork revenue before and after STP packs
-    const artworkRevenueBeforeStp = artworkSales * (1 - baseCommissionRate);
-    const artworkRevenueAfterStp = artworkSales * (1 - effectiveCommissionRate);
+    const artworkRevenueBeforeStp = (artworkSales || 0) * (1 - baseCommissionRate);
+    const artworkRevenueAfterStp = (artworkSales || 0) * (1 - effectiveCommissionRate);
     
     // Total revenue
     const totalRevenue = stpRevenue + artworkRevenueAfterStp;
@@ -152,7 +152,7 @@ const SalesCalculator = () => {
                 <FormField
                   control={form.control}
                   name="stpPacks"
-                  render={({ field }) => (
+                  render={({ field: { onChange, value, ...rest } }) => (
                     <FormItem>
                       <FormLabel className="flex items-center">
                         STP Packs Sold 
@@ -172,7 +172,14 @@ const SalesCalculator = () => {
                         </TooltipProvider>
                       </FormLabel>
                       <FormControl>
-                        <Input {...field} type="number" min="0" />
+                        <Input 
+                          type="number" 
+                          min="0" 
+                          onChange={onChange}
+                          value={value === undefined ? "" : value}
+                          placeholder=""
+                          {...rest}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -182,13 +189,21 @@ const SalesCalculator = () => {
                 <FormField
                   control={form.control}
                   name="artworkSales"
-                  render={({ field }) => (
+                  render={({ field: { onChange, value, ...rest } }) => (
                     <FormItem>
                       <FormLabel>Original Artwork Sales ($)</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <DollarSign className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
-                          <Input {...field} type="number" min="0" className="pl-10" />
+                          <Input 
+                            type="number" 
+                            min="0" 
+                            className="pl-10" 
+                            onChange={onChange}
+                            value={value === undefined ? "" : value}
+                            placeholder=""
+                            {...rest}
+                          />
                         </div>
                       </FormControl>
                       <FormMessage />
