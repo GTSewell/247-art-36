@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Message } from './types';
@@ -26,11 +27,14 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
     try {
       setIsDeleting(true);
       await onDelete(message.id);
+      // The component should unmount when the message is removed from the list
+      // If it doesn't unmount, we still want to reset the state after a timeout
+      setTimeout(() => {
+        setIsDeleting(false);
+      }, 5000); // Safety timeout in case component doesn't unmount
     } catch (error) {
       console.error('Error deleting message:', error);
-    } finally {
-      // Keep isDeleting true to show disabled button
-      // It will be unmounted when the message is removed from the list
+      setIsDeleting(false);
     }
   };
   

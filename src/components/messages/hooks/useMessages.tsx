@@ -42,11 +42,11 @@ export const useMessages = (userId: string | undefined) => {
     setTimeout(() => {
       refetchSent();
       refetchReceived();
-    }, 100);
+    }, 300);
   }, [refetchSent, refetchReceived]);
 
   // Use thread actions with appropriate refetch function
-  const { handleReply, handleDelete } = useThreadActions(
+  const { handleReply, handleDelete, isReplying, isDeleting } = useThreadActions(
     userId,
     forceRefetch
   );
@@ -65,6 +65,8 @@ export const useMessages = (userId: string | undefined) => {
     handleReply,
     handleDelete,
     handlePageChange,
+    isReplying,
+    isDeleting,
     refetchSent,
     refetchReceived
   };

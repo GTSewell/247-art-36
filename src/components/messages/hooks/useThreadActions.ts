@@ -47,12 +47,14 @@ export function useThreadActions(userId: string | undefined, refetch: () => void
       toast.success("Message deleted successfully");
       
       // Force a refetch after deletion
-      // This should update the UI with the latest data
-      refetch();
+      // Add a small delay to ensure database operations complete
+      setTimeout(() => {
+        refetch();
+      }, 300);
     } catch (error) {
       console.error('Error deleting message:', error);
       toast.error("Failed to delete message");
-    } finally {
+      // Important: Reset the deleting state on error
       setIsDeleting(false);
     }
   };
