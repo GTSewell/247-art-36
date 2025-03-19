@@ -102,6 +102,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({ onFormChange }) => {
                     onChange={onChange}
                     value={value === undefined ? "" : value}
                     placeholder=""
+                    className="border-2 border-gray-300 focus:border-primary" 
                     {...rest}
                   />
                 </FormControl>
@@ -122,7 +123,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({ onFormChange }) => {
                     <Input 
                       type="number" 
                       min="0" 
-                      className="pl-10" 
+                      className="pl-10 border-2 border-gray-300 focus:border-primary" 
                       onChange={onChange}
                       value={value === undefined ? "" : value}
                       placeholder=""
