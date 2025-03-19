@@ -43,7 +43,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
             ) : (
               <ChevronDown className="h-4 w-4 text-gray-500 mr-1 flex-shrink-0" />
             )}
-            <span className="text-xs sm:text-base">{feature.name}</span>
+            <span className="text-sm sm:text-base font-medium">{feature.name}</span>
           </div>
         </TableCell>
         <FeatureCell 

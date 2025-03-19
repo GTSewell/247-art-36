@@ -23,7 +23,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       <TableCell className="text-center p-1">
         <div className="flex flex-col items-center justify-center">
           <span className="line-through text-gray-500 text-xs sm:text-sm">{originalPrice}</span>
-          <span className="text-xs sm:text-base">{value}</span>
+          <span className="text-sm sm:text-base font-medium">{value}</span>
         </div>
       </TableCell>
     );
@@ -41,7 +41,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       return (
         <TableCell className="text-center p-1">
           <div className="stacked-text items-center">
-            <span>{parts[0]}</span>
+            <span className="font-medium">{parts[0]}</span>
             <span>({parts[1]})</span>
           </div>
         </TableCell>
@@ -54,7 +54,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       return (
         <TableCell className="text-center p-1">
           <div className="stacked-text items-center">
-            <span>{parts[0]}</span>
+            <span className="font-medium">{parts[0]}</span>
             <span>to {parts[1]}</span>
           </div>
         </TableCell>
@@ -68,7 +68,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       return (
         <TableCell className="text-center p-1">
           <div className="stacked-text items-center">
-            <span>{parts[0]}</span>
+            <span className="font-medium">{parts[0]}</span>
             <span>every {parts[1]}</span>
           </div>
         </TableCell>
@@ -85,7 +85,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
           <X className="mx-auto text-red-500 h-4 w-4 sm:h-5 sm:w-5" />
         )
       ) : (
-        <span className="text-xs sm:text-base">{value}</span>
+        <span className="text-sm sm:text-base">{value}</span>
       )}
     </TableCell>
   );

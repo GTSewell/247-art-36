@@ -8,7 +8,7 @@ const TableFooterComponent = () => {
   return (
     <TableRow className="bg-black hover:bg-black border-t-2 border-gray-700" style={{ transition: 'none' }}>
       <TableCell className="font-bold text-white py-2 sm:py-4">
-        <span className="text-xs sm:text-lg">Secure your spot...</span>
+        <span className="text-sm sm:text-lg">Secure your spot...</span>
       </TableCell>
       <TableCell className="text-center py-2 sm:py-4">
         <Button 
@@ -16,7 +16,7 @@ const TableFooterComponent = () => {
           size="sm"
         >
           <ShoppingCart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-xs">Studio</span>
+          <span className="text-xs sm:text-sm">Studio</span>
         </Button>
       </TableCell>
       <TableCell className="text-center py-2 sm:py-4">
@@ -25,7 +25,7 @@ const TableFooterComponent = () => {
           size="sm"
         >
           <ShoppingCart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-xs">Feature</span>
+          <span className="text-xs sm:text-sm">Feature</span>
         </Button>
       </TableCell>
     </TableRow>
