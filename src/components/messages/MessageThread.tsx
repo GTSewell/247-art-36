@@ -66,6 +66,12 @@ const MessageThread = ({
     );
   }
   
+  // Determine the recipient information based on the original message
+  const isFromMe = message.sender?.email === 'You';
+  const recipientName = isFromMe 
+    ? message.artist?.name || 'Artist'
+    : 'You';
+  
   return (
     <div className="space-y-4">
       <Button 
@@ -77,7 +83,12 @@ const MessageThread = ({
         Back to Messages
       </Button>
       
-      <h1 className="text-2xl font-bold mb-6">Message Thread</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Message Thread</h1>
+        <div className="text-muted-foreground">
+          {isFromMe ? `To: ${message.artist?.name || 'Artist'}` : `From: ${message.artist?.name || 'Artist'}`}
+        </div>
+      </div>
       
       <MessageThreadItem 
         message={message} 

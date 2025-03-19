@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/use-auth";
 
 interface MessageThreadItemProps {
   message: Message;
@@ -15,6 +16,7 @@ interface MessageThreadItemProps {
 
 const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThreadItemProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
+  const { user } = useAuth();
   
   const handleDelete = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -47,19 +49,18 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
   const avatarInitials = isFromArtist
     ? (message.artist?.name?.substring(0, 2) || 'AR')
     : 'YO';
+    
+  // Determine the avatar image based on sender type
+  const avatarImage = isFromArtist
+    ? message.artist?.image || ''
+    : user?.user_metadata?.avatar_url || '';
   
   return (
     <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/50 shadow-md' : 'bg-card shadow-md'} border-gray-300 dark:border-gray-700`}>
       <div className="flex gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
-          {isFromArtist ? (
-            <>
-              <AvatarImage src={message.artist?.image || ''} alt={message.artist?.name || 'Artist'} />
-              <AvatarFallback>{avatarInitials}</AvatarFallback>
-            </>
-          ) : (
-            <AvatarFallback>{avatarInitials}</AvatarFallback>
-          )}
+          <AvatarImage src={avatarImage} alt={senderName} />
+          <AvatarFallback>{avatarInitials}</AvatarFallback>
         </Avatar>
         
         <div className="flex-1">

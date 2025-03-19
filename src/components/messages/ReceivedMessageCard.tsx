@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Message } from './types';
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Send, Trash2, MessageSquare, Loader2 } from "lucide-react";
+import { Trash2, MessageSquare, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
 import CountdownTimer from './CountdownTimer';
 import MessageReplyForm from './MessageReplyForm';
+import { useAuth } from "@/hooks/use-auth";
 
 interface ReceivedMessageCardProps {
   message: Message;
@@ -19,6 +20,7 @@ interface ReceivedMessageCardProps {
 const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCardProps) => {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
+  const { user } = useAuth();
   
   const handleDelete = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,10 +41,14 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
     }
   };
   
+  // Get the user's avatar URL from auth
+  const userAvatarUrl = user?.user_metadata?.avatar_url || '';
+  
   return (
     <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
+          <AvatarImage src={userAvatarUrl} alt="You" />
           <AvatarFallback>YO</AvatarFallback>
         </Avatar>
         

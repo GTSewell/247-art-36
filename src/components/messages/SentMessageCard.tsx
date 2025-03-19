@@ -8,6 +8,7 @@ import { Trash2, MessageSquare, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
 import CountdownTimer from './CountdownTimer';
+import { useAuth } from "@/hooks/use-auth";
 
 interface SentMessageCardProps {
   message: Message;
@@ -17,6 +18,7 @@ interface SentMessageCardProps {
 const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
+  const { user } = useAuth();
   
   const handleDelete = async (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent event bubbling
