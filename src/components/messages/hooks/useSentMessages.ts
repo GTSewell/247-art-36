@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageFilter, Message, RawMessage } from '../types';
 import { fetchSentMessageCount } from "../api/messageCountApi";
+import { fetchArtistById } from "../api/messageApi";
 
 export const useSentMessages = (
   userId: string | undefined,
@@ -43,53 +44,18 @@ export const useSentMessages = (
         throw messagesError;
       }
       
-      // Now process each message to add artist info
+      // Process each message to add artist info using our updated fetchArtistById function
       const messagesWithArtists: Message[] = await Promise.all(
         (sentMessagesData as RawMessage[]).map(async (message) => {
           try {
-            // Handle the artist_id regardless of format
+            // Convert artist_id to string for consistent handling
             const artistId = message.artist_id.toString();
-            
-            if (!artistId) {
-              return {
-                ...message,
-                status: message.status as Message['status'],
-                artist: { name: 'Unknown Artist', image: '' }
-              };
-            }
-            
-            // Try to get artist from the artists table
-            // Need to convert artistId to number if it's a numeric string
-            const artistIdNum = !isNaN(Number(artistId)) ? Number(artistId) : null;
-            
-            if (artistIdNum === null) {
-              console.error("Invalid artist ID format:", artistId);
-              return {
-                ...message,
-                status: message.status as Message['status'],
-                artist: { name: 'Unknown Artist', image: '' }
-              };
-            }
-            
-            const { data: artistData, error: artistError } = await supabase
-              .from('artists')
-              .select('name, image')
-              .eq('id', artistIdNum)
-              .maybeSingle();
-              
-            if (artistError || !artistData) {
-              console.error('Error fetching artist data:', artistError || 'No artist found');
-              return {
-                ...message,
-                status: message.status as Message['status'],
-                artist: { name: 'Unknown Artist', image: '' }
-              };
-            }
+            const artistData = await fetchArtistById(artistId);
             
             return {
               ...message,
               status: message.status as Message['status'],
-              artist: artistData
+              artist: artistData || { name: 'Unknown Artist', image: '' }
             };
           } catch (error) {
             console.error('Error processing artist data:', error);

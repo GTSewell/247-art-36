@@ -27,27 +27,47 @@ export async function fetchMessageReplies(messageId: string): Promise<RawMessage
 
 export async function fetchArtistById(artistId: string): Promise<{ name: string; image: string } | null> {
   try {
-    // Make sure we're using a consistent format for the query
-    // Convert artistId to a number for the database query if it's a numeric string
-    const artistIdNum = !isNaN(Number(artistId)) ? Number(artistId) : null;
-    
-    if (artistIdNum === null) {
-      console.error("Invalid artist ID format:", artistId);
-      return null;
-    }
-    
-    const { data, error } = await supabase
-      .from('artists')
-      .select('name, image')
-      .eq('id', artistIdNum)
-      .maybeSingle();
+    // The artists table uses numeric IDs, so we need to convert if it's a UUID format
+    // First check if it looks like a UUID (contains hyphens)
+    if (artistId.includes('-')) {
+      // It's likely a UUID format, we need to look up the numeric ID first
+      const { data: artistData, error: artistError } = await supabase
+        .from('artists')
+        .select('id, name, image')
+        .eq('user_id', artistId)
+        .maybeSingle();
+        
+      if (artistError || !artistData) {
+        console.error('Error fetching artist by UUID:', artistError || 'No artist found');
+        return null;
+      }
       
-    if (error) {
-      console.error("Error fetching artist:", error);
-      return null;
+      return {
+        name: artistData.name || 'Unknown Artist',
+        image: artistData.image || ''
+      };
+    } else {
+      // It's likely a numeric ID, convert it to a number
+      const artistIdNum = parseInt(artistId, 10);
+      
+      if (isNaN(artistIdNum)) {
+        console.error("Invalid artist ID format:", artistId);
+        return null;
+      }
+      
+      const { data, error } = await supabase
+        .from('artists')
+        .select('name, image')
+        .eq('id', artistIdNum)
+        .maybeSingle();
+        
+      if (error) {
+        console.error("Error fetching artist:", error);
+        return null;
+      }
+      
+      return data as { name: string; image: string } || null;
     }
-    
-    return data as { name: string; image: string };
   } catch (error) {
     console.error("Error in fetchArtistById:", error);
     return null;

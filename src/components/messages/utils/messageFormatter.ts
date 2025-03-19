@@ -7,7 +7,7 @@ export async function formatMessage(rawMessage: RawMessage): Promise<Message> {
     // Convert artist_id to string for consistent handling
     const artistId = rawMessage.artist_id.toString();
     
-    // Fetch artist data with the string ID (will be converted to number in fetchArtistById)
+    // Fetch artist data
     const artistData = await fetchArtistById(artistId);
     
     return {
