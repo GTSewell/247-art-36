@@ -1,33 +1,13 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { Message, RawMessage } from "../types";
 
-// Define explicit interfaces for table rows with string IDs
-
-interface Messages247Row {
-  id: string;
-  parent_message_id: string | null;
-  sender_id: string;
-  artist_id: string;
-  message: string;
-  status: string;
-  created_at: string;
-  replied_at: string | null;
-  // Add any additional columns as needed
-}
-
-interface ArtistsRow {
-  id: string;
-  name: string;
-  image: string;
-  user_id: string;
-  // Add any additional columns as needed
-}
-
+// Define explicit types for our responses, not for the table structure
 export async function fetchMessageById(messageId: string): Promise<RawMessage> {
   const { data, error } = await supabase
-    .from<Messages247Row, Messages247Row>("messages_247")
-    .select("*")
-    .eq("id", messageId)
+    .from('messages_247')
+    .select('*')
+    .eq('id', messageId)
     .single();
     
   if (error) throw error;
@@ -36,10 +16,10 @@ export async function fetchMessageById(messageId: string): Promise<RawMessage> {
 
 export async function fetchMessageReplies(messageId: string): Promise<RawMessage[]> {
   const { data, error } = await supabase
-    .from<Messages247Row, Messages247Row>("messages_247")
-    .select("*")
-    .eq("parent_message_id", messageId)
-    .order("created_at", { ascending: true });
+    .from('messages_247')
+    .select('*')
+    .eq('parent_message_id', messageId)
+    .order('created_at', { ascending: true });
     
   if (error) throw error;
   return data as RawMessage[];
@@ -47,9 +27,9 @@ export async function fetchMessageReplies(messageId: string): Promise<RawMessage
 
 export async function fetchArtistById(artistId: string): Promise<{ name: string; image: string } | null> {
   const { data, error } = await supabase
-    .from<ArtistsRow, ArtistsRow>("artists")
-    .select("name, image")
-    .eq("id", artistId)
+    .from('artists')
+    .select('name, image')
+    .eq('id', artistId)
     .single();
     
   if (error) {
@@ -57,19 +37,19 @@ export async function fetchArtistById(artistId: string): Promise<{ name: string;
     return null;
   }
   
-  return data;
+  return data as { name: string; image: string };
 }
 
 export async function fetchArtistByUserId(userId: string): Promise<{ id: string }> {
   const { data, error } = await supabase
-    .from<ArtistsRow, ArtistsRow>("artists")
-    .select("id")
-    .eq("user_id", userId)
+    .from('artists')
+    .select('id')
+    .eq('user_id', userId)
     .single();
     
   if (error) throw error;
   
-  return { id: data.id };
+  return { id: data.id.toString() };
 }
 
 export async function createMessageReply(
@@ -79,7 +59,7 @@ export async function createMessageReply(
   artistId: string
 ): Promise<void> {
   const { error } = await supabase
-    .from<Messages247Row, Messages247Row>("messages_247")
+    .from('messages_247')
     .insert({
       message: replyText,
       parent_message_id: messageId,
@@ -93,21 +73,21 @@ export async function createMessageReply(
 
 export async function updateMessageStatus(messageId: string): Promise<void> {
   const { error } = await supabase
-    .from<Messages247Row, Messages247Row>("messages_247")
+    .from('messages_247')
     .update({
       status: "replied",
       replied_at: new Date().toISOString()
     })
-    .eq("id", messageId);
+    .eq('id', messageId);
     
   if (error) throw error;
 }
 
 export async function deleteMessage(messageId: string): Promise<void> {
   const { error } = await supabase
-    .from<Messages247Row, Messages247Row>("messages_247")
+    .from('messages_247')
     .delete()
-    .eq("id", messageId);
+    .eq('id', messageId);
     
   if (error) throw error;
 }
