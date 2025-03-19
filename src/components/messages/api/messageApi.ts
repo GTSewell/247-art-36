@@ -67,17 +67,33 @@ export async function createMessageReply(
   userId: string,
   artistId: string
 ): Promise<void> {
+  // First, get the original message to obtain the correct artist_id
+  const { data: originalMessage, error: fetchError } = await supabase
+    .from('messages_247')
+    .select('artist_id')
+    .eq('id', messageId)
+    .single();
+  
+  if (fetchError) {
+    console.error("Error fetching original message:", fetchError);
+    throw fetchError;
+  }
+  
+  // Use the artist_id from the original message to ensure we're using the correct UUID format
   const { error } = await supabase
     .from('messages_247')
     .insert({
       message: replyText,
       parent_message_id: messageId,
       sender_id: userId,
-      artist_id: artistId,
+      artist_id: originalMessage.artist_id, // Use the artist_id from the original message
       status: "replied"
     });
     
-  if (error) throw error;
+  if (error) {
+    console.error("Error creating message reply:", error);
+    throw error;
+  }
 }
 
 export async function updateMessageStatus(messageId: string): Promise<void> {
