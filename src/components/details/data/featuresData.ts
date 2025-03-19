@@ -4,15 +4,17 @@ interface Feature {
   featureArtist: boolean | string;
   signatureArtist?: boolean | string;
   description?: string;
+  hasDiscount?: boolean;
 }
 
 export const features: Feature[] = [
   { 
-    name: "Price", 
+    name: "Genesis Price", 
     studioArtist: "$995", 
     featureArtist: "$1495", 
     signatureArtist: "$1995",
-    description: "One-time payment to join our exclusive artist community. This includes all of your retail print & merch production and stocked in our space, gallery sales staffing, customer relations etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course any Problems. You focus on creating art, we will take care of the rest."
+    description: "One-time payment to join our exclusive artist community. This includes all of your retail print & merch production and stocked in our space, gallery sales staffing, customer relations etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course any Problems. You focus on creating art, we will take care of the rest.",
+    hasDiscount: true
   },
   { 
     name: "Limited Spaces", 
@@ -140,7 +142,6 @@ export const features: Feature[] = [
     signatureArtist: true,
     description: "Exclusive opportunity on our dedicated feature wall showcasing your work for one week alongside 3 other Feature Artists on our gallery Feature Wall"
   },
-  
 ];
 
 export default features;

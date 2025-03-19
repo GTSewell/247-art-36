@@ -35,8 +35,16 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
             <span>{feature.name}</span>
           </div>
         </TableCell>
-        <FeatureCell value={feature.studioArtist} />
-        <FeatureCell value={feature.featureArtist} />
+        <FeatureCell 
+          value={feature.studioArtist} 
+          hasDiscount={feature.hasDiscount} 
+          type="studioArtist"
+        />
+        <FeatureCell 
+          value={feature.featureArtist} 
+          hasDiscount={feature.hasDiscount}
+          type="featureArtist" 
+        />
       </TableRow>
       
       {/* Expanded content - no hover effect */}
