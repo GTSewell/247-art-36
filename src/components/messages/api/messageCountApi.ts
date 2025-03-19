@@ -32,30 +32,11 @@ export const fetchReceivedMessageCount = async (userId: string | undefined, mess
   if (!userId) return 0;
   
   try {
-    // First get the artist ID for the current user
-    const { data: artistData, error: artistError } = await supabase
-      .from('artists')
-      .select('id')
-      .eq('user_id', userId)
-      .maybeSingle();
-    
-    if (artistError) {
-      console.error('Error fetching artist profile:', artistError);
-      return 0;
-    }
-    
-    if (!artistData) {
-      console.log("No artist profile found for user:", userId);
-      return 0;
-    }
-    
-    // Convert to string for the query to ensure compatibility
-    const artistId = artistData.id.toString();
-    
+    // Try to directly count messages where artist_id equals the user's ID
     let query = supabase
       .from('messages_247')
       .select('id', { count: 'exact', head: true })
-      .eq('artist_id', artistId)
+      .eq('artist_id', userId)
       .is('parent_message_id', null); // Only count main messages, not replies
       
     // Apply filters if not showing all
