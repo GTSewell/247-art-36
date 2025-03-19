@@ -40,17 +40,40 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
       
       // For artists table, the ID is numeric
       // But for messages_247 table, artist_id is a UUID
-      // We need to get the artist's user_id (UUID) if available, or generate a UUID from numeric ID
       let artistUuid;
       
       if (artist.user_id) {
         // If artist has a user_id, use that directly
         artistUuid = artist.user_id;
+        console.log("Using artist's user_id as artistUuid:", artistUuid);
       } else {
-        // Generate a string UUID for this artist ID
-        // This is a fallback that consistently generates the same UUID for a given artist ID
-        artistUuid = `artist-${artist.id}`;
-        console.log("Using generated artistUuid:", artistUuid);
+        try {
+          // First attempt to fetch the artist's user_id from the database
+          const { data: artistData, error: lookupError } = await supabase
+            .from('artists')
+            .select('user_id')
+            .eq('id', artist.id)
+            .single();
+            
+          if (lookupError || !artistData?.user_id) {
+            throw new Error("Artist user_id not found");
+          }
+          
+          artistUuid = artistData.user_id;
+          console.log("Found artist user_id from database:", artistUuid);
+        } catch (lookupError) {
+          console.error("Error looking up artist user_id:", lookupError);
+          toast.error("Unable to send message to this artist at this time");
+          setSending(false);
+          return;
+        }
+      }
+      
+      if (!artistUuid) {
+        console.error("No valid artist UUID found");
+        toast.error("This artist doesn't have a valid user account to receive messages");
+        setSending(false);
+        return;
       }
       
       // Insert the message into the database
