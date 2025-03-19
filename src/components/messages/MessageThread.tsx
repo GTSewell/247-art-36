@@ -15,6 +15,7 @@ interface MessageThreadProps {
   isLoading: boolean;
   onReply: (messageId: string, replyText: string) => Promise<void>;
   onDelete: (messageId: string) => Promise<void>;
+  isReplying?: boolean;
 }
 
 const MessageThread = ({ 
@@ -22,7 +23,8 @@ const MessageThread = ({
   replies = [], 
   isLoading, 
   onReply, 
-  onDelete 
+  onDelete,
+  isReplying = false
 }: MessageThreadProps) => {
   const navigate = useNavigate();
   
@@ -109,6 +111,7 @@ const MessageThread = ({
             messageId={message.id} 
             onReply={onReply}
             creditAmount={message.credit_amount || 0}
+            isSubmitting={isReplying}
           />
         </div>
       )}

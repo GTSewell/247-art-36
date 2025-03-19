@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import AuthRequiredState from "@/components/messages/AuthRequiredState";
 import MessageThread from "@/components/messages/MessageThread";
-import { useMessageThread } from "@/components/messages/useMessageThread";
+import { useMessageThread } from "@/components/messages/hooks/useMessageThread";
 
 const MessageDetails = () => {
   const { messageId } = useParams();
@@ -17,7 +17,8 @@ const MessageDetails = () => {
     replies,
     isLoading,
     handleReply,
-    handleDelete
+    handleDelete,
+    isReplying
   } = useMessageThread(messageId, user?.id);
 
   if (authLoading) {
@@ -43,6 +44,7 @@ const MessageDetails = () => {
           isLoading={isLoading}
           onReply={handleReply}
           onDelete={handleDelete}
+          isReplying={isReplying}
         />
       </main>
     </div>

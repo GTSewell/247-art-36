@@ -9,7 +9,7 @@ export function useMessageData(messageId: string | undefined, userId: string | u
   const [message, setMessage] = useState<Message>();
   const [replies, setReplies] = useState<Message[]>([]);
 
-  const { data: threadData, isLoading } = useQuery({
+  const { data: threadData, isLoading, refetch } = useQuery({
     queryKey: ['messageThread', messageId],
     queryFn: async () => {
       if (!messageId) return null;
@@ -40,6 +40,7 @@ export function useMessageData(messageId: string | undefined, userId: string | u
   return {
     message,
     replies,
-    isLoading
+    isLoading,
+    refetch
   };
 }

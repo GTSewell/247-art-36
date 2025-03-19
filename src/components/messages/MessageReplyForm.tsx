@@ -8,11 +8,11 @@ interface MessageReplyFormProps {
   messageId: string;
   onReply: (messageId: string, replyText: string) => Promise<void>;
   creditAmount: number;
+  isSubmitting?: boolean;
 }
 
-const MessageReplyForm = ({ messageId, onReply, creditAmount }: MessageReplyFormProps) => {
+const MessageReplyForm = ({ messageId, onReply, creditAmount, isSubmitting = false }: MessageReplyFormProps) => {
   const [replyText, setReplyText] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,13 +22,10 @@ const MessageReplyForm = ({ messageId, onReply, creditAmount }: MessageReplyForm
     }
     
     try {
-      setIsSubmitting(true);
       await onReply(messageId, replyText);
       setReplyText('');
     } catch (error) {
       console.error("Error submitting reply:", error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
   
