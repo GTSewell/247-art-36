@@ -44,6 +44,9 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   // Get avatar based on current user
   const userAvatar = user?.user_metadata?.avatar_url || '';
   
+  // Get artist information
+  const artistName = message.artist?.name || 'Unknown Artist';
+  
   return (
     <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
@@ -57,7 +60,7 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
             <div>
               <h3 className="font-medium">You</h3>
               <p className="text-sm text-muted-foreground">
-                To: <span className="font-medium">{message.artist?.name || 'Unknown Artist'}</span> • {format(new Date(message.created_at), 'PPP p')}
+                To: <span className="font-medium">{artistName}</span> • {format(new Date(message.created_at), 'PPP p')}
               </p>
             </div>
             

@@ -42,17 +42,15 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
   const isCurrentUserMessage = message.sender?.isCurrentUser;
   
   // Get the correct sender name
-  const senderName = isCurrentUserMessage ? 'You' : (isFromArtist ? message.artist?.name || 'Artist' : 'User');
+  const senderName = message.sender?.email || 'Unknown Sender';
   
-  // Get avatar initials
-  const avatarInitials = isCurrentUserMessage 
-    ? 'YO'
-    : (message.artist?.name?.substring(0, 2) || 'AR');
-    
-  // Determine the avatar image
+  // Get avatar image
   const avatarImage = isCurrentUserMessage
     ? user?.user_metadata?.avatar_url || ''
     : message.artist?.image || '';
+  
+  // Get avatar initials
+  const avatarInitials = senderName === 'You' ? 'YO' : senderName.substring(0, 2).toUpperCase();
   
   return (
     <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/50 shadow-md' : 'bg-card shadow-md'} border-gray-300 dark:border-gray-700`}>
@@ -72,7 +70,7 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
                 )}
               </div>
               <p className="text-sm text-muted-foreground">
-                {format(new Date(message.created_at), 'PPP p')}
+                To: <span className="font-medium">{message.recipient?.name || 'Unknown Recipient'}</span> • {format(new Date(message.created_at), 'PPP p')}
               </p>
             </div>
             

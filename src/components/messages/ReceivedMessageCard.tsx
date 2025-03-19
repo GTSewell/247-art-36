@@ -41,23 +41,22 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
     }
   };
   
-  // Get sender information (user who sent the message to the artist)
+  // Get sender information
   const senderName = message.sender?.email || 'Unknown Sender';
   const isFromCurrentUser = message.sender?.isCurrentUser;
   
-  // Get the appropriate avatar for the sender
-  const senderAvatar = isFromCurrentUser 
-    ? user?.user_metadata?.avatar_url || ''
-    : ''; // Could add default user avatar here
-    
-  // Get initials for avatar fallback
-  const avatarInitials = isFromCurrentUser ? 'YO' : senderName.substring(0, 2).toUpperCase();
+  // Get artist information
+  const artistName = message.artist?.name || 'Unknown Artist';
+  const artistAvatar = message.artist?.image || '';
+  
+  // Get avatar initials
+  const avatarInitials = senderName === 'You' ? 'YO' : senderName.substring(0, 2).toUpperCase();
   
   return (
     <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
-          <AvatarImage src={senderAvatar} alt={senderName} />
+          <AvatarImage src={artistAvatar} alt={senderName} />
           <AvatarFallback>{avatarInitials}</AvatarFallback>
         </Avatar>
         
@@ -66,7 +65,7 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
             <div>
               <h3 className="font-medium">{senderName}</h3>
               <p className="text-sm text-muted-foreground">
-                To: <span className="font-medium">{message.artist?.name || 'You'}</span> • {format(new Date(message.created_at), 'PPP p')}
+                To: <span className="font-medium">{message.recipient?.name || 'You'}</span> • {format(new Date(message.created_at), 'PPP p')}
               </p>
             </div>
             

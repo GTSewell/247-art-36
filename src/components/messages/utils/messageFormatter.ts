@@ -12,23 +12,25 @@ export async function formatMessage(rawMessage: RawMessage, currentUserId?: stri
     const isFromArtist = rawMessage.sender_id === rawMessage.artist_id;
     const isCurrentUser = currentUserId && rawMessage.sender_id === currentUserId;
     
+    // Get sender and recipient names
+    const artistName = artistData?.name || 'Unknown Artist';
+    const senderName = isFromArtist ? artistName : (isCurrentUser ? 'You' : 'User');
+    const recipientName = isFromArtist ? (isCurrentUser ? 'You' : 'User') : artistName;
+    
     return {
       ...rawMessage,
       status: rawMessage.status as Message['status'],
-      artist: artistData ? { 
-        name: artistData.name || 'Unknown Artist', 
-        image: artistData.image || '' 
-      } : { 
-        name: 'Unknown Artist', 
-        image: '' 
+      artist: { 
+        name: artistName, 
+        image: artistData?.image || '' 
       },
       // Clear identification of sender and recipient
       sender: { 
-        email: isFromArtist ? (artistData?.name || 'Artist') : (isCurrentUser ? 'You' : 'User'),
+        email: senderName,
         isCurrentUser: isCurrentUser
       },
       recipient: {
-        name: isFromArtist ? (isCurrentUser ? 'You' : 'User') : (artistData?.name || 'Unknown Artist') 
+        name: recipientName
       }
     };
   } catch (error) {
@@ -37,7 +39,10 @@ export async function formatMessage(rawMessage: RawMessage, currentUserId?: stri
       ...rawMessage,
       status: rawMessage.status as Message['status'],
       artist: { name: 'Unknown Artist', image: '' },
-      sender: { email: currentUserId && rawMessage.sender_id === currentUserId ? 'You' : 'Unknown User' },
+      sender: { 
+        email: currentUserId && rawMessage.sender_id === currentUserId ? 'You' : 'Unknown User',
+        isCurrentUser: currentUserId && rawMessage.sender_id === currentUserId 
+      },
       recipient: { name: 'Unknown Recipient' }
     };
   }

@@ -66,14 +66,9 @@ const MessageThread = ({
     );
   }
   
-  // Get thread participants information
-  const isFromCurrentUser = message.sender?.isCurrentUser;
-  const recipientName = isFromCurrentUser 
-    ? message.artist?.name || 'Artist'
-    : 'You';
-  const senderName = isFromCurrentUser 
-    ? 'You' 
-    : (message.sender?.email || 'Unknown Sender');
+  // Get sender and recipient names
+  const senderName = message.sender?.email || 'Unknown Sender';
+  const recipientName = message.recipient?.name || 'Unknown Recipient';
   
   return (
     <div className="space-y-4">
