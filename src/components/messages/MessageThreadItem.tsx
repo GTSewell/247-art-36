@@ -37,21 +37,28 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
   
   // Determine who the message is from
   const isFromArtist = message.sender_id === message.artist_id;
+  
+  // Get the correct sender name based on whether it's from artist or user
   const senderName = isFromArtist 
     ? message.artist?.name || 'Artist' 
-    : message.sender?.email || 'You';
+    : 'You';
+  
+  // Get the first two letters for avatar fallback
+  const avatarInitials = isFromArtist
+    ? (message.artist?.name?.substring(0, 2) || 'AR')
+    : 'YO';
   
   return (
-    <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/30' : 'bg-card'}`}>
+    <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/50 shadow-md' : 'bg-card shadow'}`}>
       <div className="flex gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
           {isFromArtist ? (
             <>
               <AvatarImage src={message.artist?.image || ''} alt={message.artist?.name || 'Artist'} />
-              <AvatarFallback>{message.artist?.name?.substring(0, 2) || 'AR'}</AvatarFallback>
+              <AvatarFallback>{avatarInitials}</AvatarFallback>
             </>
           ) : (
-            <AvatarFallback>{message.sender?.email?.substring(0, 2) || 'YO'}</AvatarFallback>
+            <AvatarFallback>{avatarInitials}</AvatarFallback>
           )}
         </Avatar>
         
@@ -84,7 +91,7 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
             </Button>
           </div>
           
-          <div className="mt-3">
+          <div className="mt-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
             <p className="text-sm">{message.message}</p>
           </div>
         </div>

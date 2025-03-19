@@ -39,7 +39,7 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   };
   
   return (
-    <div className="border rounded-lg p-4 bg-card">
+    <div className="border rounded-lg p-4 bg-card shadow">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
           <AvatarImage src={message.artist?.image || ''} alt={message.artist?.name || 'Artist'} />
@@ -63,7 +63,7 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
             </div>
           </div>
           
-          <div className="mt-3 p-3 bg-muted rounded-md">
+          <div className="mt-3 p-3 bg-gray-100 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
             <p>{message.message}</p>
           </div>
           

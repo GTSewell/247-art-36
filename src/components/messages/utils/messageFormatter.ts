@@ -10,11 +10,15 @@ export async function formatMessage(rawMessage: RawMessage): Promise<Message> {
     // Fetch artist data
     const artistData = await fetchArtistById(artistId);
     
+    // Determine if this message is from the artist or from the user
+    const isFromArtist = rawMessage.sender_id === artistId;
+    
     return {
       ...rawMessage,
       status: rawMessage.status as Message['status'],
       artist: artistData || { name: 'Unknown Artist', image: '' },
-      sender: { email: `User ${rawMessage.sender_id.substring(0, 8)}` }
+      // Don't expose email addresses in UI
+      sender: { email: isFromArtist ? artistData?.name || 'Artist' : 'You' }
     };
   } catch (error) {
     console.error("Error formatting message:", error);
@@ -22,7 +26,7 @@ export async function formatMessage(rawMessage: RawMessage): Promise<Message> {
       ...rawMessage,
       status: rawMessage.status as Message['status'],
       artist: { name: 'Unknown Artist', image: '' },
-      sender: { email: `User ${rawMessage.sender_id.substring(0, 8)}` }
+      sender: { email: 'You' }
     };
   }
 }
