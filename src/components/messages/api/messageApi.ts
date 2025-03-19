@@ -7,29 +7,16 @@ import { processArtistData } from "@/components/artistSubdomain/utils/artistData
 // Fetch artist by ID (can be numeric ID or UUID)
 export const fetchArtistById = async (artistId: string | number): Promise<Artist | null> => {
   try {
-    // Try to fetch by numeric ID or UUID
+    // Try to fetch by ID (convert to string for query)
     const { data: artistData, error } = await supabase
       .from('artists')
       .select('*')
-      .eq('id', artistId)
+      .or(`id.eq.${artistId},user_id.eq.${artistId}`)
       .maybeSingle();
       
     if (error) {
       console.error('Error fetching artist by ID:', error);
-      
-      // Try to fetch by user_id if ID fetch fails
-      const { data: artistByUserId, error: userIdError } = await supabase
-        .from('artists')
-        .select('*')
-        .eq('user_id', artistId)
-        .maybeSingle();
-        
-      if (userIdError) {
-        console.error('Error fetching artist by user_id:', userIdError);
-        return null;
-      }
-      
-      return artistByUserId ? processArtistData(artistByUserId) : null;
+      return null;
     }
     
     return artistData ? processArtistData(artistData) : null;
