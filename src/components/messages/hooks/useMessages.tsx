@@ -38,11 +38,11 @@ export const useMessages = (userId: string | undefined) => {
   // Define a function to force refetch
   const forceRefetch = useCallback(() => {
     // Force a refetch by invoking both refetch functions
-    // Add a small timeout to ensure DB operations complete
+    // Add a larger timeout to ensure DB operations complete
     setTimeout(() => {
       refetchSent();
       refetchReceived();
-    }, 300);
+    }, 500);
   }, [refetchSent, refetchReceived]);
 
   // Use thread actions with appropriate refetch function

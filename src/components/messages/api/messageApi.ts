@@ -147,37 +147,46 @@ export async function deleteMessage(messageId: string): Promise<void> {
   try {
     console.log(`Starting deletion process for message ID: ${messageId}`);
     
-    // First, delete any replies to this message
-    const { error: repliesError, count: repliesDeleted } = await supabase
+    // First, check if the message exists
+    const { data: messageExists, error: checkError } = await supabase
+      .from('messages_247')
+      .select('id')
+      .eq('id', messageId)
+      .maybeSingle();
+      
+    if (checkError) {
+      console.error("Error checking if message exists:", checkError);
+      throw checkError;
+    }
+    
+    if (!messageExists) {
+      console.error(`Message with ID ${messageId} not found`);
+      throw new Error(`Message with ID ${messageId} not found`);
+    }
+    
+    // First delete any replies to this message
+    const { error: repliesError } = await supabase
       .from('messages_247')
       .delete()
-      .eq('parent_message_id', messageId)
-      .select('count');
+      .eq('parent_message_id', messageId);
       
     if (repliesError) {
       console.error("Error deleting message replies:", repliesError);
       throw repliesError;
     }
     
-    console.log(`Deleted ${repliesDeleted} replies for message ID: ${messageId}`);
-    
     // Then delete the message itself
-    const { error, count: messageDeleted } = await supabase
+    const { error } = await supabase
       .from('messages_247')
       .delete()
-      .eq('id', messageId)
-      .select('count');
+      .eq('id', messageId);
       
     if (error) {
       console.error("Error deleting message:", error);
       throw error;
     }
     
-    console.log(`Deleted main message. Affected rows: ${messageDeleted}`);
-    
-    if (messageDeleted === 0) {
-      console.warn(`Warning: No message found with ID: ${messageId}`);
-    }
+    console.log(`Successfully deleted message ID: ${messageId}`);
   } catch (error) {
     console.error("Error in deleteMessage:", error);
     throw error;

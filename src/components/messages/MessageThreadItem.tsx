@@ -49,7 +49,7 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
     : 'YO';
   
   return (
-    <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/50 shadow-md' : 'bg-card shadow'}`}>
+    <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/50 shadow-md' : 'bg-card shadow-md'} border-gray-300 dark:border-gray-700`}>
       <div className="flex gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
           {isFromArtist ? (

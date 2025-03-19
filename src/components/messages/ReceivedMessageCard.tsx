@@ -28,6 +28,7 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
     
     try {
       setIsDeleting(true);
+      console.log(`Deleting received message with ID: ${message.id}`);
       await onDelete(message.id);
       setTimeout(() => {
         setIsDeleting(false);
@@ -39,7 +40,7 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
   };
   
   return (
-    <div className="border rounded-lg p-4 bg-card shadow">
+    <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
           <AvatarFallback>YO</AvatarFallback>

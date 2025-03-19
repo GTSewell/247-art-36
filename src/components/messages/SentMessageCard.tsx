@@ -26,7 +26,11 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
     
     try {
       setIsDeleting(true);
+      console.log(`Card handling delete for message with ID: ${message.id}`);
+      
+      // Delete the message and its replies
       await onDelete(message.id);
+      
       // The component should unmount when the message is removed from the list
       // If it doesn't unmount, we still want to reset the state after a timeout
       setTimeout(() => {
@@ -39,7 +43,7 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   };
   
   return (
-    <div className="border rounded-lg p-4 bg-card shadow">
+    <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
           <AvatarImage src={message.artist?.image || ''} alt={message.artist?.name || 'Artist'} />
