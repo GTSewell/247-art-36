@@ -32,7 +32,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
             ) : (
               <ChevronDown className="h-4 w-4 text-gray-500 mr-2 flex-shrink-0" />
             )}
-            <span>{feature.name}</span>
+            <span className="text-sm sm:text-base">{feature.name}</span>
           </div>
         </TableCell>
         <FeatureCell 
@@ -53,8 +53,8 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} 
           style={{ transition: 'none' }}
         >
-          <TableCell colSpan={3} className="p-4 pt-0">
-            <div className="text-gray-600 text-sm italic pl-4 pb-2">
+          <TableCell colSpan={3} className="p-4 pt-0 sm:p-4 sm:pt-0">
+            <div className="text-gray-600 text-xs sm:text-sm italic pl-2 sm:pl-4 pb-2">
               {feature.description}
             </div>
           </TableCell>

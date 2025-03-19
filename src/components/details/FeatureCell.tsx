@@ -19,25 +19,25 @@ const FeatureCell = ({ value, hasDiscount, type }: FeatureCellProps) => {
     }
     
     return (
-      <TableCell className="text-center">
+      <TableCell className="text-center p-1 sm:p-4">
         <div className="flex flex-col items-center justify-center">
-          <span className="line-through text-gray-500">{originalPrice}</span>
-          <span>{value}</span>
+          <span className="line-through text-gray-500 text-xs sm:text-sm">{originalPrice}</span>
+          <span className="text-xs sm:text-base">{value}</span>
         </div>
       </TableCell>
     );
   }
   
   return (
-    <TableCell className="text-center">
+    <TableCell className="text-center p-1 sm:p-4">
       {typeof value === "boolean" ? (
         value ? (
-          <Check className="mx-auto text-green-500" />
+          <Check className="mx-auto text-green-500 h-4 w-4 sm:h-5 sm:w-5" />
         ) : (
-          <X className="mx-auto text-red-500" />
+          <X className="mx-auto text-red-500 h-4 w-4 sm:h-5 sm:w-5" />
         )
       ) : (
-        <span>{value}</span>
+        <span className="text-xs sm:text-base">{value}</span>
       )}
     </TableCell>
   );
