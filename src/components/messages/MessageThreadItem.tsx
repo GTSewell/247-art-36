@@ -39,21 +39,20 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
   
   // Determine who the message is from
   const isFromArtist = message.sender_id === message.artist_id;
+  const isCurrentUserMessage = message.sender?.isCurrentUser;
   
-  // Get the correct sender name based on whether it's from artist or user
-  const senderName = isFromArtist 
-    ? message.artist?.name || 'Artist' 
-    : 'You';
+  // Get the correct sender name
+  const senderName = isCurrentUserMessage ? 'You' : (isFromArtist ? message.artist?.name || 'Artist' : 'User');
   
-  // Get the first two letters for avatar fallback
-  const avatarInitials = isFromArtist
-    ? (message.artist?.name?.substring(0, 2) || 'AR')
-    : 'YO';
+  // Get avatar initials
+  const avatarInitials = isCurrentUserMessage 
+    ? 'YO'
+    : (message.artist?.name?.substring(0, 2) || 'AR');
     
-  // Determine the avatar image based on sender type
-  const avatarImage = isFromArtist
-    ? message.artist?.image || ''
-    : user?.user_metadata?.avatar_url || '';
+  // Determine the avatar image
+  const avatarImage = isCurrentUserMessage
+    ? user?.user_metadata?.avatar_url || ''
+    : message.artist?.image || '';
   
   return (
     <div className={`p-4 border rounded-lg ${isOriginal ? 'bg-muted/50 shadow-md' : 'bg-card shadow-md'} border-gray-300 dark:border-gray-700`}>

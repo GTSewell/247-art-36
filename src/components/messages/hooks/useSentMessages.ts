@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { MessageFilter, Message, RawMessage } from '../types';
 import { fetchSentMessageCount } from "../api/messageCountApi";
-import { fetchArtistById } from "../api/messageApi";
+import { formatMessages } from "../utils/messageFormatter";
 
 export const useSentMessages = (
   userId: string | undefined,
@@ -44,31 +44,9 @@ export const useSentMessages = (
         throw messagesError;
       }
       
-      // Process each message to add artist info using our updated fetchArtistById function
-      const messagesWithArtists: Message[] = await Promise.all(
-        (sentMessagesData as RawMessage[]).map(async (message) => {
-          try {
-            // Convert artist_id to string for consistent handling
-            const artistId = message.artist_id.toString();
-            const artistData = await fetchArtistById(artistId);
-            
-            return {
-              ...message,
-              status: message.status as Message['status'],
-              artist: artistData || { name: 'Unknown Artist', image: '' }
-            };
-          } catch (error) {
-            console.error('Error processing artist data:', error);
-            return {
-              ...message,
-              status: message.status as Message['status'],
-              artist: { name: 'Unknown Artist', image: '' }
-            };
-          }
-        })
-      );
-      
-      return messagesWithArtists;
+      // Format the messages with sender and recipient info, passing current user ID
+      const formattedMessages = await formatMessages(sentMessagesData as RawMessage[], userId);
+      return formattedMessages;
     },
     enabled: !!userId,
   });

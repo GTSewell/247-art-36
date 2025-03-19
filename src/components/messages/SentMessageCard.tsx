@@ -21,43 +21,43 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   const { user } = useAuth();
   
   const handleDelete = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent event bubbling
-    e.stopPropagation(); // Ensure the event doesn't trigger other handlers
+    e.preventDefault(); 
+    e.stopPropagation(); 
     
-    if (isDeleting) return; // Prevent multiple clicks
+    if (isDeleting) return; 
     
     try {
       setIsDeleting(true);
       console.log(`Card handling delete for message with ID: ${message.id}`);
       
-      // Delete the message and its replies
       await onDelete(message.id);
       
-      // The component should unmount when the message is removed from the list
-      // If it doesn't unmount, we still want to reset the state after a timeout
       setTimeout(() => {
         setIsDeleting(false);
-      }, 5000); // Safety timeout in case component doesn't unmount
+      }, 5000);
     } catch (error) {
       console.error('Error deleting message:', error);
       setIsDeleting(false);
     }
   };
   
+  // Get avatar based on current user
+  const userAvatar = user?.user_metadata?.avatar_url || '';
+  
   return (
     <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
-          <AvatarImage src={message.artist?.image || ''} alt={message.artist?.name || 'Artist'} />
-          <AvatarFallback>{message.artist?.name?.substring(0, 2) || 'AR'}</AvatarFallback>
+          <AvatarImage src={userAvatar} alt="You" />
+          <AvatarFallback>YO</AvatarFallback>
         </Avatar>
         
         <div className="flex-1">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-medium">{message.artist?.name || 'Unknown Artist'}</h3>
+              <h3 className="font-medium">You</h3>
               <p className="text-sm text-muted-foreground">
-                {format(new Date(message.created_at), 'PPP p')}
+                To: <span className="font-medium">{message.artist?.name || 'Unknown Artist'}</span> • {format(new Date(message.created_at), 'PPP p')}
               </p>
             </div>
             

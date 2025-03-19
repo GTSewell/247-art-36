@@ -49,8 +49,8 @@ export const useReceivedMessages = (
         
         console.log("Received messages data:", receivedMessagesData);
         
-        // Format messages with sender and artist info
-        const formattedMessages = await formatMessages(receivedMessagesData as RawMessage[]);
+        // Format messages with sender and artist info, passing the current user ID
+        const formattedMessages = await formatMessages(receivedMessagesData as RawMessage[], userId);
         return formattedMessages;
       } catch (error) {
         console.error("Error in useReceivedMessages:", error);

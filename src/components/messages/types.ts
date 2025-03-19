@@ -1,22 +1,25 @@
-
 export type MessageStatus = 'pending' | 'replied' | 'expired';
 
 export interface Message {
   id: string;
   message: string;
-  created_at: string;
-  status: MessageStatus;
   sender_id: string;
   artist_id: string;
-  replied_at: string | null;
-  credit_amount: number;
-  parent_message_id?: string | null;
+  status: 'pending' | 'replied' | 'expired';
+  created_at: string;
+  replied_at?: string;
+  parent_message_id?: string;
+  credit_amount?: number;
   artist?: {
     name: string;
     image: string;
   };
-  sender?: {
+  sender: {
     email: string;
+    isCurrentUser?: boolean;
+  };
+  recipient?: {
+    name: string;
   };
 }
 

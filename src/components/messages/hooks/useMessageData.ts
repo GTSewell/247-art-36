@@ -22,11 +22,11 @@ export function useMessageData(messageId: string | undefined, userId: string | u
           return null;
         }
         
-        const formattedMessage = await formatMessage(messageData);
+        const formattedMessage = await formatMessage(messageData, userId);
 
         // Fetch related replies
         const repliesData = await fetchMessageReplies(messageId);
-        const formattedReplies = await formatMessages(repliesData);
+        const formattedReplies = await formatMessages(repliesData, userId);
 
         return {
           message: formattedMessage,

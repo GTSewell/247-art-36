@@ -66,11 +66,14 @@ const MessageThread = ({
     );
   }
   
-  // Determine the recipient information based on the original message
-  const isFromMe = message.sender?.email === 'You';
-  const recipientName = isFromMe 
+  // Get thread participants information
+  const isFromCurrentUser = message.sender?.isCurrentUser;
+  const recipientName = isFromCurrentUser 
     ? message.artist?.name || 'Artist'
     : 'You';
+  const senderName = isFromCurrentUser 
+    ? 'You' 
+    : (message.sender?.email || 'Unknown Sender');
   
   return (
     <div className="space-y-4">
@@ -86,7 +89,8 @@ const MessageThread = ({
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Message Thread</h1>
         <div className="text-muted-foreground">
-          {isFromMe ? `To: ${message.artist?.name || 'Artist'}` : `From: ${message.artist?.name || 'Artist'}`}
+          From: <span className="font-medium">{senderName}</span> • 
+          To: <span className="font-medium">{recipientName}</span>
         </div>
       </div>
       

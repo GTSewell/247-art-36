@@ -41,23 +41,32 @@ const ReceivedMessageCard = ({ message, onReply, onDelete }: ReceivedMessageCard
     }
   };
   
-  // Get the user's avatar URL from auth
-  const userAvatarUrl = user?.user_metadata?.avatar_url || '';
+  // Get sender information (user who sent the message to the artist)
+  const senderName = message.sender?.email || 'Unknown Sender';
+  const isFromCurrentUser = message.sender?.isCurrentUser;
+  
+  // Get the appropriate avatar for the sender
+  const senderAvatar = isFromCurrentUser 
+    ? user?.user_metadata?.avatar_url || ''
+    : ''; // Could add default user avatar here
+    
+  // Get initials for avatar fallback
+  const avatarInitials = isFromCurrentUser ? 'YO' : senderName.substring(0, 2).toUpperCase();
   
   return (
     <div className="border rounded-lg p-4 bg-card shadow-md border-gray-300 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Avatar className="h-10 w-10 flex-shrink-0">
-          <AvatarImage src={userAvatarUrl} alt="You" />
-          <AvatarFallback>YO</AvatarFallback>
+          <AvatarImage src={senderAvatar} alt={senderName} />
+          <AvatarFallback>{avatarInitials}</AvatarFallback>
         </Avatar>
         
         <div className="flex-1">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-medium">You</h3>
+              <h3 className="font-medium">{senderName}</h3>
               <p className="text-sm text-muted-foreground">
-                {format(new Date(message.created_at), 'PPP p')}
+                To: <span className="font-medium">{message.artist?.name || 'You'}</span> • {format(new Date(message.created_at), 'PPP p')}
               </p>
             </div>
             
