@@ -35,10 +35,16 @@ export function useThreadActions(userId: string | undefined, refetch: () => void
   const handleDelete = async (messageId: string) => {
     try {
       setIsDeleting(true);
+      
+      // Delete the message and its replies
       await deleteMessage(messageId);
       
       toast.success("Message deleted successfully");
-      refetch();
+      
+      // Force a refetch after deletion
+      setTimeout(() => {
+        refetch();
+      }, 100); // Small delay to ensure database operation completes
     } catch (error) {
       console.error('Error deleting message:', error);
       toast.error("Failed to delete message");

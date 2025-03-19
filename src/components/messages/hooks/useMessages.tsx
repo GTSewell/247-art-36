@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { MessageFilter } from '../types';
 import { usePagination } from './usePagination';
 import { useSentMessages } from './useSentMessages';
@@ -21,6 +21,14 @@ export const useMessages = (userId: string | undefined) => {
     handlePageChange
   } = usePagination();
 
+  // Define refetch functions
+  const forceRefetch = useCallback(() => {
+    // Force a refetch by temporarily changing the query keys
+    const dummyTimeStamp = Date.now();
+    refetchSent({ queryKey: ['sentMessages', userId, sentRange, messageFilter, dummyTimeStamp] });
+    refetchReceived({ queryKey: ['receivedMessages', userId, receivedRange, messageFilter, dummyTimeStamp] });
+  }, [userId, sentRange, receivedRange, messageFilter]);
+
   // Fetch sent messages
   const { 
     data: sentMessages, 
@@ -35,15 +43,10 @@ export const useMessages = (userId: string | undefined) => {
     refetch: refetchReceived 
   } = useReceivedMessages(userId, receivedRange, messageFilter, setReceivedPagination);
 
-  // Use thread actions with appropriate refetch function based on active tab
-  const refetchAll = () => {
-    refetchSent();
-    refetchReceived();
-  };
-
+  // Use thread actions with appropriate refetch function
   const { handleReply, handleDelete } = useThreadActions(
     userId,
-    refetchAll
+    forceRefetch
   );
   
   return {

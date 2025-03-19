@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Message } from './types';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Trash2, MessageSquare } from "lucide-react";
+import { Trash2, MessageSquare, Loader2 } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
 import CountdownTimer from './CountdownTimer';
@@ -16,6 +16,16 @@ interface SentMessageCardProps {
 
 const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   const navigate = useNavigate();
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      await onDelete(message.id);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
   
   return (
     <div className="border rounded-lg p-4 bg-card">
@@ -64,9 +74,14 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
                 variant="outline" 
                 size="sm" 
                 className="text-destructive hover:bg-destructive/10"
-                onClick={() => onDelete(message.id)}
+                onClick={handleDelete}
+                disabled={isDeleting}
               >
-                <Trash2 className="h-4 w-4 mr-1" /> Delete
+                {isDeleting ? (
+                  <><Loader2 className="h-4 w-4 mr-1 animate-spin" /> Deleting</>
+                ) : (
+                  <><Trash2 className="h-4 w-4 mr-1" /> Delete</>
+                )}
               </Button>
               
               <Button 
