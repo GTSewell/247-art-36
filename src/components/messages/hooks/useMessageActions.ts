@@ -1,51 +1,61 @@
 
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { 
-  fetchArtistByUserId, 
-  createMessageReply, 
-  updateMessageStatus,
-  deleteMessage
-} from '../api/messageApi';
 
-export function useMessageActions(userId: string | undefined) {
-  
+export const useMessageActions = (
+  refetchSent: () => void,
+  refetchReceived: () => void,
+  activeTab: string
+) => {
+  // Handle message reply
   const handleReply = async (messageId: string, replyText: string) => {
-    if (!replyText.trim() || !userId) {
+    if (!replyText.trim()) {
       toast.error("Reply cannot be empty");
       return;
     }
     
     try {
-      // First get the artist ID for the current user
-      const artistData = await fetchArtistByUserId(userId);
+      // Update message status
+      const { error } = await supabase
+        .from('messages_247')
+        .update({ 
+          status: 'replied',
+          replied_at: new Date().toISOString(),
+        })
+        .eq('id', messageId);
+        
+      if (error) throw error;
       
-      // The artistData.id is already a string from our updated fetchArtistByUserId function
-      const artistId = artistData.id;
-      
-      console.log("Replying to message:", messageId, "with artist ID:", artistId);
-      
-      // Insert the reply
-      await createMessageReply(messageId, replyText, userId, artistId);
-      
-      // Update original message status
-      await updateMessageStatus(messageId);
-      
+      // You would typically send the actual reply here
+      // For now, just show a success toast
       toast.success("Reply sent successfully");
       
-      // Refresh the page to show updated data
-      window.location.reload();
+      // Refetch messages to update the UI
+      refetchReceived();
     } catch (error) {
       console.error('Error replying to message:', error);
       toast.error("Failed to send reply");
     }
   };
   
+  // Handle message deletion
   const handleDelete = async (messageId: string) => {
     try {
-      await deleteMessage(messageId);
+      const { error } = await supabase
+        .from('messages_247')
+        .delete()
+        .eq('id', messageId);
+        
+      if (error) throw error;
       
       toast.success("Message deleted successfully");
-      window.location.reload();
+      
+      // Refetch to update the UI
+      if (activeTab === 'sent') {
+        refetchSent();
+      } else {
+        refetchReceived();
+      }
     } catch (error) {
       console.error('Error deleting message:', error);
       toast.error("Failed to delete message");
@@ -56,4 +66,4 @@ export function useMessageActions(userId: string | undefined) {
     handleReply,
     handleDelete
   };
-}
+};

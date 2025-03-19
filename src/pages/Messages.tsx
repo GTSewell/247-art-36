@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Loader2 } from "lucide-react";
 import AuthRequiredState from "@/components/messages/AuthRequiredState";
 import MessagesContent from "@/components/messages/MessagesContent";
-import { useMessages } from "@/components/messages/useMessages";
+import { useMessages } from "@/components/messages/hooks/useMessages";
 import { useNavigate } from "react-router-dom";
 import { Navigation } from "@/components/navigation/Navigation";
 
