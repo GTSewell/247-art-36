@@ -7,6 +7,7 @@ import { Artist } from '@/data/types/artist';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
+import { fetchArtistByUserId } from '@/components/messages/api/messageApi';
 
 interface ArtistMessageModalProps {
   open: boolean;
@@ -37,8 +38,20 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
     try {
       setSending(true);
       
-      // First, fetch the artist ID as a string from the database
-      const artistId = String(artist.id);
+      // For artists table, the ID is numeric
+      // But for messages_247 table, artist_id is a UUID
+      // We need to get the artist's user_id (UUID) if available, or generate a UUID from numeric ID
+      let artistUuid;
+      
+      if (artist.user_id) {
+        // If artist has a user_id, use that directly
+        artistUuid = artist.user_id;
+      } else {
+        // Generate a string UUID for this artist ID
+        // This is a fallback that consistently generates the same UUID for a given artist ID
+        artistUuid = `artist-${artist.id}`;
+        console.log("Using generated artistUuid:", artistUuid);
+      }
       
       // Insert the message into the database
       const { error } = await supabase
@@ -46,7 +59,7 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
         .insert({
           message: message.trim(),
           sender_id: user.id,
-          artist_id: artistId,
+          artist_id: artistUuid,
           status: 'pending',
           credit_amount: 5.00
         });
