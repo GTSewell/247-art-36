@@ -25,7 +25,7 @@ export async function fetchMessageReplies(messageId: string): Promise<RawMessage
   return data as RawMessage[];
 }
 
-export async function fetchArtistById(artistId: string | number): Promise<{ name: string; image: string } | null> {
+export async function fetchArtistById(artistId: string): Promise<{ name: string; image: string } | null> {
   try {
     // Make sure we're using a consistent format for the query
     const { data, error } = await supabase

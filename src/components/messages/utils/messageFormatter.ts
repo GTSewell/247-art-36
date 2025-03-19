@@ -4,8 +4,11 @@ import { fetchArtistById } from "../api/messageApi";
 
 export async function formatMessage(rawMessage: RawMessage): Promise<Message> {
   try {
-    // Ensure consistent treatment of artist_id
-    const artistData = await fetchArtistById(rawMessage.artist_id);
+    // Convert artist_id to string for consistent handling
+    const artistId = rawMessage.artist_id.toString();
+    
+    // Fetch artist data
+    const artistData = await fetchArtistById(artistId);
     
     return {
       ...rawMessage,

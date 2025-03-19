@@ -47,8 +47,8 @@ export const useSentMessages = (
       const messagesWithArtists: Message[] = await Promise.all(
         (sentMessagesData as RawMessage[]).map(async (message) => {
           try {
-            // Handle the artist_id regardless of format (numeric string or UUID)
-            const artistId = message.artist_id;
+            // Handle the artist_id regardless of format
+            const artistId = message.artist_id.toString();
             
             if (!artistId) {
               return {
