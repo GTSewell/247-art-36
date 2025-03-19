@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Message } from './types';
@@ -18,12 +17,20 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = useState(false);
   
-  const handleDelete = async () => {
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent event bubbling
+    e.stopPropagation(); // Ensure the event doesn't trigger other handlers
+    
+    if (isDeleting) return; // Prevent multiple clicks
+    
     try {
       setIsDeleting(true);
       await onDelete(message.id);
+    } catch (error) {
+      console.error('Error deleting message:', error);
     } finally {
-      setIsDeleting(false);
+      // Keep isDeleting true to show disabled button
+      // It will be unmounted when the message is removed from the list
     }
   };
   
@@ -88,6 +95,7 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
                 variant="outline" 
                 size="sm"
                 onClick={() => navigate(`/messages/${message.id}`)}
+                disabled={isDeleting}
               >
                 <MessageSquare className="h-4 w-4 mr-1" /> View Thread
               </Button>

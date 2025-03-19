@@ -145,26 +145,38 @@ export async function updateMessageStatus(messageId: string): Promise<void> {
 
 export async function deleteMessage(messageId: string): Promise<void> {
   try {
+    console.log(`Starting deletion process for message ID: ${messageId}`);
+    
     // First, delete any replies to this message
-    const { error: repliesError } = await supabase
+    const { error: repliesError, count: repliesDeleted } = await supabase
       .from('messages_247')
       .delete()
-      .eq('parent_message_id', messageId);
+      .eq('parent_message_id', messageId)
+      .select('count');
       
     if (repliesError) {
       console.error("Error deleting message replies:", repliesError);
       throw repliesError;
     }
     
+    console.log(`Deleted ${repliesDeleted} replies for message ID: ${messageId}`);
+    
     // Then delete the message itself
-    const { error } = await supabase
+    const { error, count: messageDeleted } = await supabase
       .from('messages_247')
       .delete()
-      .eq('id', messageId);
+      .eq('id', messageId)
+      .select('count');
       
     if (error) {
       console.error("Error deleting message:", error);
       throw error;
+    }
+    
+    console.log(`Deleted main message. Affected rows: ${messageDeleted}`);
+    
+    if (messageDeleted === 0) {
+      console.warn(`Warning: No message found with ID: ${messageId}`);
     }
   } catch (error) {
     console.error("Error in deleteMessage:", error);

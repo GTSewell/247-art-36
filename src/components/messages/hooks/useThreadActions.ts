@@ -23,6 +23,8 @@ export function useThreadActions(userId: string | undefined, refetch: () => void
       await updateMessageStatus(messageId);
       
       toast.success("Reply sent successfully");
+      
+      // Refetch data to update UI
       refetch();
     } catch (error) {
       console.error('Error sending reply:', error);
@@ -33,8 +35,11 @@ export function useThreadActions(userId: string | undefined, refetch: () => void
   };
   
   const handleDelete = async (messageId: string) => {
+    if (isDeleting) return; // Prevent multiple clicks
+    
     try {
       setIsDeleting(true);
+      console.log(`Deleting message with ID: ${messageId}`);
       
       // Delete the message and its replies
       await deleteMessage(messageId);
@@ -42,9 +47,8 @@ export function useThreadActions(userId: string | undefined, refetch: () => void
       toast.success("Message deleted successfully");
       
       // Force a refetch after deletion
-      setTimeout(() => {
-        refetch();
-      }, 100); // Small delay to ensure database operation completes
+      // This should update the UI with the latest data
+      refetch();
     } catch (error) {
       console.error('Error deleting message:', error);
       toast.error("Failed to delete message");
