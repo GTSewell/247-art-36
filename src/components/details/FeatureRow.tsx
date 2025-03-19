@@ -17,7 +17,9 @@ interface FeatureRowProps {
 const stackableFeatures = [
   "Exhibition Duration",
   "Gallery Commission (Original Artwork)",
-  "24/7 Video Wall & Projection Profile"
+  "24/7 Video Wall & Projection Profile",
+  "Artist Commission (Retail Production)",
+  "Artwork Changes"
 ];
 
 const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) => {
@@ -37,11 +39,11 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         <TableCell className="font-medium">
           <div className="flex items-center w-full">
             {isExpanded ? (
-              <ChevronUp className="h-4 w-4 text-gray-500 mr-2 flex-shrink-0" />
+              <ChevronUp className="h-4 w-4 text-gray-500 mr-1 flex-shrink-0" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-gray-500 mr-2 flex-shrink-0" />
+              <ChevronDown className="h-4 w-4 text-gray-500 mr-1 flex-shrink-0" />
             )}
-            <span className="text-sm sm:text-base">{feature.name}</span>
+            <span className="text-xs sm:text-base">{feature.name}</span>
           </div>
         </TableCell>
         <FeatureCell 

@@ -19,10 +19,10 @@ const ArtistPackageTable = () => {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full overflow-hidden rounded-lg shadow-lg"
+      className="w-full min-w-0 overflow-hidden rounded-lg shadow-lg"
     >
       <div className="overflow-x-auto">
-        <Table className="w-full">
+        <Table className="w-full table-fixed border-collapse">
           <TableHeaderComponent />
           <TableBody>
             {features.map((feature, index) => (

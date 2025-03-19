@@ -60,6 +60,20 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
         </TableCell>
       );
     }
+    
+    // Handle "X every Y" pattern for rotation frequency
+    if (value.includes(' every ')) {
+      parts = value.split(' every ');
+      
+      return (
+        <TableCell className="text-center p-1">
+          <div className="stacked-text items-center">
+            <span>{parts[0]}</span>
+            <span>every {parts[1]}</span>
+          </div>
+        </TableCell>
+      );
+    }
   }
   
   return (
