@@ -41,7 +41,8 @@ export const useMessages = (userId: string | undefined) => {
     let query = supabase
       .from('messages_247')
       .select('id', { count: 'exact', head: true })
-      .eq('sender_id', userId);
+      .eq('sender_id', userId)
+      .is('parent_message_id', null); // Only count main messages, not replies
       
     // Apply filters if not showing all
     if (messageFilter !== 'all') {
@@ -82,7 +83,8 @@ export const useMessages = (userId: string | undefined) => {
     let query = supabase
       .from('messages_247')
       .select('id', { count: 'exact', head: true })
-      .eq('artist_id', artistData.id.toString());
+      .eq('artist_id', artistData.id.toString())
+      .is('parent_message_id', null); // Only count main messages, not replies
       
     // Apply filters if not showing all
     if (messageFilter !== 'all') {
@@ -114,6 +116,7 @@ export const useMessages = (userId: string | undefined) => {
         .from('messages_247')
         .select('*')
         .eq('sender_id', userId)
+        .is('parent_message_id', null) // Only fetch main messages, not replies
         .order('created_at', { ascending: false })
         .range(sentRange.from, sentRange.to);
         
@@ -197,6 +200,7 @@ export const useMessages = (userId: string | undefined) => {
         .from('messages_247')
         .select('*')
         .eq('artist_id', artistData.id.toString())
+        .is('parent_message_id', null) // Only fetch main messages, not replies
         .order('created_at', { ascending: false })
         .range(receivedRange.from, receivedRange.to);
         
