@@ -59,10 +59,22 @@ export const useSentMessages = (
             }
             
             // Try to get artist from the artists table
+            // Need to convert artistId to number if it's a numeric string
+            const artistIdNum = !isNaN(Number(artistId)) ? Number(artistId) : null;
+            
+            if (artistIdNum === null) {
+              console.error("Invalid artist ID format:", artistId);
+              return {
+                ...message,
+                status: message.status as Message['status'],
+                artist: { name: 'Unknown Artist', image: '' }
+              };
+            }
+            
             const { data: artistData, error: artistError } = await supabase
               .from('artists')
               .select('name, image')
-              .eq('id', artistId)
+              .eq('id', artistIdNum)
               .maybeSingle();
               
             if (artistError || !artistData) {

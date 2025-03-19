@@ -28,10 +28,18 @@ export async function fetchMessageReplies(messageId: string): Promise<RawMessage
 export async function fetchArtistById(artistId: string): Promise<{ name: string; image: string } | null> {
   try {
     // Make sure we're using a consistent format for the query
+    // Convert artistId to a number for the database query if it's a numeric string
+    const artistIdNum = !isNaN(Number(artistId)) ? Number(artistId) : null;
+    
+    if (artistIdNum === null) {
+      console.error("Invalid artist ID format:", artistId);
+      return null;
+    }
+    
     const { data, error } = await supabase
       .from('artists')
       .select('name, image')
-      .eq('id', artistId)
+      .eq('id', artistIdNum)
       .maybeSingle();
       
     if (error) {
