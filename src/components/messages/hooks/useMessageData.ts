@@ -14,18 +14,23 @@ export function useMessageData(messageId: string | undefined, userId: string | u
     queryFn: async () => {
       if (!messageId) return null;
 
-      // Fetch the original message
-      const messageData = await fetchMessageById(messageId);
-      const formattedMessage = await formatMessage(messageData);
+      try {
+        // Fetch the original message
+        const messageData = await fetchMessageById(messageId);
+        const formattedMessage = await formatMessage(messageData);
 
-      // Fetch related replies
-      const repliesData = await fetchMessageReplies(messageId);
-      const formattedReplies = await formatMessages(repliesData);
+        // Fetch related replies
+        const repliesData = await fetchMessageReplies(messageId);
+        const formattedReplies = await formatMessages(repliesData);
 
-      return {
-        message: formattedMessage,
-        replies: formattedReplies
-      };
+        return {
+          message: formattedMessage,
+          replies: formattedReplies
+        };
+      } catch (error) {
+        console.error("Error fetching message thread:", error);
+        throw error;
+      }
     },
     enabled: !!messageId && !!userId
   });

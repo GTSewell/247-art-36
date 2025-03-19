@@ -25,40 +25,45 @@ export async function fetchMessageReplies(messageId: string): Promise<RawMessage
   return data as RawMessage[];
 }
 
-export async function fetchArtistById(artistId: string): Promise<{ name: string; image: string } | null> {
-  // Convert the string artistId to a number if it's a numeric string
-  const numericArtistId = parseInt(artistId, 10);
-  
-  // Check if conversion was successful (not NaN)
-  if (isNaN(numericArtistId)) {
-    console.error("Invalid artist ID format:", artistId);
-    return null;
-  }
-  
-  const { data, error } = await supabase
-    .from('artists')
-    .select('name, image')
-    .eq('id', numericArtistId)
-    .single();
+export async function fetchArtistById(artistId: string | number): Promise<{ name: string; image: string } | null> {
+  try {
+    // Make sure we're using a consistent format for the query
+    const { data, error } = await supabase
+      .from('artists')
+      .select('name, image')
+      .eq('id', artistId)
+      .maybeSingle();
+      
+    if (error) {
+      console.error("Error fetching artist:", error);
+      return null;
+    }
     
-  if (error) {
-    console.error("Error fetching artist:", error);
+    return data as { name: string; image: string };
+  } catch (error) {
+    console.error("Error in fetchArtistById:", error);
     return null;
   }
-  
-  return data as { name: string; image: string };
 }
 
-export async function fetchArtistByUserId(userId: string): Promise<{ id: string }> {
-  const { data, error } = await supabase
-    .from('artists')
-    .select('id')
-    .eq('user_id', userId)
-    .single();
+export async function fetchArtistByUserId(userId: string): Promise<{ id: string } | null> {
+  try {
+    const { data, error } = await supabase
+      .from('artists')
+      .select('id')
+      .eq('user_id', userId)
+      .maybeSingle();
+      
+    if (error || !data) {
+      console.error("Error fetching artist by user ID:", error || "No artist found");
+      return null;
+    }
     
-  if (error) throw error;
-  
-  return { id: data.id.toString() };
+    return { id: data.id.toString() };
+  } catch (error) {
+    console.error("Error in fetchArtistByUserId:", error);
+    return null;
+  }
 }
 
 export async function createMessageReply(
@@ -70,7 +75,7 @@ export async function createMessageReply(
   // First, get the original message to obtain the correct artist_id
   const { data: originalMessage, error: fetchError } = await supabase
     .from('messages_247')
-    .select('artist_id')
+    .select('artist_id, sender_id')
     .eq('id', messageId)
     .single();
   
@@ -79,7 +84,9 @@ export async function createMessageReply(
     throw fetchError;
   }
   
-  // Use the artist_id from the original message to ensure we're using the correct UUID format
+  console.log("Creating reply for message with artist_id:", originalMessage.artist_id);
+  
+  // Use the artist_id from the original message to ensure we're using the correct format
   const { error } = await supabase
     .from('messages_247')
     .insert({

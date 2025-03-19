@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import MessageStatusBadge from './MessageStatusBadge';
+import CountdownTimer from './CountdownTimer';
 
 interface SentMessageCardProps {
   message: Message;
@@ -33,7 +34,12 @@ const SentMessageCard = ({ message, onDelete }: SentMessageCardProps) => {
               </p>
             </div>
             
-            <MessageStatusBadge status={message.status} />
+            <div className="flex flex-col items-end gap-1">
+              <MessageStatusBadge status={message.status} />
+              {message.status === 'pending' && (
+                <CountdownTimer createdAt={message.created_at} expiryHours={24} />
+              )}
+            </div>
           </div>
           
           <div className="mt-3 p-3 bg-muted rounded-md">

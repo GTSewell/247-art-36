@@ -46,30 +46,47 @@ export const useSentMessages = (
       // Now process each message to add artist info
       const messagesWithArtists: Message[] = await Promise.all(
         (sentMessagesData as RawMessage[]).map(async (message) => {
-          // Convert from numeric string to number for the lookup
-          const artistIdAsNumber = typeof message.artist_id === 'string' 
-            ? parseInt(message.artist_id, 10) 
-            : message.artist_id;
-          
-          if (isNaN(artistIdAsNumber)) {
+          try {
+            // Handle the artist_id regardless of format (numeric string or UUID)
+            const artistId = message.artist_id;
+            
+            if (!artistId) {
+              return {
+                ...message,
+                status: message.status as Message['status'],
+                artist: { name: 'Unknown Artist', image: '' }
+              };
+            }
+            
+            // Try to get artist from the artists table
+            const { data: artistData, error: artistError } = await supabase
+              .from('artists')
+              .select('name, image')
+              .eq('id', artistId)
+              .maybeSingle();
+              
+            if (artistError || !artistData) {
+              console.error('Error fetching artist data:', artistError || 'No artist found');
+              return {
+                ...message,
+                status: message.status as Message['status'],
+                artist: { name: 'Unknown Artist', image: '' }
+              };
+            }
+            
+            return {
+              ...message,
+              status: message.status as Message['status'],
+              artist: artistData
+            };
+          } catch (error) {
+            console.error('Error processing artist data:', error);
             return {
               ...message,
               status: message.status as Message['status'],
               artist: { name: 'Unknown Artist', image: '' }
             };
           }
-          
-          const { data: artistData } = await supabase
-            .from('artists')
-            .select('name, image')
-            .eq('id', artistIdAsNumber)
-            .single();
-            
-          return {
-            ...message,
-            status: message.status as Message['status'],
-            artist: artistData || { name: 'Unknown Artist', image: '' }
-          };
         })
       );
       
