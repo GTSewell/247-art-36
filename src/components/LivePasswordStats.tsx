@@ -21,6 +21,8 @@ interface AccessLog {
 export const LivePasswordStats = () => {
   const [stats, setStats] = useState<PasswordStats[]>([]);
   const [logs, setLogs] = useState<AccessLog[]>([]);
+  const [isUpdating, setIsUpdating] = useState<string | null>(null);
+  const [recipientName, setRecipientName] = useState<string>("");
 
   useEffect(() => {
     // Initial load of stats and logs
@@ -107,6 +109,31 @@ export const LivePasswordStats = () => {
     }).format(date);
   };
 
+  const handleRecipientUpdate = async (password: string) => {
+    setIsUpdating(password);
+  };
+
+  const saveRecipientName = async (password: string) => {
+    try {
+      const { error } = await supabase
+        .from('site_settings')
+        .update({ recipient_name: recipientName })
+        .eq('site_password', password);
+
+      if (error) {
+        console.error('Error updating recipient name:', error);
+        return;
+      }
+
+      console.log('Recipient name updated successfully');
+      setIsUpdating(null);
+      setRecipientName("");
+      loadStats(); // Reload stats to reflect the update
+    } catch (error) {
+      console.error('Error in saveRecipientName:', error);
+    }
+  };
+
   return (
     <div className="p-4 space-y-8">
       <h2 className="text-xl font-bold mb-4">Live Password Usage Statistics</h2>
@@ -125,7 +152,33 @@ export const LivePasswordStats = () => {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Recipient</p>
-                <p className="text-lg font-bold">{stat.recipient_name || "—"}</p>
+                {isUpdating === stat.site_password ? (
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      className="text-sm border px-1 rounded"
+                      value={recipientName}
+                      onChange={(e) => setRecipientName(e.target.value)}
+                      placeholder="Enter recipient name"
+                    />
+                    <button 
+                      className="bg-green-500 text-white px-2 py-1 rounded text-xs"
+                      onClick={() => saveRecipientName(stat.site_password)}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <p className="text-lg font-bold">{stat.recipient_name || "—"}</p>
+                    <button 
+                      className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"
+                      onClick={() => handleRecipientUpdate(stat.site_password)}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

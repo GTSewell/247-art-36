@@ -43,11 +43,16 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
           
           // Log access with both the original recipient name and user-provided name
           try {
+            // Use a more reliable approach instead of relying on request.headers
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            const clientIp = ipData.ip || 'unknown';
+            
             await supabase
               .from('password_access_logs')
               .insert({ 
                 site_password: password,
-                ip_address: 'client-side', // This will be replaced by RLS trigger
+                ip_address: clientIp, 
                 original_recipient_name: data?.recipient_name || null,
                 user_provided_name: userName.trim() || null
               });
@@ -55,6 +60,16 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
             console.log("Password access logged with user name");
           } catch (logError) {
             console.error("Error logging password access:", logError);
+            
+            // Fallback: Log without IP if the service fails
+            await supabase
+              .from('password_access_logs')
+              .insert({ 
+                site_password: password,
+                ip_address: 'client-side-fallback', 
+                original_recipient_name: data?.recipient_name || null,
+                user_provided_name: userName.trim() || null
+              });
           }
           
           // Personalized welcome message
