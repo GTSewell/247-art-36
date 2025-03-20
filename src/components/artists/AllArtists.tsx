@@ -52,10 +52,6 @@ const AllArtists: React.FC<AllArtistsProps> = ({
   return (
     <div className="mt-8">
       <AllArtistsHeader
-        allArtistsSearch={allArtistsSearch}
-        setAllArtistsSearch={setAllArtistsSearch}
-        showFavorites={showFavorites}
-        setShowFavorites={setShowFavorites}
         artistsCount={artists.length}
       />
 

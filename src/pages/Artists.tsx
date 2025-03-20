@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
@@ -118,6 +119,10 @@ const Artists = () => {
             setSelectedSocials={setSelectedSocials}
             onUpdateSelection={handleUpdateSelection}
             onClearFilters={handleClearFilters}
+            allArtistsSearch={allArtistsSearch}
+            setAllArtistsSearch={setAllArtistsSearch}
+            showFavorites={showFavorites}
+            setShowFavorites={setShowFavorites}
           />
 
           <FeaturedArtists
