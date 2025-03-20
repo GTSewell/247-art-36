@@ -14,9 +14,19 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [nameError, setNameError] = useState('');
   
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate the user name field
+    if (!userName.trim()) {
+      setNameError('Please enter your name');
+      return;
+    } else {
+      setNameError('');
+    }
+    
     setIsLoading(true);
     
     try {
@@ -166,11 +176,16 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               placeholder="Your name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full"
+              className={`w-full ${nameError ? 'border-red-500' : ''}`}
+              required
             />
-            <p className="text-xs text-gray-500 mt-1">
-              We use this to track who has access to the site
-            </p>
+            {nameError ? (
+              <p className="text-xs text-red-500 mt-1">{nameError}</p>
+            ) : (
+              <p className="text-xs text-gray-500 mt-1">
+                We use this to track who has access to the site
+              </p>
+            )}
           </div>
           
           <Button 
