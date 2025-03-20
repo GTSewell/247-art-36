@@ -82,7 +82,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
           
           <Button 
             type="submit" 
-            className="w-full bg-black hover:bg-gray-800"
+            className="w-full bg-zap-red text-white hover:bg-zap-red/80"
             disabled={isLoading}
           >
             {isLoading ? 'Checking...' : 'Enter'}

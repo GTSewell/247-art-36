@@ -99,7 +99,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
           />
           <Button 
             type="submit" 
-            className="w-full bg-zap-red hover:bg-zap-blue active:bg-zap-blue transition-colors"
+            className="w-full bg-zap-red text-white hover:bg-zap-red/80 transition-colors"
             disabled={isLoading}
           >
             {isLoading ? "Checking..." : "Enter"}
