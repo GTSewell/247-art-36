@@ -26,14 +26,18 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         // If recipient name is provided, update it in the database
         if (recipientName.trim()) {
           try {
-            await supabase
+            const { error } = await supabase
               .from('site_settings')
               .update({ 
-                recipient_name: recipientName.trim()
+                recipient_name: recipientName.trim() 
               })
               .eq('site_password', password);
             
-            console.log("Recipient name updated for password:", password);
+            if (error) {
+              console.error("Failed to update recipient name:", error);
+            } else {
+              console.log("Recipient name updated successfully");
+            }
           } catch (updateError) {
             console.error("Failed to update recipient name:", updateError);
           }
