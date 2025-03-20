@@ -35,3 +35,8 @@
 .app-read-the-docs {
   color: #888;
 }
+
+/* Support for newlines in text elements */
+.text-with-newlines {
+  white-space: pre-line;
+}
