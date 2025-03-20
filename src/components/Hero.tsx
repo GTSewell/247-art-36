@@ -1,7 +1,5 @@
-
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
 import { toast } from "sonner";
 
 const Hero = () => {
@@ -41,15 +39,6 @@ const Hero = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
-
-  const scrollToWhatIsZap = () => {
-    const whatIsZapSection = document.getElementById('247-details');
-    if (whatIsZapSection) {
-      whatIsZapSection.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
-  };
 
   const handleInstallClick = async () => {
     setIsClicked(true);
@@ -127,28 +116,6 @@ const Hero = () => {
             <p className="mb-6">It's time for a revolution in the art world!</p>
             <p className="font-extrabold">YOU CREATE. WE CREATE.</p>
             <p className="font-extrabold">TOGETHER WE KICK ASS!</p>
-          </motion.div>
-          
-          <motion.div initial={{
-          y: 20,
-          opacity: 0
-        }} animate={{
-          y: 0,
-          opacity: 1
-        }} transition={{
-          delay: 0.6,
-          duration: 0.5
-        }} className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <button 
-              onClick={handleInstallClick} 
-              className={`${isClicked && !isInstallable ? 'bg-zap-blue' : 'bg-[#ea384c]'} text-white px-8 py-3 rounded-full font-bold hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105`}
-              disabled={isClicked && !isInstallable}
-            >
-              {isClicked && !isInstallable ? 'Installed' : isInstallable ? 'Install App' : 'Get the app'}
-            </button>
-            <button onClick={scrollToWhatIsZap} className="border-2 border-[#ea384c] text-[#ea384c] px-8 py-3 rounded-full font-bold hover:bg-[#ea384c] hover:text-white transition-all duration-200">
-              Learn More
-            </button>
           </motion.div>
         </div>
       </div>
