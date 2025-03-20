@@ -31,6 +31,15 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
       if (isValid) {
         logger.info('Valid password found, proceeding with authentication');
         
+        // Get current recipient name for password (to store in logs)
+        const { data: currentSettings, error: settingsError } = await supabase
+          .from('site_settings')
+          .select('recipient_name')
+          .eq('site_password', lowerPassword)
+          .single();
+        
+        const currentRecipientName = currentSettings?.recipient_name || null;
+        
         // If recipient name is provided, update it in the database
         if (recipientName.trim()) {
           try {
@@ -44,6 +53,45 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             logger.info("Recipient name updated for password:", lowerPassword);
           } catch (updateError) {
             logger.error("Failed to update recipient name:", updateError);
+          }
+          
+          // Log access with original and new recipient name
+          try {
+            // Use a more reliable approach instead of relying on request.headers
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            const clientIp = ipData.ip || 'unknown';
+            
+            const { error: logError } = await supabase
+              .from('password_access_logs')
+              .insert({ 
+                site_password: lowerPassword,
+                ip_address: clientIp, 
+                original_recipient_name: currentRecipientName,
+                user_provided_name: recipientName.trim()
+              });
+              
+            if (logError) {
+              logger.error("Error logging password access:", logError);
+            } else {
+              logger.info("Password access logged successfully");
+            }
+          } catch (logError) {
+            logger.error("Error with IP fetch:", logError);
+            
+            // Fallback logging without IP
+            const { error: fallbackLogError } = await supabase
+              .from('password_access_logs')
+              .insert({ 
+                site_password: lowerPassword,
+                ip_address: 'client-side-fallback', 
+                original_recipient_name: currentRecipientName,
+                user_provided_name: recipientName.trim()
+              });
+              
+            if (fallbackLogError) {
+              logger.error("Error with fallback logging:", fallbackLogError);
+            }
           }
         }
         

@@ -34,22 +34,22 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
       
       if (isCorrect) {
         // Fetch recipient name from the database
-        const { data, error } = await supabase
+        const { data: settingsData, error: settingsError } = await supabase
           .from('site_settings')
           .select('recipient_name, usage_count')
-          .eq('site_password', password)
+          .eq('site_password', password.toLowerCase().trim())
           .single();
         
-        if (error) {
-          console.error("Failed to fetch recipient data:", error);
+        if (settingsError) {
+          console.error("Failed to fetch recipient data:", settingsError);
         } else {
           // Increment usage count manually
-          const updatedCount = (data?.usage_count || 0) + 1;
+          const updatedCount = (settingsData?.usage_count || 0) + 1;
           
           await supabase
             .from('site_settings')
             .update({ usage_count: updatedCount })
-            .eq('site_password', password);
+            .eq('site_password', password.toLowerCase().trim());
           
           // Log access with both the original recipient name and user-provided name
           try {
@@ -60,18 +60,18 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             
             console.log("Logging password access with the following data:");
             console.log({
-              site_password: password,
+              site_password: password.toLowerCase().trim(),
               ip_address: clientIp,
-              original_recipient_name: data?.recipient_name || null,
+              original_recipient_name: settingsData?.recipient_name || null,
               user_provided_name: userName.trim() || null
             });
             
             const { data: logData, error: logError } = await supabase
               .from('password_access_logs')
               .insert({ 
-                site_password: password,
+                site_password: password.toLowerCase().trim(),
                 ip_address: clientIp, 
-                original_recipient_name: data?.recipient_name || null,
+                original_recipient_name: settingsData?.recipient_name || null,
                 user_provided_name: userName.trim() || null
               })
               .select();
@@ -88,9 +88,9 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             const { data: fallbackLogData, error: fallbackLogError } = await supabase
               .from('password_access_logs')
               .insert({ 
-                site_password: password,
+                site_password: password.toLowerCase().trim(),
                 ip_address: 'client-side-fallback', 
-                original_recipient_name: data?.recipient_name || null,
+                original_recipient_name: settingsData?.recipient_name || null,
                 user_provided_name: userName.trim() || null
               })
               .select();
@@ -105,8 +105,8 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           // Personalized welcome message
           if (userName.trim()) {
             toast.success(`Welcome ${userName}!`);
-          } else if (data?.recipient_name) {
-            toast.success(`Welcome ${data.recipient_name}!`);
+          } else if (settingsData?.recipient_name) {
+            toast.success(`Welcome ${settingsData.recipient_name}!`);
           } else {
             toast.success('Welcome to 247.art!');
           }
