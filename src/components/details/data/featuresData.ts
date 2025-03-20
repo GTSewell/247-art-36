@@ -18,15 +18,15 @@ export const features: Feature[] = [
   },
   { 
     name: "Limited Spaces", 
-    studioArtist: "48 Artists", 
-    featureArtist: "48 Artists", 
+    studioArtist: "50 Artists", 
+    featureArtist: "50 Artists", 
     signatureArtist: "12  Artists",
     description: "Limited spaces ensure we can offer personalized attention for the duration of the exhibition."
   },
   { 
     name: "Exhibition Duration", 
-    studioArtist: "~100 Days (3 months)", 
-    featureArtist: "~100 Days (3 months)", 
+    studioArtist: "~100 Days / (3 months)", 
+    featureArtist: "~100 Days / (3 months)", 
     signatureArtist: "~100 Days (3 months)",
     description: "We believe standard exhibition lengths are too short for maximum impact. You don't see the NGV launch 1 week pop-ups, why? Because the cultural and financial impact in most cases is not worth it. Your work will be displayed in our gallery for approximately 100 days, providing maximum exposure to collectors and art enthusiasts."
   },
