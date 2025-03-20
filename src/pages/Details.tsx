@@ -22,8 +22,11 @@ const Details = () => {
           className="max-w-3xl mx-auto text-center mb-16"
         >
           <h1 className="text-4xl font-bold mb-6 text-gray-800">Artist Exhibition Packages</h1>
-          <p className="text-lg text-gray-800">
+          <p className="text-lg text-gray-800 mb-4">
             Whether you're just starting your journey, or, a full-time artist, we have the perfect package for you. Select between our Studio and Feature Artist options to get started.
+          </p>
+          <p className="text-lg text-gray-800">
+            Below you will find full details on the available Artist packages, along with both an Artwork Size & Exhibition Profit Calculator to help you better understand your investment value.
           </p>
         </motion.div>
 
