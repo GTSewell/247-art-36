@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
@@ -26,17 +26,33 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         // If recipient name is provided, update it in the database
         if (recipientName.trim()) {
           try {
-            const { error } = await supabase
+            // First fetch the current record to work with
+            const { data: existingData, error: fetchError } = await supabase
               .from('site_settings')
-              .update({ 
-                recipient_name: recipientName.trim() 
-              })
-              .eq('site_password', password);
+              .select('usage_count, unique_ip_count')
+              .eq('site_password', password)
+              .single();
             
-            if (error) {
-              console.error("Failed to update recipient name:", error);
+            if (fetchError) {
+              console.error("Failed to fetch existing data:", fetchError);
             } else {
-              console.log("Recipient name updated successfully");
+              // Now update the record with the recipient name
+              // and increment usage_count manually
+              const updatedCount = (existingData?.usage_count || 0) + 1;
+              
+              const { error: updateError } = await supabase
+                .from('site_settings')
+                .update({ 
+                  recipient_name: recipientName.trim(),
+                  usage_count: updatedCount
+                })
+                .eq('site_password', password);
+              
+              if (updateError) {
+                console.error("Failed to update recipient name:", updateError);
+              } else {
+                console.log("Recipient name updated successfully");
+              }
             }
           } catch (updateError) {
             console.error("Failed to update recipient name:", updateError);
