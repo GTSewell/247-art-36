@@ -5,7 +5,6 @@ import VirtualTourSection from "@/components/sections/VirtualTourSection";
 import CallToAction from "@/components/sections/CallToAction";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
-import FeatureCarousel from "@/components/sections/FeatureCarousel";
 import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Helmet } from "react-helmet";
@@ -22,7 +21,6 @@ const Index = () => {
       <main className={`min-h-screen ${isPWA ? 'overflow-hidden' : ''}`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
         <Hero />
-        <FeatureCarousel />
         <WhatIsZap />
         <JoinUndergroundSection />
         <VirtualTourSection />

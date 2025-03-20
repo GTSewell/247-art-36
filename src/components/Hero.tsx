@@ -77,7 +77,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative min-h-[90vh] overflow-hidden bg-zap-yellow">
+    <div className="relative min-h-screen overflow-hidden bg-zap-yellow">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -92,7 +92,7 @@ const Hero = () => {
       </div>
 
       {/* Content Container - Positioned just below navbar */}
-      <div className="relative z-10 flex flex-col items-center pt-32 md:pt-36">
+      <div className="relative z-10 flex flex-col items-center pt-24 md:pt-28">
         <motion.div 
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
