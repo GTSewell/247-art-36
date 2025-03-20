@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
@@ -12,7 +12,6 @@ interface SitePasswordProps {
 
 export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect }) => {
   const [password, setPassword] = useState('');
-  const [recipientName, setRecipientName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
   const handlePasswordSubmit = async (e: React.FormEvent) => {
@@ -23,39 +22,29 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       const isCorrect = await validateSitePassword(password);
       
       if (isCorrect) {
-        // If recipient name is provided, update it in the database
-        if (recipientName.trim()) {
-          try {
-            // First fetch the current record to work with
-            const { data: existingData, error: fetchError } = await supabase
-              .from('site_settings')
-              .select('usage_count, unique_ip_count')
-              .eq('site_password', password)
-              .single();
-            
-            if (fetchError) {
-              console.error("Failed to fetch existing data:", fetchError);
-            } else {
-              // Now update the record with the recipient name
-              // and increment usage_count manually
-              const updatedCount = (existingData?.usage_count || 0) + 1;
-              
-              const { error: updateError } = await supabase
-                .from('site_settings')
-                .update({ 
-                  recipient_name: recipientName.trim(),
-                  usage_count: updatedCount
-                })
-                .eq('site_password', password);
-              
-              if (updateError) {
-                console.error("Failed to update recipient name:", updateError);
-              } else {
-                console.log("Recipient name updated successfully");
-              }
-            }
-          } catch (updateError) {
-            console.error("Failed to update recipient name:", updateError);
+        // Fetch recipient name from the database
+        const { data, error } = await supabase
+          .from('site_settings')
+          .select('recipient_name, usage_count')
+          .eq('site_password', password)
+          .single();
+        
+        if (error) {
+          console.error("Failed to fetch recipient data:", error);
+        } else {
+          // Increment usage count manually
+          const updatedCount = (data?.usage_count || 0) + 1;
+          
+          await supabase
+            .from('site_settings')
+            .update({ usage_count: updatedCount })
+            .eq('site_password', password);
+          
+          // Personalized welcome message if recipient name exists
+          if (data?.recipient_name) {
+            toast.success(`Welcome ${data.recipient_name}!`);
+          } else {
+            toast.success('Welcome to 247.art!');
           }
         }
         
@@ -70,7 +59,6 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
-        toast.success('Welcome to 247.art!');
       } else {
         toast.error('Incorrect password');
       }
@@ -116,19 +104,6 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               className="w-full"
               required
             />
-          </div>
-
-          <div>
-            <Input
-              type="text"
-              placeholder="Optional: Your name or organization"
-              value={recipientName}
-              onChange={(e) => setRecipientName(e.target.value)}
-              className="w-full"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              We use this to track who has access to the site
-            </p>
           </div>
           
           <Button 
