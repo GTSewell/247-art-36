@@ -11,22 +11,34 @@ const TableFooterComponent = () => {
         <span className="text-sm sm:text-lg">Secure your spot...</span>
       </TableCell>
       <TableCell className="text-center py-2 sm:py-4">
-        <Button 
-          className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors w-full sm:w-auto justify-center"
-          size="sm"
+        <a 
+          href="https://print.oshi.id/products/studio?_pos=1&_psq=studio&_ss=e&_v=1.0" 
+          target="_blank" 
+          rel="noopener noreferrer"
         >
-          <ShoppingCart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-xs sm:text-sm">Studio</span>
-        </Button>
+          <Button 
+            className="bg-zap-yellow text-black hover:bg-zap-yellow/80 transition-colors w-full sm:w-auto justify-center"
+            size="sm"
+          >
+            <ShoppingCart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="text-xs sm:text-sm">Studio</span>
+          </Button>
+        </a>
       </TableCell>
       <TableCell className="text-center py-2 sm:py-4">
-        <Button 
-          className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors w-full sm:w-auto justify-center"
-          size="sm"
+        <a 
+          href="https://print.oshi.id/products/feature-247-art-exhibition?_pos=1&_psq=feat&_ss=e&_v=1.0" 
+          target="_blank" 
+          rel="noopener noreferrer"
         >
-          <ShoppingCart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
-          <span className="text-xs sm:text-sm">Feature</span>
-        </Button>
+          <Button 
+            className="bg-zap-red text-white hover:bg-zap-red/80 transition-colors w-full sm:w-auto justify-center"
+            size="sm"
+          >
+            <ShoppingCart className="mr-1 h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="text-xs sm:text-sm">Feature</span>
+          </Button>
+        </a>
       </TableCell>
     </TableRow>
   );
