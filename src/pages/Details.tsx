@@ -6,7 +6,7 @@ import ArtworkSizeCalculator from "@/components/details/ArtworkSizeCalculator";
 import SalesCalculator from "@/components/details/SalesCalculator";
 import InterestForm from "@/components/sections/underground/InterestForm";
 import { outroText } from "@/components/sections/underground/faqData";
-import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, Printer, ShoppingBag, BookOpen } from "lucide-react";
+import { Zap, Palette, CreditCard, Gift, Coins, Trophy, Brush, Printer, ShoppingBag, BookOpen, ChevronDown } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 const benefits = [
@@ -56,7 +56,7 @@ const Details = () => {
       <Navigation />
       
       {/* Benefits Section (Moved from WhatIsZap) */}
-      <section className="py-20 px-4 relative overflow-hidden bg-zap-blue">
+      <section className="py-20 px-4 relative overflow-hidden bg-[#9ec0d2]">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -93,6 +93,16 @@ const Details = () => {
               );
             })}
           </div>
+          
+          {/* Bouncing Chevron */}
+          <motion.div 
+            className="flex justify-center mt-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          >
+            <ChevronDown className="w-12 h-12 text-white" />
+          </motion.div>
         </motion.div>
       </section>
       
