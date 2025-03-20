@@ -7,7 +7,7 @@ const TableHeaderComponent = () => {
     <TableHeader>
       <TableRow className="bg-black hover:bg-black" style={{ transition: 'none' }}>
         <TableHead className="font-bold text-lg text-white p-1">
-          <span className="text-[0.85rem] sm:text-lg">Features: Click on row to expand info</span>
+          <span className="text-[0.85rem] sm:text-lg">Features: Click feature for info</span>
         </TableHead>
         <TableHead className="text-center p-1">
           <div className="flex flex-col items-center justify-center">
