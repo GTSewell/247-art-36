@@ -46,6 +46,14 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
   onUpdateSelection,
   onClearFilters,
 }) => {
+  // Check if any filters are active
+  const hasActiveFilters = 
+    artistSearch.trim() !== '' || 
+    locationSearch.trim() !== '' || 
+    selectedTechniques.length > 0 || 
+    selectedStyles.length > 0 || 
+    selectedSocials.length > 0;
+
   return (
     <div className="flex flex-col md:flex-row md:justify-between items-center md:items-center mb-8">
       <h1 className="text-4xl font-bold text-foreground mb-4 md:mb-0 text-center md:text-left">Featured Artists</h1>
@@ -78,15 +86,17 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
             />
           </SheetContent>
         </Sheet>
-        <Button 
-          onClick={onClearFilters}
-          variant="destructive"
-          size="sm"
-          className="flex items-center gap-1 px-2 sm:px-4 sm:gap-2"
-        >
-          <FilterX size={16} className="sm:size-5" />
-          <span className="text-sm sm:text-base">Clear</span>
-        </Button>
+        {hasActiveFilters && (
+          <Button 
+            onClick={onClearFilters}
+            variant="destructive"
+            size="sm"
+            className="flex items-center gap-1 px-2 sm:px-4 sm:gap-2"
+          >
+            <FilterX size={16} className="sm:size-5" />
+            <span className="text-sm sm:text-base">Clear</span>
+          </Button>
+        )}
       </div>
     </div>
   );
