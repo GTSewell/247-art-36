@@ -51,7 +51,7 @@ export function UserMenu({ isCartPage = false }: UserMenuProps) {
             </AvatarFallback>
           </Avatar>
           <span className={`hidden md:inline-block ml-1 ${isCartPage ? "text-white" : "text-foreground"}`}>
-            {user ? user.email?.split('@')[0] : 'Account'}
+            {user ? user.email?.split('@')[0] : 'Sign in'}
           </span>
         </Button>
       </DropdownMenuTrigger>

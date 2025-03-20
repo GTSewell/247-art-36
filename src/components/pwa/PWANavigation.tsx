@@ -95,7 +95,7 @@ const PWANavigation = () => {
                 </Badge>
               )}
             </div>
-            <span className="text-xs mt-1">Account</span>
+            <span className="text-xs mt-1">{user ? 'Account' : 'Sign in'}</span>
           </NavLink>
         </div>
       </nav>
