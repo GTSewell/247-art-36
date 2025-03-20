@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -75,7 +76,7 @@ const Hero = () => {
     }
   };
 
-  return <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-zap-yellow">
+  return <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-zap-yellow pt-20">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
