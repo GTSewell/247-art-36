@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { logger } from "@/utils/logger";
 import { validateSitePassword, signInWithDemoAccount } from "@/utils/auth-utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface PasswordGateProps {
   onAuthenticated: () => void;
@@ -12,6 +13,7 @@ interface PasswordGateProps {
 
 const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
   const [password, setPassword] = useState("");
+  const [recipientName, setRecipientName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -28,6 +30,22 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 
       if (isValid) {
         logger.info('Valid password found, proceeding with authentication');
+        
+        // If recipient name is provided, update it in the database
+        if (recipientName.trim()) {
+          try {
+            await supabase
+              .from('site_settings')
+              .update({ 
+                recipient_name: recipientName.trim()
+              })
+              .eq('site_password', lowerPassword);
+            
+            logger.info("Recipient name updated for password:", lowerPassword);
+          } catch (updateError) {
+            logger.error("Failed to update recipient name:", updateError);
+          }
+        }
         
         // Try to sign in with demo account
         const signedIn = await signInWithDemoAccount();
@@ -97,6 +115,18 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             className="w-full"
             autoFocus
           />
+          
+          <Input
+            type="text"
+            placeholder="Optional: Your name or organization"
+            value={recipientName}
+            onChange={(e) => setRecipientName(e.target.value)}
+            className="w-full"
+          />
+          <p className="text-xs text-gray-500 -mt-2">
+            We use this to track who has access to the site
+          </p>
+          
           <Button 
             type="submit" 
             className="w-full bg-zap-red text-white hover:bg-zap-red/80 transition-colors"

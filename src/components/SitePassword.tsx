@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
 import { validateSitePassword, signInWithDemoAccount } from '@/utils/auth-utils';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SitePasswordProps {
   setIsPasswordCorrect: (isCorrect: boolean) => void;
@@ -11,6 +12,7 @@ interface SitePasswordProps {
 
 export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect }) => {
   const [password, setPassword] = useState('');
+  const [recipientName, setRecipientName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
   const handlePasswordSubmit = async (e: React.FormEvent) => {
@@ -21,6 +23,22 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       const isCorrect = await validateSitePassword(password);
       
       if (isCorrect) {
+        // If recipient name is provided, update it in the database
+        if (recipientName.trim()) {
+          try {
+            await supabase
+              .from('site_settings')
+              .update({ 
+                recipient_name: recipientName.trim()
+              })
+              .eq('site_password', password);
+            
+            console.log("Recipient name updated for password:", password);
+          } catch (updateError) {
+            console.error("Failed to update recipient name:", updateError);
+          }
+        }
+        
         // Try to sign in with demo account automatically
         const signedIn = await signInWithDemoAccount();
         
@@ -78,6 +96,19 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               className="w-full"
               required
             />
+          </div>
+
+          <div>
+            <Input
+              type="text"
+              placeholder="Optional: Your name or organization"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+              className="w-full"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              We use this to track who has access to the site
+            </p>
           </div>
           
           <Button 

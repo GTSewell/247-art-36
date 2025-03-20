@@ -363,6 +363,7 @@ export type Database = {
           created_at: string | null
           id: string | null
           ID: string | null
+          recipient_name: string | null
           site_password: string | null
           unique_ip_count: number | null
           usage_count: number | null
@@ -371,6 +372,7 @@ export type Database = {
           created_at?: string | null
           id?: string | null
           ID?: string | null
+          recipient_name?: string | null
           site_password?: string | null
           unique_ip_count?: number | null
           usage_count?: number | null
@@ -379,6 +381,7 @@ export type Database = {
           created_at?: string | null
           id?: string | null
           ID?: string | null
+          recipient_name?: string | null
           site_password?: string | null
           unique_ip_count?: number | null
           usage_count?: number | null
