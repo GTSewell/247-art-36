@@ -19,7 +19,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate the user name field
+    // Validate the user name field - more strict validation now
     if (!userName.trim()) {
       setNameError('Please enter your name');
       return;
