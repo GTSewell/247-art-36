@@ -30,9 +30,9 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
             <AccordionItem value={`item-${index}`} className="border-white/20 rounded-lg overflow-hidden">
-              <AccordionTrigger className="px-4 py-3 bg-white/10 text-white hover:bg-white/20 hover:no-underline">
+              <AccordionTrigger className="px-4 py-3 bg-white/10 text-white hover:bg-white/20 hover:no-underline group">
                 <div className="flex items-center gap-3">
-                  <Zap className="w-5 h-5 text-zap-yellow flex-shrink-0" />
+                  <Zap className="w-5 h-5 text-zap-yellow group-hover:text-zap-red transition-colors duration-200 flex-shrink-0" />
                   <span className="text-lg font-medium">{item.title}</span>
                 </div>
               </AccordionTrigger>
