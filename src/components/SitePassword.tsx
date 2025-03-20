@@ -48,28 +48,48 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
             const ipData = await ipResponse.json();
             const clientIp = ipData.ip || 'unknown';
             
-            await supabase
+            console.log("Logging password access with the following data:");
+            console.log({
+              site_password: password,
+              ip_address: clientIp,
+              original_recipient_name: data?.recipient_name || null,
+              user_provided_name: userName.trim() || null
+            });
+            
+            const { data: logData, error: logError } = await supabase
               .from('password_access_logs')
               .insert({ 
                 site_password: password,
                 ip_address: clientIp, 
                 original_recipient_name: data?.recipient_name || null,
                 user_provided_name: userName.trim() || null
-              });
+              })
+              .select();
             
-            console.log("Password access logged with user name");
+            if (logError) {
+              console.error("Error inserting log:", logError);
+            } else {
+              console.log("Password access logged successfully:", logData);
+            }
           } catch (logError) {
             console.error("Error logging password access:", logError);
             
             // Fallback: Log without IP if the service fails
-            await supabase
+            const { data: fallbackLogData, error: fallbackLogError } = await supabase
               .from('password_access_logs')
               .insert({ 
                 site_password: password,
                 ip_address: 'client-side-fallback', 
                 original_recipient_name: data?.recipient_name || null,
                 user_provided_name: userName.trim() || null
-              });
+              })
+              .select();
+              
+            if (fallbackLogError) {
+              console.error("Error with fallback logging:", fallbackLogError);
+            } else {
+              console.log("Fallback password access logged successfully:", fallbackLogData);
+            }
           }
           
           // Personalized welcome message
