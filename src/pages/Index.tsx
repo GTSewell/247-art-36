@@ -1,5 +1,6 @@
 
 import Hero from "@/components/Hero";
+import FeatureCarousel from "@/components/FeatureCarousel";
 import WhatIsZap from "@/components/sections/WhatIsZap";
 import VirtualTourSection from "@/components/sections/VirtualTourSection";
 import CallToAction from "@/components/sections/CallToAction";
@@ -21,6 +22,7 @@ const Index = () => {
       <main className={`min-h-screen ${isPWA ? 'overflow-hidden' : ''}`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
         <Hero />
+        <FeatureCarousel />
         <WhatIsZap />
         <JoinUndergroundSection />
         <VirtualTourSection />
