@@ -94,14 +94,18 @@ const Details = () => {
             })}
           </div>
           
-          {/* Bouncing Chevron */}
+          {/* Added "Artist Packages" heading above the bouncing chevron */}
           <motion.div 
-            className="flex justify-center mt-16"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            className="flex justify-center mt-16 flex-col items-center"
           >
-            <ChevronDown className="w-12 h-12 text-white" />
+            <h2 className="text-3xl font-bold text-white mb-4">Artist Packages</h2>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              <ChevronDown className="w-12 h-12 text-white" />
+            </motion.div>
           </motion.div>
         </motion.div>
       </section>
