@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeftCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 interface MobileNavigationProps {
   activeTab: string;
@@ -25,7 +24,6 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
   handleReturnToArtists,
   colorTheme
 }) => {
-  // Define dynamic styles based on the artist's color theme
   const tabsContainerStyle = {
     background: 'rgba(255, 255, 255, 0.9)', 
     borderRadius: '8px',
@@ -91,7 +89,7 @@ const MobileNavigation: React.FC<MobileNavigationProps> = ({
         className="h-14 w-14 flex items-center justify-center backdrop-blur-sm"
         style={returnButtonStyle}
       >
-        <ArrowLeftCircle size={24} />
+        <ArrowLeft size={28} strokeWidth={2.5} />
         <span className="sr-only">Return to Artists</span>
       </Button>
     </div>

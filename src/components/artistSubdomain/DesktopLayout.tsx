@@ -2,7 +2,7 @@
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
-import { ArrowLeftCircle } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import ArtistProfileLeftPanel from './ArtistProfileLeftPanel';
@@ -61,7 +61,7 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
             onClick={handleReturnToArtists}
             className="bg-white/80 hover:bg-white backdrop-blur-sm"
           >
-            <ArrowLeftCircle size={20} />
+            <ArrowLeft size={28} strokeWidth={2.5} />
             <span className="sr-only">Return to Artists</span>
           </Button>
         </div>
