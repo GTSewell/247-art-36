@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -10,25 +9,20 @@ const Hero = () => {
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later
       setDeferredPrompt(e);
-      // Update UI to notify the user they can install the PWA
       setIsInstallable(true);
       console.log('PWA installation prompt captured');
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
-    // Check if app is already installed
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstallable(false);
       setIsClicked(true);
       console.log('App is already in standalone mode');
     }
 
-    // For iOS Safari, use the navigator.standalone property (safely check it exists first)
     const isStandalone = (window.navigator as any).standalone;
     if (isStandalone === true || window.matchMedia('(display-mode: standalone)').matches) {
       setIsInstallable(false);
@@ -45,19 +39,14 @@ const Hero = () => {
     setIsClicked(true);
     
     if (!deferredPrompt) {
-      // If not installable via prompt, provide instructions for manual installation
       toast.info("You can install this app by tapping the browser menu and selecting 'Add to Home Screen'", {
         duration: 5000
       });
       return;
     }
 
-    // Show the install prompt
     try {
-      // @ts-ignore - deferredPrompt is a non-standard API
       deferredPrompt.prompt();
-      // Wait for the user to respond to the prompt
-      // @ts-ignore - deferredPrompt is a non-standard API
       const { outcome } = await deferredPrompt.userChoice;
       
       if (outcome === 'accepted') {
@@ -66,7 +55,6 @@ const Hero = () => {
         setIsInstallable(false);
       } else {
         toast.info("Installation cancelled");
-        // Allow the user to try again
         setIsClicked(false);
       }
     } catch (error) {
@@ -78,7 +66,6 @@ const Hero = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-zap-yellow">
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
           backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)',
@@ -86,12 +73,10 @@ const Hero = () => {
         }} />
       </div>
 
-      {/* Halftone Background Image */}
       <div className="absolute inset-0">
         <img src="/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png" alt="Halftone Pattern" className="w-full h-full object-cover" />
       </div>
 
-      {/* Content Container - Positioned just below navbar */}
       <div className="relative z-10 flex flex-col items-center pt-24 md:pt-28">
         <motion.div 
           initial={{ scale: 0.5, opacity: 0 }}
@@ -113,18 +98,15 @@ const Hero = () => {
           className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold text-center"
         >
           <p className="mb-6">It's time for a revolution in the art world!</p>
-          <p className="font-extrabold">YOU CREATE. WE CREATE.</p>
-          <p className="font-extrabold">TOGETHER WE KICK ASS!</p>
+          <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
         </motion.div>
 
-        {/* Feature Showcase Section - First Row */}
         <motion.div 
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
           className="w-full mt-12 px-4 md:px-8 flex flex-col md:flex-row gap-6 justify-center items-center"
         >
-          {/* Feature Image 1 - Artist Dashboard */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
@@ -135,7 +117,6 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Feature Image 2 - Artist Profile */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
@@ -146,7 +127,6 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Feature Image 3 - Gallery Commission */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
@@ -158,14 +138,12 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* Feature Showcase Section - Second Row */}
         <motion.div 
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.5 }}
           className="w-full mt-6 px-4 md:px-8 flex flex-col md:flex-row gap-6 justify-center items-center"
         >
-          {/* Feature Image 4 - World Class Exhibition Space */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
@@ -176,7 +154,6 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Feature Image 5 - Fine Art Print House */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
@@ -187,7 +164,6 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Feature Image 6 - STP: Stickers | T-Shirt | Print */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <img 
