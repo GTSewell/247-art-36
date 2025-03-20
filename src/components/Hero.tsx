@@ -117,7 +117,7 @@ const Hero = () => {
           <p className="font-extrabold">TOGETHER WE KICK ASS!</p>
         </motion.div>
 
-        {/* Feature Showcase Section */}
+        {/* Feature Showcase Section - First Row */}
         <motion.div 
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -127,7 +127,6 @@ const Hero = () => {
           {/* Feature Image 1 - Artist Dashboard */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-gray-800 text-white text-center py-2 font-bold">ARTIST DASHBOARD</div>
               <img 
                 src="/lovable-uploads/7ab2b4e1-a00b-4cd8-b039-5863c96b000f.png" 
                 alt="Artist Dashboard" 
@@ -139,7 +138,6 @@ const Hero = () => {
           {/* Feature Image 2 - Artist Profile */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-gray-800 text-white text-center py-2 font-bold">LINK IN BIO: ARTIST PROFILE</div>
               <img 
                 src="/lovable-uploads/36943b5d-defa-44e3-b4d3-0c03082b4abe.png" 
                 alt="Artist Profile" 
@@ -151,10 +149,50 @@ const Hero = () => {
           {/* Feature Image 3 - Gallery Commission */}
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <div className="bg-gray-800 text-white text-center py-2 font-bold">GALLERY COMMISSION: 25% TO 0%!</div>
               <img 
                 src="/lovable-uploads/69af7803-27d7-4f04-b312-6169327229b3.png" 
                 alt="Gallery Commission" 
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Feature Showcase Section - Second Row */}
+        <motion.div 
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="w-full mt-6 px-4 md:px-8 flex flex-col md:flex-row gap-6 justify-center items-center"
+        >
+          {/* Feature Image 4 - World Class Exhibition Space */}
+          <div className="w-full md:w-1/3 max-w-md">
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <img 
+                src="/lovable-uploads/65260f29-6ff3-4908-ab60-966d152fd537.png" 
+                alt="World Class Exhibition Space" 
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+          
+          {/* Feature Image 5 - Fine Art Print House */}
+          <div className="w-full md:w-1/3 max-w-md">
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <img 
+                src="/lovable-uploads/ee6879a0-42e7-4b20-bd65-45c5dedecef9.png" 
+                alt="Fine Art Print House" 
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+          
+          {/* Feature Image 6 - STP: Stickers | T-Shirt | Print */}
+          <div className="w-full md:w-1/3 max-w-md">
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <img 
+                src="/lovable-uploads/3e059aec-6e10-4d98-8e77-940f0edd0dd9.png" 
+                alt="STP: Stickers | T-Shirt | Print" 
                 className="w-full h-auto"
               />
             </div>
