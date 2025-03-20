@@ -282,19 +282,25 @@ export type Database = {
           created_at: string
           id: number
           ip_address: string
+          original_recipient_name: string | null
           site_password: string
+          user_provided_name: string | null
         }
         Insert: {
           created_at?: string
           id?: number
           ip_address: string
+          original_recipient_name?: string | null
           site_password: string
+          user_provided_name?: string | null
         }
         Update: {
           created_at?: string
           id?: number
           ip_address?: string
+          original_recipient_name?: string | null
           site_password?: string
+          user_provided_name?: string | null
         }
         Relationships: []
       }

@@ -12,6 +12,7 @@ interface SitePasswordProps {
 
 export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect }) => {
   const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
   const handlePasswordSubmit = async (e: React.FormEvent) => {
@@ -40,8 +41,26 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
             .update({ usage_count: updatedCount })
             .eq('site_password', password);
           
-          // Personalized welcome message if recipient name exists
-          if (data?.recipient_name) {
+          // Log access with both the original recipient name and user-provided name
+          try {
+            await supabase
+              .from('password_access_logs')
+              .insert({ 
+                site_password: password,
+                ip_address: 'client-side', // This will be replaced by RLS trigger
+                original_recipient_name: data?.recipient_name || null,
+                user_provided_name: userName.trim() || null
+              });
+            
+            console.log("Password access logged with user name");
+          } catch (logError) {
+            console.error("Error logging password access:", logError);
+          }
+          
+          // Personalized welcome message
+          if (userName.trim()) {
+            toast.success(`Welcome ${userName}!`);
+          } else if (data?.recipient_name) {
             toast.success(`Welcome ${data.recipient_name}!`);
           } else {
             toast.success('Welcome to 247.art!');
@@ -104,6 +123,19 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
               className="w-full"
               required
             />
+          </div>
+          
+          <div>
+            <Input
+              type="text"
+              placeholder="Your name"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              className="w-full"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              We use this to track who has access to the site
+            </p>
           </div>
           
           <Button 
