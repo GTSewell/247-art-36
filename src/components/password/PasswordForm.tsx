@@ -160,7 +160,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           <p className="text-xs text-red-500 mt-1">{nameError}</p>
         ) : (
           <p className="text-xs text-gray-500 mt-1">
-            We use this to track who has access to the site
+            
           </p>
         )}
       </div>
