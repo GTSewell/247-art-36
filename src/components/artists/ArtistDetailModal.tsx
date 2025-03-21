@@ -9,8 +9,6 @@ import {
   Carousel, 
   CarouselContent, 
   CarouselItem, 
-  CarouselPrevious, 
-  CarouselNext,
   type CarouselApi
 } from "@/components/ui/carousel";
 

@@ -1,11 +1,12 @@
 
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
-import ArtistDetailsPanel from "./ArtistDetailsPanel";
+import ArtistHeaderInfo from "./ArtistHeaderInfo";
 import ArtistImagePanel from "./ArtistImagePanel";
 import ArtistCarouselNavigation from "./ArtistCarouselNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { logger } from "@/utils/logger";
+import ArtistActions from "./ArtistActions";
 
 interface ArtistModalContentProps {
   artists: Artist[];
@@ -81,16 +82,28 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     };
   }, [selectedArtistIndex, artists.length]);
 
+  // Format the domain for the artist
+  const artistDomain = selectedArtist.name ? selectedArtist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
+
   return (
     <div className="relative overflow-hidden bg-white">
-      {/* Main content */}
       <div 
         ref={contentRef}
-        className={`flex flex-col lg:flex-row w-full min-w-0 ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[70vh]'}`}
-        style={isMobile ? { width: '100%', maxWidth: '100%', overflowX: 'hidden', background: 'white' } : { background: 'white' }}
+        className={`flex flex-col w-full ${isMobile ? 'max-h-[85vh] overflow-y-auto' : 'max-h-[70vh]'}`}
+        style={{ background: 'white' }}
       >
-        {/* For both mobile and desktop, show the empty details panel */}
-        <div className="lg:w-3/5 overflow-hidden relative min-w-0 flex items-center justify-center">
+        {/* Header Section */}
+        <div className="px-6 pt-6 pb-4">
+          <ArtistHeaderInfo
+            name={selectedArtist.name}
+            specialty={selectedArtist.specialty}
+            city={selectedArtist.city}
+            country={selectedArtist.country}
+          />
+        </div>
+        
+        {/* Artworks Grid Section */}
+        <div className="px-6 pb-4 flex-grow">
           <ArtistImagePanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
@@ -99,13 +112,15 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           />
         </div>
         
-        <div className="lg:w-2/5 p-3 lg:p-4 border-t lg:border-t-0 lg:border-l border-gray-200 overflow-y-auto overflow-x-hidden min-w-0 bg-white">
-          <ArtistDetailsPanel
-            artist={selectedArtist}
-            onFavoriteToggle={onFavoriteToggle}
+        {/* Bottom Action Buttons */}
+        <div className="px-6 pb-6">
+          <ArtistActions
+            domainName={artistDomain}
+            artistId={selectedArtist.id}
             isFavorite={isFavorite}
-            onSelect={handleSelect}
-            isModalView={true}
+            onFavoriteToggle={onFavoriteToggle}
+            handleDomainClick={handleSelect}
+            useSubPath={false}
           />
         </div>
       </div>

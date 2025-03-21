@@ -53,17 +53,6 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     borderColor: 'transparent'
   };
 
-  // Generate the domain display text based on screen size
-  const getDomainText = () => {
-    if (isMobile) {
-      // On mobile, we'll show just the domain name without "Visit"
-      return "Artist Profile";
-    } else {
-      // On desktop, we'll always show "Artist Profile"
-      return "Artist Profile";
-    }
-  };
-
   const handleVisitClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -80,20 +69,17 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   };
 
   return (
-    <div className={`flex ${isMobile ? 'flex-col' : 'justify-between'} w-full gap-2`}>
+    <div className="flex gap-3 w-full">
       {onFavoriteToggle && (
         <Button
           variant="default"
-          className={`${
-            isFavorite ? 'bg-zap-yellow text-black' : ''
-          } ${isMobile ? 'w-full' : ''}`}
+          className={`${isFavorite ? 'bg-zap-yellow text-black' : ''} flex-shrink-0 w-16 h-16`}
           style={favoriteButtonStyles}
           onClick={handleFavoriteClick}
           onMouseOver={(e) => {
             if (buttonHoverColor && !isFavorite) {
               e.currentTarget.style.backgroundColor = buttonHoverColor;
             } else if (!isFavorite) {
-              // If no hover color specified but not favorite, use slightly darker yellow
               e.currentTarget.style.backgroundColor = '#e6c00e';
             }
           }}
@@ -101,36 +87,27 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
             if (buttonColor && !isFavorite) {
               e.currentTarget.style.backgroundColor = buttonColor;
             } else if (!isFavorite) {
-              // Reset to zap yellow if not favorite
               e.currentTarget.style.backgroundColor = zapYellow;
             }
           }}
         >
-          <Zap size={18} />
-          <span className="ml-1">{isFavorite ? 'Favorited' : 'Favorite'}</span>
+          <Zap size={24} />
         </Button>
       )}
       
       <Button
         variant="default"
-        className="w-full"
+        className="flex-1"
         style={visitButtonStyles}
         onClick={handleVisitClick}
         onMouseOver={(e) => {
-          e.currentTarget.style.backgroundColor = '#0095c0'; // Darker shade of zap blue for hover
+          e.currentTarget.style.backgroundColor = '#0095c0';
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.backgroundColor = zapBlue; // Reset to zap blue
+          e.currentTarget.style.backgroundColor = zapBlue;
         }}
       >
-        {isMobile ? (
-          <>
-            <ExternalLink size={16} className="mr-1" />
-            <span className="text-sm">Artist Profile</span>
-          </>
-        ) : (
-          <>{getDomainText()}</>
-        )}
+        {isMobile ? "Artist Profile" : "Artist Profile"}
       </Button>
     </div>
   );
