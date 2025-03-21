@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistHeaderInfo from "./ArtistHeaderInfo";
@@ -126,7 +127,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     );
   }
 
-  // Desktop view redesigned to match screenshot 2
+  // Desktop view based on screenshot 2
   return (
     <div className="relative overflow-hidden bg-white">
       <div 
