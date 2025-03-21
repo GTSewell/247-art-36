@@ -115,7 +115,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         {/* Bottom Action Buttons - with increased space above */}
         <div className="px-6 pb-6 pt-4 mt-auto">
           <ArtistActions
-            domainName={artistDomain}
+            domainName={selectedArtist.name}
             artistId={selectedArtist.id}
             isFavorite={isFavorite}
             onFavoriteToggle={onFavoriteToggle}
