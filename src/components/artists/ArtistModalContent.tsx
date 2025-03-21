@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";

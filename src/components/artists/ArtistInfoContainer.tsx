@@ -46,7 +46,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
     }
   };
 
-  // If in desktop modal view, only show artworks
+  // If in desktop modal view, only show empty space instead of artworks
   if (isModalView && !isMobile) {
     return (
       <ScrollArea 
@@ -58,15 +58,8 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
           maxWidth: '100%'
         }}
       >
-        {artist && (
-          <ArtistArtworksView
-            artist={artist}
-            isGeneratingArtworks={false}
-            setIsGeneratingArtworks={() => {}}
-            artworkErrors={{}}
-            handleArtworkImageError={() => {}}
-          />
-        )}
+        {/* Empty space for desktop modal view */}
+        <div className="h-full w-full"></div>
       </ScrollArea>
     );
   }
