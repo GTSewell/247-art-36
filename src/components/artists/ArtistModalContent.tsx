@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
@@ -88,6 +89,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         className={`flex flex-col lg:flex-row w-full min-w-0 ${isMobile ? 'max-h-[85vh] overflow-y-auto px-4 max-w-full' : 'max-h-[70vh]'}`}
         style={isMobile ? { width: '100%', maxWidth: '100%', overflowX: 'hidden', background: 'white' } : { background: 'white' }}
       >
+        {/* For both mobile and desktop, show the empty details panel */}
         <div className="lg:w-3/5 overflow-hidden relative min-w-0 flex items-center justify-center">
           <ArtistImagePanel
             artist={selectedArtist}

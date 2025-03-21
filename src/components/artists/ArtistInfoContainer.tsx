@@ -46,8 +46,8 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
     }
   };
 
-  // If in desktop modal view, only show empty space instead of artworks
-  if (isModalView && !isMobile) {
+  // If in modal view (both mobile and desktop), show empty space
+  if (isModalView) {
     return (
       <ScrollArea 
         className={`flex-grow overflow-y-auto pr-3 mb-4 w-full min-w-0 ${modalTextClass}`}
@@ -58,13 +58,13 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
           maxWidth: '100%'
         }}
       >
-        {/* Empty space for desktop modal view */}
+        {/* Empty space for both mobile and desktop modal view */}
         <div className="h-full w-full"></div>
       </ScrollArea>
     );
   }
 
-  // For mobile or non-modal views, show the original content
+  // For non-modal views, show the original content
   return (
     <ScrollArea 
       className={`flex-grow overflow-y-auto pr-3 mb-4 w-full min-w-0 ${modalTextClass}`}

@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
 import ArtistActions from './ArtistActions';
 import ArtistReturnButton from './ArtistReturnButton';
-import ArtistDomainLink from './ArtistDomainLink';
 import ArtistInfoContainer from './ArtistInfoContainer';
 import { ArtistArtworksView } from './ArtistArtworksView';
 import { logger } from '@/utils/logger';
@@ -80,9 +79,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
   // Create a formatted domain name for display - remove special characters too
   const artistDomain = artist.name ? artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
 
-  // Show artworks in modal view on mobile, otherwise show full artist info
-  const showArtworksOnly = isMobile && isModalView;
-
   // For modal view, use smaller text and tighter spacing
   const modalTextClass = isModalView && !isMobile ? "text-sm" : "";
 
@@ -103,10 +99,9 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
         />
       </div>
 
-      {/* For mobile, show a mini domain link at the top for better visibility */}
-      {isMobile && <ArtistDomainLink artistDomain={artistDomain} handleDomainClick={handleDomainClick} />}
+      {/* Remove duplicated domain link for mobile */}
 
-      {/* Show either artworks grid (mobile modal) or artist info (desktop or profile page) */}
+      {/* Show empty container in modal view */}
       <ArtistInfoContainer 
         bio={artist.bio} 
         techniques={techniques} 
