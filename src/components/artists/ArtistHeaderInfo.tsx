@@ -1,32 +1,31 @@
 
 import React from 'react';
-import { MapPin, Palette } from 'lucide-react';
 
 interface ArtistHeaderInfoProps {
   name: string;
   specialty: string;
-  city?: string;
-  country?: string;
+  city: string;
+  country: string;
 }
 
-const ArtistHeaderInfo: React.FC<ArtistHeaderInfoProps> = ({ 
-  name, 
-  specialty, 
-  city, 
-  country 
+const ArtistHeaderInfo: React.FC<ArtistHeaderInfoProps> = ({
+  name,
+  specialty,
+  city,
+  country
 }) => {
+  // Create a formatted domain name based on artist name
+  const artistDomain = name ? `${name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '')}.247.art` : '';
+  
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-1">{name}</h2>
-      <div className="flex items-center gap-2 text-gray-600 mb-1">
-        <Palette size={18} />
-        <span>{specialty}</span>
-      </div>
-      {(city || country) && (
-        <div className="flex items-center gap-2 text-gray-600">
-          <MapPin size={18} />
-          <span>{[city, country].filter(Boolean).join(", ")}</span>
-        </div>
+    <div className="mb-4">
+      <h2 className="text-2xl font-bold">{name}</h2>
+      <p className="text-muted-foreground">{specialty}</p>
+      <p className="text-muted-foreground text-sm">{city}, {country}</p>
+      {artistDomain && (
+        <p className="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer">
+          {artistDomain}
+        </p>
       )}
     </div>
   );

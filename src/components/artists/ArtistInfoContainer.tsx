@@ -5,6 +5,7 @@ import ArtistBio from './ArtistBio';
 import ArtistTechniquesStyles from './ArtistTechniquesStyles';
 import ArtistSocialLinks from './ArtistSocialLinks';
 import { Artist } from '@/data/types/artist';
+import { ArtistArtworksView } from './ArtistArtworksView';
 
 interface ArtistInfoContainerProps {
   bio: string;
@@ -34,7 +35,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
   artist,
   colorTheme 
 }) => {
-  // Calculate appropriate height and determine if we should use accordion
+  // Calculate appropriate height
   const getScrollHeight = () => {
     if (isMobile) {
       return 'calc(100vh - 350px)';
@@ -45,9 +46,32 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
     }
   };
 
-  // Use accordion in desktop modal view, but not on mobile
-  const useAccordionForBio = isModalView && !isMobile;
+  // If in desktop modal view, only show artworks
+  if (isModalView && !isMobile) {
+    return (
+      <ScrollArea 
+        className={`flex-grow overflow-y-auto pr-3 mb-4 w-full min-w-0 ${modalTextClass}`}
+        style={{ 
+          height: getScrollHeight(),
+          minHeight: isMobile ? '300px' : isModalView ? '280px' : 'auto',
+          maxHeight: isMobile ? '400px' : isModalView ? '350px' : undefined,
+          maxWidth: '100%'
+        }}
+      >
+        {artist && (
+          <ArtistArtworksView
+            artist={artist}
+            isGeneratingArtworks={false}
+            setIsGeneratingArtworks={() => {}}
+            artworkErrors={{}}
+            handleArtworkImageError={() => {}}
+          />
+        )}
+      </ScrollArea>
+    );
+  }
 
+  // For mobile or non-modal views, show the original content
   return (
     <ScrollArea 
       className={`flex-grow overflow-y-auto pr-3 mb-4 w-full min-w-0 ${modalTextClass}`}
@@ -62,7 +86,7 @@ const ArtistInfoContainer: React.FC<ArtistInfoContainerProps> = ({
         <ArtistBio 
           bio={bio} 
           isMobile={isMobile}
-          useAccordion={useAccordionForBio}
+          useAccordion={isModalView && !isMobile}
         />
 
         <ArtistTechniquesStyles 

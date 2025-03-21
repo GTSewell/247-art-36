@@ -63,7 +63,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     logger.info(`Navigating to artist profile: ${formattedName}`);
 
     // Use the navigate function to go to the artist profile page
-    // We're using the full path to ensure consistency
     navigate(`/artists/${formattedName}`);
   };
 
@@ -108,32 +107,22 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       {isMobile && <ArtistDomainLink artistDomain={artistDomain} handleDomainClick={handleDomainClick} />}
 
       {/* Show either artworks grid (mobile modal) or artist info (desktop or profile page) */}
-      {showArtworksOnly ? (
-        <ArtistArtworksView 
-          artist={artist} 
-          isGeneratingArtworks={isGeneratingArtworks} 
-          setIsGeneratingArtworks={setIsGeneratingArtworks}
-          artworkErrors={artworkErrors}
-          handleArtworkImageError={handleArtworkImageError}
-        />
-      ) : (
-        <ArtistInfoContainer 
-          bio={artist.bio} 
-          techniques={techniques} 
-          styles={styles} 
-          socialPlatforms={socialPlatforms}
-          isMobile={isMobile}
-          isModalView={isModalView}
-          modalTextClass={modalTextClass}
-          artist={artist}
-          colorTheme={{
-            badgeBg: colorTheme?.badgeBg,
-            button: colorTheme?.button,
-            buttonTextColor: colorTheme?.buttonText,
-            buttonHoverColor: colorTheme?.buttonHover
-          }}
-        />
-      )}
+      <ArtistInfoContainer 
+        bio={artist.bio} 
+        techniques={techniques} 
+        styles={styles} 
+        socialPlatforms={socialPlatforms}
+        isMobile={isMobile}
+        isModalView={isModalView}
+        modalTextClass={modalTextClass}
+        artist={artist}
+        colorTheme={{
+          badgeBg: colorTheme?.badgeBg,
+          button: colorTheme?.button,
+          buttonTextColor: colorTheme?.buttonText,
+          buttonHoverColor: colorTheme?.buttonHover
+        }}
+      />
 
       {/* Action buttons at the bottom */}
       <div className={`flex-none ${isMobile ? 'mt-2' : 'mt-auto'} pt-2 min-w-0`}>
