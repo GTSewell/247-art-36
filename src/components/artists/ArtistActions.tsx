@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Zap, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -118,7 +119,10 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
           e.currentTarget.style.backgroundColor = zapBlue;
         }}
       >
-        {isMobile ? "Artist Profile" : "Artist Profile"}
+        <div className="flex items-center justify-center gap-1">
+          <span>Artist Profile</span>
+          <ExternalLink size={16} />
+        </div>
       </Button>
     </div>
   );

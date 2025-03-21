@@ -7,6 +7,7 @@ import ArtistCarouselNavigation from "./ArtistCarouselNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { logger } from "@/utils/logger";
 import ArtistActions from "./ArtistActions";
+import { useNavigate } from "react-router-dom";
 
 interface ArtistModalContentProps {
   artists: Artist[];
@@ -28,6 +29,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   onSelect
 }) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const selectedArtist = artists[selectedArtistIndex];
   const contentRef = useRef<HTMLDivElement>(null);
   
@@ -38,6 +40,19 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   
   const isFavorite = favoriteArtists.has(selectedArtist.id);
 
+  // Direct navigation to artist profile page
+  const handleNavigateToArtistProfile = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Format the artist name for the URL (remove spaces and special characters)
+    const formattedName = selectedArtist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
+    logger.info(`Navigating to artist profile from modal: ${formattedName}`);
+    
+    // Navigate to the artist's profile page
+    navigate(`/artists/${formattedName}`);
+  };
+  
   // Create a handler that adapts onSelect to the expected event signature
   const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -118,7 +133,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
               artistId={selectedArtist.id}
               isFavorite={isFavorite}
               onFavoriteToggle={onFavoriteToggle}
-              handleDomainClick={handleSelect}
+              handleDomainClick={handleNavigateToArtistProfile}
               useSubPath={false}
             />
           </div>
@@ -163,7 +178,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
               artistId={selectedArtist.id}
               isFavorite={isFavorite}
               onFavoriteToggle={onFavoriteToggle}
-              handleDomainClick={handleSelect}
+              handleDomainClick={handleNavigateToArtistProfile}
               useSubPath={false}
             />
           </div>
