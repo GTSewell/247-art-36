@@ -73,7 +73,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
       {onFavoriteToggle && (
         <Button
           variant="default"
-          className={`${isFavorite ? 'bg-zap-yellow text-black' : ''} flex-shrink-0 w-16 h-16`}
+          className="flex-shrink-0 h-10"
           style={favoriteButtonStyles}
           onClick={handleFavoriteClick}
           onMouseOver={(e) => {
@@ -97,7 +97,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
       
       <Button
         variant="default"
-        className="flex-1"
+        className="flex-1 h-10"
         style={visitButtonStyles}
         onClick={handleVisitClick}
         onMouseOver={(e) => {

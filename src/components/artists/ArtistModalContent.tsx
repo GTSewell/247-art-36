@@ -93,7 +93,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         style={{ background: 'white' }}
       >
         {/* Header Section */}
-        <div className="px-6 pt-6 pb-4">
+        <div className="px-6 pt-6 pb-2">
           <ArtistHeaderInfo
             name={selectedArtist.name}
             specialty={selectedArtist.specialty}
@@ -103,7 +103,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
         </div>
         
         {/* Artworks Grid Section */}
-        <div className="px-6 pb-4 flex-grow">
+        <div className="px-6 flex-grow">
           <ArtistImagePanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
@@ -112,8 +112,8 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           />
         </div>
         
-        {/* Bottom Action Buttons */}
-        <div className="px-6 pb-6">
+        {/* Bottom Action Buttons - with increased space above */}
+        <div className="px-6 pb-6 pt-4 mt-auto">
           <ArtistActions
             domainName={artistDomain}
             artistId={selectedArtist.id}
