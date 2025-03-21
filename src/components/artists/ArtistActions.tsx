@@ -1,16 +1,16 @@
-
 import React from 'react';
 import { Zap, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { logger } from '@/utils/logger';
+import { useNavigate } from 'react-router-dom';
 
 interface ArtistActionsProps {
   domainName: string;
   artistId: number;
   isFavorite?: boolean;
   onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
-  handleDomainClick: (e: React.MouseEvent) => void;
+  handleDomainClick?: (e: React.MouseEvent) => void;
   buttonColor?: string;
   buttonTextColor?: string;
   buttonHoverColor?: string;
@@ -31,6 +31,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   useSubPath = false
 }) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   
   // Remove spaces from the display version of the domain only
   const displayDomain = domainName.replace(/\s+/g, '');
@@ -57,7 +58,16 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
     e.preventDefault();
     e.stopPropagation();
     logger.info(`Visit artist button clicked: ${displayDomain}`);
-    handleDomainClick(e);
+    
+    if (handleDomainClick) {
+      // Use the provided click handler if available
+      handleDomainClick(e);
+    } else {
+      // Otherwise, navigate programmatically to the artist profile page
+      const formattedName = domainName.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
+      logger.info(`Navigating to artist profile: ${formattedName}`);
+      navigate(`/artists/${formattedName}`);
+    }
   };
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
