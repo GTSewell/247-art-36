@@ -33,8 +33,8 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   
-  // Remove spaces from the display version of the domain only
-  const displayDomain = domainName.replace(/\s+/g, '');
+  // Remove spaces and special characters from the domain name for URLs
+  const formattedDomain = domainName.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
   
   // Define zap yellow for favorite button
   const zapYellow = '#f7cf1e';
@@ -43,7 +43,8 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   const favoriteButtonStyles = {
     backgroundColor: isFavorite ? zapYellow : buttonColor || zapYellow,
     color: isFavorite ? '#000000' : buttonTextColor || '#000000',
-    borderColor: isFavorite ? '#000000' : buttonBorderColor || 'transparent'
+    borderColor: isFavorite ? '#000000' : buttonBorderColor || 'transparent',
+    height: '40px'
   };
 
   // Set zap blue for the artist profile button (visit button) - always blue
@@ -51,22 +52,22 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   const visitButtonStyles = {
     backgroundColor: zapBlue,
     color: 'white',
-    borderColor: 'transparent'
+    borderColor: 'transparent',
+    height: '40px'
   };
 
   const handleVisitClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    logger.info(`Visit artist button clicked: ${displayDomain}`);
+    logger.info(`Visit artist button clicked: ${formattedDomain}`);
     
     if (handleDomainClick) {
       // Use the provided click handler if available
       handleDomainClick(e);
     } else {
       // Otherwise, navigate programmatically to the artist profile page
-      const formattedName = domainName.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
-      logger.info(`Navigating to artist profile: ${formattedName}`);
-      navigate(`/artists/${formattedName}`);
+      logger.info(`Navigating to artist profile: ${formattedDomain}`);
+      navigate(`/artists/${formattedDomain}`);
     }
   };
 
@@ -83,7 +84,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
       {onFavoriteToggle && (
         <Button
           variant="default"
-          className="flex-shrink-0 h-10"
+          className="flex-shrink-0"
           style={favoriteButtonStyles}
           onClick={handleFavoriteClick}
           onMouseOver={(e) => {
@@ -107,7 +108,7 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
       
       <Button
         variant="default"
-        className="flex-1 h-10"
+        className="flex-1"
         style={visitButtonStyles}
         onClick={handleVisitClick}
         onMouseOver={(e) => {

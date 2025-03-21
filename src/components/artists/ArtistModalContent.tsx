@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistHeaderInfo from "./ArtistHeaderInfo";
@@ -82,28 +81,61 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
     };
   }, [selectedArtistIndex, artists.length]);
 
-  // Format the domain for the artist
-  const artistDomain = selectedArtist.name ? selectedArtist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
+  if (isMobile) {
+    // Mobile view remains unchanged
+    return (
+      <div className="relative overflow-hidden bg-white">
+        <div 
+          ref={contentRef}
+          className="flex flex-col w-full max-h-[85vh] overflow-y-auto"
+          style={{ background: 'white' }}
+        >
+          {/* Header Section */}
+          <div className="px-6 pt-6 pb-2">
+            <ArtistHeaderInfo
+              name={selectedArtist.name}
+              specialty={selectedArtist.specialty}
+              city={selectedArtist.city}
+              country={selectedArtist.country}
+            />
+          </div>
+          
+          {/* Artworks Grid Section */}
+          <div className="px-6 flex-grow">
+            <ArtistImagePanel
+              artist={selectedArtist}
+              onFavoriteToggle={onFavoriteToggle}
+              isFavorite={isFavorite}
+              refreshArtists={refreshArtists}
+            />
+          </div>
+          
+          {/* Bottom Action Buttons - with increased space above */}
+          <div className="px-6 pb-6 pt-4 mt-auto">
+            <ArtistActions
+              domainName={selectedArtist.name}
+              artistId={selectedArtist.id}
+              isFavorite={isFavorite}
+              onFavoriteToggle={onFavoriteToggle}
+              handleDomainClick={handleSelect}
+              useSubPath={false}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  // Desktop view redesigned to match screenshot 2
   return (
     <div className="relative overflow-hidden bg-white">
       <div 
         ref={contentRef}
-        className={`flex flex-col w-full ${isMobile ? 'max-h-[85vh] overflow-y-auto' : 'max-h-[70vh]'}`}
+        className="flex flex-row max-h-[70vh]"
         style={{ background: 'white' }}
       >
-        {/* Header Section */}
-        <div className="px-6 pt-6 pb-2">
-          <ArtistHeaderInfo
-            name={selectedArtist.name}
-            specialty={selectedArtist.specialty}
-            city={selectedArtist.city}
-            country={selectedArtist.country}
-          />
-        </div>
-        
-        {/* Artworks Grid Section */}
-        <div className="px-6 flex-grow">
+        {/* Left side: Artwork grid */}
+        <div className="w-3/5 p-6">
           <ArtistImagePanel
             artist={selectedArtist}
             onFavoriteToggle={onFavoriteToggle}
@@ -112,27 +144,37 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           />
         </div>
         
-        {/* Bottom Action Buttons - with increased space above */}
-        <div className="px-6 pb-6 pt-4 mt-auto">
-          <ArtistActions
-            domainName={selectedArtist.name}
-            artistId={selectedArtist.id}
-            isFavorite={isFavorite}
-            onFavoriteToggle={onFavoriteToggle}
-            handleDomainClick={handleSelect}
-            useSubPath={false}
-          />
+        {/* Right side: Artist info and actions */}
+        <div className="w-2/5 p-6 flex flex-col">
+          <div className="mb-auto">
+            <ArtistHeaderInfo
+              name={selectedArtist.name}
+              specialty={selectedArtist.specialty}
+              city={selectedArtist.city}
+              country={selectedArtist.country}
+            />
+          </div>
+          
+          {/* Action buttons at bottom of right panel */}
+          <div className="mt-auto pt-4">
+            <ArtistActions
+              domainName={selectedArtist.name}
+              artistId={selectedArtist.id}
+              isFavorite={isFavorite}
+              onFavoriteToggle={onFavoriteToggle}
+              handleDomainClick={handleSelect}
+              useSubPath={false}
+            />
+          </div>
         </div>
       </div>
       
-      {/* Desktop navigation arrows - only shown in desktop mode */}
-      {!isMobile && (
-        <ArtistCarouselNavigation 
-          isMobile={isMobile} 
-          onPrevious={handlePrevious} 
-          onNext={handleNext} 
-        />
-      )}
+      {/* Desktop navigation arrows */}
+      <ArtistCarouselNavigation 
+        isMobile={isMobile} 
+        onPrevious={handlePrevious} 
+        onNext={handleNext} 
+      />
     </div>
   );
 };
