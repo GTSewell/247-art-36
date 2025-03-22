@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
@@ -6,7 +7,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { Home, Users, ShoppingBag } from 'lucide-react';
 import { UserMenu } from './UserMenu';
-import { MobileUserMenu } from './MobileUserMenu';
+import MobileUserMenu from './MobileUserMenu';
 import AuthModal from '@/components/AuthModal';
 import { useCart } from '@/contexts/CartContext';
 import { Badge } from "@/components/ui/badge";
