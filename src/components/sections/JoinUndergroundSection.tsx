@@ -22,7 +22,7 @@ const JoinUndergroundSection = () => {
       >
         <div className="space-y-8 mx-0">
           <h1 className="text-4xl font-bold text-white">
-            This is not just a gallery, a print shop, or a retail space ... THIS IS A MOVEMENT!
+            IT'S TIME TO MAKE A CHANGE
           </h1>
 
           {/* FAQ Accordion */}
