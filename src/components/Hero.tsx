@@ -111,6 +111,16 @@ const Hero = () => {
         duration: 0.5
       }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold text-center px-6">
           <p className="mb-6">It's time for a revolution in the art world!</p>
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="px-8 py-4 bg-zap-blue rounded-lg mx-4 md:mx-0 mb-6"
+          >
+            <p className="text-xl md:text-2xl font-extrabold text-white text-center">
+              100 DAYS | 100 ARTISTS
+            </p>
+          </motion.div>
           <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
         </motion.div>
 
