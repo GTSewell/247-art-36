@@ -86,19 +86,19 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
       {!isLoading && user && (
         <>
           <Button 
-            className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-red hover:bg-zap-red/90"
-            onClick={() => navigate("/dashboard/collector")}
-          >
-            <Settings className="h-4 w-4 mr-2" />
-            Collector Dashboard
-          </Button>
-          
-          <Button 
             className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-blue hover:bg-zap-blue/90"
             onClick={() => navigate("/dashboard/artist")}
           >
             <Settings className="h-4 w-4 mr-2" />
             Artist Dashboard
+          </Button>
+          
+          <Button 
+            className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-red hover:bg-zap-red/90"
+            onClick={() => navigate("/dashboard/collector")}
+          >
+            <Settings className="h-4 w-4 mr-2" />
+            Collector Dashboard
           </Button>
         </>
       )}
