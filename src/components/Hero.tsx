@@ -109,7 +109,7 @@ const Hero = () => {
       }} transition={{
         delay: 0.3,
         duration: 0.5
-      }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold text-center">
+      }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold text-center px-6">
           <p className="mb-6">It's time for a revolution in the art world!</p>
           <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
         </motion.div>
