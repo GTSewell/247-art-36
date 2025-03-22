@@ -96,7 +96,7 @@ const Hero = () => {
         duration: 0.5
       }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg mx-4 md:mx-0">
           <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-            The NEW Home for the NEXT GEN Artist and NEW GEN Collector
+            Home for the NEXT GEN Artist & NEW GEN Collector
           </p>
         </motion.div>
         
