@@ -8,7 +8,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import VideoPlayer from "@/components/VideoPlayer";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FaqItem {
   title: string;
@@ -22,6 +22,8 @@ interface FaqAccordionProps {
 const FaqAccordion = ({ items }: FaqAccordionProps) => {
   const [openItem, setOpenItem] = useState<string | undefined>(undefined);
   const accordionRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const isMobile = useIsMobile();
   
   // Use Intersection Observer to detect when accordion is visible
   useEffect(() => {
@@ -49,6 +51,25 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
     };
   }, []);
   
+  // Handle scrolling to the opened accordion item
+  useEffect(() => {
+    if (!openItem || !isMobile) return;
+    
+    const itemRef = itemRefs.current[openItem];
+    if (itemRef) {
+      // Use a small timeout to ensure DOM has updated
+      setTimeout(() => {
+        const yOffset = -80; // Offset to account for headers/navigation
+        const y = itemRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        
+        window.scrollTo({
+          top: y,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  }, [openItem, isMobile]);
+  
   return (
     <div className="py-8" ref={accordionRef}>
       <Accordion 
@@ -64,6 +85,7 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
+            ref={el => itemRefs.current[`item-${index}`] = el}
           >
             <AccordionItem value={`item-${index}`} className="border-white/20 rounded-lg overflow-hidden">
               <AccordionTrigger 
