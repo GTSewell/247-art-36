@@ -70,7 +70,7 @@ const GeneralStore = () => {
           
           <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
             <AlertDescription className="text-lg font-bold">
-              This is a mock-up Storefront page, and purely for demo display at present. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their own artworks available on your personal artist profile.
+              This is a mock-up Storefront page, purely for demonstration purposes. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their artworks & prints available on your very own ATLAS 'Link in Bio' profile.
             </AlertDescription>
           </Alert>
           
