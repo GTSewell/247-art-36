@@ -37,6 +37,4 @@ export const faqItems = [
 ];
 
 // Section text content
-export const introText = "Right now, this page is locked to the public—only artists with this invite can see it.\n\nWe're building a new way to exhibit, sell, and grow, and we want the right people on board before we open this up to the general public. We think it'd be even better if artists curate the exhibition, and not just us.";
-
 export const outroText = "Right now, this page is locked to the public—only artists with an invite can see it. You have been pre-approved for curation. \n\nThis is a new way to exhibit, sell, and grow, and we want the right people on board before we open this up to the general public. \n\nIf you have a friend you think that might also like to be a part of this, we trust your curation. Just let us know and we'll send you a fresh password invite for them too.";
