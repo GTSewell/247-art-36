@@ -89,12 +89,12 @@ const Auth = () => {
           </Button>
           <img alt="ZAP!" src="/lovable-uploads/a6580086-e06f-4c81-a4f2-f866f6726959.png" className="h-12 mx-auto mb-4 rounded-none" />
           <h2 className="text-2xl font-bold">Welcome!</h2>
-          <p className="text-gray-600">Sign in or create an account</p>
+          <p className="text-gray-600">Log in or create an account</p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
+            <TabsTrigger value="signin">Log In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           
