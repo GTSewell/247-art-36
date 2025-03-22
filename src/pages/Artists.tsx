@@ -9,6 +9,7 @@ import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
@@ -101,6 +102,12 @@ const Artists = () => {
           <div className="flex justify-end mb-4">
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
+          
+          <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
+            <AlertDescription>
+              This is a mock-up artists page to show you how your 247 artist profile will look. Please play around with it, click on things. Let us know your thoughts. When artists sign up, we will add your profile into the page. Enjoy!
+            </AlertDescription>
+          </Alert>
           
           <ArtistsHeader
             artistSearch={artistSearch}
