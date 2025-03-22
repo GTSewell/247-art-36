@@ -111,7 +111,7 @@ const Hero = () => {
       }} transition={{
         delay: 0.3,
         duration: 0.5
-      }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-md mx-auto font-bold text-center px-6 w-full">
+      }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-md mx-auto font-bold text-center px-4 md:px-0 w-full">
           <p className="mb-6 font-extrabold uppercase">IT'S TIME FOR A REVOLUTION IN THE ART WORLD!</p>
           
           <motion.div 
@@ -121,9 +121,9 @@ const Hero = () => {
             className="w-full px-4 md:px-0 max-w-md mb-6"
           >
             <div className="bg-zap-blue py-4 px-4 md:px-8 rounded-lg w-full">
-              <p className="text-xl md:text-2xl font-extrabold text-white text-center flex flex-col">
-                <span className="my-1">100 ARTISTS</span>
-                <span className="my-1">100 DAYS</span>
+              <p className="text-xl md:text-2xl font-extrabold text-white text-center">
+                <span>100 ARTISTS</span>
+                <span className="block mt-1">100 DAYS</span>
               </p>
             </div>
           </motion.div>
