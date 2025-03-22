@@ -110,7 +110,7 @@ const Hero = () => {
         delay: 0.3,
         duration: 0.5
       }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold text-center px-6">
-          <p className="mb-6">It's time for a revolution in the art world!</p>
+          <p className="mb-6 font-extrabold">IT'S TIME FOR A REVOLUTION IN THE ART WORLD!</p>
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
