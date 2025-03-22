@@ -16,7 +16,7 @@ const JoinUndergroundSection = () => {
       duration: 0.5
     }} className="container mx-auto max-w-4xl">
         <div className="space-y-8 mx-0">
-          <Link to="/pricing/details" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
+          <Link to="/details" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
             <img 
               src="/lovable-uploads/d18c3542-cbb6-47d7-a6cd-b1d9d0f5fffe.png" 
               alt="TLDR; SIGN ME UP!" 
