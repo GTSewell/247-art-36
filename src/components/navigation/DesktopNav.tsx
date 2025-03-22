@@ -34,7 +34,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         About Us
       </NavLink>
       <NavLink to="/details" isActive={isActive("/details")}>
-        Details
+        Sign Up
       </NavLink>
       
       {/* Cart Icon with proper contrast based on current page */}
