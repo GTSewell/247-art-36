@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -82,6 +83,21 @@ const Hero = () => {
         duration: 0.5
       }} className="inline-block">
           <img src="/lovable-uploads/59a6f684-31db-4ac2-a157-a94968384f00.png" alt="ZAP!" className="h-32 md:h-48 mx-auto animate-float" />
+        </motion.div>
+        
+        <motion.div initial={{
+        y: 20,
+        opacity: 0
+      }} animate={{
+        y: 0,
+        opacity: 1
+      }} transition={{
+        delay: 0.2,
+        duration: 0.5
+      }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg">
+          <p className="text-xl md:text-2xl font-extrabold text-white text-center">
+            A NEW HOME for the NEXT GEN ARTIST and NEW GEN Collector
+          </p>
         </motion.div>
         
         <motion.div initial={{
