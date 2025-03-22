@@ -21,12 +21,12 @@ const AuthModal = ({ open, onOpenChange }: AuthModalProps) => {
         <div className="text-center">
           <img alt="247/ART" src="/lovable-uploads/d8aafbad-7e01-4cec-9fba-67f66a7e7952.png" className="h-8 mx-auto mb-4" />
           <h2 className="text-2xl font-bold">Welcome!</h2>
-          <p className="text-gray-600">Log in or create an account</p>
+          <p className="text-gray-600">Sign in or create an account</p>
         </div>
 
         <Tabs defaultValue="signin" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Log In</TabsTrigger>
+            <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           

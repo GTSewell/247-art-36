@@ -1,3 +1,4 @@
+
 import React from "react";
 import NavLink from "./NavLink";
 import { UserMenu } from "./UserMenu";
@@ -33,7 +34,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         About Us
       </NavLink>
       <NavLink to="/details" isActive={isActive("/details")}>
-        Log In
+        Sign Up
       </NavLink>
       
       {/* Cart Icon with proper contrast based on current page */}

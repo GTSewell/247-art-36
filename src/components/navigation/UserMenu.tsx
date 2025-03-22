@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -109,7 +110,7 @@ export function UserMenu({ isCartPage = false }: UserMenuProps) {
               setIsUserMenuOpen(false);
               navigate("/auth");
             }}>
-              Log In
+              Sign in
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLockSite} className="text-red-500">

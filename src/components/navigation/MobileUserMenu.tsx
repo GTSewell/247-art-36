@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { LogOut, MessageSquare, Settings, ShoppingCart } from "lucide-react";
@@ -122,7 +123,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
             onClick={() => navigate("/auth")}
           >
             <LogOut className="h-4 w-4 mr-2" />
-            Log In
+            Sign In
           </Button>
         )
       )}
