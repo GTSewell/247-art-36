@@ -16,18 +16,16 @@ const CallToAction = () => {
         transition={{ duration: 0.5 }}
         className="container mx-auto text-center relative z-10"
       >
-        {/* Powered By Section */}
-        <div className="mt-16 relative z-10">
-          <p className="text-black mb-6 text-lg font-extrabold">Powered by:</p>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-black font-extrabold text-3xl"
-            >
-              ARTISTS
-            </motion.div>
-          </div>
+        {/* Built By Artists For Artists Section */}
+        <div className="mt-16 relative z-10 flex justify-center">
+          <motion.img
+            src="/lovable-uploads/80693eda-1198-40da-8f3e-795e24bb4897.png"
+            alt="Built By Artists For Artists"
+            className="h-auto max-w-full md:max-w-xl animate-float"
+            initial={{ scale: 0.9 }}
+            whileInView={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+          />
         </div>
       </motion.div>
     </div>
