@@ -26,6 +26,9 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
         <MobileNavLink to="/artists" isActive={isActive("/artists")}>
           Artists
         </MobileNavLink>
+        <MobileNavLink to="/store" isActive={isActive("/store")}>
+          Store
+        </MobileNavLink>
         <MobileNavLink to="/who-are-you" isActive={isActive("/who-are-you")}>
           About Us
         </MobileNavLink>
@@ -34,9 +37,6 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
         </MobileNavLink>
         <MobileNavLink to="/services" isActive={isActive("/services")}>
           Services
-        </MobileNavLink>
-        <MobileNavLink to="/store" isActive={isActive("/store")}>
-          Store
         </MobileNavLink>
         
         {/* User menu with account functions */}
