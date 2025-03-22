@@ -96,7 +96,7 @@ const Hero = () => {
         duration: 0.5
       }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg mx-4 md:mx-0">
           <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-            A NEW HOME for the NEXT GEN Artist and NEW GEN Collector
+            The NEW Home for the NEXT GEN Artist and NEW GEN Collector
           </p>
         </motion.div>
         
@@ -118,7 +118,7 @@ const Hero = () => {
             className="px-8 py-4 bg-zap-blue rounded-lg mx-4 md:mx-0 mb-6"
           >
             <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-              100 DAYS | 100 ARTISTS
+              100 DAYS      |      100 ARTISTS
             </p>
           </motion.div>
           <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
