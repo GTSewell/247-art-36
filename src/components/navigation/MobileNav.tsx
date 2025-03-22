@@ -38,9 +38,6 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
         <MobileNavLink to="/store" isActive={isActive("/store")}>
           Store
         </MobileNavLink>
-        <MobileNavLink to="/virtual-tour" isActive={isActive("/virtual-tour")}>
-          Virtual Tour
-        </MobileNavLink>
         
         {/* User menu with account functions */}
         <MobileUserMenu user={user} isLoading={isLoading} />

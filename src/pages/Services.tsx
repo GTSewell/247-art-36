@@ -4,6 +4,7 @@ import Navigation from "@/components/navigation/Navigation";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "lucide-react";
+import MatterportViewer from "@/components/MatterportViewer";
 
 const Services = () => {
   return (
@@ -51,6 +52,39 @@ const Services = () => {
                   <h3 className="font-medium mb-2">Merchandise Printing</h3>
                   <p className="text-muted-foreground">Custom printing on apparel, accessories, and promotional items.</p>
                 </div>
+              </div>
+            </section>
+
+            {/* Virtual Tour Section */}
+            <section className="bg-white rounded-lg p-8 shadow-md">
+              <div className="flex items-center mb-6">
+                <ImageIcon className="h-7 w-7 mr-3 text-primary" />
+                <h2 className="text-2xl font-semibold">Virtual Tour</h2>
+              </div>
+              
+              <div className="bg-zap-yellow text-black p-4 rounded-lg mb-6">
+                <p className="font-semibold">
+                  This is an older 3D scan of our gallery space. We will be making BIG changes to take it to the next level in preparation for the new home of 247⚡ART!
+                </p>
+              </div>
+              
+              <div className="aspect-video w-full bg-white rounded-lg overflow-hidden mb-6">
+                <MatterportViewer 
+                  modelId="BNNRoZpfMt6"
+                  height="500px"
+                />
+              </div>
+              
+              <div className="mt-4">
+                <h3 className="font-medium mb-2">Explore Our Space</h3>
+                <p className="text-muted-foreground mb-4">
+                  Take a virtual walkthrough of our innovative art space. Navigate through different rooms
+                  and areas to get a feel for where artists create, collaborate, and showcase their work.
+                </p>
+                <p className="text-muted-foreground">
+                  Use your mouse to look around, click and drag to move, and scroll to zoom in and out.
+                  For the best experience, view in fullscreen mode.
+                </p>
               </div>
             </section>
 

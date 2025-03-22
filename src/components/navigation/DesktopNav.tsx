@@ -39,9 +39,6 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
       <NavLink to="/store" isActive={isActive("/store")}>
         Store
       </NavLink>
-      <NavLink to="/virtual-tour" isActive={isActive("/virtual-tour")}>
-        Virtual Tour
-      </NavLink>
       
       {/* Cart Icon with proper contrast based on current page */}
       <Link to="/cart" className="relative">
