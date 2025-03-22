@@ -87,14 +87,14 @@ export function UserMenu({ isCartPage = false }: UserMenuProps) {
             <DropdownMenuItem onClick={() => {
               setIsUserMenuOpen(false);
               navigate("/dashboard/collector");
-            }} className="flex items-center">
+            }} className="flex items-center bg-zap-red text-white font-bold hover:bg-zap-red/90">
               <Settings className="mr-2 h-4 w-4" />
               Collector Dashboard
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => {
               setIsUserMenuOpen(false);
               navigate("/dashboard/artist");
-            }} className="flex items-center">
+            }} className="flex items-center bg-zap-blue text-white font-bold hover:bg-zap-blue/90">
               <Settings className="mr-2 h-4 w-4" />
               Artist Dashboard
             </DropdownMenuItem>

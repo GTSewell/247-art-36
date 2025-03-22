@@ -124,8 +124,7 @@ const AccountPage = () => {
         {/* Navigation buttons */}
         <div className="space-y-2">
           <Button 
-            variant="outline" 
-            className="w-full justify-start"
+            className="w-full justify-start font-bold text-white bg-zap-red hover:bg-zap-red/90"
             onClick={() => navigate('/dashboard/collector')}
           >
             <Settings className="h-4 w-4 mr-2" />
@@ -133,8 +132,7 @@ const AccountPage = () => {
           </Button>
           
           <Button 
-            variant="outline" 
-            className="w-full justify-start"
+            className="w-full justify-start font-bold text-white bg-zap-blue hover:bg-zap-blue/90"
             onClick={() => navigate('/dashboard/artist')}
           >
             <Settings className="h-4 w-4 mr-2" />

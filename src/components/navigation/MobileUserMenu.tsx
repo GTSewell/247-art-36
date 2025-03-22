@@ -86,8 +86,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
       {!isLoading && user && (
         <>
           <Button 
-            variant="outline" 
-            className="w-full justify-start mt-2 text-left"
+            className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-red hover:bg-zap-red/90"
             onClick={() => navigate("/dashboard/collector")}
           >
             <Settings className="h-4 w-4 mr-2" />
@@ -95,8 +94,7 @@ const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
           </Button>
           
           <Button 
-            variant="outline" 
-            className="w-full justify-start mt-2 text-left"
+            className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-blue hover:bg-zap-blue/90"
             onClick={() => navigate("/dashboard/artist")}
           >
             <Settings className="h-4 w-4 mr-2" />
