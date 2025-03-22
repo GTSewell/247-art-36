@@ -118,7 +118,7 @@ const Hero = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="w-full px-4 md:px-0 max-w-md mb-6"
+            className="w-full px-4 md:px-0 max-w-md mx-auto"
           >
             <div className="bg-zap-blue py-4 px-4 md:px-8 rounded-lg w-full">
               <p className="text-xl md:text-2xl font-extrabold text-white text-center">
