@@ -7,6 +7,16 @@ const videoUrl = "https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/sig
 
 export const faqItems = [
   {
+    title: "The 'STP' Difference",
+    content: (
+      <span key="future">
+        <strong className="font-bold">STP = Stickers | T-Shirt | Print.</strong> This is our unique offering which we produce premium quality in-house an STP Collector pack for each artist. From custom packaging with your artwork on it, to Signed & numbered fine art prints. All packaged and ready to collect. Each STP Collector pack will retail for $124.95 AUD. Making it an affordable entry point for new collectors. The artist has a choice of edition sizes to suit, or you can make it a signed open edition if you like?.
+        
+        <br /> <strong className="font-bold">THE BONUS COMMISSION INCENTIVE.</strong> For every 1x STP Collector pack you sell you will receive ~$50 and in addition to that, we take 1% off your gallery commission. If you sell 10x STP Collector packs on day 1, your gallery commission will go from 25% to 15% for on your next original artwork sale. If you sell 15 more STP Collector packs in the 1st month, your commission is now 0% on any original artworks sold after that. We know that is not going to be easy for some artists, and we're here to help. Let's be real here, it's a win/win for all of us! <br></br>
+      </span>
+    )
+  },
+  {
     title: "The 5P's : 'We Print | Pack | Post | Pay | and of course, solve Problems",
     content: <span key="The 5P's"><strong className="font-bold">WE TAKE CARE OF IT ALL, SO YOU DON'T HAVE TO!</strong> This is all pretty simple for us, as we've spent over a decade helping 1000's of artists around Australia, and the world with all of the above. We understand that dealing with a full-time or part-time job, as well as trying create new artworks (or even just catch up with fam), and then you spend half the day running around to sort out some fresh print/art sales, all to rock up at a post office that just closed. Add salt ... then you miss the 86 tram home and shit just gets wild from here on. Let us deal with it (Not the Tram, that's on you), otherwise, we got you. </span>
   },
@@ -25,16 +35,6 @@ export const faqItems = [
   {
     title: "Digital Sales and Artist Profile. Yours, Forever.",
     content: <span key="profile">Not everyone can make it to our IRL space, and that's why we're taking it to the world with your very own <strong className="font-bold">247.art KICK-ASS online sales profile!</strong><br /><br />Each artist will receive their own custom domain, think of it as a 'Link in BIO' but with direct sales right at your collectors fingertips, and not just a bland few hyperlinks floating on the page.<br /><br />We call it the artist <strong className="font-bold">ATLAS</strong>, an acronym for Artist BIO, Techniques/Styles, Links, Artworks & Social media. A searchable artist "encyclopedia" (do they even exist anymore?) all in one place!<br /><br />On top of that, we'll add a fully immersive 3D lidar scan of the exhibition! Peep the <span className="text-zap-red">/virtualtour</span><br /><br /><div className="flex items-center gap-2 justify-center"><ArrowLeft className="w-5 h-5" /> <strong className="font-bold">[yournamehere].247.art</strong> <ArrowRight className="w-5 h-5" /></div></span>
-  },
-  {
-    title: "The 'STP' Difference",
-    content: (
-      <span key="future">
-        <strong className="font-bold">STP = Stickers | T-Shirt | Print.</strong> This is our unique offering which we produce premium quality in-house an STP Collector pack for each artist. From custom packaging with your artwork on it, to Signed & numbered fine art prints. All packaged and ready to collect. Each STP Collector pack will retail for $124.95 AUD. Making it an affordable entry point for new collectors. The artist has a choice of edition sizes to suit, or you can make it a signed open edition if you like?.
-        
-        <br /> <strong className="font-bold">THE BONUS COMMISSION INCENTIVE.</strong> For every 1x STP Collector pack you sell you will receive ~$50 and in addition to that, we take 1% off your gallery commission. If you sell 10x STP Collector packs on day 1, your gallery commission will go from 25% to 15% for on your next original artwork sale. If you sell 15 more STP Collector packs in the 1st month, your commission is now 0% on any original artworks sold after that. We know that is not going to be easy for some artists, and we're here to help. Let's be real here, it's a win/win for all of us! <br></br>
-      </span>
-    )
   }
 ];
 
