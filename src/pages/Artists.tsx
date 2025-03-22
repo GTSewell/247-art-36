@@ -104,7 +104,7 @@ const Artists = () => {
           </div>
           
           <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
-            <AlertDescription>
+            <AlertDescription className="text-lg font-bold">
               This is a mock-up artists page to show you how your 247 artist profile will look. Please play around with it, click on things. Let us know your thoughts. When artists sign up, we will add your profile into the page. Enjoy!
             </AlertDescription>
           </Alert>
