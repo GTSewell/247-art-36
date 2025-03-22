@@ -76,6 +76,11 @@ const Services = () => {
               </div>
               
               <div className="mt-4">
+                <h3 className="font-medium mb-2">The Virtual Exhibition</h3>
+                <p className="text-muted-foreground mb-4">
+                  Once the exhibition is in installed we will recreate a new 3D lidar scan of the gallery which will allow international viewers to explore the space and select your artwork to view and purchase directly within the virtual experience.
+                </p>
+                
                 <h3 className="font-medium mb-2">Explore Our Space</h3>
                 <p className="text-muted-foreground mb-4">
                   Take a virtual walkthrough of our innovative art space. Navigate through different rooms
