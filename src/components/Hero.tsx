@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -28,6 +30,7 @@ const Hero = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
+
   const handleInstallClick = async () => {
     setIsClicked(true);
     if (!deferredPrompt) {
@@ -55,6 +58,7 @@ const Hero = () => {
       setIsClicked(false);
     }
   };
+
   return <div className="relative min-h-screen overflow-hidden bg-zap-yellow">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -135,7 +139,7 @@ const Hero = () => {
       }} className="w-full mt-6 px-4 md:px-8 flex flex-col md:flex-row gap-6 justify-center items-center">
           <div className="w-full md:w-1/3 max-w-md">
             <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/65260f29-6ff3-4908-ab60-966d152fd537.png" alt="World Class Exhibition Space" className="w-full h-auto" />
+              <img src="/lovable-uploads/91d913c0-84aa-4722-a729-eddcbe1386cb.png" alt="World Class Exhibition Space" className="w-full h-auto" />
             </div>
           </div>
           
@@ -154,4 +158,5 @@ const Hero = () => {
       </div>
     </div>;
 };
+
 export default Hero;
