@@ -9,6 +9,7 @@ import FeaturedProducts from "@/components/store/FeaturedProducts";
 import FilteredProducts from "@/components/store/FilteredProducts";
 import { TimerProvider } from "@/contexts/TimerContext";
 import { logger } from "@/utils/logger";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface TimerState {
   hours: number;
@@ -66,6 +67,13 @@ const GeneralStore = () => {
       <div className="min-h-screen bg-zap-red">
         <Navigation />
         <main className="container mx-auto px-4 pt-24 pb-12">
+          
+          <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
+            <AlertDescription className="text-lg font-bold">
+              This is a mock-up Storefront page, and purely for demo display at present. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their own artworks available on your personal artist profile.
+            </AlertDescription>
+          </Alert>
+          
           <FeaturedProducts 
             products={featuredProducts}
             onProductSelect={handleProductSelect}

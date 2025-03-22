@@ -9,6 +9,7 @@ import TimedEditionModal from "@/components/store/TimedEditionModal";
 import ProductCategoryView from "@/components/pwa/store/ProductCategoryView";
 import StoreHomeView from "@/components/pwa/store/StoreHomeView";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface TimerState {
   hours: number;
@@ -46,6 +47,14 @@ const PWAStore = () => {
         {isPWA ? <PWANavigation /> : <Navigation />}
         
         <main className={`${isPWA ? 'pt-4 pb-20' : 'container mx-auto px-4 pt-24 pb-20'}`}>
+          {!selectedCategory && (
+            <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
+              <AlertDescription className="text-lg font-bold">
+                This is a mock-up Storefront page, and purely for demo display at present. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their own artworks available on your personal artist profile.
+              </AlertDescription>
+            </Alert>
+          )}
+          
           {selectedCategory ? (
             <ProductCategoryView 
               categoryId={selectedCategory}
