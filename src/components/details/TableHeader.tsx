@@ -19,6 +19,11 @@ const TableHeaderComponent = () => {
             <span className="font-bold text-[0.85rem] sm:text-lg text-zap-red">Feature</span>
           </div>
         </TableHead>
+        <TableHead className="text-center p-1">
+          <div className="flex flex-col items-center justify-center">
+            <span className="font-bold text-[0.85rem] sm:text-lg text-zap-blue">Signature</span>
+          </div>
+        </TableHead>
       </TableRow>
     </TableHeader>
   );

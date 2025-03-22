@@ -58,6 +58,12 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           type="featureArtist" 
           stackText={needsStacking}
         />
+        <FeatureCell 
+          value={feature.signatureArtist} 
+          hasDiscount={feature.hasDiscount}
+          type="signatureArtist" 
+          stackText={needsStacking}
+        />
       </TableRow>
       
       {/* Expanded content - no hover effect */}
@@ -66,7 +72,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} 
           style={{ transition: 'none' }}
         >
-          <TableCell colSpan={3} className="p-2 pt-0 sm:p-4 sm:pt-0">
+          <TableCell colSpan={4} className="p-2 pt-0 sm:p-4 sm:pt-0">
             <div className="text-gray-600 text-xs sm:text-sm italic pl-1 sm:pl-4 pb-1">
               {feature.description}
             </div>
