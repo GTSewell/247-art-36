@@ -94,7 +94,7 @@ const Hero = () => {
       }} transition={{
         delay: 0.2,
         duration: 0.5
-      }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg mx-4 md:mx-0">
+      }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg mx-4 md:mx-0 max-w-md w-full">
           <p className="text-xl md:text-2xl font-extrabold text-white text-center">
             Home for the NEXT GEN Artist & NEW GEN Collector
           </p>
@@ -109,20 +109,18 @@ const Hero = () => {
       }} transition={{
         delay: 0.3,
         duration: 0.5
-      }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto font-bold text-center px-6">
-          <p className="mb-6 font-extrabold">IT'S TIME FOR A REVOLUTION IN THE ART WORLD!</p>
+      }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-md mx-auto font-bold text-center px-6 w-full">
+          <p className="mb-6 font-extrabold uppercase">IT'S TIME FOR A REVOLUTION IN THE ART WORLD!</p>
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="px-8 py-4 bg-zap-blue rounded-lg mx-4 md:mx-0 mb-6"
+            className="px-8 py-4 bg-zap-blue rounded-lg mx-4 md:mx-0 mb-6 max-w-md w-full"
           >
-            <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-            <span>100 ARTISTS</span>
-            <span className="mx-8">|</span>
-            <span>100 DAYS</span>
+            <p className="text-xl md:text-2xl font-extrabold text-white text-center flex flex-wrap justify-center">
+              <span className="mx-6 my-1">100 ARTISTS</span>
+              <span className="mx-6 my-1">100 DAYS</span>
             </p>
-
           </motion.div>
           <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
         </motion.div>
