@@ -94,9 +94,9 @@ const Hero = () => {
       }} transition={{
         delay: 0.2,
         duration: 0.5
-      }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg">
+      }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg mx-4 md:mx-0">
           <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-            A NEW HOME for the NEXT GEN ARTIST and NEW GEN Collector
+            A NEW HOME for the NEXT GEN Artist and NEW GEN Collector
           </p>
         </motion.div>
         
