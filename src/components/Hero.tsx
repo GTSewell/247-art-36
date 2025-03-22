@@ -94,10 +94,12 @@ const Hero = () => {
       }} transition={{
         delay: 0.2,
         duration: 0.5
-      }} className="mt-4 px-8 py-4 bg-zap-red rounded-lg mx-4 md:mx-0 max-w-md w-full">
-          <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-            Home for the NEXT GEN Artist & NEW GEN Collector
-          </p>
+      }} className="mt-4 px-4 md:px-0 max-w-md w-full">
+          <div className="bg-zap-red py-4 px-8 rounded-lg">
+            <p className="text-xl md:text-2xl font-extrabold text-white text-center">
+              Home for the NEXT GEN Artist & NEW GEN Collector
+            </p>
+          </div>
         </motion.div>
         
         <motion.div initial={{
@@ -111,17 +113,21 @@ const Hero = () => {
         duration: 0.5
       }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-md mx-auto font-bold text-center px-6 w-full">
           <p className="mb-6 font-extrabold uppercase">IT'S TIME FOR A REVOLUTION IN THE ART WORLD!</p>
+          
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="px-8 py-4 bg-zap-blue rounded-lg mx-4 md:mx-0 mb-6 max-w-md w-full"
+            className="px-4 md:px-0 max-w-md w-full mb-6"
           >
-            <p className="text-xl md:text-2xl font-extrabold text-white text-center flex flex-wrap justify-center">
-              <span className="mx-6 my-1">100 ARTISTS</span>
-              <span className="mx-6 my-1">100 DAYS</span>
-            </p>
+            <div className="bg-zap-blue py-4 px-8 rounded-lg">
+              <p className="text-xl md:text-2xl font-extrabold text-white text-center flex flex-col">
+                <span className="my-1">100 ARTISTS</span>
+                <span className="my-1">100 DAYS</span>
+              </p>
+            </div>
           </motion.div>
+          
           <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
         </motion.div>
 
