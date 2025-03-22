@@ -118,8 +118,11 @@ const Hero = () => {
             className="px-8 py-4 bg-zap-blue rounded-lg mx-4 md:mx-0 mb-6"
           >
             <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-              100 DAYS      |      100 ARTISTS
+            <span>100 ARTISTS</span>
+            <span className="mx-8">|</span>
+            <span>100 DAYS</span>
             </p>
+
           </motion.div>
           <p className="font-extrabold">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
         </motion.div>
