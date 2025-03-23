@@ -54,13 +54,13 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         />
       </TableRow>
       
-      {/* Expanded content - with solid background instead of hover effect */}
+      {/* Expanded content - with solid background with no opacity */}
       {isExpanded && feature.description && (
         <TableRow 
           className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} 
           style={{ transition: 'none' }}
         >
-          <TableCell colSpan={2} className="p-2 pt-0 sm:p-4 sm:pt-0">
+          <TableCell colSpan={2} className="p-2 pt-0 sm:p-4 sm:pt-0 bg-white">
             <div 
               className="text-black text-base sm:text-lg pl-1 sm:pl-4 pb-1"
               dangerouslySetInnerHTML={{ __html: feature.description }}
