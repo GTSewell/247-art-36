@@ -31,7 +31,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         className={cn(
           index % 2 === 0 ? "bg-white" : "bg-gray-50",
           isExpanded ? "border-b-0" : "",
-          "cursor-pointer hover:bg-zap-blue"
+          "cursor-pointer hover:bg-[#33C3F0]/50"
         )} 
         style={{ transition: 'none' }}
         onClick={() => toggleRow(index)}
@@ -54,7 +54,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         />
       </TableRow>
       
-      {/* Expanded content - no hover effect */}
+      {/* Expanded content - with solid background instead of hover effect */}
       {isExpanded && feature.description && (
         <TableRow 
           className={cn(index % 2 === 0 ? "bg-white" : "bg-gray-50")} 
