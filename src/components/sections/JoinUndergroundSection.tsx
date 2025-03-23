@@ -5,7 +5,7 @@ import { faqItems } from "./underground/faqData";
 import { Link } from "react-router-dom";
 
 const JoinUndergroundSection = () => {
-  return <section className="py-24 px-4 relative bg-gradient-to-b from-zap-blue to-zap-yellow">
+  return <section className="py-24 px-4 relative bg-zap-blue">
       {/* Halftone Background Image */}
       <img 
         src="/lovable-uploads/6fadf1da-55ba-4d36-8571-a0af3c64c197.png" 
