@@ -31,7 +31,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
   // Determine the background color based on profitability
   const headerBgColor = !results ? "bg-zap-red" : results.profitLoss >= 0 ? "bg-zap-green" : "bg-zap-red";
-  return <Card className="p-6 py-[35px]">
+  return <Card className="p-06 py-[35px] rounded-none bg-transparent">
       <h3 className="text-xl font-semibold mb-4">Calculate Your Potential</h3>
       
       <Form {...form}>
