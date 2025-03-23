@@ -77,8 +77,8 @@ export const features: Feature[] = [
     name: "Artwork Changes", 
     studioArtist: "1 per Month", 
     featureArtist: "Up to 2 per month", 
-    signatureArtist: "Up to 2 per month",
-    description: "Frequency at which you can rotate or update your displayed artwork. We can change out your in-house stockroom works to keep the gallery dynamic, or, you can bring in new works to swap around. After all, this IS your gallery"
+    signatureArtist: "2 per month",
+    description: "Frequency at which you can rotate or update your displayed artwork. When your artwork sells, we will pack the artwork straight away and send or allow the collector to take your art on the spot. We will then place one of your stockroom works in place of the sold artwork. You can then add another new work to the stockroom if you choose to do so. We can change out your in-house stockroom works each month to keep the gallery dynamic, or, you can bring in new works to swap around. After all, this IS your gallery"
   },
   { 
     name: "Genesis Artist 'ATLAS' Book", 
