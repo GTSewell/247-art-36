@@ -67,11 +67,11 @@ export const features: Feature[] = [
     description: "Number of different artworks you can display in your allocated space in the feature gallery. Note: Additional artworks will need to allow spacing. See our artwork size calculator below."
   },
   { 
-    name: "Apparel Options", 
+    name: "Apparel & Print Options", 
     studioArtist: "Full Range", 
     featureArtist: "Full Range", 
     signatureArtist: "Full Range",
-    description: "Your artwork can be featured on our complete apparel collection, including t-shirts, hoodies, Totes, and more. We will add new items for your choice.<br /><br />We will also help artists with apparel design where needed. The apparel game is a different beast, and we know how to make the best of it!"
+    description: "Not only will you have your very own STP Collector pack, we will also produce individual retail items (Stickers/T-shirts/Prints etc) for sale and stock in our retail space. Your artwork can be featured on our complete apparel collection, including t-shirts, hoodies, Totes, and more, along with all of our other printing options. We will add new items for your choice.<br /><br />We will also help artists with apparel design where needed. The apparel game is a different beast, and we know how to make the best of it!"
   },
   { 
     name: "Artwork Changes", 
