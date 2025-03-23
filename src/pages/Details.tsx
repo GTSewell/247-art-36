@@ -100,7 +100,7 @@ We do understand that is not always going to be easy, but we're here to work tog
         duration: 0.5,
         delay: 0.6
       }} className="max-w-4xl mx-auto mt-16 mb-0 my-0 py-0">
-          <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">I'd like to know more...</h2>
+          
           <InterestForm introText={outroText} />
         </motion.div>
       </div>
