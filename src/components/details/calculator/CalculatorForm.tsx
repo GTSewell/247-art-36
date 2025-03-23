@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,12 +8,16 @@ import { Input } from "@/components/ui/input";
 import { DollarSign, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card";
-import { calculatorFormSchema, CalculatorFormValues } from "./schema";
+import { calculatorFormSchema, CalculatorFormValues, CalculationResults } from "./schema";
+
 interface CalculatorFormProps {
   onFormChange: (values: CalculatorFormValues) => void;
+  results?: CalculationResults;
 }
+
 const CalculatorForm: React.FC<CalculatorFormProps> = ({
-  onFormChange
+  onFormChange,
+  results
 }) => {
   const form = useForm<CalculatorFormValues>({
     resolver: zodResolver(calculatorFormSchema),
@@ -22,16 +27,23 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       artworkSales: undefined
     }
   });
+  
   const watchFields = form.watch();
+  
   React.useEffect(() => {
     onFormChange(watchFields);
   }, [watchFields, onFormChange]);
+  
+  // Determine the background color based on profitability
+  const headerBgColor = !results ? "bg-zap-red" : 
+                         results.profitLoss >= 0 ? "bg-zap-green" : "bg-zap-red";
+  
   return <Card className="p-6">
       <h3 className="text-xl font-semibold mb-4">Calculate Your Potential</h3>
       
       <Form {...form}>
         <form className="space-y-6">
-          <div className="bg-gradient-to-r from-zap-red to-zap-yellow text-white p-3 rounded-md mb-2">
+          <div className={`${headerBgColor} text-white p-3 rounded-md mb-2`}>
             <h4 className="text-center font-bold text-black text-2xl">Signature Artist</h4>
           </div>
 
@@ -84,4 +96,5 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       </Form>
     </Card>;
 };
+
 export default CalculatorForm;

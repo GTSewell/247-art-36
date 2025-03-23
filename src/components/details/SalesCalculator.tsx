@@ -14,7 +14,7 @@ const SalesCalculator = () => {
     artworkRevenueBeforeStp: 0,
     artworkRevenueAfterStp: 0,
     totalRevenue: 0,
-    profitLoss: 0,
+    profitLoss: -1295, // Initially showing a loss
     breakEven: false,
   });
 
@@ -30,7 +30,7 @@ const SalesCalculator = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Form Section */}
         <div>
-          <CalculatorForm onFormChange={handleFormChange} />
+          <CalculatorForm onFormChange={handleFormChange} results={calculationResults} />
         </div>
 
         {/* Results Section */}
