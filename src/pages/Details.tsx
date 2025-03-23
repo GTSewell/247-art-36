@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import ArtistPackageTable from "@/components/details/ArtistPackageTable";
@@ -45,22 +46,6 @@ We do understand that is not always going to be easy, but we're here to work tog
           <ArtistPackageTable />
         </div>
         
-        {/* "LFG, I Want In!" Image with animation and link */}
-        <motion.div initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        duration: 0.5,
-        delay: 0.2
-      }} className="flex justify-center items-center my-12">
-          <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
-            <img src="/lovable-uploads/125e0b0f-15c8-4d5a-a182-4a1dc5d0594c.png" alt="LFG, I Want In!" className="w-full max-w-[500px] animate-float cursor-pointer" />
-          </a>
-        </motion.div>
-        
         {/* Artwork Size Calculator */}
         <motion.div initial={{
         opacity: 0,
@@ -88,6 +73,22 @@ We do understand that is not always going to be easy, but we're here to work tog
       }} className="max-w-4xl mx-auto mt-16">
           <SalesCalculator />
         </motion.div>
+        
+        {/* "LFG, I Want In!" Image with animation and link - MOVED BELOW SALES CALCULATOR */}
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5,
+        delay: 0.5
+      }} className="flex justify-center items-center my-12">
+          <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
+            <img src="/lovable-uploads/125e0b0f-15c8-4d5a-a182-4a1dc5d0594c.png" alt="LFG, I Want In!" className="w-full max-w-[500px] animate-float cursor-pointer" />
+          </a>
+        </motion.div>
 
         {/* Interest Form */}
         <motion.div initial={{
@@ -98,7 +99,7 @@ We do understand that is not always going to be easy, but we're here to work tog
         y: 0
       }} transition={{
         duration: 0.5,
-        delay: 0.5
+        delay: 0.6
       }} className="max-w-4xl mx-auto mt-16 mb-0">
           <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">I'd like to know more...</h2>
           <InterestForm introText={outroText} />
