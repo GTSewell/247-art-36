@@ -1,7 +1,8 @@
+
 import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 const TableFooterComponent = () => {
   return <TableRow className="bg-black hover:bg-black text-white" style={{
@@ -12,9 +13,9 @@ const TableFooterComponent = () => {
       </TableCell>
       <TableCell className="text-center p-1">
         <Link to="/artist-submission">
-          <Button size="sm" variant="secondary" className="text-xs sm:text-sm w-full">
-            Select Signature
-            <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+          <Button size="sm" className="text-xs sm:text-sm w-full bg-[#ea384c] text-white hover:bg-[#ea384c]/90 font-medium">
+            <ShoppingCart className="w-4 h-4 mr-1" />
+            Signature Artist
           </Button>
         </Link>
       </TableCell>
