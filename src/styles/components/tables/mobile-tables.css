@@ -87,7 +87,7 @@
     line-height: 1.2;
   }
   
-  /* Description text - made black, larger, and non-italic */
+  /* Description text - made black, larger, and ensure proper HTML rendering */
   .overflow-x-auto table td .text-black.text-base {
     font-size: 0.95rem;
     padding-left: 2px;

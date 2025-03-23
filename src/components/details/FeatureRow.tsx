@@ -61,9 +61,10 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           style={{ transition: 'none' }}
         >
           <TableCell colSpan={2} className="p-2 pt-0 sm:p-4 sm:pt-0">
-            <div className="text-black text-base sm:text-lg pl-1 sm:pl-4 pb-1">
-              {feature.description}
-            </div>
+            <div 
+              className="text-black text-base sm:text-lg pl-1 sm:pl-4 pb-1"
+              dangerouslySetInnerHTML={{ __html: feature.description }}
+            />
           </TableCell>
         </TableRow>
       )}
