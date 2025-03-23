@@ -4,8 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface PackageSelectorProps {
-  value: 'studio' | 'feature';
-  onChange: (value: 'studio' | 'feature') => void;
+  value: 'signature';
+  onChange: (value: 'signature') => void;
 }
 
 const PackageSelector: React.FC<PackageSelectorProps> = ({ value, onChange }) => {
@@ -14,7 +14,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({ value, onChange }) =>
       <Label htmlFor="package-select">Select Package Type</Label>
       <Select 
         value={value} 
-        onValueChange={(value: 'studio' | 'feature') => onChange(value)}
+        onValueChange={(value: 'signature') => onChange(value)}
       >
         <SelectTrigger 
           id="package-select" 
@@ -23,8 +23,7 @@ const PackageSelector: React.FC<PackageSelectorProps> = ({ value, onChange }) =>
           <SelectValue placeholder="Select package" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="studio">Studio Artist (5,625 sq cm)</SelectItem>
-          <SelectItem value="feature">Feature Artist (10,000 sq cm)</SelectItem>
+          <SelectItem value="signature">Signature Artist (10,000 sq cm)</SelectItem>
         </SelectContent>
       </Select>
     </div>

@@ -10,22 +10,18 @@ import { Artwork, STUDIO_ARTIST_SQCM, FEATURE_ARTIST_SQCM } from "./types/artwor
 import { generateId, calculateTotalAreaWithFits } from "./utils/artwork-calculations";
 
 const ArtworkSizeCalculator: React.FC = () => {
-  const [selectedPackage, setSelectedPackage] = useState<'studio' | 'feature'>('studio');
+  const [selectedPackage, setSelectedPackage] = useState<'signature'>('signature');
   const [artworks, setArtworks] = useState<Artwork[]>([
     { id: 1, width: '', height: '', fits: true, area: 0 }
   ]);
   const [totalArea, setTotalArea] = useState<number>(0);
-  const [maxAllowedArea, setMaxAllowedArea] = useState<number>(STUDIO_ARTIST_SQCM);
-  const [maxArtworks, setMaxArtworks] = useState<number>(2);
+  const [maxAllowedArea, setMaxAllowedArea] = useState<number>(FEATURE_ARTIST_SQCM);
+  const [maxArtworks, setMaxArtworks] = useState<number>(4);
 
   useEffect(() => {
-    if (selectedPackage === 'studio') {
-      setMaxAllowedArea(STUDIO_ARTIST_SQCM);
-      setMaxArtworks(2);
-    } else {
-      setMaxAllowedArea(FEATURE_ARTIST_SQCM);
-      setMaxArtworks(4);
-    }
+    // Always use Feature Artist values for Signature Artist
+    setMaxAllowedArea(FEATURE_ARTIST_SQCM);
+    setMaxArtworks(4);
     
     updateCalculations(artworks);
   }, [selectedPackage]);
