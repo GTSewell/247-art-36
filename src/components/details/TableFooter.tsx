@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ShoppingCart } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const TableFooterComponent = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -42,7 +41,7 @@ const TableFooterComponent = () => {
         <span className="text-white text-xs font-extrabold sm:text-lg">Secure your spot ... 👉</span>
       </TableCell>
       <TableCell className="text-center p-1">
-        <Link to="/artist-submission">
+        <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
           <Button 
             size="sm" 
             className="text-xs max-w-[180px] mx-auto w-full bg-[#ea384c] text-white hover:bg-[#f7cf1e] hover:text-black font-medium px-0 py-0 text-center rounded sm:text-lg"
@@ -50,7 +49,7 @@ const TableFooterComponent = () => {
             <ShoppingCart className="w-4 h-4 mr-1" />
             Signature Artist
           </Button>
-        </Link>
+        </a>
       </TableCell>
     </TableRow>
   );
