@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,7 +32,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
 
   // Determine the background color based on profitability
   const headerBgColor = !results ? "bg-zap-red" : results.profitLoss >= 0 ? "bg-zap-green" : "bg-zap-red";
-  return <Card className="p-6 py-[35px] rounded-none bg-transparent">
+  return <Card className="p-6 py-[35px] rounded-none bg-transparent border-0">
       <h3 className="text-xl font-semibold mb-4">Calculate Your Potential</h3>
       
       <Form {...form}>
