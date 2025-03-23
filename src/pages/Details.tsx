@@ -85,25 +85,30 @@ const Details = () => {
           <InterestForm introText={outroText} />
         </motion.div>
 
-        {/* Center Rocket Icon for Desktop with Red Halftone Background */}
+        {/* Center Rocket Icon with Full-Width Red Halftone Background */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex justify-center items-center my-12 relative"
+          className="relative mt-12"
         >
-          {/* Red Halftone Background Image */}
-          <img 
-            src="/lovable-uploads/2d2a11b1-3157-4f38-82be-6b60ce75150d.png"
-            alt="Red Halftone Background"
-            className="absolute inset-0 w-full h-full object-contain"
-          />
-          {/* Rocket Icon */}
-          <img 
-            src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
-            alt="Rocket Icon"
-            className="w-full max-w-[400px] animate-float relative z-10"
-          />
+          {/* Red Halftone Background Image - Full Width */}
+          <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] border-l border-r border-b border-[#f7cf1e]">
+            <img 
+              src="/lovable-uploads/2d2a11b1-3157-4f38-82be-6b60ce75150d.png"
+              alt="Red Halftone Background"
+              className="w-full h-auto object-cover"
+            />
+          </div>
+          
+          {/* Rocket Icon - Centered absolute positioning */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full flex justify-center">
+            <img 
+              src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
+              alt="Rocket Icon"
+              className="w-full max-w-[400px] animate-float z-10"
+            />
+          </div>
         </motion.div>
       </div>
     </main>
