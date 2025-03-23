@@ -6,14 +6,13 @@ import ArtworkSizeCalculator from "@/components/details/ArtworkSizeCalculator";
 import SalesCalculator from "@/components/details/SalesCalculator";
 import InterestForm from "@/components/sections/underground/InterestForm";
 import { outroText } from "@/components/sections/underground/faqData";
-import { Zap } from "lucide-react";
 
 const Details = () => {
   return (
-    <main className="min-h-screen bg-[#f7cf1e]">
+    <main className="min-h-screen bg-[#f7cf1e] overflow-hidden">
       <Navigation />
       
-      <div className="container mx-auto px-4 pt-24 pb-12">
+      <div className="container mx-auto px-4 pt-24 pb-0">
         {/* Intro paragraph */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -79,38 +78,38 @@ const Details = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="max-w-4xl mx-auto mt-16"
+          className="max-w-4xl mx-auto mt-16 mb-0"
         >
           <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">I'd like to know more...</h2>
           <InterestForm introText={outroText} />
         </motion.div>
-
-        {/* Center Rocket Icon with Full-Width Red Halftone Background */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="relative mt-12"
-        >
-          {/* Red Halftone Background Image - Full Width */}
-          <div className="w-screen relative left-1/2 right-1/2 -mx-[50vw] border-l border-r border-b border-[#f7cf1e]">
-            <img 
-              src="/lovable-uploads/2d2a11b1-3157-4f38-82be-6b60ce75150d.png"
-              alt="Red Halftone Background"
-              className="w-full h-auto object-cover"
-            />
-          </div>
-          
-          {/* Rocket Icon - Centered absolute positioning */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full flex justify-center">
-            <img 
-              src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
-              alt="Rocket Icon"
-              className="w-full max-w-[400px] animate-float z-10"
-            />
-          </div>
-        </motion.div>
       </div>
+
+      {/* Full-width Red Halftone Background with Rocket - Outside the container */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="relative w-full mt-0"
+      >
+        {/* Red Halftone Background Image - Full Width */}
+        <div className="w-full">
+          <img 
+            src="/lovable-uploads/2d2a11b1-3157-4f38-82be-6b60ce75150d.png"
+            alt="Red Halftone Background"
+            className="w-full h-auto object-cover"
+          />
+        </div>
+        
+        {/* Rocket Icon - Centered absolute positioning */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full flex justify-center">
+          <img 
+            src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
+            alt="Rocket Icon"
+            className="w-full max-w-[400px] animate-float z-10"
+          />
+        </div>
+      </motion.div>
     </main>
   );
 };
