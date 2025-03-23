@@ -58,6 +58,9 @@ const SalesCalculator = () => {
             Note: Due to sales timing variables, these calculations show the maximum commission you might pay. 
             The actual commission could be lower depending on when STP packs are sold relative to original artworks.
           </p>
+          <p className="text-xs">
+            This calculator does not include any of your possible individual retail item sales.
+          </p>
         </div>
       </div>
     </div>
