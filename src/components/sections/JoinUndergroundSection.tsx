@@ -27,7 +27,7 @@ const JoinUndergroundSection = () => {
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
           
-          {/* Added "Built By Artists For Artists" image */}
+          {/* Built By Artists For Artists image now appears only once, at the top of the FAQ */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -35,7 +35,7 @@ const JoinUndergroundSection = () => {
             className="mt-12 text-center"
           >
             <img 
-              src="/lovable-uploads/7d2e39fb-84b5-4bfc-9f09-707fa8e985e1.png" 
+              src="/lovable-uploads/2a729dda-550e-4a9f-9b77-b04246fe65d6.png" 
               alt="Built By Artists For Artists" 
               className="w-full max-w-2xl mx-auto"
             />
