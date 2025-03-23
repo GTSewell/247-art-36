@@ -5,14 +5,16 @@ import { Link } from "react-router-dom";
 const AboutSection = () => {
   return (
     <div className="relative">
-      {/* Background image with 0.2 opacity */}
-      <div className="absolute inset-0 z-0">
-        <img 
-          src="/lovable-uploads/c4d9bfb5-2e72-440a-b468-9e82012ec737.png" 
-          alt="Background" 
-          className="w-full h-full object-cover opacity-20"
-          style={{ objectFit: 'contain' }}
-        />
+      {/* Background image with 0.2 opacity weighted to the left */}
+      <div className="absolute inset-0 z-0 pl-8">
+        <div className="w-3/4 h-full">
+          <img 
+            src="/lovable-uploads/c4d9bfb5-2e72-440a-b468-9e82012ec737.png" 
+            alt="Background" 
+            className="h-full opacity-20"
+            style={{ objectFit: 'contain', objectPosition: 'left' }}
+          />
+        </div>
       </div>
       
       <motion.div
