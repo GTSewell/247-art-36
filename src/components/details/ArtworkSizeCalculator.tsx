@@ -67,7 +67,7 @@ const ArtworkSizeCalculator: React.FC = () => {
     <div className="w-full max-w-4xl mx-auto">
       <Card className="w-full mb-8">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Artwork Size Calculator</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Calculate You Artwork Space</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
