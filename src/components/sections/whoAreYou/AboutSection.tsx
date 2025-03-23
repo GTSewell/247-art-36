@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -9,7 +10,8 @@ const AboutSection = () => {
         <img 
           src="/lovable-uploads/c4d9bfb5-2e72-440a-b468-9e82012ec737.png" 
           alt="Background" 
-          className="w-full h-full object-cover opacity-20" 
+          className="w-full h-full object-cover opacity-20"
+          style={{ objectFit: 'contain' }}
         />
       </div>
       
