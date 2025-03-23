@@ -1,13 +1,10 @@
-
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
-
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -31,7 +28,6 @@ const Hero = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
-
   const handleInstallClick = async () => {
     setIsClicked(true);
     if (!deferredPrompt) {
@@ -59,7 +55,6 @@ const Hero = () => {
       setIsClicked(false);
     }
   };
-
   return <div className="relative min-h-screen overflow-hidden bg-zap-yellow">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -114,15 +109,19 @@ const Hero = () => {
       }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-md mx-auto font-bold text-center px-4 md:px-0 w-full">
           <p className="mb-6 font-extrabold uppercase">IT'S TIME FOR A REVOLUTION IN THE ART WORLD ...</p>
           
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="w-full max-w-md"
-          >
+          <motion.div initial={{
+          y: 20,
+          opacity: 0
+        }} animate={{
+          y: 0,
+          opacity: 1
+        }} transition={{
+          delay: 0.4,
+          duration: 0.5
+        }} className="w-full max-w-md">
             <div className="bg-zap-blue py-4 px-4 md:px-8 rounded-lg w-full">
               <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-                <span>100 ARTISTS</span>
+                <span>100 ARTISTS EXHIBIT</span>
                 <span className="block mt-1">100 DAYS</span>
               </p>
             </div>
@@ -191,5 +190,4 @@ const Hero = () => {
       </div>
     </div>;
 };
-
 export default Hero;
