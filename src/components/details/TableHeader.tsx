@@ -1,4 +1,3 @@
-
 import React from "react";
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 const TableHeaderComponent = () => {
@@ -11,7 +10,7 @@ const TableHeaderComponent = () => {
         </TableHead>
         <TableHead className="text-center p-1">
           <div className="flex flex-col items-center justify-center">
-            <span className="font-bold text-[0.85rem] sm:text-lg text-[#ea384c]">Signature Artist</span>
+            <span className="font-bold text-[0.85rem] sm:text-lg text-zap-blue">Signature Artist</span>
           </div>
         </TableHead>
       </TableRow>
