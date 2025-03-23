@@ -13,7 +13,7 @@ export const features: Feature[] = [
     studioArtist: "$995", 
     featureArtist: "$1495", 
     signatureArtist: "$1295",
-    description: "One-time payment to join our exclusive artist community. This includes all of your retail print & merch production and stocked in our space, gallery sales staffing, customer relations etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course any Problems. You focus on creating art, we will take care of the rest.",
+    description: "One-time payment to join our 247 artist community. This includes all of your retail print & merch production stocked in our space ready for sales, gallery sales staffing, customer management etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course solving any Problems for you. You focus on creating art, we will take care of the rest.",
     hasDiscount: true
   },
   { 
@@ -27,14 +27,14 @@ export const features: Feature[] = [
     name: "Exhibition Duration", 
     studioArtist: "~100 Days\n(3 months)", 
     featureArtist: "~100 Days\n(3 months)", 
-    signatureArtist: "~100 Days (3 months)",
+    signatureArtist: "~100 Days\n(3 months)",
     description: "We believe standard exhibition lengths are too short for maximum impact. You don't see the NGV launch 1 week pop-ups, why? Because the cultural and financial impact in most cases is not worth it. Your work will be displayed in our gallery for approximately 100 days, providing maximum exposure to collectors and art enthusiasts."
   },
   { 
     name: "Gallery Commission (Original Artwork)", 
     studioArtist: "25% to 0%", 
     featureArtist: "10% to 0%", 
-    signatureArtist: "25% to 0%%",
+    signatureArtist: "25%\nto\n 0%",
     description: "Gallery commission on sales of original artworks. Artists can lower their gallery commission to 0% by selling STP Collector packs (See STP below). Lower percentages mean more profit for you as an artist."
   },
   { 
@@ -42,7 +42,7 @@ export const features: Feature[] = [
     studioArtist: "25", 
     featureArtist: "10", 
     signatureArtist: "25",
-    description: "For every STP Collector pack you sell, 1% is deducted from your gallery commission. Example: If you sell 15x STP Collector packs, your commission becomes 10% (25 - 15 (STP) = 10) from that point onwards. So if you sell 25x STP Collector packs on day 1, your effective gallery commission will be 0% for the next 3 months.<br />What is an STP Collector pack? Simple, 'Stickers | T-shirt | Print' with your own individual artist designed packaging. To start, We produce 25x A4 fine art prints for each artist to sign & edition. Your minimum STP Collector pack edition size is '25/25'. You can choose to make the editions larger if you are a high selling artist, Edition 50, 100, 250 etc, or even make it a signed open edition. It is completely up to you. If you are not sure, we will help guide you.<br />Each STP pack will retail at $124.95, and your commission is ~$50 each pack sold. Consider STP packs a gateway for the new gen collectors to purchase your art."
+    description: "For every STP Collector pack you sell, 1% is deducted from your gallery commission. Example: If you sell 15x STP Collector packs, your commission becomes 10% (25 - 15 (STP) = 10) from that point onwards. So if you sell 25x STP Collector packs on day 1, your effective gallery commission will be 0% for the next 3 months."<br />" What is an STP Collector pack? Simple, 'Stickers | T-shirt | Print' with your own individual artist designed packaging. To start, We produce 25x A4 fine art prints for each artist to sign & edition. Your minimum STP Collector pack edition size is '25/25'."<br />"You can choose to make the editions larger if you are a high selling artist, Edition 50, 100, 250 etc, or even make it a signed open edition. It is completely up to you. If you are not sure, we will help guide you."<br />" Each STP pack will retail at $124.95, and your commission is ~$50 each pack sold. Consider STP packs a gateway for the new gen collectors to purchase your art."
   },
   { 
     name: "Artist Commission (Retail Production)", 
@@ -56,7 +56,7 @@ export const features: Feature[] = [
     studioArtist: "0.75 sqm area", 
     featureArtist: "1 sqm area", 
     signatureArtist: "0.75 sqmm to 1 sqm area",
-    description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm.<br />Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See the artork calculator below. "
+    description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm."<br />"Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See the artork calculator below."
   },
   { 
     name: "Artworks Per Space", 
@@ -85,6 +85,13 @@ export const features: Feature[] = [
     featureArtist: "Double Page spread", 
     signatureArtist: "Double Page spread",
     description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts."
+  },
+  { 
+    name: "Priority Art Hanging", 
+    studioArtist: "true", 
+    featureArtist: "true", 
+    signatureArtist: "The first 50 sign-ups",
+    description: "Your artwork will be given priority placement during gallery rotations in the exhibition."
   },
   { 
     name: "Artist Care Package", 
@@ -120,13 +127,6 @@ export const features: Feature[] = [
     featureArtist: true, 
     signatureArtist: true,
     description: "Receive a personalized URL '[artistname].247.art' for your online profile, making it easier for collectors to find, follow and purchase your work.<br />As Genesis Artists you will have your online profile foreever and be the first to test & receive any new updates/perks etc"
-  },
-  { 
-    name: "Priority Art Hanging", 
-    studioArtist: "true", 
-    featureArtist: "true", 
-    signatureArtist: "The first 50 sign-ups",
-    description: "Your artwork will be given priority placement during gallery rotations in the exhibition."
   },
   { 
     name: "Sculpture Display Option (TBD)", 
