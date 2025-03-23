@@ -1,4 +1,3 @@
-
 import VideoPlayer from "@/components/VideoPlayer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -24,7 +23,7 @@ export const faqItems = [
   },
   {
     title: "A New Commission Structure. From 25% to 0%",
-    content: <span key="commission">How does a <strong className="font-bold">25% COMMISSION</strong> sound, or, 10%, maybe even 0%? Everyone has the opportunity to hit 0% gallery commission. Peep STP Collector packs on the Details page. We know most traditional galleries charge artists on average, 50% commission. Well, we're not planning to be a "traditional" gallery at all, and we're here to shake things up, and we're here to do that with you. It's time for something different!</span>
+    content: <span key="commission">How does a <strong className="font-bold">25% COMMISSION</strong> sound, or, 10%, maybe even 0%? Everyone has the opportunity to hit 0% gallery commission. Peep STP Collector packs on the Details page. We know most traditional galleries charge artists on average, 50% commission. We're not planning to be a "traditional" gallery at all, we're here to shake things up ... with you. It's time for something different!</span>
   },
   {
     title: "Your Personal Retail Quality Print Shop",
