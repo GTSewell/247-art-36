@@ -1,15 +1,14 @@
-
 // Cache name version - increased to force refresh
-const CACHE_NAME = '247-art-v6'; // Bumped version to force cache refresh
+const CACHE_NAME = '247-art-v7'; // Bumped version to force cache refresh
 
 // Files to cache - include essential app files and assets
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
-  '/icons/apple-touch-icon.png',
+  '/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png',
+  '/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png',
+  '/lovable-uploads/76b5d6f8-fc72-47b1-91da-29d7af2c0e97.png',
   '/favicon.ico'
 ];
 
@@ -62,7 +61,7 @@ self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
   // For PWA critical resources (manifest and icons), use network-first approach
-  if (url.pathname.includes('/icons/') || 
+  if (url.pathname.includes('/lovable-uploads/') || 
       url.pathname.includes('favicon.ico') || 
       url.pathname.includes('manifest.json')) {
     event.respondWith(
