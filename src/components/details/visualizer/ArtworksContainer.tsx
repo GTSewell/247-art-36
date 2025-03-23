@@ -18,11 +18,9 @@ const ArtworksContainer: React.FC<ArtworksContainerProps> = ({
   totalArea,
   maxArea
 }) => {
+  // Buffer calculation remains for internal use but we're removing the notification
   const bufferPercentage = 5; // 5% buffer
   const bufferThreshold = maxArea * (1 - bufferPercentage / 100);
-  
-  // Check if we're in the buffer zone (between 95% and 100% of max area)
-  const isInBufferZone = totalArea > bufferThreshold && totalArea <= maxArea;
   
   return (
     <div className="relative w-full h-64 bg-gray-100 rounded-md overflow-hidden">
@@ -47,12 +45,7 @@ const ArtworksContainer: React.FC<ArtworksContainerProps> = ({
             ))}
           </div>
           
-          {/* Show buffer zone warning if applicable */}
-          {isInBufferZone && (
-            <div className="absolute bottom-2 right-2 bg-yellow-100 border border-yellow-300 text-yellow-800 px-2 py-1 rounded text-xs">
-              Using buffer zone (within 5% of max)
-            </div>
-          )}
+          {/* Removed buffer zone notification */}
         </div>
       )}
     </div>
