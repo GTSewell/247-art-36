@@ -121,8 +121,8 @@ const Hero = () => {
         }} className="w-full max-w-md">
             <div className="bg-zap-blue py-4 px-4 md:px-8 rounded-lg w-full">
               <p className="text-xl md:text-2xl font-extrabold text-white text-center">
-                <span>100 ARTISTS EXHIBIT</span>
-                <span className="block mt-1">100 DAYS</span>
+                <span>100 ARTISTS TO EXHIBIT</span>
+                <span className="block mt-1">100 DAY IRL EXHIBITION</span>
               </p>
             </div>
           </motion.div>
