@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Card } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
 import { CalculationResults } from './schema';
 import { STP_REVENUE_PER_PACK } from './constants';
 
@@ -57,23 +56,6 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ results }) => {
           <span className={results.profitLoss >= 0 ? "text-zap-green" : "text-zap-red"}>
             ${results.profitLoss.toFixed(2)}
           </span>
-        </div>
-        
-        <div className={`mt-4 p-3 rounded-md ${results.breakEven ? "bg-zap-green/10 text-zap-green" : "bg-zap-red/10 text-zap-red"} flex items-start`}>
-          <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
-          <div>
-            {results.breakEven ? (
-              <p>You've reached break-even point! Any additional sales will be profit.</p>
-            ) : (
-              <p>
-                You need ${Math.abs(results.profitLoss).toFixed(2)} more in sales to break even.
-              </p>
-            )}
-            <p className="mt-2 text-xs">
-              Note: Due to sales timing variables, these calculations show the maximum commission you might pay. 
-              The actual commission could be lower depending on when STP packs are sold relative to original artworks.
-            </p>
-          </div>
         </div>
       </div>
     </Card>
