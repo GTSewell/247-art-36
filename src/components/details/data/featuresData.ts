@@ -56,7 +56,7 @@ export const features: Feature[] = [
     name: "Artwork Space", 
     studioArtist: "0.75 sqm area", 
     featureArtist: "1 sqm area", 
-    signatureArtist: "0.75 sqmm to 1 sqm area",
+    signatureArtist: "0.75 sqm to 1 sqm area",
     description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm.<br /><br />Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See our artwork calculator below."
   },
   { 
