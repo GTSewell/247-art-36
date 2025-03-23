@@ -49,6 +49,13 @@ const Messages = () => {
       <main className="container mx-auto px-4 pt-24 pb-16 max-w-5xl">
         <h1 className="text-3xl font-bold mb-6">Your Messages</h1>
         
+        {/* Notification box */}
+        <div className="bg-zap-yellow p-4 rounded-md mb-6">
+          <p className="text-black font-bold">
+            The 247 Messaging is purely a prototype in demo mode atm. This feature will be rolled out after initial launch. For now, enjoy GT's messages to himself on the demo account whilst we're testing.
+          </p>
+        </div>
+        
         <MessagesContent
           activeTab={activeTab}
           setActiveTab={setActiveTab}
