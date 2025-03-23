@@ -1,4 +1,3 @@
-
 interface Feature {
   name: string;
   studioArtist: boolean | string;
@@ -6,6 +5,7 @@ interface Feature {
   signatureArtist?: boolean | string;
   description?: string;
   hasDiscount?: boolean;
+  hidden?: boolean;
 }
 
 export const features: Feature[] = [
@@ -106,7 +106,8 @@ export const features: Feature[] = [
     studioArtist: "Single Page", 
     featureArtist: "Double Page spread", 
     signatureArtist: true,
-    description: "Each artist will receive 1x 'AP' (Artist Proof) STP Collector pack of their work, 1x 247 ATLAS Limited Edition Artist book."
+    description: "Each artist will receive 1x 'AP' (Artist Proof) STP Collector pack of their work, 1x 247 ATLAS Limited Edition Artist book.",
+    hidden: true
   },
   { 
     name: "24/7 Video Wall & Projection Profile", 

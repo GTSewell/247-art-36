@@ -9,6 +9,9 @@ import TableFooterComponent from "./TableFooter";
 
 const ArtistPackageTable = () => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  
+  // Filter out hidden features
+  const visibleFeatures = features.filter(feature => !feature.hidden);
 
   const toggleRow = (index: number) => {
     setExpandedRow(prev => prev === index ? null : index);
@@ -25,7 +28,7 @@ const ArtistPackageTable = () => {
         <Table className="w-full table-fixed border-collapse">
           <TableHeaderComponent />
           <TableBody>
-            {features.map((feature, index) => (
+            {visibleFeatures.map((feature, index) => (
               <FeatureRow
                 key={index}
                 feature={feature}
