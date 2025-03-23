@@ -42,7 +42,8 @@ const TableFooterComponent = () => {
           <Link to="/artist-submission">
             <Button 
               size="sm" 
-              className="text-xs max-w-[180px] bg-[#ea384c] text-white hover:bg-[#f7cf1e] hover:text-black transition-all duration-300 hover:scale-105 font-medium mx-auto px-3 py-0 text-center rounded sm:text-lg animate-float"
+              className="text-xs max-w-[180px] bg-[#ea384c] text-white hover:bg-[#f7cf1e] hover:text-black transition-all duration-300 hover:scale-105 font-medium mx-auto px-3 py-0 text-center rounded sm:text-lg"
+              style={isVisible ? { animation: 'flip 0.6s ease-out forwards' } : {}}
             >
               <ShoppingCart className="w-4 h-4 mr-1" />
               Signature Artist
