@@ -18,9 +18,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface UserMenuProps {
   isCartPage?: boolean;
+  isArtistDashboard?: boolean;
 }
 
-export function UserMenu({ isCartPage = false }: UserMenuProps) {
+export function UserMenu({ isCartPage = false, isArtistDashboard = false }: UserMenuProps) {
   const navigate = useNavigate();
   const { user, session } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -36,21 +37,24 @@ export function UserMenu({ isCartPage = false }: UserMenuProps) {
     clearPasswordStatus();
     setIsUserMenuOpen(false);
   };
+
+  // Use text-white for both cart page and artist dashboard in desktop
+  const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
   
   return (
     <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className={`flex items-center gap-1 px-3 hover:bg-accent/20 ${isCartPage ? "text-white" : "text-foreground"}`}
+          className={`flex items-center gap-1 px-3 hover:bg-accent/20 ${textColorClass}`}
         >
-          <Avatar className={`h-8 w-8 ${isCartPage ? "bg-white border-white/30" : "bg-primary border-primary/30"}`}>
+          <Avatar className={`h-8 w-8 ${isCartPage || isArtistDashboard ? "bg-white border-white/30" : "bg-primary border-primary/30"}`}>
             <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className={isCartPage ? "bg-white text-black" : "bg-primary text-primary-foreground"}>
+            <AvatarFallback className={isCartPage || isArtistDashboard ? "bg-white text-black" : "bg-primary text-primary-foreground"}>
               {user?.email?.substring(0, 2).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
-          <span className={`hidden md:inline-block ml-1 ${isCartPage ? "text-white" : "text-foreground"}`}>
+          <span className={`hidden md:inline-block ml-1 ${textColorClass}`}>
             {user ? user.email?.split('@')[0] : 'Sign in'}
           </span>
         </Button>

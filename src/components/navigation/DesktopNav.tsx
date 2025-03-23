@@ -19,8 +19,12 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const { itemCount } = useCart();
   const location = useLocation();
   
-  // Check if we're on the cart page which has a dark background
+  // Check if we're on the cart page or artist dashboard
   const isCartPage = location.pathname === "/cart";
+  const isArtistDashboard = location.pathname.includes("/dashboard/artist");
+  
+  // Determine text color based on current page
+  const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
   
   return (
     <div className="hidden md:flex items-center space-x-4 w-full justify-end">
@@ -42,7 +46,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         <Button 
           variant="ghost" 
           size="icon" 
-          className={`p-0 hover:bg-accent/20 ${isCartPage ? "text-white" : "text-foreground"}`}
+          className={`p-0 hover:bg-accent/20 ${textColorClass}`}
           title="Shopping Cart"
         >
           <ShoppingCart className="h-5 w-5" />
@@ -56,7 +60,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         </Button>
       </Link>
       
-      <UserMenu isCartPage={isCartPage} />
+      <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
     </div>
   );
 };
