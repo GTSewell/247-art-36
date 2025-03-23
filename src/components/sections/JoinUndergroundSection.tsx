@@ -16,13 +16,13 @@ const JoinUndergroundSection = () => {
       duration: 0.5
     }} className="container mx-auto max-w-4xl">
         <div className="space-y-8 mx-0">
-          <Link to="/details" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
+          <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
             <img 
               src="/lovable-uploads/d18c3542-cbb6-47d7-a6cd-b1d9d0f5fffe.png" 
               alt="TLDR; SIGN ME UP!" 
               className="w-full h-auto"
             />
-          </Link>
+          </a>
 
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
