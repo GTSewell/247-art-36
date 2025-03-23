@@ -87,11 +87,13 @@
     line-height: 1.2;
   }
   
-  /* Description text */
-  .overflow-x-auto table td .text-gray-600.text-sm {
-    font-size: 0.7rem;
+  /* Description text - increased size for better readability */
+  .overflow-x-auto table td .text-gray-600.text-sm,
+  .overflow-x-auto table td .text-gray-700.text-sm {
+    font-size: 0.85rem;
     padding-left: 2px;
-    line-height: 1.2;
+    line-height: 1.4;
+    padding: 8px 4px;
   }
   
   /* Stack text in cells with line breaks */
