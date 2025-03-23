@@ -69,7 +69,6 @@ const Details = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="max-w-4xl mx-auto mt-16"
         >
-          <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Calculate Your Exhibition Profitability</h2>
           <SalesCalculator />
         </motion.div>
 
