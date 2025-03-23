@@ -85,6 +85,15 @@ const Details = () => {
           <InterestForm introText={outroText} />
         </motion.div>
 
+        {/* White Halftone Image */}
+        <div className="relative w-full mt-8 mb-4">
+          <img 
+            src="/lovable-uploads/f8245924-0dab-4cd1-b035-81c492ad19fa.png"
+            alt="White Halftone Pattern"
+            className="w-full h-auto"
+          />
+        </div>
+
         {/* Center Rocket Icon for Desktop */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
