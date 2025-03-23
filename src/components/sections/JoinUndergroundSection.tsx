@@ -35,7 +35,7 @@ const JoinUndergroundSection = () => {
             className="mt-12 text-center"
           >
             <img 
-              src="/lovable-uploads/2ed59a3d-02e9-41db-97a4-722e0a36b249.png" 
+              src="/lovable-uploads/7d2e39fb-84b5-4bfc-9f09-707fa8e985e1.png" 
               alt="Built By Artists For Artists" 
               className="w-full max-w-2xl mx-auto"
             />
