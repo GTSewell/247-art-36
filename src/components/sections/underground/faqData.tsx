@@ -1,3 +1,4 @@
+
 import VideoPlayer from "@/components/VideoPlayer";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -49,4 +50,5 @@ export const faqItems = [
 
 // Section text content
 export const introText = "Giddy Up!";
-export const outroText = "Right now, this page is locked to the public—only artists with an invite can see it. You have been pre-approved for curation. \n\nThis is a new way to exhibit, sell, and grow, and we want the right people on board before we open this up to the general public. \n\nIf you have a friend you think that might also like to be a part of this, we trust your curation. Just let us know and we'll send you a fresh password invite for them too.";
+export const outroText = "Right now, this page is locked to the public—only artists with an invite can see it. You have been pre-approved for curation. \n\nThis is a new way to exhibit, sell, and grow, and we want the right people on board before we open this up to the general public. \n\nIf you have a friend you think that might also like to be a part of this, we trust your curation. Feel free to share your password with them. Tell them to add their name when they 'sign in' and we'll know you sent them our way! 🙏";
+
