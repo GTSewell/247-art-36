@@ -1,6 +1,5 @@
 
 import Hero from "@/components/Hero";
-import CallToAction from "@/components/sections/CallToAction";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
 import { useAppMode } from "@/contexts/AppModeContext";
@@ -20,7 +19,6 @@ const Index = () => {
         {isPWA ? <PWANavigation /> : <Navigation />}
         <Hero />
         <JoinUndergroundSection />
-        <CallToAction />
       </main>
     </>
   );
