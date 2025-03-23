@@ -96,7 +96,7 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
                   <span className="text-lg font-medium">{item.title}</span>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-4 py-4 bg-white/5 text-black text-lg">
+              <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg">
                 {item.content}
               </AccordionContent>
             </AccordionItem>
