@@ -28,10 +28,10 @@ const JoinUndergroundSection = () => {
           duration: 0.5,
           delay: 0.2
         }} className="mb-8 text-center">
-            <p className="text-xl md:text-2xl font-extrabold text-white">
-              <span className="block">We built Lanes End</span>
-              <span className="block">We built VS. Gallery</span>
-              <span className="block">We built Milkbar</span>
+            <p className="text-xl md:text-3xl font-extrabold text-white">
+              <span className="block">We built 'Lanes End'</span>
+              <span className="block">We built 'VS. Gallery'</span>
+              <span className="block">We built 'Milkbar'</span>
               <span className="block mt-4">Now, we build 247!</span>
             </p>
           </motion.div>
