@@ -7,6 +7,8 @@ import SalesCalculator from "@/components/details/SalesCalculator";
 import InterestForm from "@/components/sections/underground/InterestForm";
 import { outroText } from "@/components/sections/underground/faqData";
 import { useIsMobile } from "@/hooks/use-mobile";
+import DetailsFaqAccordion from "@/components/details/DetailsFaqAccordion";
+import { detailsFaqItems } from "@/components/details/detailsFaqData";
 
 const Details = () => {
   const isMobile = useIsMobile();
@@ -78,7 +80,7 @@ We do understand that is not always going to be easy, but we're here to work tog
           <SalesCalculator />
         </motion.div>
         
-        {/* "LFG, I Want In!" Image with animation and link - MOVED BELOW SALES CALCULATOR */}
+        {/* FAQ Accordion - Added inside the selected container */}
         <motion.div initial={{
         opacity: 0,
         y: 20
@@ -88,6 +90,23 @@ We do understand that is not always going to be easy, but we're here to work tog
       }} transition={{
         duration: 0.5,
         delay: 0.5
+      }} className="flex justify-center items-center my-12 flex-col">
+          <h2 className="text-3xl font-bold text-black mb-6">Frequently Asked Questions</h2>
+          <div className="w-full max-w-4xl">
+            <DetailsFaqAccordion items={detailsFaqItems} />
+          </div>
+        </motion.div>
+
+        {/* "LFG, I Want In!" Image with animation and link - MOVED BELOW SALES CALCULATOR */}
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5,
+        delay: 0.6
       }} className="flex justify-center items-center my-12">
           <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
             <img src="/lovable-uploads/125e0b0f-15c8-4d5a-a182-4a1dc5d0594c.png" alt="LFG, I Want In!" className="w-full max-w-[500px] animate-float cursor-pointer" />
@@ -103,7 +122,7 @@ We do understand that is not always going to be easy, but we're here to work tog
         y: 0
       }} transition={{
         duration: 0.5,
-        delay: 0.6
+        delay: 0.7
       }} className="max-w-4xl mx-auto mt-16 mb-0 my-0 py-0">
           
           <InterestForm introText={outroText} />
