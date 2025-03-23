@@ -153,7 +153,7 @@ const ServicesSection = () => {
 
       <div className="mt-12 text-center">
         <h2 className="mb-4 text-black font-bold text-3xl">Ready to Work With Us?</h2>
-        <p className="mb-6 text-white opacity-90 max-w-2xl mx-auto">
+        <p className="mb-6 opacity-90 max-w-2xl mx-auto text-black font-semibold text-3xl">
           Contact us to discuss your project needs or to schedule a consultation with our team.
         </p>
         <Button asChild size="lg" className="mt-2">
