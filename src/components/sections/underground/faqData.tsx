@@ -36,7 +36,7 @@ export const faqItems = [
         Not everyone can make it to our IRL space, and that's why we're taking it to the world with your very own <strong className="font-bold">247.art KICK-ASS online sales profile!</strong><br /><br />
         Each artist will receive their own custom domain, think of it as a 'Link in BIO' but with direct sales right at your collectors fingertips, and not just a bland few hyperlinks floating on the page.<br /><br />
         We call it the artist <strong className="font-bold">ATLAS</strong>, an acronym for Artist BIO, Techniques/Styles, Links, Artworks & Social media. A searchable artist "encyclopedia" (do they even exist anymore?) all in one place!<br /><br />
-        On top of that, we'll add a fully immersive 3D lidar scan of the exhibition! Peep the Virtual Tour on our Services page.<br /><br />
+        On top of that, we'll add a fully immersive 3D lidar scan of the exhibition! Peep the Virtual Tour on our About Us page.<br /><br />
         <div className="flex items-center gap-2 justify-center">
           <ArrowLeft className="w-5 h-5" /> 
           <strong className="font-bold">[yournamehere].247.art</strong> 
