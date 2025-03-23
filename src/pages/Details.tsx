@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/navigation/Navigation";
 import { motion } from "framer-motion";
 import ArtistPackageTable from "@/components/details/ArtistPackageTable";
@@ -5,7 +6,11 @@ import ArtworkSizeCalculator from "@/components/details/ArtworkSizeCalculator";
 import SalesCalculator from "@/components/details/SalesCalculator";
 import InterestForm from "@/components/sections/underground/InterestForm";
 import { outroText } from "@/components/sections/underground/faqData";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 const Details = () => {
+  const isMobile = useIsMobile();
+
   return <main className="min-h-screen bg-[#f7cf1e] overflow-hidden relative">
       {/* Top Red Halftone Background - Full Width */}
       <div className="absolute top-0 left-0 right-0 w-full z-10">
@@ -121,7 +126,11 @@ We do understand that is not always going to be easy, but we're here to work tog
         
         {/* Rocket Icon - Centered absolute positioning */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full flex justify-center">
-          <img src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png" alt="Rocket Icon" className="w-full max-w-[400px] animate-float z-10" />
+          <img 
+            src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png" 
+            alt="Rocket Icon" 
+            className={`w-full ${isMobile ? 'max-w-[200px]' : 'max-w-[400px]'} animate-float z-10`} 
+          />
         </div>
       </motion.div>
     </main>;
