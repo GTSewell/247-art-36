@@ -34,12 +34,27 @@ const JoinUndergroundSection = () => {
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
           
+          {/* Added paragraph with styled text above the image */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-12 mb-8 text-center"
+          >
+            <p className="text-xl md:text-2xl font-extrabold text-white">
+              <span className="block">We built Lanes End</span>
+              <span className="block">We built VS. Gallery</span>
+              <span className="block">We built Milkbar</span>
+              <span className="block mt-4">Now, we build 247!</span>
+            </p>
+          </motion.div>
+          
           {/* Added animate-float class to create the soft bounce animation */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="mt-12 text-center"
+            className="text-center"
           >
             <img 
               src="/lovable-uploads/2a729dda-550e-4a9f-9b77-b04246fe65d6.png" 
