@@ -85,17 +85,24 @@ const Details = () => {
           <InterestForm introText={outroText} />
         </motion.div>
 
-        {/* Center Rocket Icon for Desktop */}
+        {/* Center Rocket Icon for Desktop with Red Halftone Background */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex justify-center items-center my-12"
+          className="flex justify-center items-center my-12 relative"
         >
+          {/* Red Halftone Background Image */}
+          <img 
+            src="/lovable-uploads/2d2a11b1-3157-4f38-82be-6b60ce75150d.png"
+            alt="Red Halftone Background"
+            className="absolute inset-0 w-full h-full object-contain"
+          />
+          {/* Rocket Icon */}
           <img 
             src="/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png"
             alt="Rocket Icon"
-            className="w-full max-w-[400px] animate-float"
+            className="w-full max-w-[400px] animate-float relative z-10"
           />
         </motion.div>
       </div>
