@@ -43,7 +43,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       
       <Form {...form}>
         <form className="space-y-6">
-          <div className={`${headerBgColor} text-white p-3 rounded-md mb-2`}>
+          <div className={`${headerBgColor} p-3 rounded-md mb-2`}>
             <h4 className="text-center font-bold text-black text-2xl">Signature Artist</h4>
           </div>
 
