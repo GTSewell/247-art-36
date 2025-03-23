@@ -11,7 +11,7 @@ interface ResultsDisplayProps {
 
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ results }) => {
   return (
-    <Card className={`p-6 ${results.breakEven ? 'border-green-500 border-2' : 'border-orange-500 border-2'}`}>
+    <Card className={`p-6 ${results.breakEven ? 'border-zap-green border-2' : 'border-zap-red border-2'}`}>
       <h3 className="text-xl font-semibold mb-4">Your Results</h3>
       
       <div className="space-y-3 text-sm">
@@ -54,12 +54,12 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ results }) => {
         
         <div className="flex justify-between font-bold text-base">
           <span>Profit/Loss:</span>
-          <span className={results.profitLoss >= 0 ? "text-green-600" : "text-red-600"}>
+          <span className={results.profitLoss >= 0 ? "text-zap-green" : "text-zap-red"}>
             ${results.profitLoss.toFixed(2)}
           </span>
         </div>
         
-        <div className={`mt-4 p-3 rounded-md ${results.breakEven ? "bg-green-50 text-green-800" : "bg-orange-50 text-orange-800"} flex items-start`}>
+        <div className={`mt-4 p-3 rounded-md ${results.breakEven ? "bg-zap-green/10 text-zap-green" : "bg-zap-red/10 text-zap-red"} flex items-start`}>
           <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
           <div>
             {results.breakEven ? (
