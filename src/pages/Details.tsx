@@ -28,7 +28,7 @@ const Details = () => {
       }} transition={{
         duration: 0.5
       }} className="max-w-3xl mx-auto text-center mb-16 bg-zap-yellow p-6 rounded-lg shadow-md">
-          <h1 className="text-4xl font-bold mb-6 text-black">Artist Exhibition Packages</h1>
+          <h1 className="text-4xl font-bold mb-6 text-black">Signature Artist Exhibition</h1>
           <p className="text-lg text-black mb-4">
             Whether you're just starting your journey in the art world, or, you're a seasoned pro. Our Signature Artist package is flexible enough to cater to all. 
           </p>
