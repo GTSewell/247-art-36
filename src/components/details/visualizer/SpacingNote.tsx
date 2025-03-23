@@ -12,7 +12,7 @@ const SpacingNote: React.FC<SpacingNoteProps> = ({ showNote, spacing }) => {
   return (
     <div className="text-sm text-gray-600 mt-4 p-3 bg-blue-50 rounded-lg">
       <strong>Note:</strong> When displaying multiple artworks, we add {spacing}cm spacing on all sides of each artwork.
-      This increases the total space needed.
+      This allows for spacing of your art within your area.
     </div>
   );
 };

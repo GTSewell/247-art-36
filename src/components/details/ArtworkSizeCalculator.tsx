@@ -107,6 +107,7 @@ const ArtworkSizeCalculator: React.FC = () => {
 
             <div className="mt-6">
               <h3 className="text-lg font-medium mb-4">Visual Representation</h3>
+              <p className="text-sm text-gray-500 mb-3 italic">Artwork visualizer is best viewed on larger screens</p>
               <ArtworkVisualizer 
                 artworks={artworks} 
                 maxArea={maxAllowedArea}
