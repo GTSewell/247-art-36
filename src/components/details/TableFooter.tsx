@@ -16,22 +16,6 @@ const TableFooterComponent = () => {
       <TableCell className="text-center p-1">
         <Link to="/artist-submission">
           <Button size="sm" variant="secondary" className="text-xs sm:text-sm w-full">
-            Select Studio
-            <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-          </Button>
-        </Link>
-      </TableCell>
-      <TableCell className="text-center p-1">
-        <Link to="/artist-submission">
-          <Button size="sm" variant="secondary" className="text-xs sm:text-sm w-full">
-            Select Feature
-            <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-          </Button>
-        </Link>
-      </TableCell>
-      <TableCell className="text-center p-1">
-        <Link to="/artist-submission">
-          <Button size="sm" variant="secondary" className="text-xs sm:text-sm w-full">
             Select Signature
             <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
