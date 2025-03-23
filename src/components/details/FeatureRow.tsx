@@ -30,7 +30,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
       <TableRow 
         className={cn(
           index % 2 === 0 ? "bg-white" : "bg-gray-50",
-          isExpanded ? "border-b-0" : "",
+          isExpanded ? "bg-[#33C3F0] border-b-0" : "",
           "cursor-pointer hover:bg-[#33C3F0]"
         )} 
         style={{ transition: 'none' }}
