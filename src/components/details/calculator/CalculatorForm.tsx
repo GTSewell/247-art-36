@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,12 +8,10 @@ import { DollarSign, Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card";
 import { calculatorFormSchema, CalculatorFormValues, CalculationResults } from "./schema";
-
 interface CalculatorFormProps {
   onFormChange: (values: CalculatorFormValues) => void;
   results?: CalculationResults;
 }
-
 const CalculatorForm: React.FC<CalculatorFormProps> = ({
   onFormChange,
   results
@@ -27,18 +24,14 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       artworkSales: undefined
     }
   });
-  
   const watchFields = form.watch();
-  
   React.useEffect(() => {
     onFormChange(watchFields);
   }, [watchFields, onFormChange]);
-  
+
   // Determine the background color based on profitability
-  const headerBgColor = !results ? "bg-zap-red" : 
-                         results.profitLoss >= 0 ? "bg-zap-green" : "bg-zap-red";
-  
-  return <Card className="p-6">
+  const headerBgColor = !results ? "bg-zap-red" : results.profitLoss >= 0 ? "bg-zap-green" : "bg-zap-red";
+  return <Card className="p-6 py-[35px]">
       <h3 className="text-xl font-semibold mb-4">Calculate Your Potential</h3>
       
       <Form {...form}>
@@ -96,5 +89,4 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
       </Form>
     </Card>;
 };
-
 export default CalculatorForm;
