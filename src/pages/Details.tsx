@@ -30,16 +30,16 @@ const Details = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto text-center mb-16"
+          className="max-w-3xl mx-auto text-center mb-16 bg-zap-yellow p-6 rounded-lg shadow-md"
         >
-          <h1 className="text-4xl font-bold mb-6 text-gray-800">Artist Exhibition Packages</h1>
-          <p className="text-lg text-gray-800 mb-4">
+          <h1 className="text-4xl font-bold mb-6 text-black">Artist Exhibition Packages</h1>
+          <p className="text-lg text-black mb-4">
             Whether you're just starting your journey in the art world, or, you're a seasoned pro. Our Signature Artist package is flexible enough to cater to all. 
           </p>
-          <p className="text-lg text-gray-800">
+          <p className="text-lg text-black">
             Below you will find full details on the Signature Artist package, along with both an Artwork Size & Exhibition Profit Calculator to help you better understand your investment value.
           </p>
-          <p className="text-lg text-gray-800">
+          <p className="text-lg text-black">
             I goal is to help every artist with an amazing gallery experience, and at very lest return your investment through art sales. We do understand that is not always going to be easy, but we're here to work together and give you the best damn chance at succeeding.
           </p>
         </motion.div>
