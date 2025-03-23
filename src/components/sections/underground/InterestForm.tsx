@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 interface InterestFormProps {
   introText: string;
@@ -11,7 +12,8 @@ const InterestForm = ({
       {/* Embedded Tally form */}
       <div className="mt-6">
         <iframe src="https://tally.so/embed/3X8q5Y?hideTitle=1&transparentBackground=1&dynamicHeight=1" width="100%" frameBorder="0" marginHeight={0} marginWidth={0} title="Expression of Interest" className="rounded-lg w-full" style={{
-        minHeight: "700px"
+        minHeight: "500px",
+        height: "auto"
       }}></iframe>
       </div>
     </div>;
