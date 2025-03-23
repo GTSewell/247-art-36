@@ -57,7 +57,7 @@ export const features: Feature[] = [
     studioArtist: "0.75 sqm area", 
     featureArtist: "1 sqm area", 
     signatureArtist: "0.75 sqmm to 1 sqm area",
-    description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm.<br /><br />Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See the artork calculator below."
+    description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm.<br /><br />Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See our artwork calculator below."
   },
   { 
     name: "Artworks Per Space", 
@@ -78,14 +78,14 @@ export const features: Feature[] = [
     studioArtist: "1 per Month", 
     featureArtist: "Up to 2 per month", 
     signatureArtist: "2 per month",
-    description: "Frequency at which you can rotate or update your displayed artwork. When your artwork sells, we will pack the artwork straight away and send or allow the collector to take your art on the spot. We will then place one of your stockroom works in place of the sold artwork. You can then add another new work to the stockroom if you choose to do so. We can change out your in-house stockroom works each month to keep the gallery dynamic, or, you can bring in new works to swap around. After all, this IS your gallery"
+    description: "Frequency at which you can rotate or update your displayed artwork. When your artwork sells, we will pack the artwork straight away and ship to your the collector, or, they can take your art on the spot. We will then place one of your stockroom works in place of the sold artwork. You can then add another new work to the stockroom if you choose to do so. We can change out your in-house stockroom works each month to keep the gallery dynamic, or, you can bring in new works to swap around. After all, this IS your gallery"
   },
   { 
     name: "Genesis Artist 'ATLAS' Book", 
     studioArtist: "Single Page", 
     featureArtist: "Double Page spread", 
     signatureArtist: "Double Page spread",
-    description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts."
+    description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts to enjoy."
   },
   { 
     name: "Priority Art Hanging", 
