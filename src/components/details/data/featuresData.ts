@@ -1,3 +1,4 @@
+
 interface Feature {
   name: string;
   studioArtist: boolean | string;
@@ -42,7 +43,7 @@ export const features: Feature[] = [
     studioArtist: "25", 
     featureArtist: "10", 
     signatureArtist: "25",
-    description: "For every STP Collector pack you sell, 1% is deducted from your gallery commission. Example: If you sell 15x STP Collector packs, your commission becomes 10% (25 - 15 (STP) = 10) from that point onwards. So if you sell 25x STP Collector packs on day 1, your effective gallery commission will be 0% for the next 3 months."<br />" What is an STP Collector pack? Simple, 'Stickers | T-shirt | Print' with your own individual artist designed packaging. To start, We produce 25x A4 fine art prints for each artist to sign & edition. Your minimum STP Collector pack edition size is '25/25'."<br />"You can choose to make the editions larger if you are a high selling artist, Edition 50, 100, 250 etc, or even make it a signed open edition. It is completely up to you. If you are not sure, we will help guide you."<br />" Each STP pack will retail at $124.95, and your commission is ~$50 each pack sold. Consider STP packs a gateway for the new gen collectors to purchase your art."
+    description: "For every STP Collector pack you sell, 1% is deducted from your gallery commission. Example: If you sell 15x STP Collector packs, your commission becomes 10% (25 - 15 (STP) = 10) from that point onwards. So if you sell 25x STP Collector packs on day 1, your effective gallery commission will be 0% for the next 3 months.<br /><br /> What is an STP Collector pack? Simple, 'Stickers | T-shirt | Print' with your own individual artist designed packaging. To start, We produce 25x A4 fine art prints for each artist to sign & edition. Your minimum STP Collector pack edition size is '25/25'.<br /><br />You can choose to make the editions larger if you are a high selling artist, Edition 50, 100, 250 etc, or even make it a signed open edition. It is completely up to you. If you are not sure, we will help guide you.<br /><br /> Each STP pack will retail at $124.95, and your commission is ~$50 each pack sold. Consider STP packs a gateway for the new gen collectors to purchase your art."
   },
   { 
     name: "Artist Commission (Retail Production)", 
@@ -56,7 +57,7 @@ export const features: Feature[] = [
     studioArtist: "0.75 sqm area", 
     featureArtist: "1 sqm area", 
     signatureArtist: "0.75 sqmm to 1 sqm area",
-    description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm."<br />"Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See the artork calculator below."
+    description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm.<br /><br />Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See the artork calculator below."
   },
   { 
     name: "Artworks Per Space", 
@@ -70,7 +71,7 @@ export const features: Feature[] = [
     studioArtist: "Full Range", 
     featureArtist: "Full Range", 
     signatureArtist: "Full Range",
-    description: "Your artwork can be featured on our complete apparel collection, including t-shirts, hoodies, Totes, and more. We will add new items for your choice.<br />We will also help artists with apparel design where needed. The apparel game is a different beast, and we know how to make the best of it!"
+    description: "Your artwork can be featured on our complete apparel collection, including t-shirts, hoodies, Totes, and more. We will add new items for your choice.<br /><br />We will also help artists with apparel design where needed. The apparel game is a different beast, and we know how to make the best of it!"
   },
   { 
     name: "Artwork Changes", 
@@ -126,14 +127,14 @@ export const features: Feature[] = [
     studioArtist: true, 
     featureArtist: true, 
     signatureArtist: true,
-    description: "Receive a personalized URL '[artistname].247.art' for your online profile, making it easier for collectors to find, follow and purchase your work.<br />As Genesis Artists you will have your online profile foreever and be the first to test & receive any new updates/perks etc"
+    description: "Receive a personalized URL '[artistname].247.art' for your online profile, making it easier for collectors to find, follow and purchase your work.<br /><br />As Genesis Artists you will have your online profile foreever and be the first to test & receive any new updates/perks etc"
   },
   { 
     name: "Sculpture Display Option (TBD)", 
     studioArtist: false, 
     featureArtist: true, 
     signatureArtist: true,
-    description: "Option to display three-dimensional artwork, expanding the media types you can showcase. There are limited sizes & spots for sculptural works.<br />There will be limited availabilty for sculptural display. Please contact us using the form below for more information"
+    description: "Option to display three-dimensional artwork, expanding the media types you can showcase. There are limited sizes & spots for sculptural works.<br /><br />There will be limited availabilty for sculptural display. Please contact us using the form below for more information"
   },
   { 
     name: "Shop-front Feature Display", 
