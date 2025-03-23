@@ -2,7 +2,6 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -24,7 +23,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({ onFormChange }) => {
   const form = useForm<CalculatorFormValues>({
     resolver: zodResolver(calculatorFormSchema),
     defaultValues: {
-      packageType: "studio",
+      packageType: "signature",
       stpPacks: undefined,
       artworkSales: undefined,
     },
@@ -42,36 +41,9 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({ onFormChange }) => {
       
       <Form {...form}>
         <form className="space-y-6">
-          <FormField
-            control={form.control}
-            name="packageType"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>Package Type</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-col space-y-1"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="studio" id="studio" />
-                      <Label htmlFor="studio" className="font-normal">
-                        Studio Artist ($995, 25% commission)
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="feature" id="feature" />
-                      <Label htmlFor="feature" className="font-normal">
-                        Feature Artist ($1,495, 10% commission)
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="bg-black text-white p-3 rounded-md mb-2">
+            <h4 className="font-medium">Signature Artist ($1,295, 25% commission)</h4>
+          </div>
 
           <FormField
             control={form.control}
@@ -88,8 +60,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({ onFormChange }) => {
                       <TooltipContent>
                         <p className="max-w-xs">
                           Each STP pack sold reduces commission by 1%. 
-                          Studio Artists need 25 packs to reach 0% commission.
-                          Feature Artists need 10 packs to reach 0% commission.
+                          Signature Artists need 25 packs to reach 0% commission.
                         </p>
                       </TooltipContent>
                     </Tooltip>

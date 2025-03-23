@@ -2,12 +2,14 @@
 // Constants for sales calculator
 export const PACKAGE_COSTS = {
   studio: 995,
-  feature: 1495
+  feature: 1495,
+  signature: 1295
 };
 
 export const BASE_COMMISSION_RATES = {
   studio: 0.25, // 25%
-  feature: 0.10  // 10%
+  feature: 0.10, // 10%
+  signature: 0.25  // 25%
 };
 
 export const STP_REVENUE_PER_PACK = 50; // Artist makes $50 per STP pack

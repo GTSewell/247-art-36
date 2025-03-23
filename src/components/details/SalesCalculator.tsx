@@ -7,10 +7,10 @@ import { calculateResults } from './calculator/calculations';
 
 const SalesCalculator = () => {
   const [calculationResults, setCalculationResults] = useState<CalculationResults>({
-    packageCost: 0,
+    packageCost: 1295, // Default to Signature Artist package cost
     stpRevenue: 0,
-    baseCommissionRate: 0,
-    effectiveCommissionRate: 0,
+    baseCommissionRate: 0.25,
+    effectiveCommissionRate: 0.25,
     artworkRevenueBeforeStp: 0,
     artworkRevenueAfterStp: 0,
     totalRevenue: 0,
