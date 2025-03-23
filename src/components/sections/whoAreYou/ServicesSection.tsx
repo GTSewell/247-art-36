@@ -157,7 +157,7 @@ const ServicesSection = () => {
           Contact us to discuss your project needs or to schedule a consultation with our team.
         </p>
         <Button asChild size="lg" className="mt-2">
-          <Link to="/artists">Connect With Our Team</Link>
+          <Link to="/artists" className="px-[123px]">Connect With Our Team</Link>
         </Button>
       </div>
     </div>;
