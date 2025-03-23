@@ -1,12 +1,9 @@
-
 import { Printer, ImageIcon, ShoppingBag, Users, Calendar, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import MatterportViewer from "@/components/MatterportViewer";
-
 const ServicesSection = () => {
-  return (
-    <div className="mt-16 mb-12">
+  return <div className="mt-16 mb-12">
       <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-white">Our Services</h2>
       
       <div className="space-y-12 max-w-4xl mx-auto">
@@ -51,10 +48,7 @@ const ServicesSection = () => {
           </div>
           
           <div className="aspect-video w-full bg-white rounded-lg overflow-hidden mb-6">
-            <MatterportViewer 
-              modelId="BNNRoZpfMt6"
-              height="500px"
-            />
+            <MatterportViewer modelId="BNNRoZpfMt6" height="500px" />
           </div>
           
           <div className="mt-4">
@@ -158,7 +152,7 @@ const ServicesSection = () => {
       </div>
 
       <div className="mt-12 text-center">
-        <h2 className="text-2xl font-semibold mb-4 text-white">Ready to Work With Us?</h2>
+        <h2 className="mb-4 text-black font-bold text-3xl">Ready to Work With Us?</h2>
         <p className="mb-6 text-white opacity-90 max-w-2xl mx-auto">
           Contact us to discuss your project needs or to schedule a consultation with our team.
         </p>
@@ -166,8 +160,6 @@ const ServicesSection = () => {
           <Link to="/artists">Connect With Our Team</Link>
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default ServicesSection;
