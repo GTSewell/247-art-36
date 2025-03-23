@@ -43,9 +43,9 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
   const baseArea = width * height;
 
   return (
-    <div className="text-center relative mx-2">
+    <div className="text-center relative mx-4">
       {/* Position the title above the artwork with more spacing */}
-      <div className="mb-4 text-sm font-medium">Artwork {index + 1}</div>
+      <div className="mb-6 text-sm font-medium">Artwork {index + 1}</div>
       <div 
         className={`relative border-2 ${borderColor}`}
         style={{ 
@@ -65,10 +65,10 @@ const ArtworkElement: React.FC<ArtworkElementProps> = ({
         )}
       </div>
       {/* Move the area info below with more spacing */}
-      <div className="mt-4 text-xs">
-        Base Area: {baseArea} sq cm
+      <div className="mt-6 text-xs">
+        <div className="font-medium">Base Area: {baseArea} sq cm</div>
         {artwork.area !== baseArea && baseArea > 0 && (
-          <div className="text-gray-500">
+          <div className="text-gray-500 mt-1">
             With spacing: {artwork.area} sq cm
           </div>
         )}

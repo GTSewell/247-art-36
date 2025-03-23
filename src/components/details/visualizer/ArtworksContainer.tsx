@@ -23,14 +23,14 @@ const ArtworksContainer: React.FC<ArtworksContainerProps> = ({
   const bufferThreshold = maxArea * (1 - bufferPercentage / 100);
   
   return (
-    <div className="relative w-full h-64 bg-gray-100 rounded-md overflow-hidden">
+    <div className="relative w-full h-96 bg-gray-100 rounded-md overflow-hidden">
       {artworks.length === 0 ? (
         <div className="flex items-center justify-center h-full">
           <p className="text-gray-500">No artworks added yet</p>
         </div>
       ) : (
         <div className="w-full h-full relative p-6">
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center gap-8">
             {artworks.map((artwork, index) => (
               <ArtworkElement 
                 key={index}
