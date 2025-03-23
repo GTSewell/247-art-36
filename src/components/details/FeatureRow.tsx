@@ -31,7 +31,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         className={cn(
           index % 2 === 0 ? "bg-white" : "bg-gray-50",
           isExpanded ? "border-b-0" : "",
-          "cursor-pointer hover:bg-[#33C3F0]/50"
+          "cursor-pointer hover:bg-[#33C3F0]"
         )} 
         style={{ transition: 'none' }}
         onClick={() => toggleRow(index)}
