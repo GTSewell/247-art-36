@@ -34,7 +34,7 @@ const JoinUndergroundSection = () => {
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
           
-          {/* Built By Artists For Artists image now appears only once, at the top of the FAQ */}
+          {/* Added animate-float class to create the soft bounce animation */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -44,7 +44,7 @@ const JoinUndergroundSection = () => {
             <img 
               src="/lovable-uploads/2a729dda-550e-4a9f-9b77-b04246fe65d6.png" 
               alt="Built By Artists For Artists" 
-              className="w-full max-w-2xl mx-auto"
+              className="w-full max-w-2xl mx-auto animate-float"
             />
           </motion.div>
         </div>
