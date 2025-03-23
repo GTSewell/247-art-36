@@ -41,7 +41,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({ onFormChange }) => {
       
       <Form {...form}>
         <form className="space-y-6">
-          <div className="bg-black text-white p-3 rounded-md mb-2">
+          <div className="bg-gradient-to-r from-zap-red to-zap-yellow text-white p-3 rounded-md mb-2">
             <h4 className="font-medium">Signature Artist ($1,295, 25% commission)</h4>
           </div>
 
