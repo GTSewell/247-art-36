@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Check, X } from "lucide-react";
 import { TableCell } from "@/components/ui/table";
@@ -17,6 +16,19 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       originalPrice = '$1495';
     } else if (type === 'featureArtist') {
       originalPrice = '$1995';
+    } else if (type === 'signatureArtist') {
+      originalPrice = '$1495';
+    }
+    
+    if (type === 'signatureArtist') {
+      return (
+        <TableCell className="text-center p-1">
+          <div className="flex items-center justify-center space-x-2">
+            <span className="line-through text-gray-500 text-xs sm:text-sm">{originalPrice}</span>
+            <span className="text-sm sm:text-base font-medium">{value}</span>
+          </div>
+        </TableCell>
+      );
     }
     
     return (
@@ -29,14 +41,12 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
     );
   }
   
-  // Handle stacked text (like converting "100 Days (3 months)" to stacked format)
   if (stackText && typeof value === 'string') {
-    // Look for patterns like "X (Y)" or "X to Y"
     let parts;
     
     if (value.includes(' (')) {
       parts = value.split(' (');
-      parts[1] = parts[1].replace(')', ''); // Remove closing parenthesis
+      parts[1] = parts[1].replace(')', '');
       
       return (
         <TableCell className="text-center p-1">
@@ -61,7 +71,6 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       );
     }
     
-    // Handle "X every Y" pattern for rotation frequency
     if (value.includes(' every ')) {
       parts = value.split(' every ');
       
