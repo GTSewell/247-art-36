@@ -88,18 +88,18 @@ export const features: Feature[] = [
     description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts to enjoy."
   },
   { 
+    name: "Priority Art Hanging", 
+    studioArtist: "true", 
+    featureArtist: "true", 
+    signatureArtist: "The first 50 artists",
+    description: "Your artwork will be given priority placement during gallery rotations in the exhibition."
+  },
+  { 
     name: "Artist Dashboard: Profile, Trade & Sales", 
     studioArtist: "true", 
     featureArtist: "true", 
     signatureArtist: true,
     description: "You will receive your very own Artist Dashboard which will include sales analytics, your collector information and details (If they choose not to be Anon), along with the ability to trade your retail artworks with other artists!<br /><br /> Visit the 'Profile icon' (Top right of screen) and go to 'Artist Dashboard' in the dropdown menu. Click around a see what you think<br /><br />Note: Although we have the prototype functioning smoothly, the 'artist-to-artist' trades may not be available on day 1, though, you will be the first to use it when it's ready!"
-  },
-  { 
-    name: "Priority Art Hanging", 
-    studioArtist: "true", 
-    featureArtist: "true", 
-    signatureArtist: "The first 50 sign-ups",
-    description: "Your artwork will be given priority placement during gallery rotations in the exhibition."
   },
   { 
     name: "Artist Care Package", 
