@@ -5,7 +5,7 @@ interface InterestFormProps {
 const InterestForm = ({
   introText
 }: InterestFormProps) => {
-  return <div className="p-6 rounded-lg bg-zap-blue">
+  return <div className="p-6 rounded-lg bg-zap-blue my-[175px] px-[4px] py-[10px]">
       <p className="whitespace-pre-wrap font-semibold text-2xl text-neutral-700">{introText}</p>
       
       {/* Embedded Tally form */}
