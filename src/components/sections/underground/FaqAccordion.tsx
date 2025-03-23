@@ -82,7 +82,7 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
           >
             <AccordionItem 
               value={`item-${index}`} 
-              className="border-zap-yellow border-2 rounded-lg overflow-hidden"
+              className="border-black border-2 rounded-lg overflow-hidden"
             >
               <AccordionTrigger 
                 className="px-4 py-3 bg-zap-blue text-white hover:bg-zap-red hover:no-underline group data-[state=open]:bg-zap-red"
