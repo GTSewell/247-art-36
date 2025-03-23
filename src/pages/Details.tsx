@@ -10,7 +10,7 @@ import { Zap } from "lucide-react";
 
 const Details = () => {
   return (
-    <main className="min-h-screen bg-[#9ec0d2]">
+    <main className="min-h-screen bg-[#f7cf1e]">
       <Navigation />
       
       <div className="container mx-auto px-4 pt-24 pb-12">
