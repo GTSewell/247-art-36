@@ -9,10 +9,22 @@ import { outroText } from "@/components/sections/underground/faqData";
 
 const Details = () => {
   return (
-    <main className="min-h-screen bg-[#f7cf1e] overflow-hidden">
-      <Navigation />
+    <main className="min-h-screen bg-[#f7cf1e] overflow-hidden relative">
+      {/* Top Red Halftone Background - Full Width */}
+      <div className="absolute top-0 left-0 right-0 w-full z-10">
+        <img 
+          src="/lovable-uploads/41f4bd11-64e7-4a89-bc4f-730883fb8f4e.png"
+          alt="Red Halftone Background Top"
+          className="w-full h-auto object-cover"
+        />
+      </div>
       
-      <div className="container mx-auto px-4 pt-24 pb-0">
+      {/* Navigation sits above the halftone background */}
+      <div className="relative z-20">
+        <Navigation />
+      </div>
+      
+      <div className="container mx-auto px-4 pt-24 pb-0 relative z-10">
         {/* Intro paragraph */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
