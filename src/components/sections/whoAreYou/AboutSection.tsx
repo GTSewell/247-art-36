@@ -1,4 +1,3 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
@@ -9,7 +8,7 @@ const AboutSection = () => {
       <div className="absolute inset-0 z-0 pl-8">
         <div className="w-3/4 h-full">
           <img 
-            src="/lovable-uploads/c4d9bfb5-2e72-440a-b468-9e82012ec737.png" 
+            src="/lovable-uploads/f0337ab3-9370-4ae2-b37e-2ead60b25a72.png" 
             alt="Background" 
             className="h-full opacity-20"
             style={{ objectFit: 'contain', objectPosition: 'left' }}
