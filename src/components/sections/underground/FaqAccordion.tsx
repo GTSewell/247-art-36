@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
@@ -25,23 +24,19 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const isMobile = useIsMobile();
   
-  // Use Intersection Observer to detect when accordion is visible
   useEffect(() => {
     if (!accordionRef.current) return;
     
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
-          // When the accordion becomes visible in the viewport
           if (entry.isIntersecting) {
-            // Auto-open the first accordion item (the 5P's one)
             setOpenItem('item-0');
-            // Disconnect the observer after opening to avoid reopening
             observer.disconnect();
           }
         });
       },
-      { threshold: 0.3 } // Trigger when 30% of the element is visible
+      { threshold: 0.3 }
     );
     
     observer.observe(accordionRef.current);
@@ -51,15 +46,13 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
     };
   }, []);
   
-  // Handle scrolling to the opened accordion item
   useEffect(() => {
     if (!openItem || !isMobile) return;
     
     const itemRef = itemRefs.current[openItem];
     if (itemRef) {
-      // Use a small timeout to ensure DOM has updated
       setTimeout(() => {
-        const yOffset = -80; // Offset to account for headers/navigation
+        const yOffset = -80;
         const y = itemRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
         
         window.scrollTo({
@@ -87,7 +80,10 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
             ref={el => itemRefs.current[`item-${index}`] = el}
           >
-            <AccordionItem value={`item-${index}`} className="border-white/20 rounded-lg overflow-hidden">
+            <AccordionItem 
+              value={`item-${index}`} 
+              className="border-zap-yellow border-2 rounded-lg overflow-hidden"
+            >
               <AccordionTrigger 
                 className="px-4 py-3 bg-zap-blue text-white hover:bg-zap-red hover:no-underline group data-[state=open]:bg-zap-red"
               >
