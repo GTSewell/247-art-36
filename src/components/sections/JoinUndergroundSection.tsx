@@ -6,6 +6,13 @@ import { Link } from "react-router-dom";
 
 const JoinUndergroundSection = () => {
   return <section className="py-24 px-4 relative bg-gradient-to-b from-zap-blue to-zap-yellow">
+      {/* Halftone Background Image */}
+      <img 
+        src="/lovable-uploads/6fadf1da-55ba-4d36-8571-a0af3c64c197.png" 
+        alt="Halftone Pattern" 
+        className="absolute inset-0 w-full h-full object-cover z-10 opacity-100 pointer-events-none"
+      />
+      
       <motion.div initial={{
       opacity: 0,
       y: 20
@@ -14,7 +21,7 @@ const JoinUndergroundSection = () => {
       y: 0
     }} transition={{
       duration: 0.5
-    }} className="container mx-auto max-w-4xl">
+    }} className="container mx-auto max-w-4xl relative z-20">
         <div className="space-y-8 mx-0">
           <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
             <img 
