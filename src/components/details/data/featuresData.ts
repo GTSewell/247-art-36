@@ -20,7 +20,7 @@ export const features: Feature[] = [
     name: "Limited Spaces", 
     studioArtist: "50 Artists", 
     featureArtist: "50 Artists", 
-    signatureArtist: "Priority First 50 Artists",
+    signatureArtist: "Priority First 50 Sign-Ups", 
     description: "Limited spaces ensure we can offer personalized attention for all artists for duration of the exhibition."
   },
   { 
@@ -123,8 +123,8 @@ export const features: Feature[] = [
   },
   { 
     name: "Priority Art Hanging", 
-    studioArtist: false, 
-    featureArtist: true, 
+    studioArtist: "true", 
+    featureArtist: "true", 
     signatureArtist: "The first 50 sign-ups,
     description: "Your artwork will be given priority placement during gallery rotations in the exhibition."
   },
