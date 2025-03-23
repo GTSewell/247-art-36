@@ -23,10 +23,13 @@ const Details = () => {
         >
           <h1 className="text-4xl font-bold mb-6 text-gray-800">Artist Exhibition Packages</h1>
           <p className="text-lg text-gray-800 mb-4">
-            Whether you're just starting your journey, or, a full-time artist, we have the perfect package for you. Select between our Studio and Feature Artist options to get started.
+            Whether you're just starting your journey in the art world, or, you're a seasoned pro. Our Signature Artist package is flexible enough to cater to all. 
           </p>
           <p className="text-lg text-gray-800">
-            Below you will find full details on the available Artist packages, along with both an Artwork Size & Exhibition Profit Calculator to help you better understand your investment value.
+            Below you will find full details on the Signature Artist package, along with both an Artwork Size & Exhibition Profit Calculator to help you better understand your investment value.
+          </p>
+          <p className="text-lg text-gray-800">
+            I goal is to help every artist with an amazing gallery experience, and at very lest return your investment through art sales. We do understand that is not always going to be easy, but we're here to work together and give you the best damn chance at succeeding.
           </p>
         </motion.div>
 
