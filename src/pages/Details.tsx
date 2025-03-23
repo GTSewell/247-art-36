@@ -52,7 +52,7 @@ We do understand that is not always going to be easy, but we're here to work tog
           <ArtistPackageTable />
         </div>
         
-        {/* Artwork Size Calculator */}
+        {/* Sales Calculator - Moved above Artwork Size Calculator */}
         <motion.div initial={{
         opacity: 0,
         y: 20
@@ -63,10 +63,10 @@ We do understand that is not always going to be easy, but we're here to work tog
         duration: 0.5,
         delay: 0.3
       }} className="max-w-4xl mx-auto mt-16">
-          <ArtworkSizeCalculator />
+          <SalesCalculator />
         </motion.div>
-
-        {/* Sales Calculator - New Section */}
+        
+        {/* Artwork Size Calculator - Now below Sales Calculator */}
         <motion.div initial={{
         opacity: 0,
         y: 20
@@ -77,7 +77,7 @@ We do understand that is not always going to be easy, but we're here to work tog
         duration: 0.5,
         delay: 0.4
       }} className="max-w-4xl mx-auto mt-16">
-          <SalesCalculator />
+          <ArtworkSizeCalculator />
         </motion.div>
         
         {/* FAQ Accordion - Added inside the selected container */}
