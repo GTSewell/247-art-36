@@ -6,7 +6,7 @@ const InterestForm = ({
   introText
 }: InterestFormProps) => {
   return <div className="p-6 rounded-lg bg-zap-blue">
-      <p className="text-lg text-white/90 whitespace-pre-wrap">{introText}</p>
+      <p className="whitespace-pre-wrap font-semibold text-2xl text-neutral-700">{introText}</p>
       
       {/* Embedded Tally form */}
       <div className="mt-6">
