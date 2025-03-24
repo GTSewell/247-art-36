@@ -6,7 +6,7 @@ export const detailsFaqItems = [
     title: "When will the exhibition start?",
     content: (
       <span>
-        The exhibition is scheduled to start in Spring 2024. We're finalizing exact dates and will announce them across all our channels as soon as they're confirmed. All participating artists will receive advance notice before the public announcement.
+        The exhibition is scheduled to start in May-June 2025. We need to allow enough time, preferebly 1 month prior to exhibition launch, to allow artists and ourselves prepare all artworks and let the world know we're coming. We will finalise exact dates and will announce them directly to each artist and across all our channels as soon as they're confirmed. All participating artists will receive advance notice before the public announcement. 
       </span>
     )
   },
@@ -14,7 +14,7 @@ export const detailsFaqItems = [
     title: "Where is the exhibition location?",
     content: (
       <span>
-        The exhibition will be held at our gallery space on Smith Street in Collingwood, Melbourne. The space is centrally located in one of Melbourne's most vibrant arts precincts, easily accessible by public transport, and surrounded by cafes, restaurants, and other cultural venues.
+        The exhibition will be held at our gallery space at 386 Smith Street in Collingwood, Melbourne. The space is centrally located in one of Melbourne's most vibrant arts precincts, easily accessible by public transport with the 86 Tram stopping right out the front, and surrounded by cafes, restaurants, and other cultural venues.
       </span>
     )
   },
@@ -22,7 +22,7 @@ export const detailsFaqItems = [
     title: "How long will my artwork be displayed?",
     content: (
       <span>
-        Your artwork will be displayed throughout the full 100-day exhibition period. We operate on a rotating display system to ensure all artists get optimal exposure, with primary and secondary display positions that are rotated regularly throughout the exhibition duration.
+        Your artwork will be displayed throughout the full 100-day exhibition period. We operate on a rotating display system each month to ensure all artists get optimal exposure, with primary and secondary display positions that are rotated regularly throughout the exhibition duration.
       </span>
     )
   },
@@ -30,7 +30,7 @@ export const detailsFaqItems = [
     title: "What happens after I sign up?",
     content: (
       <span>
-        After signing up, you'll receive a welcome email with detailed information about next steps. Our curation team will contact you to discuss your artwork submission, space allocation, and any technical requirements. We'll work closely with you throughout the process to ensure your work is presented exactly as you envision it.
+        After signing up, you'll receive a welcome email with more information about next steps. If you don't here from us within a few days, YELL AT US ON SOCIALS! Our curation team will contact you to discuss your artwork submission, space allocation, and any technical requirements. We'll work closely with you throughout the process to ensure your work is presented exactly as you envision it.
       </span>
     )
   },
@@ -38,7 +38,23 @@ export const detailsFaqItems = [
     title: "Can I change my artwork during the exhibition?",
     content: (
       <span>
-        Yes! We understand that artists evolve and create new work. You can refresh your displayed artwork during the exhibition, subject to scheduling with our curation team. This flexibility allows you to showcase new pieces or respond to collector interest with similar works as originals sell.
+        Yes! We understand that artists evolve and create new work. You can refresh your displayed artwork during the exhibition, subject to scheduling with our curation team as we wil need to prepare both IRL and online content. This flexibility allows you to showcase new pieces or respond to collector interest with similar works as originals sell.
+      </span>
+    )
+  },
+  {
+    title: "Artwork Preparation",
+    content: (
+      <span>
+        All artworks must be supplied gallery ready. This means ready to hang and framed if necessary. Frames must be reasonable quality, "$2 dollar shop" frames wont cut it. Soz. If you do need help framing, we can assist you.<br /><br />All artworks must be signed, either on the front or back.<br /><br />All artworks must come with full details. Include; Artist Name, Artwork Title, Year of creation, Medium, and dimensions, written on a card at very least and attached to the artwork.
+      </span>
+    )
+  },
+  {
+    title: "Artwork Shipping & Packing?",
+    content: (
+      <span>
+        All artists are resposible for shipping your artworks directly to our gallery. If you are Melbourne based, we can offer local pick-ups for you. All artists are responsible for any unsold artworks being returned after the exhibition has concluded.<br /><br />All artworks are to be packed and protected accordingly. We DO NOT take responsibility for damaged artwork sent to us. If artworks are damaged on arrival, we will take all necessary photos etc for you to pass onto your courier. If you are not confident in packing your artwork, there are plenty of servivces, such as Pack & Send (Aust) that will take care of it for you.<br /><br />All artworks must arrive at our IRL gallery no later than 2-weeks before the launch date (TBA: See above FAQ 'When will the exhibition start?).   
       </span>
     )
   },
