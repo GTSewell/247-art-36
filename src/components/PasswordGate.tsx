@@ -75,6 +75,27 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
               logger.error("Error logging password access:", logError);
             } else {
               logger.info("Password access logged successfully");
+              
+              // Update the unique_ip_count in site_settings
+              // Calculate the current unique IP count
+              const { data: uniqueIpData, error: uniqueIpError } = await supabase
+                .from('password_access_logs')
+                .select('ip_address')
+                .eq('site_password', lowerPassword);
+                
+              if (!uniqueIpError && uniqueIpData) {
+                // Get unique IPs using Set
+                const uniqueIps = new Set(uniqueIpData.map(log => log.ip_address));
+                const uniqueIpCount = uniqueIps.size;
+                
+                // Update the site_settings table with the new count
+                await supabase
+                  .from('site_settings')
+                  .update({ unique_ip_count: uniqueIpCount })
+                  .eq('site_password', lowerPassword);
+                  
+                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${lowerPassword}`);
+              }
             }
           } catch (logError) {
             logger.error("Error with IP fetch:", logError);
