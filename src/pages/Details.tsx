@@ -25,7 +25,7 @@ const Details = () => {
       </div>
       
       <div className="container mx-auto px-4 pt-24 pb-0 relative z-10">
-        {/* Intro paragraph */}
+        {/* Intro paragraph - Added black border */}
         <motion.div initial={{
         opacity: 0,
         y: 20
@@ -34,7 +34,7 @@ const Details = () => {
         y: 0
       }} transition={{
         duration: 0.5
-      }} className="max-w-3xl mx-auto text-center mb-16 bg-zap-yellow p-6 rounded-lg shadow-md">
+      }} className="max-w-3xl mx-auto text-center mb-16 bg-zap-yellow p-6 rounded-lg shadow-md border-2 border-black">
           <h1 className="text-4xl font-bold mb-6 text-black">Signature Artist Exhibition</h1>
           <p className="text-lg text-black mb-4">
             Whether you're just starting your journey in the art world, or, you're a seasoned pro. Our Signature Artist package is flexible enough to cater to all. 
