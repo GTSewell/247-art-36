@@ -59,6 +59,14 @@ export const detailsFaqItems = [
     )
   },
   {
+    title: "SHOW ME THE MONEY! When do I get paid?",
+    content: (
+      <span>
+        At present all artists sales will be correlated and made at the end of each month. We have built an online invoicing system to make it easier for you to send an invoice to us. It will auto generate all artworks & prints you have sold for the past 30 days, so all you need to do is 'click send'. Take a look in the Artist Dashboard (click on the profile icon top right), then navigate to the 'Analytics' tab, and the 'Generate Invoice' is the big green button at the bottom.<br /><br />We are working on automatic split payments, so when your work sells, you get your $$$ instantly. This is a little while off yet. But. It is coming, and you will be the first to use it!   
+      </span>
+    )
+  },
+  {
     title: "The 'STP' Difference",
     content: (
       <span>
