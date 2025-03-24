@@ -2,7 +2,7 @@
 {
   "name": "247.ART",
   "short_name": "247.ART",
-  "description": "247.ART - Artist & Collector Platform",
+  "description": "247.ART - Art Never Sleeps",
   "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#f7cf1e",
@@ -11,7 +11,7 @@
   "scope": "/",
   "prefer_related_applications": false,
   "related_applications": [],
-  "categories": ["art", "music", "lifestyle", "social"],
+  "categories": ["art", "lifestyle", "social"],
   "icons": [
     {
       "src": "/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png",
