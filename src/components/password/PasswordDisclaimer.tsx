@@ -9,7 +9,7 @@ export const PasswordDisclaimer: React.FC = () => {
       </p>
       
       {/* Password sharing notice */}
-      <div className="mt-4 p-4 bg-zap-yellow rounded-md">
+      <div className="mt-4 p-4 bg-zap-yellow rounded-md border-2 border-black">
         <p className="text-black font-bold text-center">
           PLEASE DO NOT SHARE YOUR PASSWORD PUBLICLY.
           <br />
@@ -20,6 +20,9 @@ export const PasswordDisclaimer: React.FC = () => {
       <div className="mt-4 p-3 bg-gray-50 rounded-md">
         <p className="text-xs text-center text-gray-700 font-medium">
           After entering the password, you'll be automatically logged in to our artist demo account
+        </p>
+        <p className="text-xs text-center text-gray-700 mt-1">
+          Note: Passwords are case insensitive (uppercase or lowercase will work)
         </p>
       </div>
     </div>

@@ -28,20 +28,27 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
     }
     
     setIsLoading(true);
+    console.log("Attempting to validate password:", password);
     
     try {
-      const isCorrect = await validateSitePassword(password);
+      // Normalize password - lowercase and trim whitespace
+      const normalizedPassword = password.toLowerCase().trim();
+      console.log("Normalized password:", normalizedPassword);
+      
+      const isCorrect = await validateSitePassword(normalizedPassword);
+      console.log("Password validation result:", isCorrect);
       
       if (isCorrect) {
         // Fetch recipient name from the database
         const { data: settingsData, error: settingsError } = await supabase
           .from('site_settings')
           .select('recipient_name, usage_count')
-          .eq('site_password', password.toLowerCase().trim())
+          .eq('site_password', normalizedPassword)
           .single();
         
         if (settingsError) {
           console.error("Failed to fetch recipient data:", settingsError);
+          toast.error("Error retrieving user data");
         } else {
           // Increment usage count manually
           const updatedCount = (settingsData?.usage_count || 0) + 1;
@@ -49,7 +56,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           await supabase
             .from('site_settings')
             .update({ usage_count: updatedCount })
-            .eq('site_password', password.toLowerCase().trim());
+            .eq('site_password', normalizedPassword);
           
           // Log access with both the original recipient name and user-provided name
           try {
@@ -60,7 +67,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             
             console.log("Logging password access with the following data:");
             console.log({
-              site_password: password.toLowerCase().trim(),
+              site_password: normalizedPassword,
               ip_address: clientIp,
               original_recipient_name: settingsData?.recipient_name || null,
               user_provided_name: userName.trim() || null
@@ -69,7 +76,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             const { data: logData, error: logError } = await supabase
               .from('password_access_logs')
               .insert({ 
-                site_password: password.toLowerCase().trim(),
+                site_password: normalizedPassword,
                 ip_address: clientIp, 
                 original_recipient_name: settingsData?.recipient_name || null,
                 user_provided_name: userName.trim() || null
@@ -88,7 +95,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             const { data: fallbackLogData, error: fallbackLogError } = await supabase
               .from('password_access_logs')
               .insert({ 
-                site_password: password.toLowerCase().trim(),
+                site_password: normalizedPassword,
                 ip_address: 'client-side-fallback', 
                 original_recipient_name: settingsData?.recipient_name || null,
                 user_provided_name: userName.trim() || null
@@ -124,11 +131,14 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
       } else {
-        toast.error('Incorrect password');
+        console.error("Password validation failed for:", normalizedPassword);
+        toast.error('Incorrect password. Please try again.', {
+          duration: 3000
+        });
       }
     } catch (error: any) {
-      toast.error(`Error: ${error.message}`);
       console.error('Error checking password:', error);
+      toast.error(`Error: ${error.message || 'Failed to validate password'}`);
     } finally {
       setIsLoading(false);
     }

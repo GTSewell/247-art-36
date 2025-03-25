@@ -9,20 +9,26 @@ import { toast } from "sonner";
  */
 export const validateSitePassword = async (password: string): Promise<boolean> => {
   try {
-    console.log("Validating password:", password);
+    console.log("Validating password in auth-utils:", password);
+    
+    // Ensure password is always normalized to lowercase and trimmed
+    const normalizedPassword = password.toLowerCase().trim();
     
     // Get all site passwords
     const { data, error } = await supabase
       .from('site_settings')
       .select('site_password')
-      .eq('site_password', password.toLowerCase().trim());
+      .eq('site_password', normalizedPassword);
     
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase error during password validation:", error);
+      throw error;
+    }
     
     // Check if entered password matches any of the passwords in the database
     const isCorrect = data && data.length > 0;
     
-    console.log("Password validation result:", isCorrect);
+    console.log("Password validation result:", isCorrect, "Found matches:", data?.length || 0);
     
     if (isCorrect) {
       // After successful validation, perform the update in the background
@@ -31,7 +37,7 @@ export const validateSitePassword = async (password: string): Promise<boolean> =
         .update({
           created_at: new Date().toISOString()
         })
-        .eq('site_password', password.toLowerCase().trim())
+        .eq('site_password', normalizedPassword)
         .then(({ error: updateError }) => {
           if (updateError) {
             console.error('Background update error:', updateError);
