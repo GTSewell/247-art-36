@@ -4,6 +4,7 @@ import { PasswordForm } from './password/PasswordForm';
 import { PasswordDisclaimer } from './password/PasswordDisclaimer';
 import { PasswordPageLogo } from './password/PasswordPageLogo';
 import { PasswordPageBackground } from './password/PasswordPageBackground';
+import { ArtistEOIForm } from './password/ArtistEOIForm';
 
 interface SitePasswordProps {
   setIsPasswordCorrect: (isCorrect: boolean) => void;
@@ -14,7 +15,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
     <div className="h-screen flex flex-col items-center justify-center bg-zap-yellow relative overflow-hidden">
       <PasswordPageBackground />
       
-      <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8">
+      <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8 mb-4">
         <PasswordPageLogo />
         
         <p className="mb-6 text-center text-gray-600">
@@ -24,6 +25,11 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         <PasswordForm setIsPasswordCorrect={setIsPasswordCorrect} />
         
         <PasswordDisclaimer />
+      </div>
+      
+      {/* Artist Expression of Interest Form */}
+      <div className="relative z-10 w-full max-w-md mb-10">
+        <ArtistEOIForm />
       </div>
     </div>
   );
