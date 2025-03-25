@@ -12,10 +12,10 @@ interface SitePasswordProps {
 
 export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect }) => {
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-zap-yellow relative overflow-hidden">
+    <div className="min-h-screen overflow-auto py-10 flex flex-col items-center justify-center bg-zap-yellow relative">
       <PasswordPageBackground />
       
-      <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8 mb-4">
+      <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8 mb-6">
         <PasswordPageLogo />
         
         <p className="mb-6 text-center text-gray-600">
