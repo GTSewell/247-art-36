@@ -14,7 +14,7 @@ export const features: Feature[] = [
     studioArtist: "$995", 
     featureArtist: "$1495", 
     signatureArtist: "$1295",
-    description: "One-time payment to join our 247 artist community. This includes all of your retail print & merch production stocked in our space ready for sales, gallery sales staffing, customer management etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course solving any Problems for you. You focus on creating art, we will take care of the rest.",
+    description: "One-time payment to join our 247 artist community. This includes all of your retail print & merch production stocked in our space ready for sales, gallery sales staffing, customer management etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course solving any Problems for you. You focus on creating art, we will take care of the rest.<br /><br />We will also pre-print 25x A4 prints on 310gsn Bauhaus 100% cotton rag, museum grade fine art paper for you to sign & number ready for your STP Collector packs!",
     hasDiscount: true
   },
   { 
