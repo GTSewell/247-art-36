@@ -55,10 +55,10 @@ const JoinUndergroundSection = () => {
           {/* FAQ Accordion */}
           <FaqAccordion items={faqItems} />
           
-          {/* Swapped: Now showing "TLDR; SIGN ME UP!" image here */}
-          <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
+          {/* Changed from external link to Link component pointing to details page */}
+          <Link to="/details" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
             <img src="/lovable-uploads/d18c3542-cbb6-47d7-a6cd-b1d9d0f5fffe.png" alt="TLDR; SIGN ME UP!" className="w-full h-auto" />
-          </a>
+          </Link>
         </div>
       </motion.div>
     </section>;
