@@ -27,6 +27,13 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
         <PasswordDisclaimer />
       </div>
       
+      {/* Bold instruction text for the form below */}
+      <div className="relative z-10 w-full max-w-md mb-2">
+        <p className="text-center font-bold text-black">
+          If you need a password, please fill out the form below
+        </p>
+      </div>
+      
       {/* Artist Expression of Interest Form */}
       <div className="relative z-10 w-full max-w-md mb-10">
         <ArtistEOIForm />
