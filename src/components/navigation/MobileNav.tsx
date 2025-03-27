@@ -33,7 +33,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
           About Us
         </MobileNavLink>
         <MobileNavLink to="/details" isActive={isActive("/details")}>
-          Pricing
+          Sign Up
         </MobileNavLink>
         
         {/* User menu with account functions */}
