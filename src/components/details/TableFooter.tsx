@@ -30,7 +30,7 @@ const TableFooterComponent = () => {
       </TableCell>
       <TableCell className="text-center p-1">
         <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
-          <Button size="sm" className="text-xs max-w-[180px] mx-auto w-full text-white hover:text-black font-medium px-0 py-0 text-center rounded sm:text-lg bg-zap-blue">
+          <Button size="sm" className="text-xs max-w-[180px] mx-auto w-full text-white hover:text-black font-medium px-0 py-0 text-center rounded sm:text-lg bg-zap-red">
             <ShoppingCart className="w-4 h-4 mr-1" />
             Signature Artist
           </Button>
