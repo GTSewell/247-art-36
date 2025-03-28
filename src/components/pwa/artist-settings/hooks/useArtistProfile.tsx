@@ -34,10 +34,10 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       setLoading(true);
       
       if (!artistId) {
-        throw new Error("User ID not found");
+        throw new Error("Artist ID not found");
       }
       
-      console.log("Fetching artist profile for user ID:", artistId);
+      console.log("Fetching artist profile for artist ID:", artistId);
       const { data, error } = await fetchArtistProfile(artistId);
       
       if (error) {
@@ -81,7 +81,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     e.preventDefault();
     
     if (!artistId) {
-      toast.error("User ID not found");
+      toast.error("Artist ID not found");
       return;
     }
     

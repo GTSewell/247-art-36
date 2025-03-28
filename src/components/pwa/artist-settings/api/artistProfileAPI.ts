@@ -9,15 +9,24 @@ import { toast } from "sonner";
  */
 export const fetchArtistProfile = async (artistId: string) => {
   try {
-    // First check if user already has an artist profile
+    console.log("Fetching artist with ID:", artistId);
+    
+    // Query artist by id (numeric id, not user_id)
     const { data, error } = await supabase
       .from('artists')
       .select('*')
-      .eq('user_id', artistId)
+      .eq('id', artistId)
       .maybeSingle();
     
-    if (error && !error.message.includes('No rows found')) {
+    if (error) {
+      console.error("Database error fetching artist:", error);
       throw error;
+    }
+    
+    if (!data) {
+      console.warn(`No artist found with id: ${artistId}`);
+    } else {
+      console.log("Artist data retrieved:", data);
     }
     
     return { data, error: null };
@@ -34,7 +43,6 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
   try {
     // Process array values
     const processedData = {
-      user_id: artistId,
       name: formData.name,
       specialty: formData.specialty,
       bio: formData.bio,
@@ -46,14 +54,15 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       image: formData.image
     };
     
-    console.log("Saving artist profile with data:", processedData);
+    console.log("Saving artist profile with ID:", artistId);
+    console.log("Processed data:", processedData);
     
     if (existingArtist) {
       // Update existing artist profile
       const { error } = await supabase
         .from('artists')
         .update(processedData)
-        .eq('id', existingArtist.id);
+        .eq('id', artistId);
       
       if (error) {
         console.error("Update error:", error);
