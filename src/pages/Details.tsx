@@ -54,7 +54,7 @@ const Details = () => {
           <p className="text-lg text-black">
             We do understand that is not always going to be easy, but we're here to work together and give you the best damn chance at succeeding.
           </p>
-          <p className="text-lg text-black">
+          <p className="text-lg text-black font-bold">
             Please read through the dropdown info in the features table below. Select a row to expand the info.
           </p>
         </motion.div>
