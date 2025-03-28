@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -21,6 +22,7 @@ import Messages from "@/pages/Messages";
 import ArtistSubdomain from "@/pages/ArtistSubdomain";
 import NotFound from "@/pages/NotFound";
 import ArtistSubmission from "@/pages/ArtistSubmission";
+import TallyFormPage from "@/pages/TallyFormPage";
 
 // PWA specific pages
 import PWAHome from "@/pages/pwa/PWAHome";
@@ -85,6 +87,9 @@ const App = () => {
         <Route path="/virtual-tour" element={<VirtualTour />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/submit" element={<ArtistSubmission />} />
+        
+        {/* Tally Form Page - hidden from navigation */}
+        <Route path="/artistsubform" element={<TallyFormPage />} />
         
         {/* Account and Dashboard routes */}
         <Route path="/account" element={<AccountPage />} />
