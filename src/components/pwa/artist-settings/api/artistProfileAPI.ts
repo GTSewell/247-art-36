@@ -11,11 +11,18 @@ export const fetchArtistProfile = async (artistId: string) => {
   try {
     console.log("Fetching artist with ID:", artistId);
     
+    // Convert string id to number for database query
+    const numericId = parseInt(artistId, 10);
+    
+    if (isNaN(numericId)) {
+      throw new Error(`Invalid artist ID format: ${artistId}`);
+    }
+    
     // Query artist by id (numeric id, not user_id)
     const { data, error } = await supabase
       .from('artists')
       .select('*')
-      .eq('id', artistId)
+      .eq('id', numericId)
       .maybeSingle();
     
     if (error) {
@@ -54,7 +61,14 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       image: formData.image
     };
     
-    console.log("Saving artist profile with ID:", artistId);
+    // Convert string id to number for database operations
+    const numericId = parseInt(artistId, 10);
+    
+    if (isNaN(numericId)) {
+      throw new Error(`Invalid artist ID format: ${artistId}`);
+    }
+    
+    console.log("Saving artist profile with ID:", numericId);
     console.log("Processed data:", processedData);
     
     if (existingArtist) {
@@ -62,7 +76,7 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       const { error } = await supabase
         .from('artists')
         .update(processedData)
-        .eq('id', artistId);
+        .eq('id', numericId);
       
       if (error) {
         console.error("Update error:", error);
