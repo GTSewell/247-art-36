@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { v4 as uuidv4 } from "@/utils/uuid";
 import { logger } from "@/utils/logger";
 import { Json } from "@/integrations/supabase/types";
+import { uploadImage } from "@/components/pwa/artist-settings/api/imageUploadAPI";
 
 export interface ArtworkData {
   publicUrl: string;
@@ -16,49 +17,51 @@ export const useArtistArtworks = (artistId: string | null) => {
   const [uploading, setUploading] = useState(false);
   const [artworks, setArtworks] = useState<string[]>([]);
   const [artworkFiles, setArtworkFiles] = useState<string[]>([]);
+  const [artistName, setArtistName] = useState<string>("");
   
   useEffect(() => {
     if (artistId) {
-      fetchArtistArtworks();
+      fetchArtistData();
     } else {
       setLoading(false);
     }
   }, [artistId]);
   
-  const fetchArtistArtworks = async () => {
+  const fetchArtistData = async () => {
     try {
       setLoading(true);
-      logger.info(`Fetching artworks for artist ID: ${artistId}`);
+      logger.info(`Fetching artist data for ID: ${artistId}`);
       
-      const { data, error } = await supabase
+      const { data: artistData, error: artistError } = await supabase
         .from('artists')
-        .select('artworks, artwork_files')
+        .select('name, artworks, artwork_files')
         .eq('user_id', artistId)
         .maybeSingle();
       
-      if (error) {
-        logger.error("Error fetching artworks:", error);
-        toast.error(`Failed to load artworks: ${error.message}`);
+      if (artistError) {
+        logger.error("Error fetching artist data:", artistError);
+        toast.error(`Failed to load artist data: ${artistError.message}`);
         setLoading(false);
         return;
       }
       
-      // Process artworks from both sources
-      let combinedArtworks: string[] = [];
-      
-      if (data) {
+      if (artistData) {
+        setArtistName(artistData.name || "Unknown Artist");
+        
         // Process artworks array (legacy URL artworks if they exist)
-        if (data.artworks) {
+        let combinedArtworks: string[] = [];
+        
+        if (artistData.artworks) {
           let artworkArray: string[] = [];
           
-          if (Array.isArray(data.artworks)) {
+          if (Array.isArray(artistData.artworks)) {
             // Convert each item to string to ensure type safety
-            artworkArray = (data.artworks as Json[]).map(item => 
+            artworkArray = (artistData.artworks as Json[]).map(item => 
               typeof item === 'string' ? item : String(item)
             );
-          } else if (typeof data.artworks === 'string') {
+          } else if (typeof artistData.artworks === 'string') {
             try {
-              const parsed = JSON.parse(data.artworks);
+              const parsed = JSON.parse(artistData.artworks);
               if (Array.isArray(parsed)) {
                 artworkArray = parsed.map(item => 
                   typeof item === 'string' ? item : String(item)
@@ -81,17 +84,17 @@ export const useArtistArtworks = (artistId: string | null) => {
         }
         
         // Process artwork_files
-        if (data.artwork_files) {
+        if (artistData.artwork_files) {
           let fileArray: string[] = [];
           
-          if (Array.isArray(data.artwork_files)) {
+          if (Array.isArray(artistData.artwork_files)) {
             // Convert each item to string to ensure type safety
-            fileArray = (data.artwork_files as Json[]).map(item => 
+            fileArray = (artistData.artwork_files as Json[]).map(item => 
               typeof item === 'string' ? item : String(item)
             );
-          } else if (typeof data.artwork_files === 'string') {
+          } else if (typeof artistData.artwork_files === 'string') {
             try {
-              const parsed = JSON.parse(data.artwork_files);
+              const parsed = JSON.parse(artistData.artwork_files);
               if (Array.isArray(parsed)) {
                 fileArray = parsed.map(item => 
                   typeof item === 'string' ? item : String(item)
@@ -107,15 +110,27 @@ export const useArtistArtworks = (artistId: string | null) => {
           logger.info(`Loaded ${fileArray.length} artwork file paths`);
           
           // Get public URLs for each artwork file
+          // Check both buckets
+          const buckets = ['artists', 'artist-images'];
+          
           for (const filePath of fileArray) {
             if (filePath && filePath.trim() !== '') {
-              const { data: { publicUrl } } = supabase
-                .storage
-                .from('artist-images')
-                .getPublicUrl(filePath);
-              
-              if (publicUrl) {
-                combinedArtworks.push(publicUrl);
+              // Try both buckets
+              for (const bucket of buckets) {
+                try {
+                  const { data: { publicUrl } } = supabase
+                    .storage
+                    .from(bucket)
+                    .getPublicUrl(filePath);
+                  
+                  if (publicUrl) {
+                    combinedArtworks.push(publicUrl);
+                    break; // Found in this bucket, no need to check others
+                  }
+                } catch (error) {
+                  // Skip errors, try the next bucket
+                  continue;
+                }
               }
             }
           }
@@ -124,19 +139,19 @@ export const useArtistArtworks = (artistId: string | null) => {
         logger.info(`Total combined artworks: ${combinedArtworks.length}`);
         setArtworks(combinedArtworks);
       } else {
-        logger.info("No artworks found for artist");
+        logger.info("No artist data found for user");
         setArtworks([]);
         setArtworkFiles([]);
       }
     } catch (error: any) {
-      logger.error("Error in fetchArtistArtworks:", error);
+      logger.error("Error in fetchArtistData:", error);
       toast.error(`Failed to load artworks: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
   
-  const handleUploadArtwork = async (file: File) => {
+  const handleUploadArtwork = async (file: File, artistName: string) => {
     if (!artistId) {
       toast.error("User ID not found");
       return false;
@@ -145,30 +160,22 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       setUploading(true);
       
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${uuidv4()}.${fileExt}`;
-      const filePath = `${artistId}/${fileName}`;
+      // Use the uploadImage function with isProfileImage=false to indicate it's an artwork
+      const publicUrl = await uploadImage(file, artistName, false);
       
-      logger.info(`Uploading file to ${filePath}`);
-      
-      // Upload file to Supabase storage
-      const { error: uploadError } = await supabase
-        .storage
-        .from('artist-images')
-        .upload(filePath, file);
-      
-      if (uploadError) {
-        logger.error("Upload error:", uploadError);
-        throw uploadError;
+      if (!publicUrl) {
+        throw new Error("Failed to upload artwork");
       }
       
-      // Get the public URL
-      const { data: { publicUrl } } = supabase
-        .storage
-        .from('artist-images')
-        .getPublicUrl(filePath);
-      
       logger.info(`File uploaded successfully, public URL: ${publicUrl}`);
+      
+      // Extract the file path from the URL
+      const urlObj = new URL(publicUrl);
+      const pathParts = urlObj.pathname.split('/');
+      const bucketIndex = pathParts.findIndex(part => part === 'object' || part === 'storage');
+      const filePath = pathParts.slice(bucketIndex + 2).join('/');
+      
+      logger.info(`Extracted file path: ${filePath}`);
       
       // Update the artworks list in state
       const updatedArtworks = [...artworks, publicUrl];
@@ -231,13 +238,24 @@ export const useArtistArtworks = (artistId: string | null) => {
         // Remove file from storage
         if (filePathToRemove) {
           logger.info(`Removing file from storage: ${filePathToRemove}`);
-          const { error: storageError } = await supabase
-            .storage
-            .from('artist-images')
-            .remove([filePathToRemove]);
           
-          if (storageError) {
-            logger.error("Error removing file from storage:", storageError);
+          // Try both buckets
+          const buckets = ['artists', 'artist-images'];
+          for (const bucket of buckets) {
+            try {
+              const { error: storageError } = await supabase
+                .storage
+                .from(bucket)
+                .remove([filePathToRemove]);
+              
+              if (!storageError) {
+                logger.info(`Successfully removed file from ${bucket} bucket`);
+                break; // Successfully deleted, no need to try other buckets
+              }
+            } catch (error) {
+              // Skip errors, try the next bucket
+              continue;
+            }
           }
         }
         
@@ -272,8 +290,9 @@ export const useArtistArtworks = (artistId: string | null) => {
     loading,
     uploading,
     artworks,
+    artistName,
     handleUploadArtwork,
     handleRemoveArtwork,
-    fetchArtistArtworks
+    fetchArtistData
   };
 };

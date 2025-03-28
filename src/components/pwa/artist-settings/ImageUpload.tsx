@@ -9,9 +9,10 @@ import { logger } from '@/utils/logger';
 interface ImageUploadProps {
   currentImage: string | null;
   onImageChange: (imageUrl: string | null) => void;
+  artistName: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange, artistName }) => {
   const [preview, setPreview] = useState<string | null>(currentImage);
   const [isUploading, setIsUploading] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -45,7 +46,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ currentImage, onImageChange }
 
       // Upload to Supabase
       setIsUploading(true);
-      const imageUrl = await uploadImage(file);
+      const imageUrl = await uploadImage(file, artistName, true);
       
       if (imageUrl) {
         onImageChange(imageUrl);

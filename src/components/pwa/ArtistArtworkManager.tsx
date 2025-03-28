@@ -15,6 +15,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     loading, 
     uploading, 
     artworks, 
+    artistName,
     handleUploadArtwork, 
     handleRemoveArtwork 
   } = useArtistArtworks(artistId);
@@ -34,8 +35,9 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       <CardContent>
         <div className="space-y-6">
           <ArtworkUploader 
-            onUpload={handleUploadArtwork}
+            onUpload={(file) => handleUploadArtwork(file, artistName)}
             isUploading={uploading}
+            artistName={artistName}
           />
           
           <ArtworkGrid 

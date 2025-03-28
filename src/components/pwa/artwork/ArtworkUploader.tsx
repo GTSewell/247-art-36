@@ -6,11 +6,12 @@ import { Upload, Image } from "lucide-react";
 import { toast } from "sonner";
 
 interface ArtworkUploaderProps {
-  onUpload: (file: File) => Promise<boolean>;
+  onUpload: (file: File, artistName: string) => Promise<boolean>;
   isUploading: boolean;
+  artistName: string;
 }
 
-const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ onUpload, isUploading }) => {
+const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ onUpload, isUploading, artistName }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const validateFile = (file: File): boolean => {
@@ -50,7 +51,7 @@ const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ onUpload, isUploading
     
     try {
       // Upload the file
-      const success = await onUpload(file);
+      const success = await onUpload(file, artistName);
       
       // Clean up
       if (success) {
