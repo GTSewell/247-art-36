@@ -4,8 +4,6 @@ import MobileNavLink from "./MobileNavLink";
 import MobileUserMenu from "./MobileUserMenu";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useCart } from "@/contexts/CartContext";
-import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -36,8 +34,8 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
           Sign Up
         </MobileNavLink>
         
-        {/* User menu with account functions */}
-        <MobileUserMenu user={user} isLoading={isLoading} />
+        {/* User menu with account functions - no longer passing props */}
+        <MobileUserMenu />
       </div>
     </div>
   );

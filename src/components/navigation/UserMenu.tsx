@@ -25,7 +25,13 @@ function getInitials(name: string): string {
   return name.charAt(0);
 }
 
-const UserMenu = () => {
+interface UserMenuProps {
+  isCartPage?: boolean;
+  isArtistDashboard?: boolean;
+}
+
+// Export both as default and named export
+export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
   const [initials, setInitials] = useState('');
@@ -72,10 +78,13 @@ const UserMenu = () => {
     );
   }
   
+  // Determine text color based on current page
+  const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative rounded-full h-10 w-10 p-0">
+        <Button variant="ghost" className={`relative rounded-full h-10 w-10 p-0 ${textColorClass}`}>
           <Avatar className="h-10 w-10">
             <AvatarImage 
               src={user.user_metadata?.avatar_url || undefined} 
@@ -131,4 +140,5 @@ const UserMenu = () => {
   );
 };
 
+// Also export as default
 export default UserMenu;
