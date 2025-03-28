@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
+import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
 import { transformArtist } from '@/utils/artist-transformer';
 
 const ArtistManagement: React.FC = () => {
@@ -59,7 +60,7 @@ const ArtistManagement: React.FC = () => {
   };
   
   const handleArtistSelect = (artistId: number) => {
-    // Convert to string because our ArtistProfileSettings expects a string ID
+    // Convert to string because our components expect a string ID
     setSelectedArtistId(artistId.toString());
   };
   
@@ -81,10 +82,17 @@ const ArtistManagement: React.FC = () => {
           Back to Artists
         </Button>
         
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
           <div className="p-6">
             <h2 className="text-xl font-semibold mb-4">Edit Artist Profile</h2>
             <ArtistProfileSettings artistId={selectedArtistId} />
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Manage Artist Artworks</h2>
+            <ArtistArtworkManager artistId={selectedArtistId} />
           </div>
         </div>
       </div>

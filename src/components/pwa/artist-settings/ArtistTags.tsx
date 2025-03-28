@@ -14,38 +14,6 @@ interface ArtistTagsProps {
 }
 
 const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
-  // Helper function to handle social platform input
-  const handleSocialChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    
-    // Clean up formats to prevent duplications like instagram.com/instagram.com/username
-    const cleanedValue = value
-      .split(',')
-      .map(platform => platform.trim())
-      .map(platform => {
-        // Remove duplicate domain prefixes
-        if (platform.includes('instagram.com/instagram.com/')) {
-          return platform.replace('instagram.com/instagram.com/', 'instagram.com/');
-        }
-        if (platform.includes('twitter.com/twitter.com/') || platform.includes('x.com/x.com/')) {
-          return platform.replace(/(?:twitter\.com\/twitter\.com\/|x\.com\/x\.com\/)/, 'twitter.com/');
-        }
-        return platform;
-      })
-      .join(', ');
-
-    // Create a synthetic event with the cleaned value
-    const syntheticEvent = {
-      ...e,
-      target: {
-        ...e.target,
-        value: cleanedValue
-      }
-    };
-
-    handleChange(syntheticEvent);
-  };
-
   return (
     <>
       <div className="space-y-2">
@@ -86,7 +54,7 @@ const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
           id="social_platforms"
           name="social_platforms"
           value={formData.social_platforms}
-          onChange={handleSocialChange}
+          onChange={handleChange}
           placeholder="instagram.com/username, twitter.com/username, etc."
         />
       </div>
