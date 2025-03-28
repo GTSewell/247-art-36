@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -18,6 +17,20 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
   panelColor,
   badgeBgColor = '#f5f5f5'
 }) => {
+  const formatBioText = (text: string) => {
+    const paragraphs = text.split(/\n+/).filter(p => p.trim() !== '');
+    
+    if (paragraphs.length <= 1) {
+      return <p>{text}</p>;
+    }
+    
+    return paragraphs.map((paragraph, index) => (
+      <p key={index} className={index > 0 ? "mt-4" : ""}>
+        {paragraph}
+      </p>
+    ));
+  };
+
   return (
     <div className="flex flex-col h-full p-5" style={{ backgroundColor: panelColor }}>
       <div className="flex items-start mb-4">
@@ -41,16 +54,15 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
 
       <div className="flex flex-col h-full">
         <ScrollArea className="flex-1">
-          {/* Bio Section */}
           <div className="mb-6">
             <h3 className="text-left font-bold text-base mb-3">Bio</h3>
-            <p className="text-gray-700 leading-relaxed">{artist.bio}</p>
+            <div className="text-gray-700 leading-relaxed">
+              {formatBioText(artist.bio || '')}
+            </div>
           </div>
           
-          {/* This empty div will push the techniques & styles to the bottom */}
           <div className="flex-grow min-h-[200px]"></div>
           
-          {/* Techniques & Styles Section - Now positioned at the bottom */}
           {(techniques.length > 0 || styles.length > 0) && (
             <div className="w-full mt-auto mb-2">
               <h3 className="text-left font-bold text-base mb-3">
