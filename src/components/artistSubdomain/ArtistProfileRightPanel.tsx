@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from '@/hooks/use-mobile';
-import { X, Eye } from 'lucide-react';
+import { X, Eye, ShoppingCart } from 'lucide-react';
 import { 
   Dialog, 
   DialogContent,
@@ -19,6 +19,7 @@ interface ArtworkDetails {
   title: string;
   description: string;
   specifications: string;
+  price?: string;
 }
 
 interface ArtistProfileRightPanelProps {
@@ -51,18 +52,46 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       ? placeholderArtworks
       : Array(4).fill('/placeholder.svg');
   
+  // Check if this is a real artist (ID 26 or above)
+  const isRealArtist = artist.id ? artist.id >= 26 : false;
+  
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
-    return {
+    const details: ArtworkDetails = {
       image: artworkUrl,
       title: `${artist.name}'s Artwork ${index + 1}`,
       description: "This stunning piece showcases the artist's unique style and vision, bringing together elements of color, texture, and form in perfect harmony.",
       specifications: `Medium: Acrylic on Canvas\nSize: 24" x 36"\nYear: ${new Date().getFullYear()}`
     };
+    
+    // Only add price for non-real artists (for demo purposes)
+    if (!isRealArtist) {
+      details.price = `$${Math.floor(Math.random() * 5000) + 1000}`;
+    }
+    
+    return details;
   };
 
   const handleArtworkClick = (artwork: string, index: number) => {
     setSelectedArtwork(getArtworkDetails(artwork, index));
     setIsModalOpen(true);
+  };
+  
+  const handleAddToCart = () => {
+    if (selectedArtwork && !isRealArtist) {
+      // Convert price string (e.g. "$1500") to number
+      const price = selectedArtwork.price ? parseFloat(selectedArtwork.price.replace('$', '')) : 1000;
+      
+      addItem({
+        id: `${artist.id || 'artwork'}-${Date.now()}`,
+        name: selectedArtwork.title,
+        price: price,
+        image_url: selectedArtwork.image,
+        artist: { name: artist.name }
+      });
+      
+      // Close the modal after adding to cart
+      setIsModalOpen(false);
+    }
   };
 
   return (
@@ -116,7 +145,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                         handleArtworkClick(artwork, index);
                       }}
                     >
-                      <Eye className="h-4 w-4" />
+                      {isRealArtist ? <Eye className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
@@ -151,11 +180,24 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
               <p className="text-sm whitespace-pre-line">{selectedArtwork?.specifications}</p>
             </div>
             
-            <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-              <p className="text-sm text-amber-800 font-medium">
-                This artwork is displayed for preview purposes only and is not currently available for purchase.
-              </p>
-            </div>
+            {isRealArtist ? (
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                <p className="text-sm text-amber-800 font-medium">
+                  This artwork is displayed for preview purposes only and is not currently available for purchase.
+                </p>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between mt-4">
+                <span className="font-bold text-lg">{selectedArtwork?.price}</span>
+                <Button 
+                  onClick={handleAddToCart}
+                  className="bg-[#ea384c] hover:bg-[#d41f33] text-white transition-colors rounded-lg"
+                >
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Add to Cart
+                </Button>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
