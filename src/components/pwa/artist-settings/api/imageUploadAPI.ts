@@ -35,7 +35,7 @@ export const uploadImage = async (file: File): Promise<string | null> => {
       .from('artist-images')
       .upload(filePath, file, {
         cacheControl: '3600',
-        upsert: true // Changed to true to allow overwriting files
+        upsert: true
       });
     
     if (error) {

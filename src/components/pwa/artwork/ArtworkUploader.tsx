@@ -48,13 +48,17 @@ const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ onUpload, isUploading
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
     
-    // Upload the file
-    const success = await onUpload(file);
-    
-    // Clean up
-    if (success) {
-      e.target.value = '';
-      setPreviewUrl(null);
+    try {
+      // Upload the file
+      const success = await onUpload(file);
+      
+      // Clean up
+      if (success) {
+        e.target.value = '';
+        setPreviewUrl(null);
+      }
+    } catch (error: any) {
+      toast.error(`Upload failed: ${error.message}`);
     }
   };
 

@@ -21,7 +21,7 @@ const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
         <Input
           id="techniques"
           name="techniques"
-          value={formData.techniques}
+          value={formData.techniques || ''}
           onChange={handleChange}
           placeholder="Oil, Acrylic, Digital, etc."
         />
@@ -32,7 +32,7 @@ const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
         <Input
           id="styles"
           name="styles"
-          value={formData.styles}
+          value={formData.styles || ''}
           onChange={handleChange}
           placeholder="Abstract, Modern, Pop Art, etc."
         />
@@ -53,7 +53,7 @@ const ArtistTags: React.FC<ArtistTagsProps> = ({ formData, handleChange }) => {
         <Input
           id="social_platforms"
           name="social_platforms"
-          value={formData.social_platforms}
+          value={formData.social_platforms || ''}
           onChange={handleChange}
           placeholder="instagram.com/username, twitter.com/username, etc."
         />
