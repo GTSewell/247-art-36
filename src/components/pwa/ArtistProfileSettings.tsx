@@ -18,6 +18,9 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     saving,
     formData,
     handleChange,
+    handleSocialPlatformChange,
+    addSocialPlatform,
+    removeSocialPlatform,
     handleImageChange,
     handleSubmit
   } = useArtistProfile(artistId);
@@ -50,6 +53,9 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
           <ArtistTags 
             formData={formData}
             handleChange={handleChange}
+            handleSocialPlatformChange={handleSocialPlatformChange}
+            addSocialPlatform={addSocialPlatform}
+            removeSocialPlatform={removeSocialPlatform}
           />
           
           <Button type="submit" className="w-full" disabled={saving}>

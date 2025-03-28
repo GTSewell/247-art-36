@@ -1,33 +1,36 @@
 
 /**
- * Process social platforms from form data to database format
+ * Format social platforms from database format to form data format
  */
-export const processSocialPlatforms = (socialPlatformsString: string): string[] => {
-  if (!socialPlatformsString) return [];
+export const formatSocialPlatforms = (artistData: any): string[] => {
+  if (!artistData || !artistData.social_platforms) return [""];
   
-  // Split the string by comma and trim each item
-  return socialPlatformsString
-    .split(',')
-    .map(platform => platform.trim())
-    .filter(platform => platform !== ''); // Filter out empty strings
+  // Check if social_platforms is already an array
+  if (Array.isArray(artistData.social_platforms)) {
+    return artistData.social_platforms.length > 0 
+      ? artistData.social_platforms 
+      : [""];
+  }
+  
+  // If it's a string, split it
+  if (typeof artistData.social_platforms === 'string') {
+    return artistData.social_platforms
+      .split(',')
+      .map(platform => platform.trim())
+      .filter(platform => platform !== '');
+  }
+  
+  // Return empty array with one empty string as default
+  return [""];
 };
 
 /**
- * Format social platforms from database to form data format
+ * Process social platforms from form data for database storage
+ * Now accepts and returns string array directly
  */
-export const formatSocialPlatforms = (artistData: any): string => {
-  if (!artistData || !artistData.social_platforms) return '';
+export const processSocialPlatforms = (socialPlatforms: string[]): string[] => {
+  if (!socialPlatforms) return [];
   
-  // Check if social_platforms is an array
-  if (Array.isArray(artistData.social_platforms)) {
-    return artistData.social_platforms.join(', ');
-  }
-  
-  // If it's a string, return it directly
-  if (typeof artistData.social_platforms === 'string') {
-    return artistData.social_platforms;
-  }
-  
-  // If it's an object or something else, convert to string
-  return JSON.stringify(artistData.social_platforms);
+  // Filter out empty strings
+  return socialPlatforms.filter(platform => platform.trim() !== '');
 };

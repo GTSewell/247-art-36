@@ -17,7 +17,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: "",
+    social_platforms: [""],
     image: null
   });
   
@@ -70,6 +70,33 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     }));
   };
   
+  const handleSocialPlatformChange = (index: number, value: string) => {
+    const updatedPlatforms = [...formData.social_platforms];
+    updatedPlatforms[index] = value;
+    setFormData(prev => ({
+      ...prev,
+      social_platforms: updatedPlatforms
+    }));
+  };
+  
+  const addSocialPlatform = () => {
+    setFormData(prev => ({
+      ...prev,
+      social_platforms: [...prev.social_platforms, ""]
+    }));
+  };
+  
+  const removeSocialPlatform = (index: number) => {
+    if (formData.social_platforms.length <= 1) return;
+    
+    const updatedPlatforms = [...formData.social_platforms];
+    updatedPlatforms.splice(index, 1);
+    setFormData(prev => ({
+      ...prev,
+      social_platforms: updatedPlatforms
+    }));
+  };
+  
   const handleImageChange = (imageUrl: string | null) => {
     setFormData(prev => ({
       ...prev,
@@ -113,6 +140,9 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     artist,
     formData,
     handleChange,
+    handleSocialPlatformChange,
+    addSocialPlatform,
+    removeSocialPlatform,
     handleImageChange,
     handleSubmit
   };
