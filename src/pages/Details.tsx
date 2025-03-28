@@ -42,9 +42,11 @@ const Details = () => {
           <p className="text-lg text-black">
             Below you will find full details on the Signature Artist package, along with both an Artwork Size & Exhibition Profit Calculator to help you better understand your investment value.
           </p>
-          <p className="text-lg text-black">Our goal is to give artists &amp; collectors an amazing gallery experience, and at very least a good return on your investment through art sales. 
-
-We do understand that is not always going to be easy, but we're here to work together and give you the best damn chance at succeeding.</p>
+          <p className="text-lg text-black">Our goal is to give artists &amp; collectors an amazing gallery experience, and at very least a good return on your investment through art sales.
+            </p>
+          <p className="text-lg text-black">We do understand that is not always going to be easy, but we're here to work together and give you the best damn chance at succeeding.</p>
+          </p>
+          <p className="text-lg text-black">Please read through the dropdown info in the features table below. Select a row to expand the info.
         </motion.div>
 
         {/* Comparison Table */}
