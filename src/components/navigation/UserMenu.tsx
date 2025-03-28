@@ -1,129 +1,134 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { 
+import React, { useEffect, useState } from 'react';
+import { User, LogOut, Settings, ChevronDown, MessageSquare, UserPlus, ShieldCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { LogOut, MessageSquare, Settings, ShoppingCart } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
-import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/use-auth';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { isUserAdmin } from '@/utils/admin-utils';
 
-interface UserMenuProps {
-  isCartPage?: boolean;
-  isArtistDashboard?: boolean;
+function getInitials(name: string): string {
+  if (!name) return 'U';
+  
+  const nameParts = name.split(' ');
+  if (nameParts.length > 1) {
+    return `${nameParts[0].charAt(0)}${nameParts[1].charAt(0)}`;
+  }
+  return name.charAt(0);
 }
 
-export function UserMenu({ isCartPage = false, isArtistDashboard = false }: UserMenuProps) {
+const UserMenu = () => {
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
-  const { user, session } = useAuth();
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { clearPasswordStatus } = usePasswordProtection();
+  const [initials, setInitials] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  
+  useEffect(() => {
+    // If user is loaded, get initials
+    if (user) {
+      const name = user.user_metadata?.full_name || user.email || '';
+      setInitials(getInitials(name));
+      
+      // Check if user is admin
+      const checkAdminStatus = async () => {
+        const adminStatus = await isUserAdmin();
+        setIsAdmin(adminStatus);
+      };
+      
+      checkAdminStatus();
+    }
+  }, [user]);
   
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setIsUserMenuOpen(false);
-    navigate("/auth");
+    try {
+      await supabase.auth.signOut();
+      toast.success("You have been signed out");
+      navigate('/');
+    } catch (error: any) {
+      toast.error(`Error signing out: ${error.message}`);
+    }
   };
-
-  const handleLockSite = () => {
-    clearPasswordStatus();
-    setIsUserMenuOpen(false);
-  };
-
-  // Use text-white for both cart page and artist dashboard in desktop
-  const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
+  
+  if (isLoading) {
+    return (
+      <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
+    );
+  }
+  
+  if (!user) {
+    return (
+      <Button variant="outline" onClick={() => navigate('/auth')}>
+        <User className="h-4 w-4 mr-2" />
+        Sign In
+      </Button>
+    );
+  }
   
   return (
-    <DropdownMenu open={isUserMenuOpen} onOpenChange={setIsUserMenuOpen}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          className={`flex items-center gap-1 px-3 hover:bg-accent/20 ${textColorClass}`}
-        >
-          <Avatar className={`h-8 w-8 ${isCartPage || isArtistDashboard ? "bg-white border-white/30" : "bg-primary border-primary/30"}`}>
-            <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className={isCartPage || isArtistDashboard ? "bg-white text-black" : "bg-primary text-primary-foreground"}>
-              {user?.email?.substring(0, 2).toUpperCase() || 'U'}
+        <Button variant="ghost" className="relative rounded-full h-10 w-10 p-0">
+          <Avatar className="h-10 w-10">
+            <AvatarImage 
+              src={user.user_metadata?.avatar_url || undefined} 
+              alt={user.user_metadata?.full_name || "User"}
+            />
+            <AvatarFallback className="bg-primary text-white">
+              {initials}
             </AvatarFallback>
           </Avatar>
-          <span className={`hidden md:inline-block ml-1 ${textColorClass}`}>
-            {user ? user.email?.split('@')[0] : 'Sign in'}
-          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        {user ? (
-          <>
-            <DropdownMenuLabel className="flex items-center">
-              <Avatar className="h-6 w-6 mr-2">
-                <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-                <AvatarFallback className="bg-gray-200 text-xs">
-                  {user?.email?.substring(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="truncate">
-                {user.email}
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => {
-              setIsUserMenuOpen(false);
-              navigate("/cart");
-            }} className="flex items-center">
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Cart
+        <div className="flex items-center justify-start p-2">
+          <div className="flex flex-col space-y-0.5">
+            <p className="text-sm font-medium">
+              {user.user_metadata?.full_name || user.email}
+            </p>
+            <p className="text-xs text-gray-500 truncate">
+              {user.email}
+            </p>
+          </div>
+        </div>
+        
+        <Link to="/account">
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Account Settings</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/messages">
+          <DropdownMenuItem>
+            <MessageSquare className="mr-2 h-4 w-4" />
+            <span>Messages</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        {isAdmin && (
+          <Link to="/admin/artists">
+            <DropdownMenuItem>
+              <ShieldCheck className="mr-2 h-4 w-4" />
+              <span>Artist Management</span>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {
-              setIsUserMenuOpen(false);
-              navigate("/messages");
-            }} className="flex items-center">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              Messages
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {
-              setIsUserMenuOpen(false);
-              navigate("/dashboard/artist");
-            }} className="flex items-center bg-zap-blue text-white font-bold hover:bg-zap-blue/90">
-              <Settings className="mr-2 h-4 w-4" />
-              Artist Dashboard
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => {
-              setIsUserMenuOpen(false);
-              navigate("/dashboard/collector");
-            }} className="flex items-center bg-zap-red text-white font-bold hover:bg-zap-red/90">
-              <Settings className="mr-2 h-4 w-4" />
-              Collector Dashboard
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </DropdownMenuItem>
-          </>
-        ) : (
-          <>
-            <DropdownMenuItem onClick={() => {
-              setIsUserMenuOpen(false);
-              navigate("/auth");
-            }}>
-              Sign in
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLockSite} className="text-red-500">
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Lock Site</span>
-            </DropdownMenuItem>
-          </>
+          </Link>
         )}
+        
+        <DropdownMenuItem onClick={handleSignOut}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Sign out</span>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
+
+export default UserMenu;

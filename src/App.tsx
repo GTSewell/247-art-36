@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -8,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { SitePassword } from "@/components/SitePassword";
 import { usePasswordProtection } from "@/contexts/PasswordProtectionContext";
 import MessageDetails from "@/pages/MessageDetails";
+import AdminProtectedRoute from "@/components/admin/AdminProtectedRoute";
 
 import Index from "@/pages/Index";
 import Artists from "@/pages/Artists";
@@ -23,6 +23,9 @@ import ArtistSubdomain from "@/pages/ArtistSubdomain";
 import NotFound from "@/pages/NotFound";
 import ArtistSubmission from "@/pages/ArtistSubmission";
 import TallyFormPage from "@/pages/TallyFormPage";
+
+// Admin pages
+import ArtistManagement from "@/pages/admin/ArtistManagement";
 
 // PWA specific pages
 import PWAHome from "@/pages/pwa/PWAHome";
@@ -87,6 +90,16 @@ const App = () => {
         <Route path="/virtual-tour" element={<VirtualTour />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/submit" element={<ArtistSubmission />} />
+        
+        {/* Admin routes */}
+        <Route 
+          path="/admin/artists" 
+          element={
+            <AdminProtectedRoute>
+              <ArtistManagement />
+            </AdminProtectedRoute>
+          } 
+        />
         
         {/* Tally Form Page - hidden from navigation */}
         <Route path="/artistsubform" element={<TallyFormPage />} />

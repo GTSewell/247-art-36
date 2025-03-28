@@ -1,131 +1,168 @@
 
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { LogOut, MessageSquare, Settings, ShoppingCart } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
-import { useCart } from "@/contexts/CartContext";
-import { Badge } from "@/components/ui/badge";
-import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import React, { useEffect, useState } from 'react';
+import { User, LogOut, Settings, ChevronDown, MessageSquare, UserPlus, ShieldCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/use-auth';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
+import { Separator } from '@/components/ui/separator';
+import { isUserAdmin } from '@/utils/admin-utils';
 
-interface MobileUserMenuProps {
-  user: any | null;
-  isLoading: boolean;
+function getInitials(name: string): string {
+  if (!name) return 'U';
+  
+  const nameParts = name.split(' ');
+  if (nameParts.length > 1) {
+    return `${nameParts[0].charAt(0)}${nameParts[1].charAt(0)}`;
+  }
+  return name.charAt(0);
 }
 
-const MobileUserMenu = ({ user, isLoading }: MobileUserMenuProps) => {
+const MobileUserMenu = () => {
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
-  const { itemCount } = useCart();
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [initials, setInitials] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  
+  useEffect(() => {
+    // If user is loaded, get initials
+    if (user) {
+      const name = user.user_metadata?.full_name || user.email || '';
+      setInitials(getInitials(name));
+      
+      // Check if user is admin
+      const checkAdminStatus = async () => {
+        const adminStatus = await isUserAdmin();
+        setIsAdmin(adminStatus);
+      };
+      
+      checkAdminStatus();
+    }
+  }, [user]);
+  
   const handleSignOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      navigate("/");
+      await supabase.auth.signOut();
+      toast.success("You have been signed out");
+      setIsOpen(false);
+      navigate('/');
     } catch (error: any) {
-      console.error("Error signing out:", error.message);
+      toast.error(`Error signing out: ${error.message}`);
     }
   };
-
+  
+  const closeSheet = () => {
+    setIsOpen(false);
+  };
+  
+  if (isLoading) {
+    return (
+      <div className="h-10 w-10 rounded-full bg-gray-200 animate-pulse"></div>
+    );
+  }
+  
+  if (!user) {
+    return (
+      <Button variant="outline" className="h-9" onClick={() => navigate('/auth')}>
+        <User className="h-4 w-4 mr-2" />
+        Sign In
+      </Button>
+    );
+  }
+  
   return (
-    <>
-      {/* User Avatar and info if logged in */}
-      {!isLoading && user && (
-        <div className="flex items-center gap-2 px-3 py-3 mb-2 bg-gray-100 dark:bg-gray-800 rounded-md">
-          <Avatar className="h-10 w-10 border border-gray-300">
-            <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
-            <AvatarFallback className="bg-gray-200 text-gray-700">
-              {user?.email?.substring(0, 2).toUpperCase()}
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" className="relative rounded-full h-10 w-10 p-0">
+          <Avatar className="h-10 w-10">
+            <AvatarImage 
+              src={user.user_metadata?.avatar_url || undefined} 
+              alt={user.user_metadata?.full_name || "User"}
+            />
+            <AvatarFallback className="bg-primary text-white">
+              {initials}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1 overflow-hidden">
-            <div className="font-medium truncate">{user.email?.split('@')[0] || 'User'}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</div>
+        </Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader className="mb-4">
+          <SheetTitle>Account</SheetTitle>
+        </SheetHeader>
+        
+        <div className="flex items-center mb-4">
+          <Avatar className="h-12 w-12 mr-4">
+            <AvatarImage 
+              src={user.user_metadata?.avatar_url || undefined} 
+              alt={user.user_metadata?.full_name || "User"}
+            />
+            <AvatarFallback className="bg-primary text-white text-lg">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="font-medium">
+              {user.user_metadata?.full_name || user.email}
+            </p>
+            <p className="text-sm text-gray-500 truncate max-w-[200px]">
+              {user.email}
+            </p>
           </div>
         </div>
-      )}
-      
-      {/* Cart Link */}
-      <Link
-        to="/cart"
-        className={cn(
-          "flex items-center justify-between px-3 py-2 rounded-md text-base font-medium",
-          "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
-        )}
-      >
-        <div className="flex items-center">
-          <ShoppingCart className="mr-2 h-5 w-5" />
-          <span>Cart</span>
-        </div>
-        {itemCount > 0 && (
-          <Badge className="bg-zap-red text-white">
-            {itemCount}
-          </Badge>
-        )}
-      </Link>
-      
-      {/* Messages Link */}
-      {!isLoading && user && (
-        <Link
-          to="/messages"
-          className={cn(
-            "flex items-center justify-between mt-2 px-3 py-2 rounded-md text-base font-medium",
-            "bg-gray-200 text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
-          )}
-        >
-          <div className="flex items-center">
+        
+        <Separator className="my-4" />
+        
+        <nav className="flex flex-col space-y-3">
+          <Link 
+            to="/account" 
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
+            onClick={closeSheet}
+          >
+            <Settings className="mr-2 h-5 w-5" />
+            <span>Account Settings</span>
+          </Link>
+          
+          <Link 
+            to="/messages" 
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
+            onClick={closeSheet}
+          >
             <MessageSquare className="mr-2 h-5 w-5" />
             <span>Messages</span>
-          </div>
-        </Link>
-      )}
-      
-      {/* Only show dashboard links if user is logged in */}
-      {!isLoading && user && (
-        <>
-          <Button 
-            className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-blue hover:bg-zap-blue/90"
-            onClick={() => navigate("/dashboard/artist")}
-          >
-            <Settings className="h-4 w-4 mr-2" />
-            Artist Dashboard
-          </Button>
+          </Link>
+          
+          {isAdmin && (
+            <Link 
+              to="/admin/artists" 
+              className="flex items-center p-2 rounded-md hover:bg-gray-100"
+              onClick={closeSheet}
+            >
+              <ShieldCheck className="mr-2 h-5 w-5" />
+              <span>Artist Management</span>
+            </Link>
+          )}
           
           <Button 
-            className="w-full justify-start mt-2 text-left font-bold text-white bg-zap-red hover:bg-zap-red/90"
-            onClick={() => navigate("/dashboard/collector")}
-          >
-            <Settings className="h-4 w-4 mr-2" />
-            Collector Dashboard
-          </Button>
-        </>
-      )}
-      
-      {/* Sign in/out button */}
-      {!isLoading && (
-        user ? (
-          <Button 
-            variant="outline" 
-            className="w-full justify-start mt-2 text-red-500"
+            variant="destructive" 
+            className="justify-start mt-4"
             onClick={handleSignOut}
           >
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign Out
+            <LogOut className="mr-2 h-5 w-5" />
+            <span>Sign out</span>
           </Button>
-        ) : (
-          <Button 
-            variant="outline" 
-            className="w-full justify-start mt-2"
-            onClick={() => navigate("/auth")}
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Sign In
-          </Button>
-        )
-      )}
-    </>
+        </nav>
+      </SheetContent>
+    </Sheet>
   );
 };
 
