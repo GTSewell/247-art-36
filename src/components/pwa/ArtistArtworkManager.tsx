@@ -19,7 +19,8 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     artist,
     handleUploadArtwork, 
     handleRemoveArtwork,
-    handleSetAsBackgroundImage
+    handleSetAsBackgroundImage,
+    syncArtistImages
   } = useArtistArtworks(artistId);
   
   if (loading && artworks.length === 0) {
@@ -45,6 +46,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
             isUploading={uploading}
             artistName={artistName}
             artistId={artist?.id}
+            onAfterUpload={syncArtistImages}
           />
           
           <ArtworkGrid 

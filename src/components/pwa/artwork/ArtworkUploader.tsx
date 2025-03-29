@@ -1,21 +1,24 @@
+
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/utils/logger";
 
 interface ArtworkUploaderProps {
   onUpload: (file: File) => Promise<boolean>;
   isUploading: boolean;
   artistName: string;
   artistId?: string | number;
+  onAfterUpload?: () => Promise<boolean>;
 }
 
 const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ 
   onUpload, 
   isUploading,
   artistName,
-  artistId
+  artistId,
+  onAfterUpload
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   
@@ -43,19 +46,18 @@ const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({
       
       const success = await onUpload(file);
       
-      if (success && artistId) {
+      if (success && onAfterUpload) {
         try {
-          const { data, error } = await supabase.functions.invoke('sync-artist-images', {
-            body: { artistId }
-          });
+          logger.info("Triggering sync after artwork upload");
+          const syncSuccess = await onAfterUpload();
           
-          if (error) {
-            console.error("Error syncing artwork images:", error);
+          if (syncSuccess) {
+            logger.info("Successfully synced after upload");
           } else {
-            console.log("Artwork sync response:", data);
+            logger.warn("Sync after upload returned false");
           }
         } catch (syncError) {
-          console.error("Failed to sync artwork images:", syncError);
+          logger.error("Error in sync after upload:", syncError);
         }
       }
       
@@ -63,7 +65,7 @@ const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({
         fileInputRef.current.value = "";
       }
     } catch (error: any) {
-      console.error("Error handling file upload:", error);
+      logger.error("Error handling file upload:", error);
       toast.error(`Upload failed: ${error.message}`);
     }
   };

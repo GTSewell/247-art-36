@@ -75,6 +75,32 @@ export const useArtistArtworks = (artistId: string | null) => {
     }
   }, [fetchArtworks, artistName]);
 
+  const syncArtistImages = async () => {
+    if (!artist || !artist.id) {
+      return false;
+    }
+    
+    try {
+      logger.info(`Syncing images for artist ID ${artist.id}`);
+      
+      // Call the sync-artist-images edge function
+      const { data, error } = await supabase.functions.invoke('sync-artist-images', {
+        body: { artistId: artist.id }
+      });
+      
+      if (error) {
+        logger.error("Error syncing artist images:", error);
+        return false;
+      }
+      
+      logger.info("Artist images sync response:", data);
+      return true;
+    } catch (error) {
+      logger.error("Failed to sync artist images:", error);
+      return false;
+    }
+  };
+
   const handleUploadArtwork = async (file: File, artistName: string): Promise<boolean> => {
     if (!file || !artistName) {
       toast.error("Missing file or artist information");
@@ -147,6 +173,15 @@ export const useArtistArtworks = (artistId: string | null) => {
       // Update state
       setArtworks(prev => prev.filter((_, i) => i !== index));
       
+      // After successful deletion, sync the artist images
+      const syncSuccess = await syncArtistImages();
+      
+      if (syncSuccess) {
+        logger.info("Successfully synced artist images after deletion");
+      } else {
+        logger.warn("Failed to sync artist images after deletion");
+      }
+      
       toast.success("Artwork removed successfully");
     } catch (error) {
       logger.error("Error removing artwork:", error);
@@ -182,6 +217,7 @@ export const useArtistArtworks = (artistId: string | null) => {
     artistName,
     handleUploadArtwork,
     handleRemoveArtwork,
-    handleSetAsBackgroundImage
+    handleSetAsBackgroundImage,
+    syncArtistImages
   };
 };
