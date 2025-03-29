@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "../types";
 import { fetchArtistProfile, saveArtistProfile } from "../api/artistProfileAPI";
 import { mapArtistToFormData } from "../utils/formDataMapper";
+import { logger } from "@/utils/logger";
 
 export const useArtistProfile = (artistId: string | null): ArtistProfileHookReturn => {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: [""], // Fixed: Initialize as string array with empty string
+    social_platforms: [""], // Initialize as string array with empty string
     image: null
   });
   
@@ -37,7 +38,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
         throw new Error("Artist ID not found");
       }
       
-      console.log("Fetching artist profile for artist ID:", artistId);
+      logger.info("Fetching artist profile for artist ID:", artistId);
       const { data, error } = await fetchArtistProfile(artistId);
       
       if (error) {
@@ -45,17 +46,17 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       }
       
       if (data) {
-        console.log("Artist profile data retrieved:", data);
+        logger.info("Artist profile data retrieved:", data);
         // If artist profile exists, load it
         setArtist(data);
         
         // Map API data to form data
         const mappedFormData = mapArtistToFormData(data);
-        console.log("Mapped form data:", mappedFormData);
+        logger.info("Mapped form data:", mappedFormData);
         setFormData(mappedFormData);
       }
     } catch (error: any) {
-      console.error("Error fetching artist profile:", error);
+      logger.error("Error fetching artist profile:", error);
       toast.error(`Failed to load artist profile: ${error.message}`);
     } finally {
       setLoading(false);
@@ -64,16 +65,17 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    logger.info(`Form field changed: ${name} = ${value}`);
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
   
-  // Add the missing methods for social platform handling
   const handleSocialPlatformChange = (index: number, value: string) => {
     const updatedPlatforms = [...formData.social_platforms];
     updatedPlatforms[index] = value;
+    logger.info(`Social platform ${index} changed to: ${value}`);
     setFormData(prev => ({
       ...prev,
       social_platforms: updatedPlatforms
@@ -81,6 +83,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   };
   
   const addSocialPlatform = () => {
+    logger.info("Adding new social platform field");
     setFormData(prev => ({
       ...prev,
       social_platforms: [...prev.social_platforms, ""]
@@ -90,6 +93,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   const removeSocialPlatform = (index: number) => {
     if (formData.social_platforms.length <= 1) return;
     
+    logger.info(`Removing social platform at index ${index}`);
     const updatedPlatforms = [...formData.social_platforms];
     updatedPlatforms.splice(index, 1);
     setFormData(prev => ({
@@ -99,6 +103,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   };
   
   const handleImageChange = (imageUrl: string | null) => {
+    logger.info(`Image URL changed to: ${imageUrl}`);
     setFormData(prev => ({
       ...prev,
       image: imageUrl
@@ -115,7 +120,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     
     try {
       setSaving(true);
-      console.log("Submitting artist profile form data:", formData);
+      logger.info("Submitting artist profile form data:", formData);
       
       const result = await saveArtistProfile(formData, artistId, artist);
       
@@ -128,14 +133,14 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
         throw new Error(result.message);
       }
     } catch (error: any) {
-      console.error("Error updating artist profile:", error);
+      logger.error("Error updating artist profile:", error);
       toast.error(`Failed to update profile: ${error.message}`);
     } finally {
       setSaving(false);
     }
   };
 
-  // Return all required properties as defined in ArtistProfileHookReturn
+  // Return all required properties
   return {
     loading,
     saving,

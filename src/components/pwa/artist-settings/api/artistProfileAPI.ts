@@ -3,13 +3,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArtistProfileFormData } from "../types";
 import { processSocialPlatforms } from "../utils/socialPlatformUtils";
 import { toast } from "sonner";
+import { logger } from "@/utils/logger";
 
 /**
  * Fetch artist profile from Supabase
  */
 export const fetchArtistProfile = async (artistId: string) => {
   try {
-    console.log("Fetching artist with ID:", artistId);
+    logger.info("Fetching artist with ID:", artistId);
     
     // Convert string id to number for database query
     const numericId = parseInt(artistId, 10);
@@ -26,19 +27,19 @@ export const fetchArtistProfile = async (artistId: string) => {
       .maybeSingle();
     
     if (error) {
-      console.error("Database error fetching artist:", error);
+      logger.error("Database error fetching artist:", error);
       throw error;
     }
     
     if (!data) {
-      console.warn(`No artist found with id: ${artistId}`);
+      logger.warn(`No artist found with id: ${artistId}`);
     } else {
-      console.log("Artist data retrieved:", data);
+      logger.info("Artist data retrieved:", data);
     }
     
     return { data, error: null };
   } catch (error: any) {
-    console.error("Error fetching artist profile:", error);
+    logger.error("Error fetching artist profile:", error);
     return { data: null, error };
   }
 };
@@ -68,22 +69,24 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       throw new Error(`Invalid artist ID format: ${artistId}`);
     }
     
-    console.log("Saving artist profile with ID:", numericId);
-    console.log("Processed data:", processedData);
+    logger.info("Saving artist profile with ID:", numericId);
+    logger.info("Processed data:", processedData);
     
     if (existingArtist) {
       // Update existing artist profile
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('artists')
         .update(processedData)
-        .eq('id', numericId);
+        .eq('id', numericId)
+        .select();
       
       if (error) {
-        console.error("Update error:", error);
+        logger.error("Update error:", error);
         throw error;
       }
       
-      return { success: true, message: "Profile updated successfully" };
+      logger.info("Updated artist data:", data);
+      return { success: true, message: "Profile updated successfully", data };
     } else {
       // For new artist profiles, get the next available ID from the sequence
       const { data: maxIdData, error: maxIdError } = await supabase
@@ -101,23 +104,25 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       const nextId = maxIdData ? maxIdData.id + 1 : 1;
       
       // Create new artist profile with the new ID
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('artists')
         .insert([{
           id: nextId,
           ...processedData,
           published: true // Set published to true by default
-        }]);
+        }])
+        .select();
       
       if (error) {
-        console.error("Insert error:", error);
+        logger.error("Insert error:", error);
         throw error;
       }
       
-      return { success: true, message: "Profile created successfully" };
+      logger.info("Created artist data:", data);
+      return { success: true, message: "Profile created successfully", data };
     }
   } catch (error: any) {
-    console.error("Error saving artist profile:", error);
+    logger.error("Error saving artist profile:", error);
     return { success: false, message: error.message };
   }
 };
