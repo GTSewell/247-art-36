@@ -159,8 +159,11 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
     
     // Prepare artwork_files with background_image
     const artworkFiles = artistData.artwork_files || {};
-    const updatedArtworkFiles = {
-      ...artworkFiles,
+    // Ensure artworkFiles is treated as a Record to avoid spread type error
+    const updatedArtworkFiles = typeof artworkFiles === 'object' ? {
+      ...artworkFiles as Record<string, any>,
+      background_image: imageUrl
+    } : {
       background_image: imageUrl
     };
     
