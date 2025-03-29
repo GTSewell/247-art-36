@@ -58,14 +58,19 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
     const details: ArtworkDetails = {
       image: artworkUrl,
-      title: `${artist.name}'s Artwork ${index + 1}`,
-      description: "This stunning piece showcases the artist's unique style and vision, bringing together elements of color, texture, and form in perfect harmony.",
+      title: `${artist.name}'s Art`,
+      description: isRealArtist 
+        ? `This is a temporary artwork preview for ${artist.name}.` 
+        : "This stunning piece showcases the artist's unique style and vision, bringing together elements of color, texture, and form in perfect harmony.",
       specifications: `Medium: Acrylic on Canvas\nSize: 24" x 36"\nYear: ${new Date().getFullYear()}`
     };
     
     // Only add price for non-real artists (for demo purposes)
     if (!isRealArtist) {
       details.price = `$${Math.floor(Math.random() * 5000) + 1000}`;
+    } else {
+      // For real artists, add $ without a value
+      details.price = "$";
     }
     
     return details;
@@ -145,7 +150,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                         handleArtworkClick(artwork, index);
                       }}
                     >
-                      {isRealArtist ? <Eye className="h-4 w-4" /> : <ShoppingCart className="h-4 w-4" />}
+                      <Eye className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
@@ -181,10 +186,22 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
             </div>
             
             {isRealArtist ? (
-              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
-                <p className="text-sm text-amber-800 font-medium">
-                  This artwork is displayed for preview purposes only and is not currently available for purchase.
-                </p>
+              <div className="space-y-4">
+                <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                  <p className="text-sm text-amber-800 font-medium">
+                    This artwork is displayed for preview purposes only and is not currently available for purchase.
+                  </p>
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <span className="font-bold text-lg">{selectedArtwork?.price}</span>
+                  <Button 
+                    disabled={true}
+                    className="bg-gray-400 hover:bg-gray-400 text-white transition-colors rounded-lg cursor-not-allowed"
+                  >
+                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    Add to Cart
+                  </Button>
+                </div>
               </div>
             ) : (
               <div className="flex items-center justify-between mt-4">
