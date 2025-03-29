@@ -65,8 +65,12 @@ const ArtistCard = ({
     onFavoriteToggle(!isFavorite);
   };
 
-  // Check if artist is a Genesis Artist (ID > 26)
-  const isGenesisArtist = id > 26;
+  // Check if artist is a Genesis Artist (ID >= 26)
+  // Changed from "id > 26" to "id >= 26" to include artist with ID 26
+  const isGenesisArtist = id >= 26;
+  
+  // Log the artist information for debugging
+  console.log(`Artist: ${name}, ID: ${id}, isGenesisArtist: ${isGenesisArtist}`);
 
   return (
     <div className="relative">
@@ -82,9 +86,9 @@ const ArtistCard = ({
             onError={handleImageError}
           />
           
-          {/* Genesis Artist Badge - completely redesigned for maximum visibility */}
+          {/* Genesis Artist Badge - extra visible with important styling */}
           {isGenesisArtist && (
-            <div className="absolute top-2 left-2 z-50 bg-[#F7CF1E] text-black px-3 py-1.5 rounded-md font-bold text-sm shadow-xl border-2 border-black transform rotate-0 translate-y-0 translate-x-0">
+            <div className="absolute top-2 left-2 z-[100] bg-[#F7CF1E] text-black px-3 py-1.5 rounded-md font-bold text-sm shadow-xl border-2 border-black !important">
               Genesis Artist
             </div>
           )}
