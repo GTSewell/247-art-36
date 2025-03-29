@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Refresh, DownloadCloud, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
+import { RefreshCw, DownloadCloud, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
 import { useBulkSyncArtistImages } from '@/hooks/use-bulk-sync-artist-images';
 
 const BulkSyncArtistImages = () => {
@@ -55,7 +55,7 @@ const BulkSyncArtistImages = () => {
               disabled={isSyncing || !startId}
               className="mb-[1px]"
             >
-              {isSyncing ? <Refresh className="h-4 w-4 mr-2 animate-spin" /> : <DownloadCloud className="h-4 w-4 mr-2" />}
+              {isSyncing ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <DownloadCloud className="h-4 w-4 mr-2" />}
               Sync from ID {startId}
             </Button>
           </div>
@@ -98,7 +98,7 @@ const BulkSyncArtistImages = () => {
           disabled={isSyncing}
           className="w-full"
         >
-          {isSyncing ? <Refresh className="h-4 w-4 mr-2 animate-spin" /> : <DownloadCloud className="h-4 w-4 mr-2" />}
+          {isSyncing ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <DownloadCloud className="h-4 w-4 mr-2" />}
           Sync All Artists' Images
         </Button>
       </CardFooter>
