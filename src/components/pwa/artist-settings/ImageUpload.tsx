@@ -9,12 +9,14 @@ interface ImageUploadProps {
   currentImage: string | null;
   onImageChange: (imageUrl: string | null) => void;
   artistName: string;
+  artistId?: number;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ 
   currentImage,
   onImageChange,
-  artistName
+  artistName,
+  artistId
 }) => {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

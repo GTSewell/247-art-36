@@ -2,6 +2,7 @@
 import { ArtistProfileFormData } from "../types";
 import { formatSocialPlatforms } from "./socialPlatformUtils";
 import { logger } from "@/utils/logger";
+import { ensureArray } from "@/utils/ensureArray";
 
 export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
   if (!artist) {
@@ -22,39 +23,13 @@ export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
 
   logger.info("Mapping artist data to form data:", artist);
 
-  // Format techniques
-  let techniquesString = "";
-  if (artist.techniques) {
-    if (Array.isArray(artist.techniques)) {
-      techniquesString = artist.techniques.join(", ");
-    } else if (typeof artist.techniques === 'string') {
-      try {
-        const parsed = JSON.parse(artist.techniques);
-        techniquesString = Array.isArray(parsed) ? parsed.join(", ") : artist.techniques;
-      } catch (e) {
-        techniquesString = artist.techniques;
-      }
-    } else if (typeof artist.techniques === 'object') {
-      techniquesString = Object.values(artist.techniques).join(", ");
-    }
-  }
-
-  // Format styles
-  let stylesString = "";
-  if (artist.styles) {
-    if (Array.isArray(artist.styles)) {
-      stylesString = artist.styles.join(", ");
-    } else if (typeof artist.styles === 'string') {
-      try {
-        const parsed = JSON.parse(artist.styles);
-        stylesString = Array.isArray(parsed) ? parsed.join(", ") : artist.styles;
-      } catch (e) {
-        stylesString = artist.styles;
-      }
-    } else if (typeof artist.styles === 'object') {
-      stylesString = Object.values(artist.styles).join(", ");
-    }
-  }
+  // Process techniques and styles using the ensureArray utility
+  const techniquesArray = ensureArray(artist.techniques);
+  const stylesArray = ensureArray(artist.styles);
+  
+  // Join arrays into comma-separated strings for form fields
+  const techniquesString = techniquesArray.join(", ");
+  const stylesString = stylesArray.join(", ");
 
   // Format social platforms
   const socialPlatforms = formatSocialPlatforms(artist);

@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { ArtistProfileFormData } from "../types";
 import { processSocialPlatforms } from "../utils/socialPlatformUtils";
@@ -47,7 +48,7 @@ export const fetchArtistProfile = async (artistId: string) => {
  */
 export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string, existingArtist: any) => {
   try {
-    // Process array values
+    // Process array values - ensure they're stored as proper arrays for JSONB columns
     const processedData = {
       name: formData.name,
       specialty: formData.specialty,

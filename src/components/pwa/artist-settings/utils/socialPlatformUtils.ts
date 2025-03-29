@@ -1,61 +1,42 @@
 
+import { ensureArray } from "@/utils/ensureArray";
 import { logger } from "@/utils/logger";
 
-export const formatSocialPlatforms = (artistData: any): string[] => {
-  if (!artistData || !artistData.social_platforms) {
-    logger.info("No social platforms data found, returning empty array");
+/**
+ * Format social platforms from database format to form format
+ */
+export const formatSocialPlatforms = (artist: any): string[] => {
+  if (!artist || !artist.social_platforms) {
+    logger.info("No social platforms found, returning empty array");
     return [""];
   }
-  
+
   try {
-    // If social_platforms is a string, try to parse it as JSON
-    if (typeof artistData.social_platforms === 'string') {
-      try {
-        const parsed = JSON.parse(artistData.social_platforms);
-        const result = Array.isArray(parsed) && parsed.length > 0 ? parsed : [""];
-        logger.info("Parsed social platforms from string:", result);
-        return result;
-      } catch (e) {
-        logger.error("Error parsing social_platforms string:", e);
-        return [""];
-      }
+    // Use ensureArray to handle different formats
+    const platforms = ensureArray(artist.social_platforms);
+    
+    // Return empty array with one empty string if no platforms
+    if (platforms.length === 0) {
+      return [""];
     }
     
-    // If social_platforms is already an array, return it
-    if (Array.isArray(artistData.social_platforms)) {
-      const result = artistData.social_platforms.length > 0 ? 
-        artistData.social_platforms.map(p => p?.toString() || "") : 
-        [""];
-      logger.info("Social platforms from array:", result);
-      return result;
-    }
-    
-    // If social_platforms is an object, convert it to an array
-    if (typeof artistData.social_platforms === 'object' && artistData.social_platforms !== null) {
-      const platforms = Object.values(artistData.social_platforms);
-      const result = platforms.length > 0 ? 
-        platforms.map(p => p?.toString() || "") : 
-        [""];
-      logger.info("Social platforms from object:", result);
-      return result;
-    }
+    return platforms;
   } catch (error) {
     logger.error("Error formatting social platforms:", error);
+    return [""];
   }
-  
-  // Default fallback
-  logger.info("Using default empty social platforms array");
-  return [""];
 };
 
+/**
+ * Process social platforms from form format to database format
+ */
 export const processSocialPlatforms = (platforms: string[]): string[] => {
-  // Filter out empty platforms and trim whitespace
-  const processed = platforms
-    .filter(platform => platform.trim() !== "")
-    .map(platform => platform.trim());
-    
-  logger.info("Processed social platforms:", processed);
+  if (!platforms || platforms.length === 0) {
+    return [];
+  }
   
-  // If all platforms were empty, return an empty array
-  return processed.length > 0 ? processed : [];
+  // Filter out empty strings and trim whitespace
+  return platforms
+    .map(platform => platform.trim())
+    .filter(platform => platform.length > 0);
 };

@@ -16,6 +16,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
   const {
     loading,
     saving,
+    artist,
     formData,
     handleChange,
     handleSocialPlatformChange,
@@ -43,6 +44,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
             formData={formData} 
             handleChange={handleChange}
             handleImageChange={handleImageChange}
+            artistId={artist?.id}
           />
           
           <LocationForm 
