@@ -48,7 +48,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         <Button 
           variant="ghost" 
           size="icon" 
-          className={`p-0 hover:bg-accent/20 ${textColorClass}`}
+          className={`p-0 hover:bg-gray-200 dark:hover:bg-gray-800 ${textColorClass}`}
           title="Shopping Cart"
         >
           <ShoppingCart className="h-5 w-5" />
@@ -61,8 +61,6 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
           )}
         </Button>
       </Link>
-      
-      {/* Removed the display name div that was here */}
       
       <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
     </div>

@@ -14,14 +14,29 @@ const PWANavigation = () => {
   
   // Get display name from user data
   let displayName = 'Sign In';
+  let initials = 'U';
   
   if (user) {
-    // Extract name from user metadata or use email if no name is available
-    displayName = user.user_metadata?.full_name || '';
-    
-    // If name is empty or contains @ (likely an email), use first part of email instead
-    if (!displayName || displayName.includes('@')) {
-      displayName = user.email ? user.email.split('@')[0] : 'User';
+    // For demo accounts, always display "Demo Artist"
+    if (user.email?.includes('demo') || user.email?.includes('247art')) {
+      displayName = 'Demo Artist';
+      initials = 'DA';
+    } else {
+      // Extract name from user metadata or use email if no name is available
+      displayName = user.user_metadata?.full_name || '';
+      
+      // If name is empty or contains @ (likely an email), use first part of email instead
+      if (!displayName || displayName.includes('@')) {
+        displayName = user.email ? user.email.split('@')[0] : 'User';
+      }
+      
+      // Get initials for avatar
+      const nameParts = displayName.split(' ');
+      if (nameParts.length > 1) {
+        initials = `${nameParts[0].charAt(0)}${nameParts[1].charAt(0)}`;
+      } else {
+        initials = displayName.charAt(0);
+      }
     }
   }
 

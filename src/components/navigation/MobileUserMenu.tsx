@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -36,14 +37,22 @@ const MobileUserMenu = () => {
   
   useEffect(() => {
     if (user) {
-      let name = user.user_metadata?.full_name || '';
-      
-      if (!name || name.includes('@')) {
-        name = user.email ? user.email.split('@')[0] : 'User';
+      // For demo accounts, always display "Demo Artist"
+      if (user.email?.includes('demo') || user.email?.includes('247art')) {
+        setDisplayName('Demo Artist');
+        setInitials('DA');
+      } else {
+        // Extract name from user metadata or use email if no name is available
+        let name = user.user_metadata?.full_name || '';
+        
+        // If name is empty or contains @, use first part of email instead
+        if (!name || name.includes('@')) {
+          name = user.email ? user.email.split('@')[0] : 'User';
+        }
+        
+        setInitials(getInitials(name));
+        setDisplayName(name);
       }
-      
-      setInitials(getInitials(name));
-      setDisplayName(name);
       
       const checkAdminStatus = async () => {
         const adminStatus = await isUserAdmin();
