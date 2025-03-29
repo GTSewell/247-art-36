@@ -62,7 +62,7 @@ const ArtistCard = ({
   // Check if artist is a Signature Artist (ID >= 26)
   const isSignatureArtist = id >= 26;
   return <div className="relative">
-      <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" onClick={onSelect}>
+      <div className={`group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`} onClick={onSelect}>
         <div className="aspect-square overflow-hidden relative">
           <img src={imageError ? '/placeholder.svg' : image} alt={name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" onError={handleImageError} />
           

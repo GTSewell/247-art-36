@@ -33,6 +33,9 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   const selectedArtist = artists[selectedArtistIndex];
   const contentRef = useRef<HTMLDivElement>(null);
   
+  // Check if artist is a Signature Artist (ID >= 26)
+  const isSignatureArtist = selectedArtist?.id >= 26;
+  
   // Log when the modal content is rendered
   React.useEffect(() => {
     logger.info(`Modal content rendered for artist: ${selectedArtist.name} (ID: ${selectedArtist.id})`);
@@ -103,9 +106,16 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
       <div className="relative overflow-hidden bg-white">
         <div 
           ref={contentRef}
-          className="flex flex-col w-full max-h-[85vh] overflow-y-auto"
+          className={`flex flex-col w-full max-h-[85vh] overflow-y-auto ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
           style={{ background: 'white' }}
         >
+          {/* Signature Artist Badge - Added to mobile */}
+          {isSignatureArtist && (
+            <div className="bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
+              Signature Artist
+            </div>
+          )}
+          
           {/* Header Section */}
           <div className="px-6 pt-6 pb-2">
             <ArtistHeaderInfo
@@ -145,9 +155,16 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   // Desktop view based on screenshot 2
   return (
     <div className="relative overflow-hidden bg-white">
+      {/* Signature Artist Badge - Added to desktop */}
+      {isSignatureArtist && (
+        <div className="bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
+          Signature Artist
+        </div>
+      )}
+      
       <div 
         ref={contentRef}
-        className="flex flex-row max-h-[70vh]"
+        className={`flex flex-row max-h-[70vh] ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
         style={{ background: 'white' }}
       >
         {/* Left side: Artwork grid */}
