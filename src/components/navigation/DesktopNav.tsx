@@ -21,15 +21,6 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const location = useLocation();
   const { user: authUser } = useAuth();
   
-  // Display name for the nav
-  let displayName = 'Demo Artist';
-  if (authUser?.user_metadata?.full_name) {
-    displayName = authUser.user_metadata.full_name;
-    if (displayName.includes('@')) {
-      displayName = 'Demo Artist';
-    }
-  }
-  
   // Check if we're on the cart page or artist dashboard
   const isCartPage = location.pathname === "/cart";
   const isArtistDashboard = location.pathname.includes("/dashboard/artist");
@@ -71,12 +62,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         </Button>
       </Link>
       
-      {/* Display username next to avatar if logged in */}
-      {authUser && (
-        <div className={`mr-2 ${textColorClass}`}>
-          {displayName}
-        </div>
-      )}
+      {/* Removed the display name div that was here */}
       
       <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
     </div>
