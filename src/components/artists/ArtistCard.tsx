@@ -82,9 +82,9 @@ const ArtistCard = ({
             onError={handleImageError}
           />
           
-          {/* Genesis Artist Badge - enhanced styling for visibility */}
+          {/* Genesis Artist Badge - completely redesigned for maximum visibility */}
           {isGenesisArtist && (
-            <div className="absolute top-2 left-2 z-30 bg-zap-yellow text-black px-3 py-1 rounded-md font-bold text-xs shadow-lg border border-black/20">
+            <div className="absolute top-2 left-2 z-50 bg-[#F7CF1E] text-black px-3 py-1.5 rounded-md font-bold text-sm shadow-xl border-2 border-black transform rotate-0 translate-y-0 translate-x-0">
               Genesis Artist
             </div>
           )}
