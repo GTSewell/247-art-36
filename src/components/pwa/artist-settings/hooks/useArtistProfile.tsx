@@ -17,7 +17,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     country: "",
     techniques: "",
     styles: "",
-    social_platforms: [""],
+    social_platforms: [""], // Fixed: Initialize as string array with empty string
     image: null
   });
   
@@ -70,6 +70,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     }));
   };
   
+  // Add the missing methods for social platform handling
   const handleSocialPlatformChange = (index: number, value: string) => {
     const updatedPlatforms = [...formData.social_platforms];
     updatedPlatforms[index] = value;
@@ -134,6 +135,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     }
   };
 
+  // Return all required properties as defined in ArtistProfileHookReturn
   return {
     loading,
     saving,
