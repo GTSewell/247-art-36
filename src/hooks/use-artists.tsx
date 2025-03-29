@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -24,29 +23,25 @@ export const useArtists = () => {
       }
 
       if (artists) {
-        // Filter specific artists that should always go to the additional section
-        const additionalArtistNames = ['Emily', 'Yuki', 'Lucas'];
+        // Featured artist IDs - specific selection
+        const featuredArtistIds = [5, 6, 18]; // Lucas, Nina, Marcus
         
-        // First, separate the artists that must go to additional section
-        const mustBeAdditional = artists.filter(artist => 
-          additionalArtistNames.includes(artist.name)
+        // Filter out the featured artists
+        const featured = artists.filter(artist => 
+          featuredArtistIds.includes(artist.id)
         );
         
-        // Get eligible artists for featured section (all artists not in mustBeAdditional)
-        const eligibleForFeatured = artists.filter(artist => 
-          !additionalArtistNames.includes(artist.name)
+        // All other artists go to additional
+        const additional = artists.filter(artist => 
+          !featuredArtistIds.includes(artist.id)
         );
         
-        // Take the first 3 eligible artists for featured section
-        const featured = eligibleForFeatured.slice(0, 3);
+        // Sort featured artists to match the requested order: Lucas (5), Nina (6), Marcus (18)
+        const sortedFeatured = [...featured].sort((a, b) => {
+          return featuredArtistIds.indexOf(a.id) - featuredArtistIds.indexOf(b.id);
+        });
         
-        // Put the rest of eligible artists along with mustBeAdditional into additional
-        const additional = [
-          ...mustBeAdditional,
-          ...eligibleForFeatured.slice(3)
-        ];
-        
-        setFeaturedArtists(featured as Artist[]);
+        setFeaturedArtists(sortedFeatured as Artist[]);
         setAdditionalArtists(additional as Artist[]);
       }
     } catch (error: any) {
@@ -79,11 +74,6 @@ export const useArtists = () => {
       logger.error('Error fetching favorites:', error);
     }
   };
-
-  useEffect(() => {
-    fetchArtists();
-    fetchFavorites();
-  }, []);
 
   const handleFavoriteToggle = async (artistId: number, isFavorite: boolean) => {
     try {
@@ -137,7 +127,6 @@ export const useArtists = () => {
     }
   };
 
-  // Improved refreshArtists function that refreshes a single artist if specified
   const refreshArtists = async (artistId?: number): Promise<void> => {
     if (artistId) {
       try {
@@ -170,6 +159,11 @@ export const useArtists = () => {
       await fetchFavorites();
     }
   };
+
+  useEffect(() => {
+    fetchArtists();
+    fetchFavorites();
+  }, []);
 
   return {
     featuredArtists,

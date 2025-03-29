@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { FilterX, Filter, Search } from 'lucide-react';
@@ -5,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import AtlasFilter from './AtlasFilter';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
+
 interface ArtistsHeaderProps {
   artistSearch: string;
   setArtistSearch: (value: string) => void;
@@ -27,6 +29,7 @@ interface ArtistsHeaderProps {
   showFavorites: boolean;
   setShowFavorites: (show: boolean) => void;
 }
+
 const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
   artistSearch,
   setArtistSearch,
@@ -54,7 +57,7 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
   return <div className="mb-8">
       {/* Desktop view - single line layout */}
       <div className="hidden md:flex items-center justify-between gap-4">
-        <h1 className="text-4xl font-bold text-foreground whitespace-nowrap">Demo Artists</h1>
+        <h1 className="text-4xl font-bold text-foreground whitespace-nowrap">Featured Artists</h1>
         
         <div className="flex items-center gap-4 flex-1 justify-end">
           <div className="flex items-center space-x-2">
