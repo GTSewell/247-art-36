@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistHeaderInfo from "./ArtistHeaderInfo";
@@ -11,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 interface ArtistModalContentProps {
   artists: Artist[];
-  selectedArtist: Artist;  // Added this missing prop
   selectedArtistIndex: number;
   onArtistChange: (index: number) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
@@ -22,7 +20,6 @@ interface ArtistModalContentProps {
 
 const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   artists,
-  selectedArtist,  // Now using the prop directly
   selectedArtistIndex,
   onArtistChange,
   onFavoriteToggle,
@@ -32,6 +29,7 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const selectedArtist = artists[selectedArtistIndex];
   const contentRef = useRef<HTMLDivElement>(null);
   
   // Check if artist is a Signature Artist (ID >= 26)

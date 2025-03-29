@@ -64,7 +64,6 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
         <div className={`rounded-lg overflow-hidden ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}>
           <ArtistModalContent
             artists={artists}
-            selectedArtist={selectedArtist}
             selectedArtistIndex={selectedArtistIndex}
             onArtistChange={onArtistChange}
             onFavoriteToggle={onFavoriteToggle}
