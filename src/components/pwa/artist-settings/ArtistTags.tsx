@@ -1,100 +1,99 @@
 
 import React from "react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Info, Plus, Trash2 } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Plus, Trash2 } from "lucide-react";
+import { ArtistProfileFormData } from "./types";
 
 interface ArtistTagsProps {
-  formData: {
-    techniques: string;
-    styles: string;
-    social_platforms: string[];
-  };
+  formData: ArtistProfileFormData;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSocialPlatformChange: (index: number, value: string) => void;
   addSocialPlatform: () => void;
   removeSocialPlatform: (index: number) => void;
 }
 
-const ArtistTags: React.FC<ArtistTagsProps> = ({ 
-  formData, 
-  handleChange, 
+const ArtistTags: React.FC<ArtistTagsProps> = ({
+  formData,
+  handleChange,
   handleSocialPlatformChange,
   addSocialPlatform,
   removeSocialPlatform
 }) => {
   return (
-    <>
-      <div className="space-y-2">
-        <Label htmlFor="techniques">Techniques (comma separated)</Label>
+    <div className="space-y-8">
+      <div>
+        <Label htmlFor="techniques">Techniques</Label>
         <Input
           id="techniques"
           name="techniques"
-          value={formData.techniques || ''}
+          value={formData.techniques}
           onChange={handleChange}
-          placeholder="Oil, Acrylic, Digital, etc."
+          placeholder="e.g. Oil Painting, Charcoal, Digital"
+          className="mt-1"
         />
+        <p className="text-xs text-muted-foreground mt-1">
+          Separate with commas
+        </p>
       </div>
       
-      <div className="space-y-2">
-        <Label htmlFor="styles">Styles (comma separated)</Label>
+      <div>
+        <Label htmlFor="styles">Styles</Label>
         <Input
           id="styles"
           name="styles"
-          value={formData.styles || ''}
+          value={formData.styles}
           onChange={handleChange}
-          placeholder="Abstract, Modern, Pop Art, etc."
+          placeholder="e.g. Abstract, Impressionism, Modern"
+          className="mt-1"
         />
+        <p className="text-xs text-muted-foreground mt-1">
+          Separate with commas
+        </p>
       </div>
       
-      <div className="space-y-3">
-        <Label>Social Platforms</Label>
-        <div className="text-xs text-gray-500 flex items-start gap-1 mb-1">
-          <Info className="h-3 w-3 mt-0.5" />
-          <span>Add just usernames or full URLs. Examples:</span>
-        </div>
-        <div className="grid grid-cols-2 gap-2 mb-2 text-xs text-gray-500">
-          <div>• instagram.com/username</div>
-          <div>• twitter.com/username</div>
-          <div>• @username (for Instagram)</div>
-          <div>• facebook.com/username</div>
+      <div>
+        <div className="flex justify-between items-center mb-2">
+          <Label>Social Media</Label>
+          <Button 
+            type="button" 
+            variant="ghost" 
+            size="sm" 
+            onClick={addSocialPlatform}
+            className="h-7 px-2"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            Add Another
+          </Button>
         </div>
         
         {formData.social_platforms.map((platform, index) => (
-          <div key={index} className="flex items-center gap-2">
+          <div key={index} className="flex mb-2 gap-2">
             <Input
               value={platform}
               onChange={(e) => handleSocialPlatformChange(index, e.target.value)}
-              placeholder="instagram.com/username"
+              placeholder="https://..."
               className="flex-1"
             />
             {formData.social_platforms.length > 1 && (
               <Button 
                 type="button" 
                 variant="ghost" 
-                size="icon"
+                size="icon" 
                 onClick={() => removeSocialPlatform(index)}
-                className="h-9 w-9 text-gray-500 hover:text-red-500"
+                className="h-10 w-10 text-destructive"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
             )}
           </div>
         ))}
-        
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={addSocialPlatform}
-          className="mt-2 flex items-center"
-        >
-          <Plus className="mr-1 h-3.5 w-3.5" />
-          Add Another
-        </Button>
+        <p className="text-xs text-muted-foreground mt-1">
+          Add full URLs to your social media profiles
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 

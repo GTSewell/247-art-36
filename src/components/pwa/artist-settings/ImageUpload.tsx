@@ -30,8 +30,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     try {
       setUploading(true);
       
-      // Use artist name for folder organization
-      const safeArtistName = artistName || "Unnamed Artist";
+      // Use artist name for folder organization, fallback to "Unnamed Artist" if not provided
+      const safeArtistName = artistName?.trim() || "Unnamed_Artist";
+      
+      console.log("Uploading image for artist:", safeArtistName);
       
       const imageUrl = await uploadImage(files[0], safeArtistName, true);
       if (imageUrl) {

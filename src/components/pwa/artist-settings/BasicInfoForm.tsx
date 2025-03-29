@@ -3,8 +3,8 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import ImageUpload from "./ImageUpload";
 import { ArtistProfileFormData } from "./types";
+import ImageUpload from "./ImageUpload";
 
 interface BasicInfoFormProps {
   formData: ArtistProfileFormData;
@@ -12,14 +12,14 @@ interface BasicInfoFormProps {
   handleImageChange: (imageUrl: string | null) => void;
 }
 
-const BasicInfoForm: React.FC<BasicInfoFormProps> = ({ 
-  formData, 
+const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
+  formData,
   handleChange,
-  handleImageChange 
+  handleImageChange
 }) => {
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-6">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row gap-6 items-start">
         <ImageUpload 
           currentImage={formData.image} 
           onImageChange={handleImageChange}
@@ -34,8 +34,7 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Your full name"
-              required
+              placeholder="Artist name"
             />
           </div>
           
@@ -46,7 +45,7 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
               name="specialty"
               value={formData.specialty}
               onChange={handleChange}
-              placeholder="Your artistic specialty (e.g., Painter, Sculptor, etc.)"
+              placeholder="e.g. Painting, Sculpture, Digital Art"
             />
           </div>
         </div>
@@ -59,8 +58,8 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
           name="bio"
           value={formData.bio}
           onChange={handleChange}
-          placeholder="Tell us about yourself and your art..."
-          className="resize-none min-h-[120px]"
+          placeholder="Artist biography"
+          rows={5}
         />
       </div>
     </div>

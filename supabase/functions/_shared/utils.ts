@@ -34,8 +34,12 @@ export async function downloadAndStoreImage(
   try {
     console.log(`Downloading image from ${imageUrl}`);
     
-    // Skip if the URL is already a Supabase storage URL
-    if (imageUrl.includes('storage.googleapis.com') && imageUrl.includes('artist-images')) {
+    // Check for both possible bucket names in the URL
+    const isAlreadyInStorage = 
+      (imageUrl.includes('storage.googleapis.com') && 
+      (imageUrl.includes('artist-images') || imageUrl.includes('artists')));
+    
+    if (isAlreadyInStorage) {
       console.log('Image is already in Supabase storage, skipping');
       return imageUrl;
     }
@@ -49,24 +53,57 @@ export async function downloadAndStoreImage(
     // Get the image data as a blob
     const imageBlob = await imageResponse.blob();
 
-    // Upload to Supabase Storage
-    const { data, error } = await supabase
-      .storage
-      .from('artist-images')
-      .upload(storagePath, imageBlob, {
-        contentType: 'image/webp',
-        upsert: true
-      });
-
-    if (error) {
-      throw new Error(`Failed to upload to storage: ${error.message}`);
+    // Try both bucket names
+    let uploadResult = null;
+    let publicUrl = null;
+    
+    // First try with new 'artists' bucket
+    try {
+      const { data, error } = await supabase
+        .storage
+        .from('artists')
+        .upload(storagePath, imageBlob, {
+          contentType: 'image/webp',
+          upsert: true
+        });
+        
+      if (!error) {
+        uploadResult = data;
+        const { data: { publicUrl: url } } = supabase
+          .storage
+          .from('artists')
+          .getPublicUrl(storagePath);
+        publicUrl = url;
+      }
+    } catch (firstError) {
+      console.log('Failed to upload to artists bucket, trying artist-images bucket', firstError);
     }
-
-    // Get the public URL
-    const { data: { publicUrl } } = supabase
-      .storage
-      .from('artist-images')
-      .getPublicUrl(storagePath);
+    
+    // If first attempt failed, try with legacy 'artist-images' bucket
+    if (!uploadResult) {
+      try {
+        const { data, error } = await supabase
+          .storage
+          .from('artist-images')
+          .upload(storagePath, imageBlob, {
+            contentType: 'image/webp',
+            upsert: true
+          });
+          
+        if (error) {
+          throw new Error(`Failed to upload to storage: ${error.message}`);
+        }
+        
+        uploadResult = data;
+        const { data: { publicUrl: url } } = supabase
+          .storage
+          .from('artist-images')
+          .getPublicUrl(storagePath);
+        publicUrl = url;
+      } catch (secondError) {
+        throw new Error(`Failed to upload to any storage bucket: ${secondError.message}`);
+      }
+    }
 
     console.log(`Successfully stored image at ${publicUrl}`);
     return publicUrl;

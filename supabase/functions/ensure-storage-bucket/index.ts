@@ -18,78 +18,91 @@ serve(async (req) => {
   }
 
   try {
-    const bucketName = 'artist-images';
+    // Process both buckets
+    const buckets = ['artist-images', 'artists'];
+    const results = {};
 
-    // Check if the bucket exists
-    const { data: bucketData, error: bucketError } = await supabaseAdmin
-      .storage
-      .getBucket(bucketName);
-    
-    if (bucketError && bucketError.message.includes('does not exist')) {
-      console.log(`Bucket ${bucketName} does not exist, creating it now...`);
-      
-      // Create the bucket if it doesn't exist
-      const { error: createBucketError } = await supabaseAdmin
+    for (const bucketName of buckets) {
+      // Check if the bucket exists
+      const { data: bucketData, error: bucketError } = await supabaseAdmin
         .storage
-        .createBucket(bucketName, {
-          public: true, // Make the bucket public
-          fileSizeLimit: 10485760, // 10MB limit
-        });
+        .getBucket(bucketName);
       
-      if (createBucketError) {
-        throw new Error(`Failed to create storage bucket: ${createBucketError.message}`);
-      }
-      
-      // Create public access policies
-      const createPublicPolicy = `
-        CREATE POLICY "Public Access for ${bucketName}" ON storage.objects
-        FOR SELECT
-        USING (bucket_id = '${bucketName}');
-      `;
-      
-      const createUploadPolicy = `
-        CREATE POLICY "Authenticated users can upload images" ON storage.objects
-        FOR INSERT
-        WITH CHECK (bucket_id = '${bucketName}' AND auth.role() = 'authenticated');
-      `;
-      
-      const createUpdatePolicy = `
-        CREATE POLICY "Users can update own images" ON storage.objects
-        FOR UPDATE
-        USING (bucket_id = '${bucketName}' AND auth.role() = 'authenticated');
-      `;
-      
-      const createDeletePolicy = `
-        CREATE POLICY "Users can delete own images" ON storage.objects
-        FOR DELETE
-        USING (bucket_id = '${bucketName}' AND auth.role() = 'authenticated');
-      `;
-      
-      // Execute the policy creation SQL
-      // Note: This is a simplified example; in production, you would want to use the SQL API
-      console.log(`Bucket ${bucketName} created successfully`);
-      
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
+      if (bucketError && bucketError.message.includes('does not exist')) {
+        console.log(`Bucket ${bucketName} does not exist, creating it now...`);
+        
+        // Create the bucket if it doesn't exist
+        const { error: createBucketError } = await supabaseAdmin
+          .storage
+          .createBucket(bucketName, {
+            public: true, // Make the bucket public
+            fileSizeLimit: 10485760, // 10MB limit
+          });
+        
+        if (createBucketError) {
+          results[bucketName] = {
+            success: false,
+            error: `Failed to create storage bucket: ${createBucketError.message}`
+          };
+          continue;
+        }
+        
+        // Create public access policies
+        const createPublicPolicy = `
+          CREATE POLICY "Public Access for ${bucketName}" ON storage.objects
+          FOR SELECT
+          USING (bucket_id = '${bucketName}');
+        `;
+        
+        const createUploadPolicy = `
+          CREATE POLICY "Authenticated users can upload images" ON storage.objects
+          FOR INSERT
+          WITH CHECK (bucket_id = '${bucketName}' AND auth.role() = 'authenticated');
+        `;
+        
+        const createUpdatePolicy = `
+          CREATE POLICY "Users can update own images" ON storage.objects
+          FOR UPDATE
+          USING (bucket_id = '${bucketName}' AND auth.role() = 'authenticated');
+        `;
+        
+        const createDeletePolicy = `
+          CREATE POLICY "Users can delete own images" ON storage.objects
+          FOR DELETE
+          USING (bucket_id = '${bucketName}' AND auth.role() = 'authenticated');
+        `;
+        
+        // Execute the policy creation SQL
+        // Note: This is a simplified example; in production, you would want to use the SQL API
+        console.log(`Bucket ${bucketName} created successfully`);
+        
+        results[bucketName] = {
+          success: true,
           message: `Storage bucket '${bucketName}' created successfully with public access`,
           details: "Please also make sure to create appropriate storage policies"
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    } else if (bucketError) {
-      throw bucketError;
-    } else {
-      console.log(`Bucket ${bucketName} already exists`);
-      return new Response(
-        JSON.stringify({ 
+        };
+      } else if (bucketError) {
+        results[bucketName] = {
+          success: false,
+          error: bucketError.message
+        };
+      } else {
+        console.log(`Bucket ${bucketName} already exists`);
+        results[bucketName] = {
           success: true, 
           message: `Storage bucket '${bucketName}' already exists`,
           details: bucketData
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+        };
+      }
     }
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        results: results
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('Error in ensure-storage-bucket function:', error);
     return new Response(

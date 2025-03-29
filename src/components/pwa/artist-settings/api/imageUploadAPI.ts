@@ -12,10 +12,13 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     const fileExt = file.name.split('.').pop();
     const fileName = `${uuidv4()}.${fileExt}`;
     
+    // Sanitize artist name for folder path (replace spaces with underscores)
+    const sanitizedArtistName = artistName.replace(/\s+/g, '_');
+    
     // Create folder path based on artist name and image type
     const folderPath = isProfileImage 
-      ? `${artistName}/Profile Image` 
-      : `${artistName}/Artworks`;
+      ? `${sanitizedArtistName}/Profile_Image` 
+      : `${sanitizedArtistName}/Artworks`;
     
     const filePath = `${folderPath}/${fileName}`;
     
@@ -29,19 +32,36 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
       throw bucketError;
     }
     
-    // Check for both buckets since we're transitioning
-    const artistBucketExists = bucketList?.some(bucket => bucket.name === 'Artists');
+    // Check for artists bucket first
+    const artistBucketExists = bucketList?.some(bucket => bucket.name === 'artists');
+    // Then check for legacy artist-images bucket
     const legacyBucketExists = bucketList?.some(bucket => bucket.name === 'artist-images');
     
     let bucketName = 'artists';
     
-    if (!artistBucketExists && !legacyBucketExists) {
-      logger.error("Neither 'artists' nor 'artist-images' bucket exists. Please run the storage setup SQL.");
-      throw new Error("Storage bucket not configured");
-    } else if (!artistBucketExists && legacyBucketExists) {
+    if (artistBucketExists) {
+      // Use the new bucket if it exists
+      bucketName = 'artists';
+    } else if (legacyBucketExists) {
       // Fall back to legacy bucket if new one doesn't exist
       bucketName = 'artist-images';
       logger.warn("Using legacy 'artist-images' bucket as 'artists' bucket does not exist");
+    } else {
+      // If neither bucket exists, attempt to create the artists bucket
+      try {
+        const { error: createBucketError } = await supabase.storage.createBucket('artists', {
+          public: true
+        });
+        
+        if (createBucketError) {
+          throw createBucketError;
+        }
+        
+        logger.info("Created 'artists' bucket successfully");
+      } catch (createError) {
+        logger.error("Failed to create storage bucket:", createError);
+        throw new Error("Storage bucket not configured and could not be created");
+      }
     }
     
     // Upload image to Supabase
