@@ -25,7 +25,7 @@ const LinkSection: React.FC<LinkSectionProps> = ({
 }) => {
   return (
     <div className="mt-6 space-y-2">
-      <h3 className="text-base font-bold mb-3">{title}</h3>
+      <h3 className="text-base font-bold mb-3">{title === 'WEBSITE' ? 'Below are temp placeholder links.\nThese are purely to show your artist profile will function when it is live' : title}</h3>
       <div className="space-y-2">
         <a 
           href={url} 
