@@ -56,24 +56,23 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const isRealArtist = artist.id ? artist.id >= 26 : false;
   
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
-    const details: ArtworkDetails = {
-      image: artworkUrl,
-      title: `${artist.name}'s Art`,
-      description: isRealArtist 
-        ? `This is a temporary artwork preview for ${artist.name}.` 
-        : "This stunning piece showcases the artist's unique style and vision, bringing together elements of color, texture, and form in perfect harmony.",
-      specifications: `Medium: Acrylic on Canvas\nSize: 24" x 36"\nYear: ${new Date().getFullYear()}`
-    };
-    
-    // Only add price for non-real artists (for demo purposes)
-    if (!isRealArtist) {
-      details.price = `$${Math.floor(Math.random() * 5000) + 1000}`;
+    if (isRealArtist) {
+      return {
+        image: artworkUrl,
+        title: `${artist.name}'s Art`,
+        description: `This is a temporary artwork preview for ${artist.name}.`,
+        specifications: `Medium:\nSize:\nYear:`,
+        price: "$"
+      };
     } else {
-      // For real artists, add $ without a value
-      details.price = "$";
+      return {
+        image: artworkUrl,
+        title: `${artist.name}'s Art`,
+        description: "This stunning piece showcases the artist's unique style and vision, bringing together elements of color, texture, and form in perfect harmony.",
+        specifications: `Medium: Acrylic on Canvas\nSize: 24" x 36"\nYear: ${new Date().getFullYear()}`,
+        price: `$${Math.floor(Math.random() * 5000) + 1000}`
+      };
     }
-    
-    return details;
   };
 
   const handleArtworkClick = (artwork: string, index: number) => {

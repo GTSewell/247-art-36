@@ -28,9 +28,6 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     await ensureBucketExists('artists');
     
     // Upload image to Supabase
-    // The Supabase upload method expects:
-    // 1. The path where the file should be stored
-    // 2. The file content (and options are passed as part of this upload call)
     const { data, error } = await supabase.storage
       .from('artists')
       .upload(filePath, file, {
@@ -132,43 +129,17 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
   try {
     logger.info(`Updating background image for artist ID ${artistId} with URL: ${imageUrl}`);
     
-    // First, check if the artist has a profile record
-    const { data: profiles, error: profileError } = await supabase
-      .from('artist_profiles')
-      .select('*')
-      .eq('artist_id', artistId.toString())
-      .maybeSingle();
+    // Update the artists table with a background_image field
+    // This is a simplified approach since we don't have a separate artist_profiles table
+    const { error } = await supabase
+      .from('artists')
+      .update({ 
+        background_image: imageUrl
+      })
+      .eq('id', artistId);
     
-    if (profileError) {
-      logger.error("Error checking artist profile:", profileError);
-      throw profileError;
-    }
-    
-    let result;
-    
-    if (profiles) {
-      // Update existing profile
-      result = await supabase
-        .from('artist_profiles')
-        .update({ 
-          background_image: imageUrl
-        })
-        .eq('artist_id', artistId.toString());
-    } else {
-      // Create new profile with default values
-      result = await supabase
-        .from('artist_profiles')
-        .insert({ 
-          artist_id: artistId.toString(),
-          background_image: imageUrl,
-          background_color: '#f0f0f0', // Default light gray
-          panel_color: '#ffffff', // Default white
-          links: []
-        });
-    }
-    
-    if (result.error) {
-      logger.error("Error updating artist background image:", result.error);
+    if (error) {
+      logger.error("Error updating artist background image:", error);
       return false;
     }
     
