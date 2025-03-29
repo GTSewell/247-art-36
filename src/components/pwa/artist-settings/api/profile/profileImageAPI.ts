@@ -108,3 +108,12 @@ export async function deleteProfileImage(artistId: string): Promise<boolean> {
     return false;
   }
 }
+
+// Add the missing function that's causing the build error
+export async function updateArtistProfileImage(file: File, artistId: string): Promise<string | null> {
+  // First delete any existing profile images
+  await deleteProfileImage(artistId);
+  
+  // Then upload the new image
+  return await uploadProfileImage(file, artistId);
+}

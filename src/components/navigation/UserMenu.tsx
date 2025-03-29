@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings, ShieldCheck } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -89,7 +89,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <Button variant="ghost" className={`flex items-center gap-2 ${textColorClass}`}>
           <Avatar className="h-8 w-8">
             <AvatarImage 
-              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
+              src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -103,7 +103,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <div className="flex items-center gap-2 p-3 border-b">
           <Avatar className="h-8 w-8">
             <AvatarImage 
-              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
+              src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -127,17 +127,17 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
           </DropdownMenuItem>
         </Link>
         
-        <Link to="/dashboard/collector">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-red/10 text-zap-red">
-            <Settings className="mr-2 h-5 w-5" />
-            <span className="font-medium">Collector Dashboard</span>
-          </DropdownMenuItem>
-        </Link>
-        
         <Link to="/dashboard/artist">
           <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-blue/10 text-zap-blue">
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Artist Dashboard</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/dashboard/collector">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-red/10 text-zap-red">
+            <Settings className="mr-2 h-5 w-5" />
+            <span className="font-medium">Collector Dashboard</span>
           </DropdownMenuItem>
         </Link>
         

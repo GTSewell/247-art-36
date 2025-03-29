@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "@/hooks/use-auth";
 
 interface DesktopNavProps {
   isActive: (path: string) => boolean;
@@ -18,6 +19,11 @@ interface DesktopNavProps {
 const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const { itemCount } = useCart();
   const location = useLocation();
+  const { user: authUser } = useAuth();
+  
+  // Display name for the nav
+  const displayName = authUser?.user_metadata?.full_name || 
+                     (authUser?.email ? authUser.email.split('@')[0] : '');
   
   // Check if we're on the cart page or artist dashboard
   const isCartPage = location.pathname === "/cart";
@@ -59,6 +65,13 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
           )}
         </Button>
       </Link>
+      
+      {/* Display username next to avatar if logged in */}
+      {authUser && (
+        <div className={`mr-2 ${textColorClass}`}>
+          {displayName}
+        </div>
+      )}
       
       <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
     </div>

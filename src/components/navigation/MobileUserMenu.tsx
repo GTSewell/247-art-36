@@ -88,14 +88,14 @@ const MobileUserMenu = () => {
         <Button variant="ghost" className="flex items-center gap-2">
           <Avatar className="h-9 w-9">
             <AvatarImage 
-              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
+              src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
               {initials}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm hidden sm:inline">{displayName}</span>
+          <span className="text-sm sm:inline">{displayName}</span>
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -106,7 +106,7 @@ const MobileUserMenu = () => {
         <div className="flex items-center mb-4">
           <Avatar className="h-12 w-12 mr-4">
             <AvatarImage 
-              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
+              src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white text-lg">
@@ -145,21 +145,21 @@ const MobileUserMenu = () => {
           </Link>
           
           <Link 
-            to="/dashboard/collector" 
-            className="flex items-center p-2 rounded-md bg-zap-red/10 text-zap-red"
-            onClick={closeSheet}
-          >
-            <Settings className="mr-2 h-5 w-5" />
-            <span className="font-medium">Collector Dashboard</span>
-          </Link>
-          
-          <Link 
             to="/dashboard/artist" 
             className="flex items-center p-2 rounded-md bg-zap-blue/10 text-zap-blue"
             onClick={closeSheet}
           >
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Artist Dashboard</span>
+          </Link>
+          
+          <Link 
+            to="/dashboard/collector" 
+            className="flex items-center p-2 rounded-md bg-zap-red/10 text-zap-red"
+            onClick={closeSheet}
+          >
+            <Settings className="mr-2 h-5 w-5" />
+            <span className="font-medium">Collector Dashboard</span>
           </Link>
           
           {isAdmin && (
