@@ -5,6 +5,7 @@ import { getFilesFromFolder, uploadImage, updateArtistBackgroundImage } from "@/
 import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
+import { transformArtist } from "@/utils/artist-transformer";
 
 export const useArtistArtworks = (artistId: string | null) => {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ export const useArtistArtworks = (artistId: string | null) => {
       const { data, error } = await supabase
         .from("artists")
         .select("*")
-        .eq("id", artistId)
+        .eq("id", parseInt(artistId, 10)) // Convert string ID to number
         .single();
       
       if (error) {
@@ -28,8 +29,10 @@ export const useArtistArtworks = (artistId: string | null) => {
       }
       
       if (data) {
-        setArtist(data);
-        setArtistName(data.name || "Unknown Artist");
+        // Transform raw DB data to Artist type
+        const transformedArtist = transformArtist(data);
+        setArtist(transformedArtist);
+        setArtistName(transformedArtist.name || "Unknown Artist");
       }
     } catch (error) {
       logger.error("Error fetching artist:", error);

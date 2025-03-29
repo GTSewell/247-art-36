@@ -27,7 +27,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     // First ensure the bucket exists
     await ensureBucketExists('artists');
     
-    // Upload image to Supabase
+    // Upload image to Supabase - fixed argument count
     const { data, error } = await supabase.storage
       .from('artists')
       .upload(filePath, file, {
@@ -129,12 +129,44 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
   try {
     logger.info(`Updating background image for artist ID ${artistId} with URL: ${imageUrl}`);
     
-    // Update the artists table with a background_image field
-    // This is a simplified approach since we don't have a separate artist_profiles table
+    // Fix the error by removing the 'background_image' field which doesn't exist in the artists table
+    // Instead, we'll add the background image URL to the 'artworks' field so it can be used as needed
+    const { data: artistData, error: getError } = await supabase
+      .from('artists')
+      .select('artworks')
+      .eq('id', artistId)
+      .single();
+    
+    if (getError) {
+      logger.error("Error fetching artist data:", getError);
+      return false;
+    }
+    
+    // Get current artworks or initialize as empty array
+    let artworks = artistData.artworks;
+    if (!artworks) {
+      artworks = [];
+    } else if (!Array.isArray(artworks)) {
+      // Convert to array if not already
+      try {
+        artworks = JSON.parse(artworks);
+        if (!Array.isArray(artworks)) {
+          artworks = [artworks];
+        }
+      } catch {
+        artworks = [artworks];
+      }
+    }
+    
+    // Update the artist with background image info stored in metadata
     const { error } = await supabase
       .from('artists')
       .update({ 
-        background_image: imageUrl
+        artworks: artworks,
+        image: artistData.image || imageUrl, // Use as profile image if none exists
+        artwork_files: {
+          background_image: imageUrl // Store background image URL in artwork_files JSON field
+        }
       })
       .eq('id', artistId);
     

@@ -18,7 +18,11 @@ interface ArtworkDetails {
   image: string;
   title: string;
   description: string;
-  specifications: string;
+  specifications: {
+    medium: string;
+    size: string;
+    year: string;
+  };
   price?: string;
 }
 
@@ -57,19 +61,29 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
     if (isRealArtist) {
+      // For real artists (ID 26+), just show empty fields
       return {
         image: artworkUrl,
         title: `${artist.name}'s Art`,
         description: `This is a temporary artwork preview for ${artist.name}.`,
-        specifications: `Medium:\nSize:\nYear:`,
+        specifications: {
+          medium: '',
+          size: '',
+          year: ''
+        },
         price: "$"
       };
     } else {
+      // For demo artists (ID below 26), show sample data
       return {
         image: artworkUrl,
         title: `${artist.name}'s Art`,
         description: "This stunning piece showcases the artist's unique style and vision, bringing together elements of color, texture, and form in perfect harmony.",
-        specifications: `Medium: Acrylic on Canvas\nSize: 24" x 36"\nYear: ${new Date().getFullYear()}`,
+        specifications: {
+          medium: 'Acrylic on Canvas',
+          size: '24" x 36"',
+          year: `${new Date().getFullYear()}`
+        },
         price: `$${Math.floor(Math.random() * 5000) + 1000}`
       };
     }
@@ -181,7 +195,11 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
             
             <div className="space-y-2">
               <h4 className="font-semibold text-sm">Specifications</h4>
-              <p className="text-sm whitespace-pre-line">{selectedArtwork?.specifications}</p>
+              <p className="text-sm">
+                Medium: {isRealArtist ? '' : selectedArtwork?.specifications.medium}<br />
+                Size: {isRealArtist ? '' : selectedArtwork?.specifications.size}<br />
+                Year: {isRealArtist ? '' : selectedArtwork?.specifications.year}
+              </p>
             </div>
             
             {isRealArtist ? (
