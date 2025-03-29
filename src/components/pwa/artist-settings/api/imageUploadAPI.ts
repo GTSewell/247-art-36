@@ -33,7 +33,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: true
-      });
+      }); // Removed extra argument here
     
     if (error) {
       logger.error("Error uploading image:", error);

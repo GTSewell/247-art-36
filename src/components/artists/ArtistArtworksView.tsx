@@ -10,7 +10,7 @@ interface ArtistArtworksViewProps {
   isGeneratingArtworks: boolean;
   setIsGeneratingArtworks: (value: boolean) => void;
   artworkErrors: Record<number, boolean>;
-  handleArtworkImageError: (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number) => void;
+  handleArtworkImageError: (e: React.SyntheticEvent<HTMLImageElement, Event>, index: number, artworkUrl?: string) => void;
   refreshArtworks?: () => void;
 }
 
@@ -86,7 +86,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                   src={artworkErrors[index] ? '/placeholder.svg' : artwork}
                   alt={`Artwork ${index + 1} by ${artist.name}`}
                   className="w-full h-full object-cover"
-                  onError={(e) => handleArtworkImageError(e, index)}
+                  onError={(e) => handleArtworkImageError(e, index, artwork)}
                   data-artwork-image={`image-${index}`}
                 />
               ) : (

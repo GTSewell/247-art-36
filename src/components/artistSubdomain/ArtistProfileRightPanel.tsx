@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useImageErrors } from '@/components/artists/hooks/useImageErrors';
 
 interface ArtworkDetails {
   image: string;
@@ -41,6 +42,10 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkDetails | null>(null);
   const { addItem } = useCart();
+  const { artworkErrors, handleArtworkImageError } = useImageErrors(
+    artist.id || 0, 
+    artist.name || 'Unknown Artist'
+  );
   
   // For Demo Artist, use placeholder artworks if none exist
   const placeholderArtworks = artist.name === "Demo Artist" ? [
@@ -50,11 +55,14 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png"
   ] : [];
   
-  const displayArtworks = artworks.length > 0 
-    ? artworks 
+  // Filter out empty or invalid URLs
+  const filteredArtworks = artworks.filter(url => url && typeof url === 'string' && url.trim() !== '');
+  
+  const displayArtworks = filteredArtworks.length > 0 
+    ? filteredArtworks 
     : placeholderArtworks.length > 0
       ? placeholderArtworks
-      : Array(4).fill('/placeholder.svg');
+      : [];
   
   // Check if this is a real artist (ID 26 or above)
   const isRealArtist = artist.id ? artist.id >= 26 : false;
@@ -139,36 +147,43 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
           <div className="flex flex-col space-y-4 pr-4 pb-4">
-            {displayArtworks.map((artwork, index) => (
-              <div 
-                key={index}
-                className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
-              >
-                <img 
-                  src={artwork} 
-                  alt={`Artwork ${index + 1}`}
-                  className="w-full object-cover"
-                />
+            {displayArtworks.length > 0 ? (
+              displayArtworks.map((artwork, index) => (
                 <div 
-                  className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
-                  onClick={() => handleArtworkClick(artwork, index)}
+                  key={index}
+                  className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
                 >
-                  <div className="absolute bottom-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity">
-                    <Button 
-                      size="icon"
-                      variant="secondary" 
-                      className="h-8 w-8 rounded-full bg-white text-black border border-black shadow-md hover:bg-gray-100"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleArtworkClick(artwork, index);
-                      }}
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
+                  <img 
+                    src={artworkErrors[index] ? '/placeholder.svg' : artwork} 
+                    alt={`Artwork ${index + 1}`}
+                    className="w-full object-cover"
+                    onError={(e) => handleArtworkImageError(e, index, artwork)}
+                  />
+                  <div 
+                    className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
+                    onClick={() => handleArtworkClick(artwork, index)}
+                  >
+                    <div className="absolute bottom-2 right-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                      <Button 
+                        size="icon"
+                        variant="secondary" 
+                        className="h-8 w-8 rounded-full bg-white text-black border border-black shadow-md hover:bg-gray-100"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleArtworkClick(artwork, index);
+                        }}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="p-4 text-center text-gray-500">
+                No artworks available
               </div>
-            ))}
+            )}
           </div>
         </ScrollArea>
       </div>
@@ -189,6 +204,9 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                   src={selectedArtwork.image} 
                   alt={selectedArtwork.title}
                   className="w-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = '/placeholder.svg';
+                  }}
                 />
               )}
             </div>
