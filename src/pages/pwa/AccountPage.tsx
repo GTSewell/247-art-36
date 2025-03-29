@@ -15,6 +15,19 @@ const AccountPage = () => {
   const navigate = useNavigate();
   const { items, itemCount } = useCart();
 
+  // Get display name from user data
+  let displayName = 'User';
+  
+  if (user) {
+    // Extract name from user metadata or use email if no name is available
+    displayName = user.user_metadata?.full_name || '';
+    
+    // If name is empty or contains @ (likely an email), use first part of email instead
+    if (!displayName || displayName.includes('@')) {
+      displayName = user.email ? user.email.split('@')[0] : 'User';
+    }
+  }
+
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -47,7 +60,7 @@ const AccountPage = () => {
             )}
           </div>
           <div>
-            <h1 className="text-xl font-bold">{user?.user_metadata?.full_name || 'User'}</h1>
+            <h1 className="text-xl font-bold">{displayName}</h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
           </div>
         </div>

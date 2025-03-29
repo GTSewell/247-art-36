@@ -40,9 +40,12 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   
   useEffect(() => {
     if (user) {
-      let name = user.user_metadata?.full_name || 'Demo Artist';
-      if (name.includes('@')) {
-        name = 'Demo Artist';
+      // Extract name from user metadata or use email if no name is available
+      let name = user.user_metadata?.full_name || '';
+      
+      // If name is empty or contains @ (likely an email), use first part of email instead
+      if (!name || name.includes('@')) {
+        name = user.email ? user.email.split('@')[0] : 'User';
       }
       
       setInitials(getInitials(name));

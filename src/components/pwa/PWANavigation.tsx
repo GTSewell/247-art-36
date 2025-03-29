@@ -12,12 +12,16 @@ const PWANavigation = () => {
   const navigate = useNavigate();
   const { itemCount } = useCart();
   
-  // Format display name to be "Demo Artist" instead of username format
-  let displayName = 'Demo Artist';
-  if (user?.user_metadata?.full_name) {
-    displayName = user.user_metadata.full_name;
-    if (displayName.includes('@')) {
-      displayName = 'Demo Artist';
+  // Get display name from user data
+  let displayName = 'Sign In';
+  
+  if (user) {
+    // Extract name from user metadata or use email if no name is available
+    displayName = user.user_metadata?.full_name || '';
+    
+    // If name is empty or contains @ (likely an email), use first part of email instead
+    if (!displayName || displayName.includes('@')) {
+      displayName = user.email ? user.email.split('@')[0] : 'User';
     }
   }
 
@@ -104,7 +108,7 @@ const PWANavigation = () => {
                 </Badge>
               )}
             </div>
-            <span className="text-xs mt-1">{user ? displayName : 'Sign in'}</span>
+            <span className="text-xs mt-1">{displayName}</span>
           </NavLink>
         </div>
       </nav>

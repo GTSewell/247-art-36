@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -37,9 +36,10 @@ const MobileUserMenu = () => {
   
   useEffect(() => {
     if (user) {
-      let name = user.user_metadata?.full_name || 'Demo Artist';
-      if (name.includes('@')) {
-        name = 'Demo Artist';
+      let name = user.user_metadata?.full_name || '';
+      
+      if (!name || name.includes('@')) {
+        name = user.email ? user.email.split('@')[0] : 'User';
       }
       
       setInitials(getInitials(name));
