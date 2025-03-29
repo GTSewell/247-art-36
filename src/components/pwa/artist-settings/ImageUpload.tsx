@@ -10,7 +10,7 @@ interface ImageUploadProps {
   currentImage: string | null;
   onImageChange: (imageUrl: string | null) => void;
   artistName: string;
-  artistId?: number;
+  artistId?: string | number;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ 
@@ -45,26 +45,33 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         
         // If artist ID is provided, directly update the artist record in the database
         if (artistId) {
-          const success = await updateArtistProfileImage(artistId, imageUrl);
-          if (success) {
-            console.log("Database updated with new profile image");
-            
-            // Sync images via edge function for extra reliability
-            try {
-              const { data, error } = await supabase.functions.invoke('sync-artist-images', {
-                body: { artistId }
-              });
+          // Convert string artistId to number if needed for the API call
+          const numericArtistId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+          
+          if (!isNaN(numericArtistId)) {
+            const success = await updateArtistProfileImage(numericArtistId, imageUrl);
+            if (success) {
+              console.log("Database updated with new profile image");
               
-              if (error) {
-                console.error("Error syncing images:", error);
-              } else {
-                console.log("Image sync response:", data);
+              // Sync images via edge function for extra reliability
+              try {
+                const { data, error } = await supabase.functions.invoke('sync-artist-images', {
+                  body: { artistId }
+                });
+                
+                if (error) {
+                  console.error("Error syncing images:", error);
+                } else {
+                  console.log("Image sync response:", data);
+                }
+              } catch (syncError) {
+                console.error("Failed to sync images:", syncError);
               }
-            } catch (syncError) {
-              console.error("Failed to sync images:", syncError);
+            } else {
+              console.error("Failed to update database with new profile image");
             }
           } else {
-            console.error("Failed to update database with new profile image");
+            console.error("Invalid artist ID format:", artistId);
           }
         }
         

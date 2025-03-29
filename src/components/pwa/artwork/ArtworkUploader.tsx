@@ -9,7 +9,7 @@ interface ArtworkUploaderProps {
   onUpload: (file: File) => Promise<boolean>;
   isUploading: boolean;
   artistName: string;
-  artistId?: number;
+  artistId?: string | number;
 }
 
 const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ 
