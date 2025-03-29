@@ -66,7 +66,6 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       
       <ScrollArea className="flex-grow overflow-auto">
         <div className="p-5">
-          {/* CONNECT section - moved to top */}
           <ArtistConnectSection 
             artist={artist}
             socialPlatforms={validSocialPlatforms}
@@ -76,7 +75,6 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
             buttonBorderColor={buttonBorderColor}
           />
           
-          {/* LINKS section - moved up before bio */}
           {links.length > 0 && (
             <div className="mt-6">
               <h3 className="text-base font-bold mb-3">Links</h3>
@@ -90,7 +88,6 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
             </div>
           )}
           
-          {/* About section - moved below CONNECT and LINKS */}
           <div className="mt-6">
             <h3 className="text-base font-bold mb-3">About {artist.name}</h3>
             <div className="whitespace-pre-wrap text-gray-700">
@@ -98,7 +95,6 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
             </div>
           </div>
           
-          {/* Social Media section */}
           {validSocialPlatforms.length > 0 && (
             <div className="mt-6">
               <h3 className="text-base font-bold mb-3">Social Media</h3>
