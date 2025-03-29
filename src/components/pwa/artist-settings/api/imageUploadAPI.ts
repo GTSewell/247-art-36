@@ -2,6 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from "@/utils/logger";
+import { ensureBucketExists } from "./storage/storageUtils";
 
 const BUCKET_NAME = 'artists';
 
@@ -10,10 +11,18 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     // Sanitize artist name for folder path
     const sanitizedArtistName = artistName.replace(/\s+/g, '_');
     
-    // Construct the storage path
-    const folderPath = `artists/${sanitizedArtistName}/${isProfileImage ? 'Profile' : 'Artworks'}`;
+    // Construct the storage path - standardize to use the same structure across all uploads
+    const folderPath = isProfileImage 
+      ? `${sanitizedArtistName}/Profile_Image` 
+      : `${sanitizedArtistName}/Artworks`;
+    
     const fileName = `${uuidv4()}-${file.name}`;
     const filePath = `${folderPath}/${fileName}`;
+    
+    logger.info(`Uploading ${isProfileImage ? 'profile' : 'artwork'} image to: ${filePath}`);
+    
+    // Ensure the bucket exists
+    await ensureBucketExists(BUCKET_NAME);
     
     // Upload the file to Supabase storage
     const { data, error } = await supabase.storage
@@ -28,7 +37,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
       return null;
     }
     
-    // Construct the public URL - fix the property access
+    // Get public URL for the uploaded image
     const publicUrl = supabase.storage
       .from(BUCKET_NAME)
       .getPublicUrl(filePath).data.publicUrl;
@@ -44,6 +53,8 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
 
 export const getFilesFromFolder = async (bucketName: string, folderPath: string): Promise<string[]> => {
   try {
+    logger.info(`Retrieving files from folder: ${bucketName}/${folderPath}`);
+    
     const { data, error } = await supabase.storage
       .from(bucketName)
       .list(folderPath, {
@@ -62,9 +73,15 @@ export const getFilesFromFolder = async (bucketName: string, folderPath: string)
       return [];
     }
     
-    const baseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${bucketName}/`;
-    const fileUrls = data.map(file => baseUrl + folderPath + '/' + file.name);
+    const fileUrls = data
+      .filter(file => !file.id.endsWith('/')) // Filter out folders
+      .map(file => {
+        return supabase.storage
+          .from(bucketName)
+          .getPublicUrl(`${folderPath}/${file.name}`).data.publicUrl;
+      });
     
+    logger.info(`Found ${fileUrls.length} files in ${bucketName}/${folderPath}`);
     return fileUrls;
   } catch (error: any) {
     logger.error("Error in getFilesFromFolder:", error);
@@ -117,9 +134,14 @@ export const updateArtistBackgroundImage = async (artistId: number, artworkUrl: 
 
 export const deleteFileFromStorage = async (fileUrl: string): Promise<boolean> => {
   try {
+    logger.info(`Attempting to delete file: ${fileUrl}`);
+    
     // Extract the path from the URL
-    const baseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/artists/`;
-    const filePath = fileUrl.replace(baseUrl, 'artists/');
+    const baseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/`;
+    // Extract just the path after the bucket name
+    let filePath = fileUrl.replace(baseUrl, '');
+    
+    logger.info(`Extracted file path: ${filePath}`);
     
     // Delete the file from Supabase storage
     const { error } = await supabase.storage

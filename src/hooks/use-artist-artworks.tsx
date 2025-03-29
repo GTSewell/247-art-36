@@ -53,9 +53,12 @@ export const useArtistArtworks = (artistId: string | null) => {
       
       // Sanitize artist name for folder path
       const sanitizedArtistName = artistName.replace(/\s+/g, '_');
+      // Use the standard path structure
       const folderPath = `${sanitizedArtistName}/Artworks`;
       
+      logger.info(`Fetching artworks from: ${folderPath}`);
       const artworkUrls = await getFilesFromFolder('artists', folderPath);
+      logger.info(`Retrieved ${artworkUrls.length} artworks`);
       setArtworks(artworkUrls);
     } catch (error) {
       logger.error("Error fetching artworks:", error);
@@ -94,6 +97,8 @@ export const useArtistArtworks = (artistId: string | null) => {
       }
       
       logger.info("Artist images sync response:", data);
+      // Refresh artworks after sync
+      await fetchArtworks();
       return true;
     } catch (error) {
       logger.error("Failed to sync artist images:", error);

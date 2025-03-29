@@ -39,7 +39,7 @@ async function syncArtistImages(artistId: number, artistName: string) {
       console.log(`Available folders in artists bucket:`, rootFolders.map(f => f.name).join(', '));
     }
     
-    // Get profile image
+    // Get profile image - use the standard path structure
     const profilePath = `${sanitizedArtistName}/Profile_Image`;
     console.log(`Checking for profile images in: ${profilePath}`);
     
@@ -85,7 +85,7 @@ async function syncArtistImages(artistId: number, artistName: string) {
       console.log(`No profile images found for artist ${artistName} in path: ${profilePath}`);
     }
     
-    // Get artwork images
+    // Get artwork images - use the standard path structure
     const artworksPath = `${sanitizedArtistName}/Artworks`;
     console.log(`Checking for artwork images in: ${artworksPath}`);
     
@@ -115,7 +115,10 @@ async function syncArtistImages(artistId: number, artistName: string) {
           .from('artists')
           .update({ 
             artworks: artworkUrls,
-            artwork_files: artworkUrls
+            artwork_files: {
+              ...((await supabaseAdmin.from('artists').select('artwork_files').eq('id', artistId).single()).data?.artwork_files || {}),
+              artworks: artworkUrls
+            }
           })
           .eq('id', artistId);
         

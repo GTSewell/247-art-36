@@ -16,7 +16,7 @@ export const uploadProfileImage = async (file: File, artistName: string): Promis
     // Sanitize artist name for folder path (replace spaces with underscores)
     const sanitizedArtistName = artistName.replace(/\s+/g, '_');
     
-    // Create folder path based on artist name
+    // Create folder path based on artist name using standard format
     const folderPath = `${sanitizedArtistName}/Profile_Image`;
     
     const filePath = `${folderPath}/${fileName}`;
