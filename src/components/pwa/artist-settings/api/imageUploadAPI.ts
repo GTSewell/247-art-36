@@ -46,10 +46,39 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
       .getPublicUrl(filePath);
     
     logger.info("Image uploaded successfully:", publicUrl);
+    
+    // If this is a profile image, update the artist's image field
+    if (isProfileImage && artistName) {
+      await updateArtistProfileImage(artistName, publicUrl);
+    }
+    
     return publicUrl;
   } catch (error) {
     logger.error("Error in uploadImage:", error);
     return null;
+  }
+};
+
+/**
+ * Update artist profile image in the database
+ */
+export const updateArtistProfileImage = async (artistName: string, imageUrl: string): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase
+      .from('artists')
+      .update({ image: imageUrl })
+      .eq('name', artistName);
+      
+    if (error) {
+      logger.error("Error updating artist profile image:", error);
+      return false;
+    }
+    
+    logger.info("Artist profile image updated successfully for:", artistName);
+    return true;
+  } catch (error) {
+    logger.error("Error in updateArtistProfileImage:", error);
+    return false;
   }
 };
 
