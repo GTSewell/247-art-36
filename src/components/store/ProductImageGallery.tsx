@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import { Maximize2, X } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProductImageGalleryProps {
   images: string[];
@@ -9,6 +10,7 @@ interface ProductImageGalleryProps {
 
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const isMobile = useIsMobile();
 
   const handleImageClick = (index: number) => {
     if (selectedImage === index) {
@@ -40,12 +42,12 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="relative max-w-3xl max-h-[80vh] w-full"
+              className={`relative ${isMobile ? 'max-h-[80vh] overflow-y-auto' : 'max-w-3xl max-h-[80vh]'} w-full`}
             >
               <img
                 src={images[selectedImage]}
                 alt={`Enlarged variation ${selectedImage + 1}`}
-                className="w-full h-full object-contain rounded-lg"
+                className={`w-full ${isMobile ? 'object-contain max-h-full' : 'object-contain'} rounded-lg`}
               />
             </motion.div>
           </motion.div>

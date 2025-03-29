@@ -47,22 +47,11 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     artist.name || 'Unknown Artist'
   );
   
-  // For Demo Artist, use placeholder artworks if none exist
-  const placeholderArtworks = artist.name === "Demo Artist" ? [
-    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png",
-    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png",
-    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png",
-    "/lovable-uploads/2d358d55-3e32-4df5-b06b-d2c4cc68d85c.png"
-  ] : [];
-  
   // Filter out empty or invalid URLs
   const filteredArtworks = artworks.filter(url => url && typeof url === 'string' && url.trim() !== '');
   
-  const displayArtworks = filteredArtworks.length > 0 
-    ? filteredArtworks 
-    : placeholderArtworks.length > 0
-      ? placeholderArtworks
-      : [];
+  // Display artworks if available
+  const displayArtworks = filteredArtworks.length > 0 ? filteredArtworks : [];
   
   // Check if this is a real artist (ID 26 or above)
   const isRealArtist = artist.id ? artist.id >= 26 : false;
@@ -189,29 +178,34 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-md" style={{ backgroundColor: panelColor }}>
-          <DialogHeader>
+        <DialogContent 
+          className={`sm:max-w-md ${isMobile ? 'max-h-[90vh] p-3 overflow-hidden' : ''}`} 
+          style={{ backgroundColor: panelColor }}
+        >
+          <DialogHeader className="pb-1">
             <DialogTitle>{selectedArtwork?.title}</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="line-clamp-2">
               {selectedArtwork?.description}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="grid gap-4 py-4">
-            <div className="rounded-md overflow-hidden mb-4">
+          <div className={`${isMobile ? 'flex flex-col overflow-y-auto max-h-[calc(90vh-8rem)]' : 'grid gap-4 py-4'}`}>
+            <div className={`rounded-md overflow-hidden ${isMobile ? 'flex-shrink-0 mb-3' : 'mb-4'}`}>
               {selectedArtwork && (
-                <img 
-                  src={selectedArtwork.image} 
-                  alt={selectedArtwork.title}
-                  className="w-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = '/placeholder.svg';
-                  }}
-                />
+                <div className="artwork-container">
+                  <img 
+                    src={selectedArtwork.image} 
+                    alt={selectedArtwork.title}
+                    className="w-full max-h-[50vh] object-contain rounded-md"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder.svg';
+                    }}
+                  />
+                </div>
               )}
             </div>
             
-            <div className="space-y-2">
+            <div className={`${isMobile ? 'flex-shrink-0' : ''} space-y-2`}>
               <h4 className="font-semibold text-sm">Specifications</h4>
               <p className="text-sm">
                 Medium: {isRealArtist ? '' : selectedArtwork?.specifications.medium}<br />
@@ -221,13 +215,13 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
             </div>
             
             {isRealArtist ? (
-              <div className="space-y-4">
-                <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+              <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} space-y-4`}>
+                <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
                   <p className="text-sm text-amber-800 font-medium">
                     This artwork is displayed for preview purposes only and is not currently available for purchase.
                   </p>
                 </div>
-                <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center justify-between mt-2">
                   <span className="font-bold text-lg">{selectedArtwork?.price}</span>
                   <Button 
                     disabled={true}
@@ -239,7 +233,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between mt-4">
+              <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} flex items-center justify-between mt-2`}>
                 <span className="font-bold text-lg">{selectedArtwork?.price}</span>
                 <Button 
                   onClick={handleAddToCart}
@@ -258,4 +252,3 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
 };
 
 export default ArtistProfileRightPanel;
-

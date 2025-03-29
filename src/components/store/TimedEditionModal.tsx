@@ -54,7 +54,9 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[1000px] p-0 overflow-hidden bg-white rounded-xl shadow-lg border border-gray-100">
+      <DialogContent 
+        className={`p-0 overflow-hidden bg-white rounded-xl shadow-lg border border-gray-100 ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}
+      >
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
         {/* Close button with improved positioning */}
@@ -66,11 +68,11 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
           <X className="h-4 w-4 text-gray-700" />
         </button>
         
-        <div className="flex flex-col md:flex-row max-h-[90vh]">
-          <div className="w-full md:w-1/2 p-3 md:p-6">
+        <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
+          <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
             <ProductImageGallery images={variations} />
           </div>
-          <div className="w-full md:w-1/2 border-l border-gray-100 p-4 md:p-6 flex flex-col h-full overflow-y-auto">
+          <div className={`${isMobile ? 'w-full border-t border-gray-100 p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-gray-100 p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
             <div className="flex-grow space-y-3 md:space-y-4">
               <ProductHeader 
                 name={product.name} 
