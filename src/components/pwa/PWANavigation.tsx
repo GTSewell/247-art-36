@@ -80,7 +80,7 @@ const PWANavigation = () => {
             <div className="relative">
               <Avatar className="h-10 w-10 border border-white/30 bg-gray-800">
                 <AvatarImage 
-                  src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" 
+                  src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
                   alt="Account" 
                 />
                 <AvatarFallback className="bg-gray-600 text-white">

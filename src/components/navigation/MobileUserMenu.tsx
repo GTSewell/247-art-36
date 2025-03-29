@@ -86,7 +86,7 @@ const MobileUserMenu = () => {
         <Button variant="ghost" className="relative rounded-full h-10 w-10 p-0">
           <Avatar className="h-10 w-10">
             <AvatarImage 
-              src={user.user_metadata?.avatar_url || undefined} 
+              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
               alt={user.user_metadata?.full_name || "User"}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -103,7 +103,7 @@ const MobileUserMenu = () => {
         <div className="flex items-center mb-4">
           <Avatar className="h-12 w-12 mr-4">
             <AvatarImage 
-              src={user.user_metadata?.avatar_url || undefined} 
+              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
               alt={user.user_metadata?.full_name || "User"}
             />
             <AvatarFallback className="bg-primary text-white text-lg">
@@ -130,6 +130,24 @@ const MobileUserMenu = () => {
           >
             <Settings className="mr-2 h-5 w-5" />
             <span>Account Settings</span>
+          </Link>
+          
+          <Link 
+            to="/dashboard/artist" 
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
+            onClick={closeSheet}
+          >
+            <Settings className="mr-2 h-5 w-5 text-zap-blue" />
+            <span>Artist Dashboard</span>
+          </Link>
+          
+          <Link 
+            to="/dashboard/collector" 
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
+            onClick={closeSheet}
+          >
+            <Settings className="mr-2 h-5 w-5 text-zap-red" />
+            <span>Collector Dashboard</span>
           </Link>
           
           <Link 

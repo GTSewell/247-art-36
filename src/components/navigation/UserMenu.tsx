@@ -87,7 +87,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <Button variant="ghost" className={`relative rounded-full h-10 w-10 p-0 ${textColorClass}`}>
           <Avatar className="h-10 w-10">
             <AvatarImage 
-              src={user.user_metadata?.avatar_url || undefined} 
+              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
               alt={user.user_metadata?.full_name || "User"}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -112,6 +112,20 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
             <span>Account Settings</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/dashboard/artist">
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4 text-zap-blue" />
+            <span>Artist Dashboard</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/dashboard/collector">
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4 text-zap-red" />
+            <span>Collector Dashboard</span>
           </DropdownMenuItem>
         </Link>
         
