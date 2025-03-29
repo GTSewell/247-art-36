@@ -2,6 +2,7 @@
 import React from "react";
 import { Artist } from "@/data/types/artist";
 import ArtistCard from "./ArtistCard";
+import { ensureArray } from "@/utils/ensureArray";
 
 interface ArtistGridProps {
   artists: Artist[];
@@ -33,15 +34,9 @@ const ArtistGrid: React.FC<ArtistGridProps> = ({
             city={artist.city}
             country={artist.country}
             bio={artist.bio || ""}
-            techniques={typeof artist.techniques === 'string' 
-              ? JSON.parse(artist.techniques) 
-              : artist.techniques}
-            styles={typeof artist.styles === 'string'
-              ? JSON.parse(artist.styles)
-              : artist.styles}
-            social_platforms={typeof artist.social_platforms === 'string'
-              ? JSON.parse(artist.social_platforms)
-              : artist.social_platforms}
+            techniques={ensureArray(artist.techniques)}
+            styles={ensureArray(artist.styles)}
+            social_platforms={ensureArray(artist.social_platforms)}
             onSelect={(e) => onArtistClick(e, artist)}
             onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { ensureArray } from "@/utils/ensureArray";
 
 interface ArtistArtworksSectionProps {
   artist: Artist;
@@ -23,11 +24,7 @@ const ArtistArtworksSection = ({
 }: ArtistArtworksSectionProps) => {
   const handleSaveArtworks = async () => {
     // Get the artworks, ensuring it's an array
-    const artworksArray = Array.isArray(artist.artworks) 
-      ? artist.artworks 
-      : typeof artist.artworks === 'string' && artist.artworks
-        ? JSON.parse(artist.artworks)
-        : [];
+    const artworksArray = ensureArray(artist.artworks);
         
     if (!artworksArray || artworksArray.length === 0) {
       toast.error("No artworks to save!");
@@ -84,11 +81,7 @@ const ArtistArtworksSection = ({
   };
 
   // Process artworks to ensure it's always an array
-  const artworksArray = Array.isArray(artist.artworks) 
-    ? artist.artworks 
-    : typeof artist.artworks === 'string' && artist.artworks
-      ? JSON.parse(artist.artworks)
-      : [];
+  const artworksArray = ensureArray(artist.artworks);
 
   return (
     <div>

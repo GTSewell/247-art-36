@@ -2,6 +2,7 @@
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import ArtistCard from './ArtistCard';
+import { ensureArray } from '@/utils/ensureArray';
 
 interface ArtistGridViewProps {
   artists: Artist[];
@@ -10,19 +11,6 @@ interface ArtistGridViewProps {
   favoriteArtists: Set<number>;
   refreshArtist?: (artistId: number) => Promise<Artist | void>;
 }
-
-// Helper function to ensure we have an array
-const ensureArray = (value: string | string[] | undefined): string[] => {
-  if (!value) return [];
-  if (Array.isArray(value)) return value;
-  
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [value];
-  } catch (e) {
-    return [value];
-  }
-};
 
 const ArtistGridView: React.FC<ArtistGridViewProps> = ({
   artists,

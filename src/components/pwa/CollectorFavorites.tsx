@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Artist } from "@/data/types/artist";
 import { logger } from "@/utils/logger";
+import { ensureArray } from "@/utils/ensureArray";
 
 const CollectorFavorites: React.FC = () => {
   const { user } = useAuth();
@@ -61,26 +62,10 @@ const CollectorFavorites: React.FC = () => {
             location: data.location,
             city: data.city,
             country: data.country,
-            techniques: Array.isArray(data.techniques) 
-              ? data.techniques 
-              : typeof data.techniques === 'string' 
-                ? JSON.parse(data.techniques) 
-                : [],
-            styles: Array.isArray(data.styles) 
-              ? data.styles 
-              : typeof data.styles === 'string' 
-                ? JSON.parse(data.styles) 
-                : [],
-            social_platforms: Array.isArray(data.social_platforms) 
-              ? data.social_platforms 
-              : typeof data.social_platforms === 'string' 
-                ? JSON.parse(data.social_platforms) 
-                : [],
-            artworks: Array.isArray(data.artworks) 
-              ? data.artworks 
-              : typeof data.artworks === 'string' 
-                ? JSON.parse(data.artworks) 
-                : [],
+            techniques: ensureArray(data.techniques),
+            styles: ensureArray(data.styles),
+            social_platforms: ensureArray(data.social_platforms),
+            artworks: ensureArray(data.artworks),
             locked_artworks: data.locked_artworks,
             published: data.published === true
           }));

@@ -7,19 +7,7 @@ import ArtistCarouselNavigation from '@/components/artists/ArtistCarouselNavigat
 import { useIsMobile } from '@/hooks/use-mobile';
 import ArtistDetailModal from '@/components/artists/ArtistDetailModal';
 import { logger } from '@/utils/logger';
-
-// Helper function to ensure we have an array
-const ensureArray = (value: string | string[] | undefined): string[] => {
-  if (!value) return [];
-  if (Array.isArray(value)) return value;
-  
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [value];
-  } catch (e) {
-    return [value];
-  }
-};
+import { ensureArray } from '@/utils/ensureArray';
 
 interface PWAArtistCarouselProps {
   artists: Artist[];

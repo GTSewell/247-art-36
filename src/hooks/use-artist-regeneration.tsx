@@ -3,19 +3,7 @@ import { Artist } from "@/data/types/artist";
 import { supabase } from "@/integrations/supabase/client";
 import { useGenerateArtistImage } from "@/hooks/use-generate-artist-image";
 import { toast } from "sonner";
-
-// Helper function to ensure we have an array
-const ensureArray = (value: string | string[] | undefined): string[] => {
-  if (!value) return [];
-  if (Array.isArray(value)) return value;
-  
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [value];
-  } catch (e) {
-    return [value];
-  }
-};
+import { ensureArray } from "@/utils/ensureArray";
 
 export const useArtistRegeneration = () => {
   const { generateImage, isLoading: isGenerating } = useGenerateArtistImage();

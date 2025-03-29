@@ -4,19 +4,7 @@ import ArtistCard from './ArtistCard';
 import { Artist } from '@/data/types/artist';
 import ArtistDetailModal from './ArtistDetailModal';
 import { logger } from "@/utils/logger";
-
-// Helper function to ensure we have an array
-const ensureArray = (value: string | string[] | undefined): string[] => {
-  if (!value) return [];
-  if (Array.isArray(value)) return value;
-  
-  try {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [value];
-  } catch (e) {
-    return [value];
-  }
-};
+import { ensureArray } from '@/utils/ensureArray';
 
 interface FeaturedArtistsProps {
   artists: Artist[];
