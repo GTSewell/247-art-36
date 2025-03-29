@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
-import { getFilesFromFolder, uploadImage, updateArtistBackgroundImage } from "@/components/pwa/artist-settings/api/imageUploadAPI";
+import { getFilesFromFolder, uploadImage, updateArtistBackgroundImage, deleteFileFromStorage } from "@/components/pwa/artist-settings/api/imageUploadAPI";
 import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
@@ -109,19 +109,29 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       const artworkUrl = artworks[index];
       
-      // Extract the path from the URL
-      const urlParts = artworkUrl.split('/');
-      const fileName = urlParts[urlParts.length - 1];
-      const sanitizedArtistName = artistName.replace(/\s+/g, '_');
-      const filePath = `${sanitizedArtistName}/Artworks/${fileName}`;
+      // Delete the file from storage first
+      const deleteSuccess = await deleteFileFromStorage(artworkUrl);
       
-      // Remove from storage
-      const { error } = await supabase.storage
-        .from('artists')
-        .remove([filePath]);
+      if (!deleteSuccess) {
+        throw new Error("Failed to delete artwork from storage");
+      }
       
-      if (error) {
-        throw error;
+      // Also remove from the database if this artwork is being used as background image
+      if (artist && artist.artwork_files && artist.artwork_files.background_image === artworkUrl) {
+        // Clear the background image reference
+        const { error: updateError } = await supabase
+          .from('artists')
+          .update({ 
+            artwork_files: {
+              ...artist.artwork_files,
+              background_image: null
+            }
+          })
+          .eq('id', artist.id);
+          
+        if (updateError) {
+          logger.error("Error updating artist record after artwork deletion:", updateError);
+        }
       }
       
       // Update state

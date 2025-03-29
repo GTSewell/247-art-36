@@ -129,11 +129,10 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
   try {
     logger.info(`Updating background image for artist ID ${artistId} with URL: ${imageUrl}`);
     
-    // Fix the error by removing the 'background_image' field which doesn't exist in the artists table
-    // Instead, we'll add the background image URL to the 'artworks' field so it can be used as needed
+    // Get current artist data
     const { data: artistData, error: getError } = await supabase
       .from('artists')
-      .select('artworks')
+      .select('artworks, artwork_files')
       .eq('id', artistId)
       .single();
     
@@ -149,7 +148,7 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
     } else if (!Array.isArray(artworks)) {
       // Convert to array if not already
       try {
-        artworks = JSON.parse(artworks);
+        artworks = JSON.parse(String(artworks));
         if (!Array.isArray(artworks)) {
           artworks = [artworks];
         }
@@ -158,15 +157,19 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
       }
     }
     
-    // Update the artist with background image info stored in metadata
+    // Prepare artwork_files with background_image
+    const artworkFiles = artistData.artwork_files || {};
+    const updatedArtworkFiles = {
+      ...artworkFiles,
+      background_image: imageUrl
+    };
+    
+    // Update the artist with background image info
     const { error } = await supabase
       .from('artists')
       .update({ 
         artworks: artworks,
-        image: artistData.image || imageUrl, // Use as profile image if none exists
-        artwork_files: {
-          background_image: imageUrl // Store background image URL in artwork_files JSON field
-        }
+        artwork_files: updatedArtworkFiles
       })
       .eq('id', artistId);
     
@@ -212,3 +215,46 @@ export const getFilesFromFolder = async (bucketName: string, folderPath: string)
     return [];
   }
 };
+
+/**
+ * Delete a file from storage
+ */
+export const deleteFileFromStorage = async (fileUrl: string, bucketName: string = 'artists'): Promise<boolean> => {
+  try {
+    logger.info(`Attempting to delete file: ${fileUrl}`);
+    
+    // Extract the file path from the URL
+    // URL format: https://[project-ref].supabase.co/storage/v1/object/public/[bucket]/[path]
+    const urlObj = new URL(fileUrl);
+    const pathParts = urlObj.pathname.split('/');
+    
+    // Find the position of 'public' and the bucket name in the path
+    const publicIndex = pathParts.findIndex(part => part === 'public');
+    const bucketIndex = publicIndex + 1;
+    
+    if (publicIndex === -1 || bucketIndex >= pathParts.length) {
+      throw new Error(`Invalid storage URL format: ${fileUrl}`);
+    }
+    
+    // The actual file path is everything after the bucket name
+    const filePath = pathParts.slice(bucketIndex + 1).join('/');
+    
+    logger.info(`Extracted file path: ${filePath} from bucket: ${bucketName}`);
+    
+    // Delete the file from storage
+    const { error } = await supabase.storage
+      .from(bucketName)
+      .remove([filePath]);
+    
+    if (error) {
+      throw error;
+    }
+    
+    logger.info(`Successfully deleted file: ${filePath}`);
+    return true;
+  } catch (error) {
+    logger.error(`Error deleting file from storage:`, error);
+    return false;
+  }
+};
+
