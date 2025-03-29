@@ -53,6 +53,16 @@ const ArtistSubdomain = () => {
   const parsedSocialPlatforms = ensureArray(socialPlatforms);
   const parsedArtworks = ensureArray(artworks);
   
+  // Get background image from artwork_files if available
+  let backgroundImage = null;
+  if (artist.artwork_files && 
+      typeof artist.artwork_files === 'object' && 
+      'background_image' in artist.artwork_files && 
+      artist.artwork_files.background_image) {
+    backgroundImage = artist.artwork_files.background_image;
+    logger.info(`Using explicitly set background image: ${backgroundImage}`);
+  }
+  
   // Use custom color theme for Demo Artist
   const customColorTheme = artistName.toLowerCase() === 'demo artist' ? {
     background: '#e5d0b9', // Beige/tan background
@@ -73,6 +83,7 @@ const ArtistSubdomain = () => {
       socialPlatforms={parsedSocialPlatforms}
       artworks={parsedArtworks}
       colorTheme={customColorTheme}
+      backgroundImage={backgroundImage}
     />
   ) : (
     <DesktopLayout
@@ -83,6 +94,7 @@ const ArtistSubdomain = () => {
       socialPlatforms={parsedSocialPlatforms}
       artworks={parsedArtworks}
       colorTheme={customColorTheme}
+      backgroundImage={backgroundImage}
     />
   );
 };

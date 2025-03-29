@@ -25,6 +25,7 @@ interface DesktopLayoutProps {
     buttonBorder: string;
     badgeBg: string;
   };
+  backgroundImage?: string | null;
 }
 
 const DesktopLayout: React.FC<DesktopLayoutProps> = ({
@@ -34,20 +35,24 @@ const DesktopLayout: React.FC<DesktopLayoutProps> = ({
   styles,
   socialPlatforms,
   artworks,
-  colorTheme
+  colorTheme,
+  backgroundImage
 }) => {
   const navigate = useNavigate();
 
   const handleReturnToArtists = () => {
     navigate('/artists');
   };
+  
+  // Use explicitly set background image if available, otherwise fallback to profile background
+  const bgImage = backgroundImage || profile?.background_image || undefined;
 
   return (
     <div 
       className="min-h-screen flex items-center justify-center py-8 px-8 overflow-hidden"
       style={{ 
         backgroundColor: colorTheme.background,
-        backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
+        backgroundImage: bgImage ? `url(${bgImage})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '100vh'

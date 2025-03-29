@@ -24,6 +24,7 @@ interface MobileLayoutProps {
     buttonBorder: string;
     badgeBg: string;
   };
+  backgroundImage?: string | null;
 }
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({
@@ -33,7 +34,8 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   styles,
   socialPlatforms,
   artworks,
-  colorTheme
+  colorTheme,
+  backgroundImage
 }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("about");
@@ -80,13 +82,16 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   };
 
   const panelHeight = "calc(100vh - 7rem)";
+  
+  // Use explicitly set background image if available, otherwise fallback to profile background
+  const bgImage = backgroundImage || profile?.background_image || undefined;
 
   return (
     <div 
       className="flex items-center justify-center overflow-hidden"
       style={{ 
         backgroundColor: colorTheme.background,
-        backgroundImage: profile?.background_image ? `url(${profile.background_image})` : 'none',
+        backgroundImage: bgImage ? `url(${bgImage})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         height: '100vh',
