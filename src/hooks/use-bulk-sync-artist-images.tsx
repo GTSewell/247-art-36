@@ -40,7 +40,9 @@ export const useBulkSyncArtistImages = () => {
       const { data, error } = await supabase.functions.invoke('download-artist-images', {
         body: { 
           regenerateAll: !processedIds || processedIds.length === 0,
-          artist_ids: processedIds || [] 
+          artist_ids: processedIds || [],
+          // Add flag to update both image columns
+          updateBothImageColumns: true 
         }
       });
       

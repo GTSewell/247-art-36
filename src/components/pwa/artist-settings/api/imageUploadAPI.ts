@@ -63,7 +63,10 @@ export const updateArtistProfileImage = async (artistId: number, imageUrl: strin
     
     const { data, error } = await supabase
       .from('artists')
-      .update({ image: imageUrl })
+      .update({ 
+        image: imageUrl,
+        profile_image_url: imageUrl // Update both image columns to maintain consistency
+      })
       .eq('id', artistId)
       .select();
       

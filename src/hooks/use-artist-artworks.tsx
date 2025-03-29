@@ -97,10 +97,13 @@ export const useArtistArtworks = (artistId: string | null) => {
         throw new Error(`Invalid artist ID format: ${artistId}`);
       }
       
-      // Update the database
+      // Update the database - update both the artworks and artwork_files columns
       const { error } = await supabase
         .from('artists')
-        .update({ artworks: currentArtworks })
+        .update({ 
+          artworks: currentArtworks,
+          artwork_files: currentArtworks // Update both columns for consistency
+        })
         .eq('id', numericId);
       
       if (error) {
@@ -139,10 +142,13 @@ export const useArtistArtworks = (artistId: string | null) => {
         throw new Error(`Invalid artist ID format: ${artistId}`);
       }
       
-      // Update the database
+      // Update the database - update both artworks and artwork_files columns
       const { error } = await supabase
         .from('artists')
-        .update({ artworks: updatedArtworks })
+        .update({ 
+          artworks: updatedArtworks,
+          artwork_files: updatedArtworks // Update both columns for consistency
+        })
         .eq('id', numericId);
       
       if (error) {
@@ -157,7 +163,7 @@ export const useArtistArtworks = (artistId: string | null) => {
       // Sync images via edge function for extra reliability
       try {
         await supabase.functions.invoke('sync-artist-images', {
-          body: { artistId }
+          body: { artistId: numericId }
         });
       } catch (syncError) {
         logger.error("Failed to sync artwork images after removal:", syncError);

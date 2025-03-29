@@ -33,6 +33,26 @@ async function ensureStorageBucketExists(): Promise<void> {
       }
       console.log('Created artist-images bucket successfully');
     }
+    
+    // Also check for the artists bucket (newer version)
+    const { data: artistsBucketData, error: artistsBucketError } = await supabaseAdmin
+      .storage
+      .getBucket('artists');
+    
+    if (artistsBucketError && artistsBucketError.message.includes('does not exist')) {
+      // Create the bucket if it doesn't exist
+      const { error: createArtistsBucketError } = await supabaseAdmin
+        .storage
+        .createBucket('artists', {
+          public: true
+        });
+      
+      if (createArtistsBucketError) {
+        console.error('Error creating artists bucket:', createArtistsBucketError);
+        throw new Error(`Failed to create artists bucket: ${createArtistsBucketError.message}`);
+      }
+      console.log('Created artists bucket successfully');
+    }
   } catch (error) {
     console.error('Error checking/creating bucket:', error);
     // Continue execution, as this might not be fatal
@@ -45,7 +65,8 @@ async function ensureStorageBucketExists(): Promise<void> {
 async function processArtist(
   artist: any, 
   storageFolder: string,
-  results: any
+  results: any,
+  updateBothImageColumns: boolean = true
 ): Promise<void> {
   try {
     // Skip artists without an id or name
@@ -60,16 +81,16 @@ async function processArtist(
     console.log(`Processing artist: ${artist.name} (ID: ${artist.id})`);
 
     // Process profile image
-    await processArtistProfileImage(artist, storageFolder, supabaseAdmin);
+    const newProfileImageUrl = await processArtistProfileImage(artist, storageFolder, supabaseAdmin, updateBothImageColumns);
     
     // Process artwork images
-    await processArtistArtworks(artist, storageFolder, supabaseAdmin);
+    const newArtworkUrls = await processArtistArtworks(artist, storageFolder, supabaseAdmin, updateBothImageColumns);
 
     // Record success
     results.success.push({
       id: artist.id,
       name: artist.name,
-      newUrl: artist.image
+      newUrl: newProfileImageUrl || artist.image || artist.profile_image_url
     });
     
     console.log(`Successfully processed artist ${artist.name} (ID: ${artist.id})`);
@@ -92,9 +113,9 @@ serve(async (req) => {
 
   try {
     // Get the request body
-    const { regenerateAll = false, artist_ids = [] } = await req.json();
+    const { regenerateAll = false, artist_ids = [], updateBothImageColumns = true } = await req.json();
 
-    console.log(`Processing request to download artist images, regenerateAll=${regenerateAll}, specific artist_ids=${artist_ids.length > 0 ? artist_ids.join(',') : 'none'}`);
+    console.log(`Processing request to download artist images, regenerateAll=${regenerateAll}, specific artist_ids=${artist_ids.length > 0 ? artist_ids.join(',') : 'none'}, updateBothImageColumns=${updateBothImageColumns}`);
 
     // Make sure the storage bucket exists
     await ensureStorageBucketExists();
@@ -133,7 +154,7 @@ serve(async (req) => {
 
     // Process each artist
     for (const artist of artists) {
-      await processArtist(artist, storageFolder, results);
+      await processArtist(artist, storageFolder, results, updateBothImageColumns);
     }
 
     // Return results

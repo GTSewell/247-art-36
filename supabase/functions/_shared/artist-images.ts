@@ -1,3 +1,4 @@
+
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4';
 import { downloadAndStoreImage } from './utils.ts';
 
@@ -7,9 +8,14 @@ import { downloadAndStoreImage } from './utils.ts';
 export async function processArtistProfileImage(
   artist: any,
   storageFolder: string,
-  supabase: any
+  supabase: any,
+  updateBothImageColumns: boolean = true
 ): Promise<string | null> {
-  if (!artist.image) {
+  // Use either image or profile_image_url, preferring image if available
+  const artistImage = artist.image || artist.profile_image_url;
+
+  if (!artistImage) {
+    console.log(`No profile image found for artist: ${artist.name} (ID: ${artist.id})`);
     return null;
   }
 
@@ -18,23 +24,34 @@ export async function processArtistProfileImage(
     
     // Download and store the profile image
     const profileImageUrl = await downloadAndStoreImage(
-      artist.image,
+      artistImage,
       `${storageFolder}/profiles/${artist.id}.webp`,
       supabase
     );
 
     if (profileImageUrl) {
-      // Update the artist record with the new image URL
+      // Prepare update payload
+      const updatePayload: Record<string, any> = {};
+      
+      // Always update image
+      updatePayload.image = profileImageUrl;
+      
+      // Optionally update profile_image_url as well
+      if (updateBothImageColumns) {
+        updatePayload.profile_image_url = profileImageUrl;
+      }
+      
+      // Update the artist record with the new image URL(s)
       const { error: updateError } = await supabase
         .from('artists')
-        .update({ image: profileImageUrl })
+        .update(updatePayload)
         .eq('id', artist.id);
 
       if (updateError) {
         console.error(`Error updating profile image for artist ${artist.id}:`, updateError);
         return null;
       } else {
-        console.log(`Updated profile image for artist ${artist.name}`);
+        console.log(`Updated profile image for artist ${artist.name} to ${profileImageUrl}`);
         return profileImageUrl;
       }
     }
@@ -52,21 +69,28 @@ export async function processArtistProfileImage(
 export async function processArtistArtworks(
   artist: any,
   storageFolder: string,
-  supabase: any
+  supabase: any,
+  updateBothArtworkColumns: boolean = true
 ): Promise<string[] | null> {
-  if (!artist.artworks) {
-    return null;
-  }
-
-  try {
-    const artworks = typeof artist.artworks === 'string' 
+  // Use either artworks or artwork_files, preferring artworks if available
+  let artworks = null;
+  
+  if (artist.artworks) {
+    artworks = typeof artist.artworks === 'string' 
       ? JSON.parse(artist.artworks) 
       : artist.artworks;
-    
-    if (!Array.isArray(artworks) || artworks.length === 0) {
-      return null;
-    }
-    
+  } else if (artist.artwork_files) {
+    artworks = typeof artist.artwork_files === 'string' 
+      ? JSON.parse(artist.artwork_files) 
+      : artist.artwork_files;
+  }
+
+  if (!Array.isArray(artworks) || artworks.length === 0) {
+    console.log(`No artworks found for artist: ${artist.name} (ID: ${artist.id})`);
+    return null;
+  }
+  
+  try {
     console.log(`Processing ${artworks.length} artworks for artist: ${artist.name} (ID: ${artist.id})`);
     
     const updatedArtworks = [];
@@ -95,10 +119,21 @@ export async function processArtistArtworks(
     
     // Only update if we have any artwork URLs
     if (updatedArtworks.length > 0) {
+      // Prepare update payload
+      const updatePayload: Record<string, any> = {};
+      
+      // Always update artworks
+      updatePayload.artworks = updatedArtworks;
+      
+      // Optionally update artwork_files as well
+      if (updateBothArtworkColumns) {
+        updatePayload.artwork_files = updatedArtworks;
+      }
+      
       // Update the artist record with the new artwork URLs
       const { error: updateError } = await supabase
         .from('artists')
-        .update({ artworks: updatedArtworks })
+        .update(updatePayload)
         .eq('id', artist.id);
       
       if (updateError) {
