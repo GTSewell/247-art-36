@@ -34,6 +34,7 @@ export const transformArtist = (artist: ArtistRow): Artist => {
     styles,
     social_platforms,
     artworks,
-    locked_artworks: artist.locked_artworks || false
+    locked_artworks: artist.locked_artworks || false,
+    user_id: artist.user_id || undefined
   };
 };

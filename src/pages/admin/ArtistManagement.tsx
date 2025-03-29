@@ -48,6 +48,7 @@ const ArtistManagement: React.FC = () => {
       
       if (data) {
         const transformedArtists = data.map(artist => transformArtist(artist));
+        console.log("Transformed artists:", transformedArtists); // Debug artists data
         setArtists(transformedArtists);
         setFilteredArtists(transformedArtists);
       }
@@ -158,7 +159,7 @@ const ArtistManagement: React.FC = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{artist.specialty || 'N/A'}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {artist.user_id ? (
-                          <span className="truncate max-w-[120px] inline-block">{artist.user_id}</span>
+                          <span className="max-w-[200px] inline-block overflow-hidden text-ellipsis">{artist.user_id}</span>
                         ) : 'N/A'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
