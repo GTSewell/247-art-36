@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload, ImagePlus } from "lucide-react";
@@ -31,24 +30,20 @@ const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({
     try {
       const file = files[0];
       
-      // Validate file type
       if (!file.type.startsWith('image/')) {
         toast.error("Please select an image file");
         return;
       }
       
-      // Validate file size (5MB limit)
       const maxSize = 5 * 1024 * 1024; // 5MB in bytes
       if (file.size > maxSize) {
         toast.error("Image size should be less than 5MB");
         return;
       }
       
-      // Call the parent component's upload function
       const success = await onUpload(file);
       
       if (success && artistId) {
-        // Sync images via edge function for extra reliability
         try {
           const { data, error } = await supabase.functions.invoke('sync-artist-images', {
             body: { artistId }
@@ -64,7 +59,6 @@ const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({
         }
       }
       
-      // Reset the file input
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }

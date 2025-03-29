@@ -1,7 +1,11 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
-import { getFilesFromFolder, uploadImage, updateArtistBackgroundImage, deleteFileFromStorage } from "@/components/pwa/artist-settings/api/imageUploadAPI";
+import { 
+  getFilesFromFolder, 
+  uploadImage, 
+  updateArtistBackgroundImage, 
+  deleteFileFromStorage 
+} from "@/components/pwa/artist-settings/api/imageUploadAPI";
 import { logger } from "@/utils/logger";
 import { supabase } from "@/integrations/supabase/client";
 import { Artist } from "@/data/types/artist";
@@ -79,7 +83,7 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       setUploading(true);
       
-      // Upload to storage
+      // Upload to storage - use uploadImage with isProfileImage=false for artwork
       const imageUrl = await uploadImage(file, artistName, false);
       
       if (!imageUrl) {
