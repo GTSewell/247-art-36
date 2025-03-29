@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from "uuid";
 import { logger } from "@/utils/logger";
@@ -27,8 +26,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     // First ensure the bucket exists
     await ensureBucketExists('artists');
     
-    // Upload image to Supabase - FIX: The upload method only accepts 2 arguments (path and file)
-    // The options object should be passed as the second argument
+    // Upload image to Supabase - Fixed: only two arguments (filePath and file), with options merged into second argument
     const { data, error } = await supabase.storage
       .from('artists')
       .upload(filePath, file, {
