@@ -12,6 +12,7 @@ export interface Artist {
   styles?: string[] | string;
   social_platforms?: string[] | string;
   artworks?: string[] | string;
+  artwork_files?: any; // This will hold the background_image and other artwork-related data
   locked_artworks?: boolean;
   user_id?: string;
   published: boolean;

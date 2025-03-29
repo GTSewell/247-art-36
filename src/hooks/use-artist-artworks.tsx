@@ -116,14 +116,19 @@ export const useArtistArtworks = (artistId: string | null) => {
         throw new Error("Failed to delete artwork from storage");
       }
       
-      // Also remove from the database if this artwork is being used as background image
-      if (artist && artist.artwork_files && artist.artwork_files.background_image === artworkUrl) {
+      // Check if artist has artwork_files property and if this artwork is being used as background image
+      if (artist && artist.artwork_files && 
+          typeof artist.artwork_files === 'object' && 
+          'background_image' in artist.artwork_files && 
+          artist.artwork_files.background_image === artworkUrl) {
+        
         // Clear the background image reference
+        const artworkFilesObj = artist.artwork_files as Record<string, any>;
         const { error: updateError } = await supabase
           .from('artists')
           .update({ 
             artwork_files: {
-              ...artist.artwork_files,
+              ...artworkFilesObj,
               background_image: null
             }
           })

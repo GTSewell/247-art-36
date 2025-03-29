@@ -257,4 +257,3 @@ export const deleteFileFromStorage = async (fileUrl: string, bucketName: string 
     return false;
   }
 };
-

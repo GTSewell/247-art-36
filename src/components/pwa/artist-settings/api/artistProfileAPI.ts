@@ -48,15 +48,22 @@ export const fetchArtistProfile = async (artistId: string) => {
  */
 export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string, existingArtist: any) => {
   try {
-    // Process array values - ensure they're stored as proper arrays for JSONB columns
+    // Process array values - ensure they're stored as proper JSON arrays for JSONB columns
     const processedData = {
       name: formData.name,
       specialty: formData.specialty,
       bio: formData.bio,
       city: formData.city,
       country: formData.country,
-      techniques: formData.techniques.split(',').map(item => item.trim()).filter(item => item),
-      styles: formData.styles.split(',').map(item => item.trim()).filter(item => item),
+      // Convert comma-separated strings to arrays for jsonb columns
+      techniques: formData.techniques
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item.length > 0),
+      styles: formData.styles
+        .split(',')
+        .map(item => item.trim())
+        .filter(item => item.length > 0),
       social_platforms: processSocialPlatforms(formData.social_platforms),
       image: formData.image,
       // If existingArtist has a published property, keep it; otherwise, default to false
