@@ -61,42 +61,38 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
     }
   }, [artist.artworks, artist.id]);
 
-  // Create a fixed array of exactly 4 items
-  // If we have less than 4 artworks, we'll fill the rest with empty strings
-  const fixedArtworks = [...processedArtworks];
-  while (fixedArtworks.length < 4) {
-    fixedArtworks.push('');
-  }
-
-  // Strictly limit to exactly 4 artworks maximum
-  const displayArtworks = fixedArtworks.slice(0, 4);
-
   return (
     <div className="w-full">
       <div className="grid grid-cols-2 gap-3">
-        {displayArtworks.map((artwork, index) => (
-          <div 
-            key={index} 
-            className="relative rounded-md overflow-hidden bg-gray-100"
-            data-artwork-cell={`cell-${index}`}
-          >
-            <AspectRatio ratio={1} className="w-full">
-              {artwork ? (
-                <img
-                  src={artworkErrors[index] ? '/placeholder.svg' : artwork}
-                  alt={`Artwork ${index + 1} by ${artist.name}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => handleArtworkImageError(e, index, artwork)}
-                  data-artwork-image={`image-${index}`}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                  <span className="text-gray-400 text-sm">No artwork</span>
-                </div>
-              )}
-            </AspectRatio>
+        {processedArtworks.length > 0 ? (
+          processedArtworks.map((artwork, index) => (
+            <div 
+              key={index} 
+              className="relative rounded-md overflow-hidden bg-gray-100"
+              data-artwork-cell={`cell-${index}`}
+            >
+              <AspectRatio ratio={1} className="w-full">
+                {!artworkErrors[index] ? (
+                  <img
+                    src={artwork}
+                    alt={`Artwork ${index + 1} by ${artist.name}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => handleArtworkImageError(e, index, artwork)}
+                    data-artwork-image={`image-${index}`}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                    <span className="text-gray-400 text-sm">Image unavailable</span>
+                  </div>
+                )}
+              </AspectRatio>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-2 p-4 text-center text-gray-500">
+            No artworks available
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

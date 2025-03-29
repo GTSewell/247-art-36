@@ -154,7 +154,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                   className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
                 >
                   <img 
-                    src={artworkErrors[index] ? '/placeholder.svg' : artwork} 
+                    src={artwork} 
                     alt={`Artwork ${index + 1}`}
                     className="w-full object-cover"
                     onError={(e) => handleArtworkImageError(e, index, artwork)}
@@ -258,3 +258,4 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
 };
 
 export default ArtistProfileRightPanel;
+

@@ -26,16 +26,14 @@ export const uploadProfileImage = async (file: File, artistName: string): Promis
     // First ensure the bucket exists
     await ensureBucketExists('artists');
     
-    // Upload image to Supabase - Fixed to match TypeScript type definitions
-    // The upload method in the current version expects only 2 parameters
-    const options = {
-      cacheControl: '3600',
-      upsert: true
-    };
-    
+    // Upload image to Supabase - using the correct type signature
+    // We'll pass the options object as the third parameter
     const { data, error } = await supabase.storage
       .from('artists')
-      .upload(filePath, file, options);
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
     
     if (error) {
       logger.error("Error uploading profile image:", error);
