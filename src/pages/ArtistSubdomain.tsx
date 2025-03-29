@@ -11,6 +11,19 @@ import { generateColorTheme } from '@/utils/colorExtraction';
 import { logger } from '@/utils/logger';
 import { toast } from 'sonner';
 
+// Helper function to ensure we have an array
+const ensureArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [value];
+  } catch (e) {
+    return [value];
+  }
+};
+
 const ArtistSubdomain = () => {
   const { artistName } = useParams<{ artistName: string }>();
   const navigate = useNavigate();
@@ -47,6 +60,10 @@ const ArtistSubdomain = () => {
   }
 
   const { techniques, styles, socialPlatforms, artworks } = getArtistData();
+  const parsedTechniques = ensureArray(techniques);
+  const parsedStyles = ensureArray(styles);
+  const parsedSocialPlatforms = ensureArray(socialPlatforms);
+  const parsedArtworks = ensureArray(artworks);
   
   // Use custom color theme for Demo Artist
   const customColorTheme = artistName.toLowerCase() === 'demo artist' ? {
@@ -57,26 +74,26 @@ const ArtistSubdomain = () => {
     buttonHover: '#7A9CC2',// Darker blue on hover
     buttonBorder: '#95B3D2',// Blue border
     badgeBg: '#f7f4f0'     // Light beige badge
-  } : generateColorTheme(artist, profile, artworks);
+  } : generateColorTheme(artist, profile, parsedArtworks);
 
   return isMobile ? (
     <MobileLayout
       artist={artist}
       profile={profile}
-      techniques={techniques}
-      styles={styles}
-      socialPlatforms={socialPlatforms}
-      artworks={artworks}
+      techniques={parsedTechniques}
+      styles={parsedStyles}
+      socialPlatforms={parsedSocialPlatforms}
+      artworks={parsedArtworks}
       colorTheme={customColorTheme}
     />
   ) : (
     <DesktopLayout
       artist={artist}
       profile={profile}
-      techniques={techniques}
-      styles={styles}
-      socialPlatforms={socialPlatforms}
-      artworks={artworks}
+      techniques={parsedTechniques}
+      styles={parsedStyles}
+      socialPlatforms={parsedSocialPlatforms}
+      artworks={parsedArtworks}
       colorTheme={customColorTheme}
     />
   );

@@ -11,6 +11,19 @@ interface ArtistGridViewProps {
   refreshArtist?: (artistId: number) => Promise<Artist | void>;
 }
 
+// Helper function to ensure we have an array
+const ensureArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [value];
+  } catch (e) {
+    return [value];
+  }
+};
+
 const ArtistGridView: React.FC<ArtistGridViewProps> = ({
   artists,
   onArtistClick,
@@ -28,6 +41,9 @@ const ArtistGridView: React.FC<ArtistGridViewProps> = ({
         >
           <ArtistCard
             {...artist}
+            techniques={ensureArray(artist.techniques)}
+            styles={ensureArray(artist.styles)}
+            social_platforms={ensureArray(artist.social_platforms)}
             onSelect={(e) => {
               e.preventDefault();
               e.stopPropagation();

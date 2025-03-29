@@ -22,7 +22,14 @@ const ArtistArtworksSection = ({
   setIsSaving
 }: ArtistArtworksSectionProps) => {
   const handleSaveArtworks = async () => {
-    if (!artist.artworks || artist.artworks.length === 0) {
+    // Get the artworks, ensuring it's an array
+    const artworksArray = Array.isArray(artist.artworks) 
+      ? artist.artworks 
+      : typeof artist.artworks === 'string' && artist.artworks
+        ? JSON.parse(artist.artworks)
+        : [];
+        
+    if (!artworksArray || artworksArray.length === 0) {
       toast.error("No artworks to save!");
       return;
     }
@@ -33,7 +40,7 @@ const ArtistArtworksSection = ({
         .from('artists')
         .update({ 
           locked_artworks: true,
-          artworks: artist.artworks
+          artworks: artworksArray
         })
         .eq('id', artist.id);
 
@@ -76,6 +83,13 @@ const ArtistArtworksSection = ({
     }
   };
 
+  // Process artworks to ensure it's always an array
+  const artworksArray = Array.isArray(artist.artworks) 
+    ? artist.artworks 
+    : typeof artist.artworks === 'string' && artist.artworks
+      ? JSON.parse(artist.artworks)
+      : [];
+
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -86,7 +100,7 @@ const ArtistArtworksSection = ({
               variant="outline"
               size="sm"
               onClick={handleSaveArtworks}
-              disabled={isSaving || !artist.artworks?.length}
+              disabled={isSaving || !artworksArray.length}
               className="flex items-center gap-2"
             >
               <SaveAll className="h-4 w-4" />
@@ -106,8 +120,8 @@ const ArtistArtworksSection = ({
         )}
       </div>
       <div className="grid grid-cols-2 gap-4">
-        {artist.artworks && artist.artworks.length > 0 ? (
-          artist.artworks.map((artwork, index) => (
+        {artworksArray && artworksArray.length > 0 ? (
+          artworksArray.map((artwork, index) => (
             <div key={index} className="aspect-square rounded-lg overflow-hidden border border-border/40">
               <img
                 src={artwork}

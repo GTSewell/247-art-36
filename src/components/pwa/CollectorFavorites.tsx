@@ -81,7 +81,8 @@ const CollectorFavorites: React.FC = () => {
               : typeof data.artworks === 'string' 
                 ? JSON.parse(data.artworks) 
                 : [],
-            locked_artworks: data.locked_artworks
+            locked_artworks: data.locked_artworks,
+            published: data.published === true
           }));
           
           setFavorites(transformedArtists);

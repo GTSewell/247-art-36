@@ -25,7 +25,8 @@ export function processArtistData(artistData: any): Artist | null {
       styles: parsePotentialJsonArray(artistData.styles),
       social_platforms: parsePotentialJsonArray(artistData.social_platforms),
       artworks: parsePotentialJsonArray(artistData.artworks),
-      locked_artworks: artistData.locked_artworks || false
+      locked_artworks: artistData.locked_artworks || false,
+      published: artistData.published === true
     };
     
     return processedArtist;

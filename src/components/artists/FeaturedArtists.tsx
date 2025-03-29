@@ -5,6 +5,19 @@ import { Artist } from '@/data/types/artist';
 import ArtistDetailModal from './ArtistDetailModal';
 import { logger } from "@/utils/logger";
 
+// Helper function to ensure we have an array
+const ensureArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [value];
+  } catch (e) {
+    return [value];
+  }
+};
+
 interface FeaturedArtistsProps {
   artists: Artist[];
   onSelect: (artist: Artist) => void;
@@ -55,9 +68,9 @@ const FeaturedArtists: React.FC<FeaturedArtistsProps> = ({
             city={artist.city}
             country={artist.country}
             bio={artist.bio}
-            techniques={artist.techniques}
-            styles={artist.styles}
-            social_platforms={artist.social_platforms}
+            techniques={ensureArray(artist.techniques)}
+            styles={ensureArray(artist.styles)}
+            social_platforms={ensureArray(artist.social_platforms)}
             onSelect={(e) => handleArtistClick(e, artist)}
             onFavoriteToggle={(isFavorite) => onFavoriteToggle(artist.id, isFavorite)}
             isFavorite={favoriteArtists.has(artist.id)}
