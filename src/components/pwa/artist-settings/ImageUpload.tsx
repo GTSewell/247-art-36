@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
@@ -44,33 +45,28 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         
         // If artist ID is provided, directly update the artist record in the database
         if (artistId) {
-          // Convert string artistId to number if needed for the API call
-          const numericArtistId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+          // Handle both string and number artistId
+          const success = await updateArtistProfileImage(artistId, imageUrl);
           
-          if (!isNaN(numericArtistId)) {
-            const success = await updateArtistProfileImage(numericArtistId, imageUrl);
-            if (success) {
-              console.log("Database updated with new profile image");
+          if (success) {
+            console.log("Database updated with new profile image");
+            
+            // Sync images via edge function for extra reliability
+            try {
+              const { data, error } = await supabase.functions.invoke('sync-artist-images', {
+                body: { artistId }
+              });
               
-              // Sync images via edge function for extra reliability
-              try {
-                const { data, error } = await supabase.functions.invoke('sync-artist-images', {
-                  body: { artistId }
-                });
-                
-                if (error) {
-                  console.error("Error syncing images:", error);
-                } else {
-                  console.log("Image sync response:", data);
-                }
-              } catch (syncError) {
-                console.error("Failed to sync images:", syncError);
+              if (error) {
+                console.error("Error syncing images:", error);
+              } else {
+                console.log("Image sync response:", data);
               }
-            } else {
-              console.error("Failed to update database with new profile image");
+            } catch (syncError) {
+              console.error("Failed to sync images:", syncError);
             }
           } else {
-            console.error("Invalid artist ID format:", artistId);
+            console.error("Failed to update database with new profile image");
           }
         }
         
