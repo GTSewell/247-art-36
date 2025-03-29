@@ -40,32 +40,9 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
       className="flex flex-col h-full overflow-hidden"
       style={{ backgroundColor: panelColor }}
     >
-      {!isMobile && (
-        <div className="border-b border-gray-200 p-5 flex items-center">
-          <div className="mr-4">
-            <div className="w-20 h-20 rounded-full overflow-hidden">
-              <img 
-                src={artist.image || '/placeholder.svg'} 
-                alt={artist.name || 'Artist'} 
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.src = '/placeholder.svg';
-                }}
-              />
-            </div>
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold">{artist.name}</h2>
-            <p className="text-gray-600">{artist.specialty}</p>
-            <p className="text-sm text-gray-500">
-              {artist.city}{artist.city && artist.country ? ', ' : ''}{artist.country}
-            </p>
-          </div>
-        </div>
-      )}
-      
       <ScrollArea className="flex-grow overflow-auto">
         <div className="p-5">
+          <h3 className="text-base font-bold mb-3">CONNECT</h3>
           <ArtistConnectSection 
             artist={artist}
             socialPlatforms={validSocialPlatforms}
@@ -89,24 +66,186 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
           )}
           
           <div className="mt-6">
-            <h3 className="text-base font-bold mb-3">About {artist.name}</h3>
-            <div className="whitespace-pre-wrap text-gray-700">
-              {artist.bio || `No biography available for ${artist.name}.`}
-            </div>
-          </div>
-          
-          {validSocialPlatforms.length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-base font-bold mb-3">Social Media</h3>
-              <div className="space-y-1">
-                {validSocialPlatforms.map((platform, index) => (
-                  <div key={index} className="p-2 rounded-md bg-gray-50">
-                    {platform}
-                  </div>
-                ))}
+            <div className="space-y-2">
+              <h3 className="text-base font-bold mb-3">WEBSITE</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">🌐</span>
+                    Portfolio Website
+                  </span>
+                  <span>↗</span>
+                </a>
               </div>
             </div>
-          )}
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">EXHIBITION</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">🎭</span>
+                    Next Exhibition
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">INSTALLATION</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">📍</span>
+                    Public Art Installation
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">SHOP</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">🛒</span>
+                    Online Art Shop
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">GALLERY</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">🖼️</span>
+                    Gallery Representation
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">CONTACT</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">✉️</span>
+                    Contact for Commissions
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">VIDEO</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">🎥</span>
+                    Studio Tour Video
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 space-y-2">
+              <h3 className="text-base font-bold mb-3">AWARD</h3>
+              <div className="space-y-2">
+                <a 
+                  href="#" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-3 rounded-md w-full"
+                  style={{ 
+                    backgroundColor: buttonColor, 
+                    color: buttonTextColor 
+                  }}
+                >
+                  <span className="flex items-center">
+                    <span className="mr-2">🏆</span>
+                    Recent Awards
+                  </span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+            
+            <div className="mt-6 text-center text-sm text-gray-500">
+              These are sample links to show how artist links would appear
+            </div>
+          </div>
         </div>
       </ScrollArea>
     </div>
