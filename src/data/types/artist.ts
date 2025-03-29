@@ -8,10 +8,10 @@ export interface Artist {
   location?: string;
   city?: string;
   country?: string;
-  techniques?: string[];
-  styles?: string[];
-  social_platforms?: string[];
-  artworks?: string[];
+  techniques?: string[] | string;
+  styles?: string[] | string;
+  social_platforms?: string[] | string;
+  artworks?: string[] | string;
   locked_artworks?: boolean;
   user_id?: string;
   published?: boolean;

@@ -3,67 +3,74 @@ import { ArtistProfileFormData } from "../types";
 import { formatSocialPlatforms } from "./socialPlatformUtils";
 import { logger } from "@/utils/logger";
 
-export const mapArtistToFormData = (artistData: any): ArtistProfileFormData => {
-  // Set default empty values
-  const formData: ArtistProfileFormData = {
-    name: "",
-    specialty: "",
-    bio: "",
-    city: "",
-    country: "",
-    techniques: "",
-    styles: "",
-    social_platforms: [""],
-    image: null
-  };
-  
-  // If artist data exists, map fields
-  if (artistData) {
-    logger.info("Mapping artist data to form:", artistData);
-    
-    // Map simple string fields
-    formData.name = artistData.name || "";
-    formData.specialty = artistData.specialty || "";
-    formData.bio = artistData.bio || "";
-    formData.city = artistData.city || "";
-    formData.country = artistData.country || "";
-    
-    // Map techniques array to comma-separated string
-    if (artistData.techniques) {
-      if (typeof artistData.techniques === 'string') {
-        try {
-          const parsed = JSON.parse(artistData.techniques);
-          formData.techniques = Array.isArray(parsed) ? parsed.join(", ") : "";
-        } catch {
-          formData.techniques = "";
-        }
-      } else if (Array.isArray(artistData.techniques)) {
-        formData.techniques = artistData.techniques.join(", ");
-      }
-    }
-    
-    // Map styles array to comma-separated string
-    if (artistData.styles) {
-      if (typeof artistData.styles === 'string') {
-        try {
-          const parsed = JSON.parse(artistData.styles);
-          formData.styles = Array.isArray(parsed) ? parsed.join(", ") : "";
-        } catch {
-          formData.styles = "";
-        }
-      } else if (Array.isArray(artistData.styles)) {
-        formData.styles = artistData.styles.join(", ");
-      }
-    }
-    
-    // Map social platforms
-    formData.social_platforms = formatSocialPlatforms(artistData);
-    
-    // Map image URL
-    formData.image = artistData.image || null;
-    
-    logger.info("Mapped form data:", formData);
+export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
+  if (!artist) {
+    logger.warn("Attempted to map null or undefined artist to form data");
+    return {
+      name: "",
+      specialty: "",
+      bio: "",
+      city: "",
+      country: "",
+      techniques: "",
+      styles: "",
+      social_platforms: [""],
+      image: null
+    };
   }
-  
+
+  logger.info("Mapping artist data to form data:", artist);
+
+  // Format techniques
+  let techniquesString = "";
+  if (artist.techniques) {
+    if (Array.isArray(artist.techniques)) {
+      techniquesString = artist.techniques.join(", ");
+    } else if (typeof artist.techniques === 'string') {
+      try {
+        const parsed = JSON.parse(artist.techniques);
+        techniquesString = Array.isArray(parsed) ? parsed.join(", ") : artist.techniques;
+      } catch (e) {
+        techniquesString = artist.techniques;
+      }
+    } else if (typeof artist.techniques === 'object') {
+      techniquesString = Object.values(artist.techniques).join(", ");
+    }
+  }
+
+  // Format styles
+  let stylesString = "";
+  if (artist.styles) {
+    if (Array.isArray(artist.styles)) {
+      stylesString = artist.styles.join(", ");
+    } else if (typeof artist.styles === 'string') {
+      try {
+        const parsed = JSON.parse(artist.styles);
+        stylesString = Array.isArray(parsed) ? parsed.join(", ") : artist.styles;
+      } catch (e) {
+        stylesString = artist.styles;
+      }
+    } else if (typeof artist.styles === 'object') {
+      stylesString = Object.values(artist.styles).join(", ");
+    }
+  }
+
+  // Format social platforms
+  const socialPlatforms = formatSocialPlatforms(artist);
+
+  // Create the mapped form data
+  const formData: ArtistProfileFormData = {
+    name: artist.name || "",
+    specialty: artist.specialty || "",
+    bio: artist.bio || "",
+    city: artist.city || "",
+    country: artist.country || "",
+    techniques: techniquesString,
+    styles: stylesString,
+    social_platforms: socialPlatforms,
+    image: artist.image || null
+  };
+
+  logger.info("Mapped form data:", formData);
   return formData;
 };

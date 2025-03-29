@@ -58,9 +58,11 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
             removeSocialPlatform={removeSocialPlatform}
           />
           
-          <Button type="submit" className="w-full" disabled={saving}>
-            {saving ? "Saving..." : "Save Changes"}
-          </Button>
+          <div className="pt-4">
+            <Button type="submit" className="w-full" disabled={saving}>
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

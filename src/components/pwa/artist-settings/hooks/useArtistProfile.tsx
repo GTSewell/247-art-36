@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "../types";
@@ -113,6 +112,8 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    logger.info("Form submission started with artist ID:", artistId);
+    
     if (!artistId) {
       toast.error("Artist ID not found");
       return;
@@ -125,10 +126,19 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       const result = await saveArtistProfile(formData, artistId, artist);
       
       if (result.success) {
-        toast.success(result.message);
+        // Get the updated data from the result
+        if (result.data && result.data.length > 0) {
+          const updatedArtist = result.data[0];
+          setArtist(updatedArtist);
+          
+          // Update form data with the new values to keep form state consistent
+          const updatedFormData = mapArtistToFormData(updatedArtist);
+          setFormData(updatedFormData);
+          
+          logger.info("Updated artist profile state with new data:", updatedArtist);
+        }
         
-        // If we created a new profile or updated an existing one, refresh data
-        fetchArtistProfileData();
+        toast.success(result.message);
       } else {
         throw new Error(result.message);
       }

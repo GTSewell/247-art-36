@@ -2,7 +2,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { ArtistProfileFormData } from "../types";
 import { processSocialPlatforms } from "../utils/socialPlatformUtils";
-import { toast } from "sonner";
 import { logger } from "@/utils/logger";
 
 /**
