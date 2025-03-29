@@ -36,9 +36,7 @@ const MobileUserMenu = () => {
   const [displayName, setDisplayName] = useState('');
   
   useEffect(() => {
-    // If user is loaded, get initials
     if (user) {
-      // Format the display name to be "Demo Artist" instead of username format
       let name = user.user_metadata?.full_name || 'Demo Artist';
       if (name.includes('@')) {
         name = 'Demo Artist';
@@ -47,7 +45,6 @@ const MobileUserMenu = () => {
       setInitials(getInitials(name));
       setDisplayName(name);
       
-      // Check if user is admin
       const checkAdminStatus = async () => {
         const adminStatus = await isUserAdmin();
         setIsAdmin(adminStatus);
@@ -151,7 +148,7 @@ const MobileUserMenu = () => {
           
           <Link 
             to="/dashboard/artist" 
-            className="flex items-center p-2 rounded-md bg-zap-blue/10 text-zap-blue"
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
             onClick={closeSheet}
           >
             <Settings className="mr-2 h-5 w-5" />
@@ -160,7 +157,7 @@ const MobileUserMenu = () => {
           
           <Link 
             to="/dashboard/collector" 
-            className="flex items-center p-2 rounded-md bg-zap-red/10 text-zap-red"
+            className="flex items-center p-2 rounded-md hover:bg-gray-100"
             onClick={closeSheet}
           >
             <Settings className="mr-2 h-5 w-5" />

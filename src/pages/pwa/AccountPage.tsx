@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
-import PWANavigation from "@/components/pwa/PWANavigation"; // Import PWA navigation
+import PWANavigation from "@/components/pwa/PWANavigation";
 
 const AccountPage = () => {
   const { user, isLoading } = useAuth();
@@ -31,7 +32,7 @@ const AccountPage = () => {
   }
 
   return (
-    <div className="container max-w-md mx-auto px-4 py-8 pt-20 pb-24"> {/* Added pb-24 for footer spacing */}
+    <div className="container max-w-md mx-auto px-4 py-8 pt-20 pb-24">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
         <div className="flex items-center mb-6">
           <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden mr-4">
@@ -119,7 +120,8 @@ const AccountPage = () => {
 
         <div className="space-y-2">
           <Button 
-            className="w-full justify-start font-bold text-white bg-zap-blue hover:bg-zap-blue/90"
+            variant="outline"
+            className="w-full justify-start font-medium"
             onClick={() => navigate('/dashboard/artist')}
           >
             <Settings className="h-4 w-4 mr-2" />
@@ -127,7 +129,8 @@ const AccountPage = () => {
           </Button>
           
           <Button 
-            className="w-full justify-start font-bold text-white bg-zap-yellow hover:bg-zap-yellow/90"
+            variant="outline"
+            className="w-full justify-start font-medium"
             onClick={() => navigate('/dashboard/collector')}
           >
             <Settings className="h-4 w-4 mr-2" />

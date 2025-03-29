@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -128,14 +129,14 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         </Link>
         
         <Link to="/dashboard/artist">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-blue/10 text-zap-blue">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100">
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Artist Dashboard</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/dashboard/collector">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-yellow/10 text-zap-yellow">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100">
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Collector Dashboard</span>
           </DropdownMenuItem>
