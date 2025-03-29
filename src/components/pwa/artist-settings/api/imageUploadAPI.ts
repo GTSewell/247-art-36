@@ -41,10 +41,13 @@ export async function uploadProfileImage(file: File, artistName: string): Promis
  */
 export async function updateArtistProfileImage(artistId: string | number, imageUrl: string): Promise<boolean> {
   try {
+    // Convert artistId to number if it's a string
+    const numericArtistId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+    
     const { error } = await supabase
       .from('artists')
       .update({ profile_image_url: imageUrl })
-      .eq('id', artistId);
+      .eq('id', numericArtistId);
     
     if (error) {
       logger.error("Error updating artist profile image:", error);
@@ -162,11 +165,14 @@ export async function getFilesFromFolder(bucketName: string, folderPath: string)
  */
 export async function updateArtistBackgroundImage(artistId: number | string, imageUrl: string): Promise<boolean> {
   try {
+    // Convert artistId to number if it's a string
+    const numericArtistId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+    
     // First, get the current artwork_files object
     const { data: artistData, error: fetchError } = await supabase
       .from('artists')
       .select('artwork_files')
-      .eq('id', artistId)
+      .eq('id', numericArtistId)
       .single();
     
     if (fetchError) {
@@ -175,16 +181,14 @@ export async function updateArtistBackgroundImage(artistId: number | string, ima
     }
     
     // Update the background_image property
-    const updatedArtworkFiles = {
-      ...artistData.artwork_files,
-      background_image: imageUrl
-    };
+    const updatedArtworkFiles = artistData.artwork_files || {};
+    updatedArtworkFiles.background_image = imageUrl;
     
     // Update the artist record
     const { error: updateError } = await supabase
       .from('artists')
       .update({ artwork_files: updatedArtworkFiles })
-      .eq('id', artistId);
+      .eq('id', numericArtistId);
     
     if (updateError) {
       logger.error("Error updating artist background image:", updateError);
