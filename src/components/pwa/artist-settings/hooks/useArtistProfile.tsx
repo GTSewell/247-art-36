@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/use-toast";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "../types";
 import { fetchArtistProfile, saveArtistProfile } from "../api/artistProfileAPI";
 import { mapArtistToFormData } from "../utils/formDataMapper";
@@ -56,7 +56,11 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       }
     } catch (error: any) {
       logger.error("Error fetching artist profile:", error);
-      toast.error(`Failed to load artist profile: ${error.message}`);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Failed to load artist profile: ${error.message}`
+      });
     } finally {
       setLoading(false);
     }
@@ -114,11 +118,6 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     
     logger.info("Form submission started with artist ID:", artistId);
     
-    if (!artistId) {
-      toast.error("Artist ID not found");
-      return;
-    }
-    
     try {
       setSaving(true);
       logger.info("Submitting artist profile form data:", formData);
@@ -138,13 +137,20 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
           logger.info("Updated artist profile state with new data:", updatedArtist);
         }
         
-        toast.success(result.message);
+        toast({
+          title: "Success",
+          description: result.message
+        });
       } else {
         throw new Error(result.message);
       }
     } catch (error: any) {
       logger.error("Error updating artist profile:", error);
-      toast.error(`Failed to update profile: ${error.message}`);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Failed to update profile: ${error.message}`
+      });
     } finally {
       setSaving(false);
     }

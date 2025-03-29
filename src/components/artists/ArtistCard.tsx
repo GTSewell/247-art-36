@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -58,15 +59,15 @@ const ArtistCard = ({
     onFavoriteToggle(!isFavorite);
   };
 
-  // Check if artist is a Genesis Artist (ID >= 26)
-  const isGenesisArtist = id >= 26;
+  // Check if artist is a Signature Artist (ID >= 26)
+  const isSignatureArtist = id >= 26;
   return <div className="relative">
       <div className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" onClick={onSelect}>
         <div className="aspect-square overflow-hidden relative">
           <img src={imageError ? '/placeholder.svg' : image} alt={name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" onError={handleImageError} />
           
           {/* Signature Artist Badge */}
-          {isGenesisArtist && <div className="absolute top-3 left-3 z-10 bg-zap-red text-[#ffffff] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+          {isSignatureArtist && <div className="absolute top-3 left-3 z-10 bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
               Signature Artist
             </div>}
           

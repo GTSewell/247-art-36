@@ -64,9 +64,35 @@ const processStringToArray = (input: string): string[] => {
 };
 
 /**
+ * Get the next available artist ID
+ */
+const getNextArtistId = async (): Promise<number> => {
+  try {
+    const { data, error } = await supabase
+      .from('artists')
+      .select('id')
+      .order('id', { ascending: false })
+      .limit(1)
+      .single();
+      
+    if (error) {
+      if (error.message.includes('No rows found')) {
+        return 1; // Start with ID 1 if no artists exist
+      }
+      throw error;
+    }
+    
+    return data.id + 1;
+  } catch (error: any) {
+    logger.error("Error getting next artist ID:", error);
+    throw error;
+  }
+}
+
+/**
  * Create or update artist profile in Supabase
  */
-export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string, existingArtist: any) => {
+export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string | null, existingArtist: any) => {
   try {
     // Process array values - ensure they're stored as proper JSON arrays for JSONB columns
     logger.info("Processing form data for saving:", formData);
@@ -106,16 +132,16 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
     // Log the final processed data before saving
     logger.info("Final processed data for saving:", processedData);
     
-    // Convert string id to number for database operations
-    const numericId = parseInt(artistId, 10);
-    
-    if (isNaN(numericId)) {
-      throw new Error(`Invalid artist ID format: ${artistId}`);
-    }
-    
-    logger.info("Saving artist profile with ID:", numericId);
-    
-    if (existingArtist) {
+    if (artistId && existingArtist) {
+      // Convert string id to number for database operations
+      const numericId = parseInt(artistId, 10);
+      
+      if (isNaN(numericId)) {
+        throw new Error(`Invalid artist ID format: ${artistId}`);
+      }
+      
+      logger.info("Updating existing artist profile with ID:", numericId);
+      
       // Update existing artist profile
       const { data, error } = await supabase
         .from('artists')
@@ -131,20 +157,9 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       logger.info("Updated artist data:", data);
       return { success: true, message: "Profile updated successfully", data };
     } else {
-      // For new artist profiles, get the next available ID from the sequence
-      const { data: maxIdData, error: maxIdError } = await supabase
-        .from('artists')
-        .select('id')
-        .order('id', { ascending: false })
-        .limit(1)
-        .single();
-        
-      if (maxIdError && !maxIdError.message.includes('No rows found')) {
-        throw maxIdError;
-      }
-      
-      // Calculate next ID (either increment max ID or start at 1)
-      const nextId = maxIdData ? maxIdData.id + 1 : 1;
+      // For new artist profiles, get the next available ID
+      const nextId = await getNextArtistId();
+      logger.info("Creating new artist with ID:", nextId);
       
       // Create new artist profile with the new ID
       const { data, error } = await supabase
