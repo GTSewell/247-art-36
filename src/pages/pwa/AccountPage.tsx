@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,6 @@ const AccountPage = () => {
     }
   };
 
-  // If not authenticated, redirect to auth page
   if (!isLoading && !user) {
     navigate('/auth');
     return null;
@@ -53,7 +51,6 @@ const AccountPage = () => {
           </div>
         </div>
 
-        {/* Cart section */}
         <div className="mb-6">
           <Button 
             variant="outline" 
@@ -71,7 +68,6 @@ const AccountPage = () => {
             )}
           </Button>
           
-          {/* Messages button */}
           <Button 
             variant="outline" 
             className="w-full justify-between mb-2" 
@@ -121,7 +117,6 @@ const AccountPage = () => {
           )}
         </div>
 
-        {/* Navigation buttons */}
         <div className="space-y-2">
           <Button 
             className="w-full justify-start font-bold text-white bg-zap-blue hover:bg-zap-blue/90"
@@ -132,7 +127,7 @@ const AccountPage = () => {
           </Button>
           
           <Button 
-            className="w-full justify-start font-bold text-white bg-zap-red hover:bg-zap-red/90"
+            className="w-full justify-start font-bold text-white bg-zap-yellow hover:bg-zap-yellow/90"
             onClick={() => navigate('/dashboard/collector')}
           >
             <Settings className="h-4 w-4 mr-2" />
@@ -150,7 +145,6 @@ const AccountPage = () => {
         </div>
       </div>
       
-      {/* Add PWA Navigation */}
       <PWANavigation />
     </div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -39,9 +38,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   const [displayName, setDisplayName] = useState('');
   
   useEffect(() => {
-    // If user is loaded, get initials and display name
     if (user) {
-      // Format the display name to be "Demo Artist" instead of username format
       let name = user.user_metadata?.full_name || 'Demo Artist';
       if (name.includes('@')) {
         name = 'Demo Artist';
@@ -50,7 +47,6 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
       setInitials(getInitials(name));
       setDisplayName(name);
       
-      // Check if user is admin
       const checkAdminStatus = async () => {
         const adminStatus = await isUserAdmin();
         setIsAdmin(adminStatus);
@@ -85,7 +81,6 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
     );
   }
   
-  // Determine text color based on current page
   const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
   
   return (
@@ -140,7 +135,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         </Link>
         
         <Link to="/dashboard/collector">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-red/10 text-zap-red">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-yellow/10 text-zap-yellow">
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Collector Dashboard</span>
           </DropdownMenuItem>
@@ -164,5 +159,4 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   );
 };
 
-// Also export as default
 export default UserMenu;
