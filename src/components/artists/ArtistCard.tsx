@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,12 +65,8 @@ const ArtistCard = ({
   };
 
   // Check if artist is a Genesis Artist (ID >= 26)
-  // Changed from "id > 26" to "id >= 26" to include artist with ID 26
   const isGenesisArtist = id >= 26;
   
-  // Log the artist information for debugging
-  console.log(`Artist: ${name}, ID: ${id}, isGenesisArtist: ${isGenesisArtist}`);
-
   return (
     <div className="relative">
       <div 
@@ -86,9 +81,9 @@ const ArtistCard = ({
             onError={handleImageError}
           />
           
-          {/* Genesis Artist Badge - extra visible with important styling */}
+          {/* Genesis Artist Badge - adjusted to be in bottom right with normal z-index */}
           {isGenesisArtist && (
-            <div className="absolute top-2 left-2 z-[100] bg-[#F7CF1E] text-black px-3 py-1.5 rounded-md font-bold text-sm shadow-xl border-2 border-black !important">
+            <div className="absolute bottom-3 right-3 z-10 bg-[#F7CF1E] text-black px-2 py-1 rounded-md font-medium text-xs shadow-md">
               Genesis Artist
             </div>
           )}
