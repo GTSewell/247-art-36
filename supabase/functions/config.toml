@@ -6,3 +6,7 @@ verify_jwt = false
 
 [functions.bulk-sync-artist-images]
 verify_jwt = false
+
+[functions.download-artist-images]
+verify_jwt = false
+

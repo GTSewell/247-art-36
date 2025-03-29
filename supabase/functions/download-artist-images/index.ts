@@ -115,7 +115,12 @@ serve(async (req) => {
     
     // If specific artist ids were provided, filter by them
     if (artist_ids && artist_ids.length > 0) {
-      artistsQuery = artistsQuery.in('id', artist_ids);
+      // Handle numeric conversion for IDs if they're strings
+      const numericIds = artist_ids.map(id => {
+        return typeof id === 'string' ? parseInt(id, 10) : id;
+      }).filter(id => !isNaN(id));
+      
+      artistsQuery = artistsQuery.in('id', numericIds);
     }
     
     const { data: artists, error: artistsError } = await artistsQuery;

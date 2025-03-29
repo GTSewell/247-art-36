@@ -23,10 +23,17 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       setLoading(true);
       
+      // Convert string ID to number for querying
+      const numericId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+      
+      if (isNaN(numericId)) {
+        throw new Error(`Invalid artist ID format: ${artistId}`);
+      }
+      
       const { data, error } = await supabase
         .from('artists')
         .select('*')
-        .eq('id', artistId)
+        .eq('id', numericId)
         .single();
       
       if (error) {
@@ -83,11 +90,18 @@ export const useArtistArtworks = (artistId: string | null) => {
       // Add the new artwork
       currentArtworks.push(imageUrl);
       
+      // Convert ID to number for database update
+      const numericId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+      
+      if (isNaN(numericId)) {
+        throw new Error(`Invalid artist ID format: ${artistId}`);
+      }
+      
       // Update the database
       const { error } = await supabase
         .from('artists')
         .update({ artworks: currentArtworks })
-        .eq('id', artistId);
+        .eq('id', numericId);
       
       if (error) {
         throw error;
@@ -118,11 +132,18 @@ export const useArtistArtworks = (artistId: string | null) => {
       const updatedArtworks = [...artworks];
       updatedArtworks.splice(index, 1);
       
+      // Convert ID to number for database update
+      const numericId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+      
+      if (isNaN(numericId)) {
+        throw new Error(`Invalid artist ID format: ${artistId}`);
+      }
+      
       // Update the database
       const { error } = await supabase
         .from('artists')
         .update({ artworks: updatedArtworks })
-        .eq('id', artistId);
+        .eq('id', numericId);
       
       if (error) {
         throw error;
