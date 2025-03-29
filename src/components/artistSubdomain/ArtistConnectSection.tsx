@@ -35,7 +35,6 @@ const ArtistConnectSection: React.FC<ArtistConnectSectionProps> = ({
 
   return (
     <div className="space-y-2">
-      <h3 className="text-sm font-semibold">CONNECT</h3>
       <div className="flex gap-2 flex-wrap">
         {normalizedPlatforms.map((platform, index) => (
           <Button
