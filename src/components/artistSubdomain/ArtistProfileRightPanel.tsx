@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -47,11 +47,21 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     artist.name || 'Unknown Artist'
   );
   
-  // Filter out empty or invalid URLs
-  const filteredArtworks = artworks.filter(url => url && typeof url === 'string' && url.trim() !== '');
+  // State to track valid artworks (not broken)
+  const [validArtworks, setValidArtworks] = useState<string[]>([]);
   
-  // Display artworks if available
-  const displayArtworks = filteredArtworks.length > 0 ? filteredArtworks : [];
+  // Process and filter artworks when they change or errors are detected
+  useEffect(() => {
+    // Filter out empty, invalid URLs, and known broken images
+    const filtered = artworks.filter((url, index) => {
+      return url && 
+             typeof url === 'string' && 
+             url.trim() !== '' && 
+             !artworkErrors[index];
+    });
+    
+    setValidArtworks(filtered);
+  }, [artworks, artworkErrors]);
   
   // Check if this is a real artist (ID 26 or above)
   const isRealArtist = artist.id ? artist.id >= 26 : false;
@@ -136,8 +146,8 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         <h3 className="text-base font-bold mb-3">Featured Artworks</h3>
         <ScrollArea className="h-[calc(100%-2rem)]">
           <div className="flex flex-col space-y-4 pr-4 pb-4">
-            {displayArtworks.length > 0 ? (
-              displayArtworks.map((artwork, index) => (
+            {validArtworks.length > 0 ? (
+              validArtworks.map((artwork, index) => (
                 <div 
                   key={index}
                   className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
@@ -146,7 +156,11 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
                     src={artwork} 
                     alt={`Artwork ${index + 1}`}
                     className="w-full object-cover"
-                    onError={(e) => handleArtworkImageError(e, index, artwork)}
+                    onError={(e) => {
+                      handleArtworkImageError(e, index, artwork);
+                      // Remove this artwork from validArtworks after error
+                      setValidArtworks(current => current.filter(item => item !== artwork));
+                    }}
                   />
                   <div 
                     className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center"
