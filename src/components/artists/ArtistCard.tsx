@@ -65,6 +65,9 @@ const ArtistCard = ({
     onFavoriteToggle(!isFavorite);
   };
 
+  // Check if artist is a Genesis Artist (ID > 26)
+  const isGenesisArtist = id > 26;
+
   return (
     <div className="relative">
       <div 
@@ -78,6 +81,13 @@ const ArtistCard = ({
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
             onError={handleImageError}
           />
+          
+          {/* Genesis Artist Badge - always visible */}
+          {isGenesisArtist && (
+            <div className="absolute top-2 left-2 z-20 bg-zap-yellow/90 text-black px-2 py-1 rounded-md font-semibold text-xs shadow-md">
+              Genesis Artist
+            </div>
+          )}
           
           {/* Name overlay for PWA */}
           {showNameOverlay && (
