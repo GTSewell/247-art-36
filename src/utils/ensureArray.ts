@@ -1,25 +1,63 @@
 
+import { logger } from "./logger";
+
 /**
- * Helper function to ensure a value is an array of strings
- * This handles the various ways array data might be stored or passed around in the app
+ * Ensures that the input is converted to an array of strings
+ * Handles various input types: string, array, null, undefined, numbers, etc.
  */
-export const ensureArray = (value: string | string[] | number | number[] | any | undefined): string[] => {
-  if (!value) return [];
-  if (Array.isArray(value)) {
-    // Convert all array elements to strings
-    return value.map(item => String(item));
-  }
-  
+export function ensureArray(input: any): string[] {
   try {
-    const parsed = typeof value === 'string' ? JSON.parse(value) : value;
-    if (Array.isArray(parsed)) {
-      // Convert all parsed array elements to strings
-      return parsed.map(item => String(item));
+    // Handle null or undefined
+    if (input === null || input === undefined) {
+      return [];
     }
-    // If not an array, convert the single value to string and wrap in array
-    return [String(value)];
-  } catch (e) {
-    // If parsing fails, treat as a single string
-    return [String(value)];
+    
+    // Handle case where input is already an array
+    if (Array.isArray(input)) {
+      // Convert all items to strings and filter out null/undefined
+      return input
+        .map(item => {
+          if (item === null || item === undefined) return '';
+          return String(item);
+        })
+        .filter(item => item !== '');
+    }
+    
+    // Handle case where input is a string that's actually a JSON array
+    if (typeof input === 'string') {
+      try {
+        const parsed = JSON.parse(input);
+        if (Array.isArray(parsed)) {
+          return parsed
+            .map(item => {
+              if (item === null || item === undefined) return '';
+              return String(item);
+            })
+            .filter(item => item !== '');
+        }
+        // If it's not an array after parsing, treat as a single string
+        return input.trim() ? [input] : [];
+      } catch (e) {
+        // Not valid JSON, treat as a single string
+        return input.trim() ? [input] : [];
+      }
+    }
+    
+    // Handle numbers, booleans, or other primitive types
+    if (typeof input === 'number' || typeof input === 'boolean') {
+      return [String(input)];
+    }
+    
+    // For objects or other types, convert to string
+    if (typeof input === 'object') {
+      const str = JSON.stringify(input);
+      return str === '{}' ? [] : [str];
+    }
+    
+    // Default fallback
+    return [];
+  } catch (error) {
+    logger.error("Error in ensureArray:", error);
+    return [];
   }
-};
+}

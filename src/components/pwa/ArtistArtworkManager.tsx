@@ -16,6 +16,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     uploading, 
     artworks, 
     artistName,
+    artist,
     handleUploadArtwork, 
     handleRemoveArtwork 
   } = useArtistArtworks(artistId);
@@ -42,6 +43,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
             onUpload={onUpload}
             isUploading={uploading}
             artistName={artistName}
+            artistId={artist?.id}
           />
           
           <ArtworkGrid 

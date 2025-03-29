@@ -2,7 +2,8 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { uploadImage } from "./api/imageUploadAPI";
+import { uploadImage, updateArtistProfileImage } from "./api/imageUploadAPI";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 interface ImageUploadProps {
@@ -35,11 +36,38 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       // Use artist name for folder organization, fallback to "Unnamed Artist" if not provided
       const safeArtistName = artistName?.trim() || "Unnamed_Artist";
       
-      console.log("Uploading image for artist:", safeArtistName);
+      console.log("Uploading image for artist:", safeArtistName, "ID:", artistId);
       
       const imageUrl = await uploadImage(files[0], safeArtistName, true);
       if (imageUrl) {
+        // Update the local state
         onImageChange(imageUrl);
+        
+        // If artist ID is provided, directly update the artist record in the database
+        if (artistId) {
+          const success = await updateArtistProfileImage(artistId, imageUrl);
+          if (success) {
+            console.log("Database updated with new profile image");
+            
+            // Sync images via edge function for extra reliability
+            try {
+              const { data, error } = await supabase.functions.invoke('sync-artist-images', {
+                body: { artistId }
+              });
+              
+              if (error) {
+                console.error("Error syncing images:", error);
+              } else {
+                console.log("Image sync response:", data);
+              }
+            } catch (syncError) {
+              console.error("Failed to sync images:", syncError);
+            }
+          } else {
+            console.error("Failed to update database with new profile image");
+          }
+        }
+        
         toast.success("Profile image uploaded successfully");
       } else {
         throw new Error("Failed to upload image");

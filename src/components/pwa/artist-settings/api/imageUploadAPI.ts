@@ -41,9 +41,9 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     }
     
     // Get public URL for the uploaded image
-    const { data: { publicUrl } } = supabase.storage
+    const publicUrl = supabase.storage
       .from('artists')
-      .getPublicUrl(filePath);
+      .getPublicUrl(filePath).data.publicUrl;
     
     logger.info("Image uploaded successfully:", publicUrl);
     
@@ -59,17 +59,20 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
  */
 export const updateArtistProfileImage = async (artistId: number, imageUrl: string): Promise<boolean> => {
   try {
+    logger.info(`Updating profile image for artist ID ${artistId} with URL: ${imageUrl}`);
+    
     const { data, error } = await supabase
       .from('artists')
       .update({ image: imageUrl })
-      .eq('id', artistId);
+      .eq('id', artistId)
+      .select();
       
     if (error) {
       logger.error("Error updating artist profile image:", error);
       return false;
     }
     
-    logger.info("Artist profile image updated successfully for ID:", artistId);
+    logger.info("Artist profile image updated successfully for ID:", artistId, data);
     return true;
   } catch (error) {
     logger.error("Error in updateArtistProfileImage:", error);
@@ -113,5 +116,35 @@ export const ensureBucketExists = async (bucketName: string): Promise<boolean> =
   } catch (error) {
     logger.error("Error in ensureBucketExists:", error);
     return false;
+  }
+};
+
+/**
+ * Get all files from a specific folder in the storage bucket
+ */
+export const getFilesFromFolder = async (bucketName: string, folderPath: string): Promise<string[]> => {
+  try {
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .list(folderPath);
+    
+    if (error) {
+      logger.error(`Error listing files in ${folderPath}:`, error);
+      return [];
+    }
+    
+    // Convert file list to public URLs
+    const fileUrls = data
+      .filter(item => !item.id.endsWith('/')) // Filter out folders
+      .map(file => {
+        return supabase.storage
+          .from(bucketName)
+          .getPublicUrl(`${folderPath}/${file.name}`).data.publicUrl;
+      });
+    
+    return fileUrls;
+  } catch (error) {
+    logger.error(`Error in getFilesFromFolder (${folderPath}):`, error);
+    return [];
   }
 };
