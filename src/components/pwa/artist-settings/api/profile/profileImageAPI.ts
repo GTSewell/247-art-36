@@ -1,86 +1,110 @@
 
+// Fix the build error
 import { supabase } from "@/integrations/supabase/client";
-import { v4 as uuidv4 } from "uuid";
-import { logger } from "@/utils/logger";
-import { ensureBucketExists } from "../storage/storageUtils";
+import { toast } from "sonner";
 
 /**
- * Upload artist profile image to Supabase Storage
+ * Uploads a profile image for an artist
+ * @param file The image file to upload
+ * @param artistId The artist's ID
+ * @returns The URL of the uploaded image or null if there was an error
  */
-export const uploadProfileImage = async (file: File, artistName: string): Promise<string | null> => {
+export async function uploadProfileImage(file: File, artistId: string): Promise<string | null> {
   try {
-    // Generate unique file name
+    if (!file) {
+      toast.error("No file selected");
+      return null;
+    }
+    
+    if (!artistId) {
+      toast.error("No artist ID provided");
+      return null;
+    }
+    
+    // Create a unique filename
     const fileExt = file.name.split('.').pop();
-    const fileName = `${uuidv4()}.${fileExt}`;
+    const fileName = `${artistId}-profile.${fileExt}`;
+    const filePath = `${artistId}/Profile_Image/${fileName}`;
     
-    // Sanitize artist name for folder path (replace spaces with underscores)
-    const sanitizedArtistName = artistName.replace(/\s+/g, '_');
-    
-    // Create folder path based on artist name using standard format
-    const folderPath = `${sanitizedArtistName}/Profile_Image`;
-    
-    const filePath = `${folderPath}/${fileName}`;
-    
-    logger.info(`Uploading profile image to ${filePath}`);
-    
-    // First ensure the bucket exists
-    await ensureBucketExists('artists');
-    
-    // Upload image to Supabase
+    // Upload the file
     const { data, error } = await supabase.storage
-      .from('artists')
-      .upload(filePath, file, { 
-        cacheControl: '3600',
-        upsert: true 
+      .from('artist-profiles')
+      .upload(filePath, file, {
+        upsert: true
       });
     
     if (error) {
-      logger.error("Error uploading profile image:", error);
-      throw error;
+      console.error("Error uploading profile image:", error);
+      toast.error(`Error uploading profile image: ${error.message}`);
+      return null;
     }
     
-    // Get public URL for the uploaded image
-    const publicUrl = supabase.storage
-      .from('artists')
-      .getPublicUrl(filePath).data.publicUrl;
+    // Get the public URL for the file
+    const { data: urlData } = supabase.storage
+      .from('artist-profiles')
+      .getPublicUrl(filePath);
     
-    logger.info("Profile image uploaded successfully:", publicUrl);
+    if (urlData) {
+      toast.success("Profile image uploaded successfully");
+      return urlData.publicUrl;
+    }
     
-    return publicUrl;
-  } catch (error) {
-    logger.error("Error in uploadProfileImage:", error);
+    return null;
+    
+  } catch (error: any) {
+    console.error("Error in uploadProfileImage:", error);
+    toast.error(`Error uploading profile image: ${error.message}`);
     return null;
   }
-};
+}
 
 /**
- * Update artist profile image in the database
+ * Deletes a profile image for an artist
+ * @param artistId The artist's ID
+ * @returns A boolean indicating whether the deletion was successful
  */
-export const updateArtistProfileImage = async (artistId: number | string, imageUrl: string): Promise<boolean> => {
+export async function deleteProfileImage(artistId: string): Promise<boolean> {
   try {
-    // Convert string ID to number if needed
-    const numericArtistId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
-    
-    logger.info(`Updating profile image for artist ID ${numericArtistId} with URL: ${imageUrl}`);
-    
-    const { data, error } = await supabase
-      .from('artists')
-      .update({ 
-        image: imageUrl,
-        profile_image_url: imageUrl // Update both image columns to maintain consistency
-      })
-      .eq('id', numericArtistId)
-      .select();
-      
-    if (error) {
-      logger.error("Error updating artist profile image:", error);
+    if (!artistId) {
+      toast.error("No artist ID provided");
       return false;
     }
     
-    logger.info("Artist profile image updated successfully for ID:", numericArtistId, data);
+    // Find files in the artist's profile folder
+    const { data: files, error: listError } = await supabase.storage
+      .from('artist-profiles')
+      .list(`${artistId}/Profile_Image`);
+    
+    if (listError) {
+      console.error("Error listing profile images:", listError);
+      toast.error(`Error deleting profile image: ${listError.message}`);
+      return false;
+    }
+    
+    if (!files || files.length === 0) {
+      // No files to delete
+      return true;
+    }
+    
+    // Delete all files in the folder
+    const filePaths = files.map(file => `${artistId}/Profile_Image/${file.name}`);
+    
+    const { error: deleteError } = await supabase.storage
+      .from('artist-profiles')
+      .remove(filePaths);
+    
+    if (deleteError) {
+      console.error("Error deleting profile image:", deleteError);
+      toast.error(`Error deleting profile image: ${deleteError.message}`);
+      return false;
+    }
+    
+    toast.success("Profile image deleted successfully");
     return true;
-  } catch (error) {
-    logger.error("Error in updateArtistProfileImage:", error);
+    
+  } catch (error: any) {
+    console.error("Error in deleteProfileImage:", error);
+    toast.error(`Error deleting profile image: ${error.message}`);
     return false;
   }
-};
+}

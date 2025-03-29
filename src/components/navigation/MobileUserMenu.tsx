@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, Settings, ChevronDown, MessageSquare, UserPlus, ShieldCheck } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -33,12 +33,14 @@ const MobileUserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [initials, setInitials] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [displayName, setDisplayName] = useState('');
   
   useEffect(() => {
     // If user is loaded, get initials
     if (user) {
       const name = user.user_metadata?.full_name || user.email || '';
       setInitials(getInitials(name));
+      setDisplayName(user.user_metadata?.full_name || user.email?.split('@')[0] || 'User');
       
       // Check if user is admin
       const checkAdminStatus = async () => {
@@ -83,28 +85,29 @@ const MobileUserMenu = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="relative rounded-full h-10 w-10 p-0">
-          <Avatar className="h-10 w-10">
+        <Button variant="ghost" className="flex items-center gap-2">
+          <Avatar className="h-9 w-9">
             <AvatarImage 
               src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
-              alt={user.user_metadata?.full_name || "User"}
+              alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
               {initials}
             </AvatarFallback>
           </Avatar>
+          <span className="text-sm hidden sm:inline">{displayName}</span>
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="mb-4">
-          <SheetTitle>Account</SheetTitle>
+          <SheetTitle>Menu</SheetTitle>
         </SheetHeader>
         
         <div className="flex items-center mb-4">
           <Avatar className="h-12 w-12 mr-4">
             <AvatarImage 
               src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
-              alt={user.user_metadata?.full_name || "User"}
+              alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white text-lg">
               {initials}
@@ -112,7 +115,7 @@ const MobileUserMenu = () => {
           </Avatar>
           <div>
             <p className="font-medium">
-              {user.user_metadata?.full_name || user.email}
+              {displayName}
             </p>
             <p className="text-sm text-gray-500 truncate max-w-[200px]">
               {user.email}
@@ -124,30 +127,12 @@ const MobileUserMenu = () => {
         
         <nav className="flex flex-col space-y-3">
           <Link 
-            to="/account" 
+            to="/cart" 
             className="flex items-center p-2 rounded-md hover:bg-gray-100"
             onClick={closeSheet}
           >
-            <Settings className="mr-2 h-5 w-5" />
-            <span>Account Settings</span>
-          </Link>
-          
-          <Link 
-            to="/dashboard/artist" 
-            className="flex items-center p-2 rounded-md hover:bg-gray-100"
-            onClick={closeSheet}
-          >
-            <Settings className="mr-2 h-5 w-5 text-zap-blue" />
-            <span>Artist Dashboard</span>
-          </Link>
-          
-          <Link 
-            to="/dashboard/collector" 
-            className="flex items-center p-2 rounded-md hover:bg-gray-100"
-            onClick={closeSheet}
-          >
-            <Settings className="mr-2 h-5 w-5 text-zap-red" />
-            <span>Collector Dashboard</span>
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            <span>Cart</span>
           </Link>
           
           <Link 
@@ -157,6 +142,24 @@ const MobileUserMenu = () => {
           >
             <MessageSquare className="mr-2 h-5 w-5" />
             <span>Messages</span>
+          </Link>
+          
+          <Link 
+            to="/dashboard/collector" 
+            className="flex items-center p-2 rounded-md bg-zap-red/10 text-zap-red"
+            onClick={closeSheet}
+          >
+            <Settings className="mr-2 h-5 w-5" />
+            <span className="font-medium">Collector Dashboard</span>
+          </Link>
+          
+          <Link 
+            to="/dashboard/artist" 
+            className="flex items-center p-2 rounded-md bg-zap-blue/10 text-zap-blue"
+            onClick={closeSheet}
+          >
+            <Settings className="mr-2 h-5 w-5" />
+            <span className="font-medium">Artist Dashboard</span>
           </Link>
           
           {isAdmin && (

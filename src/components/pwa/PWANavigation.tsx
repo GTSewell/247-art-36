@@ -11,6 +11,8 @@ const PWANavigation = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { itemCount } = useCart();
+  const displayName = user?.user_metadata?.full_name || 
+                     (user?.email ? user.email.split('@')[0] : '');
 
   // Handle account navigation based on authentication status
   const handleAccountClick = (e: React.MouseEvent) => {
@@ -95,7 +97,7 @@ const PWANavigation = () => {
                 </Badge>
               )}
             </div>
-            <span className="text-xs mt-1">{user ? 'Account' : 'Sign in'}</span>
+            <span className="text-xs mt-1">{user ? displayName || 'Account' : 'Sign in'}</span>
           </NavLink>
         </div>
       </nav>

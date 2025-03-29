@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, Settings, ChevronDown, MessageSquare, UserPlus, ShieldCheck } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -36,12 +36,14 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   const navigate = useNavigate();
   const [initials, setInitials] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [displayName, setDisplayName] = useState('');
   
   useEffect(() => {
-    // If user is loaded, get initials
+    // If user is loaded, get initials and display name
     if (user) {
       const name = user.user_metadata?.full_name || user.email || '';
       setInitials(getInitials(name));
+      setDisplayName(user.user_metadata?.full_name || user.email?.split('@')[0] || 'User');
       
       // Check if user is admin
       const checkAdminStatus = async () => {
@@ -84,69 +86,72 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className={`relative rounded-full h-10 w-10 p-0 ${textColorClass}`}>
-          <Avatar className="h-10 w-10">
+        <Button variant="ghost" className={`flex items-center gap-2 ${textColorClass}`}>
+          <Avatar className="h-8 w-8">
             <AvatarImage 
               src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
-              alt={user.user_metadata?.full_name || "User"}
+              alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
               {initials}
             </AvatarFallback>
           </Avatar>
+          <span className="hidden md:inline">{displayName}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <div className="flex items-center justify-start p-2">
-          <div className="flex flex-col space-y-0.5">
-            <p className="text-sm font-medium">
-              {user.user_metadata?.full_name || user.email}
-            </p>
-            <p className="text-xs text-gray-500 truncate">
-              {user.email}
-            </p>
-          </div>
+      <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-white">
+        <div className="flex items-center gap-2 p-3 border-b">
+          <Avatar className="h-8 w-8">
+            <AvatarImage 
+              src="/lovable-uploads/2b4962e8-7f5b-46d0-8cb9-b263bb3f3aad.png" 
+              alt={displayName}
+            />
+            <AvatarFallback className="bg-primary text-white">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <span className="text-sm font-medium truncate">{user.email}</span>
         </div>
         
-        <Link to="/account">
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Account Settings</span>
-          </DropdownMenuItem>
-        </Link>
-        
-        <Link to="/dashboard/artist">
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4 text-zap-blue" />
-            <span>Artist Dashboard</span>
-          </DropdownMenuItem>
-        </Link>
-        
-        <Link to="/dashboard/collector">
-          <DropdownMenuItem>
-            <Settings className="mr-2 h-4 w-4 text-zap-red" />
-            <span>Collector Dashboard</span>
+        <Link to="/cart">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100">
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            <span>Cart</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/messages">
-          <DropdownMenuItem>
-            <MessageSquare className="mr-2 h-4 w-4" />
+          <DropdownMenuItem className="p-3 hover:bg-gray-100">
+            <MessageSquare className="mr-2 h-5 w-5" />
             <span>Messages</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/dashboard/collector">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-red/10 text-zap-red">
+            <Settings className="mr-2 h-5 w-5" />
+            <span className="font-medium">Collector Dashboard</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/dashboard/artist">
+          <DropdownMenuItem className="p-3 hover:bg-gray-100 bg-zap-blue/10 text-zap-blue">
+            <Settings className="mr-2 h-5 w-5" />
+            <span className="font-medium">Artist Dashboard</span>
           </DropdownMenuItem>
         </Link>
         
         {isAdmin && (
           <Link to="/admin/artists">
-            <DropdownMenuItem>
-              <ShieldCheck className="mr-2 h-4 w-4" />
+            <DropdownMenuItem className="p-3 hover:bg-gray-100">
+              <ShieldCheck className="mr-2 h-5 w-5" />
               <span>Artist Management</span>
             </DropdownMenuItem>
           </Link>
         )}
         
-        <DropdownMenuItem onClick={handleSignOut}>
-          <LogOut className="mr-2 h-4 w-4" />
+        <DropdownMenuItem onClick={handleSignOut} className="p-3 hover:bg-gray-100 text-red-500 border-t">
+          <LogOut className="mr-2 h-5 w-5" />
           <span>Sign out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
