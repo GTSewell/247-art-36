@@ -27,7 +27,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     // First ensure the bucket exists
     await ensureBucketExists('artists');
     
-    // Upload image to Supabase
+    // Upload image to Supabase - fixing the argument count issue
     const { data, error } = await supabase.storage
       .from('artists')
       .upload(filePath, file, {
