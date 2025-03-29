@@ -82,10 +82,10 @@ const ArtistCard = ({
             onError={handleImageError}
           />
           
-          {/* Genesis Artist Badge - moved to top left corner */}
+          {/* Signature Artist Badge */}
           {isGenesisArtist && (
-            <div className="absolute top-3 left-3 z-10 bg-[#F7CF1E] text-black px-2 py-1 rounded-md font-medium text-xs shadow-md">
-              Genesis Artist
+            <div className="absolute top-3 left-3 z-10 bg-zap-red text-[#333] px-2 py-1 rounded-md font-bold text-xs shadow-md">
+              Signature Artist
             </div>
           )}
           
