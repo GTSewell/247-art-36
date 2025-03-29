@@ -180,8 +180,17 @@ export async function updateArtistBackgroundImage(artistId: number | string, ima
       return false;
     }
     
-    // Update the background_image property
-    const updatedArtworkFiles = artistData.artwork_files || {};
+    // Properly handle the artwork_files - first check if it exists and is an object
+    let updatedArtworkFiles: Record<string, any> = {};
+    
+    if (artistData.artwork_files) {
+      // Check if artwork_files is an object before trying to spread it
+      if (typeof artistData.artwork_files === 'object' && artistData.artwork_files !== null) {
+        updatedArtworkFiles = { ...artistData.artwork_files as Record<string, any> };
+      }
+    }
+    
+    // Set the background_image property
     updatedArtworkFiles.background_image = imageUrl;
     
     // Update the artist record
