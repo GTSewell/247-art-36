@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { ArtistProfileFormData } from "../types";
 import { processSocialPlatforms } from "../utils/socialPlatformUtils";
@@ -58,7 +57,9 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       techniques: formData.techniques.split(',').map(item => item.trim()).filter(item => item),
       styles: formData.styles.split(',').map(item => item.trim()).filter(item => item),
       social_platforms: processSocialPlatforms(formData.social_platforms),
-      image: formData.image
+      image: formData.image,
+      // If existingArtist has a published property, keep it; otherwise, default to false
+      published: existingArtist?.published === true
     };
     
     // Convert string id to number for database operations
@@ -108,7 +109,7 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
         .insert([{
           id: nextId,
           ...processedData,
-          published: true // Set published to true by default
+          published: false // Set published to false by default for new artists
         }])
         .select();
       

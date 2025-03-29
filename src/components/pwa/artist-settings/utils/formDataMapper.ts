@@ -15,7 +15,8 @@ export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
       techniques: "",
       styles: "",
       social_platforms: [""],
-      image: null
+      image: null,
+      published: false
     };
   }
 
@@ -68,7 +69,8 @@ export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
     techniques: techniquesString,
     styles: stylesString,
     social_platforms: socialPlatforms,
-    image: artist.image || null
+    image: artist.image || null,
+    published: artist.published === true
   };
 
   logger.info("Mapped form data:", formData);

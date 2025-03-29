@@ -1,4 +1,5 @@
 
+// For the ArtistProfileFormData interface, add or update these fields
 export interface ArtistProfileFormData {
   name: string;
   specialty: string;
@@ -9,8 +10,10 @@ export interface ArtistProfileFormData {
   styles: string;
   social_platforms: string[];
   image: string | null;
+  published?: boolean;
 }
 
+// For the ArtistProfileHookReturn interface, add or update these fields
 export interface ArtistProfileHookReturn {
   loading: boolean;
   saving: boolean;
@@ -21,5 +24,5 @@ export interface ArtistProfileHookReturn {
   addSocialPlatform: () => void;
   removeSocialPlatform: (index: number) => void;
   handleImageChange: (imageUrl: string | null) => void;
-  handleSubmit: (e: React.FormEvent) => void;
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
 }

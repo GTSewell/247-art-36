@@ -37,7 +37,7 @@ const ArtistManagement: React.FC = () => {
         )
       );
       
-      // Set initial publishing status
+      // Set initial publishing status from the artists data
       const initialStatus: Record<number, boolean> = {};
       artists.forEach(artist => {
         initialStatus[artist.id] = artist.published || false;
@@ -57,10 +57,22 @@ const ArtistManagement: React.FC = () => {
       if (error) throw error;
       
       if (data) {
-        const transformedArtists = data.map(artist => transformArtist(artist));
+        const transformedArtists = data.map(artist => {
+          const transformed = transformArtist(artist);
+          // Ensure published status is properly set
+          transformed.published = artist.published === true;
+          return transformed;
+        });
         console.log("Transformed artists:", transformedArtists);
         setArtists(transformedArtists);
         setFilteredArtists(transformedArtists);
+        
+        // Set initial publishing status
+        const initialStatus: Record<number, boolean> = {};
+        transformedArtists.forEach(artist => {
+          initialStatus[artist.id] = artist.published;
+        });
+        setPublishingStatus(initialStatus);
       }
     } catch (error: any) {
       console.error('Error fetching artists:', error);
@@ -77,6 +89,8 @@ const ArtistManagement: React.FC = () => {
         ...prev,
         [artistId]: !currentStatus
       }));
+      
+      console.log(`Toggling publish status for artist ${artistId}: ${currentStatus} -> ${!currentStatus}`);
       
       const { error } = await supabase
         .from('artists')
