@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { uploadImage } from "@/components/pwa/artist-settings/api/imageUploadAPI";
 import { logger } from "@/utils/logger";
+import { Json } from "@/integrations/supabase/types";
 
 export const useArtistArtworks = (artistId: string | null) => {
   const [loading, setLoading] = useState(true);
@@ -58,11 +59,14 @@ export const useArtistArtworks = (artistId: string | null) => {
               logger.error("Error parsing artworks JSON string:", e);
             }
           } else if (Array.isArray(data.artworks)) {
-            artworksArray = data.artworks;
+            // Ensure all items in the array are strings
+            artworksArray = (data.artworks as Json[]).map(item => 
+              typeof item === 'string' ? item : String(item)
+            );
           } else if (typeof data.artworks === 'object') {
-            artworksArray = Object.values(data.artworks).filter(
-              value => typeof value === 'string'
-            ) as string[];
+            artworksArray = Object.values(data.artworks)
+              .filter(value => value !== null && value !== undefined)
+              .map(value => typeof value === 'string' ? value : String(value));
           }
         }
         
@@ -77,13 +81,13 @@ export const useArtistArtworks = (artistId: string | null) => {
     }
   };
   
-  const handleUploadArtwork = async (file: File, artistName: string) => {
+  const handleUploadArtwork = async (file: File, artistName: string): Promise<boolean> => {
     try {
       setUploading(true);
       
       if (!artistId) {
         toast.error("Artist ID not found");
-        return;
+        return false;
       }
       
       // Use artist name for folder organization, fallback to "Unnamed Artist" if not provided
@@ -116,9 +120,11 @@ export const useArtistArtworks = (artistId: string | null) => {
       
       setArtworks(updatedArtworks);
       toast.success("Artwork uploaded successfully");
+      return true;
     } catch (error: any) {
       console.error("Error uploading artwork:", error);
       toast.error(`Upload failed: ${error.message}`);
+      return false;
     } finally {
       setUploading(false);
     }

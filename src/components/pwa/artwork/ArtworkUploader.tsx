@@ -1,113 +1,98 @@
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Upload, Image } from "lucide-react";
+import { Upload } from "lucide-react";
 import { toast } from "sonner";
 
 interface ArtworkUploaderProps {
-  onUpload: (file: File, artistName: string) => Promise<boolean>;
+  onUpload: (file: File) => Promise<boolean>;
   isUploading: boolean;
   artistName: string;
 }
 
-const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ onUpload, isUploading, artistName }) => {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  const validateFile = (file: File): boolean => {
-    // Check file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-    if (!allowedTypes.includes(file.type)) {
-      toast.error("File must be an image (JPEG, PNG, WebP, or GIF)");
-      return false;
-    }
-    
-    // Check file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      toast.error("Image must be smaller than 5MB");
-      return false;
-    }
-    
-    return true;
+const ArtworkUploader: React.FC<ArtworkUploaderProps> = ({ 
+  onUpload, 
+  isUploading,
+  artistName
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
   };
-
+  
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    const file = files[0];
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please select an image file");
       return;
     }
     
-    const file = e.target.files[0];
-    
-    // Validate the file
-    if (!validateFile(file)) {
-      e.target.value = '';
+    // Validate file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+      toast.error("File size exceeds 10MB limit");
       return;
     }
-    
-    // Create a preview
-    const objectUrl = URL.createObjectURL(file);
-    setPreviewUrl(objectUrl);
     
     try {
-      // Upload the file
-      const success = await onUpload(file, artistName);
+      const success = await onUpload(file);
       
-      // Clean up
       if (success) {
-        e.target.value = '';
-        setPreviewUrl(null);
+        // Reset the input field to allow uploading the same file again
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       }
-    } catch (error: any) {
-      toast.error(`Upload failed: ${error.message}`);
+    } catch (error) {
+      console.error("Error in ArtworkUploader:", error);
     }
   };
-
+  
   return (
-    <div className="flex flex-col space-y-4">
-      <Label htmlFor="artwork-upload" className="mb-2">Upload new artwork</Label>
-      
-      {previewUrl && (
-        <div className="relative w-32 h-32 mx-auto mb-2">
-          <img 
-            src={previewUrl} 
-            alt="Preview" 
-            className="w-full h-full object-cover rounded-md"
-            onLoad={() => URL.revokeObjectURL(previewUrl)}
-          />
-        </div>
-      )}
-      
-      <div className="flex items-center gap-2">
+    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+      <div className="flex flex-col items-center justify-center">
+        <Upload className="h-10 w-10 text-gray-400 mb-2" />
+        <h3 className="text-lg font-medium mb-1">Upload Artwork</h3>
+        <p className="text-sm text-gray-500 mb-4 text-center">
+          Drag and drop or click to select images
+        </p>
+        
         <input
-          id="artwork-upload"
           type="file"
-          accept="image/*"
+          ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
-          disabled={isUploading}
+          accept="image/*"
         />
+        
         <Button 
-          onClick={() => document.getElementById('artwork-upload')?.click()}
+          onClick={handleButtonClick}
           disabled={isUploading}
-          className="w-full bg-zap-yellow hover:bg-zap-blue text-black hover:text-white"
+          className="w-full sm:w-auto"
         >
           {isUploading ? (
             <>
-              <Upload className="h-4 w-4 mr-2 animate-spin" />
+              <div className="mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-current"></div>
               Uploading...
             </>
           ) : (
             <>
-              <Image className="h-4 w-4 mr-2" />
-              Upload Artwork
+              <Upload className="mr-2 h-4 w-4" /> 
+              Select Image
             </>
           )}
         </Button>
+        
+        <p className="text-xs text-gray-400 mt-2">
+          Supported formats: JPG, PNG, GIF (max 10MB)
+        </p>
       </div>
-      <p className="text-xs text-gray-500 text-center">
-        Accepted formats: JPEG, PNG, WebP, GIF (max 5MB)
-      </p>
     </div>
   );
 };

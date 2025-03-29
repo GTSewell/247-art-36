@@ -24,6 +24,10 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     return <div className="p-8 text-center">Loading artworks...</div>;
   }
   
+  const onUpload = async (file: File) => {
+    return await handleUploadArtwork(file, artistName);
+  };
+  
   return (
     <Card>
       <CardHeader>
@@ -35,7 +39,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
       <CardContent>
         <div className="space-y-6">
           <ArtworkUploader 
-            onUpload={(file) => handleUploadArtwork(file, artistName)}
+            onUpload={onUpload}
             isUploading={uploading}
             artistName={artistName}
           />

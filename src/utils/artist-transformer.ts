@@ -1,6 +1,7 @@
 
 import { Artist } from "@/data/types/artist";
 import { Database } from "@/integrations/supabase/types";
+import { Json } from "@/integrations/supabase/types";
 
 type ArtistRow = Database['public']['Tables']['artists']['Row'];
 
@@ -12,7 +13,21 @@ const parseJsonField = <T>(field: unknown): T[] => {
       return [];
     }
   }
-  return Array.isArray(field) ? field : [];
+  
+  if (Array.isArray(field)) {
+    // Ensure all items are of the correct type
+    if (typeof field[0] === 'string') {
+      return field as unknown as T[];
+    }
+    
+    // Convert all items to strings if necessary
+    return field.map(item => {
+      if (item === null || item === undefined) return '' as unknown as T;
+      return String(item) as unknown as T;
+    });
+  }
+  
+  return [];
 };
 
 export const transformArtist = (artist: ArtistRow): Artist => {
