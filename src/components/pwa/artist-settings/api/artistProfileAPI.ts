@@ -44,31 +44,67 @@ export const fetchArtistProfile = async (artistId: string) => {
 };
 
 /**
+ * Helper function to process comma or space separated string to array
+ */
+const processStringToArray = (input: string): string[] => {
+  if (!input || input.trim() === '') return [];
+  
+  // First check if it contains commas
+  if (input.includes(',')) {
+    return input
+      .split(',')
+      .map(item => item.trim())
+      .filter(item => item.length > 0);
+  }
+  
+  // If no commas, try splitting by spaces, but be careful with multi-word phrases
+  return input
+    .split(/\s+/)
+    .filter(item => item.length > 0);
+};
+
+/**
  * Create or update artist profile in Supabase
  */
 export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string, existingArtist: any) => {
   try {
     // Process array values - ensure they're stored as proper JSON arrays for JSONB columns
+    logger.info("Processing form data for saving:", formData);
+    
+    // Process techniques with more thorough conversion
+    let techniques: string[] = [];
+    if (formData.techniques) {
+      techniques = processStringToArray(formData.techniques);
+      logger.info("Processed techniques:", techniques);
+    }
+    
+    // Process styles with more thorough conversion
+    let styles: string[] = [];
+    if (formData.styles) {
+      styles = processStringToArray(formData.styles);
+      logger.info("Processed styles:", styles);
+    }
+    
+    // Process social platforms
+    const socialPlatforms = processSocialPlatforms(formData.social_platforms);
+    logger.info("Processed social platforms:", socialPlatforms);
+    
     const processedData = {
       name: formData.name,
       specialty: formData.specialty,
       bio: formData.bio,
       city: formData.city,
       country: formData.country,
-      // Convert comma-separated strings to arrays for jsonb columns
-      techniques: formData.techniques
-        .split(',')
-        .map(item => item.trim())
-        .filter(item => item.length > 0),
-      styles: formData.styles
-        .split(',')
-        .map(item => item.trim())
-        .filter(item => item.length > 0),
-      social_platforms: processSocialPlatforms(formData.social_platforms),
+      techniques: techniques,
+      styles: styles,
+      social_platforms: socialPlatforms,
       image: formData.image,
       // If existingArtist has a published property, keep it; otherwise, default to false
       published: existingArtist?.published === true
     };
+    
+    // Log the final processed data before saving
+    logger.info("Final processed data for saving:", processedData);
     
     // Convert string id to number for database operations
     const numericId = parseInt(artistId, 10);
@@ -78,7 +114,6 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
     }
     
     logger.info("Saving artist profile with ID:", numericId);
-    logger.info("Processed data:", processedData);
     
     if (existingArtist) {
       // Update existing artist profile

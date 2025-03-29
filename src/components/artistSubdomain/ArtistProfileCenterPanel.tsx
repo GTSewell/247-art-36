@@ -68,6 +68,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
         <div className="p-5">
           <ArtistConnectSection 
             artist={artist}
+            socialPlatforms={validSocialPlatforms}
             buttonColor={buttonColor}
             buttonTextColor={buttonTextColor}
             buttonHoverColor={buttonHoverColor}

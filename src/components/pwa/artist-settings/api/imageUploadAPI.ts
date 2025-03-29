@@ -33,7 +33,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: true
-      }); // Removed extra argument here
+      });
     
     if (error) {
       logger.error("Error uploading image:", error);
@@ -123,7 +123,7 @@ export const ensureBucketExists = async (bucketName: string): Promise<boolean> =
 };
 
 /**
- * Update artist profile background image
+ * Update artist background image
  */
 export const updateArtistBackgroundImage = async (artistId: number, imageUrl: string): Promise<boolean> => {
   try {
@@ -159,13 +159,16 @@ export const updateArtistBackgroundImage = async (artistId: number, imageUrl: st
     
     // Prepare artwork_files with background_image
     const artworkFiles = artistData.artwork_files || {};
+    
     // Ensure artworkFiles is treated as a Record to avoid spread type error
-    const updatedArtworkFiles = typeof artworkFiles === 'object' ? {
-      ...artworkFiles as Record<string, any>,
-      background_image: imageUrl
-    } : {
-      background_image: imageUrl
-    };
+    let updatedArtworkFiles: Record<string, any> = {};
+    
+    if (typeof artworkFiles === 'object' && artworkFiles !== null) {
+      updatedArtworkFiles = { ...artworkFiles as Record<string, any> };
+    }
+    
+    // Add the background image to the artwork_files object
+    updatedArtworkFiles.background_image = imageUrl;
     
     // Update the artist with background image info
     const { error } = await supabase

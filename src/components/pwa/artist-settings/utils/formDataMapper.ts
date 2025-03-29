@@ -27,12 +27,17 @@ export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
   const techniquesArray = ensureArray(artist.techniques);
   const stylesArray = ensureArray(artist.styles);
   
+  // Log the processed arrays
+  logger.info("Techniques array:", techniquesArray);
+  logger.info("Styles array:", stylesArray);
+  
   // Join arrays into comma-separated strings for form fields
   const techniquesString = techniquesArray.join(", ");
   const stylesString = stylesArray.join(", ");
 
   // Format social platforms
   const socialPlatforms = formatSocialPlatforms(artist);
+  logger.info("Social platforms:", socialPlatforms);
 
   // Create the mapped form data
   const formData: ArtistProfileFormData = {
