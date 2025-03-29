@@ -28,10 +28,9 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     await ensureBucketExists('artists');
     
     // Upload image to Supabase
-    // The correct way to call upload is with two arguments:
+    // The Supabase storage upload method accepts 2 arguments:
     // 1. The path where the file should be stored
-    // 2. The file content
-    // The options (like cacheControl and upsert) should be part of the second argument
+    // 2. The file content with optional configuration as a second parameter to upload()
     const { data, error } = await supabase.storage
       .from('artists')
       .upload(filePath, file, {
