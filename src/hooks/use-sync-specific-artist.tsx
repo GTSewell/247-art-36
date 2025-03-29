@@ -42,6 +42,24 @@ export const useSyncSpecificArtist = () => {
       
       logger.info(`Found artist "${artist.name}" (ID: ${artistId}), proceeding with sync`);
       
+      // Verify if storage folders exist with the sanitized artist name
+      const sanitizedArtistName = artist.name.replace(/\s+/g, '_');
+      
+      // Try to check if the folder exists in storage (listing will throw an error if it doesn't exist)
+      try {
+        const { data: folders, error: folderError } = await supabase.storage
+          .from('artists')
+          .list(sanitizedArtistName);
+          
+        if (folderError) {
+          logger.warn(`Warning: Could not find folder '${sanitizedArtistName}' for artist "${artist.name}": ${folderError.message}`);
+        } else {
+          logger.info(`Found artist folder with ${folders.length} subfolders: ${folders.map(f => f.name).join(', ')}`);
+        }
+      } catch (folderError) {
+        logger.warn(`Warning: Error checking artist folder: ${folderError}`);
+      }
+      
       // Call the sync-artist-images edge function with specific artist ID
       const { data, error } = await supabase.functions.invoke('sync-artist-images', {
         body: { artistId }
@@ -72,6 +90,21 @@ export const useSyncSpecificArtist = () => {
       setResult(combinedResult);
       toast.success(combinedResult.message);
       logger.info("Sync completed successfully:", combinedResult);
+      
+      // Refresh the artist in the artists context if it exists
+      try {
+        const { error: refreshError } = await supabase
+          .from('artists')
+          .select('*')
+          .eq('id', artistId)
+          .single();
+          
+        if (!refreshError) {
+          logger.info("Artist record refreshed successfully");
+        }
+      } catch (refreshError) {
+        logger.warn("Failed to refresh artist after sync:", refreshError);
+      }
       
       return true;
     } catch (error: any) {

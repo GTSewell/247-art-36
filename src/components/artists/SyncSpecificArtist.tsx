@@ -46,7 +46,7 @@ const SyncSpecificArtist: React.FC<SyncSpecificArtistProps> = ({ defaultArtistId
           </div>
           
           <Button 
-            variant="primary" 
+            variant="default" 
             onClick={handleSync}
             disabled={isSyncing || !artistId}
             className="mb-[1px]"

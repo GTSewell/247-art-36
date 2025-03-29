@@ -9,14 +9,40 @@ const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
 );
 
+// Convert artist name to sanitized folder name
+function sanitizeArtistName(name: string): string {
+  return name.replace(/\s+/g, '_');
+}
+
+// Revert sanitized folder name to original artist name format
+function desanitizeArtistName(folderName: string): string {
+  return folderName.replace(/_+/g, ' ');
+}
+
 // Sync images from storage to database for a specific artist
 async function syncArtistImages(artistId: number, artistName: string) {
   try {
+    console.log(`Starting sync for artist ID ${artistId}, name: "${artistName}"`);
+    
     // Sanitize artist name for folder path
-    const sanitizedArtistName = artistName.replace(/\s+/g, '_');
+    const sanitizedArtistName = sanitizeArtistName(artistName);
+    console.log(`Looking for folders with name: "${sanitizedArtistName}"`);
+    
+    // Try to list all folders in the artists bucket to verify what's available
+    const { data: rootFolders, error: rootFoldersError } = await supabaseAdmin.storage
+      .from('artists')
+      .list('');
+    
+    if (rootFoldersError) {
+      console.error(`Error listing root folders:`, rootFoldersError);
+    } else {
+      console.log(`Available folders in artists bucket:`, rootFolders.map(f => f.name).join(', '));
+    }
     
     // Get profile image
     const profilePath = `${sanitizedArtistName}/Profile_Image`;
+    console.log(`Checking for profile images in: ${profilePath}`);
+    
     const { data: profileFiles, error: profileError } = await supabaseAdmin.storage
       .from('artists')
       .list(profilePath);
@@ -24,6 +50,8 @@ async function syncArtistImages(artistId: number, artistName: string) {
     if (profileError) {
       console.error(`Error listing profile images for ${artistName}:`, profileError);
     } else if (profileFiles && profileFiles.length > 0) {
+      console.log(`Found ${profileFiles.length} files in profile folder: ${profileFiles.map(f => f.name).join(', ')}`);
+      
       // Get the latest profile image
       const latestProfileImage = profileFiles
         .filter(file => !file.id.endsWith('/'))
@@ -36,22 +64,31 @@ async function syncArtistImages(artistId: number, artistName: string) {
           .from('artists')
           .getPublicUrl(`${profilePath}/${latestProfileImage.name}`).data.publicUrl;
         
-        // Update artist profile image in database
+        console.log(`Using profile image: ${profileImageUrl}`);
+        
+        // Update artist profile image in database (update both image columns)
         const { error: updateError } = await supabaseAdmin
           .from('artists')
-          .update({ image: profileImageUrl })
+          .update({ 
+            image: profileImageUrl,
+            profile_image_url: profileImageUrl 
+          })
           .eq('id', artistId);
         
         if (updateError) {
           console.error(`Error updating profile image for artist ${artistId}:`, updateError);
         } else {
-          console.log(`Updated profile image for artist ${artistId}`);
+          console.log(`Successfully updated profile images for artist ${artistId}`);
         }
       }
+    } else {
+      console.log(`No profile images found for artist ${artistName} in path: ${profilePath}`);
     }
     
     // Get artwork images
     const artworksPath = `${sanitizedArtistName}/Artworks`;
+    console.log(`Checking for artwork images in: ${artworksPath}`);
+    
     const { data: artworkFiles, error: artworksError } = await supabaseAdmin.storage
       .from('artists')
       .list(artworksPath);
@@ -59,6 +96,8 @@ async function syncArtistImages(artistId: number, artistName: string) {
     if (artworksError) {
       console.error(`Error listing artwork images for ${artistName}:`, artworksError);
     } else if (artworkFiles && artworkFiles.length > 0) {
+      console.log(`Found ${artworkFiles.length} files in artworks folder: ${artworkFiles.map(f => f.name).join(', ')}`);
+      
       // Filter and get public URLs for all artwork files
       const artworkUrls = artworkFiles
         .filter(file => !file.id.endsWith('/'))
@@ -69,18 +108,25 @@ async function syncArtistImages(artistId: number, artistName: string) {
         );
       
       if (artworkUrls.length > 0) {
-        // Update artist artworks in database
+        console.log(`Generated ${artworkUrls.length} artwork URLs`);
+        
+        // Update both artwork related columns in the database
         const { error: updateError } = await supabaseAdmin
           .from('artists')
-          .update({ artworks: artworkUrls })
+          .update({ 
+            artworks: artworkUrls,
+            artwork_files: artworkUrls
+          })
           .eq('id', artistId);
         
         if (updateError) {
           console.error(`Error updating artworks for artist ${artistId}:`, updateError);
         } else {
-          console.log(`Updated ${artworkUrls.length} artworks for artist ${artistId}`);
+          console.log(`Successfully updated ${artworkUrls.length} artworks for artist ${artistId}`);
         }
       }
+    } else {
+      console.log(`No artwork images found for artist ${artistName} in path: ${artworksPath}`);
     }
     
     return { success: true };
@@ -105,6 +151,8 @@ serve(async (req) => {
       throw new Error("Artist ID is required");
     }
     
+    console.log(`Processing sync request for artist ID: ${artistId}`);
+    
     // Get the artist details first
     const { data: artist, error: artistError } = await supabaseAdmin
       .from('artists')
@@ -113,18 +161,26 @@ serve(async (req) => {
       .single();
     
     if (artistError) {
+      console.error(`Failed to fetch artist with ID ${artistId}:`, artistError);
       throw new Error(`Failed to fetch artist: ${artistError.message}`);
     }
     
     if (!artist || !artist.name) {
+      console.error(`No artist found with ID: ${artistId}`);
       throw new Error(`Artist not found with ID: ${artistId}`);
     }
+    
+    console.log(`Found artist: ${artist.name} (ID: ${artistId})`);
     
     // Sync images for the artist
     const result = await syncArtistImages(artistId, artist.name);
     
     return new Response(
-      JSON.stringify(result),
+      JSON.stringify({
+        ...result,
+        artistName: artist.name,
+        artistId: artist.id
+      }),
       { 
         headers: { 
           ...corsHeaders, 
