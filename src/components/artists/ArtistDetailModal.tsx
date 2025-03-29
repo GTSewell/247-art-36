@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -40,21 +39,18 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   const isMobile = useIsMobile();
   const [api, setApi] = useState<CarouselApi | null>(null);
   
-  // Add debug logging
   React.useEffect(() => {
     if (selectedArtist) {
       logger.info(`ArtistDetailModal - Selected artist: ${selectedArtist.name}, ID: ${selectedArtist.id}`);
     }
   }, [selectedArtist]);
 
-  // Sync carousel with selected artist index
   React.useEffect(() => {
     if (api && open) {
       api.scrollTo(selectedArtistIndex);
     }
   }, [api, selectedArtistIndex, open]);
 
-  // Handle carousel changes
   const handleCarouselChange = useCallback((index: number) => {
     if (index !== selectedArtistIndex) {
       onArtistChange(index);
@@ -68,7 +64,6 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
     }
   }, [api, handleCarouselChange]);
 
-  // Add keyboard navigation for mobile carousel
   useEffect(() => {
     if (!isMobile || !open || !api) return;
 

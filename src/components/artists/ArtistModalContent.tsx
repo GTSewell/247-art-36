@@ -1,13 +1,11 @@
 
 import React, { useRef, useEffect } from "react";
 import { Artist } from "@/data/types/artist";
-import ArtistHeaderInfo from "./ArtistHeaderInfo";
-import ArtistImagePanel from "./ArtistImagePanel";
-import ArtistCarouselNavigation from "./ArtistCarouselNavigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { logger } from "@/utils/logger";
-import ArtistActions from "./ArtistActions";
 import { useNavigate } from "react-router-dom";
+import MobileArtistContent from "./MobileArtistContent";
+import DesktopArtistContent from "./DesktopArtistContent";
 
 interface ArtistModalContentProps {
   artists: Artist[];
@@ -106,126 +104,34 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   }, [selectedArtistIndex, artists.length]);
 
   if (isMobile) {
-    // Mobile view remains unchanged
     return (
-      <div className="relative overflow-hidden bg-white">
-        <div 
-          ref={contentRef}
-          className={`flex flex-col w-full max-h-[85vh] overflow-y-auto ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
-          style={{ background: 'white' }}
-        >
-          {/* Signature Artist Badge */}
-          {isSignatureArtist && (
-            <div className="bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
-              Signature Artist
-            </div>
-          )}
-          
-          {/* Demo Badge - Added for artists that are not signature artists and not excluded */}
-          {!isSignatureArtist && isDemo && (
-            <div className="bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
-              Demo
-            </div>
-          )}
-          
-          {/* Header Section */}
-          <div className="px-6 pt-6 pb-2">
-            <ArtistHeaderInfo
-              name={selectedArtist.name}
-              specialty={selectedArtist.specialty}
-              city={selectedArtist.city}
-              country={selectedArtist.country}
-            />
-          </div>
-          
-          {/* Artworks Grid Section */}
-          <div className="px-6 flex-grow">
-            <ArtistImagePanel
-              artist={selectedArtist}
-              onFavoriteToggle={onFavoriteToggle}
-              isFavorite={isFavorite}
-              refreshArtists={refreshArtists}
-            />
-          </div>
-          
-          {/* Bottom Action Buttons - with increased space above */}
-          <div className="px-6 pb-6 pt-4 mt-auto">
-            <ArtistActions
-              domainName={selectedArtist.name}
-              artistId={selectedArtist.id}
-              isFavorite={isFavorite}
-              onFavoriteToggle={onFavoriteToggle}
-              handleDomainClick={handleNavigateToArtistProfile}
-              useSubPath={false}
-            />
-          </div>
-        </div>
+      <div className="relative overflow-hidden bg-white" ref={contentRef}>
+        <MobileArtistContent
+          artist={selectedArtist}
+          onFavoriteToggle={onFavoriteToggle}
+          isFavorite={isFavorite}
+          refreshArtists={refreshArtists}
+          handleNavigateToArtistProfile={handleNavigateToArtistProfile}
+          isSignatureArtist={isSignatureArtist}
+          isDemo={isDemo}
+        />
       </div>
     );
   }
 
-  // Desktop view based on screenshot 2
   return (
-    <div className="relative overflow-hidden bg-white">
-      {/* Signature Artist Badge */}
-      {isSignatureArtist && (
-        <div className="bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
-          Signature Artist
-        </div>
-      )}
-      
-      {/* Demo Badge - Added for artists that are not signature artists and not excluded */}
-      {!isSignatureArtist && isDemo && (
-        <div className="bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
-          Demo
-        </div>
-      )}
-      
-      <div 
-        ref={contentRef}
-        className={`flex flex-row max-h-[70vh] ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
-        style={{ background: 'white' }}
-      >
-        {/* Left side: Artwork grid */}
-        <div className="w-3/5 p-6">
-          <ArtistImagePanel
-            artist={selectedArtist}
-            onFavoriteToggle={onFavoriteToggle}
-            isFavorite={isFavorite}
-            refreshArtists={refreshArtists}
-          />
-        </div>
-        
-        {/* Right side: Artist info and actions */}
-        <div className="w-2/5 p-6 flex flex-col">
-          <div className="mb-auto">
-            <ArtistHeaderInfo
-              name={selectedArtist.name}
-              specialty={selectedArtist.specialty}
-              city={selectedArtist.city}
-              country={selectedArtist.country}
-            />
-          </div>
-          
-          {/* Action buttons at bottom of right panel */}
-          <div className="mt-auto pt-4">
-            <ArtistActions
-              domainName={selectedArtist.name}
-              artistId={selectedArtist.id}
-              isFavorite={isFavorite}
-              onFavoriteToggle={onFavoriteToggle}
-              handleDomainClick={handleNavigateToArtistProfile}
-              useSubPath={false}
-            />
-          </div>
-        </div>
-      </div>
-      
-      {/* Desktop navigation arrows */}
-      <ArtistCarouselNavigation 
-        isMobile={isMobile} 
-        onPrevious={handlePrevious} 
-        onNext={handleNext} 
+    <div ref={contentRef}>
+      <DesktopArtistContent
+        artist={selectedArtist}
+        onFavoriteToggle={onFavoriteToggle}
+        isFavorite={isFavorite}
+        refreshArtists={refreshArtists}
+        handleNavigateToArtistProfile={handleNavigateToArtistProfile}
+        handlePrevious={handlePrevious}
+        handleNext={handleNext}
+        isMobile={isMobile}
+        isSignatureArtist={isSignatureArtist}
+        isDemo={isDemo}
       />
     </div>
   );
