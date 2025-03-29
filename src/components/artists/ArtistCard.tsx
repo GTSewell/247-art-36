@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -81,9 +82,9 @@ const ArtistCard = ({
             onError={handleImageError}
           />
           
-          {/* Genesis Artist Badge - adjusted to be in bottom right with normal z-index */}
+          {/* Genesis Artist Badge - moved to top left corner */}
           {isGenesisArtist && (
-            <div className="absolute bottom-3 right-3 z-10 bg-[#F7CF1E] text-black px-2 py-1 rounded-md font-medium text-xs shadow-md">
+            <div className="absolute top-3 left-3 z-10 bg-[#F7CF1E] text-black px-2 py-1 rounded-md font-medium text-xs shadow-md">
               Genesis Artist
             </div>
           )}
