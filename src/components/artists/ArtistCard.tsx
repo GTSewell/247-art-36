@@ -61,10 +61,6 @@ const ArtistCard = ({
 
   // Check if artist is a Signature Artist (ID >= 26)
   const isSignatureArtist = id >= 26;
-  
-  // Check if artist should have a Demo badge (not signature artist and not ID 24)
-  const isDemoArtist = id < 26 && id !== 24;
-  
   return <div className="relative">
       <div className={`group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`} onClick={onSelect}>
         <div className="aspect-square overflow-hidden relative">
@@ -73,11 +69,6 @@ const ArtistCard = ({
           {/* Signature Artist Badge */}
           {isSignatureArtist && <div className="absolute top-3 left-3 z-10 bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
               Signature Artist
-            </div>}
-          
-          {/* Demo Artist Badge */}
-          {isDemoArtist && <div className="absolute top-3 left-3 z-10 bg-zap-blue text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
-              Demo
             </div>}
           
           {/* Name overlay for PWA */}
