@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ArtistLinkButtons from './ArtistLinkButtons';
 import ArtistConnectSection from './ArtistConnectSection';
 import { useIsMobile } from '@/hooks/use-mobile';
+import ArtistMobileHeader from './ArtistMobileHeader';
 
 interface ArtistProfileCenterPanelProps {
   artist: Artist;
@@ -42,6 +43,9 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
     >
       <ScrollArea className="flex-grow overflow-auto">
         <div className="p-5">
+          {/* Add the artist header for mobile view */}
+          {isMobile && <ArtistMobileHeader artist={artist} />}
+        
           <h3 className="text-base font-bold mb-3">CONNECT</h3>
           <ArtistConnectSection 
             artist={artist}

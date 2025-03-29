@@ -27,7 +27,7 @@ export const uploadProfileImage = async (file: File, artistName: string): Promis
     await ensureBucketExists('artists');
     
     // Upload image to Supabase
-    // Fixed: Passing options as part of the file object parameter to match type definitions
+    // Fixed: Using the correct upload method signature with options as part of second parameter
     const { data, error } = await supabase.storage
       .from('artists')
       .upload(filePath, file, { 
