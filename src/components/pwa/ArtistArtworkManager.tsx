@@ -24,7 +24,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     return <div className="p-8 text-center">Loading artworks...</div>;
   }
   
-  const onUpload = async (file: File) => {
+  const onUpload = async (file: File): Promise<boolean> => {
     return await handleUploadArtwork(file, artistName);
   };
   

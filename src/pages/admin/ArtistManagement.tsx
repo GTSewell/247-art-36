@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Edit2, ArrowLeft } from 'lucide-react';
+import { Search, Edit2, ArrowLeft, PlusCircle } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,7 @@ const ArtistManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
   const [selectedArtistId, setSelectedArtistId] = useState<string | null>(null);
+  const [isCreatingNew, setIsCreatingNew] = useState(false);
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -28,7 +29,7 @@ const ArtistManagement: React.FC = () => {
     if (artists.length > 0) {
       setFilteredArtists(
         artists.filter(artist => 
-          artist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          artist.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           (artist.user_id && artist.user_id.toLowerCase().includes(searchTerm.toLowerCase())) ||
           artist.id.toString().includes(searchTerm)
         )
@@ -48,7 +49,7 @@ const ArtistManagement: React.FC = () => {
       
       if (data) {
         const transformedArtists = data.map(artist => transformArtist(artist));
-        console.log("Transformed artists:", transformedArtists); // Debug artists data
+        console.log("Transformed artists:", transformedArtists);
         setArtists(transformedArtists);
         setFilteredArtists(transformedArtists);
       }
@@ -63,15 +64,22 @@ const ArtistManagement: React.FC = () => {
   const handleArtistSelect = (artistId: number) => {
     // Convert to string because our components expect a string ID
     setSelectedArtistId(artistId.toString());
+    setIsCreatingNew(false);
+  };
+  
+  const handleCreateNewArtist = () => {
+    setSelectedArtistId(null);
+    setIsCreatingNew(true);
   };
   
   const handleBackToList = () => {
     setSelectedArtistId(null);
+    setIsCreatingNew(false);
     // Refresh the artist list to show any updates
     fetchArtists();
   };
   
-  if (selectedArtistId) {
+  if (selectedArtistId || isCreatingNew) {
     return (
       <div className="container mx-auto p-4">
         <Button 
@@ -85,17 +93,21 @@ const ArtistManagement: React.FC = () => {
         
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
           <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Edit Artist Profile</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              {isCreatingNew ? "Create New Artist" : "Edit Artist Profile"}
+            </h2>
             <ArtistProfileSettings artistId={selectedArtistId} />
           </div>
         </div>
         
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Manage Artist Artworks</h2>
-            <ArtistArtworkManager artistId={selectedArtistId} />
+        {!isCreatingNew && (
+          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4">Manage Artist Artworks</h2>
+              <ArtistArtworkManager artistId={selectedArtistId} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -104,9 +116,15 @@ const ArtistManagement: React.FC = () => {
     <div className="container mx-auto p-4">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Artist Management</h1>
-        <Button variant="outline" onClick={() => navigate('/')}>
-          Back to Home
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate('/')}>
+            Back to Home
+          </Button>
+          <Button onClick={handleCreateNewArtist}>
+            <PlusCircle className="h-4 w-4 mr-2" />
+            Create New Artist
+          </Button>
+        </div>
       </div>
       
       <div className="mb-4 relative">

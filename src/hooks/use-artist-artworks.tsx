@@ -93,6 +93,8 @@ export const useArtistArtworks = (artistId: string | null) => {
       // Use artist name for folder organization, fallback to "Unnamed Artist" if not provided
       const safeArtistName = artistName?.trim() || "Unnamed_Artist";
       
+      logger.info(`Uploading artwork for artist: ${safeArtistName}`);
+      
       // Upload to storage with isProfileImage=false to put in Artworks subfolder
       const imageUrl = await uploadImage(file, safeArtistName, false);
       

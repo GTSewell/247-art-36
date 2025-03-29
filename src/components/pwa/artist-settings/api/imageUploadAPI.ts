@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { logger } from "@/utils/logger";
 
 /**
- * Upload artist profile image to Supabase Storage
+ * Upload artist profile image or artwork to Supabase Storage
  */
 export const uploadImage = async (file: File, artistName: string, isProfileImage: boolean = true): Promise<string | null> => {
   try {
@@ -24,49 +24,12 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     
     logger.info(`Uploading ${isProfileImage ? 'profile image' : 'artwork'} to ${filePath}`);
     
-    // Check if the bucket exists
-    const { data: bucketList, error: bucketError } = await supabase.storage.listBuckets();
-    
-    if (bucketError) {
-      logger.error("Error checking storage buckets:", bucketError);
-      throw bucketError;
-    }
-    
-    // Check for artists bucket first
-    const artistBucketExists = bucketList?.some(bucket => bucket.name === 'artists');
-    // Then check for legacy artist-images bucket
-    const legacyBucketExists = bucketList?.some(bucket => bucket.name === 'artist-images');
-    
-    let bucketName = 'artists';
-    
-    if (artistBucketExists) {
-      // Use the new bucket if it exists
-      bucketName = 'artists';
-    } else if (legacyBucketExists) {
-      // Fall back to legacy bucket if new one doesn't exist
-      bucketName = 'artist-images';
-      logger.warn("Using legacy 'artist-images' bucket as 'artists' bucket does not exist");
-    } else {
-      // If neither bucket exists, attempt to create the artists bucket
-      try {
-        const { error: createBucketError } = await supabase.storage.createBucket('artists', {
-          public: true
-        });
-        
-        if (createBucketError) {
-          throw createBucketError;
-        }
-        
-        logger.info("Created 'artists' bucket successfully");
-      } catch (createError) {
-        logger.error("Failed to create storage bucket:", createError);
-        throw new Error("Storage bucket not configured and could not be created");
-      }
-    }
+    // First ensure the bucket exists
+    await ensureBucketExists('artists');
     
     // Upload image to Supabase
     const { data, error } = await supabase.storage
-      .from(bucketName)
+      .from('artists')
       .upload(filePath, file, {
         cacheControl: '3600',
         upsert: true
@@ -79,7 +42,7 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
     
     // Get public URL for the uploaded image
     const { data: { publicUrl } } = supabase.storage
-      .from(bucketName)
+      .from('artists')
       .getPublicUrl(filePath);
     
     logger.info("Image uploaded successfully:", publicUrl);
@@ -87,5 +50,44 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
   } catch (error) {
     logger.error("Error in uploadImage:", error);
     return null;
+  }
+};
+
+/**
+ * Ensure the storage bucket exists
+ */
+export const ensureBucketExists = async (bucketName: string): Promise<boolean> => {
+  try {
+    // Check if the bucket exists
+    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+    
+    if (bucketsError) {
+      logger.error("Error checking buckets:", bucketsError);
+      throw bucketsError;
+    }
+    
+    const bucketExists = buckets?.some(bucket => bucket.name === bucketName);
+    
+    if (!bucketExists) {
+      // Create the bucket if it doesn't exist
+      logger.info(`Creating bucket: ${bucketName}`);
+      const { error: createError } = await supabase.storage.createBucket(bucketName, {
+        public: true
+      });
+      
+      if (createError) {
+        logger.error("Error creating bucket:", createError);
+        throw createError;
+      }
+      
+      logger.info(`Bucket ${bucketName} created successfully`);
+    } else {
+      logger.info(`Bucket ${bucketName} already exists`);
+    }
+    
+    return true;
+  } catch (error) {
+    logger.error("Error in ensureBucketExists:", error);
+    return false;
   }
 };

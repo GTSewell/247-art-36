@@ -6,6 +6,10 @@ import { Json } from "@/integrations/supabase/types";
 type ArtistRow = Database['public']['Tables']['artists']['Row'];
 
 const parseJsonField = <T>(field: unknown): T[] => {
+  if (!field) {
+    return [];
+  }
+  
   if (typeof field === 'string') {
     try {
       return JSON.parse(field);
@@ -16,14 +20,16 @@ const parseJsonField = <T>(field: unknown): T[] => {
   
   if (Array.isArray(field)) {
     // Ensure all items are of the correct type
-    if (typeof field[0] === 'string') {
-      return field as unknown as T[];
-    }
-    
-    // Convert all items to strings if necessary
     return field.map(item => {
       if (item === null || item === undefined) return '' as unknown as T;
-      return String(item) as unknown as T;
+      return typeof item === 'string' ? item as unknown as T : String(item) as unknown as T;
+    });
+  }
+  
+  if (typeof field === 'object' && field !== null) {
+    return Object.values(field).map(value => {
+      if (value === null || value === undefined) return '' as unknown as T;
+      return typeof value === 'string' ? value as unknown as T : String(value) as unknown as T;
     });
   }
   
