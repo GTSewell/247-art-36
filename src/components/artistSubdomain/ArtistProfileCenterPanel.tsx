@@ -47,6 +47,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
           {/* Add the artist header for mobile view */}
           {isMobile && <ArtistMobileHeader artist={artist} />}
         
+          {/* Connect section always appears first */}
           <h3 className="text-base font-bold mb-3">CONNECT</h3>
           <ArtistConnectSection 
             artist={artist}
@@ -57,6 +58,7 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
             buttonBorderColor={buttonBorderColor}
           />
           
+          {/* Show real links if available */}
           {links.length > 0 && (
             <div className="mt-6">
               <h3 className="text-base font-bold mb-3">Links</h3>

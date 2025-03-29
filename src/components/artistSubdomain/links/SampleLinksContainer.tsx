@@ -28,6 +28,8 @@ const SampleLinksContainer: React.FC<SampleLinksContainerProps> = ({
 
   return (
     <div>
+      {/* Connect section will appear before this component in parent */}
+      
       {sampleLinks.map((link, index) => (
         <LinkSection
           key={index}
