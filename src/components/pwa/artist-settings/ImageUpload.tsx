@@ -46,7 +46,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         
         // If artist ID is provided, directly update the artist record in the database
         if (artistId) {
-          // Handle both string and number artistId
+          // Handle string and number artistId correctly now
           const success = await updateArtistProfileImage(artistId, imageUrl);
           
           if (success) {
@@ -54,8 +54,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
             
             // Sync images via edge function for extra reliability
             try {
+              // Convert artistId to string if it's a number
+              const id = typeof artistId === 'number' ? artistId.toString() : artistId;
+              
               const { data, error } = await supabase.functions.invoke('sync-artist-images', {
-                body: { artistId }
+                body: { artistId: id }
               });
               
               if (error) {

@@ -22,8 +22,13 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const { user: authUser } = useAuth();
   
   // Display name for the nav
-  const displayName = authUser?.user_metadata?.full_name || 
-                     (authUser?.email ? authUser.email.split('@')[0] : '');
+  let displayName = 'Demo Artist';
+  if (authUser?.user_metadata?.full_name) {
+    displayName = authUser.user_metadata.full_name;
+    if (displayName.includes('@')) {
+      displayName = 'Demo Artist';
+    }
+  }
   
   // Check if we're on the cart page or artist dashboard
   const isCartPage = location.pathname === "/cart";

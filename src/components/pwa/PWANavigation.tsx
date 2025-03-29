@@ -11,8 +11,15 @@ const PWANavigation = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { itemCount } = useCart();
-  const displayName = user?.user_metadata?.full_name || 
-                     (user?.email ? user.email.split('@')[0] : '');
+  
+  // Format display name to be "Demo Artist" instead of username format
+  let displayName = 'Demo Artist';
+  if (user?.user_metadata?.full_name) {
+    displayName = user.user_metadata.full_name;
+    if (displayName.includes('@')) {
+      displayName = 'Demo Artist';
+    }
+  }
 
   // Handle account navigation based on authentication status
   const handleAccountClick = (e: React.MouseEvent) => {
@@ -82,7 +89,7 @@ const PWANavigation = () => {
             <div className="relative">
               <Avatar className="h-10 w-10 border border-white/30 bg-gray-800">
                 <AvatarImage 
-                  src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
+                  src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
                   alt="Account" 
                 />
                 <AvatarFallback className="bg-gray-600 text-white">
@@ -97,7 +104,7 @@ const PWANavigation = () => {
                 </Badge>
               )}
             </div>
-            <span className="text-xs mt-1">{user ? displayName || 'Account' : 'Sign in'}</span>
+            <span className="text-xs mt-1">{user ? displayName : 'Sign in'}</span>
           </NavLink>
         </div>
       </nav>

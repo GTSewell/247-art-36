@@ -55,7 +55,7 @@ const CollectorSettings: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Avatar className="mr-2 h-6 w-6">
-              <AvatarImage src="/lovable-uploads/5277ffb4-1849-4a10-9964-bb459163cabc.png" alt="Profile" />
+              <AvatarImage src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" alt="Profile" />
               <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
             </Avatar>
             Profile Settings

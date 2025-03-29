@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -41,9 +41,14 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   useEffect(() => {
     // If user is loaded, get initials and display name
     if (user) {
-      const name = user.user_metadata?.full_name || user.email || '';
+      // Format the display name to be "Demo Artist" instead of username format
+      let name = user.user_metadata?.full_name || 'Demo Artist';
+      if (name.includes('@')) {
+        name = 'Demo Artist';
+      }
+      
       setInitials(getInitials(name));
-      setDisplayName(user.user_metadata?.full_name || user.email?.split('@')[0] || 'User');
+      setDisplayName(name);
       
       // Check if user is admin
       const checkAdminStatus = async () => {
@@ -89,7 +94,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <Button variant="ghost" className={`flex items-center gap-2 ${textColorClass}`}>
           <Avatar className="h-8 w-8">
             <AvatarImage 
-              src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
+              src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -103,7 +108,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <div className="flex items-center gap-2 p-3 border-b">
           <Avatar className="h-8 w-8">
             <AvatarImage 
-              src="/lovable-uploads/16f2e313-fded-449d-84fb-74238acce45c.png" 
+              src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -144,7 +149,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         {isAdmin && (
           <Link to="/admin/artists">
             <DropdownMenuItem className="p-3 hover:bg-gray-100">
-              <ShieldCheck className="mr-2 h-5 w-5" />
+              <Shield className="mr-2 h-5 w-5" />
               <span>Artist Management</span>
             </DropdownMenuItem>
           </Link>
