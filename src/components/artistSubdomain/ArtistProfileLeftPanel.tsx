@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Artist } from '@/data/types/artist';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -52,60 +53,56 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
         </div>
       </div>
 
-      <div className="flex flex-col h-full">
-        <ScrollArea className="flex-1">
-          <div className="mb-6">
-            <h3 className="text-left font-bold text-base mb-3">Bio</h3>
-            <div className="text-gray-700 leading-relaxed">
-              {formatBioText(artist.bio || '')}
-            </div>
+      <ScrollArea className="flex-grow overflow-y-auto pr-1">
+        <div className="mb-6">
+          <h3 className="text-left font-bold text-base mb-3">Bio</h3>
+          <div className="text-gray-700 leading-relaxed">
+            {formatBioText(artist.bio || '')}
           </div>
+        </div>
           
-          <div className="flex-grow min-h-[200px]"></div>
-          
-          {(techniques.length > 0 || styles.length > 0) && (
-            <div className="w-full mt-auto mb-2">
-              <h3 className="text-left font-bold text-base mb-3">
-                Techniques & Styles
-              </h3>
+        {(techniques.length > 0 || styles.length > 0) && (
+          <div className="w-full mb-5">
+            <h3 className="text-left font-bold text-base mb-3">
+              Techniques & Styles
+            </h3>
               
-              {techniques.length > 0 && (
-                <div className="mb-3">
-                  <h4 className="text-sm font-semibold mb-1">Techniques</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {techniques.map((technique, index) => (
-                      <span 
-                        key={index} 
-                        className="inline-block px-2 py-1 text-gray-700 text-xs rounded-md"
-                        style={{ backgroundColor: badgeBgColor }}
-                      >
-                        {technique}
-                      </span>
-                    ))}
-                  </div>
+            {techniques.length > 0 && (
+              <div className="mb-3">
+                <h4 className="text-sm font-semibold mb-1">Techniques</h4>
+                <div className="flex flex-wrap gap-1">
+                  {techniques.map((technique, index) => (
+                    <span 
+                      key={index} 
+                      className="inline-block px-2 py-1 text-gray-700 text-xs rounded-md"
+                      style={{ backgroundColor: badgeBgColor }}
+                    >
+                      {technique}
+                    </span>
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
               
-              {styles.length > 0 && (
-                <div>
-                  <h4 className="text-sm font-semibold mb-1">Styles</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {styles.map((style, index) => (
-                      <span 
-                        key={index} 
-                        className="inline-block px-2 py-1 text-gray-700 text-xs rounded-md"
-                        style={{ backgroundColor: badgeBgColor }}
-                      >
-                        {style}
-                      </span>
-                    ))}
-                  </div>
+            {styles.length > 0 && (
+              <div className="mb-2">
+                <h4 className="text-sm font-semibold mb-1">Styles</h4>
+                <div className="flex flex-wrap gap-1">
+                  {styles.map((style, index) => (
+                    <span 
+                      key={index} 
+                      className="inline-block px-2 py-1 text-gray-700 text-xs rounded-md"
+                      style={{ backgroundColor: badgeBgColor }}
+                    >
+                      {style}
+                    </span>
+                  ))}
                 </div>
-              )}
-            </div>
-          )}
-        </ScrollArea>
-      </div>
+              </div>
+            )}
+          </div>
+        )}
+      </ScrollArea>
     </div>
   );
 };
