@@ -116,6 +116,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
                     <ArtistModalContent
                       artists={[artist]} // Pass as single artist array
                       selectedArtistIndex={0} // Always 0 since we're in a CarouselItem
+                      selectedArtist={artist} // Pass the current artist explicitly
                       onArtistChange={() => {}} // Handled by carousel now
                       onFavoriteToggle={onFavoriteToggle}
                       favoriteArtists={favoriteArtists}
@@ -132,6 +133,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
             <ArtistModalContent
               artists={artists}
               selectedArtistIndex={selectedArtistIndex}
+              selectedArtist={selectedArtist} // Pass the selected artist explicitly
               onArtistChange={onArtistChange}
               onFavoriteToggle={onFavoriteToggle}
               favoriteArtists={favoriteArtists}

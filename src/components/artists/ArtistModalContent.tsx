@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 interface ArtistModalContentProps {
   artists: Artist[];
   selectedArtistIndex: number;
+  selectedArtist?: Artist | null;
   onArtistChange: (index: number) => void;
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   favoriteArtists: Set<number>;
@@ -22,6 +23,7 @@ interface ArtistModalContentProps {
 const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   artists,
   selectedArtistIndex,
+  selectedArtist: selectedArtistProp,
   onArtistChange,
   onFavoriteToggle,
   favoriteArtists,
@@ -30,11 +32,14 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const selectedArtist = artists[selectedArtistIndex];
+  const selectedArtist = selectedArtistProp || artists[selectedArtistIndex];
   const contentRef = useRef<HTMLDivElement>(null);
   
   // Check if artist is a Signature Artist (ID >= 26)
   const isSignatureArtist = selectedArtist?.id >= 26;
+  
+  // Check if artist should show Demo badge (not ID 24 or ID 26)
+  const isDemo = selectedArtist?.id !== 24 && selectedArtist?.id !== 26;
   
   // Log when the modal content is rendered
   React.useEffect(() => {
@@ -109,10 +114,17 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
           className={`flex flex-col w-full max-h-[85vh] overflow-y-auto ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
           style={{ background: 'white' }}
         >
-          {/* Signature Artist Badge - Added to mobile */}
+          {/* Signature Artist Badge */}
           {isSignatureArtist && (
             <div className="bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
               Signature Artist
+            </div>
+          )}
+          
+          {/* Demo Badge - Added for artists that are not signature artists and not excluded */}
+          {!isSignatureArtist && isDemo && (
+            <div className="bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
+              Demo
             </div>
           )}
           
@@ -155,10 +167,17 @@ const ArtistModalContent: React.FC<ArtistModalContentProps> = ({
   // Desktop view based on screenshot 2
   return (
     <div className="relative overflow-hidden bg-white">
-      {/* Signature Artist Badge - Added to desktop */}
+      {/* Signature Artist Badge */}
       {isSignatureArtist && (
         <div className="bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
           Signature Artist
+        </div>
+      )}
+      
+      {/* Demo Badge - Added for artists that are not signature artists and not excluded */}
+      {!isSignatureArtist && isDemo && (
+        <div className="bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute top-3 left-3 z-50">
+          Demo
         </div>
       )}
       
