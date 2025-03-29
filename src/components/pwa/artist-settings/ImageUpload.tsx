@@ -2,7 +2,8 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { uploadImage, updateArtistProfileImage } from "./api/imageUploadAPI";
+import { uploadImage } from "./api/imageUploadAPI";
+import { updateArtistProfileImage } from "./api/profile/profileImageAPI";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 

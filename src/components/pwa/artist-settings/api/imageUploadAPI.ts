@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from "@/utils/logger";
@@ -27,11 +28,14 @@ export const uploadImage = async (file: File, artistName: string, isProfileImage
       return null;
     }
     
-    // Construct the public URL
-    const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.Key}`;
-    logger.info(`Image uploaded successfully to: ${imageUrl}`);
+    // Construct the public URL - fix the property access
+    const publicUrl = supabase.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(filePath).data.publicUrl;
     
-    return imageUrl;
+    logger.info(`Image uploaded successfully to: ${publicUrl}`);
+    
+    return publicUrl;
   } catch (error: any) {
     logger.error("Error in uploadImage:", error);
     return null;
@@ -82,7 +86,10 @@ export const updateArtistBackgroundImage = async (artistId: number, artworkUrl: 
       return false;
     }
     
-    const existingArtworkFiles = artistData?.artwork_files || {};
+    // Fix the spread type issue - ensure artistData.artwork_files is an object
+    const existingArtworkFiles = artistData?.artwork_files && typeof artistData.artwork_files === 'object' 
+      ? artistData.artwork_files 
+      : {};
     
     // Update the artist record with the new background image URL, preserving other artwork_files
     const { error: updateError } = await supabase

@@ -53,7 +53,7 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
         </div>
       </div>
 
-      <ScrollArea className="flex-grow overflow-y-auto pr-1">
+      <ScrollArea className="flex-grow overflow-y-auto pr-1 max-h-[calc(100%-4rem)]">
         <div className="mb-6">
           <h3 className="text-left font-bold text-base mb-3">Bio</h3>
           <div className="text-gray-700 leading-relaxed">
@@ -62,7 +62,7 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
         </div>
           
         {(techniques.length > 0 || styles.length > 0) && (
-          <div className="w-full mb-5">
+          <div className="w-full mb-5 pb-4">
             <h3 className="text-left font-bold text-base mb-3">
               Techniques & Styles
             </h3>

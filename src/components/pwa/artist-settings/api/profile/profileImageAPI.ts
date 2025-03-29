@@ -56,9 +56,12 @@ export const uploadProfileImage = async (file: File, artistName: string): Promis
 /**
  * Update artist profile image in the database
  */
-export const updateArtistProfileImage = async (artistId: number, imageUrl: string): Promise<boolean> => {
+export const updateArtistProfileImage = async (artistId: number | string, imageUrl: string): Promise<boolean> => {
   try {
-    logger.info(`Updating profile image for artist ID ${artistId} with URL: ${imageUrl}`);
+    // Convert string ID to number if needed
+    const numericArtistId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+    
+    logger.info(`Updating profile image for artist ID ${numericArtistId} with URL: ${imageUrl}`);
     
     const { data, error } = await supabase
       .from('artists')
@@ -66,7 +69,7 @@ export const updateArtistProfileImage = async (artistId: number, imageUrl: strin
         image: imageUrl,
         profile_image_url: imageUrl // Update both image columns to maintain consistency
       })
-      .eq('id', artistId)
+      .eq('id', numericArtistId)
       .select();
       
     if (error) {
@@ -74,7 +77,7 @@ export const updateArtistProfileImage = async (artistId: number, imageUrl: strin
       return false;
     }
     
-    logger.info("Artist profile image updated successfully for ID:", artistId, data);
+    logger.info("Artist profile image updated successfully for ID:", numericArtistId, data);
     return true;
   } catch (error) {
     logger.error("Error in updateArtistProfileImage:", error);
