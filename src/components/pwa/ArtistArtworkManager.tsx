@@ -18,7 +18,8 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     artistName,
     artist,
     handleUploadArtwork, 
-    handleRemoveArtwork 
+    handleRemoveArtwork,
+    handleSetAsBackgroundImage
   } = useArtistArtworks(artistId);
   
   if (loading && artworks.length === 0) {
@@ -49,6 +50,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
           <ArtworkGrid 
             artworks={artworks}
             onRemove={handleRemoveArtwork}
+            onSetAsBackground={handleSetAsBackgroundImage}
           />
         </div>
       </CardContent>

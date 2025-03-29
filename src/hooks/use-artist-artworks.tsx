@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
-import { uploadImage } from '@/components/pwa/artist-settings/api/imageUploadAPI';
+import { uploadImage, updateArtistBackgroundImage } from '@/components/pwa/artist-settings/api/imageUploadAPI';
 import { ensureArray } from '@/utils/ensureArray';
 
 export const useArtistArtworks = (artistId: string | null) => {
@@ -12,6 +12,7 @@ export const useArtistArtworks = (artistId: string | null) => {
   const [artworks, setArtworks] = useState<string[]>([]);
   const [artistName, setArtistName] = useState<string>('');
   const [artist, setArtist] = useState<any>(null);
+  const [settingBackground, setSettingBackground] = useState(false);
   
   // Fetch artist data including artworks
   const fetchArtistData = useCallback(async () => {
@@ -174,14 +175,49 @@ export const useArtistArtworks = (artistId: string | null) => {
     }
   };
   
+  // Set artwork as background image
+  const handleSetAsBackgroundImage = async (artworkUrl: string) => {
+    if (!artistId) {
+      toast.error('Artist ID not found');
+      return;
+    }
+    
+    try {
+      setSettingBackground(true);
+      
+      // Convert ID to number for database update
+      const numericId = typeof artistId === 'string' ? parseInt(artistId, 10) : artistId;
+      
+      if (isNaN(numericId)) {
+        throw new Error(`Invalid artist ID format: ${artistId}`);
+      }
+      
+      // Update the background image
+      const success = await updateArtistBackgroundImage(numericId, artworkUrl);
+      
+      if (!success) {
+        throw new Error('Failed to update background image');
+      }
+      
+      toast.success('Background image updated successfully');
+    } catch (error: any) {
+      logger.error('Error setting background image:', error);
+      toast.error(`Failed to set background image: ${error.message}`);
+    } finally {
+      setSettingBackground(false);
+    }
+  };
+  
   return {
     loading,
     uploading,
     artworks,
     artistName,
     artist,
+    settingBackground,
     handleUploadArtwork,
     handleRemoveArtwork,
+    handleSetAsBackgroundImage,
     refreshArtworks: fetchArtistData
   };
 };

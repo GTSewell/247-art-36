@@ -126,6 +126,61 @@ export const ensureBucketExists = async (bucketName: string): Promise<boolean> =
 };
 
 /**
+ * Update artist profile background image
+ */
+export const updateArtistBackgroundImage = async (artistId: number, imageUrl: string): Promise<boolean> => {
+  try {
+    logger.info(`Updating background image for artist ID ${artistId} with URL: ${imageUrl}`);
+    
+    // First, check if the artist has a profile record
+    const { data: profiles, error: profileError } = await supabase
+      .from('artist_profiles')
+      .select('*')
+      .eq('artist_id', artistId.toString())
+      .maybeSingle();
+    
+    if (profileError) {
+      logger.error("Error checking artist profile:", profileError);
+      throw profileError;
+    }
+    
+    let result;
+    
+    if (profiles) {
+      // Update existing profile
+      result = await supabase
+        .from('artist_profiles')
+        .update({ 
+          background_image: imageUrl
+        })
+        .eq('artist_id', artistId.toString());
+    } else {
+      // Create new profile with default values
+      result = await supabase
+        .from('artist_profiles')
+        .insert({ 
+          artist_id: artistId.toString(),
+          background_image: imageUrl,
+          background_color: '#f0f0f0', // Default light gray
+          panel_color: '#ffffff', // Default white
+          links: []
+        });
+    }
+    
+    if (result.error) {
+      logger.error("Error updating artist background image:", result.error);
+      return false;
+    }
+    
+    logger.info("Artist background image updated successfully for ID:", artistId);
+    return true;
+  } catch (error) {
+    logger.error("Error in updateArtistBackgroundImage:", error);
+    return false;
+  }
+};
+
+/**
  * Get all files from a specific folder in the storage bucket
  */
 export const getFilesFromFolder = async (bucketName: string, folderPath: string): Promise<string[]> => {
