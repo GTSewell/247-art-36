@@ -14,4 +14,5 @@ export interface Artist {
   artworks?: string[];
   locked_artworks?: boolean;
   user_id?: string;
+  published?: boolean;
 }

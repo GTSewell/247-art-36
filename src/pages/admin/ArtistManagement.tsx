@@ -4,13 +4,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Edit2, ArrowLeft, PlusCircle } from 'lucide-react';
+import { Search, Edit2, ArrowLeft, PlusCircle, Check, X } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
 import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
 import { transformArtist } from '@/utils/artist-transformer';
+import { Switch } from '@/components/ui/switch';
 
 const ArtistManagement: React.FC = () => {
   const [artists, setArtists] = useState<Artist[]>([]);
@@ -19,6 +20,7 @@ const ArtistManagement: React.FC = () => {
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
   const [selectedArtistId, setSelectedArtistId] = useState<string | null>(null);
   const [isCreatingNew, setIsCreatingNew] = useState(false);
+  const [publishingStatus, setPublishingStatus] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -34,6 +36,13 @@ const ArtistManagement: React.FC = () => {
           artist.id.toString().includes(searchTerm)
         )
       );
+      
+      // Set initial publishing status
+      const initialStatus: Record<number, boolean> = {};
+      artists.forEach(artist => {
+        initialStatus[artist.id] = artist.published || false;
+      });
+      setPublishingStatus(initialStatus);
     }
   }, [searchTerm, artists]);
   
@@ -58,6 +67,44 @@ const ArtistManagement: React.FC = () => {
       toast.error(`Failed to load artists: ${error.message}`);
     } finally {
       setLoading(false);
+    }
+  };
+  
+  const handlePublishToggle = async (artistId: number, currentStatus: boolean) => {
+    try {
+      // Optimistically update UI
+      setPublishingStatus(prev => ({
+        ...prev,
+        [artistId]: !currentStatus
+      }));
+      
+      const { error } = await supabase
+        .from('artists')
+        .update({ published: !currentStatus })
+        .eq('id', artistId);
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Update the local state after successful DB update
+      setArtists(prev => 
+        prev.map(artist => 
+          artist.id === artistId 
+            ? { ...artist, published: !currentStatus } 
+            : artist
+        )
+      );
+      
+      toast.success(`Artist ${!currentStatus ? 'published' : 'unpublished'} successfully`);
+    } catch (error: any) {
+      // Revert optimistic update on error
+      setPublishingStatus(prev => ({
+        ...prev,
+        [artistId]: currentStatus
+      }));
+      console.error('Error toggling artist publish status:', error);
+      toast.error(`Failed to update artist: ${error.message}`);
     }
   };
   
@@ -152,6 +199,7 @@ const ArtistManagement: React.FC = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Specialty</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
@@ -180,6 +228,28 @@ const ArtistManagement: React.FC = () => {
                           <span className="max-w-[200px] inline-block overflow-hidden text-ellipsis">{artist.user_id}</span>
                         ) : 'N/A'}
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            checked={publishingStatus[artist.id] || false}
+                            onCheckedChange={() => handlePublishToggle(artist.id, publishingStatus[artist.id] || false)}
+                            className="data-[state=checked]:bg-green-500"
+                          />
+                          <span className="text-sm text-gray-500">
+                            {publishingStatus[artist.id] ? (
+                              <span className="flex items-center text-green-600">
+                                <Check size={16} className="mr-1" />
+                                Published
+                              </span>
+                            ) : (
+                              <span className="flex items-center text-gray-500">
+                                <X size={16} className="mr-1" />
+                                Unpublished
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <Button
                           variant="ghost"
@@ -195,7 +265,7 @@ const ArtistManagement: React.FC = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
+                    <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
                       No artists found.
                     </td>
                   </tr>
