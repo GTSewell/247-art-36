@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -41,8 +42,18 @@ export const useArtists = () => {
           return featuredArtistIds.indexOf(a.id) - featuredArtistIds.indexOf(b.id);
         });
         
+        // Sort additional artists to show signature artists (ID >= 26) first
+        const sortedAdditional = [...additional].sort((a, b) => {
+          // If both are signature artists or both are not, maintain original order
+          if ((a.id >= 26 && b.id >= 26) || (a.id < 26 && b.id < 26)) {
+            return a.id - b.id;
+          }
+          // Signature artists come first
+          return a.id >= 26 ? -1 : 1;
+        });
+        
         setFeaturedArtists(sortedFeatured as Artist[]);
-        setAdditionalArtists(additional as Artist[]);
+        setAdditionalArtists(sortedAdditional as Artist[]);
       }
     } catch (error: any) {
       logger.error('Error fetching artists:', error);
