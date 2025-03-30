@@ -27,12 +27,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 }) => {
   return (
     <div 
-      className={`flex flex-col w-full max-h-[85vh] overflow-y-auto relative`}
-      style={{ 
-        background: 'white', 
-        overflow: 'visible',
-        boxShadow: isSignatureArtist ? 'inset 0 0 0 4px #FFC700' : 'none'
-      }}
+      className={`flex flex-col w-full max-h-[85vh] overflow-y-auto relative ${isSignatureArtist ? 'border-4 border-zap-yellow' : ''}`}
+      style={{ background: 'white', overflow: 'visible' }}
     >
       {/* Artist badges - using isMobile prop with improved positioning */}
       <ArtistBadges 
