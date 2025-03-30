@@ -2,10 +2,10 @@
 import React from 'react';
 import FavoriteButton from './buttons/FavoriteButton';
 import ArtistProfileButton from './buttons/ArtistProfileButton';
+import { Artist } from '@/data/types/artist';
 
 interface ArtistActionsProps {
-  domainName: string;
-  artistId: number;
+  artist: Artist;
   isFavorite?: boolean;
   onFavoriteToggle?: (artistId: number, isFavorite: boolean) => void;
   handleDomainClick?: (e: React.MouseEvent) => void;
@@ -14,11 +14,11 @@ interface ArtistActionsProps {
   buttonHoverColor?: string;
   buttonBorderColor?: string;
   useSubPath?: boolean;
+  isMobile?: boolean;
 }
 
 const ArtistActions: React.FC<ArtistActionsProps> = ({
-  domainName,
-  artistId,
+  artist,
   isFavorite = false,
   onFavoriteToggle,
   handleDomainClick,
@@ -26,16 +26,17 @@ const ArtistActions: React.FC<ArtistActionsProps> = ({
   buttonTextColor,
   buttonHoverColor,
   buttonBorderColor,
-  useSubPath = false
+  useSubPath = false,
+  isMobile = false
 }) => {
   // Remove spaces and special characters from the domain name for URLs
-  const formattedDomain = domainName.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
+  const formattedDomain = artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
   
   return (
     <div className="flex gap-3 w-full">
       {onFavoriteToggle && (
         <FavoriteButton
-          artistId={artistId}
+          artistId={artist.id}
           isFavorite={isFavorite}
           onFavoriteToggle={onFavoriteToggle}
           buttonColor={buttonColor}

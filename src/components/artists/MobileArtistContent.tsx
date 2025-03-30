@@ -32,6 +32,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
   isDemo
 }) => {
   const { currentArtist, refreshArtist } = useArtistData(artist, refreshArtists);
+  const isMobile = true;
   
   return (
     <div className="flex flex-col max-h-[80vh] overflow-hidden">
@@ -40,7 +41,9 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         <ArtistImagePanel 
           artist={currentArtist} 
           refreshArtists={refreshArtist}
-          isMobile={true}
+          onFavoriteToggle={onFavoriteToggle}
+          isFavorite={isFavorite}
+          isMobile={isMobile}
         />
       </div>
       
@@ -61,7 +64,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
           country={currentArtist.country || ''}
         />
         
-        <ArtistBio bio={currentArtist.bio} />
+        <ArtistBio bio={currentArtist.bio} isMobile={isMobile} />
         
         <ArtistTechniquesStyles 
           techniques={Array.isArray(currentArtist.techniques) ? currentArtist.techniques : []} 
@@ -70,7 +73,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         
         <ArtistSocialSection 
           socialPlatforms={Array.isArray(currentArtist.social_platforms) ? currentArtist.social_platforms : []} 
-          isMobile={true}
+          isMobile={isMobile}
         />
         
         <div className="mt-6 flex flex-col space-y-3 pb-16">
@@ -78,7 +81,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
             artist={currentArtist}
             isFavorite={isFavorite}
             onFavoriteToggle={onFavoriteToggle}
-            isMobile={true}
+            handleDomainClick={handleNavigateToArtistProfile}
+            isMobile={isMobile}
           />
           
           <Button 

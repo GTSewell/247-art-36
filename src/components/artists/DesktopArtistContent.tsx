@@ -43,6 +43,9 @@ const DesktopArtistContent: React.FC<DesktopArtistContentProps> = ({
         <ArtistImagePanel 
           artist={artist} 
           refreshArtists={refreshArtists} 
+          onFavoriteToggle={onFavoriteToggle}
+          isFavorite={isFavorite}
+          isMobile={isMobile}
         />
       </div>
       
@@ -82,7 +85,7 @@ const DesktopArtistContent: React.FC<DesktopArtistContentProps> = ({
             country={artist.country || ''}
           />
           
-          <ArtistBio bio={artist.bio} />
+          <ArtistBio bio={artist.bio} isMobile={isMobile} />
           
           <ArtistTechniquesStyles 
             techniques={Array.isArray(artist.techniques) ? artist.techniques : []} 
@@ -91,6 +94,7 @@ const DesktopArtistContent: React.FC<DesktopArtistContentProps> = ({
           
           <ArtistSocialSection 
             socialPlatforms={Array.isArray(artist.social_platforms) ? artist.social_platforms : []} 
+            isMobile={isMobile}
           />
           
           <div className="mt-6 flex space-x-4 pb-4">
@@ -98,6 +102,8 @@ const DesktopArtistContent: React.FC<DesktopArtistContentProps> = ({
               artist={artist}
               isFavorite={isFavorite}
               onFavoriteToggle={onFavoriteToggle}
+              handleDomainClick={handleNavigateToArtistProfile}
+              isMobile={isMobile}
             />
             
             <Button 

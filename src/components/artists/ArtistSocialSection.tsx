@@ -11,9 +11,13 @@ const socialIcons = {
 
 interface ArtistSocialSectionProps {
   socialPlatforms?: string[];
+  isMobile?: boolean;
 }
 
-const ArtistSocialSection = ({ socialPlatforms }: ArtistSocialSectionProps) => {
+const ArtistSocialSection: React.FC<ArtistSocialSectionProps> = ({ 
+  socialPlatforms,
+  isMobile = false 
+}) => {
   if (!socialPlatforms || socialPlatforms.length === 0) return null;
 
   return (
