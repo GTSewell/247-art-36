@@ -49,6 +49,7 @@ export const useArtistArtworks = (artistId: string | null) => {
         
         // Convert artworks from JSON to array of strings
         const artworkArray = ensureArray(data.artworks);
+        // Fix: map array to ensure each element is a string
         setArtworks(artworkArray.map(artwork => artwork.toString()));
       }
     } catch (error: any) {
@@ -65,7 +66,8 @@ export const useArtistArtworks = (artistId: string | null) => {
       
       // Upload image to storage
       const safeName = name.replace(/\s+/g, '_');
-      const imageUrl = await uploadImage(file, safeName, false, 'Artworks');
+      // Fix: Remove the fourth argument which is causing the type error
+      const imageUrl = await uploadImage(file, safeName, false);
       
       if (!imageUrl) {
         throw new Error("Failed to upload image");
