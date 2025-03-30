@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Search, Edit2, ArrowLeft, PlusCircle, Check, X } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
 import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
 import { transformArtist } from '@/utils/artist-transformer';
@@ -18,10 +18,14 @@ const ArtistManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
-  const [selectedArtistId, setSelectedArtistId] = useState<string | null>(null);
-  const [isCreatingNew, setIsCreatingNew] = useState(false);
   const [publishingStatus, setPublishingStatus] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get URL parameters
+  const searchParams = new URLSearchParams(location.search);
+  const selectedArtistId = searchParams.get('selectedArtistId');
+  const isCreatingNew = searchParams.get('isCreatingNew') === 'true';
   
   useEffect(() => {
     fetchArtists();
@@ -123,19 +127,18 @@ const ArtistManagement: React.FC = () => {
   };
   
   const handleArtistSelect = (artistId: number) => {
-    // Convert to string because our components expect a string ID
-    setSelectedArtistId(artistId.toString());
-    setIsCreatingNew(false);
+    // Use URL parameters instead of component state
+    navigate(`/admin/artists?selectedArtistId=${artistId}`);
   };
   
   const handleCreateNewArtist = () => {
-    setSelectedArtistId(null);
-    setIsCreatingNew(true);
+    // Use URL parameters instead of component state
+    navigate('/admin/artists?isCreatingNew=true');
   };
   
   const handleBackToList = () => {
-    setSelectedArtistId(null);
-    setIsCreatingNew(false);
+    // Clear URL parameters and go back to list
+    navigate('/admin/artists');
     // Refresh the artist list to show any updates
     fetchArtists();
   };
@@ -161,7 +164,7 @@ const ArtistManagement: React.FC = () => {
           </div>
         </div>
         
-        {!isCreatingNew && (
+        {!isCreatingNew && selectedArtistId && (
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-4">Manage Artist Artworks</h2>

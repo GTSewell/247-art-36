@@ -167,7 +167,9 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
         .insert([{
           id: nextId,
           ...processedData,
-          published: false // Set published to false by default for new artists
+          published: false, // Set published to false by default for new artists
+          locked_artworks: false, // Ensure new artists can have artworks uploaded
+          artwork_files: [] // Initialize empty artwork files array
         }])
         .select();
       

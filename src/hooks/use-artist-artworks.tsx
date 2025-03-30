@@ -1,216 +1,273 @@
 
-import { useState, useEffect, useCallback } from "react";
-import { toast } from "sonner";
-import { 
-  getFilesFromFolder, 
-  uploadImage, 
-  updateArtistBackgroundImage, 
-  deleteFileFromStorage 
-} from "@/components/pwa/artist-settings/api/imageUploadAPI";
-import { logger } from "@/utils/logger";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Artist } from "@/data/types/artist";
-import { transformArtist } from "@/utils/artist-transformer";
+import { toast } from "sonner";
+import { logger } from "@/utils/logger";
 
 export const useArtistArtworks = (artistId: string | null) => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [artworks, setArtworks] = useState<string[]>([]);
   const [artistName, setArtistName] = useState("");
-  const [artist, setArtist] = useState<Artist | null>(null);
+  const [artist, setArtist] = useState<any>(null);
 
-  const fetchArtist = useCallback(async () => {
-    if (!artistId) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from("artists")
-        .select("*")
-        .eq("id", parseInt(artistId, 10)) // Convert string ID to number
-        .single();
-      
-      if (error) {
-        throw error;
-      }
-      
-      if (data) {
-        // Transform raw DB data to Artist type
-        const transformedArtist = transformArtist(data);
-        setArtist(transformedArtist);
-        setArtistName(transformedArtist.name || "Unknown Artist");
-      }
-    } catch (error) {
-      logger.error("Error fetching artist:", error);
-      toast.error("Failed to load artist information");
+  useEffect(() => {
+    if (artistId) {
+      fetchArtistData();
+    } else {
+      setLoading(false);
     }
   }, [artistId]);
 
-  const fetchArtworks = useCallback(async () => {
-    if (!artistId || !artistName) return;
-    
+  const fetchArtistData = async () => {
     try {
+      if (!artistId) {
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
+      const numericId = parseInt(artistId, 10);
       
-      // Sanitize artist name for folder path
-      const sanitizedArtistName = artistName.replace(/\s+/g, '_');
-      // Use the standard path structure
-      const folderPath = `${sanitizedArtistName}/Artworks`;
-      
-      logger.info(`Fetching artworks from: ${folderPath}`);
-      const artworkUrls = await getFilesFromFolder('artists', folderPath);
-      logger.info(`Retrieved ${artworkUrls.length} artworks`);
-      setArtworks(artworkUrls);
-    } catch (error) {
-      logger.error("Error fetching artworks:", error);
-      toast.error("Failed to load artworks");
+      if (isNaN(numericId)) {
+        throw new Error("Invalid artist ID");
+      }
+
+      const { data, error } = await supabase
+        .from("artists")
+        .select("*")
+        .eq("id", numericId)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {
+        setArtist(data);
+        setArtistName(data.name || "");
+
+        // Handle different types of artwork data
+        if (data.artworks) {
+          if (Array.isArray(data.artworks)) {
+            setArtworks(data.artworks);
+          } else if (typeof data.artworks === "string") {
+            try {
+              const parsedArtworks = JSON.parse(data.artworks);
+              setArtworks(Array.isArray(parsedArtworks) ? parsedArtworks : []);
+            } catch (e) {
+              setArtworks([data.artworks]);
+            }
+          } else {
+            setArtworks([]);
+          }
+        } else {
+          setArtworks([]);
+        }
+      }
+    } catch (error: any) {
+      logger.error("Error fetching artist data:", error);
+      toast.error(`Failed to load artist data: ${error.message}`);
     } finally {
       setLoading(false);
-    }
-  }, [artistId, artistName]);
-
-  useEffect(() => {
-    fetchArtist();
-  }, [fetchArtist]);
-  
-  useEffect(() => {
-    if (artistName) {
-      fetchArtworks();
-    }
-  }, [fetchArtworks, artistName]);
-
-  const syncArtistImages = async () => {
-    if (!artist || !artist.id) {
-      return false;
-    }
-    
-    try {
-      logger.info(`Syncing images for artist ID ${artist.id}`);
-      
-      // Call the sync-artist-images edge function
-      const { data, error } = await supabase.functions.invoke('sync-artist-images', {
-        body: { artistId: artist.id }
-      });
-      
-      if (error) {
-        logger.error("Error syncing artist images:", error);
-        return false;
-      }
-      
-      logger.info("Artist images sync response:", data);
-      // Refresh artworks after sync
-      await fetchArtworks();
-      return true;
-    } catch (error) {
-      logger.error("Failed to sync artist images:", error);
-      return false;
     }
   };
 
   const handleUploadArtwork = async (file: File, artistName: string): Promise<boolean> => {
-    if (!file || !artistName) {
-      toast.error("Missing file or artist information");
+    if (!artistId) {
+      toast.error("No artist ID provided for upload.");
       return false;
     }
     
+    if (!file || !artistName) {
+      toast.error("Missing file or artist name for upload.");
+      return false;
+    }
+
     try {
       setUploading(true);
       
-      // Upload to storage - use uploadImage with isProfileImage=false for artwork
-      const imageUrl = await uploadImage(file, artistName, false);
+      // Sanitize artist name for folder structure
+      const folderName = artistName.replace(/\s+/g, "_").replace(/[^\w-]/g, "");
       
-      if (!imageUrl) {
-        throw new Error("Failed to upload image");
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+      const filePath = `${folderName}/Artworks/${fileName}`;
+      
+      logger.info(`Uploading artwork to path: artists/${filePath}`);
+      
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('artists')
+        .upload(filePath, file);
+      
+      if (uploadError) {
+        throw uploadError;
       }
       
-      // Refresh artworks list
-      await fetchArtworks();
+      // Get the public URL
+      const { data: publicUrlData } = supabase.storage
+        .from('artists')
+        .getPublicUrl(filePath);
       
+      if (!publicUrlData || !publicUrlData.publicUrl) {
+        throw new Error("Failed to get public URL for uploaded file");
+      }
+
+      const publicUrl = publicUrlData.publicUrl;
+      logger.info("Artwork uploaded successfully:", publicUrl);
+      
+      // Update artist's artworks array
+      const numericId = parseInt(artistId, 10);
+      
+      // First get current artworks
+      const { data: currentArtist, error: fetchError } = await supabase
+        .from("artists")
+        .select("artworks")
+        .eq("id", numericId)
+        .single();
+      
+      if (fetchError) {
+        throw fetchError;
+      }
+      
+      // Prepare the updated artworks array
+      let updatedArtworks: string[] = [];
+      
+      if (currentArtist.artworks) {
+        if (Array.isArray(currentArtist.artworks)) {
+          updatedArtworks = [...currentArtist.artworks, publicUrl];
+        } else if (typeof currentArtist.artworks === "string") {
+          try {
+            const parsedArtworks = JSON.parse(currentArtist.artworks);
+            updatedArtworks = [...(Array.isArray(parsedArtworks) ? parsedArtworks : []), publicUrl];
+          } catch (e) {
+            updatedArtworks = [currentArtist.artworks, publicUrl];
+          }
+        } else {
+          updatedArtworks = [publicUrl];
+        }
+      } else {
+        updatedArtworks = [publicUrl];
+      }
+      
+      // Update the database
+      const { error: updateError } = await supabase
+        .from("artists")
+        .update({ artworks: updatedArtworks })
+        .eq("id", numericId);
+      
+      if (updateError) {
+        throw updateError;
+      }
+      
+      // Update state
+      setArtworks(updatedArtworks);
       toast.success("Artwork uploaded successfully");
       return true;
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error uploading artwork:", error);
-      toast.error("Failed to upload artwork");
+      toast.error(`Upload failed: ${error.message}`);
       return false;
     } finally {
       setUploading(false);
     }
   };
 
-  const handleRemoveArtwork = async (index: number) => {
-    if (index < 0 || index >= artworks.length) {
-      toast.error("Invalid artwork selection");
-      return;
-    }
-    
+  const handleRemoveArtwork = async (artworkUrl: string) => {
+    if (!artistId || !artworkUrl) return;
+
     try {
-      const artworkUrl = artworks[index];
+      // Extract the path from the URL
+      const urlObj = new URL(artworkUrl);
+      const pathMatch = urlObj.pathname.match(/\/object\/public\/artists\/(.+)$/);
       
-      // Delete the file from storage first
-      const deleteSuccess = await deleteFileFromStorage(artworkUrl);
-      
-      if (!deleteSuccess) {
-        throw new Error("Failed to delete artwork from storage");
+      if (!pathMatch) {
+        throw new Error("Invalid artwork URL format");
       }
       
-      // Check if artist has artwork_files property and if this artwork is being used as background image
-      if (artist && artist.artwork_files && 
-          typeof artist.artwork_files === 'object' && 
-          'background_image' in artist.artwork_files && 
-          artist.artwork_files.background_image === artworkUrl) {
-        
-        // Clear the background image reference
-        const artworkFilesObj = artist.artwork_files as Record<string, any>;
-        const { error: updateError } = await supabase
-          .from('artists')
-          .update({ 
-            artwork_files: {
-              ...artworkFilesObj,
-              background_image: null
-            }
-          })
-          .eq('id', artist.id);
-          
-        if (updateError) {
-          logger.error("Error updating artist record after artwork deletion:", updateError);
-        }
+      const storagePath = pathMatch[1];
+      logger.info(`Removing artwork from storage path: ${storagePath}`);
+      
+      // Remove from storage
+      const { error: storageError } = await supabase.storage
+        .from('artists')
+        .remove([storagePath]);
+      
+      if (storageError) {
+        throw storageError;
+      }
+      
+      // Update artist's artworks array
+      const numericId = parseInt(artistId, 10);
+      const updatedArtworks = artworks.filter(url => url !== artworkUrl);
+      
+      const { error: updateError } = await supabase
+        .from("artists")
+        .update({ artworks: updatedArtworks })
+        .eq("id", numericId);
+      
+      if (updateError) {
+        throw updateError;
       }
       
       // Update state
-      setArtworks(prev => prev.filter((_, i) => i !== index));
-      
-      // After successful deletion, sync the artist images
-      const syncSuccess = await syncArtistImages();
-      
-      if (syncSuccess) {
-        logger.info("Successfully synced artist images after deletion");
-      } else {
-        logger.warn("Failed to sync artist images after deletion");
-      }
-      
+      setArtworks(updatedArtworks);
       toast.success("Artwork removed successfully");
-    } catch (error) {
+    } catch (error: any) {
       logger.error("Error removing artwork:", error);
-      toast.error("Failed to remove artwork");
+      toast.error(`Failed to remove artwork: ${error.message}`);
     }
   };
-  
+
   const handleSetAsBackgroundImage = async (artworkUrl: string) => {
-    if (!artist || !artist.id) {
-      toast.error("Artist information not available");
-      return;
-    }
-    
+    if (!artistId || !artworkUrl) return;
+
     try {
-      const success = await updateArtistBackgroundImage(artist.id, artworkUrl);
+      const numericId = parseInt(artistId, 10);
       
-      if (success) {
-        toast.success("Background image updated successfully");
-      } else {
-        throw new Error("Failed to update background image");
+      const { error } = await supabase
+        .from("artists")
+        .update({ image: artworkUrl })
+        .eq("id", numericId);
+      
+      if (error) {
+        throw error;
       }
-    } catch (error) {
+      
+      // Update local state if needed
+      setArtist(prev => ({ ...prev, image: artworkUrl }));
+      toast.success("Artwork set as profile image");
+    } catch (error: any) {
       logger.error("Error setting background image:", error);
-      toast.error("Failed to set artwork as background image");
+      toast.error(`Failed to set as profile image: ${error.message}`);
+    }
+  };
+
+  const syncArtistImages = async () => {
+    try {
+      if (!artistId) return;
+      
+      const numericId = parseInt(artistId, 10);
+      
+      // Call edge function to sync images
+      const { data, error } = await supabase.functions.invoke("sync-artist-images", {
+        body: { artist_id: numericId }
+      });
+      
+      if (error) throw error;
+      
+      if (data?.success) {
+        // Reload artist data to show updated images
+        await fetchArtistData();
+        toast.success("Artist images synchronized successfully");
+      } else {
+        toast.info(data?.message || "No changes to synchronize");
+      }
+    } catch (error: any) {
+      logger.error("Error syncing artist images:", error);
+      toast.error(`Failed to sync images: ${error.message}`);
     }
   };
 
@@ -218,8 +275,8 @@ export const useArtistArtworks = (artistId: string | null) => {
     loading,
     uploading,
     artworks,
-    artist,
     artistName,
+    artist,
     handleUploadArtwork,
     handleRemoveArtwork,
     handleSetAsBackgroundImage,

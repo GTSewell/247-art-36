@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "../types";
@@ -25,6 +26,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     if (artistId) {
       fetchArtistProfileData();
     } else {
+      // For new artist, just set loading to false
       setLoading(false);
     }
   }, [artistId]);
@@ -141,6 +143,11 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
           title: "Success",
           description: result.message
         });
+        
+        // For new artists, we should refresh the page to show artwork manager
+        if (!artistId) {
+          window.location.href = window.location.href.replace('isCreatingNew=true', `selectedArtistId=${result.data[0].id}`);
+        }
       } else {
         throw new Error(result.message);
       }

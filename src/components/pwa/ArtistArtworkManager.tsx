@@ -23,8 +23,38 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     syncArtistImages
   } = useArtistArtworks(artistId);
   
+  if (!artistId) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Image className="mr-2 h-5 w-5" />
+            Manage Artworks
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="p-4 text-center">
+            Please save the artist profile first to enable artwork management.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+  
   if (loading && artworks.length === 0) {
-    return <div className="p-8 text-center">Loading artworks...</div>;
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Image className="mr-2 h-5 w-5" />
+            Manage Artworks
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="p-4 text-center">Loading artworks...</div>
+        </CardContent>
+      </Card>
+    );
   }
   
   const onUpload = async (file: File): Promise<boolean> => {
