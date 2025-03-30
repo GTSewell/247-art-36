@@ -197,6 +197,9 @@ export const useArtistArtworks = (artistId: string | null) => {
       // Update local state
       setArtist(prev => ({ ...prev, image: artworkUrl }));
       toast.success("Background image updated successfully");
+      
+      // Refresh data to ensure UI is updated correctly
+      fetchArtistData();
     } catch (error: any) {
       console.error("Error setting background image:", error);
       toast.error(`Failed to set background image: ${error.message}`);
