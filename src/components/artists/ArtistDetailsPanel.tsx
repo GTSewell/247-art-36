@@ -76,9 +76,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
     }));
   };
 
-  // Create a formatted domain name for display - remove special characters too
-  const artistDomain = artist.name ? artist.name.replace(/\s+/g, '').replace(/[^\w\s]/gi, '') : '';
-
   // For modal view, use smaller text and tighter spacing
   const modalTextClass = isModalView && !isMobile ? "text-sm" : "";
 
@@ -98,8 +95,6 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
           country={artist.country} 
         />
       </div>
-
-      {/* Remove duplicated domain link for mobile */}
 
       {/* Show empty container in modal view */}
       <ArtistInfoContainer 
@@ -122,8 +117,7 @@ const ArtistDetailsPanel: React.FC<ArtistDetailsPanelProps> = ({
       {/* Action buttons at the bottom */}
       <div className={`flex-none ${isMobile ? 'mt-2' : 'mt-auto'} pt-2 min-w-0`}>
         <ArtistActions 
-          domainName={artistDomain} 
-          artistId={artist.id} 
+          artist={artist}
           isFavorite={isFavorite}
           onFavoriteToggle={onFavoriteToggle}
           handleDomainClick={handleDomainClick}
