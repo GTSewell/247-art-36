@@ -8,6 +8,7 @@ import PWATimedEditions from "@/components/pwa/PWATimedEditions";
 import { logger } from "@/utils/logger";
 import Navigation from "@/components/navigation/Navigation";
 import { useAppMode } from "@/contexts/AppModeContext";
+import { Helmet } from "react-helmet";
 
 const PWAHome = () => {
   const { featuredArtists, favoriteArtists, handleFavoriteToggle, refreshArtists } = useArtists();
@@ -105,6 +106,14 @@ const PWAHome = () => {
 
   return (
     <TimerProvider>
+      <Helmet>
+        <title>247.ART - Art Never Sleeps</title>
+        <meta name="description" content="247.ART - Discover and connect with artists" />
+        <meta property="og:title" content="247.ART" />
+        <meta property="og:description" content="247.ART - Art Never Sleeps" />
+        <meta property="og:image" content="https://247.art/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png" />
+        <link rel="icon" href="https://247.art/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png" />
+      </Helmet>
       <div className={`min-h-screen bg-zap-yellow ${isPWA ? 'h-screen' : ''}`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
 
