@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { 
-  fetchArtistData, 
+  fetchArtistData as fetchArtistDataApi, 
   uploadArtwork, 
   removeArtwork, 
   setArtworkAsBackground,
@@ -34,7 +34,7 @@ export const useArtistArtworks = (artistId: string | null) => {
         return;
       }
       
-      const { data, error } = await fetchArtistData(artistId);
+      const { data, error } = await fetchArtistDataApi(artistId);
       
       if (error) throw error;
       
