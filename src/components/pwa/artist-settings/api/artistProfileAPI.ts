@@ -161,7 +161,11 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       const nextId = await getNextArtistId();
       logger.info("Creating new artist with ID:", nextId);
       
-      // Create new artist profile with the new ID
+      // Get the current user
+      const { data: { user } } = await supabase.auth.getUser();
+      logger.info("Current user:", user?.id);
+      
+      // Create new artist profile with the new ID and the current user's ID
       const { data, error } = await supabase
         .from('artists')
         .insert([{
@@ -169,7 +173,8 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
           ...processedData,
           published: false, // Set published to false by default for new artists
           locked_artworks: false, // Ensure new artists can have artworks uploaded
-          artwork_files: [] // Initialize empty artwork files array
+          artwork_files: [], // Initialize empty artwork files array
+          user_id: user?.id // Add the authenticated user's ID to link to this artist
         }])
         .select();
       
