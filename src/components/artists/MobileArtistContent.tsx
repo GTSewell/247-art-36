@@ -30,15 +30,15 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
       className={`flex flex-col w-full max-h-[85vh] overflow-y-auto relative ${isSignatureArtist ? 'border-4 border-zap-yellow' : ''}`}
       style={{ background: 'white', overflow: 'visible' }}
     >
-      {/* Artist badges - using isMobile prop with improved positioning */}
+      {/* Artist badges are now handled outside the modal in ArtistDetailModal.tsx */}
       <ArtistBadges 
         isSignatureArtist={isSignatureArtist} 
         isDemo={isDemo}
         isMobile={true}
       />
       
-      {/* Header Section with padding to make room for badge */}
-      <div className="px-6 pt-6 pb-2 mt-2">
+      {/* Header Section */}
+      <div className="px-6 pt-6 pb-2">
         <ArtistHeaderInfo
           name={artist.name}
           specialty={artist.specialty}
@@ -57,7 +57,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Bottom Action Buttons - with increased space above */}
+      {/* Bottom Action Buttons */}
       <div className="px-6 pb-6 pt-4 mt-auto">
         <ArtistActions
           domainName={artist.name}

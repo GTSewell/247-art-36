@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface ArtistBadgesProps {
@@ -6,6 +5,7 @@ interface ArtistBadgesProps {
   isDemo: boolean;
   position?: 'top-left' | 'top-right';
   isMobile?: boolean;
+  overrideStyle?: boolean;
 }
 
 const ArtistBadges: React.FC<ArtistBadgesProps> = ({
@@ -13,24 +13,45 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
   isDemo,
   position = 'top-left',
   isMobile = false,
+  overrideStyle = false,
 }) => {
-  // For mobile view, we'll use fixed positioning to make the badges overlap the modal
-  if (isMobile) {
+  // For mobile view with override style (positioned above modal)
+  if (isMobile && overrideStyle) {
     return (
-      <>
-        {/* Signature Artist Badge */}
+      <div className="flex flex-col items-center gap-2">
         {isSignatureArtist && (
-          <div className="absolute left-6 -top-5 z-20 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+          <div className="bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-1 px-3 z-50">
             Signature Artist
           </div>
         )}
         
-        {/* Demo Badge - Added for artists that are not signature artists and should show the demo badge */}
         {!isSignatureArtist && isDemo && (
-          <div className="absolute left-6 -top-5 z-20 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+          <div className="bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-1 px-3 z-50">
             Demo
           </div>
         )}
+      </div>
+    );
+  }
+  
+  // For mobile view within the modal (we'll hide this in MobileArtistContent)
+  if (isMobile && !overrideStyle) {
+    return (
+      <>
+        {/* Keep hidden badges for structural consistency but don't display them */}
+        <div className="hidden">
+          {isSignatureArtist && (
+            <div className="absolute left-6 -top-5 z-20 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+              Signature Artist
+            </div>
+          )}
+          
+          {!isSignatureArtist && isDemo && (
+            <div className="absolute left-6 -top-5 z-20 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+              Demo
+            </div>
+          )}
+        </div>
       </>
     );
   }

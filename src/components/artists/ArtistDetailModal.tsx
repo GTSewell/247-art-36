@@ -11,6 +11,7 @@ import {
   CarouselItem, 
   type CarouselApi
 } from "@/components/ui/carousel";
+import ArtistBadges from "./ArtistBadges";
 
 interface ArtistDetailModalProps {
   artists: Artist[];
@@ -84,8 +85,25 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
     };
   }, [api, isMobile, open]);
 
+  // Check if the selected artist should show Signature Artist or Demo badge
+  const isSignatureArtist = selectedArtist?.id ? selectedArtist.id >= 26 : false;
+  const isDemo = selectedArtist?.id ? selectedArtist.id !== 24 && selectedArtist.id !== 26 : false;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
+      {/* Mobile badges positioned above the modal */}
+      {isMobile && open && selectedArtist && (
+        <div className="fixed z-[51] top-[15%] left-0 right-0 flex justify-center pointer-events-none">
+          <ArtistBadges 
+            isSignatureArtist={isSignatureArtist}
+            isDemo={isDemo}
+            position="top-left"
+            isMobile={true}
+            overrideStyle={true}
+          />
+        </div>
+      )}
+      
       <DialogContent 
         className={`${isMobile ? 'w-[90vw] max-w-[95%] mx-auto' : 'max-w-5xl w-[80vw]'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
         style={{ boxSizing: 'border-box', background: 'white' }}
