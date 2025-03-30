@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Artist } from "@/data/types/artist";
 import { useIsMobile } from "@/hooks/use-mobile";
