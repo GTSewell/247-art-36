@@ -1,9 +1,14 @@
 
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { uploadImage } from "@/components/pwa/artist-settings/api/imageUploadAPI";
-import { ensureArray } from "@/utils/ensureArray";
+import { 
+  fetchArtistData, 
+  uploadArtwork, 
+  removeArtwork, 
+  setArtworkAsBackground,
+  syncArtistImages as syncImages
+} from "./artwork/api/artwork-api";
+import { processArtworks } from "./artwork/utils/artwork-utils";
 
 export const useArtistArtworks = (artistId: string | null) => {
   const [loading, setLoading] = useState(true);
@@ -29,28 +34,14 @@ export const useArtistArtworks = (artistId: string | null) => {
         return;
       }
       
-      const numericId = parseInt(artistId, 10);
-      
-      if (isNaN(numericId)) {
-        throw new Error("Invalid artist ID");
-      }
-      
-      const { data, error } = await supabase
-        .from('artists')
-        .select('*')
-        .eq('id', numericId)
-        .maybeSingle();
+      const { data, error } = await fetchArtistData(artistId);
       
       if (error) throw error;
       
       if (data) {
         setArtist(data);
         setArtistName(data.name || "Unnamed_Artist");
-        
-        // Convert artworks from JSON to array of strings
-        const artworkArray = ensureArray(data.artworks);
-        // Fix: map array to ensure each element is a string
-        setArtworks(artworkArray.map(artwork => artwork.toString()));
+        setArtworks(processArtworks(data.artworks));
       }
     } catch (error: any) {
       console.error("Error fetching artist data:", error);
@@ -64,53 +55,22 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       setUploading(true);
       
-      // Upload image to storage
-      const safeName = name.replace(/\s+/g, '_');
-      // Fix: Remove the fourth argument which is causing the type error
-      const imageUrl = await uploadImage(file, safeName, false);
+      const { url, updatedArtworks, error } = await uploadArtwork(file, name, artistId);
       
-      if (!imageUrl) {
-        throw new Error("Failed to upload image");
-      }
+      if (error) throw error;
       
-      // If there's no artist ID yet, just add it to the local state
       if (!artistId) {
-        setArtworks(prev => [...prev, imageUrl]);
+        // If no artist ID yet, just add it to local state
+        if (url) {
+          setArtworks(prev => [...prev, url]);
+          toast.success("Artwork uploaded successfully");
+        }
+      } else if (updatedArtworks) {
+        // Update local state with the new artworks array
+        setArtworks(updatedArtworks.map(artwork => artwork.toString()));
         toast.success("Artwork uploaded successfully");
-        return true;
       }
       
-      // Update the artist record with the new artwork
-      const numericId = parseInt(artistId, 10);
-      
-      if (isNaN(numericId)) {
-        throw new Error("Invalid artist ID");
-      }
-      
-      // Get current artworks
-      const { data: artistData, error: fetchError } = await supabase
-        .from('artists')
-        .select('artworks')
-        .eq('id', numericId)
-        .single();
-      
-      if (fetchError) throw fetchError;
-      
-      // Convert to array and add new artwork
-      const currentArtworks = ensureArray(artistData.artworks || []);
-      const updatedArtworks = [...currentArtworks, imageUrl];
-      
-      // Update the database
-      const { error: updateError } = await supabase
-        .from('artists')
-        .update({ artworks: updatedArtworks })
-        .eq('id', numericId);
-      
-      if (updateError) throw updateError;
-      
-      // Update local state
-      setArtworks(updatedArtworks.map(artwork => artwork.toString()));
-      toast.success("Artwork uploaded successfully");
       return true;
     } catch (error: any) {
       console.error("Error uploading artwork:", error);
@@ -125,19 +85,17 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       if (!artistId) return false;
       
-      // Call the sync-artist-images function
-      const { data, error } = await supabase.functions.invoke('sync-artist-images', {
-        body: { artistId }
-      });
+      const { success, error } = await syncImages(artistId);
       
       if (error) throw error;
       
-      console.log("Image sync response:", data);
-      toast.success("Artist images synchronized successfully");
+      if (success) {
+        toast.success("Artist images synchronized successfully");
+        fetchArtistData(); // Refresh artwork data
+        return true;
+      }
       
-      // Refresh artwork data
-      fetchArtistData();
-      return true;
+      return false;
     } catch (error: any) {
       console.error("Error syncing images:", error);
       toast.error(`Failed to sync images: ${error.message}`);
@@ -149,27 +107,14 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       if (!artistId) return;
       
-      const numericId = parseInt(artistId, 10);
-      
-      if (isNaN(numericId)) {
-        throw new Error("Invalid artist ID");
-      }
-      
-      // Create a copy of the artworks array and remove the selected artwork
-      const updatedArtworks = [...artworks];
-      updatedArtworks.splice(index, 1);
-      
-      // Update the database
-      const { error } = await supabase
-        .from('artists')
-        .update({ artworks: updatedArtworks })
-        .eq('id', numericId);
+      const { success, updatedArtworks, error } = await removeArtwork(artistId, artworks, index);
       
       if (error) throw error;
       
-      // Update local state
-      setArtworks(updatedArtworks);
-      toast.success("Artwork removed successfully");
+      if (success && updatedArtworks) {
+        setArtworks(updatedArtworks);
+        toast.success("Artwork removed successfully");
+      }
     } catch (error: any) {
       console.error("Error removing artwork:", error);
       toast.error(`Failed to remove artwork: ${error.message}`);
@@ -180,26 +125,18 @@ export const useArtistArtworks = (artistId: string | null) => {
     try {
       if (!artistId) return;
       
-      const numericId = parseInt(artistId, 10);
-      
-      if (isNaN(numericId)) {
-        throw new Error("Invalid artist ID");
-      }
-      
-      // Update the artist's image field with the selected artwork URL
-      const { error } = await supabase
-        .from('artists')
-        .update({ image: artworkUrl })
-        .eq('id', numericId);
+      const { success, error } = await setArtworkAsBackground(artistId, artworkUrl);
       
       if (error) throw error;
       
-      // Update local state
-      setArtist(prev => ({ ...prev, image: artworkUrl }));
-      toast.success("Background image updated successfully");
-      
-      // Refresh data to ensure UI is updated correctly
-      fetchArtistData();
+      if (success) {
+        // Update local state
+        setArtist(prev => ({ ...prev, image: artworkUrl }));
+        toast.success("Background image updated successfully");
+        
+        // Refresh data to ensure UI is updated correctly
+        fetchArtistData();
+      }
     } catch (error: any) {
       console.error("Error setting background image:", error);
       toast.error(`Failed to set background image: ${error.message}`);
