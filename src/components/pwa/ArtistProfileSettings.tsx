@@ -62,7 +62,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
           
           <div className="pt-4">
             <Button type="submit" className="w-full" disabled={saving}>
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? "Saving..." : artistId ? "Save Changes" : "Create Artist"}
             </Button>
           </div>
         </form>

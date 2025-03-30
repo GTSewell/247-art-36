@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "../types";
 import { fetchArtistProfile, saveArtistProfile } from "../api/artistProfileAPI";
 import { mapArtistToFormData } from "../utils/formDataMapper";
@@ -58,11 +57,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       }
     } catch (error: any) {
       logger.error("Error fetching artist profile:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: `Failed to load artist profile: ${error.message}`
-      });
+      toast.error(`Failed to load artist profile: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -139,13 +134,11 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
           logger.info("Updated artist profile state with new data:", updatedArtist);
         }
         
-        toast({
-          title: "Success",
-          description: result.message
-        });
+        toast.success(result.message);
         
         // For new artists, we should refresh the page to show artwork manager
         if (!artistId) {
+          // Update the URL with the new artist ID instead of reloading the page
           window.location.href = window.location.href.replace('isCreatingNew=true', `selectedArtistId=${result.data[0].id}`);
         }
       } else {
@@ -153,11 +146,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       }
     } catch (error: any) {
       logger.error("Error updating artist profile:", error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: `Failed to update profile: ${error.message}`
-      });
+      toast.error(`Failed to update profile: ${error.message}`);
     } finally {
       setSaving(false);
     }

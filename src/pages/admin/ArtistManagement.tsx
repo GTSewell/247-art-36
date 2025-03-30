@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Artist } from '@/data/types/artist';
@@ -164,14 +163,12 @@ const ArtistManagement: React.FC = () => {
           </div>
         </div>
         
-        {!isCreatingNew && selectedArtistId && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Manage Artist Artworks</h2>
-              <ArtistArtworkManager artistId={selectedArtistId} />
-            </div>
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="p-6">
+            <h2 className="text-xl font-semibold mb-4">Manage Artist Artworks</h2>
+            <ArtistArtworkManager artistId={selectedArtistId} />
           </div>
-        )}
+        </div>
       </div>
     );
   }

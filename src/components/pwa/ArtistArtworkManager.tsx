@@ -58,7 +58,8 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
   }
   
   const onUpload = async (file: File): Promise<boolean> => {
-    return await handleUploadArtwork(file, artistName);
+    const result = await handleUploadArtwork(file, artistName);
+    return result;
   };
   
   return (
