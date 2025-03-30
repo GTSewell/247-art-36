@@ -12,19 +12,16 @@ interface ArtistImagePanelProps {
   onFavoriteToggle: (artistId: number, isFavorite: boolean) => void;
   isFavorite: boolean;
   refreshArtists?: () => void;
-  isMobile?: boolean;
 }
 
 const ArtistImagePanel: React.FC<ArtistImagePanelProps> = ({ 
   artist, 
   onFavoriteToggle, 
   isFavorite,
-  refreshArtists,
-  isMobile: propIsMobile
+  refreshArtists
 }) => {
   const [isGeneratingArtworks, setIsGeneratingArtworks] = useState(false);
-  const defaultIsMobile = useIsMobile();
-  const isMobile = propIsMobile !== undefined ? propIsMobile : defaultIsMobile;
+  const isMobile = useIsMobile();
   
   // Custom hooks
   const { currentArtist, refreshArtist } = useArtistData(artist, refreshArtists);

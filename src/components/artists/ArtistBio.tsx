@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { 
@@ -10,11 +9,11 @@ import {
 
 interface ArtistBioProps {
   bio: string;
-  isMobile?: boolean;
+  isMobile: boolean;
   useAccordion?: boolean;
 }
 
-const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile = false, useAccordion = false }) => {
+const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = false }) => {
   const [expanded, setExpanded] = useState(false);
   
   if (!bio) {

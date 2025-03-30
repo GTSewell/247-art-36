@@ -1,16 +1,10 @@
 
-import React from "react";
-import { Artist } from "@/data/types/artist";
-import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
-import { useArtistData } from "./hooks/useArtistData";
-import ArtistImagePanel from "./ArtistImagePanel";
-import ArtistHeaderInfo from "./ArtistHeaderInfo";
-import ArtistBio from "./ArtistBio";
-import ArtistTechniquesStyles from "./ArtistTechniquesStyles";
-import ArtistSocialSection from "./ArtistSocialSection";
-import ArtistActions from "./ArtistActions";
-import ArtistBadges from "./ArtistBadges";
+import React from 'react';
+import { Artist } from '@/data/types/artist';
+import ArtistHeaderInfo from './ArtistHeaderInfo';
+import ArtistImagePanel from './ArtistImagePanel';
+import ArtistActions from './ArtistActions';
+import ArtistBadges from './ArtistBadges';
 
 interface MobileArtistContentProps {
   artist: Artist;
@@ -31,68 +25,48 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
   isSignatureArtist,
   isDemo
 }) => {
-  const { currentArtist, refreshArtist } = useArtistData(artist, refreshArtists);
-  const isMobile = true;
-  
   return (
-    <div className="flex flex-col max-h-[80vh] overflow-hidden">
-      {/* Artist Gallery */}
-      <div className="bg-gray-50 p-4 border-b">
-        <ArtistImagePanel 
-          artist={currentArtist} 
-          refreshArtists={refreshArtist}
-          onFavoriteToggle={onFavoriteToggle}
-          isFavorite={isFavorite}
-          isMobile={isMobile}
+    <div 
+      className={`flex flex-col w-full max-h-[85vh] overflow-y-auto ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
+      style={{ background: 'white' }}
+    >
+      {/* Artist badges */}
+      <ArtistBadges 
+        isSignatureArtist={isSignatureArtist} 
+        isDemo={isDemo}
+        isMobile={true}
+      />
+      
+      {/* Header Section */}
+      <div className="px-6 pt-6 pb-2">
+        <ArtistHeaderInfo
+          name={artist.name}
+          specialty={artist.specialty}
+          city={artist.city}
+          country={artist.country}
         />
       </div>
       
-      {/* Artist Details */}
-      <div className="flex-1 p-4 overflow-y-auto relative">
-        <div className="absolute top-4 right-4 z-10">
-          <ArtistBadges
-            isSignatureArtist={isSignatureArtist}
-            isDemo={isDemo}
-            isMobile={true}
-          />
-        </div>
-        
-        <ArtistHeaderInfo 
-          name={currentArtist.name}
-          specialty={currentArtist.specialty}
-          city={currentArtist.city || ''}
-          country={currentArtist.country || ''}
+      {/* Artworks Grid Section */}
+      <div className="px-6 flex-grow">
+        <ArtistImagePanel
+          artist={artist}
+          onFavoriteToggle={onFavoriteToggle}
+          isFavorite={isFavorite}
+          refreshArtists={refreshArtists}
         />
-        
-        <ArtistBio bio={currentArtist.bio} isMobile={isMobile} />
-        
-        <ArtistTechniquesStyles 
-          techniques={Array.isArray(currentArtist.techniques) ? currentArtist.techniques : []} 
-          styles={Array.isArray(currentArtist.styles) ? currentArtist.styles : []}
+      </div>
+      
+      {/* Bottom Action Buttons - with increased space above */}
+      <div className="px-6 pb-6 pt-4 mt-auto">
+        <ArtistActions
+          domainName={artist.name}
+          artistId={artist.id}
+          isFavorite={isFavorite}
+          onFavoriteToggle={onFavoriteToggle}
+          handleDomainClick={handleNavigateToArtistProfile}
+          useSubPath={false}
         />
-        
-        <ArtistSocialSection 
-          socialPlatforms={Array.isArray(currentArtist.social_platforms) ? currentArtist.social_platforms : []} 
-          isMobile={isMobile}
-        />
-        
-        <div className="mt-6 flex flex-col space-y-3 pb-16">
-          <ArtistActions
-            artist={currentArtist}
-            isFavorite={isFavorite}
-            onFavoriteToggle={onFavoriteToggle}
-            handleDomainClick={handleNavigateToArtistProfile}
-            isMobile={isMobile}
-          />
-          
-          <Button 
-            className="w-full flex items-center justify-center space-x-2" 
-            onClick={handleNavigateToArtistProfile}
-          >
-            <span>View Artist Profile</span>
-            <ExternalLink size={16} />
-          </Button>
-        </div>
       </div>
     </div>
   );
