@@ -87,7 +87,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className={`${isMobile ? 'w-[90vw] max-w-[95%] mx-auto' : 'max-w-5xl w-[80vw]'} p-0 overflow-visible bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
+        className={`${isMobile ? 'w-[90vw] max-w-[95%] mx-auto mt-8' : 'max-w-5xl w-[80vw]'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
         style={{ boxSizing: 'border-box', background: 'white' }}
       >
         <DialogTitle className="sr-only">Artist Details</DialogTitle>
@@ -102,13 +102,13 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
               skipSnaps: false,
               startIndex: selectedArtistIndex,
             }}
-            className="w-full min-w-0 overflow-visible"
+            className="w-full min-w-0 overflow-hidden"
             onSelect={handleSelect}
           >
-            <CarouselContent className="-ml-1 min-w-0 overflow-visible">
+            <CarouselContent className="-ml-1 min-w-0 overflow-hidden">
               {artists.map((artist, index) => (
-                <CarouselItem key={artist.id} className="pl-1 w-full min-w-0 overflow-visible">
-                  <div className="w-full min-w-0 overflow-visible">
+                <CarouselItem key={artist.id} className="pl-1 w-full min-w-0 overflow-hidden">
+                  <div className="w-full min-w-0 overflow-hidden">
                     <ArtistModalContent
                       artists={[artist]} // Pass as single artist array
                       selectedArtistIndex={0} // Always 0 since we're in a CarouselItem
