@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import Navigation from "@/components/navigation/Navigation";
@@ -10,6 +9,7 @@ import ProductCategoryView from "@/components/pwa/store/ProductCategoryView";
 import StoreHomeView from "@/components/pwa/store/StoreHomeView";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Helmet } from "react-helmet";
 
 interface TimerState {
   hours: number;
@@ -43,6 +43,15 @@ const PWAStore = () => {
 
   return (
     <TimerProvider>
+      <Helmet>
+        <title>247.ART Store - Buy Original Artworks</title>
+        <meta name="description" content="Shop for original artworks, prints and more from independent artists" />
+        <meta property="og:title" content="247.ART Store" />
+        <meta property="og:description" content="Buy original artworks from independent artists" />
+        <meta property="og:image" content="https://247.art/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png" />
+        <link rel="icon" href="https://247.art/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png" />
+      </Helmet>
+      
       <div className="min-h-screen bg-zap-red">
         {isPWA ? <PWANavigation /> : <Navigation />}
         

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { useArtists } from "@/hooks/use-artists";
@@ -18,13 +17,11 @@ const PWAHome = () => {
   const { isPWA } = useAppMode();
 
   useEffect(() => {
-    // Set loading to false after artists have been loaded
     if (featuredArtists.length > 0) {
       setIsLoading(false);
     }
   }, [featuredArtists]);
 
-  // Refresh an artist's data
   const refreshArtist = async (artistId: number) => {
     try {
       logger.info(`Refreshing artist with ID: ${artistId}`);
@@ -37,7 +34,6 @@ const PWAHome = () => {
     }
   };
 
-  // Handle manual refresh when user pulls down
   const handleManualRefresh = async () => {
     try {
       setIsRefreshing(true);
@@ -52,7 +48,6 @@ const PWAHome = () => {
     }
   };
 
-  // Add touch event listeners for pull-to-refresh
   useEffect(() => {
     if (!isPWA) return;
 
@@ -71,9 +66,8 @@ const PWAHome = () => {
       const isAtTop = mainElement.scrollTop === 0;
       const pullDistance = currentY - startY;
       
-      // If we're at the top and pulling down
       if (isAtTop && pullDistance > 70 && !isRefreshing) {
-        e.preventDefault(); // Prevent default only when we want to refresh
+        e.preventDefault();
         handleManualRefresh();
       }
     };
@@ -125,7 +119,6 @@ const PWAHome = () => {
             </div>
           )}
           <div className={`${isPWA ? 'pb-20' : 'pb-64'}`}>
-            {/* Featured Artists Section */}
             {isLoading ? (
               <div className="flex justify-center items-center h-24">
                 <p className="text-lg">Loading artists...</p>
@@ -140,7 +133,6 @@ const PWAHome = () => {
               />
             )}
 
-            {/* Timed Edition Drops Section - no margin to eliminate space */}
             <div className={`${isPWA ? 'mb-16' : 'mb-12'} mt-0`}>
               <PWATimedEditions
                 isLoading={isLoading}
