@@ -27,10 +27,10 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 }) => {
   return (
     <div 
-      className={`flex flex-col w-full max-h-[85vh] overflow-y-auto ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
+      className={`flex flex-col w-full max-h-[85vh] overflow-y-auto relative ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
       style={{ background: 'white' }}
     >
-      {/* Artist badges */}
+      {/* Artist badges - now using isMobile prop */}
       <ArtistBadges 
         isSignatureArtist={isSignatureArtist} 
         isDemo={isDemo}
