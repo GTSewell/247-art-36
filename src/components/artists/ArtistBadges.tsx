@@ -20,14 +20,14 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
     <>
       {/* Signature Artist Badge */}
       {isSignatureArtist && (
-        <div className={`bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute ${positionClass} z-50`}>
+        <div className={`absolute ${positionClass} z-10 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]`}>
           Signature Artist
         </div>
       )}
       
       {/* Demo Badge - Added for artists that are not signature artists and should show the demo badge */}
       {!isSignatureArtist && isDemo && (
-        <div className={`bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] absolute ${positionClass} z-50`}>
+        <div className={`absolute ${positionClass} z-10 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]`}>
           Demo
         </div>
       )}
