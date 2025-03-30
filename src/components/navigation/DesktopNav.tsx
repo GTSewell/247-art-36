@@ -25,9 +25,6 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const isCartPage = location.pathname === "/cart";
   const isArtistDashboard = location.pathname.includes("/dashboard/artist");
   
-  // Determine text color based on current page
-  const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
-  
   return (
     <div className="hidden md:flex items-center space-x-4 w-full justify-end">
       <NavLink to="/artists" isActive={isActive("/artists")}>
@@ -43,12 +40,12 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         Sign Up
       </NavLink>
       
-      {/* Cart Icon with proper contrast based on current page */}
+      {/* Cart Icon with solid background for better contrast */}
       <Link to="/cart" className="relative">
         <Button 
-          variant="ghost" 
+          variant="secondary" 
           size="icon" 
-          className={`p-0 hover:bg-gray-200 dark:hover:bg-gray-800 ${textColorClass}`}
+          className="p-0 rounded-md"
           title="Shopping Cart"
         >
           <ShoppingCart className="h-5 w-5" />

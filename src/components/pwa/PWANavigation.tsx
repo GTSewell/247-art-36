@@ -106,15 +106,17 @@ const PWANavigation = () => {
             onClick={handleAccountClick}
           >
             <div className="relative">
-              <Avatar className="h-10 w-10 border border-white/30 bg-gray-800">
-                <AvatarImage 
-                  src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
-                  alt="Account" 
-                />
-                <AvatarFallback className="bg-gray-600 text-white">
-                  {user?.email?.substring(0, 2).toUpperCase() || 'A'}
-                </AvatarFallback>
-              </Avatar>
+              <div className="bg-gray-800 rounded-full p-1">
+                <Avatar className="h-10 w-10 border border-white/30">
+                  <AvatarImage 
+                    src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+                    alt="Account" 
+                  />
+                  <AvatarFallback className="bg-gray-600 text-white">
+                    {user?.email?.substring(0, 2).toUpperCase() || 'A'}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
               {itemCount > 0 && (
                 <Badge 
                   className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
@@ -123,7 +125,7 @@ const PWANavigation = () => {
                 </Badge>
               )}
             </div>
-            <span className="text-xs mt-1">{displayName}</span>
+            <span className="text-xs mt-1 font-medium">{displayName}</span>
           </NavLink>
         </div>
       </nav>

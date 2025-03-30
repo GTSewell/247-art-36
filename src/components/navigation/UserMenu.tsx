@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -90,12 +91,16 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
     );
   }
   
-  const textColorClass = isCartPage || isArtistDashboard ? "text-white" : "text-foreground";
+  // Use a solid background variant to improve contrast against any background
+  const buttonVariant = "secondary";
   
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className={`flex items-center gap-2 ${textColorClass}`}>
+        <Button 
+          variant={buttonVariant} 
+          className="flex items-center gap-2 rounded-md"
+        >
           <Avatar className="h-8 w-8">
             <AvatarImage 
               src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 

@@ -86,7 +86,7 @@ const MobileUserMenu = () => {
   
   if (!user) {
     return (
-      <Button variant="outline" className="h-9" onClick={() => navigate('/auth')}>
+      <Button variant="secondary" className="h-9" onClick={() => navigate('/auth')}>
         <User className="h-4 w-4 mr-2" />
         Sign In
       </Button>
@@ -96,7 +96,7 @@ const MobileUserMenu = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="flex items-center gap-2">
+        <Button variant="secondary" className="flex items-center gap-2 rounded-md">
           <Avatar className="h-9 w-9">
             <AvatarImage 
               src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
