@@ -3,7 +3,6 @@ import React from "react";
 import MobileNavLink from "./MobileNavLink";
 import MobileUserMenu from "./MobileUserMenu";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -34,8 +33,10 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
           Sign Up
         </MobileNavLink>
         
-        {/* User menu with account functions - no longer passing props */}
-        <MobileUserMenu />
+        {/* User menu with account functions - now uses dropdown directly */}
+        <div className="py-1">
+          <MobileUserMenu />
+        </div>
       </div>
     </div>
   );
