@@ -4,7 +4,6 @@ import { Artist } from '@/data/types/artist';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistActions from './ArtistActions';
-import ArtistBadges from './ArtistBadges';
 
 interface MobileArtistContentProps {
   artist: Artist;
@@ -27,15 +26,6 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 }) => {
   return (
     <div className="relative w-full h-full">
-      {/* Position badges outside of the modal content */}
-      <div className="absolute top-0 left-6 z-50">
-        <ArtistBadges 
-          isSignatureArtist={isSignatureArtist} 
-          isDemo={isDemo}
-          isMobile={true}
-        />
-      </div>
-      
       {/* Main content container with yellow border for signature artists */}
       <div 
         className="flex flex-col w-full h-full max-h-[85vh] relative bg-white rounded-xl overflow-hidden"
