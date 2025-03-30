@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { filterArtists } from "@/components/artists/ArtistsFilter";
@@ -105,7 +104,9 @@ const Artists = () => {
           
           <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
             <AlertDescription className="text-lg font-bold">
-              This is a mock-up artist page to show you how the 247 artist profile will look. Please play around with it, click on things. When you sign up, we will add your profile with a 'Signature Artist' badge into the 'All Artists' profiles. Note: All newly added artists profiles are currently temporary placeholder profiles. Enjoy!
+              This is a mock-up artist page to show you how the 247 artist profile will look. Please play around with it, click on things. When you sign up, we will add your profile with a 'Signature Artist' badge into the 'All Artists' profiles. Enjoy!
+              <br />
+              Note: All newly added artists profiles are currently temporary placeholder profiles.
             </AlertDescription>
           </Alert>
           
