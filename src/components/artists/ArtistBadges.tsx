@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface ArtistBadgesProps {
@@ -13,22 +14,24 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
   position = 'top-left',
   isMobile = false,
 }) => {
-  // For mobile view, we'll position the badges completely outside the modal container
+  // For mobile view, we'll use fixed positioning to make the badges overlap the modal
   if (isMobile) {
     return (
-      <div className="fixed top-[60px] left-0 right-0 z-[60] flex justify-center pointer-events-none">
+      <>
+        {/* Signature Artist Badge */}
         {isSignatureArtist && (
-          <div className="pointer-events-auto bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] mx-1">
+          <div className="absolute left-6 -top-5 z-20 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
             Signature Artist
           </div>
         )}
         
+        {/* Demo Badge - Added for artists that are not signature artists and should show the demo badge */}
         {!isSignatureArtist && isDemo && (
-          <div className="pointer-events-auto bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px] mx-1">
+          <div className="absolute left-6 -top-5 z-20 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
             Demo
           </div>
         )}
-      </div>
+      </>
     );
   }
 
