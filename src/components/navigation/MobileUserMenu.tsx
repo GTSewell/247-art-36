@@ -1,22 +1,22 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { isUserAdmin } from '@/utils/admin-utils';
-import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/contexts/CartContext';
+import UserAvatar from './UserAvatar';
+import UserMenuItems from './UserMenuItems';
+import UserProfileHeader from './UserProfileHeader';
 
 function getInitials(name: string): string {
   if (!name) return 'U';
@@ -93,93 +93,30 @@ const MobileUserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary" className="flex items-center gap-2 rounded-md">
-          <Avatar className="h-9 w-9">
-            <AvatarImage 
-              src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
-              alt={displayName}
-            />
-            <AvatarFallback className="bg-primary text-white">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar 
+            user={user}
+            displayName={displayName}
+            initials={initials}
+            itemCount={itemCount}
+          />
           <span className="text-sm sm:inline">{displayName}</span>
-          {itemCount > 0 && (
-            <Badge 
-              className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs"
-            >
-              {itemCount}
-            </Badge>
-          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 bg-white" align="end">
-        <div className="flex items-center p-2">
-          <Avatar className="h-10 w-10 mr-3">
-            <AvatarImage 
-              src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
-              alt={displayName}
-            />
-            <AvatarFallback className="bg-primary text-white">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <p className="font-medium text-sm">{displayName}</p>
-            <p className="text-xs text-gray-500 truncate max-w-[150px]">{user.email}</p>
-          </div>
-        </div>
+        <UserProfileHeader 
+          user={user}
+          displayName={displayName}
+          initials={initials}
+        />
 
         <DropdownMenuSeparator />
         
-        <DropdownMenuItem asChild>
-          <Link to="/cart" className="flex cursor-pointer items-center">
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            <span>Cart</span>
-            {itemCount > 0 && (
-              <Badge className="ml-auto bg-zap-red text-white">{itemCount}</Badge>
-            )}
-          </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
-          <Link to="/messages" className="flex cursor-pointer items-center">
-            <MessageSquare className="mr-2 h-4 w-4" />
-            <span>Messages</span>
-          </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
-          <Link to="/dashboard/artist" className="flex cursor-pointer items-center">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Artist Dashboard</span>
-          </Link>
-        </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
-          <Link to="/dashboard/collector" className="flex cursor-pointer items-center">
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Collector Dashboard</span>
-          </Link>
-        </DropdownMenuItem>
-        
-        {isAdmin && (
-          <DropdownMenuItem asChild>
-            <Link to="/admin/artists" className="flex cursor-pointer items-center">
-              <Shield className="mr-2 h-4 w-4" />
-              <span>Artist Management</span>
-            </Link>
-          </DropdownMenuItem>
-        )}
-        
-        <DropdownMenuSeparator />
-        
-        <DropdownMenuItem 
-          className="text-red-500 focus:text-red-500 cursor-pointer" 
-          onClick={handleSignOut}
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Sign out</span>
-        </DropdownMenuItem>
+        <UserMenuItems 
+          user={user}
+          isAdmin={isAdmin}
+          itemCount={itemCount}
+          handleSignOut={handleSignOut}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

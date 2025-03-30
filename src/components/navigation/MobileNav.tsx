@@ -33,7 +33,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
           Sign Up
         </MobileNavLink>
         
-        {/* User menu with account functions - now uses dropdown directly */}
+        {/* User menu with account functions */}
         <div className="py-1">
           <MobileUserMenu />
         </div>
