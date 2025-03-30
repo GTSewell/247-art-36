@@ -27,7 +27,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 }) => {
   return (
     <div 
-      className={`flex flex-col w-full h-full max-h-[85vh] overflow-y-auto relative bg-white`}
+      className={`flex flex-col w-full h-full max-h-[85vh] relative bg-white`}
       style={{ 
         overflow: 'visible',
         boxShadow: isSignatureArtist ? 'inset 0 0 0 4px #ffc800' : 'none',
@@ -51,8 +51,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Artworks Grid Section */}
-      <div className="px-6 flex-grow">
+      {/* Scrollable content area */}
+      <div className="px-6 flex-grow overflow-y-auto">
         <ArtistImagePanel
           artist={artist}
           onFavoriteToggle={onFavoriteToggle}
@@ -61,8 +61,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Bottom Action Buttons - with increased space above */}
-      <div className="px-6 pb-6 pt-4 mt-auto">
+      {/* Fixed bottom action buttons */}
+      <div className="px-6 py-4 border-t border-gray-100 sticky bottom-0 bg-white mt-auto">
         <ArtistActions
           domainName={artist.name}
           artistId={artist.id}
