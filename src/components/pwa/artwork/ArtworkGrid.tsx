@@ -1,15 +1,45 @@
 
-import React from "react";
-import { Trash2, Image } from "lucide-react";
+import React, { useState, useCallback } from "react";
+import { Trash2, Image, MoveHorizontal, MoveUp, MoveDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ArtworkGridProps {
   artworks: string[];
   onRemove: (index: number) => void;
   onSetAsBackground: (artworkUrl: string) => void;
+  onReorder?: (newOrder: string[]) => void;
 }
 
-const ArtworkGrid: React.FC<ArtworkGridProps> = ({ artworks, onRemove, onSetAsBackground }) => {
+const ArtworkGrid: React.FC<ArtworkGridProps> = ({ 
+  artworks, 
+  onRemove, 
+  onSetAsBackground,
+  onReorder
+}) => {
+  const [isDragging, setIsDragging] = useState<number | null>(null);
+
+  const handleMoveUp = (index: number) => {
+    if (index <= 0 || !onReorder) return;
+    
+    const newArtworks = [...artworks];
+    const temp = newArtworks[index];
+    newArtworks[index] = newArtworks[index - 1];
+    newArtworks[index - 1] = temp;
+    
+    onReorder(newArtworks);
+  };
+
+  const handleMoveDown = (index: number) => {
+    if (index >= artworks.length - 1 || !onReorder) return;
+    
+    const newArtworks = [...artworks];
+    const temp = newArtworks[index];
+    newArtworks[index] = newArtworks[index + 1];
+    newArtworks[index + 1] = temp;
+    
+    onReorder(newArtworks);
+  };
+
   if (artworks.length === 0) {
     return (
       <div className="text-center p-6 bg-gray-50 rounded-lg border border-dashed border-gray-300">
@@ -25,11 +55,18 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({ artworks, onRemove, onSetAsBa
   return (
     <div>
       <h3 className="font-medium mb-3">Uploaded Artworks</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      {onReorder && (
+        <p className="text-sm text-gray-500 mb-4">
+          Use the arrow buttons to rearrange the order of artworks. This order is how they'll appear on the artist's profile.
+        </p>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {artworks.map((artwork, index) => (
           <div 
             key={index} 
-            className="group relative aspect-square rounded-md overflow-hidden border border-gray-200 bg-gray-100"
+            className={`group relative aspect-square rounded-md overflow-hidden border ${
+              isDragging === index ? 'border-primary ring-2 ring-primary' : 'border-gray-200'
+            } bg-gray-100`}
           >
             <img 
               src={artwork} 
@@ -58,7 +95,37 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({ artworks, onRemove, onSetAsBa
               >
                 <Image className="h-4 w-4" />
               </Button>
+
+              {onReorder && (
+                <>
+                  <Button 
+                    variant="secondary"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => handleMoveUp(index)}
+                    disabled={index === 0}
+                    title="Move up"
+                  >
+                    <MoveUp className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="secondary"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => handleMoveDown(index)}
+                    disabled={index === artworks.length - 1}
+                    title="Move down"
+                  >
+                    <MoveDown className="h-4 w-4" />
+                  </Button>
+                </>
+              )}
             </div>
+            {onReorder && (
+              <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 text-xs rounded">
+                #{index + 1}
+              </div>
+            )}
           </div>
         ))}
       </div>

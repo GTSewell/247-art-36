@@ -6,7 +6,8 @@ import {
   uploadArtwork, 
   removeArtwork, 
   setArtworkAsBackground,
-  syncArtistImages as syncImages
+  syncArtistImages as syncImages,
+  reorderArtworks
 } from "./artwork/api/artwork-api";
 import { processArtworks } from "./artwork/utils/artwork-utils";
 
@@ -120,6 +121,30 @@ export const useArtistArtworks = (artistId: string | null) => {
       toast.error(`Failed to remove artwork: ${error.message}`);
     }
   };
+
+  const handleReorderArtworks = async (newOrder: string[]): Promise<void> => {
+    try {
+      if (!artistId) return;
+
+      // Update local state immediately for responsive UI
+      setArtworks(newOrder);
+      
+      // Send update to the server
+      const { success, error } = await reorderArtworks(artistId, newOrder);
+      
+      if (error) throw error;
+      
+      if (success) {
+        toast.success("Artwork order updated successfully");
+      }
+    } catch (error: any) {
+      console.error("Error reordering artworks:", error);
+      toast.error(`Failed to reorder artworks: ${error.message}`);
+      
+      // Revert local state on error by re-fetching
+      fetchArtistData();
+    }
+  };
   
   const handleSetAsBackgroundImage = async (artworkUrl: string): Promise<void> => {
     try {
@@ -152,6 +177,7 @@ export const useArtistArtworks = (artistId: string | null) => {
     handleUploadArtwork,
     handleRemoveArtwork,
     handleSetAsBackgroundImage,
+    handleReorderArtworks,
     syncArtistImages
   };
 };

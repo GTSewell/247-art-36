@@ -121,6 +121,34 @@ export const removeArtwork = async (artistId: string, artworks: string[], index:
 };
 
 /**
+ * Reorder artworks array
+ */
+export const reorderArtworks = async (artistId: string, newOrder: string[]) => {
+  try {
+    if (!artistId) return { success: false, error: new Error("No artist ID provided") };
+    
+    const numericId = parseInt(artistId, 10);
+    
+    if (isNaN(numericId)) {
+      return { success: false, error: new Error("Invalid artist ID") };
+    }
+    
+    // Update the database with the new artwork order
+    const { error } = await supabase
+      .from('artists')
+      .update({ artworks: newOrder })
+      .eq('id', numericId);
+    
+    if (error) throw error;
+    
+    return { success: true, error: null };
+  } catch (error: any) {
+    logger.error("Error reordering artworks:", error);
+    return { success: false, error };
+  }
+};
+
+/**
  * Set artwork as artist background image
  */
 export const setArtworkAsBackground = async (artistId: string, artworkUrl: string) => {

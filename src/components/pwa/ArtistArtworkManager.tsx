@@ -20,6 +20,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     handleUploadArtwork, 
     handleRemoveArtwork,
     handleSetAsBackgroundImage,
+    handleReorderArtworks,
     syncArtistImages
   } = useArtistArtworks(artistId);
   
@@ -84,6 +85,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
             artworks={artworks}
             onRemove={handleRemoveArtwork}
             onSetAsBackground={handleSetAsBackgroundImage}
+            onReorder={handleReorderArtworks}
           />
         </div>
       </CardContent>
