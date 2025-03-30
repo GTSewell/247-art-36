@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -52,7 +51,6 @@ const ArtistCard = ({
   const isMobile = useIsMobile();
   const [isGeneratingArtworks, setIsGeneratingArtworks] = useState(false);
 
-  // Custom hooks for card functionality
   const { 
     isFlipped, 
     showClickIndicator, 
@@ -76,7 +74,6 @@ const ArtistCard = ({
     onFavoriteToggle(!isFavorite);
   };
 
-  // Prepare the artist data for passing to sub-components
   const artist: Artist = {
     id,
     name,
@@ -91,10 +88,8 @@ const ArtistCard = ({
     published: true
   };
   
-  // Check if artist is a Signature Artist (ID >= 26)
   const isSignatureArtist = id >= 26;
   
-  // Check if artist should show Demo badge (not ID 24 or ID 26)
   const isDemo = id !== 24 && id !== 26;
   
   const refreshArtworks = async () => {
@@ -114,7 +109,6 @@ const ArtistCard = ({
         onClick={isFlipped ? stopPropagation : onSelect}
       >
         <div className="aspect-square overflow-hidden relative">
-          {/* Render the front or back of the card based on the flipped state */}
           {!isFlipped ? (
             <ArtistCardFront 
               image={image}
@@ -133,21 +127,18 @@ const ArtistCard = ({
             />
           )}
           
-          {/* Signature Artist Badge */}
           {isSignatureArtist && (
-            <div className="absolute top-3 left-3 z-10 bg-zap-red text-[#333333] font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+            <div className="absolute top-3 left-3 z-10 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
               Signature Artist
             </div>
           )}
           
-          {/* Demo Badge - Added for artists that are not signature artists and not excluded */}
           {!isSignatureArtist && isDemo && (
             <div className="absolute top-3 left-3 z-10 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
               Demo
             </div>
           )}
           
-          {/* Name overlay for PWA */}
           {showNameOverlay && (
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
               <div className="p-3 w-full">
