@@ -14,20 +14,20 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
   position = 'top-left',
   isMobile = false,
 }) => {
-  // For mobile view, we'll use fixed positioning to make the badges overlap the modal
+  // For mobile view, we'll position badges to be visible above the modal
   if (isMobile) {
     return (
       <>
         {/* Signature Artist Badge */}
         {isSignatureArtist && (
-          <div className="absolute left-6 -top-5 z-20 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+          <div className="absolute left-6 -top-6 z-50 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
             Signature Artist
           </div>
         )}
         
         {/* Demo Badge - Added for artists that are not signature artists and should show the demo badge */}
         {!isSignatureArtist && isDemo && (
-          <div className="absolute left-6 -top-5 z-20 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
+          <div className="absolute left-6 -top-6 z-50 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
             Demo
           </div>
         )}
