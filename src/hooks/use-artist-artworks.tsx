@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { logger } from "@/utils/logger";
+import { ensureArray } from "@/utils/ensureArray";
 
 export const useArtistArtworks = (artistId: string | null) => {
   const [loading, setLoading] = useState(true);
@@ -47,20 +48,11 @@ export const useArtistArtworks = (artistId: string | null) => {
         setArtist(data);
         setArtistName(data.name || "");
 
-        // Handle different types of artwork data
+        // Handle different types of artwork data using the ensureArray utility
         if (data.artworks) {
-          if (Array.isArray(data.artworks)) {
-            setArtworks(data.artworks);
-          } else if (typeof data.artworks === "string") {
-            try {
-              const parsedArtworks = JSON.parse(data.artworks);
-              setArtworks(Array.isArray(parsedArtworks) ? parsedArtworks : []);
-            } catch (e) {
-              setArtworks([data.artworks]);
-            }
-          } else {
-            setArtworks([]);
-          }
+          // Convert any type of input to a string array
+          const artworkArray = ensureArray(data.artworks);
+          setArtworks(artworkArray);
         } else {
           setArtworks([]);
         }
@@ -132,25 +124,9 @@ export const useArtistArtworks = (artistId: string | null) => {
         throw fetchError;
       }
       
-      // Prepare the updated artworks array
-      let updatedArtworks: string[] = [];
-      
-      if (currentArtist.artworks) {
-        if (Array.isArray(currentArtist.artworks)) {
-          updatedArtworks = [...currentArtist.artworks, publicUrl];
-        } else if (typeof currentArtist.artworks === "string") {
-          try {
-            const parsedArtworks = JSON.parse(currentArtist.artworks);
-            updatedArtworks = [...(Array.isArray(parsedArtworks) ? parsedArtworks : []), publicUrl];
-          } catch (e) {
-            updatedArtworks = [currentArtist.artworks, publicUrl];
-          }
-        } else {
-          updatedArtworks = [publicUrl];
-        }
-      } else {
-        updatedArtworks = [publicUrl];
-      }
+      // Prepare the updated artworks array using ensureArray utility
+      const currentArtworks = ensureArray(currentArtist.artworks);
+      const updatedArtworks = [...currentArtworks, publicUrl];
       
       // Update the database
       const { error: updateError } = await supabase
@@ -175,8 +151,11 @@ export const useArtistArtworks = (artistId: string | null) => {
     }
   };
 
-  const handleRemoveArtwork = async (artworkUrl: string) => {
-    if (!artistId || !artworkUrl) return;
+  // Updated to accept index parameter
+  const handleRemoveArtwork = async (index: number): Promise<void> => {
+    if (!artistId || index < 0 || index >= artworks.length) return;
+    
+    const artworkUrl = artworks[index];
 
     try {
       // Extract the path from the URL
@@ -201,7 +180,7 @@ export const useArtistArtworks = (artistId: string | null) => {
       
       // Update artist's artworks array
       const numericId = parseInt(artistId, 10);
-      const updatedArtworks = artworks.filter(url => url !== artworkUrl);
+      const updatedArtworks = artworks.filter((_, i) => i !== index);
       
       const { error: updateError } = await supabase
         .from("artists")
@@ -221,7 +200,8 @@ export const useArtistArtworks = (artistId: string | null) => {
     }
   };
 
-  const handleSetAsBackgroundImage = async (artworkUrl: string) => {
+  // Fixed version that accepts a URL string
+  const handleSetAsBackgroundImage = async (artworkUrl: string): Promise<void> => {
     if (!artistId || !artworkUrl) return;
 
     try {
@@ -245,9 +225,10 @@ export const useArtistArtworks = (artistId: string | null) => {
     }
   };
 
-  const syncArtistImages = async () => {
+  // Updated to return boolean
+  const syncArtistImages = async (): Promise<boolean> => {
     try {
-      if (!artistId) return;
+      if (!artistId) return false;
       
       const numericId = parseInt(artistId, 10);
       
@@ -262,12 +243,15 @@ export const useArtistArtworks = (artistId: string | null) => {
         // Reload artist data to show updated images
         await fetchArtistData();
         toast.success("Artist images synchronized successfully");
+        return true;
       } else {
         toast.info(data?.message || "No changes to synchronize");
+        return true; // Still return true as the operation completed successfully
       }
     } catch (error: any) {
       logger.error("Error syncing artist images:", error);
       toast.error(`Failed to sync images: ${error.message}`);
+      return false;
     }
   };
 
