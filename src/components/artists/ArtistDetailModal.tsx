@@ -40,6 +40,12 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
 }) => {
   const isMobile = useIsMobile();
   const [api, setApi] = useState<CarouselApi | null>(null);
+  const [currentArtistIndex, setCurrentArtistIndex] = useState(selectedArtistIndex);
+  const currentArtist = artists[currentArtistIndex] || selectedArtist;
+  
+  // Check if the current artist should show Signature Artist or Demo badge
+  const isSignatureArtist = currentArtist?.id ? currentArtist.id >= 26 : false;
+  const isDemo = currentArtist?.id ? currentArtist.id !== 24 && currentArtist.id !== 26 : false;
   
   React.useEffect(() => {
     if (selectedArtist) {
@@ -50,8 +56,26 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
   React.useEffect(() => {
     if (api && open) {
       api.scrollTo(selectedArtistIndex);
+      setCurrentArtistIndex(selectedArtistIndex);
     }
   }, [api, selectedArtistIndex, open]);
+
+  // Update the current artist index when the carousel changes
+  useEffect(() => {
+    if (!api) return;
+    
+    const onSelect = () => {
+      const currentIndex = api.selectedScrollSnap();
+      setCurrentArtistIndex(currentIndex);
+      onArtistChange(currentIndex);
+    };
+
+    api.on("select", onSelect);
+    
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api, onArtistChange]);
 
   const handleCarouselChange = useCallback((index: number) => {
     if (index !== selectedArtistIndex) {
@@ -85,14 +109,10 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
     };
   }, [api, isMobile, open]);
 
-  // Check if the selected artist should show Signature Artist or Demo badge
-  const isSignatureArtist = selectedArtist?.id ? selectedArtist.id >= 26 : false;
-  const isDemo = selectedArtist?.id ? selectedArtist.id !== 24 && selectedArtist.id !== 26 : false;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* Mobile badges positioned above the modal */}
-      {isMobile && open && selectedArtist && (
+      {/* Mobile badges positioned above the modal - now uses currentArtistIndex */}
+      {isMobile && open && currentArtist && (
         <div className="fixed z-[51] top-[15%] left-0 right-0 flex justify-center pointer-events-none">
           <ArtistBadges 
             isSignatureArtist={isSignatureArtist}

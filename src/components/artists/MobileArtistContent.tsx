@@ -31,11 +31,6 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
       style={{ background: 'white', overflow: 'visible' }}
     >
       {/* Artist badges are now handled outside the modal in ArtistDetailModal.tsx */}
-      <ArtistBadges 
-        isSignatureArtist={isSignatureArtist} 
-        isDemo={isDemo}
-        isMobile={true}
-      />
       
       {/* Header Section */}
       <div className="px-6 pt-6 pb-2">
