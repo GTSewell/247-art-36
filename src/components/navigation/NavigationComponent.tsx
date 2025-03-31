@@ -41,7 +41,7 @@ const NavigationComponent = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent w-full`}>
       <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
         <div className={`flex justify-between items-center ${navExtraClass} w-full`}>
-          {/* Logo */}
+          {/* Logo - always on the left */}
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" 

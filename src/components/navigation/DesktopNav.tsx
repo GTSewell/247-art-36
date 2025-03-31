@@ -25,16 +25,20 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const isArtistDashboard = location.pathname.includes("/dashboard/artist");
   
   return (
-    <div className="hidden lg:flex lg:flex-1 lg:items-center">
-      <div className="flex items-center gap-4 mr-auto">
-        <NavLink to="/" isActive={isActive("/")} className="text-lg text-zap-yellow mr-4">
+    <div className="hidden lg:flex lg:flex-1 lg:items-center justify-between">
+      {/* Logo - Left side */}
+      <div className="flex items-center">
+        <Link to="/" className="mr-4">
           <img
             src="/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png"
             alt="247.ART Logo"
             className="h-10"
           />
-        </NavLink>
-        
+        </Link>
+      </div>
+      
+      {/* Navigation Links - Right side */}
+      <div className="flex items-center gap-4">
         <NavLink to="/artists" isActive={isActive("/artists")}>
           Artists
         </NavLink>
@@ -52,10 +56,8 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
           <ShoppingCart className="mr-2 h-4 w-4 inline" />
           Shop
         </NavLink>
-      </div>
-      
-      <div className="flex items-center gap-4">
-        <Link to="/cart" className="relative mr-2">
+        
+        <Link to="/cart" className="relative ml-2">
           <Button 
             variant="secondary" 
             size="icon" 

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { X, Menu, Home, Users, Palette, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
   const [showMenu, setShowMenu] = useState(isOpen);
 
   // Update internal state when prop changes
-  React.useEffect(() => {
+  useEffect(() => {
     setShowMenu(isOpen);
   }, [isOpen]);
 
