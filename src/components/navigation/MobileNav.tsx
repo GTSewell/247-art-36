@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { X, Menu, Home, Users, Palette, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/use-auth";
 import { useAppMode } from "@/contexts/AppModeContext";
 import MobileNavLink from "./MobileNavLink";
 

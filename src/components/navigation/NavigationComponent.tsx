@@ -54,7 +54,7 @@ const NavigationComponent = () => {
           <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
 
           {/* Mobile menu button - with cart badge */}
-          <div className="md:hidden relative">
+          <div className="lg:hidden relative">
             <Button
               variant="ghost"
               size="icon"

@@ -25,9 +25,9 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const isArtistDashboard = location.pathname.includes("/dashboard/artist");
   
   return (
-    <div className="hidden lg:flex lg:flex-1 lg:justify-between lg:items-center">
-      <div className="flex items-center gap-6 ml-2">
-        <NavLink to="/" isActive={isActive("/")} className="text-lg text-zap-yellow">
+    <div className="hidden lg:flex lg:flex-1 lg:items-center">
+      <div className="flex items-center gap-4 mr-auto">
+        <NavLink to="/" isActive={isActive("/")} className="text-lg text-zap-yellow mr-4">
           <img
             src="/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png"
             alt="247.ART Logo"
@@ -54,25 +54,27 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         </NavLink>
       </div>
       
-      <Link to="/cart" className="relative">
-        <Button 
-          variant="secondary" 
-          size="icon" 
-          className="p-0 rounded-md"
-          title="Shopping Cart"
-        >
-          <ShoppingCart className="h-5 w-5" />
-          {itemCount > 0 && (
-            <Badge 
-              className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-zap-red text-white rounded-full"
-            >
-              {itemCount}
-            </Badge>
-          )}
-        </Button>
-      </Link>
-      
-      <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
+      <div className="flex items-center gap-4">
+        <Link to="/cart" className="relative mr-2">
+          <Button 
+            variant="secondary" 
+            size="icon" 
+            className="p-0 rounded-md"
+            title="Shopping Cart"
+          >
+            <ShoppingCart className="h-5 w-5" />
+            {itemCount > 0 && (
+              <Badge 
+                className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-zap-red text-white rounded-full"
+              >
+                {itemCount}
+              </Badge>
+            )}
+          </Button>
+        </Link>
+        
+        <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
+      </div>
     </div>
   );
 };
