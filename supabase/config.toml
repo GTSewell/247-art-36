@@ -3,3 +3,15 @@ project_id = "iqmskopbhrzqqqjewdzv"
 
 [functions.create-demo-account]
 verify_jwt = false
+
+[functions.sync-artist-images]
+verify_jwt = false
+
+[functions.bulk-sync-artist-images]
+verify_jwt = false
+
+[functions.download-artist-images]
+verify_jwt = false
+
+[functions.shopify]
+verify_jwt = false

@@ -1,4 +1,3 @@
-
 import React from "react";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
@@ -21,26 +20,39 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   const location = useLocation();
   const { user: authUser } = useAuth();
   
-  // Check if we're on the cart page or artist dashboard
   const isCartPage = location.pathname === "/cart";
   const isArtistDashboard = location.pathname.includes("/dashboard/artist");
   
   return (
-    <div className="hidden md:flex items-center space-x-4 w-full justify-end">
-      <NavLink to="/artists" isActive={isActive("/artists")}>
-        Artists
-      </NavLink>
-      <NavLink to="/store" isActive={isActive("/store")}>
-        Store
-      </NavLink>
-      <NavLink to="/who-are-you" isActive={isActive("/who-are-you")}>
-        About Us
-      </NavLink>
-      <NavLink to="/details" isActive={isActive("/details")}>
-        Sign Up
-      </NavLink>
+    <div className="hidden lg:flex lg:flex-1 lg:justify-between lg:items-center">
+      <div className="flex items-center gap-6 ml-2">
+        <NavLink to="/" className="text-lg text-zap-yellow">
+          <img
+            src="/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png"
+            alt="247.ART Logo"
+            className="h-10"
+          />
+        </NavLink>
+        
+        <NavLink to="/artists" isActive={isActive("/artists")}>
+          Artists
+        </NavLink>
+        <NavLink to="/store" isActive={isActive("/store")}>
+          Store
+        </NavLink>
+        <NavLink to="/who-are-you" isActive={isActive("/who-are-you")}>
+          About Us
+        </NavLink>
+        <NavLink to="/details" isActive={isActive("/details")}>
+          Sign Up
+        </NavLink>
+        
+        <NavLink to="/shop">
+          <ShoppingCart className="mr-2 h-4 w-4 inline" />
+          Shop
+        </NavLink>
+      </div>
       
-      {/* Cart Icon with solid background for better contrast */}
       <Link to="/cart" className="relative">
         <Button 
           variant="secondary" 

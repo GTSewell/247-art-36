@@ -36,6 +36,14 @@ import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
 import AccountPage from "@/pages/pwa/AccountPage";
 
 import "./App.css";
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { ThemeProvider } from 'next-themes';
+import { BrowserRouter } from 'react-router-dom';
+import { ShopifyCartProvider } from './contexts/ShopifyCartContext';
+import Shop from './pages/Shop';
+import ShopifyCheckout from './pages/ShopifyCheckout';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const location = useLocation();
@@ -66,58 +74,74 @@ const App = () => {
   }
 
   return (
-    <CartProvider>
-      <Routes>
-        <Route 
-          path="/" 
-          element={usePWAUI ? <PWAHome /> : <Index />} 
-        />
-        <Route 
-          path="/artists" 
-          element={usePWAUI ? <PWAArtists /> : <Artists />} 
-        />
-        <Route 
-          path="/store" 
-          element={usePWAUI ? <PWAStore /> : <GeneralStore />} 
-        />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/messages" element={<Messages />} />
-        <Route path="/messages/:messageId" element={<MessageDetails />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/details" element={<Details />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/tour" element={<VirtualTour />} />
-        <Route path="/virtual-tour" element={<VirtualTour />} />
-        <Route path="/who-are-you" element={<WhoAreYou />} />
-        <Route path="/submit" element={<ArtistSubmission />} />
-        
-        {/* Admin routes */}
-        <Route 
-          path="/admin/artists" 
-          element={
-            <AdminProtectedRoute>
-              <ArtistManagement />
-            </AdminProtectedRoute>
-          } 
-        />
-        
-        {/* Tally Form Page - hidden from navigation */}
-        <Route path="/artistsubform" element={<TallyFormPage />} />
-        
-        {/* Account and Dashboard routes */}
-        <Route path="/account" element={<AccountPage />} />
-        <Route path="/dashboard/artist" element={<ArtistDashboard />} />
-        <Route path="/dashboard/collector" element={<CollectorDashboard />} />
-        
-        {/* Artist subdomain route - using artistName as parameter name for consistency */}
-        <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
-        
-        {/* 404 route */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      
-      <Toaster position="bottom-center" />
-    </CartProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppModeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <CartProvider>
+            <ShopifyCartProvider>
+              <div className={`App`}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route 
+                      path="/" 
+                      element={usePWAUI ? <PWAHome /> : <Index />} 
+                    />
+                    <Route 
+                      path="/artists" 
+                      element={usePWAUI ? <PWAArtists /> : <Artists />} 
+                    />
+                    <Route 
+                      path="/store" 
+                      element={usePWAUI ? <PWAStore /> : <GeneralStore />} 
+                    />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/messages" element={<Messages />} />
+                    <Route path="/messages/:messageId" element={<MessageDetails />} />
+                    <Route path="/auth" element={<Auth />} />
+                    <Route path="/details" element={<Details />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/tour" element={<VirtualTour />} />
+                    <Route path="/virtual-tour" element={<VirtualTour />} />
+                    <Route path="/who-are-you" element={<WhoAreYou />} />
+                    <Route path="/submit" element={<ArtistSubmission />} />
+                    
+                    {/* Admin routes */}
+                    <Route 
+                      path="/admin/artists" 
+                      element={
+                        <AdminProtectedRoute>
+                          <ArtistManagement />
+                        </AdminProtectedRoute>
+                      } 
+                    />
+                    
+                    {/* Tally Form Page - hidden from navigation */}
+                    <Route path="/artistsubform" element={<TallyFormPage />} />
+                    
+                    {/* Account and Dashboard routes */}
+                    <Route path="/account" element={<AccountPage />} />
+                    <Route path="/dashboard/artist" element={<ArtistDashboard />} />
+                    <Route path="/dashboard/collector" element={<CollectorDashboard />} />
+                    
+                    {/* Artist subdomain route - using artistName as parameter name for consistency */}
+                    <Route path="/artists/:artistName" element={<ArtistSubdomain />} />
+                    
+                    {/* 404 route */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </BrowserRouter>
+                <Toaster />
+              </div>
+            </ShopifyCartProvider>
+          </CartProvider>
+        </ThemeProvider>
+      </AppModeProvider>
+    </QueryClientProvider>
   );
 };
 

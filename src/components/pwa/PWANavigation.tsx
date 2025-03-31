@@ -1,36 +1,32 @@
-
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Home, Users, ShoppingBag } from 'lucide-react';
+import { Home, Users, ShoppingBag, ShoppingCart } from 'lucide-react';
 import { useAuth } from "@/hooks/use-auth";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useShopifyCart } from '@/contexts/ShopifyCartContext';
+import { Link } from 'react-router-dom';
 
 const PWANavigation = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { itemCount } = useCart();
+  const { itemCount } = useShopifyCart();
   
-  // Get display name from user data
   let displayName = 'Sign In';
   let initials = 'U';
   
   if (user) {
-    // For demo accounts, always display "Demo Artist"
     if (user.email?.includes('demo') || user.email?.includes('247art')) {
       displayName = 'Demo Artist';
       initials = 'DA';
     } else {
-      // Extract name from user metadata or use email if no name is available
       displayName = user.user_metadata?.full_name || '';
       
-      // If name is empty or contains @ (likely an email), use first part of email instead
       if (!displayName || displayName.includes('@')) {
         displayName = user.email ? user.email.split('@')[0] : 'User';
       }
       
-      // Get initials for avatar
       const nameParts = displayName.split(' ');
       if (nameParts.length > 1) {
         initials = `${nameParts[0].charAt(0)}${nameParts[1].charAt(0)}`;
@@ -40,7 +36,6 @@ const PWANavigation = () => {
     }
   }
 
-  // Handle account navigation based on authentication status
   const handleAccountClick = (e: React.MouseEvent) => {
     if (!user) {
       e.preventDefault();
@@ -49,14 +44,9 @@ const PWANavigation = () => {
   };
 
   return (
-    <>
-      {/* Top transparent header - Reduced height */}
-      <header className="fixed top-0 left-0 right-0 z-10 bg-black bg-opacity-0 pwa-header h-1"></header>
-      
-      {/* Bottom navigation bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-black text-white shadow-lg z-50 pwa-footer h-16">
-        <div className="flex justify-around items-center h-full px-2">
-          {/* Home icon - zap yellow */}
+    <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 z-40">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-around items-center h-16">
           <NavLink 
             to="/" 
             className={({ isActive }) => 
@@ -69,7 +59,6 @@ const PWANavigation = () => {
             <span className="text-xs mt-1">Home</span>
           </NavLink>
           
-          {/* Artists icon - zap blue */}
           <NavLink 
             to="/artists" 
             className={({ isActive }) => 
@@ -82,7 +71,6 @@ const PWANavigation = () => {
             <span className="text-xs mt-1">Artists</span>
           </NavLink>
           
-          {/* Store icon - zap red */}
           <NavLink 
             to="/store" 
             className={({ isActive }) => 
@@ -95,7 +83,18 @@ const PWANavigation = () => {
             <span className="text-xs mt-1">Store</span>
           </NavLink>
           
-          {/* Account icon - with cart badge overlay */}
+          <Link to="/shop" className="flex flex-col items-center justify-center">
+            <div className="relative">
+              <ShoppingCart className="h-6 w-6" />
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-zap-red text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
+            </div>
+            <span className="text-xs mt-1">Shop</span>
+          </Link>
+          
           <NavLink 
             to="/account" 
             className={({ isActive }) => 
@@ -128,8 +127,8 @@ const PWANavigation = () => {
             <span className="text-xs mt-1 font-medium">{displayName}</span>
           </NavLink>
         </div>
-      </nav>
-    </>
+      </div>
+    </div>
   );
 };
 
