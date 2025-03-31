@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, TableBody } from "@/components/ui/table";
 import { motion } from "framer-motion";
 import features from "./data/featuresData";
@@ -8,7 +8,9 @@ import FeatureRow from "./FeatureRow";
 import TableFooterComponent from "./TableFooter";
 
 const ArtistPackageTable = () => {
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  // Find the index of the "Genesis Price" feature to set it as expanded by default
+  const genesisPriceIndex = features.findIndex(feature => feature.name === "Genesis Price");
+  const [expandedRow, setExpandedRow] = useState<number | null>(genesisPriceIndex !== -1 ? genesisPriceIndex : null);
   
   // Filter out hidden features
   const visibleFeatures = features.filter(feature => !feature.hidden);
