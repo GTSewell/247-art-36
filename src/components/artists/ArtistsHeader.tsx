@@ -54,7 +54,7 @@ const ArtistsHeader: React.FC<ArtistsHeaderProps> = ({
   return <div className="mb-8">
       {/* Desktop view - single line layout */}
       <div className="hidden md:flex items-center justify-between gap-4">
-        <h1 className="text-4xl font-bold text-foreground whitespace-nowrap">Demo Artists</h1>
+        <h1 className="text-4xl font-bold text-foreground whitespace-nowrap">Feature Artists</h1>
         
         <div className="flex items-center gap-4 flex-1 justify-end">
           <div className="flex items-center space-x-2">
