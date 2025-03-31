@@ -8,7 +8,6 @@ import './index.css'
 import { registerServiceWorker } from './registerServiceWorker'
 import { AppModeProvider } from './contexts/AppModeContext'
 import { PasswordProtectionProvider } from './contexts/PasswordProtectionContext'
-import { AuthProvider } from './contexts/AuthContext'
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -42,13 +41,11 @@ const renderApp = () => {
       <React.StrictMode>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <AppModeProvider>
-                <PasswordProtectionProvider>
-                  <App />
-                </PasswordProtectionProvider>
-              </AppModeProvider>
-            </AuthProvider>
+            <AppModeProvider>
+              <PasswordProtectionProvider>
+                <App />
+              </PasswordProtectionProvider>
+            </AppModeProvider>
           </QueryClientProvider>
         </BrowserRouter>
       </React.StrictMode>
