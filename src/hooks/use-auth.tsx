@@ -40,5 +40,11 @@ export function useAuth() {
     return () => subscription.unsubscribe();
   }, []);
 
-  return { user, session, isLoading };
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
+  };
+
+  return { user, session, isLoading, logout };
 }
