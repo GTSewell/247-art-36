@@ -1,4 +1,3 @@
-
 import React from "react";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
@@ -9,31 +8,30 @@ import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
-
 interface DesktopNavProps {
   isActive: (path: string) => boolean;
   user: any | null;
   isLoading: boolean;
 }
-
-const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
-  const { itemCount } = useCart();
+const DesktopNav = ({
+  isActive,
+  user,
+  isLoading
+}: DesktopNavProps) => {
+  const {
+    itemCount
+  } = useCart();
   const location = useLocation();
-  const { user: authUser } = useAuth();
-  
+  const {
+    user: authUser
+  } = useAuth();
   const isCartPage = location.pathname === "/cart";
   const isArtistDashboard = location.pathname.includes("/dashboard/artist");
-  
-  return (
-    <div className="hidden lg:flex lg:flex-1 lg:items-center justify-between">
+  return <div className="hidden lg:flex lg:flex-1 lg:items-center justify-between">
       {/* Logo - Left side */}
       <div className="flex items-center">
         <Link to="/" className="mr-4">
-          <img
-            src="/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png"
-            alt="247.ART Logo"
-            className="h-10"
-          />
+          
         </Link>
       </div>
       
@@ -58,27 +56,16 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
         </NavLink>
         
         <Link to="/cart" className="relative ml-2">
-          <Button 
-            variant="secondary" 
-            size="icon" 
-            className="p-0 rounded-md"
-            title="Shopping Cart"
-          >
+          <Button variant="secondary" size="icon" className="p-0 rounded-md" title="Shopping Cart">
             <ShoppingCart className="h-5 w-5" />
-            {itemCount > 0 && (
-              <Badge 
-                className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-zap-red text-white rounded-full"
-              >
+            {itemCount > 0 && <Badge className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-zap-red text-white rounded-full">
                 {itemCount}
-              </Badge>
-            )}
+              </Badge>}
           </Button>
         </Link>
         
         <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default DesktopNav;
