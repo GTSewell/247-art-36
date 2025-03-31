@@ -86,7 +86,14 @@ const NavigationComponent = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <MobileNav isOpen={isOpen} isActive={isActive} user={user} isLoading={isLoading} />
+      {isMobile && (
+        <MobileNav 
+          isOpen={isOpen} 
+          isActive={isActive} 
+          user={user} 
+          isLoading={isLoading} 
+        />
+      )}
     </nav>
   );
 };

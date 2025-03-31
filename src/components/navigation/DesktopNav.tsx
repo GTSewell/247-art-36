@@ -1,3 +1,4 @@
+
 import React from "react";
 import NavLink from "./NavLink";
 import UserMenu from "./UserMenu";
@@ -26,7 +27,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   return (
     <div className="hidden lg:flex lg:flex-1 lg:justify-between lg:items-center">
       <div className="flex items-center gap-6 ml-2">
-        <NavLink to="/" className="text-lg text-zap-yellow">
+        <NavLink to="/" isActive={isActive("/")} className="text-lg text-zap-yellow">
           <img
             src="/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png"
             alt="247.ART Logo"
@@ -47,7 +48,7 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
           Sign Up
         </NavLink>
         
-        <NavLink to="/shop">
+        <NavLink to="/shop" isActive={isActive("/shop")}>
           <ShoppingCart className="mr-2 h-4 w-4 inline" />
           Shop
         </NavLink>
