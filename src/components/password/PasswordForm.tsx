@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -45,13 +46,13 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               return;
             }
           } catch (innerError) {
-            logger.warn(`Fallback IP service ${service} failed:`, innerError);
+            logger.warn(`Fallback IP service ${service} failed:`, { error: innerError });
           }
         }
         
-        logger.error("All IP address services failed");
+        logger.error("All IP address services failed", { success: false });
       } catch (error) {
-        logger.error("Error fetching IP address:", error);
+        logger.error("Error fetching IP address:", { error });
       }
     };
     
@@ -86,7 +87,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           .single();
         
         if (settingsError) {
-          logger.error("Failed to fetch recipient data:", settingsError);
+          logger.error("Failed to fetch recipient data:", { error: settingsError });
           toast.error("Error retrieving user data");
         } else {
           const updatedCount = (settingsData?.usage_count || 0) + 1;
@@ -121,7 +122,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               });
             
             if (logError) {
-              logger.error("Error inserting log:", logError);
+              logger.error("Error inserting log:", { error: logError });
               
               const { error: rpcError } = await supabase.rpc('log_password_access', {
                 p_site_password: normalizedPassword,
@@ -131,7 +132,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               });
               
               if (rpcError) {
-                logger.error("RPC fallback logging also failed:", rpcError);
+                logger.error("RPC fallback logging also failed:", { error: rpcError });
               } else {
                 logger.info("RPC fallback logging succeeded", { success: true });
               }
@@ -156,7 +157,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               }
             }
           } catch (logError) {
-            logger.error("Error with IP fetch or logging:", logError);
+            logger.error("Error with IP fetch or logging:", { error: logError });
             
             const { error: fallbackLogError } = await supabase
               .from('password_access_logs')
@@ -168,7 +169,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               });
               
             if (fallbackLogError) {
-              logger.error("Error with fallback logging:", fallbackLogError);
+              logger.error("Error with fallback logging:", { error: fallbackLogError });
             } else {
               logger.info("Fallback password access logged successfully", { success: true });
             }
@@ -200,7 +201,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
         });
       }
     } catch (error: any) {
-      logger.error('Error checking password:', error);
+      logger.error('Error checking password:', { error });
       toast.error(`Error: ${error.message || 'Failed to validate password'}`);
     } finally {
       setIsLoading(false);
