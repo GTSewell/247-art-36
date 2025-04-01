@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { validateSitePassword, signInWithDemoAccount } from '@/utils/auth-utils';
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { SiteSettingsRow, PasswordAccessLogRow } from '@/types/database';
 
 interface PasswordFormProps {
   setIsPasswordCorrect: (isCorrect: boolean) => void;
@@ -81,7 +82,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
       
       if (isCorrect) {
         const { data: settingsData, error: settingsError } = await supabase
-          .from('site_settings')
+          .from<SiteSettingsRow>('site_settings')
           .select('recipient_name, usage_count')
           .eq('site_password', normalizedPassword)
           .single();
@@ -98,7 +99,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           });
           
           await supabase
-            .from('site_settings')
+            .from<SiteSettingsRow>('site_settings')
             .update({ usage_count: updatedCount })
             .eq('site_password', normalizedPassword);
           
@@ -113,7 +114,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             });
             
             const { error: logError } = await supabase
-              .from('password_access_logs')
+              .from<PasswordAccessLogRow>('password_access_logs')
               .insert({ 
                 site_password: normalizedPassword,
                 ip_address: clientIp, 
@@ -140,7 +141,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               logger.info("Password access logged successfully", { success: true });
               
               const { data: uniqueIpData, error: uniqueIpError } = await supabase
-                .from('password_access_logs')
+                .from<PasswordAccessLogRow>('password_access_logs')
                 .select('ip_address')
                 .eq('site_password', normalizedPassword);
                 
@@ -149,7 +150,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
                 const uniqueIpCount = uniqueIps.size;
                 
                 await supabase
-                  .from('site_settings')
+                  .from<SiteSettingsRow>('site_settings')
                   .update({ unique_ip_count: uniqueIpCount })
                   .eq('site_password', normalizedPassword);
                   
@@ -160,7 +161,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             logger.error("Error with IP fetch or logging:", { error: logError });
             
             const { error: fallbackLogError } = await supabase
-              .from('password_access_logs')
+              .from<PasswordAccessLogRow>('password_access_logs')
               .insert({ 
                 site_password: normalizedPassword,
                 ip_address: 'client-side-fallback', 

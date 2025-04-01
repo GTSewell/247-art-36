@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { logger } from "@/utils/logger";
 import { validateSitePassword, signInWithDemoAccount } from "@/utils/auth-utils";
 import { supabase } from "@/integrations/supabase/client";
+import { SiteSettingsRow, PasswordAccessLogRow } from "@/types/database";
 
 interface PasswordGateProps {
   onAuthenticated: () => void;
@@ -23,17 +24,17 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
 
     try {
       const lowerPassword = password.toLowerCase().trim();
-      logger.info('Attempting login with password:', lowerPassword);
+      logger.info('Attempting login with password:', { password: lowerPassword });
 
       const isValid = await validateSitePassword(lowerPassword);
-      logger.info('Password validation result:', isValid);
+      logger.info('Password validation result:', { isValid });
 
       if (isValid) {
-        logger.info('Valid password found, proceeding with authentication');
+        logger.info('Valid password found, proceeding with authentication', { success: true });
         
         // Get current recipient name for password (to store in logs)
         const { data: currentSettings, error: settingsError } = await supabase
-          .from('site_settings')
+          .from<SiteSettingsRow>('site_settings')
           .select('recipient_name')
           .eq('site_password', lowerPassword)
           .single();
@@ -44,15 +45,15 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         if (recipientName.trim()) {
           try {
             await supabase
-              .from('site_settings')
+              .from<SiteSettingsRow>('site_settings')
               .update({ 
                 recipient_name: recipientName.trim()
               })
               .eq('site_password', lowerPassword);
             
-            logger.info("Recipient name updated for password:", lowerPassword);
+            logger.info("Recipient name updated for password:", { password: lowerPassword });
           } catch (updateError) {
-            logger.error("Failed to update recipient name:", updateError);
+            logger.error("Failed to update recipient name:", { error: updateError });
           }
           
           // Log access with original and new recipient name
@@ -63,7 +64,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             const clientIp = ipData.ip || 'unknown';
             
             const { error: logError } = await supabase
-              .from('password_access_logs')
+              .from<PasswordAccessLogRow>('password_access_logs')
               .insert({ 
                 site_password: lowerPassword,
                 ip_address: clientIp, 
@@ -72,14 +73,14 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
               });
               
             if (logError) {
-              logger.error("Error logging password access:", logError);
+              logger.error("Error logging password access:", { error: logError });
             } else {
-              logger.info("Password access logged successfully");
+              logger.info("Password access logged successfully", { success: true });
               
               // Update the unique_ip_count in site_settings
               // Calculate the current unique IP count
               const { data: uniqueIpData, error: uniqueIpError } = await supabase
-                .from('password_access_logs')
+                .from<PasswordAccessLogRow>('password_access_logs')
                 .select('ip_address')
                 .eq('site_password', lowerPassword);
                 
@@ -90,19 +91,19 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
                 
                 // Update the site_settings table with the new count
                 await supabase
-                  .from('site_settings')
+                  .from<SiteSettingsRow>('site_settings')
                   .update({ unique_ip_count: uniqueIpCount })
                   .eq('site_password', lowerPassword);
                   
-                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${lowerPassword}`);
+                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${lowerPassword}`, { count: uniqueIpCount });
               }
             }
           } catch (logError) {
-            logger.error("Error with IP fetch:", logError);
+            logger.error("Error with IP fetch:", { error: logError });
             
             // Fallback logging without IP
             const { error: fallbackLogError } = await supabase
-              .from('password_access_logs')
+              .from<PasswordAccessLogRow>('password_access_logs')
               .insert({ 
                 site_password: lowerPassword,
                 ip_address: 'client-side-fallback', 
@@ -111,7 +112,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
               });
               
             if (fallbackLogError) {
-              logger.error("Error with fallback logging:", fallbackLogError);
+              logger.error("Error with fallback logging:", { error: fallbackLogError });
             }
           }
         }
@@ -120,15 +121,15 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         const signedIn = await signInWithDemoAccount();
         
         if (signedIn) {
-          logger.info('Auto-signed in with demo account');
+          logger.info('Auto-signed in with demo account', { success: true });
         } else {
-          logger.warn('Could not auto-sign in with demo account');
+          logger.warn('Could not auto-sign in with demo account', { success: false });
         }
         
         // If password matches, authenticate user
         onAuthenticated();
       } else {
-        logger.info('Invalid password attempt');
+        logger.info('Invalid password attempt', { success: false });
         toast({
           variant: "destructive",
           title: "Incorrect password",
@@ -136,7 +137,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         });
       }
     } catch (error) {
-      logger.error('Password check error:', error);
+      logger.error('Password check error:', { error });
       toast({
         variant: "destructive",
         title: "Error",

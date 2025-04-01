@@ -1,6 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { SiteSettingsRow } from "@/types/database";
 
 /**
  * Validates a site password against the database
@@ -16,7 +17,7 @@ export const validateSitePassword = async (password: string): Promise<boolean> =
     
     // Get all site passwords
     const { data, error } = await supabase
-      .from('site_settings')
+      .from<SiteSettingsRow>('site_settings')
       .select('site_password')
       .eq('site_password', normalizedPassword);
     
@@ -33,7 +34,7 @@ export const validateSitePassword = async (password: string): Promise<boolean> =
     if (isCorrect) {
       // After successful validation, perform the update in the background
       supabase
-        .from('site_settings')
+        .from<SiteSettingsRow>('site_settings')
         .update({
           created_at: new Date().toISOString()
         })
