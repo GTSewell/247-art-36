@@ -14,9 +14,17 @@ const NotFound = () => {
     const path = location.pathname.replace(/^\//, '');
     
     // Check if this is an artists path with a subdomain format request
-    return location.pathname.startsWith('/artists/') && 
-           path.split('/').length > 1 && 
-           !path.includes(' ');
+    const isArtistPath = location.pathname.startsWith('/artists/') && 
+                        path.split('/').length > 1 && 
+                        !path.includes(' ');
+                        
+    // Check if we're on a subdomain (not www or the main domain)
+    const hostname = window.location.hostname;
+    const isDomainWithSubdomain = hostname.includes('.247.art') && 
+                                  !hostname.startsWith('www.') && 
+                                  hostname !== '247.art';
+    
+    return isArtistPath || isDomainWithSubdomain;
   }, [location.pathname]);
 
   useEffect(() => {
@@ -41,7 +49,7 @@ const NotFound = () => {
         <p className="text-xl mb-8">But stay tuned for the launch!</p>
         
         <Button asChild size="lg" variant="outline" className="bg-white hover:bg-gray-100 border-black">
-          <Link to="/">Go to 247.art</Link>
+          <Link to="https://247.art">Go to 247.art</Link>
         </Button>
       </div>
     );
