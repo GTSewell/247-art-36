@@ -17,11 +17,9 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
   const [nameError, setNameError] = useState('');
   const [ipAddress, setIpAddress] = useState<string | null>(null);
   
-  // Try to fetch IP address when component mounts
   useEffect(() => {
     const getIpAddress = async () => {
       try {
-        // Try main IP service
         const response = await fetch('https://api.ipify.org?format=json');
         if (response.ok) {
           const data = await response.json();
@@ -30,7 +28,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           return;
         }
         
-        // Fallback services if the first one fails
         const fallbackServices = [
           'https://ipinfo.io/json',
           'https://api.ip.sb/jsonip',
@@ -52,7 +49,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           }
         }
         
-        // If we get here, all services failed
         logger.error("All IP address services failed");
       } catch (error) {
         logger.error("Error fetching IP address:", error);
@@ -65,7 +61,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate the user name field - more strict validation now
     if (!userName.trim()) {
       setNameError('Please enter your name');
       return;
@@ -77,7 +72,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
     logger.info("Attempting to validate password:", { password: password.substring(0, 2) + '***', userName });
     
     try {
-      // Normalize password - lowercase and trim whitespace
       const normalizedPassword = password.toLowerCase().trim();
       logger.info("Normalized password:", { normalizedPassword: normalizedPassword.substring(0, 2) + '***' });
       
@@ -85,7 +79,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
       logger.info("Password validation result:", { isCorrect });
       
       if (isCorrect) {
-        // Fetch recipient name from the database
         const { data: settingsData, error: settingsError } = await supabase
           .from('site_settings')
           .select('recipient_name, usage_count')
@@ -96,7 +89,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           logger.error("Failed to fetch recipient data:", settingsError);
           toast.error("Error retrieving user data");
         } else {
-          // Increment usage count manually
           const updatedCount = (settingsData?.usage_count || 0) + 1;
           
           logger.info("Updating usage count", { 
@@ -109,9 +101,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             .update({ usage_count: updatedCount })
             .eq('site_password', normalizedPassword);
           
-          // Log access with both the original recipient name and user-provided name
           try {
-            // Use provided IP or fallback to client-side detection
             const clientIp = ipAddress || 'client-detection-failed';
             
             logger.info("Logging password access with the following data:", {
@@ -133,7 +123,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             if (logError) {
               logger.error("Error inserting log:", logError);
               
-              // Try direct RPC call as a last resort
               const { error: rpcError } = await supabase.rpc('log_password_access', {
                 p_site_password: normalizedPassword,
                 p_ip_address: clientIp,
@@ -149,19 +138,15 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             } else {
               logger.info("Password access logged successfully", { success: true });
               
-              // Update the unique_ip_count in site_settings
-              // Calculate the current unique IP count
               const { data: uniqueIpData, error: uniqueIpError } = await supabase
                 .from('password_access_logs')
                 .select('ip_address')
                 .eq('site_password', normalizedPassword);
                 
               if (!uniqueIpError && uniqueIpData) {
-                // Get unique IPs using Set
                 const uniqueIps = new Set(uniqueIpData.map(log => log.ip_address));
                 const uniqueIpCount = uniqueIps.size;
                 
-                // Update the site_settings table with the new count
                 await supabase
                   .from('site_settings')
                   .update({ unique_ip_count: uniqueIpCount })
@@ -173,7 +158,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           } catch (logError) {
             logger.error("Error with IP fetch or logging:", logError);
             
-            // Fallback logging without IP
             const { error: fallbackLogError } = await supabase
               .from('password_access_logs')
               .insert({ 
@@ -190,7 +174,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             }
           }
           
-          // Personalized welcome message
           if (userName.trim()) {
             toast.success(`Welcome ${userName}!`);
           } else if (settingsData?.recipient_name) {
@@ -200,7 +183,6 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           }
         }
         
-        // Try to sign in with demo account automatically
         const signedIn = await signInWithDemoAccount();
         
         if (signedIn) {
