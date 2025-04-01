@@ -8,44 +8,43 @@ export const useClientIp = () => {
   
   useEffect(() => {
     const fetchIpAddress = async () => {
+      // Log browser information to help debug
+      const browserInfo = {
+        userAgent: navigator.userAgent,
+        browser: navigator.userAgent.match(/(edge|edg|chrome|safari|firefox|msie|trident)/i)?.[0]?.toLowerCase() || 'unknown'
+      };
+      
+      logger.info("Browser information:", browserInfo);
+      
       try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        if (response.ok) {
-          const data = await response.json();
-          setClientIp(data.ip);
-          logger.info("Successfully obtained IP address from primary service", { ip: data.ip });
-          setIsLoading(false);
-          return;
-        }
-        
-        const fallbackServices = [
-          'https://ipinfo.io/json',
-          'https://api.ip.sb/jsonip',
-          'https://api64.ipify.org?format=json'
+        // Try all services with a timeout to avoid hanging
+        const ipPromises = [
+          fetchWithTimeout('https://api.ipify.org?format=json', 3000),
+          fetchWithTimeout('https://ipinfo.io/json', 3000),
+          fetchWithTimeout('https://api.ip.sb/jsonip', 3000),
+          fetchWithTimeout('https://api64.ipify.org?format=json', 3000)
         ];
         
-        for (const service of fallbackServices) {
-          try {
-            const fallbackResponse = await fetch(service);
-            if (fallbackResponse.ok) {
-              const fallbackData = await fallbackResponse.json();
-              const ip = fallbackData.ip;
-              setClientIp(ip);
-              logger.info(`Successfully obtained IP address from fallback service ${service}`, { ip });
-              setIsLoading(false);
-              return;
-            }
-          } catch (innerError) {
-            logger.warn(`Fallback IP service ${service} failed:`, { error: innerError });
+        // Race the promises - use the first one that resolves
+        const response = await Promise.any(ipPromises);
+        
+        if (response) {
+          const data = await response.json();
+          const ip = data.ip;
+          if (ip) {
+            setClientIp(ip);
+            logger.info("Successfully obtained IP address", { ip });
+            setIsLoading(false);
+            return;
           }
         }
         
-        logger.error("All IP address services failed", { success: false });
-        setClientIp('client-detection-failed');
-        setIsLoading(false);
+        // If we get here, no service worked
+        throw new Error("All IP services failed");
       } catch (error) {
-        logger.error("Error fetching IP address:", { error });
-        setClientIp('client-detection-error');
+        logger.warn("IP detection failed - proceeding without IP:", { error, browser: browserInfo.browser });
+        // Set to a generic value but don't block the form
+        setClientIp('ip-not-detected');
         setIsLoading(false);
       }
     };
@@ -54,4 +53,14 @@ export const useClientIp = () => {
   }, []);
   
   return { clientIp, isLoading };
+};
+
+// Helper function to add timeout to fetch
+const fetchWithTimeout = (url: string, timeout: number) => {
+  return Promise.race([
+    fetch(url),
+    new Promise<Response>((_, reject) => 
+      setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)
+    )
+  ]) as Promise<Response>;
 };

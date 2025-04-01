@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { logger } from '@/utils/logger';
 import { PasswordFormFields } from './PasswordFormFields';
-import { useIpAddress } from '@/hooks/use-ip-address';
+import { useClientIp } from '@/hooks/use-client-ip';
 import { submitPassword } from '@/services/password-service';
 import { toast } from 'sonner';
 
@@ -15,7 +15,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
   const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [nameError, setNameError] = useState('');
-  const { ipAddress } = useIpAddress();
+  const { clientIp, isLoading: ipLoading } = useClientIp();
   
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,14 +30,16 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
     setIsLoading(true);
     logger.info("Attempting to validate password:", { 
       password: password.substring(0, 2) + '***', 
-      userName 
+      userName,
+      browserInfo: navigator.userAgent
     });
     
     try {
+      // We use clientIp even if it's "client-detection-failed" - this is now handled gracefully
       const result = await submitPassword({
         password,
         userName,
-        ipAddress
+        ipAddress: clientIp
       });
       
       if (result.isCorrect) {
