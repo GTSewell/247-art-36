@@ -25,7 +25,7 @@ const TableFooterComponent = () => {
         </TableCell>
       </TableRow>
       <TableRow className="text-center hover:bg-transparent border-0">
-        <TableCell colSpan={2} className="text-xs text-gray-600 italic p-2">
+        <TableCell colSpan={2} className="text-xs text-gray-600 italic p-2 font-medium">
           *We also accept payment in Ethereum and USDT/C. Please contact us directly for more information.
         </TableCell>
       </TableRow>
