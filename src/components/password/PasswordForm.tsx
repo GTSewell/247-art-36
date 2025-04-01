@@ -71,11 +71,18 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
     }
     
     setIsLoading(true);
-    logger.info("Attempting to validate password:", { password: password.substring(0, 2) + '***', userName });
+    // Fix: Pass an object as the second parameter, not a string
+    logger.info("Attempting to validate password:", { 
+      password: password.substring(0, 2) + '***', 
+      userName 
+    });
     
     try {
       const normalizedPassword = password.toLowerCase().trim();
-      logger.info("Normalized password:", { normalizedPassword: normalizedPassword.substring(0, 2) + '***' });
+      // Fix: Pass an object as the second parameter, not a string
+      logger.info("Normalized password:", { 
+        normalizedPassword: normalizedPassword.substring(0, 2) + '***' 
+      });
       
       const isCorrect = await validateSitePassword(normalizedPassword);
       logger.info("Password validation result:", { isCorrect });
@@ -154,7 +161,9 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
                   .update({ unique_ip_count: uniqueIpCount })
                   .eq('site_password', normalizedPassword);
                   
-                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}`, { count: uniqueIpCount });
+                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}`, { 
+                  count: uniqueIpCount 
+                });
               }
             }
           } catch (logError) {
@@ -196,7 +205,9 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
       } else {
-        logger.error("Password validation failed for:", { password: normalizedPassword.substring(0, 2) + '***' });
+        logger.error("Password validation failed for:", { 
+          password: normalizedPassword.substring(0, 2) + '***' 
+        });
         toast.error('Incorrect password. Please try again.', {
           duration: 3000
         });
