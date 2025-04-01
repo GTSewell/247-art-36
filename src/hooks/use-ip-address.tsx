@@ -17,7 +17,7 @@ export const useIpAddress = () => {
       logger.info("Browser information:", browserInfo);
       
       try {
-        // Try all services with a timeout to avoid hanging
+        // Instead of Promise.any, use Promise.allSettled and take the first resolved promise
         const ipPromises = [
           fetchWithTimeout('https://api.ipify.org?format=json', 3000),
           fetchWithTimeout('https://ipinfo.io/json', 3000),
@@ -25,12 +25,19 @@ export const useIpAddress = () => {
           fetchWithTimeout('https://api64.ipify.org?format=json', 3000)
         ];
         
-        // Race the promises - use the first one that resolves
-        const response = await Promise.any(ipPromises);
+        const results = await Promise.allSettled(ipPromises);
         
-        if (response) {
+        // Find the first fulfilled promise
+        const fulfilledResult = results.find(
+          (result): result is PromiseFulfilledResult<Response> => 
+            result.status === 'fulfilled'
+        );
+        
+        if (fulfilledResult) {
+          const response = fulfilledResult.value;
           const data = await response.json();
           const ip = data.ip;
+          
           if (ip) {
             setIpAddress(ip);
             logger.info("Successfully obtained IP address", { ip });
