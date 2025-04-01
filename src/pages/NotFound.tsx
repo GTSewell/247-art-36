@@ -10,47 +10,40 @@ const NotFound = () => {
 
   // Check if the current URL appears to be a subdomain pattern request
   const isSubdomainRequest = useMemo(() => {
-    // Extract the path without leading slash
-    const path = location.pathname.replace(/^\//, '');
-    
-    // Check if this is an artists path with a subdomain format request
-    const isArtistPath = location.pathname.startsWith('/artists/') && 
-                        path.split('/').length > 1 && 
-                        !path.includes(' ');
-                        
     // Check if we're on a subdomain (not www or the main domain)
     const hostname = window.location.hostname;
     const isDomainWithSubdomain = hostname && 
-                                  hostname.includes('.247.art') && 
-                                  !hostname.startsWith('www.') && 
-                                  hostname !== '247.art';
+                                hostname.includes('.247.art') && 
+                                !hostname.startsWith('www.') && 
+                                hostname !== '247.art';
     
     // Log detailed info for debugging
-    console.log('Current hostname:', hostname);
-    console.log('Current pathname:', location.pathname);
-    console.log('Is artist path check:', isArtistPath);
-    console.log('Is subdomain check:', isDomainWithSubdomain);
-    console.log('Final subdomain detection result:', isArtistPath || isDomainWithSubdomain);
+    logger.info('NotFound page detection', { 
+      hostname,
+      pathname: location.pathname,
+      isDomainWithSubdomain,
+      fullUrl: window.location.href
+    });
     
-    // Always show the special page on subdomains
-    if (isDomainWithSubdomain) {
-      logger.info(`Subdomain detected: ${hostname}`, { hostname });
-      return true;
-    }
-    
-    return isArtistPath || isDomainWithSubdomain;
+    return isDomainWithSubdomain;
   }, [location.pathname]);
 
   useEffect(() => {
-    logger.error(
-      `404 Error: User attempted to access non-existent route: ${location.pathname}`,
-      { 
-        path: location.pathname, 
-        search: location.search, 
+    if (isSubdomainRequest) {
+      logger.info(`Subdomain page access detected`, { 
         hostname: window.location.hostname,
-        isSubdomainRequest: isSubdomainRequest
-      }
-    );
+        path: location.pathname
+      });
+    } else {
+      logger.error(
+        `404 Error: User attempted to access non-existent route: ${location.pathname}`,
+        { 
+          path: location.pathname, 
+          search: location.search, 
+          hostname: window.location.hostname
+        }
+      );
+    }
   }, [location.pathname, location.search, isSubdomainRequest]);
 
   // If we detect this is a subdomain request, show the custom message
