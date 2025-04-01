@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -122,7 +121,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               user_provided_name: userName.trim() || null
             });
             
-            const { data: logData, error: logError } = await supabase
+            const { error: logError } = await supabase
               .from('password_access_logs')
               .insert({ 
                 site_password: normalizedPassword,
@@ -145,10 +144,10 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               if (rpcError) {
                 logger.error("RPC fallback logging also failed:", rpcError);
               } else {
-                logger.info("RPC fallback logging succeeded");
+                logger.info("RPC fallback logging succeeded", { success: true });
               }
             } else {
-              logger.info("Password access logged successfully:", logData);
+              logger.info("Password access logged successfully", { success: true });
               
               // Update the unique_ip_count in site_settings
               // Calculate the current unique IP count
@@ -168,7 +167,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
                   .update({ unique_ip_count: uniqueIpCount })
                   .eq('site_password', normalizedPassword);
                   
-                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}`);
+                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}`, { count: uniqueIpCount });
               }
             }
           } catch (logError) {
@@ -187,7 +186,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
             if (fallbackLogError) {
               logger.error("Error with fallback logging:", fallbackLogError);
             } else {
-              logger.info("Fallback password access logged successfully");
+              logger.info("Fallback password access logged successfully", { success: true });
             }
           }
           
@@ -205,15 +204,15 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
         const signedIn = await signInWithDemoAccount();
         
         if (signedIn) {
-          logger.info("Demo account sign-in successful after password entry");
+          logger.info("Demo account sign-in successful after password entry", { success: true });
         } else {
-          logger.warn("Demo account sign-in failed after password entry");
+          logger.warn("Demo account sign-in failed after password entry", { success: false });
         }
         
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
       } else {
-        logger.error("Password validation failed for:", normalizedPassword.substring(0, 2) + '***');
+        logger.error("Password validation failed for:", { password: normalizedPassword.substring(0, 2) + '***' });
         toast.error('Incorrect password. Please try again.', {
           duration: 3000
         });
