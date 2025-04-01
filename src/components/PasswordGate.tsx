@@ -34,7 +34,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         
         // Get current recipient name for password (to store in logs)
         const { data: currentSettings, error: settingsError } = await supabase
-          .from<SiteSettingsRow>('site_settings')
+          .from('site_settings')
           .select('recipient_name')
           .eq('site_password', lowerPassword)
           .single();
@@ -45,7 +45,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
         if (recipientName.trim()) {
           try {
             await supabase
-              .from<SiteSettingsRow>('site_settings')
+              .from('site_settings')
               .update({ 
                 recipient_name: recipientName.trim()
               })
@@ -64,7 +64,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             const clientIp = ipData.ip || 'unknown';
             
             const { error: logError } = await supabase
-              .from<PasswordAccessLogRow>('password_access_logs')
+              .from('password_access_logs')
               .insert({ 
                 site_password: lowerPassword,
                 ip_address: clientIp, 
@@ -80,7 +80,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
               // Update the unique_ip_count in site_settings
               // Calculate the current unique IP count
               const { data: uniqueIpData, error: uniqueIpError } = await supabase
-                .from<PasswordAccessLogRow>('password_access_logs')
+                .from('password_access_logs')
                 .select('ip_address')
                 .eq('site_password', lowerPassword);
                 
@@ -91,7 +91,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
                 
                 // Update the site_settings table with the new count
                 await supabase
-                  .from<SiteSettingsRow>('site_settings')
+                  .from('site_settings')
                   .update({ unique_ip_count: uniqueIpCount })
                   .eq('site_password', lowerPassword);
                   
@@ -103,7 +103,7 @@ const PasswordGate = ({ onAuthenticated }: PasswordGateProps) => {
             
             // Fallback logging without IP
             const { error: fallbackLogError } = await supabase
-              .from<PasswordAccessLogRow>('password_access_logs')
+              .from('password_access_logs')
               .insert({ 
                 site_password: lowerPassword,
                 ip_address: 'client-side-fallback', 
