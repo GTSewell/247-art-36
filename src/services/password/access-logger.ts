@@ -79,7 +79,7 @@ export const logPasswordAccess = async ({
         logger.info("Fallback password access logged successfully", { success: true });
       }
     } catch (finalError) {
-      logger.error("All logging attempts failed", { error: finalError });
+      logger.error("All logging attempts failed:", { error: finalError });
     }
   }
 };
