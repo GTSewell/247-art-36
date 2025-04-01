@@ -24,13 +24,17 @@ const NotFound = () => {
                                   !hostname.startsWith('www.') && 
                                   hostname !== '247.art';
     
+    // Log info for debugging
+    console.log('Hostname:', hostname);
+    console.log('Is subdomain check:', isDomainWithSubdomain);
+    
     return isArtistPath || isDomainWithSubdomain;
   }, [location.pathname]);
 
   useEffect(() => {
     logger.error(
       `404 Error: User attempted to access non-existent route: ${location.pathname}`,
-      { path: location.pathname, search: location.search }
+      { path: location.pathname, search: location.search, hostname: window.location.hostname }
     );
   }, [location.pathname, location.search]);
 
