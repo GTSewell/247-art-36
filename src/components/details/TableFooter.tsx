@@ -1,36 +1,15 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 const TableFooterComponent = () => {
-  const [isVisible, setIsVisible] = useState(false);
   const rowRef = useRef<HTMLTableRowElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-      }
-    }, {
-      threshold: 0.1
-    });
-
-    if (rowRef.current) {
-      observer.observe(rowRef.current);
-    }
-
-    return () => {
-      if (rowRef.current) {
-        observer.unobserve(rowRef.current);
-      }
-    };
-  }, []);
 
   return (
     <>
-      <TableRow ref={rowRef} className={`bg-black hover:bg-black text-white ${isVisible ? 'animate-flip' : ''}`} style={{
+      <TableRow ref={rowRef} className="bg-black hover:bg-black text-white" style={{
         transition: 'none'
       }}>
         <TableCell>
