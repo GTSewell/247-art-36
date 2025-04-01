@@ -59,14 +59,16 @@ export const submitPassword = async ({
     
     await supabase
       .from('site_settings')
-      .update({ usage_count: updatedCount })
+      .update({ 
+        usage_count: updatedCount 
+      })
       .eq('site_password', normalizedPassword);
     
     // Log password access
     await logPasswordAccess({
       normalizedPassword,
       ipAddress,
-      settingsData,
+      settingsData: settingsData as Partial<SiteSettingsRow>,
       userName
     });
     
@@ -104,7 +106,7 @@ export const submitPassword = async ({
 interface LogPasswordParams {
   normalizedPassword: string;
   ipAddress: string | null;
-  settingsData: SiteSettingsRow | null;
+  settingsData: Partial<SiteSettingsRow>;
   userName: string;
 }
 
