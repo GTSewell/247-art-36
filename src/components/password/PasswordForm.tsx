@@ -161,8 +161,9 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
                   .update({ unique_ip_count: uniqueIpCount })
                   .eq('site_password', normalizedPassword);
                   
-                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}`, { 
-                  count: uniqueIpCount 
+                logger.info("Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}", { 
+                  count: uniqueIpCount,
+                  passwordPrefix: normalizedPassword.substring(0, 2) + '***'
                 });
               }
             }
