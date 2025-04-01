@@ -11,14 +11,17 @@ const log = (level: LogLevel, message: string, data?: unknown) => {
   const baseInfo = { hostname, pathname, timestamp };
   
   if (data) {
-    console[level](`${timestamp} ${level}: ${message}`, { ...baseInfo, ...data });
+    // Ensure data is treated as a record/object before spreading
+    const safeData = typeof data === 'object' && data !== null ? data : { value: data };
+    console[level](`${timestamp} ${level}: ${message}`, { ...baseInfo, ...safeData });
   } else {
     console[level](`${timestamp} ${level}: ${message}`, baseInfo);
   }
   
   // For errors, also log to browser console in a visible format
   if (level === 'error') {
-    console.error(`%c${message}`, 'color: red; font-weight: bold;', { ...baseInfo, ...(data || {}) });
+    const safeData = data && typeof data === 'object' && data !== null ? data : { value: data };
+    console.error(`%c${message}`, 'color: red; font-weight: bold;', { ...baseInfo, ...(data ? safeData : {}) });
   }
 };
 
