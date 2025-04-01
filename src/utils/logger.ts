@@ -1,7 +1,7 @@
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
-const log = (level: LogLevel, message: string, data?: unknown) => {
+const log = (level: LogLevel, message: string, data?: any) => {
   const timestamp = new Date().toISOString();
   
   // Check if running in a browser environment
@@ -37,10 +37,10 @@ const log = (level: LogLevel, message: string, data?: unknown) => {
 };
 
 export const logger = {
-  debug: (message: string, data?: unknown) => log('debug', message, data),
-  info: (message: string, data?: unknown) => log('info', message, data),
-  warn: (message: string, data?: unknown) => log('warn', message, data),
-  error: (message: string, data?: unknown) => log('error', message, data),
+  debug: (message: string, data?: any) => log('debug', message, data),
+  info: (message: string, data?: any) => log('info', message, data),
+  warn: (message: string, data?: any) => log('warn', message, data),
+  error: (message: string, data?: any) => log('error', message, data),
   
   // Methods to help with diagnostics
   getLogs: (): any[] => {

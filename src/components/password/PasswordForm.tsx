@@ -27,7 +27,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
         if (response.ok) {
           const data = await response.json();
           setIpAddress(data.ip);
-          logger.info("Successfully obtained IP address from primary service", data.ip);
+          logger.info("Successfully obtained IP address from primary service", { ip: data.ip });
           return;
         }
         
@@ -45,7 +45,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               const fallbackData = await fallbackResponse.json();
               const ip = fallbackData.ip;
               setIpAddress(ip);
-              logger.info(`Successfully obtained IP address from fallback service ${service}`, ip);
+              logger.info(`Successfully obtained IP address from fallback service ${service}`, { ip });
               return;
             }
           } catch (innerError) {
@@ -83,7 +83,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
       logger.info("Normalized password:", { normalizedPassword: normalizedPassword.substring(0, 2) + '***' });
       
       const isCorrect = await validateSitePassword(normalizedPassword);
-      logger.info("Password validation result:", isCorrect);
+      logger.info("Password validation result:", { isCorrect });
       
       if (isCorrect) {
         // Fetch recipient name from the database
@@ -129,8 +129,7 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
                 ip_address: clientIp, 
                 original_recipient_name: settingsData?.recipient_name || null,
                 user_provided_name: userName.trim() || null
-              })
-              .select();
+              });
             
             if (logError) {
               logger.error("Error inserting log:", logError);
