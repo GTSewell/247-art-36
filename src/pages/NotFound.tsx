@@ -20,13 +20,23 @@ const NotFound = () => {
                         
     // Check if we're on a subdomain (not www or the main domain)
     const hostname = window.location.hostname;
-    const isDomainWithSubdomain = hostname.includes('.247.art') && 
+    const isDomainWithSubdomain = hostname && 
+                                  hostname.includes('.247.art') && 
                                   !hostname.startsWith('www.') && 
                                   hostname !== '247.art';
     
-    // Log info for debugging
-    console.log('Hostname:', hostname);
+    // Log detailed info for debugging
+    console.log('Current hostname:', hostname);
+    console.log('Current pathname:', location.pathname);
+    console.log('Is artist path check:', isArtistPath);
     console.log('Is subdomain check:', isDomainWithSubdomain);
+    console.log('Final subdomain detection result:', isArtistPath || isDomainWithSubdomain);
+    
+    // Always show the special page on subdomains
+    if (isDomainWithSubdomain) {
+      logger.info(`Subdomain detected: ${hostname}`, { hostname });
+      return true;
+    }
     
     return isArtistPath || isDomainWithSubdomain;
   }, [location.pathname]);
@@ -34,10 +44,16 @@ const NotFound = () => {
   useEffect(() => {
     logger.error(
       `404 Error: User attempted to access non-existent route: ${location.pathname}`,
-      { path: location.pathname, search: location.search, hostname: window.location.hostname }
+      { 
+        path: location.pathname, 
+        search: location.search, 
+        hostname: window.location.hostname,
+        isSubdomainRequest: isSubdomainRequest
+      }
     );
-  }, [location.pathname, location.search]);
+  }, [location.pathname, location.search, isSubdomainRequest]);
 
+  // If we detect this is a subdomain request, show the custom message
   if (isSubdomainRequest) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-zap-yellow p-4 text-center">
