@@ -1,15 +1,49 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AccessLog } from "../types";
+import { logger } from "@/utils/logger";
 
 export const useAccessLogs = () => {
   const [logs, setLogs] = useState<AccessLog[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
 
+  const loadLogs = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+      logger.info("Fetching password access logs");
+      
+      const { data, error } = await supabase
+        .from('password_access_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+
+      if (error) {
+        logger.error('Error loading password logs:', error);
+        setError(`Failed to load logs: ${error.message}`);
+        return;
+      }
+
+      logger.info(`Successfully loaded ${data?.length || 0} password access logs`);
+      setLogs(data || []);
+      setLastRefresh(new Date());
+    } catch (err: any) {
+      logger.error('Unexpected error loading logs:', err);
+      setError(`Unexpected error: ${err.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Initial load of logs
   useEffect(() => {
-    // Initial load of logs
     loadLogs();
-
+    
     // Subscribe to logs changes
     const logsChannel = supabase
       .channel('password_logs_changes')
@@ -21,32 +55,25 @@ export const useAccessLogs = () => {
           table: 'password_access_logs'
         },
         (payload) => {
-          console.log('Realtime update received for password_access_logs:', payload);
+          logger.info('Realtime update received for password_access_logs:', payload);
           loadLogs(); // Reload logs when changes occur
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        logger.info(`Realtime subscription status for password logs: ${status}`);
+      });
+
+    // Set up auto-refresh every 30 seconds
+    const refreshInterval = setInterval(() => {
+      loadLogs();
+    }, 30000); // 30 seconds
 
     // Cleanup subscriptions
     return () => {
       supabase.removeChannel(logsChannel);
+      clearInterval(refreshInterval);
     };
-  }, []);
-
-  const loadLogs = async () => {
-    const { data, error } = await supabase
-      .from('password_access_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(20);
-
-    if (error) {
-      console.error('Error loading password logs:', error);
-      return;
-    }
-
-    setLogs(data || []);
-  };
+  }, [loadLogs]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -56,11 +83,20 @@ export const useAccessLogs = () => {
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
+      second: '2-digit'
     }).format(date);
+  };
+
+  const refreshLogs = () => {
+    loadLogs();
   };
 
   return {
     logs,
-    formatDate
+    isLoading,
+    error,
+    formatDate,
+    refreshLogs,
+    lastRefresh
   };
 };

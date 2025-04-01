@@ -1,10 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { toast } from 'sonner';
 import { validateSitePassword, signInWithDemoAccount } from '@/utils/auth-utils';
 import { supabase } from '@/integrations/supabase/client';
+import { logger } from '@/utils/logger';
 
 interface PasswordFormProps {
   setIsPasswordCorrect: (isCorrect: boolean) => void;
@@ -15,6 +16,52 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
   const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [nameError, setNameError] = useState('');
+  const [ipAddress, setIpAddress] = useState<string | null>(null);
+  
+  // Try to fetch IP address when component mounts
+  useEffect(() => {
+    const getIpAddress = async () => {
+      try {
+        // Try main IP service
+        const response = await fetch('https://api.ipify.org?format=json');
+        if (response.ok) {
+          const data = await response.json();
+          setIpAddress(data.ip);
+          logger.info("Successfully obtained IP address from primary service", data.ip);
+          return;
+        }
+        
+        // Fallback services if the first one fails
+        const fallbackServices = [
+          'https://ipinfo.io/json',
+          'https://api.ip.sb/jsonip',
+          'https://api64.ipify.org?format=json'
+        ];
+        
+        for (const service of fallbackServices) {
+          try {
+            const fallbackResponse = await fetch(service);
+            if (fallbackResponse.ok) {
+              const fallbackData = await fallbackResponse.json();
+              const ip = fallbackData.ip;
+              setIpAddress(ip);
+              logger.info(`Successfully obtained IP address from fallback service ${service}`, ip);
+              return;
+            }
+          } catch (innerError) {
+            logger.warn(`Fallback IP service ${service} failed:`, innerError);
+          }
+        }
+        
+        // If we get here, all services failed
+        logger.error("All IP address services failed");
+      } catch (error) {
+        logger.error("Error fetching IP address:", error);
+      }
+    };
+    
+    getIpAddress();
+  }, []);
   
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,15 +75,15 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
     }
     
     setIsLoading(true);
-    console.log("Attempting to validate password:", password);
+    logger.info("Attempting to validate password:", { password: password.substring(0, 2) + '***', userName });
     
     try {
       // Normalize password - lowercase and trim whitespace
       const normalizedPassword = password.toLowerCase().trim();
-      console.log("Normalized password:", normalizedPassword);
+      logger.info("Normalized password:", { normalizedPassword: normalizedPassword.substring(0, 2) + '***' });
       
       const isCorrect = await validateSitePassword(normalizedPassword);
-      console.log("Password validation result:", isCorrect);
+      logger.info("Password validation result:", isCorrect);
       
       if (isCorrect) {
         // Fetch recipient name from the database
@@ -47,11 +94,16 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           .single();
         
         if (settingsError) {
-          console.error("Failed to fetch recipient data:", settingsError);
+          logger.error("Failed to fetch recipient data:", settingsError);
           toast.error("Error retrieving user data");
         } else {
           // Increment usage count manually
           const updatedCount = (settingsData?.usage_count || 0) + 1;
+          
+          logger.info("Updating usage count", { 
+            password: normalizedPassword.substring(0, 2) + '***', 
+            newCount: updatedCount 
+          });
           
           await supabase
             .from('site_settings')
@@ -60,14 +112,11 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
           
           // Log access with both the original recipient name and user-provided name
           try {
-            // Use a more reliable approach instead of relying on request.headers
-            const ipResponse = await fetch('https://api.ipify.org?format=json');
-            const ipData = await ipResponse.json();
-            const clientIp = ipData.ip || 'unknown';
+            // Use provided IP or fallback to client-side detection
+            const clientIp = ipAddress || 'client-detection-failed';
             
-            console.log("Logging password access with the following data:");
-            console.log({
-              site_password: normalizedPassword,
+            logger.info("Logging password access with the following data:", {
+              site_password: normalizedPassword.substring(0, 2) + '***',
               ip_address: clientIp,
               original_recipient_name: settingsData?.recipient_name || null,
               user_provided_name: userName.trim() || null
@@ -84,28 +133,62 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
               .select();
             
             if (logError) {
-              console.error("Error inserting log:", logError);
+              logger.error("Error inserting log:", logError);
+              
+              // Try direct RPC call as a last resort
+              const { error: rpcError } = await supabase.rpc('log_password_access', {
+                p_site_password: normalizedPassword,
+                p_ip_address: clientIp,
+                p_original_recipient_name: settingsData?.recipient_name || null,
+                p_user_provided_name: userName.trim() || null
+              });
+              
+              if (rpcError) {
+                logger.error("RPC fallback logging also failed:", rpcError);
+              } else {
+                logger.info("RPC fallback logging succeeded");
+              }
             } else {
-              console.log("Password access logged successfully:", logData);
+              logger.info("Password access logged successfully:", logData);
+              
+              // Update the unique_ip_count in site_settings
+              // Calculate the current unique IP count
+              const { data: uniqueIpData, error: uniqueIpError } = await supabase
+                .from('password_access_logs')
+                .select('ip_address')
+                .eq('site_password', normalizedPassword);
+                
+              if (!uniqueIpError && uniqueIpData) {
+                // Get unique IPs using Set
+                const uniqueIps = new Set(uniqueIpData.map(log => log.ip_address));
+                const uniqueIpCount = uniqueIps.size;
+                
+                // Update the site_settings table with the new count
+                await supabase
+                  .from('site_settings')
+                  .update({ unique_ip_count: uniqueIpCount })
+                  .eq('site_password', normalizedPassword);
+                  
+                logger.info(`Updated unique IP count to ${uniqueIpCount} for password ${normalizedPassword.substring(0, 2) + '***'}`);
+              }
             }
           } catch (logError) {
-            console.error("Error logging password access:", logError);
+            logger.error("Error with IP fetch or logging:", logError);
             
-            // Fallback: Log without IP if the service fails
-            const { data: fallbackLogData, error: fallbackLogError } = await supabase
+            // Fallback logging without IP
+            const { error: fallbackLogError } = await supabase
               .from('password_access_logs')
               .insert({ 
                 site_password: normalizedPassword,
                 ip_address: 'client-side-fallback', 
                 original_recipient_name: settingsData?.recipient_name || null,
                 user_provided_name: userName.trim() || null
-              })
-              .select();
+              });
               
             if (fallbackLogError) {
-              console.error("Error with fallback logging:", fallbackLogError);
+              logger.error("Error with fallback logging:", fallbackLogError);
             } else {
-              console.log("Fallback password access logged successfully:", fallbackLogData);
+              logger.info("Fallback password access logged successfully");
             }
           }
           
@@ -123,21 +206,21 @@ export const PasswordForm: React.FC<PasswordFormProps> = ({ setIsPasswordCorrect
         const signedIn = await signInWithDemoAccount();
         
         if (signedIn) {
-          console.log("Demo account sign-in successful after password entry");
+          logger.info("Demo account sign-in successful after password entry");
         } else {
-          console.warn("Demo account sign-in failed after password entry");
+          logger.warn("Demo account sign-in failed after password entry");
         }
         
         setIsPasswordCorrect(true);
         localStorage.setItem("isPasswordCorrect", "true");
       } else {
-        console.error("Password validation failed for:", normalizedPassword);
+        logger.error("Password validation failed for:", normalizedPassword.substring(0, 2) + '***');
         toast.error('Incorrect password. Please try again.', {
           duration: 3000
         });
       }
     } catch (error: any) {
-      console.error('Error checking password:', error);
+      logger.error('Error checking password:', error);
       toast.error(`Error: ${error.message || 'Failed to validate password'}`);
     } finally {
       setIsLoading(false);
