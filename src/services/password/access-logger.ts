@@ -62,19 +62,24 @@ export const logPasswordAccess = async ({
   } catch (logError) {
     logger.error("Error with IP fetch or logging:", { error: logError });
     
-    const { error: fallbackLogError } = await supabase
-      .from('password_access_logs')
-      .insert({ 
-        site_password: normalizedPassword,
-        ip_address: 'client-side-fallback', 
-        original_recipient_name: settingsData?.recipient_name || null,
-        user_provided_name: userName.trim() || null
-      });
-      
-    if (fallbackLogError) {
-      logger.error("Error with fallback logging:", { error: fallbackLogError });
-    } else {
-      logger.info("Fallback password access logged successfully", { success: true });
+    // Attempt a fallback logging without IP information
+    try {
+      const { error: fallbackLogError } = await supabase
+        .from('password_access_logs')
+        .insert({ 
+          site_password: normalizedPassword,
+          ip_address: 'client-side-fallback', 
+          original_recipient_name: settingsData?.recipient_name || null,
+          user_provided_name: userName.trim() || null
+        });
+        
+      if (fallbackLogError) {
+        logger.error("Error with fallback logging:", { error: fallbackLogError });
+      } else {
+        logger.info("Fallback password access logged successfully", { success: true });
+      }
+    } catch (finalError) {
+      logger.error("All logging attempts failed", { error: finalError });
     }
   }
 };
