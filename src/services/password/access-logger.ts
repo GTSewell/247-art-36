@@ -8,6 +8,13 @@ interface LogPasswordParams {
   userName: string;
 }
 
+// Define the correct RPC function parameter types
+interface LogPasswordAccessRPCParams {
+  p_site_password: string;
+  p_user_provided_name: string | null;
+  p_ip_address: string;
+}
+
 /**
  * Simplified password access logging that focuses only on recording 
  * the password used and the user's name
@@ -36,11 +43,15 @@ export const logPasswordAccess = async ({
       
       // Use RPC fallback if available
       try {
-        const { error: rpcError } = await supabase.rpc('log_password_access', {
-          p_site_password: normalizedPassword,
-          p_user_provided_name: userName.trim() || null,
-          p_ip_address: 'fallback-not-tracked'
-        });
+        // Properly typed RPC call
+        const { error: rpcError } = await supabase.rpc<void>(
+          'log_password_access', 
+          {
+            p_site_password: normalizedPassword,
+            p_user_provided_name: userName.trim() || null,
+            p_ip_address: 'fallback-not-tracked'
+          } as LogPasswordAccessRPCParams
+        );
         
         if (rpcError) {
           logger.error("RPC fallback logging failed:", { error: rpcError });
