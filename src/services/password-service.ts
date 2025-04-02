@@ -12,7 +12,7 @@ import { handleAuthAfterPassword } from './password/auth-handler';
 interface PasswordSubmitParams {
   password: string;
   userName: string;
-  ipAddress: string | null;
+  ipAddress?: string | null; // Made optional since we're not tracking IPs
 }
 
 interface PasswordSubmitResult {
@@ -23,21 +23,21 @@ interface PasswordSubmitResult {
 export const submitPassword = async ({
   password,
   userName,
-  ipAddress
+  ipAddress // We'll keep this parameter for backward compatibility
 }: PasswordSubmitParams): Promise<PasswordSubmitResult> => {
   try {
     const normalizedPassword = password.toLowerCase().trim();
-    logger.info("Normalized password:", { 
-      normalizedPassword: normalizedPassword.substring(0, 2) + '***',
-      browserInfo: navigator.userAgent
+    logger.info("Password submission attempt:", { 
+      browser: navigator.userAgent,
+      passwordPrefix: normalizedPassword.substring(0, 2) + '***'
     });
     
     const isCorrect = await validateSitePassword(normalizedPassword);
     logger.info("Password validation result:", { isCorrect });
     
     if (!isCorrect) {
-      logger.error("Password validation failed for:", { 
-        password: normalizedPassword.substring(0, 2) + '***' 
+      logger.error("Password validation failed:", { 
+        passwordPrefix: normalizedPassword.substring(0, 2) + '***' 
       });
       return { isCorrect: false };
     }
@@ -57,11 +57,9 @@ export const submitPassword = async ({
     // Update usage count
     await updateUsageCount(normalizedPassword, settingsData?.usage_count || 0);
     
-    // Log password access - this will now handle IP address being null or any error
+    // Log password access with simplified approach
     await logPasswordAccess({
       normalizedPassword,
-      ipAddress,
-      settingsData: settingsData as Partial<SiteSettingsRow>,
       userName
     });
     

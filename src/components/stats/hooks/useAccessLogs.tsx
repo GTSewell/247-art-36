@@ -19,7 +19,7 @@ export const useAccessLogs = () => {
       
       const { data, error } = await supabase
         .from('password_access_logs')
-        .select('*')
+        .select('id, created_at, site_password, user_provided_name')
         .order('created_at', { ascending: false })
         .limit(50);
 

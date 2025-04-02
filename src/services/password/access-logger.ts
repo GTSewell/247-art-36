@@ -2,103 +2,85 @@
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
 import { SiteSettingsRow } from '@/types/database';
-import { updateUniqueIpCount } from './usage-tracker';
 
 interface LogPasswordParams {
   normalizedPassword: string;
-  ipAddress: string | null;
-  settingsData: Partial<SiteSettingsRow>;
   userName: string;
 }
 
 /**
- * Logs password access to the password_access_logs table
+ * Simplified password access logging that focuses only on recording 
+ * the password used and the user's name
  */
 export const logPasswordAccess = async ({
   normalizedPassword,
-  ipAddress,
-  settingsData,
   userName
 }: LogPasswordParams): Promise<void> => {
   try {
-    // Use a default IP if not available - this ensures consistent logging across all browsers
-    const clientIp = ipAddress || 'ip-not-recorded';
-    
     logger.info("Logging password access with the following data:", {
-      site_password: normalizedPassword.substring(0, 2) + '***',
-      ip_address: clientIp,
-      original_recipient_name: settingsData?.recipient_name || null,
-      user_provided_name: userName.trim() || null
+      password_used: normalizedPassword.substring(0, 2) + '***',
+      user_name: userName.trim() || null
     });
     
-    // Main log attempt
+    // Primary logging attempt
     const { error: logError } = await supabase
       .from('password_access_logs')
       .insert({ 
         site_password: normalizedPassword,
-        ip_address: clientIp, 
-        original_recipient_name: settingsData?.recipient_name || null,
+        ip_address: 'not-tracked', // We're no longer tracking IP addresses
         user_provided_name: userName.trim() || null
-      } as any); // Add type assertion here
+      });
     
     if (logError) {
       logger.error("Error inserting log:", { error: logError });
       
-      // First fallback: Try RPC method
-      const { error: rpcError } = await supabase.rpc('log_password_access', {
-        p_site_password: normalizedPassword,
-        p_ip_address: clientIp,
-        p_original_recipient_name: settingsData?.recipient_name || null,
-        p_user_provided_name: userName.trim() || null
-      });
-      
-      if (rpcError) {
-        logger.error("RPC fallback logging also failed:", { error: rpcError });
+      // Use RPC fallback if available
+      try {
+        const { error: rpcError } = await supabase.rpc('log_password_access', {
+          p_site_password: normalizedPassword,
+          p_user_provided_name: userName.trim() || null
+        });
         
-        // Second fallback: Try minimal data approach
-        const { error: minimalLogError } = await supabase
-          .from('password_access_logs')
-          .insert({ 
-            site_password: normalizedPassword,
-            ip_address: 'fallback-logging', 
-            user_provided_name: userName.trim() || null
-          } as any); // Add type assertion here
-        
-        if (minimalLogError) {
-          logger.error("Minimal fallback logging also failed:", { error: minimalLogError });
+        if (rpcError) {
+          logger.error("RPC fallback logging failed:", { error: rpcError });
+          
+          // Final fallback with minimal info
+          const { error: finalError } = await supabase
+            .from('password_access_logs')
+            .insert({ 
+              site_password: normalizedPassword,
+              ip_address: 'emergency-fallback',
+              user_provided_name: userName.trim() || null
+            });
+            
+          if (finalError) {
+            logger.error("All logging attempts failed:", { error: finalError });
+          } else {
+            logger.info("Minimal fallback logging succeeded", { success: true });
+          }
         } else {
-          logger.info("Minimal fallback logging succeeded", { success: true });
+          logger.info("RPC fallback logging succeeded", { success: true });
         }
-      } else {
-        logger.info("RPC fallback logging succeeded", { success: true });
+      } catch (finalError) {
+        logger.error("All logging attempts failed:", { error: finalError });
       }
     } else {
       logger.info("Password access logged successfully", { success: true });
-      
-      if (clientIp !== 'ip-not-recorded') {
-        await updateUniqueIpCount(normalizedPassword);
-      }
     }
-  } catch (logError) {
-    logger.error("Error with logging:", { error: logError });
+  } catch (error) {
+    logger.error("Unexpected error in access logging:", { error });
     
-    // Ultimate fallback with minimal required data
+    // Ultimate emergency fallback
     try {
-      const { error: finalFallbackError } = await supabase
+      await supabase
         .from('password_access_logs')
         .insert({ 
           site_password: normalizedPassword,
-          ip_address: 'error-recovery-fallback', 
+          ip_address: 'critical-fallback',
           user_provided_name: userName.trim() || null
-        } as any); // Add type assertion here
-        
-      if (finalFallbackError) {
-        logger.error("Final fallback logging failed:", { error: finalFallbackError });
-      } else {
-        logger.info("Final fallback password logging succeeded", { success: true });
-      }
-    } catch (finalError) {
-      logger.error("All logging attempts failed:", { error: finalError });
+        });
+    } catch (e) {
+      logger.error("Critical error in logging:", { error: e });
     }
   }
 };
