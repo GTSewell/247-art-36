@@ -31,15 +31,18 @@ export const logPasswordAccess = async ({
       user_provided_name: userName.trim() || null
     });
     
+    // Define the log data object with proper typing
+    const logData = { 
+      site_password: normalizedPassword,
+      ip_address: clientIp, 
+      original_recipient_name: settingsData?.recipient_name || null,
+      user_provided_name: userName.trim() || null
+    };
+    
     // Main log attempt
     const { error: logError } = await supabase
       .from('password_access_logs')
-      .insert({ 
-        site_password: normalizedPassword,
-        ip_address: clientIp, 
-        original_recipient_name: settingsData?.recipient_name || null,
-        user_provided_name: userName.trim() || null
-      } as any); // Add type assertion here
+      .insert(logData);
     
     if (logError) {
       logger.error("Error inserting log:", { error: logError });
@@ -56,13 +59,15 @@ export const logPasswordAccess = async ({
         logger.error("RPC fallback logging also failed:", { error: rpcError });
         
         // Second fallback: Try minimal data approach
+        const minimalLogData = { 
+          site_password: normalizedPassword,
+          ip_address: 'fallback-logging', 
+          user_provided_name: userName.trim() || null
+        };
+        
         const { error: minimalLogError } = await supabase
           .from('password_access_logs')
-          .insert({ 
-            site_password: normalizedPassword,
-            ip_address: 'fallback-logging', 
-            user_provided_name: userName.trim() || null
-          } as any); // Add type assertion here
+          .insert(minimalLogData);
         
         if (minimalLogError) {
           logger.error("Minimal fallback logging also failed:", { error: minimalLogError });
@@ -84,13 +89,15 @@ export const logPasswordAccess = async ({
     
     // Ultimate fallback with minimal required data
     try {
+      const finalFallbackData = { 
+        site_password: normalizedPassword,
+        ip_address: 'error-recovery-fallback', 
+        user_provided_name: userName.trim() || null
+      };
+      
       const { error: finalFallbackError } = await supabase
         .from('password_access_logs')
-        .insert({ 
-          site_password: normalizedPassword,
-          ip_address: 'error-recovery-fallback', 
-          user_provided_name: userName.trim() || null
-        } as any); // Add type assertion here
+        .insert(finalFallbackData);
         
       if (finalFallbackError) {
         logger.error("Final fallback logging failed:", { error: finalFallbackError });

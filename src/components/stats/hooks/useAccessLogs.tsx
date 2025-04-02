@@ -30,6 +30,20 @@ export const useAccessLogs = () => {
       }
 
       logger.info(`Successfully loaded ${data?.length || 0} password access logs`);
+      
+      // Add more detailed logging about the data
+      if (data && data.length > 0) {
+        logger.info('Sample log entry:', { 
+          first_entry: { 
+            id: data[0].id,
+            created_at: data[0].created_at,
+            site_password: data[0].site_password?.substring(0, 2) + '***' || 'none' 
+          }
+        });
+      } else {
+        logger.info('No log entries found in the database');
+      }
+      
       setLogs(data || []);
       setLastRefresh(new Date());
     } catch (err: any) {
