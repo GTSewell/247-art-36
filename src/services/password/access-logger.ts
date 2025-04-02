@@ -1,7 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
-import { SiteSettingsRow } from '@/types/database';
 
 interface LogPasswordParams {
   normalizedPassword: string;

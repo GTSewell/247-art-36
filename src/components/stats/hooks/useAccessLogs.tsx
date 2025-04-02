@@ -30,7 +30,8 @@ export const useAccessLogs = () => {
       }
 
       logger.info(`Successfully loaded ${data?.length || 0} password access logs`);
-      setLogs(data || []);
+      // Type assertion to handle the shape change
+      setLogs(data as AccessLog[]);
       setLastRefresh(new Date());
     } catch (err: any) {
       logger.error('Unexpected error loading logs:', err);

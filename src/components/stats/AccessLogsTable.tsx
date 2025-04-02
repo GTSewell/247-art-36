@@ -3,6 +3,14 @@ import React from "react";
 import { useAccessLogs } from "./hooks/useAccessLogs";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from "@/components/ui/table";
 
 export const AccessLogsTable: React.FC = () => {
   const { logs, formatDate, isLoading, error, refreshLogs, lastRefresh } = useAccessLogs();
@@ -63,24 +71,24 @@ export const AccessLogsTable: React.FC = () => {
               <span className="ml-2 text-sm text-gray-600">Refreshing...</span>
             </div>
           )}
-          <table className="min-w-full bg-white rounded-lg shadow">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Password</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Name</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Time</TableHead>
+                <TableHead>Password</TableHead>
+                <TableHead>User Name</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {logs.map((log) => (
-                <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(log.created_at)}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{log.site_password}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.user_provided_name || '—'}</td>
-                </tr>
+                <TableRow key={log.id}>
+                  <TableCell>{formatDate(log.created_at)}</TableCell>
+                  <TableCell>{log.site_password}</TableCell>
+                  <TableCell>{log.user_provided_name || '—'}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>
