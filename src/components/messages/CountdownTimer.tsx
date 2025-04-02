@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { differenceInSeconds } from 'date-fns';
 import { Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatDateInMelbourne } from '@/utils/dateUtils';
 
 interface CountdownTimerProps {
   createdAt: string;
