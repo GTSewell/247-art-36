@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AccessLog } from "../types";
@@ -19,7 +18,7 @@ export const useAccessLogs = () => {
       
       const { data, error } = await supabase
         .from('password_access_logs')
-        .select('id, created_at, site_password, user_provided_name')
+        .select('id, created_at, site_password, user_provided_name, ip_address')
         .order('created_at', { ascending: false })
         .limit(50);
 
@@ -30,7 +29,6 @@ export const useAccessLogs = () => {
       }
 
       logger.info(`Successfully loaded ${data?.length || 0} password access logs`);
-      // Type assertion to handle the shape change
       setLogs(data as AccessLog[]);
       setLastRefresh(new Date());
     } catch (err: any) {
@@ -41,11 +39,9 @@ export const useAccessLogs = () => {
     }
   }, []);
 
-  // Initial load of logs
   useEffect(() => {
     loadLogs();
     
-    // Subscribe to logs changes
     const logsChannel = supabase
       .channel('password_logs_changes')
       .on(
@@ -57,19 +53,17 @@ export const useAccessLogs = () => {
         },
         (payload) => {
           logger.info('Realtime update received for password_access_logs:', payload);
-          loadLogs(); // Reload logs when changes occur
+          loadLogs();
         }
       )
       .subscribe((status) => {
         logger.info(`Realtime subscription status for password logs: ${status}`);
       });
 
-    // Set up auto-refresh every 30 seconds
     const refreshInterval = setInterval(() => {
       loadLogs();
-    }, 30000); // 30 seconds
+    }, 30000);
 
-    // Cleanup subscriptions
     return () => {
       supabase.removeChannel(logsChannel);
       clearInterval(refreshInterval);

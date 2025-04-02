@@ -26,7 +26,7 @@ export const logPasswordAccess = async ({
       .from('password_access_logs')
       .insert({ 
         site_password: normalizedPassword,
-        ip_address: 'not-tracked', // We're no longer tracking IP addresses
+        ip_address: 'not-tracked', // Using a placeholder string since the column is not nullable
         user_provided_name: userName.trim() || null
       });
     

@@ -11,7 +11,6 @@ export interface AccessLog {
   created_at: string;
   site_password: string;
   user_provided_name: string | null;
-  // Make these properties optional since we're not tracking them anymore
-  ip_address?: string;
+  ip_address: string; // Changed this back to required since the DB column is not nullable
   original_recipient_name?: string | null;
 }
