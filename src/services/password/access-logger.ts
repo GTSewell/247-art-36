@@ -43,8 +43,8 @@ export const logPasswordAccess = async ({
       
       // Use RPC fallback if available
       try {
-        // Properly typed RPC call with both type parameters
-        const { error: rpcError } = await supabase.rpc<void, LogPasswordAccessRPCParams>(
+        // Correctly typed RPC call - using null for the return type to satisfy the constraint
+        const { error: rpcError } = await supabase.rpc<null, LogPasswordAccessRPCParams>(
           'log_password_access', 
           {
             p_site_password: normalizedPassword,
