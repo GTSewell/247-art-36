@@ -11,6 +11,14 @@ export interface AccessLog {
   created_at: string;
   site_password: string;
   user_provided_name: string | null;
-  ip_address: string; // This must be required since the DB column is not nullable
+  ip_address: string; // We'll keep this for compatibility with the old table
   original_recipient_name: string | null;
+}
+
+// New interface for the simplified password logs
+export interface SimplePasswordLog {
+  id: number;
+  created_at: string;
+  site_password: string;
+  user_name: string | null;
 }

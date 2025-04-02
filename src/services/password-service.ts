@@ -6,13 +6,13 @@ import { validateSitePassword } from '@/utils/auth-utils';
 import { toast } from 'sonner';
 import { validatePassword } from './password/password-validator';
 import { updateUsageCount } from './password/usage-tracker';
-import { logPasswordAccess } from './password/access-logger';
+import { logPasswordAccess } from './password/simple-logger';
 import { handleAuthAfterPassword } from './password/auth-handler';
 
 interface PasswordSubmitParams {
   password: string;
   userName: string;
-  ipAddress?: string | null; // Made optional since we're not tracking IPs
+  ipAddress?: string | null; // Kept for backward compatibility
 }
 
 interface PasswordSubmitResult {
@@ -59,8 +59,8 @@ export const submitPassword = async ({
     
     // Log password access with simplified approach
     await logPasswordAccess({
-      normalizedPassword,
-      userName
+      password: normalizedPassword,
+      userName: userName.trim() || null
     });
     
     // Handle authentication

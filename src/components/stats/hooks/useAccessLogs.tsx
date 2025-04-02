@@ -17,20 +17,46 @@ export const useAccessLogs = () => {
     try {
       logger.info("Fetching password access logs");
       
-      const { data, error } = await supabase
-        .from('password_access_logs')
-        .select('id, created_at, site_password, user_provided_name, ip_address, original_recipient_name')
+      // Try to fetch from the new password_logs table first
+      const { data: simpleLogs, error: simpleLogsError } = await supabase
+        .from('password_logs')
+        .select('id, created_at, site_password, user_name')
         .order('created_at', { ascending: false })
         .limit(50);
-
-      if (error) {
-        logger.error('Error loading password logs:', error);
-        setError(`Failed to load logs: ${error.message}`);
-        return;
+      
+      if (simpleLogsError) {
+        logger.error('Error loading simple password logs:', simpleLogsError);
+        
+        // Fall back to the original table if there's an error
+        const { data: originalLogs, error: originalLogsError } = await supabase
+          .from('password_access_logs')
+          .select('id, created_at, site_password, user_provided_name, ip_address, original_recipient_name')
+          .order('created_at', { ascending: false })
+          .limit(50);
+          
+        if (originalLogsError) {
+          logger.error('Error loading original logs too:', originalLogsError);
+          setError(`Failed to load any logs: ${originalLogsError.message}`);
+          return;
+        }
+        
+        logger.info(`Loaded ${originalLogs?.length || 0} logs from original table`);
+        setLogs(originalLogs as AccessLog[]);
+      } else {
+        // Map the simple logs to the AccessLog format
+        const formattedLogs = simpleLogs.map(log => ({
+          id: log.id,
+          created_at: log.created_at,
+          site_password: log.site_password,
+          user_provided_name: log.user_name,
+          ip_address: 'not-tracked', // Provide a placeholder since the type expects this field
+          original_recipient_name: null
+        })) as AccessLog[];
+        
+        logger.info(`Successfully loaded ${formattedLogs.length} logs from simple logs table`);
+        setLogs(formattedLogs);
       }
-
-      logger.info(`Successfully loaded ${data?.length || 0} password access logs`);
-      setLogs(data as AccessLog[]);
+      
       setLastRefresh(new Date());
     } catch (err: any) {
       logger.error('Unexpected error loading logs:', err);
@@ -43,8 +69,21 @@ export const useAccessLogs = () => {
   useEffect(() => {
     loadLogs();
     
+    // Listen for changes to both password log tables
     const logsChannel = supabase
       .channel('password_logs_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'password_logs'
+        },
+        (payload) => {
+          logger.info('Realtime update received for password_logs:', payload);
+          loadLogs();
+        }
+      )
       .on(
         'postgres_changes',
         {

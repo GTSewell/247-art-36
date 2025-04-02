@@ -77,6 +77,8 @@ export const AccessLogsTable: React.FC = () => {
                 <TableHead>Time</TableHead>
                 <TableHead>Password</TableHead>
                 <TableHead>User Name</TableHead>
+                {/* We still show the IP address column for legacy data, 
+                    but it will display "not-tracked" for new entries */}
                 <TableHead>IP Address</TableHead>
               </TableRow>
             </TableHeader>
@@ -86,7 +88,7 @@ export const AccessLogsTable: React.FC = () => {
                   <TableCell>{formatDate(log.created_at)}</TableCell>
                   <TableCell>{log.site_password}</TableCell>
                   <TableCell>{log.user_provided_name || '—'}</TableCell>
-                  <TableCell>{log.ip_address}</TableCell>
+                  <TableCell>{log.ip_address || 'not-tracked'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

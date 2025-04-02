@@ -304,6 +304,27 @@ export type Database = {
         }
         Relationships: []
       }
+      password_logs: {
+        Row: {
+          created_at: string | null
+          id: number
+          site_password: string
+          user_name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: number
+          site_password: string
+          user_name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: number
+          site_password?: string
+          user_name?: string | null
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           artist_id: number | null
