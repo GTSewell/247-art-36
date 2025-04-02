@@ -39,7 +39,7 @@ export const logPasswordAccess = async ({
         ip_address: clientIp, 
         original_recipient_name: settingsData?.recipient_name || null,
         user_provided_name: userName.trim() || null
-      });
+      } as any); // Add type assertion here
     
     if (logError) {
       logger.error("Error inserting log:", { error: logError });
@@ -62,7 +62,7 @@ export const logPasswordAccess = async ({
             site_password: normalizedPassword,
             ip_address: 'fallback-logging', 
             user_provided_name: userName.trim() || null
-          });
+          } as any); // Add type assertion here
         
         if (minimalLogError) {
           logger.error("Minimal fallback logging also failed:", { error: minimalLogError });
@@ -90,7 +90,7 @@ export const logPasswordAccess = async ({
           site_password: normalizedPassword,
           ip_address: 'error-recovery-fallback', 
           user_provided_name: userName.trim() || null
-        });
+        } as any); // Add type assertion here
         
       if (finalFallbackError) {
         logger.error("Final fallback logging failed:", { error: finalFallbackError });

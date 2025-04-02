@@ -8,9 +8,9 @@ import {
   Dribbble, 
   Github, 
   Linkedin,
-  ExternalLink,
-  TikTok
+  ExternalLink
 } from 'lucide-react';
+import TikTokIcon from '@/components/icons/TikTokIcon';
 
 export interface NormalizedPlatform {
   type: string;
@@ -132,9 +132,8 @@ export const getSocialIcon = (type: string) => {
     case 'linkedin':
       return <Linkedin />;
     case 'tiktok':
-      return <TikTok />;
+      return <TikTokIcon />;
     default:
       return <ExternalLink />;
   }
 };
-
