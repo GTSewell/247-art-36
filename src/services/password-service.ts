@@ -27,10 +27,9 @@ export const submitPassword = async ({
 }: PasswordSubmitParams): Promise<PasswordSubmitResult> => {
   try {
     const normalizedPassword = password.toLowerCase().trim();
-    logger.info("Processing password submission:", { 
+    logger.info("Normalized password:", { 
       normalizedPassword: normalizedPassword.substring(0, 2) + '***',
-      browserInfo: navigator.userAgent,
-      hasIpAddress: !!ipAddress
+      browserInfo: navigator.userAgent
     });
     
     const isCorrect = await validateSitePassword(normalizedPassword);
@@ -59,7 +58,6 @@ export const submitPassword = async ({
     await updateUsageCount(normalizedPassword, settingsData?.usage_count || 0);
     
     // Log password access - this will now handle IP address being null or any error
-    logger.info("About to log password access with IP:", { ipAddressPresent: !!ipAddress });
     await logPasswordAccess({
       normalizedPassword,
       ipAddress,

@@ -8,7 +8,6 @@ import MessageThreadItem from './MessageThreadItem';
 import MessageReplyForm from './MessageReplyForm';
 import CountdownTimer from './CountdownTimer';
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatDateInMelbourne } from '@/utils/dateUtils';
 
 interface MessageThreadProps {
   message?: Message;

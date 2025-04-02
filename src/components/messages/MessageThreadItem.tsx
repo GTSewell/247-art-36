@@ -4,9 +4,9 @@ import { Message } from './types';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Trash2, Loader2 } from "lucide-react";
+import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/use-auth";
-import { formatDateInMelbourne } from '@/utils/dateUtils';
 
 interface MessageThreadItemProps {
   message: Message;
@@ -70,7 +70,7 @@ const MessageThreadItem = ({ message, isOriginal = false, onDelete }: MessageThr
                 )}
               </div>
               <p className="text-sm text-muted-foreground">
-                To: <span className="font-medium">{message.recipient?.name || 'Unknown Recipient'}</span> • {formatDateInMelbourne.short(message.created_at)}
+                To: <span className="font-medium">{message.recipient?.name || 'Unknown Recipient'}</span> • {format(new Date(message.created_at), 'PPP p')}
               </p>
             </div>
             

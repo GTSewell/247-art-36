@@ -30,20 +30,6 @@ export const useAccessLogs = () => {
       }
 
       logger.info(`Successfully loaded ${data?.length || 0} password access logs`);
-      
-      // Add more detailed logging about the data
-      if (data && data.length > 0) {
-        logger.info('Sample log entry:', { 
-          first_entry: { 
-            id: data[0].id,
-            created_at: data[0].created_at,
-            site_password: data[0].site_password?.substring(0, 2) + '***' || 'none' 
-          }
-        });
-      } else {
-        logger.info('No log entries found in the database');
-      }
-      
       setLogs(data || []);
       setLastRefresh(new Date());
     } catch (err: any) {
@@ -89,6 +75,18 @@ export const useAccessLogs = () => {
     };
   }, [loadLogs]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    }).format(date);
+  };
+
   const refreshLogs = () => {
     loadLogs();
   };
@@ -97,6 +95,7 @@ export const useAccessLogs = () => {
     logs,
     isLoading,
     error,
+    formatDate,
     refreshLogs,
     lastRefresh
   };

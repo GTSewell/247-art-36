@@ -3,10 +3,9 @@ import React from "react";
 import { useAccessLogs } from "./hooks/useAccessLogs";
 import { Button } from "@/components/ui/button";
 import { RefreshCcw } from "lucide-react";
-import { formatDateInMelbourne } from "@/utils/dateUtils";
 
 export const AccessLogsTable: React.FC = () => {
-  const { logs, isLoading, error, refreshLogs, lastRefresh } = useAccessLogs();
+  const { logs, formatDate, isLoading, error, refreshLogs, lastRefresh } = useAccessLogs();
 
   return (
     <div>
@@ -14,7 +13,7 @@ export const AccessLogsTable: React.FC = () => {
         <h2 className="text-xl font-bold">Recent Access Logs</h2>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-500">
-            Last updated: {formatDateInMelbourne.short(lastRefresh.toISOString())}
+            Last updated: {formatDate(lastRefresh.toISOString())}
           </span>
           <Button 
             variant="outline" 
@@ -77,7 +76,7 @@ export const AccessLogsTable: React.FC = () => {
             <tbody className="divide-y divide-gray-200">
               {logs.map((log) => (
                 <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDateInMelbourne.short(log.created_at)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatDate(log.created_at)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{log.site_password}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.ip_address}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{log.original_recipient_name || '—'}</td>
