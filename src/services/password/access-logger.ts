@@ -1,6 +1,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/utils/logger';
+import { PasswordAccessLogRow } from '@/types/database';
 
 interface LogPasswordParams {
   normalizedPassword: string;
@@ -37,7 +38,8 @@ export const logPasswordAccess = async ({
       try {
         const { error: rpcError } = await supabase.rpc('log_password_access', {
           p_site_password: normalizedPassword,
-          p_user_provided_name: userName.trim() || null
+          p_user_provided_name: userName.trim() || null,
+          p_ip_address: 'fallback-not-tracked'
         });
         
         if (rpcError) {

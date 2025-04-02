@@ -77,6 +77,7 @@ export const AccessLogsTable: React.FC = () => {
                 <TableHead>Time</TableHead>
                 <TableHead>Password</TableHead>
                 <TableHead>User Name</TableHead>
+                <TableHead>IP Address</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -85,6 +86,7 @@ export const AccessLogsTable: React.FC = () => {
                   <TableCell>{formatDate(log.created_at)}</TableCell>
                   <TableCell>{log.site_password}</TableCell>
                   <TableCell>{log.user_provided_name || '—'}</TableCell>
+                  <TableCell>{log.ip_address}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

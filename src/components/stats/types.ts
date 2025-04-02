@@ -11,6 +11,6 @@ export interface AccessLog {
   created_at: string;
   site_password: string;
   user_provided_name: string | null;
-  ip_address: string; // Changed this back to required since the DB column is not nullable
-  original_recipient_name?: string | null;
+  ip_address: string; // This must be required since the DB column is not nullable
+  original_recipient_name: string | null;
 }
