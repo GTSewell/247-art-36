@@ -8,7 +8,8 @@ import {
   Dribbble, 
   Github, 
   Linkedin,
-  ExternalLink
+  ExternalLink,
+  TikTok
 } from 'lucide-react';
 
 export interface NormalizedPlatform {
@@ -68,6 +69,8 @@ export const normalizeSocialPlatforms = (socialPlatforms: string[]): NormalizedP
         type = 'github';
       } else if (hostname.includes('dribbble')) {
         type = 'dribbble';
+      } else if (hostname.includes('tiktok')) {
+        type = 'tiktok';
       }
       
       // Make sure the URL hasn't been duplicated
@@ -78,6 +81,27 @@ export const normalizeSocialPlatforms = (socialPlatforms: string[]): NormalizedP
                 (urlObj.pathname.includes('twitter.com/') || urlObj.pathname.includes('x.com/'))) {
         const fixedPath = urlObj.pathname.replace(/\/(twitter\.com|x\.com)\//, '/');
         url = `https://twitter.com${fixedPath}`;
+      } else if (hostname.includes('tiktok.com') && urlObj.pathname.includes('tiktok.com/')) {
+        const fixedPath = urlObj.pathname.replace('/tiktok.com/', '/');
+        url = `https://www.tiktok.com${fixedPath}`;
+      }
+      
+      // Special handling for TikTok URLs to ensure they work properly
+      if (type === 'tiktok') {
+        // Ensure TikTok URLs have the www prefix
+        if (!hostname.startsWith('www.')) {
+          url = url.replace('https://tiktok.com', 'https://www.tiktok.com');
+        }
+        
+        // Make sure @ is properly included for TikTok usernames
+        if (urlObj.pathname.includes('/@')) {
+          // URL already has proper format
+        } else if (urlObj.pathname.startsWith('/')) {
+          const username = urlObj.pathname.substring(1);
+          if (username && !username.startsWith('@')) {
+            url = `https://www.tiktok.com/@${username}`;
+          }
+        }
       }
       
       return { type, url, original: trimmed };
@@ -107,7 +131,10 @@ export const getSocialIcon = (type: string) => {
       return <Github />;
     case 'linkedin':
       return <Linkedin />;
+    case 'tiktok':
+      return <TikTok />;
     default:
       return <ExternalLink />;
   }
 };
+
