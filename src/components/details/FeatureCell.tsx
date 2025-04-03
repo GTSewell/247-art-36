@@ -26,7 +26,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
         <TableCell className="text-center p-1">
           <div className="flex items-center justify-center space-x-2">
             <span className="line-through text-gray-500 text-xs sm:text-sm">{originalPrice}</span>
-            <span className="text-sm sm:text-base font-medium">{value}</span>
+            <span className="text-sm sm:text-base font-medium">{value} AUD</span>
           </div>
         </TableCell>
       );
