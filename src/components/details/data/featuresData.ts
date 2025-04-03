@@ -63,8 +63,8 @@ export const features: Feature[] = [
     name: "Artworks Per Space", 
     studioArtist: "Up to 2", 
     featureArtist: "Up to 4", 
-    signatureArtist: "Up to 4",
-    description: "Number of different artworks you can display in your allocated space in the feature gallery. Note: Additional artworks will need to allow spacing. See our artwork size calculator below."
+    signatureArtist: "1 to 4",
+    description: "Number of different artworks you can display in your allocated space in the feature gallery. All must fit within your allocated area. See our artwork size calculator below."
   },
   { 
     name: "Apparel & Print Options", 
@@ -131,11 +131,11 @@ export const features: Feature[] = [
     description: "Participate in exclusive 24-hour limited edition releases, a fun and exciting way to find new collectors."
   },
   { 
-    name: "Custom Artist 'Link in BIO' Profile URL", 
+    name: "Custom Artist 'Link in BIO' Profile", 
     studioArtist: true, 
     featureArtist: true, 
     signatureArtist: true,
-    description: "Receive a personalized URL '[artistname].247.art' for your online profile, making it easier for collectors to find, follow and purchase your work.<br /><br />As Genesis Artists you will have your online profile foreever and be the first to test & receive any new updates/perks etc"
+    description: "Receive a personalized URL '[artistname].247.art' for your online sales profile, making it easier for collectors to find, follow and purchase your work.<br /><br />As Genesis Artists you will have your online profile foreever and be the first to test & receive any new updates/perks etc"
   },
   { 
     name: "Sculpture Display Option (TBD)", 
