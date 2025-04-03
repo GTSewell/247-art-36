@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Check, X } from "lucide-react";
 import { TableCell } from "@/components/ui/table";
@@ -13,11 +14,11 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
   if (hasDiscount && typeof value === 'string') {
     let originalPrice = '';
     if (type === 'studioArtist') {
-      originalPrice = '$1495';
+      originalPrice = '$1495 AUD';
     } else if (type === 'featureArtist') {
-      originalPrice = '$1995';
+      originalPrice = '$1995 AUD';
     } else if (type === 'signatureArtist') {
-      originalPrice = '$1495';
+      originalPrice = '$1495 AUD';
     }
     
     if (type === 'signatureArtist') {
