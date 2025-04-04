@@ -68,12 +68,12 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
         'https://images.unsplash.com/photo-1551038247-3d9af20df552?w=600&auto=format', // blue and white building
       ],
       'collection': [
-        'https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=600&auto=format', // herd of sheep
-        'https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=600&auto=format', // orange and white cat
-        'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=600&auto=format', // two deer
-        'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=600&auto=format', // antelope and zebra
-        'https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=600&auto=format', // brown ox on mountain
-        'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=600&auto=format', // grey tabby kitten
+        'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=600&auto=format', // abstract colorful paint splash
+        'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=600&auto=format', // vibrant watercolor splash
+        'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=600&auto=format', // abstract art blue and orange
+        'https://images.unsplash.com/photo-1507908708918-778587c9e563?w=600&auto=format', // modern art gallery exhibition
+        'https://images.unsplash.com/photo-1563089145-599997674d42?w=600&auto=format', // artistic paint swirls
+        'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&auto=format', // abstract fluid art
       ],
       'sticker': [
         'https://images.unsplash.com/photo-1498936178812-4b2e558d2937?w=600&auto=format', // bees
