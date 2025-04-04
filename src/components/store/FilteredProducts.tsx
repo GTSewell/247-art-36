@@ -53,7 +53,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                 flex items-center justify-center text-center
                 ${isMobile ? 'h-24 mb-2' : 'aspect-square'}
               `}>
-              <span className="font-nove text-xs leading-tight text-gray-800 md:text-lg font-normal">
+              <span className="font-nove text-xs leading-tight text-gray-800 font-normal md:text-lg">
                 {category.label}
               </span>
             </button>)}
