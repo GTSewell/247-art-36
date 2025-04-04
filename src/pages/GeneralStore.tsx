@@ -19,7 +19,7 @@ interface TimerState {
 }
 
 const GeneralStore = () => {
-  const [selectedCategory, setSelectedCategory] = useState<'print' | 'merch' | 'sticker'>('print');
+  const [selectedCategory, setSelectedCategory] = useState<string>('print');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
   const [darkMode, setDarkMode] = useState(() => {
@@ -70,6 +70,10 @@ const GeneralStore = () => {
     setSelectedTimerState(timerState);
   };
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  };
+
   return (
     <TimerProvider>
       <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
@@ -104,7 +108,7 @@ const GeneralStore = () => {
             <FilteredProducts
               products={filteredProducts}
               selectedCategory={selectedCategory}
-              onCategoryChange={setSelectedCategory}
+              onCategoryChange={handleCategoryChange}
             />
 
             {isLoading && (

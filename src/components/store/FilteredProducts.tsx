@@ -7,8 +7,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 interface FilteredProductsProps {
   products: any[];
-  selectedCategory: 'print' | 'merch' | 'sticker';
-  onCategoryChange: (category: 'print' | 'merch' | 'sticker') => void;
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
 }
 
 const FilteredProducts: React.FC<FilteredProductsProps> = ({
@@ -54,10 +54,15 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
           {categories.map(category => (
             <button 
               key={category.id} 
-              onClick={() => category.id === 'sticker' || category.id === 'merch' || category.id === 'print' ? onCategoryChange(category.id as any) : undefined} 
+              onClick={() => onCategoryChange(category.id)} 
               className={`py-[15px] px-2 rounded-md transition-all duration-200 hover:bg-opacity-80 border-2 ${
                 selectedCategory === category.id 
-                  ? `${category.id === 'print' ? 'bg-zap-blue' : category.id === 'merch' ? 'bg-zap-yellow' : category.id === 'sticker' ? 'bg-zap-red' : 'bg-gray-200'} text-black border-black` 
+                  ? `${category.id === 'print' ? 'bg-zap-blue' : 
+                     category.id === 'merch' ? 'bg-zap-yellow' : 
+                     category.id === 'sticker' ? 'bg-zap-red' : 
+                     category.id === 'original' ? 'bg-zap-yellow' : 
+                     category.id === 'signed' ? 'bg-zap-blue' : 
+                     category.id === 'collection' ? 'bg-zap-red' : 'bg-gray-200'} text-black border-black` 
                   : 'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
