@@ -80,7 +80,16 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   // Force image reload with unique timestamp
   const getImageUrl = (url: string) => {
     if (!url) return '/placeholder.svg';
-    const baseUrl = url.split('?')[0]; // Remove any existing query params
+    
+    // Make sure we're using the proper base URL
+    let imageUrl = url;
+    if (url.includes('undefined')) {
+      // Fix incorrect URL formation by removing 'undefined' from the path
+      imageUrl = url.replace('/undefined', '');
+    }
+    
+    // Add cache busting parameter
+    const baseUrl = imageUrl.split('?')[0]; // Remove any existing query params
     return `${baseUrl}?t=${Date.now()}`;
   };
 

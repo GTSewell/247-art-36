@@ -307,10 +307,12 @@ serve(async (req) => {
     }
   } catch (error) {
     console.error('Error in generate-product-category-images function:', error)
+    
+    // Ensure we return a proper JSON response even on error
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message || 'Unknown error',
+        error: error instanceof Error ? error.message : 'Unknown error',
         timestamp: Date.now()
       }),
       { 

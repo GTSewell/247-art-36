@@ -53,29 +53,24 @@ export const usePWAStoreProducts = () => {
       logger.info("Starting image generation for all product categories");
       toast.info("Generating product images, this may take a minute...");
       
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
+      // Fix: Use proper URL formation with supabase functions.invoke
+      const { data, error } = await supabase.functions.invoke('generate-product-category-images', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({})
+        body: {}
       });
 
-      if (!response.ok) {
-        const errorData = await response.text();
-        logger.error("Error response from generate-product-category-images:", errorData);
-        throw new Error(`Failed to generate product images: ${response.status} ${response.statusText}`);
+      if (error) {
+        logger.error("Error response from generate-product-category-images:", error);
+        throw new Error(`Failed to generate product images: ${error.message}`);
       }
 
-      const result = await response.json();
-      logger.info("Generated product images:", result);
+      logger.info("Generated product images:", data);
       
       // Force refetch products to get the updated images
       await refetch();
       
       toast.success("Product images generated successfully!");
-      return result;
+      return data;
     } catch (error) {
       logger.error("Error generating product images:", error);
       toast.error("Failed to generate product images");
@@ -88,26 +83,23 @@ export const usePWAStoreProducts = () => {
   const generateCategoryImage = async (category: string) => {
     try {
       logger.info(`Generating image for specific category: ${category}`);
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
+      
+      // Fix: Use proper URL formation with supabase functions.invoke
+      const { data, error } = await supabase.functions.invoke('generate-product-category-images', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({ category, single: true })
+        body: { category, single: true }
       });
 
-      if (!response.ok) {
-        throw new Error(`Failed to generate image for ${category}`);
+      if (error) {
+        throw new Error(`Failed to generate image for ${category}: ${error.message}`);
       }
 
-      const result = await response.json();
-      logger.info(`Generated image for ${category}:`, result);
+      logger.info(`Generated image for ${category}:`, data);
       
       // Refetch products to get the updated images
       await refetch();
       
-      return result.imageUrl;
+      return data.imageUrl;
     } catch (error) {
       logger.error(`Error generating image for ${category}:`, error);
       toast.error(`Failed to generate image for ${category}`);
