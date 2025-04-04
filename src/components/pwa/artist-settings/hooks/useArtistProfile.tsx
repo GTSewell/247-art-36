@@ -6,13 +6,23 @@ import { useFormHandling } from "./useFormHandling";
 import { useSaveArtistProfile } from "./useSaveArtistProfile";
 
 export const useArtistProfile = (artistId: string | null): ArtistProfileHookReturn => {
+  // Initialize the artist state first to fix the TypeScript error
+  const [artist, setArtist] = useState<any>(null);
+  
   // Use the fetch hook to get artist data
   const { 
     loading, 
-    artist, 
+    artist: fetchedArtist, 
     formData, 
     setFormData 
   } = useFetchArtistProfile(artistId);
+  
+  // Update our local artist state when the fetched artist changes
+  useState(() => {
+    if (fetchedArtist) {
+      setArtist(fetchedArtist);
+    }
+  });
   
   // Use the form handling hook
   const {
@@ -28,9 +38,6 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
     saving,
     handleSubmit
   } = useSaveArtistProfile(artistId, artist, setArtist, formData, setFormData);
-  
-  // Need to create a setter function for the artist state to pass to useSaveArtistProfile
-  const [, setArtist] = useState<any>(artist);
   
   // Return all required properties
   return {
