@@ -1,22 +1,27 @@
+
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Zap, ShoppingCart } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+
 interface FilteredProductsProps {
   products: any[];
   selectedCategory: 'print' | 'merch' | 'sticker';
   onCategoryChange: (category: 'print' | 'merch' | 'sticker') => void;
 }
+
 const FilteredProducts: React.FC<FilteredProductsProps> = ({
   products,
   selectedCategory,
   onCategoryChange
 }) => {
   const isMobile = useIsMobile();
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = '/placeholder.svg';
   };
+  
   const categories = [{
     id: 'original',
     label: 'ORIGINAL ARTWORK',
@@ -42,14 +47,25 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
     label: 'THE 247 COLLECTION',
     color: 'bg-zap-red'
   }];
+
   return <>
       <section className="mb-8">
         <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-4'}`}>
-          {categories.map(category => <button key={category.id} onClick={() => category.id === 'sticker' || category.id === 'merch' || category.id === 'print' ? onCategoryChange(category.id as any) : undefined} className="py-[15px] px-0">
-              <span className="font-nove text-xs leading-tight text-gray-800 font-normal md:text-lg">
+          {categories.map(category => (
+            <button 
+              key={category.id} 
+              onClick={() => category.id === 'sticker' || category.id === 'merch' || category.id === 'print' ? onCategoryChange(category.id as any) : undefined} 
+              className={`py-[15px] px-2 rounded-md transition-all duration-200 hover:bg-opacity-80 border-2 ${
+                selectedCategory === category.id 
+                  ? `${category.id === 'print' ? 'bg-zap-blue' : category.id === 'merch' ? 'bg-zap-yellow' : category.id === 'sticker' ? 'bg-zap-red' : 'bg-gray-200'} text-black border-black` 
+                  : 'bg-transparent hover:bg-gray-100 border-transparent hover:border-gray-300'
+              }`}
+            >
+              <span className={`font-nove text-xs leading-tight ${selectedCategory === category.id ? 'text-black font-semibold' : 'text-gray-800 font-normal'} md:text-lg`}>
                 {category.label}
               </span>
-            </button>)}
+            </button>
+          ))}
         </div>
       </section>
 
@@ -85,4 +101,5 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
       </section>
     </>;
 };
+
 export default FilteredProducts;
