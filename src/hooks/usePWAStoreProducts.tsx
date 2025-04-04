@@ -24,18 +24,23 @@ export const usePWAStoreProducts = () => {
         } = await supabase.from('products').select('*, artists(name, image)').order('created_at', {
           ascending: false
         });
+        
         if (error) {
           logger.error("Failed to load products from Supabase", error);
           toast.error("Failed to load products");
           return [];
         }
+        
+        logger.info("Loaded products from Supabase:", { count: data?.length || 0 });
         return data || [];
       } catch (error) {
         logger.error("Error loading products:", error);
         toast.error("Failed to load products");
         return [];
       }
-    }
+    },
+    refetchOnWindowFocus: false,
+    staleTime: 60000 // 1 minute
   });
 
   if (error) {
@@ -45,6 +50,9 @@ export const usePWAStoreProducts = () => {
   const generateProductImages = async () => {
     setIsGeneratingImages(true);
     try {
+      logger.info("Starting image generation for all product categories");
+      toast.info("Generating product images, this may take a minute...");
+      
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
         method: 'POST',
         headers: {
@@ -63,9 +71,10 @@ export const usePWAStoreProducts = () => {
       const result = await response.json();
       logger.info("Generated product images:", result);
       
-      // Refetch products to get the updated images
+      // Force refetch products to get the updated images
       await refetch();
       
+      toast.success("Product images generated successfully!");
       return result;
     } catch (error) {
       logger.error("Error generating product images:", error);
@@ -78,6 +87,7 @@ export const usePWAStoreProducts = () => {
 
   const generateCategoryImage = async (category: string) => {
     try {
+      logger.info(`Generating image for specific category: ${category}`);
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
         method: 'POST',
         headers: {
@@ -119,7 +129,7 @@ export const usePWAStoreProducts = () => {
         'collection': '247 Collection'
       };
       
-      // Generate a timestamp for cache busting
+      // Unique timestamp for cache busting
       const timestamp = Date.now();
       
       for (let i = 1; i <= 6; i++) {
@@ -137,6 +147,7 @@ export const usePWAStoreProducts = () => {
         });
       }
       
+      logger.info(`Generated ${sampleProducts.length} sample products for category ${categoryId}`);
       return sampleProducts;
     }
     

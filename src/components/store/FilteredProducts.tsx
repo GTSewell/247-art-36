@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Zap, ShoppingCart, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
+import { logger } from "@/utils/logger";
 
 interface FilteredProductsProps {
   products: any[];
@@ -20,7 +21,17 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
 }) => {
   const isMobile = useIsMobile();
   
+  // Log products for debugging
+  React.useEffect(() => {
+    logger.info(`Rendering FilteredProducts for category: ${selectedCategory}`, {
+      productsCount: products.length,
+      firstProductImage: products[0]?.image_url,
+      generating: isGeneratingImages
+    });
+  }, [products, selectedCategory, isGeneratingImages]);
+  
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    logger.error("Image failed to load", { src: e.currentTarget.src });
     e.currentTarget.src = '/placeholder.svg';
   };
   
@@ -66,6 +77,13 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
     }
   };
 
+  // Force image reload with unique timestamp
+  const getImageUrl = (url: string) => {
+    if (!url) return '/placeholder.svg';
+    const baseUrl = url.split('?')[0]; // Remove any existing query params
+    return `${baseUrl}?t=${Date.now()}`;
+  };
+
   return <>
       <section className="mb-8">
         <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-4'}`}>
@@ -101,7 +119,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                 <div key={product.id} className="group">
                   <div className="relative aspect-square overflow-hidden rounded-lg mb-2 bg-gray-100 dark:bg-gray-700">
                     <img 
-                      src={`${product.image_url}?t=${Date.now()}`} 
+                      src={getImageUrl(product.image_url)} 
                       alt={product.name} 
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
                       onError={handleImageError} 

@@ -25,6 +25,10 @@ async function downloadAndStoreImage(imageUrl: string, storagePath: string): Pro
 
     // Get the image data as a blob
     const imageBlob = await imageResponse.blob()
+    console.log(`Downloaded image, size: ${imageBlob.size} bytes`)
+
+    // Check if the bucket exists, create if not
+    await ensureStorageBucketExists()
 
     // Upload to Supabase Storage
     const { data, error } = await supabaseAdmin
@@ -32,7 +36,8 @@ async function downloadAndStoreImage(imageUrl: string, storagePath: string): Pro
       .from(BUCKET_NAME)
       .upload(storagePath, imageBlob, {
         contentType: 'image/webp',
-        upsert: true
+        upsert: true,
+        cacheControl: '0' // No caching to ensure fresh images
       })
 
     if (error) {
@@ -103,8 +108,12 @@ async function generateRunwareImage(prompt: string, category: string): Promise<s
       ])
     })
 
+    if (!response.ok) {
+      throw new Error(`Runware API HTTP error: ${response.status} ${response.statusText}`)
+    }
+
     const responseText = await response.text()
-    console.log(`Raw response from Runware: ${responseText}`)
+    console.log(`Raw response from Runware: ${responseText.substring(0, 200)}...`)
     
     let data
     try {
@@ -114,12 +123,12 @@ async function generateRunwareImage(prompt: string, category: string): Promise<s
     }
 
     if (data.error || data.errors) {
-      const errorMsg = data.errors?.[0]?.message || 'Unknown error'
+      const errorMsg = data.errors?.[0]?.message || data.error || 'Unknown error'
       throw new Error(`Runware API error: ${errorMsg}`)
     }
 
     // Find the image URL in the response
-    const imageResult = data.data.find((item: any) => 
+    const imageResult = data.data?.find((item: any) => 
       item.taskType === 'imageInference' && item.imageURL
     )
 
@@ -127,6 +136,7 @@ async function generateRunwareImage(prompt: string, category: string): Promise<s
       throw new Error('No image URL in Runware response')
     }
 
+    console.log(`Generated image URL: ${imageResult.imageURL.substring(0, 100)}...`)
     return imageResult.imageURL
   } catch (error) {
     console.error('Error generating image with Runware:', error)
@@ -137,8 +147,15 @@ async function generateRunwareImage(prompt: string, category: string): Promise<s
 // Ensure the storage bucket exists
 async function ensureStorageBucketExists() {
   try {
+    console.log(`Checking if ${BUCKET_NAME} bucket exists`)
+    
     // Check if bucket exists
-    const { data: buckets } = await supabaseAdmin.storage.listBuckets()
+    const { data: buckets, error: listError } = await supabaseAdmin.storage.listBuckets()
+    
+    if (listError) {
+      throw new Error(`Failed to list buckets: ${listError.message}`)
+    }
+    
     const bucketExists = buckets?.some(bucket => bucket.name === BUCKET_NAME)
     
     if (!bucketExists) {
@@ -153,22 +170,9 @@ async function ensureStorageBucketExists() {
         throw new Error(`Failed to create bucket: ${error.message}`)
       }
       
-      // Set public policy on the bucket
-      const { error: policyError } = await supabaseAdmin.storage.from(BUCKET_NAME).createSignedUrl('dummy-path', 1)
-      if (policyError && !policyError.message.includes('not found')) {
-        // Try to create a public policy
-        const { error: publicError } = await supabaseAdmin.rpc('create_public_bucket_policy', { bucket_name: BUCKET_NAME })
-        if (publicError) {
-          console.warn(`Failed to set public policy: ${publicError.message}`)
-        }
-      }
-    }
-    
-    // Ensure category folders exist
-    const categories = ['original', 'signed', 'sticker', 'merch', 'print', 'collection']
-    for (const category of categories) {
-      // We don't need to explicitly create folders in Supabase Storage
-      // They're created automatically when files are uploaded with path separators
+      console.log(`Successfully created ${BUCKET_NAME} bucket`)
+    } else {
+      console.log(`${BUCKET_NAME} bucket already exists`)
     }
     
     return true
@@ -188,31 +192,38 @@ async function generateCategoryImages() {
     
     // Generate multiple images per category
     for (let i = 1; i <= 6; i++) {
-      const prompt = getCategoryPrompt(category)
-      const imageUrl = await generateRunwareImage(prompt, category)
-      
-      if (imageUrl) {
-        // Store in Supabase
-        const filename = `${category}-${i}-${uuidv4()}.webp`
-        const storagePath = `${category}/${filename}`
-        const storedUrl = await downloadAndStoreImage(imageUrl, storagePath)
+      try {
+        console.log(`Generating image ${i} for category ${category}`)
+        const prompt = getCategoryPrompt(category)
+        const imageUrl = await generateRunwareImage(prompt, category)
         
-        if (storedUrl) {
-          results[category].push(storedUrl)
+        if (imageUrl) {
+          // Store in Supabase
+          const filename = `${category}-${i}-${uuidv4()}.webp`
+          const storagePath = `${category}/${filename}`
+          const storedUrl = await downloadAndStoreImage(imageUrl, storagePath)
           
-          // Update products table with the new image
-          const { error } = await supabaseAdmin
-            .from('products')
-            .update({ image_url: storedUrl })
-            .eq('category', category)
-            .eq('id', `sample-${category}-${i}`)
+          if (storedUrl) {
+            results[category].push(storedUrl)
             
-          if (error) {
-            console.error(`Error updating product: ${error.message}`)
+            // Update products table with the new image
+            const { error } = await supabaseAdmin
+              .from('products')
+              .update({ image_url: storedUrl })
+              .eq('category', category)
+              .eq('id', `sample-${category}-${i}`)
+              
+            if (error) {
+              console.error(`Error updating product: ${error.message}`)
+            } else {
+              console.log(`Updated sample-${category}-${i} with new image URL`)
+            }
           }
+        } else {
+          console.error(`Failed to generate image for ${category}-${i}`)
         }
-      } else {
-        console.error(`Failed to generate image for ${category}-${i}`)
+      } catch (err) {
+        console.error(`Error processing image ${i} for ${category}:`, err)
       }
     }
   }
@@ -245,6 +256,7 @@ serve(async (req) => {
     
     if (single && category) {
       // Generate a single category
+      console.log(`Generating single image for category ${category}`)
       const prompt = getCategoryPrompt(category)
       const imageUrl = await generateRunwareImage(prompt, category)
       
@@ -256,23 +268,41 @@ serve(async (req) => {
       const storagePath = `${category}/${filename}`
       const storedUrl = await downloadAndStoreImage(imageUrl, storagePath)
       
+      if (!storedUrl) {
+        throw new Error(`Failed to store image for category ${category}`)
+      }
+      
       return new Response(
         JSON.stringify({ 
           success: true, 
           imageUrl: storedUrl 
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate' 
+          } 
+        }
       )
     } else {
       // Generate all categories
+      console.log("Starting generation for all categories")
       const results = await generateCategoryImages()
       
       return new Response(
         JSON.stringify({ 
           success: true, 
-          results
+          results,
+          timestamp: Date.now() // Add timestamp for caching purposes
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate'
+          } 
+        }
       )
     }
   } catch (error) {
@@ -280,7 +310,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         success: false, 
-        error: error.message 
+        error: error.message || 'Unknown error',
+        timestamp: Date.now()
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
