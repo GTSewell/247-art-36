@@ -58,10 +58,10 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
               className={`py-[15px] px-2 rounded-md transition-all duration-200 hover:bg-opacity-80 border-2 ${
                 selectedCategory === category.id 
                   ? `${category.id === 'print' ? 'bg-zap-blue' : category.id === 'merch' ? 'bg-zap-yellow' : category.id === 'sticker' ? 'bg-zap-red' : 'bg-gray-200'} text-black border-black` 
-                  : 'bg-transparent hover:bg-gray-100 border-transparent hover:border-gray-300'
+                  : 'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
-              <span className={`font-nove text-xs leading-tight ${selectedCategory === category.id ? 'text-black font-semibold' : 'text-gray-800 font-normal'} md:text-lg`}>
+              <span className={`font-nove text-xs leading-tight ${selectedCategory === category.id ? 'text-black font-semibold' : 'text-gray-800 dark:text-gray-200 font-normal'} md:text-lg`}>
                 {category.label}
               </span>
             </button>
@@ -70,7 +70,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
       </section>
 
       <section>
-        <ScrollArea className="h-[800px] rounded-md border-4 border-black p-4 bg-zap-yellow py-[32px] px-[32px]">
+        <ScrollArea className="h-[800px] rounded-md border-4 border-black dark:border-gray-700 p-4 bg-zap-yellow dark:bg-zap-yellow/90 py-[32px] px-[32px]">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map(product => <div key={product.id} className="group">
                 <div className="relative aspect-square overflow-hidden rounded-lg mb-2">
@@ -82,9 +82,9 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                       </div>
                     </div>}
                 </div>
-                <h3 className="font-medium mb-1 text-sm md:text-base font-nove">{product.name}</h3>
+                <h3 className="font-medium mb-1 text-sm md:text-base font-nove dark:text-white">{product.name}</h3>
                 <div className="flex items-center justify-between">
-                  <p className="text-gray-600 text-sm md:text-base">${product.price}</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base">${product.price}</p>
                   <Button size={isMobile ? "icon" : "sm"} className="bg-zap-red hover:bg-zap-blue h-8 w-8 md:w-auto md:h-9">
                     {isMobile ? <ShoppingCart className="h-4 w-4" /> : <>
                         <Zap className="mr-2 h-4 w-4" />
@@ -92,7 +92,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                       </>}
                   </Button>
                 </div>
-                {product.artists && <p className="text-sm text-gray-500 mt-2 font-nove">
+                {product.artists && <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 font-nove">
                     By {product.artists.name}
                   </p>}
               </div>)}

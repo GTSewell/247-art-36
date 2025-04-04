@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import Navigation from "@/components/navigation/Navigation";
 import { useAppMode } from "@/contexts/AppModeContext";
@@ -10,6 +11,7 @@ import StoreHomeView from "@/components/pwa/store/StoreHomeView";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Helmet } from "react-helmet";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface TimerState {
   hours: number;
@@ -21,6 +23,9 @@ const PWAStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
   const { isPWA } = useAppMode();
   const { featuredProducts, getProductsForCategory, isLoading } = usePWAStoreProducts();
   
@@ -41,6 +46,10 @@ const PWAStore = () => {
     setSelectedCategory(null);
   };
 
+  const handleThemeToggle = (isDark: boolean) => {
+    setDarkMode(isDark);
+  };
+
   return (
     <TimerProvider>
       <Helmet>
@@ -52,43 +61,51 @@ const PWAStore = () => {
         <link rel="icon" href="https://247.art/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png" />
       </Helmet>
       
-      <div className="min-h-screen bg-zap-red">
-        {isPWA ? <PWANavigation /> : <Navigation />}
-        
-        <main className={`${isPWA ? 'pt-4 pb-20' : 'container mx-auto px-4 pt-24 pb-20'}`}>
-          {!selectedCategory && (
-            <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
-              <AlertDescription className="text-lg font-bold">
-                This is a mock-up Storefront page, and purely for demo display at present. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their own artworks available on your personal artist profile.
-              </AlertDescription>
-            </Alert>
-          )}
+      <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+        <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
+          {isPWA ? <PWANavigation /> : <Navigation />}
           
-          {selectedCategory ? (
-            <ProductCategoryView 
-              categoryId={selectedCategory}
-              products={categoryProducts}
-              onBack={handleBack}
-            />
-          ) : (
-            <StoreHomeView
-              featuredProducts={featuredProducts}
-              isLoading={isLoading}
-              onProductSelect={handleProductSelect}
-              onCategorySelect={handleCategorySelect}
-            />
-          )}
-        </main>
+          <main className={`${isPWA ? 'pt-4 pb-20' : 'container mx-auto px-4 pt-24 pb-20'}`}>
+            {!isPWA && (
+              <div className="flex justify-end mb-4">
+                <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
+              </div>
+            )}
+            
+            {!selectedCategory && (
+              <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
+                <AlertDescription className="text-lg font-bold">
+                  This is a mock-up Storefront page, and purely for demo display at present. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their own artworks available on your personal artist profile.
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            {selectedCategory ? (
+              <ProductCategoryView 
+                categoryId={selectedCategory}
+                products={categoryProducts}
+                onBack={handleBack}
+              />
+            ) : (
+              <StoreHomeView
+                featuredProducts={featuredProducts}
+                isLoading={isLoading}
+                onProductSelect={handleProductSelect}
+                onCategorySelect={handleCategorySelect}
+              />
+            )}
+          </main>
 
-        <TimedEditionModal
-          isOpen={!!selectedProduct}
-          onClose={() => {
-            setSelectedProduct(null);
-            setSelectedTimerState(null);
-          }}
-          product={selectedProduct}
-          timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
-        />
+          <TimedEditionModal
+            isOpen={!!selectedProduct}
+            onClose={() => {
+              setSelectedProduct(null);
+              setSelectedTimerState(null);
+            }}
+            product={selectedProduct}
+            timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
+          />
+        </div>
       </div>
     </TimerProvider>
   );

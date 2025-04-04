@@ -25,8 +25,8 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
     <div className="space-y-2">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold tracking-tight">{name}</h2>
-          <p className="text-sm text-muted-foreground">By {artistName || 'Unknown Artist'}</p>
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight dark:text-white">{name}</h2>
+          <p className="text-sm text-muted-foreground dark:text-gray-300">By {artistName || 'Unknown Artist'}</p>
         </div>
         
         {!isExpired && timeLeft && productId && (
@@ -40,8 +40,8 @@ const ProductHeader: React.FC<ProductHeaderProps> = ({
       </div>
       
       <div className="flex items-center">
-        <span className="text-lg md:text-xl font-semibold">$49.99</span>
-        <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">Limited Edition</span>
+        <span className="text-lg md:text-xl font-semibold dark:text-white">$49.99</span>
+        <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100 text-xs rounded-full">Limited Edition</span>
       </div>
     </div>
   );
