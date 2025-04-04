@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Zap, ShoppingCart, Loader2 } from "lucide-react";
@@ -34,7 +35,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
     const img = e.currentTarget;
     const productId = img.getAttribute('data-product-id') || '';
     const category = img.getAttribute('data-category') || '';
-    img.src = getCategoryFallbackImage(category, getNumberFromProductId(productId));
+    img.src = getArtworkImage(category, getNumberFromProductId(productId));
   };
   
   const getNumberFromProductId = (productId: string): number => {
@@ -44,49 +45,76 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
     return isNaN(num) ? 1 : num;
   };
   
-  const getCategoryFallbackImage = (category: string, index: number = 1): string => {
+  // New function to get artwork images from Unsplash
+  const getArtworkImage = (category: string, index: number = 1): string => {
     const imageIndex = Math.max(1, Math.min(6, index));
     
+    // Different image sets for each category
     const categoryImages: Record<string, string[]> = {
       'original': [
-        '/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png',
-        '/lovable-uploads/77d6eca3-c8ee-469f-8975-11645265224b.png',
-        '/lovable-uploads/2ed59a3d-02e9-41db-97a4-722e0a36b249.png',
-        '/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png',
-        '/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png',
-        '/lovable-uploads/e3632eac-612c-482e-aad1-8d4fd3b2947c.png'
+        'https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=600&auto=format', // river between mountains
+        'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=600&auto=format', // pine trees
+        'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=600&auto=format', // low angle trees
+        'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&auto=format', // sun through trees
+        'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&auto=format', // mountain sun rays
+        'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=600&auto=format', // blue starry night
       ],
       'signed': [
-        '/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png',
-        '/lovable-uploads/e87b6304-c331-43ea-8732-079538ff941a.png',
-        '/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png',
-        '/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png',
-        '/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png',
-        '/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png'
+        'https://images.unsplash.com/photo-1486718448742-163732cd1544?w=600&auto=format', // brown wavy structure
+        'https://images.unsplash.com/photo-1439337153520-7082a56a81f4?w=600&auto=format', // clear glass roof
+        'https://images.unsplash.com/photo-1497604401993-f2e922e5cb0a?w=600&auto=format', // glass building
+        'https://images.unsplash.com/photo-1473177104440-ffee2f376098?w=600&auto=format', // empty cathedral
+        'https://images.unsplash.com/photo-1494891848038-7bd202a2afeb?w=600&auto=format', // black and red building
+        'https://images.unsplash.com/photo-1551038247-3d9af20df552?w=600&auto=format', // blue and white building
       ],
       'collection': [
-        '/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png',
-        '/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png',
-        '/lovable-uploads/7ab2b4e1-a00b-4cd8-b039-5863c96b000f.png',
-        '/lovable-uploads/c7f799f3-cf1b-4b9f-8c6c-a680bb4f0add.png',
-        '/lovable-uploads/7d2e39fb-84b5-4bfc-9f09-707fa8e985e1.png',
-        '/lovable-uploads/cdc0cbb8-b760-4aba-b9aa-3490af08c781.png'
+        'https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=600&auto=format', // herd of sheep
+        'https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=600&auto=format', // orange and white cat
+        'https://images.unsplash.com/photo-1472396961693-142e6e269027?w=600&auto=format', // two deer
+        'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?w=600&auto=format', // antelope and zebra
+        'https://images.unsplash.com/photo-1493962853295-0fd70327578a?w=600&auto=format', // brown ox on mountain
+        'https://images.unsplash.com/photo-1535268647677-300dbf3d78d1?w=600&auto=format', // grey tabby kitten
+      ],
+      'sticker': [
+        'https://images.unsplash.com/photo-1498936178812-4b2e558d2937?w=600&auto=format', // bees
+        'https://images.unsplash.com/photo-1452960962994-acf4fd70b632?w=600&auto=format', // sheep
+        'https://images.unsplash.com/photo-1518877593221-1f28583780b4?w=600&auto=format', // humpback whale
+        'https://images.unsplash.com/photo-1439886183900-e79ec0057170?w=600&auto=format', // two deer
+        'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?w=600&auto=format', // brown cattle
+        'https://images.unsplash.com/photo-1441057206919-63d19fac2369?w=600&auto=format', // penguins
+      ],
+      'merch': [
+        'https://images.unsplash.com/photo-1485833077593-4278bba3f11f?w=600&auto=format', // brown deer near trees
+        'https://images.unsplash.com/photo-1438565434616-3ef039228b15?w=600&auto=format', // two mountain goats
+        'https://images.unsplash.com/photo-1501286353178-1ec871bba838?w=600&auto=format', // monkey with banana
+        'https://images.unsplash.com/photo-1469041797191-50ace28483c3?w=600&auto=format', // five camels on field
+        'https://images.unsplash.com/photo-1452378174528-3090a4bba7b2?w=600&auto=format', // four brown horses
+        'https://images.unsplash.com/photo-1487252665478-49b61b47f302?w=600&auto=format', // comodo dragons
+      ],
+      'print': [
+        'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600&auto=format', // foggy mountains
+        'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=600&auto=format', // ocean wave
+        'https://images.unsplash.com/photo-1458668383970-8ddd3927deed?w=600&auto=format', // mountain alps
+        'https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=600&auto=format', // river surrounded by rocks
+        'https://images.unsplash.com/photo-1482881497185-d4a9ddbe4151?w=600&auto=format', // desert sand
+        'https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=600&auto=format', // trees near rocky mountain
       ]
     };
     
+    // If category doesn't exist in our mapping, use a default image
     if (!categoryImages[category]) {
-      return '/placeholder.svg';
+      return 'https://images.unsplash.com/photo-1548502499-ef49e8cf98d4?w=600&auto=format';
     }
     
     return categoryImages[category][imageIndex - 1] || categoryImages[category][0];
   };
   
   const getProductImageUrl = (product: any): string => {
-    if (product.image_url && !product.image_url.includes('undefined')) {
+    if (product.image_url && !product.image_url.includes('undefined') && !product.image_url.includes('lovable-uploads')) {
       return `${product.image_url}?t=${Date.now()}`;
     }
     
-    return getCategoryFallbackImage(product.category, getNumberFromProductId(product.id));
+    return getArtworkImage(product.category, getNumberFromProductId(product.id));
   };
   
   const categories = [{
