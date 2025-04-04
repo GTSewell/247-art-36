@@ -33,7 +33,7 @@ export const fetchArtistProfile = async (artistId: string) => {
     if (!data) {
       logger.warn(`No artist found with id: ${artistId}`);
     } else {
-      logger.info("Artist data retrieved:", data);
+      logger.info(`Artist data retrieved: ${data.name} (ID: ${data.id})`);
     }
     
     return { data, error: null };

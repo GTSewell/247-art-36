@@ -20,6 +20,8 @@ export const fetchArtistData = async (artistId: string) => {
       return { data: null, error: new Error("Invalid artist ID") };
     }
     
+    logger.info(`Fetching artist data for ID: ${numericId}`);
+    
     const { data, error } = await supabase
       .from('artists')
       .select('*')
@@ -27,6 +29,12 @@ export const fetchArtistData = async (artistId: string) => {
       .maybeSingle();
     
     if (error) throw error;
+    
+    if (data) {
+      logger.info(`Found artist: ${data.name} (ID: ${data.id})`);
+    } else {
+      logger.warn(`No artist found with ID: ${numericId}`);
+    }
     
     return { data, error: null };
   } catch (error: any) {

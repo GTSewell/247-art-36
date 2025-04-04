@@ -30,12 +30,15 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     return <div className="p-8 text-center">Loading artist profile...</div>;
   }
   
+  const isDemo = artistId === "demo";
+  const displayText = isDemo ? "Demo Artist Profile" : (artistId ? "Artist Profile" : "Create New Artist Profile");
+  
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center">
           <User className="mr-2 h-5 w-5" />
-          Profile Settings
+          {displayText}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -62,7 +65,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
           
           <div className="pt-4">
             <Button type="submit" className="w-full" disabled={saving}>
-              {saving ? "Saving..." : artistId ? "Save Changes" : "Create Artist"}
+              {saving ? "Saving..." : isDemo ? "Save Demo Changes" : (artistId ? "Save Changes" : "Create Artist")}
             </Button>
           </div>
         </form>

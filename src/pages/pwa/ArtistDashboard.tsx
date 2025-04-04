@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import PWANavigation from "@/components/pwa/PWANavigation";
@@ -11,18 +12,16 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Navigation from "@/components/navigation/Navigation";
 import { useAppMode } from "@/contexts/AppModeContext";
+
 type TabType = "profile" | "artworks" | "trade" | "analytics";
+
 const ArtistDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("profile");
-  const {
-    user,
-    isLoading
-  } = useAuth();
-  const {
-    isPWA
-  } = useAppMode();
+  const { user, isLoading } = useAuth();
+  const { isPWA } = useAppMode();
   const navigate = useNavigate();
   const location = useLocation();
+
   useEffect(() => {
     // Parse the query parameter to set the initial tab
     const searchParams = new URLSearchParams(location.search);
@@ -31,16 +30,21 @@ const ArtistDashboard: React.FC = () => {
       setActiveTab(tab as TabType);
     }
   }, [location.search]);
+
   if (isLoading) {
-    return <div className="min-h-screen bg-black">
+    return (
+      <div className="min-h-screen bg-black">
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-16 pb-20">
           <div className="animate-pulse text-white">Loading dashboard...</div>
         </div>
-      </div>;
+      </div>
+    );
   }
+
   if (!user) {
-    return <div className="min-h-screen bg-black">
+    return (
+      <div className="min-h-screen bg-black">
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-16 pb-20 flex flex-col items-center justify-center">
           <p className="text-xl text-white mb-4">Please sign in to access your artist dashboard</p>
@@ -48,20 +52,30 @@ const ArtistDashboard: React.FC = () => {
             Sign In
           </Button>
         </div>
-      </div>;
+      </div>
+    );
   }
 
-  // Use user.id directly as the artistId
-  const artistId = user?.id || null;
-  return <div className="min-h-screen bg-black">
+  // Check if this is the demo account
+  const isDemo = user.email?.includes('demo') || user.email?.includes('247art');
+  
+  // Use "demo" as artistId for demo accounts, otherwise use user.id
+  const artistId = isDemo ? "demo" : user?.id || null;
+
+  return (
+    <div className="min-h-screen bg-black">
       {isPWA ? <PWANavigation /> : <Navigation />}
       <div className="container mx-auto px-4 pt-16 pb-24">
         <div className="flex items-center mb-6">
-          {isPWA && <Button variant="ghost" size="sm" className="mr-2 -ml-2 text-white" onClick={() => navigate('/account')}>
+          {isPWA && (
+            <Button variant="ghost" size="sm" className="mr-2 -ml-2 text-white" onClick={() => navigate('/account')}>
               <ArrowLeft className="h-4 w-4 mr-1" />
               Back
-            </Button>}
-          <h1 className="text-2xl font-bold text-white">Artist Dashboard: Demo Mode</h1>
+            </Button>
+          )}
+          <h1 className="text-2xl font-bold text-white">
+            {isDemo ? "Artist Dashboard: Demo Mode" : "Artist Dashboard"}
+          </h1>
         </div>
         
         <Tabs value={activeTab} onValueChange={value => setActiveTab(value as TabType)} className="space-y-4">
@@ -91,6 +105,8 @@ const ArtistDashboard: React.FC = () => {
           </div>
         </Tabs>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default ArtistDashboard;

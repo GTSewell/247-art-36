@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { ArtistProfileFormData, ArtistProfileHookReturn } from "../types";
@@ -22,13 +23,45 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   });
   
   useEffect(() => {
-    if (artistId) {
+    // If artist ID is specifically set to "demo", fetch the Demo Artist (id: 25)
+    if (artistId === "demo") {
+      fetchDemoArtistProfileData();
+    } else if (artistId) {
       fetchArtistProfileData();
     } else {
       // For new artist, just set loading to false
       setLoading(false);
     }
   }, [artistId]);
+  
+  const fetchDemoArtistProfileData = async () => {
+    try {
+      setLoading(true);
+      
+      // Always fetch artist with ID 25 (Demo Artist) for demo accounts
+      logger.info("Fetching Demo Artist profile (ID: 25)");
+      const { data, error } = await fetchArtistProfile("25");
+      
+      if (error) {
+        throw error;
+      }
+      
+      if (data) {
+        logger.info("Demo Artist profile data retrieved:", data);
+        setArtist(data);
+        
+        // Map API data to form data
+        const mappedFormData = mapArtistToFormData(data);
+        logger.info("Mapped form data for Demo Artist:", mappedFormData);
+        setFormData(mappedFormData);
+      }
+    } catch (error: any) {
+      logger.error("Error fetching Demo Artist profile:", error);
+      toast.error(`Failed to load Demo Artist profile: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   const fetchArtistProfileData = async () => {
     try {
@@ -113,13 +146,16 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    logger.info("Form submission started with artist ID:", artistId);
+    const isDemo = artistId === "demo";
+    const effectiveArtistId = isDemo ? "25" : artistId;
+    
+    logger.info("Form submission started with artist ID:", effectiveArtistId, isDemo ? "(Demo Mode)" : "");
     
     try {
       setSaving(true);
       logger.info("Submitting artist profile form data:", formData);
       
-      const result = await saveArtistProfile(formData, artistId, artist);
+      const result = await saveArtistProfile(formData, effectiveArtistId, artist);
       
       if (result.success) {
         // Get the updated data from the result
@@ -137,7 +173,7 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
         toast.success(result.message);
         
         // For new artists, we should refresh the page to show artwork manager
-        if (!artistId) {
+        if (!effectiveArtistId) {
           // Update the URL with the new artist ID instead of reloading the page
           window.location.href = window.location.href.replace('isCreatingNew=true', `selectedArtistId=${result.data[0].id}`);
         }
