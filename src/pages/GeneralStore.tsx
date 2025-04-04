@@ -9,8 +9,6 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ThemeToggle from "@/components/ThemeToggle";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
-import { Button } from "@/components/ui/button";
-import { ImageIcon, Loader2, RefreshCcw } from "lucide-react";
 import { logger } from "@/utils/logger";
 
 interface TimerState {
@@ -30,10 +28,8 @@ const GeneralStore = () => {
   const {
     featuredProducts,
     getProductsForCategory,
-    generateProductImages,
     isLoading,
-    isGeneratingImages,
-    refetch
+    isGeneratingImages
   } = usePWAStoreProducts();
 
   const handleThemeToggle = (isDark: boolean) => {
@@ -56,56 +52,13 @@ const GeneralStore = () => {
     setSelectedCategory(category);
   };
 
-  const handleGenerateImages = async () => {
-    if (isGeneratingImages) return;
-    
-    toast.info("Generating product images, this may take a minute...");
-    try {
-      await generateProductImages();
-      // Force reload after generation to ensure new images are loaded
-      setTimeout(() => {
-        refetch();
-      }, 1000);
-    } catch (error) {
-      toast.error("Failed to generate product images");
-    }
-  };
-
-  const handleForceRefresh = () => {
-    refetch();
-    toast.info("Refreshing product data...");
-  };
-
   return (
     <TimerProvider>
       <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           <Navigation />
           <main className="container mx-auto px-4 pt-24 pb-12">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex gap-2">
-                <Button 
-                  onClick={handleGenerateImages} 
-                  disabled={isGeneratingImages}
-                  className="flex items-center gap-2 bg-zap-blue hover:bg-zap-blue/90"
-                >
-                  {isGeneratingImages ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <ImageIcon className="h-4 w-4" />
-                  )}
-                  {isGeneratingImages ? "Generating Images..." : "Generate Product Images"}
-                </Button>
-                
-                <Button 
-                  onClick={handleForceRefresh} 
-                  variant="outline"
-                  className="flex items-center gap-2"
-                >
-                  <RefreshCcw className="h-4 w-4" />
-                  Refresh
-                </Button>
-              </div>
+            <div className="flex justify-end items-center mb-4">
               <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
             </div>
             
