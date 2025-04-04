@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { X, UserRound } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
@@ -10,6 +10,7 @@ import MobileNav from "./MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
+import ThemedLogo from "./ThemedLogo";
 
 const NavigationComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,24 @@ const NavigationComponent = () => {
   const { isPWA } = useAppMode();
   const isMobile = useIsMobile();
   const { itemCount } = useCart();
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+  
+  // Listen for theme changes
+  useEffect(() => {
+    const checkTheme = () => {
+      setDarkMode(localStorage.getItem("theme") === "dark");
+    };
+    
+    // Initial check
+    checkTheme();
+    
+    // Set up an interval to check for theme changes
+    const interval = setInterval(checkTheme, 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Return null if in PWA mode to hide navigation
   if (isPWA) {
@@ -41,14 +60,8 @@ const NavigationComponent = () => {
     <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent w-full`}>
       <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
         <div className={`flex justify-between items-center ${navExtraClass} w-full`}>
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img 
-              src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" 
-              alt="247art" 
-              className="h-8"
-            />
-          </Link>
+          {/* Logo with theme awareness */}
+          <ThemedLogo darkMode={darkMode} />
 
           {/* Desktop Navigation */}
           <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
