@@ -4,8 +4,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { logger } from "@/utils/logger";
 import { v4 as uuidv4 } from "@/utils/uuid";
+import { useState } from "react";
 
 export const usePWAStoreProducts = () => {
+  const [isGeneratingImages, setIsGeneratingImages] = useState(false);
+  
   const {
     data: products,
     isLoading,
@@ -40,6 +43,7 @@ export const usePWAStoreProducts = () => {
   }
 
   const generateProductImages = async () => {
+    setIsGeneratingImages(true);
     try {
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
         method: 'POST',
@@ -51,7 +55,9 @@ export const usePWAStoreProducts = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate product images');
+        const errorData = await response.text();
+        logger.error("Error response from generate-product-category-images:", errorData);
+        throw new Error(`Failed to generate product images: ${response.status} ${response.statusText}`);
       }
 
       const result = await response.json();
@@ -65,6 +71,8 @@ export const usePWAStoreProducts = () => {
       logger.error("Error generating product images:", error);
       toast.error("Failed to generate product images");
       return null;
+    } finally {
+      setIsGeneratingImages(false);
     }
   };
 
@@ -111,6 +119,9 @@ export const usePWAStoreProducts = () => {
         'collection': '247 Collection'
       };
       
+      // Generate a timestamp for cache busting
+      const timestamp = Date.now();
+      
       for (let i = 1; i <= 6; i++) {
         const productId = `sample-${categoryId}-${i}`;
         const isLimitedEdition = i % 2 === 0;
@@ -120,13 +131,7 @@ export const usePWAStoreProducts = () => {
           name: `${categoryNames[categoryId as keyof typeof categoryNames]} ${i}`,
           price: (Math.random() * 100 + 20).toFixed(2),
           category: categoryId,
-          image_url: i % 3 === 0 ? '/placeholder.svg' : 
-                    categoryId === 'original' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/original/${categoryId}-${i}-${uuidv4()}.webp` :
-                    categoryId === 'signed' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/signed/${categoryId}-${i}-${uuidv4()}.webp` :
-                    categoryId === 'collection' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/collection/${categoryId}-${i}-${uuidv4()}.webp` :
-                    categoryId === 'print' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/print/${categoryId}-${i}-${uuidv4()}.webp` : 
-                    categoryId === 'merch' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/merch/${categoryId}-${i}-${uuidv4()}.webp` :
-                    `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/sticker/${categoryId}-${i}-${uuidv4()}.webp`,
+          image_url: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${categoryId}/${categoryId}-${i}-${uuidv4()}.webp?t=${timestamp}`,
           is_limited_edition: isLimitedEdition,
           artists: { name: 'Demo Artist' }
         });
@@ -148,6 +153,7 @@ export const usePWAStoreProducts = () => {
     generateCategoryImage,
     isLoading,
     error,
-    refetch
+    refetch,
+    isGeneratingImages
   };
 };

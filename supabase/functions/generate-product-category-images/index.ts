@@ -103,12 +103,16 @@ async function generateRunwareImage(prompt: string, category: string): Promise<s
       ])
     })
 
-    if (!response.ok) {
-      throw new Error(`Runware API returned ${response.status}`)
+    const responseText = await response.text()
+    console.log(`Raw response from Runware: ${responseText}`)
+    
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      throw new Error(`Failed to parse Runware response: ${e.message}, Response: ${responseText.substring(0, 200)}...`)
     }
 
-    const data = await response.json()
-    
     if (data.error || data.errors) {
       const errorMsg = data.errors?.[0]?.message || 'Unknown error'
       throw new Error(`Runware API error: ${errorMsg}`)
@@ -127,6 +131,50 @@ async function generateRunwareImage(prompt: string, category: string): Promise<s
   } catch (error) {
     console.error('Error generating image with Runware:', error)
     return null
+  }
+}
+
+// Ensure the storage bucket exists
+async function ensureStorageBucketExists() {
+  try {
+    // Check if bucket exists
+    const { data: buckets } = await supabaseAdmin.storage.listBuckets()
+    const bucketExists = buckets?.some(bucket => bucket.name === BUCKET_NAME)
+    
+    if (!bucketExists) {
+      console.log(`Creating ${BUCKET_NAME} bucket`)
+      const { error } = await supabaseAdmin.storage.createBucket(BUCKET_NAME, {
+        public: true,
+        allowedMimeTypes: ['image/webp', 'image/jpeg', 'image/png'],
+        fileSizeLimit: 5242880 // 5MB
+      })
+        
+      if (error) {
+        throw new Error(`Failed to create bucket: ${error.message}`)
+      }
+      
+      // Set public policy on the bucket
+      const { error: policyError } = await supabaseAdmin.storage.from(BUCKET_NAME).createSignedUrl('dummy-path', 1)
+      if (policyError && !policyError.message.includes('not found')) {
+        // Try to create a public policy
+        const { error: publicError } = await supabaseAdmin.rpc('create_public_bucket_policy', { bucket_name: BUCKET_NAME })
+        if (publicError) {
+          console.warn(`Failed to set public policy: ${publicError.message}`)
+        }
+      }
+    }
+    
+    // Ensure category folders exist
+    const categories = ['original', 'signed', 'sticker', 'merch', 'print', 'collection']
+    for (const category of categories) {
+      // We don't need to explicitly create folders in Supabase Storage
+      // They're created automatically when files are uploaded with path separators
+    }
+    
+    return true
+  } catch (error) {
+    console.error('Error ensuring storage bucket exists:', error)
+    return false
   }
 }
 
@@ -163,6 +211,8 @@ async function generateCategoryImages() {
             console.error(`Error updating product: ${error.message}`)
           }
         }
+      } else {
+        console.error(`Failed to generate image for ${category}-${i}`)
       }
     }
   }
@@ -177,30 +227,21 @@ serve(async (req) => {
   }
 
   try {
-    // Check if storage bucket exists, create if not
-    const { data: buckets } = await supabaseAdmin
-      .storage
-      .listBuckets()
-      
-    const bucketExists = buckets?.some(bucket => bucket.name === BUCKET_NAME)
-    
-    if (!bucketExists) {
-      console.log(`Creating ${BUCKET_NAME} bucket`)
-      const { error } = await supabaseAdmin
-        .storage
-        .createBucket(BUCKET_NAME, {
-          public: true,
-          allowedMimeTypes: ['image/webp', 'image/jpeg', 'image/png'],
-          fileSizeLimit: 5242880 // 5MB
-        })
-        
-      if (error) {
-        throw new Error(`Failed to create bucket: ${error.message}`)
-      }
+    // Ensure storage bucket exists
+    const bucketReady = await ensureStorageBucketExists()
+    if (!bucketReady) {
+      throw new Error('Failed to ensure storage bucket exists')
     }
     
     // Process the generate request
-    const { category, single } = await req.json()
+    let body
+    try {
+      body = await req.json()
+    } catch (e) {
+      body = {}
+    }
+    
+    const { category, single } = body
     
     if (single && category) {
       // Generate a single category

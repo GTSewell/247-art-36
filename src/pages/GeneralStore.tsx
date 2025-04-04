@@ -25,13 +25,13 @@ const GeneralStore = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
-  const [isGeneratingImages, setIsGeneratingImages] = useState(false);
   
   const {
     featuredProducts,
     getProductsForCategory,
     generateProductImages,
-    isLoading
+    isLoading,
+    isGeneratingImages
   } = usePWAStoreProducts();
 
   const handleThemeToggle = (isDark: boolean) => {
@@ -50,15 +50,14 @@ const GeneralStore = () => {
   };
 
   const handleGenerateImages = async () => {
-    setIsGeneratingImages(true);
+    if (isGeneratingImages) return;
+    
     toast.info("Generating product images, this may take a minute...");
     try {
       await generateProductImages();
       toast.success("Product images generated successfully!");
     } catch (error) {
       toast.error("Failed to generate product images");
-    } finally {
-      setIsGeneratingImages(false);
     }
   };
 
@@ -109,6 +108,7 @@ const GeneralStore = () => {
               products={filteredProducts}
               selectedCategory={selectedCategory}
               onCategoryChange={handleCategoryChange}
+              isGeneratingImages={isGeneratingImages}
             />
 
             {isLoading && (
