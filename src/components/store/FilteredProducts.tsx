@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Zap, ShoppingCart, Loader2 } from "lucide-react";
@@ -32,7 +31,62 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     logger.error("Image failed to load", { src: e.currentTarget.src });
-    e.currentTarget.src = '/placeholder.svg';
+    const img = e.currentTarget;
+    const productId = img.getAttribute('data-product-id') || '';
+    const category = img.getAttribute('data-category') || '';
+    img.src = getCategoryFallbackImage(category, getNumberFromProductId(productId));
+  };
+  
+  const getNumberFromProductId = (productId: string): number => {
+    const parts = productId.split('-');
+    const lastPart = parts[parts.length - 1];
+    const num = parseInt(lastPart, 10);
+    return isNaN(num) ? 1 : num;
+  };
+  
+  const getCategoryFallbackImage = (category: string, index: number = 1): string => {
+    const imageIndex = Math.max(1, Math.min(6, index));
+    
+    const categoryImages: Record<string, string[]> = {
+      'original': [
+        '/lovable-uploads/2f884c19-75ec-4f8c-a501-ebc90a17c2c6.png',
+        '/lovable-uploads/77d6eca3-c8ee-469f-8975-11645265224b.png',
+        '/lovable-uploads/2ed59a3d-02e9-41db-97a4-722e0a36b249.png',
+        '/lovable-uploads/3ab59a55-2f79-43d8-970b-05c9af0af079.png',
+        '/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png',
+        '/lovable-uploads/e3632eac-612c-482e-aad1-8d4fd3b2947c.png'
+      ],
+      'signed': [
+        '/lovable-uploads/5d0599b7-4561-43b3-af8b-550a349ed4fc.png',
+        '/lovable-uploads/e87b6304-c331-43ea-8732-079538ff941a.png',
+        '/lovable-uploads/cf5565b7-f7b3-4c38-bdbb-99b1bfb3b192.png',
+        '/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png',
+        '/lovable-uploads/ba2acde7-f602-4a0e-b52f-f5b1b5a3689e.png',
+        '/lovable-uploads/e0deff39-8fe2-4550-ab0c-1e69017df558.png'
+      ],
+      'collection': [
+        '/lovable-uploads/8045e416-b0d7-482c-b222-33fee5d700fc.png',
+        '/lovable-uploads/f0f9a807-bce8-48e7-86d9-73deb089ec3b.png',
+        '/lovable-uploads/7ab2b4e1-a00b-4cd8-b039-5863c96b000f.png',
+        '/lovable-uploads/c7f799f3-cf1b-4b9f-8c6c-a680bb4f0add.png',
+        '/lovable-uploads/7d2e39fb-84b5-4bfc-9f09-707fa8e985e1.png',
+        '/lovable-uploads/cdc0cbb8-b760-4aba-b9aa-3490af08c781.png'
+      ]
+    };
+    
+    if (!categoryImages[category]) {
+      return '/placeholder.svg';
+    }
+    
+    return categoryImages[category][imageIndex - 1] || categoryImages[category][0];
+  };
+  
+  const getProductImageUrl = (product: any): string => {
+    if (product.image_url && !product.image_url.includes('undefined')) {
+      return `${product.image_url}?t=${Date.now()}`;
+    }
+    
+    return getCategoryFallbackImage(product.category, getNumberFromProductId(product.id));
   };
   
   const categories = [{
@@ -77,22 +131,6 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
     }
   };
 
-  // Force image reload with unique timestamp
-  const getImageUrl = (url: string) => {
-    if (!url) return '/placeholder.svg';
-    
-    // Make sure we're using the proper base URL
-    let imageUrl = url;
-    if (url.includes('undefined')) {
-      // Fix incorrect URL formation by removing 'undefined' from the path
-      imageUrl = url.replace('/undefined', '');
-    }
-    
-    // Add cache busting parameter
-    const baseUrl = imageUrl.split('?')[0]; // Remove any existing query params
-    return `${baseUrl}?t=${Date.now()}`;
-  };
-
   return <>
       <section className="mb-8">
         <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-4'}`}>
@@ -128,8 +166,10 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
                 <div key={product.id} className="group">
                   <div className="relative aspect-square overflow-hidden rounded-lg mb-2 bg-gray-100 dark:bg-gray-700">
                     <img 
-                      src={getImageUrl(product.image_url)} 
+                      src={getProductImageUrl(product)} 
                       alt={product.name} 
+                      data-product-id={product.id}
+                      data-category={product.category}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" 
                       onError={handleImageError} 
                     />

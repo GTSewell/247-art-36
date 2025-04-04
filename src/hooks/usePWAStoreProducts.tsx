@@ -53,7 +53,7 @@ export const usePWAStoreProducts = () => {
       logger.info("Starting image generation for all product categories");
       toast.info("Generating product images, this may take a minute...");
       
-      // Fix: Use proper URL formation with supabase functions.invoke
+      // Use supabase functions.invoke with correct parameters
       const { data, error } = await supabase.functions.invoke('generate-product-category-images', {
         method: 'POST',
         body: {}
@@ -84,7 +84,6 @@ export const usePWAStoreProducts = () => {
     try {
       logger.info(`Generating image for specific category: ${category}`);
       
-      // Fix: Use proper URL formation with supabase functions.invoke
       const { data, error } = await supabase.functions.invoke('generate-product-category-images', {
         method: 'POST',
         body: { category, single: true }
@@ -121,9 +120,8 @@ export const usePWAStoreProducts = () => {
         'collection': '247 Collection'
       };
       
-      // Unique timestamp for cache busting
-      const timestamp = Date.now();
-      
+      // Generate sample products with proper data for client-side use
+      // These won't be saved to the database but will be displayed in the UI
       for (let i = 1; i <= 6; i++) {
         const productId = `sample-${categoryId}-${i}`;
         const isLimitedEdition = i % 2 === 0;
@@ -133,9 +131,8 @@ export const usePWAStoreProducts = () => {
           name: `${categoryNames[categoryId as keyof typeof categoryNames]} ${i}`,
           price: (Math.random() * 100 + 20).toFixed(2),
           category: categoryId,
-          image_url: `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${categoryId}/${categoryId}-${i}-${uuidv4()}.webp?t=${timestamp}`,
-          is_limited_edition: isLimitedEdition,
-          artists: { name: 'Demo Artist' }
+          artists: { name: 'Demo Artist' },
+          is_limited_edition: isLimitedEdition
         });
       }
       
