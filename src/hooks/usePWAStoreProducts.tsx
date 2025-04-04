@@ -3,12 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { logger } from "@/utils/logger";
+import { v4 as uuidv4 } from "@/utils/uuid";
 
 export const usePWAStoreProducts = () => {
   const {
     data: products,
     isLoading,
-    error
+    error,
+    refetch
   } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -37,6 +39,64 @@ export const usePWAStoreProducts = () => {
     logger.error("Query error:", error);
   }
 
+  const generateProductImages = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({})
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to generate product images');
+      }
+
+      const result = await response.json();
+      logger.info("Generated product images:", result);
+      
+      // Refetch products to get the updated images
+      await refetch();
+      
+      return result;
+    } catch (error) {
+      logger.error("Error generating product images:", error);
+      toast.error("Failed to generate product images");
+      return null;
+    }
+  };
+
+  const generateCategoryImage = async (category: string) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-product-category-images`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({ category, single: true })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to generate image for ${category}`);
+      }
+
+      const result = await response.json();
+      logger.info(`Generated image for ${category}:`, result);
+      
+      // Refetch products to get the updated images
+      await refetch();
+      
+      return result.imageUrl;
+    } catch (error) {
+      logger.error(`Error generating image for ${category}:`, error);
+      toast.error(`Failed to generate image for ${category}`);
+      return null;
+    }
+  };
+
   const getProductsForCategory = (categoryId: string) => {
     const categoryProducts = products?.filter(p => p.category === categoryId) || [];
     
@@ -52,19 +112,22 @@ export const usePWAStoreProducts = () => {
       };
       
       for (let i = 1; i <= 6; i++) {
+        const productId = `sample-${categoryId}-${i}`;
+        const isLimitedEdition = i % 2 === 0;
+        
         sampleProducts.push({
-          id: `sample-${categoryId}-${i}`,
+          id: productId,
           name: `${categoryNames[categoryId as keyof typeof categoryNames]} ${i}`,
           price: (Math.random() * 100 + 20).toFixed(2),
           category: categoryId,
           image_url: i % 3 === 0 ? '/placeholder.svg' : 
-                    categoryId === 'original' ? 'https://images.unsplash.com/photo-1578926288207-32356bf00b16?q=80&w=1000&auto=format&fit=crop' :
-                    categoryId === 'signed' ? 'https://images.unsplash.com/photo-1579541591970-e5615259c822?q=80&w=1000&auto=format&fit=crop' :
-                    categoryId === 'collection' ? 'https://images.unsplash.com/photo-1585083969600-495ee7e3f55a?q=80&w=1000&auto=format&fit=crop' :
-                    categoryId === 'print' ? 'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?q=80&w=1000&auto=format&fit=crop' : 
-                    categoryId === 'merch' ? 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop' :
-                    'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop',
-          is_limited_edition: i % 2 === 0,
+                    categoryId === 'original' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/original/${categoryId}-${i}-${uuidv4()}.webp` :
+                    categoryId === 'signed' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/signed/${categoryId}-${i}-${uuidv4()}.webp` :
+                    categoryId === 'collection' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/collection/${categoryId}-${i}-${uuidv4()}.webp` :
+                    categoryId === 'print' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/print/${categoryId}-${i}-${uuidv4()}.webp` : 
+                    categoryId === 'merch' ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/merch/${categoryId}-${i}-${uuidv4()}.webp` :
+                    `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/sticker/${categoryId}-${i}-${uuidv4()}.webp`,
+          is_limited_edition: isLimitedEdition,
           artists: { name: 'Demo Artist' }
         });
       }
@@ -81,7 +144,10 @@ export const usePWAStoreProducts = () => {
     products,
     featuredProducts,
     getProductsForCategory,
+    generateProductImages,
+    generateCategoryImage,
     isLoading,
-    error
+    error,
+    refetch
   };
 };

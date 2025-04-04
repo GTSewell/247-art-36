@@ -9,6 +9,8 @@ import { TimerProvider } from "@/contexts/TimerContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ThemeToggle from "@/components/ThemeToggle";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
+import { Button } from "@/components/ui/button";
+import { ImageIcon, Loader2 } from "lucide-react";
 
 interface TimerState {
   hours: number;
@@ -23,10 +25,12 @@ const GeneralStore = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
+  const [isGeneratingImages, setIsGeneratingImages] = useState(false);
   
   const {
     featuredProducts,
     getProductsForCategory,
+    generateProductImages,
     isLoading
   } = usePWAStoreProducts();
 
@@ -45,13 +49,38 @@ const GeneralStore = () => {
     setSelectedCategory(category);
   };
 
+  const handleGenerateImages = async () => {
+    setIsGeneratingImages(true);
+    toast.info("Generating product images, this may take a minute...");
+    try {
+      await generateProductImages();
+      toast.success("Product images generated successfully!");
+    } catch (error) {
+      toast.error("Failed to generate product images");
+    } finally {
+      setIsGeneratingImages(false);
+    }
+  };
+
   return (
     <TimerProvider>
       <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           <Navigation />
           <main className="container mx-auto px-4 pt-24 pb-12">
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-between items-center mb-4">
+              <Button 
+                onClick={handleGenerateImages} 
+                disabled={isGeneratingImages}
+                className="flex items-center gap-2 bg-zap-blue hover:bg-zap-blue/90"
+              >
+                {isGeneratingImages ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <ImageIcon className="h-4 w-4" />
+                )}
+                {isGeneratingImages ? "Generating Images..." : "Generate Product Images"}
+              </Button>
               <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
             </div>
             
