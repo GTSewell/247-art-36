@@ -63,6 +63,16 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
     return result;
   };
   
+  // Fix the function to return a boolean instead of void
+  const handleAfterUpload = async (): Promise<boolean> => {
+    try {
+      await syncArtistImages();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+  
   return (
     <Card>
       <CardHeader>
@@ -78,7 +88,7 @@ const ArtistArtworkManager: React.FC<ArtistArtworkManagerProps> = ({ artistId })
             isUploading={uploading}
             artistName={artistName}
             artistId={artist?.id}
-            onAfterUpload={syncArtistImages}
+            onAfterUpload={handleAfterUpload}
           />
           
           <ArtworkGrid 

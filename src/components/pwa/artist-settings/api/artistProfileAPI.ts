@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { ArtistProfileFormData } from "../types";
 import { processSocialPlatforms } from "../utils/socialPlatformUtils";
@@ -91,8 +90,9 @@ const getNextArtistId = async (): Promise<number> => {
 
 /**
  * Create or update artist profile in Supabase
+ * Modified to accept only formData and artistId parameters
  */
-export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string | null, existingArtist: any) => {
+export const saveArtistProfile = async (formData: ArtistProfileFormData, artistId: string | null) => {
   try {
     // Process array values - ensure they're stored as proper JSON arrays for JSONB columns
     logger.info("Processing form data for saving:", formData);
@@ -125,14 +125,14 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       styles: styles,
       social_platforms: socialPlatforms,
       image: formData.image,
-      // If existingArtist has a published property, keep it; otherwise, default to false
-      published: existingArtist?.published === true
+      // If an existing artist has published=true, keep it; otherwise, default to false
+      published: formData.published === true
     };
     
     // Log the final processed data before saving
     logger.info("Final processed data for saving:", processedData);
     
-    if (artistId && existingArtist) {
+    if (artistId) {
       // Convert string id to number for database operations
       const numericId = parseInt(artistId, 10);
       
@@ -141,6 +141,22 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       }
       
       logger.info("Updating existing artist profile with ID:", numericId);
+      
+      // Fetch existing artist to check published status
+      const { data: existingArtist, error: fetchError } = await supabase
+        .from('artists')
+        .select('published')
+        .eq('id', numericId)
+        .single();
+        
+      if (fetchError && !fetchError.message.includes('No rows found')) {
+        throw fetchError;
+      }
+      
+      // If artist exists, use its published status
+      if (existingArtist) {
+        processedData.published = existingArtist.published === true;
+      }
       
       // Update existing artist profile
       const { data, error } = await supabase
@@ -173,7 +189,7 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
           ...processedData,
           published: false, // Set published to false by default for new artists
           locked_artworks: false, // Ensure new artists can have artworks uploaded
-          artwork_files: [], // Initialize empty artwork files array
+          artwork_files: {}, // Initialize empty artwork files object
           user_id: user?.id // Add the authenticated user's ID to link to this artist
         }])
         .select();

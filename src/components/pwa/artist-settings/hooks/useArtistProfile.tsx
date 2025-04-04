@@ -155,7 +155,8 @@ export const useArtistProfile = (artistId: string | null): ArtistProfileHookRetu
       setSaving(true);
       logger.info("Submitting artist profile form data:", formData);
       
-      const result = await saveArtistProfile(formData, effectiveArtistId, artist);
+      // Fix: Remove the third argument 'artist' as saveArtistProfile only expects 2 arguments
+      const result = await saveArtistProfile(formData, effectiveArtistId);
       
       if (result.success) {
         // Get the updated data from the result
