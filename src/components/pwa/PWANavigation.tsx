@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Users, ShoppingBag } from 'lucide-react';
@@ -109,7 +108,7 @@ const PWANavigation = () => {
               <div className="bg-gray-800 rounded-full p-1">
                 <Avatar className="h-10 w-10 border border-white/30">
                   <AvatarImage 
-                    src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+                    src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" 
                     alt="Account" 
                   />
                   <AvatarFallback className="bg-gray-600 text-white">

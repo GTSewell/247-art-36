@@ -103,7 +103,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         >
           <Avatar className="h-8 w-8">
             <AvatarImage 
-              src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+              src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">
@@ -117,7 +117,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <div className="flex items-center gap-2 p-3 border-b">
           <Avatar className="h-8 w-8">
             <AvatarImage 
-              src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+              src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" 
               alt={displayName}
             />
             <AvatarFallback className="bg-primary text-white">

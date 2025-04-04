@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -55,7 +54,7 @@ const CollectorSettings: React.FC = () => {
         <CardHeader>
           <CardTitle className="flex items-center">
             <Avatar className="mr-2 h-6 w-6">
-              <AvatarImage src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" alt="Profile" />
+              <AvatarImage src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" alt="Profile" />
               <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
             </Avatar>
             Profile Settings

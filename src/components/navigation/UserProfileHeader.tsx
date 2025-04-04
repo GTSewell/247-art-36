@@ -18,7 +18,7 @@ const UserProfileHeader: React.FC<UserProfileHeaderProps> = ({
     <div className="flex items-center p-2">
       <Avatar className="h-10 w-10 mr-3">
         <AvatarImage 
-          src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+          src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" 
           alt={displayName}
         />
         <AvatarFallback className="bg-primary text-white">

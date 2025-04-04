@@ -31,7 +31,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     <div className="relative">
       <Avatar className={avatarSize}>
         <AvatarImage 
-          src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+          src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" 
           alt={displayName}
         />
         <AvatarFallback className="bg-primary text-white">
