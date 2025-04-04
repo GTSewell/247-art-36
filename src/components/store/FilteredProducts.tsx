@@ -45,14 +45,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   return <>
       <section className="mb-8">
         <div className={`grid ${isMobile ? 'grid-cols-2 gap-2' : 'grid-cols-6 gap-4'}`}>
-          {categories.map(category => <button key={category.id} onClick={() => category.id === 'sticker' || category.id === 'merch' || category.id === 'print' ? onCategoryChange(category.id as any) : undefined} className={`
-                p-3 rounded-lg border-2 border-white
-                ${category.color}
-                ${category.id === selectedCategory ? 'ring-4 ring-white' : ''}
-                transition-all duration-200 hover:scale-105
-                flex items-center justify-center text-center
-                ${isMobile ? 'h-24 mb-2' : 'aspect-square'}
-              `}>
+          {categories.map(category => <button key={category.id} onClick={() => category.id === 'sticker' || category.id === 'merch' || category.id === 'print' ? onCategoryChange(category.id as any) : undefined} className="py-[15px] px-0">
               <span className="font-nove text-xs leading-tight text-gray-800 font-normal md:text-lg">
                 {category.label}
               </span>
