@@ -70,7 +70,7 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
       </section>
 
       <section>
-        <ScrollArea className="h-[800px] rounded-md border-4 border-black dark:border-gray-700 p-4 bg-zap-yellow dark:bg-zap-yellow/90 py-[32px] px-[32px]">
+        <ScrollArea className="h-[800px] rounded-md border-4 border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 py-[32px] px-[32px]">
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {products.map(product => <div key={product.id} className="group">
                 <div className="relative aspect-square overflow-hidden rounded-lg mb-2">
