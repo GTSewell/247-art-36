@@ -1,16 +1,14 @@
 
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/navigation/Navigation";
 import { toast } from "sonner";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import FilteredProducts from "@/components/store/FilteredProducts";
 import { TimerProvider } from "@/contexts/TimerContext";
-import { logger } from "@/utils/logger";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ThemeToggle from "@/components/ThemeToggle";
+import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
 
 interface TimerState {
   hours: number;
@@ -27,43 +25,16 @@ const GeneralStore = () => {
   });
   
   const {
-    data: products,
-    isLoading,
-    error
-  } = useQuery({
-    queryKey: ['products'],
-    queryFn: async () => {
-      try {
-        const {
-          data,
-          error
-        } = await supabase.from('products').select('*, artists(name, image)').order('created_at', {
-          ascending: false
-        });
-        if (error) {
-          logger.error("Failed to load products from Supabase", error);
-          toast.error("Failed to load products");
-          return [];
-        }
-        return data || [];
-      } catch (error) {
-        logger.error("Error loading products:", error);
-        toast.error("Failed to load products");
-        return [];
-      }
-    }
-  });
+    featuredProducts,
+    getProductsForCategory,
+    isLoading
+  } = usePWAStoreProducts();
 
   const handleThemeToggle = (isDark: boolean) => {
     setDarkMode(isDark);
   };
 
-  if (error) {
-    logger.error("Query error:", error);
-  }
-
-  const featuredProducts = products?.filter(p => p.is_featured) || [];
-  const filteredProducts = products?.filter(p => p.category === selectedCategory).slice(0, 16) || [];
+  const filteredProducts = getProductsForCategory(selectedCategory);
 
   const handleProductSelect = (product: any, timerState: TimerState) => {
     setSelectedProduct(product);

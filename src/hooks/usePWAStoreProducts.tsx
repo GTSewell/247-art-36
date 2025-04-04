@@ -58,7 +58,11 @@ export const usePWAStoreProducts = () => {
           price: (Math.random() * 100 + 20).toFixed(2),
           category: categoryId,
           image_url: i % 3 === 0 ? '/placeholder.svg' : 
+                    categoryId === 'original' ? 'https://images.unsplash.com/photo-1578926288207-32356bf00b16?q=80&w=1000&auto=format&fit=crop' :
+                    categoryId === 'signed' ? 'https://images.unsplash.com/photo-1579541591970-e5615259c822?q=80&w=1000&auto=format&fit=crop' :
+                    categoryId === 'collection' ? 'https://images.unsplash.com/photo-1585083969600-495ee7e3f55a?q=80&w=1000&auto=format&fit=crop' :
                     categoryId === 'print' ? 'https://images.unsplash.com/photo-1579783901586-d88db74b4fe4?q=80&w=1000&auto=format&fit=crop' : 
+                    categoryId === 'merch' ? 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop' :
                     'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop',
           is_limited_edition: i % 2 === 0,
           artists: { name: 'Demo Artist' }
