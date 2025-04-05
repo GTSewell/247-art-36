@@ -8,12 +8,10 @@ export const PasswordDisclaimer: React.FC = () => {
         Note: This site is purely in prototype mode solely for reference purposes only.
       </p>
       
-      {/* Password sharing notice */}
-      <div className="mt-4 p-4 bg-zap-yellow rounded-md border-2 border-black">
-        <p className="text-black font-bold text-center">
-          PLEASE DO NOT SHARE YOUR PASSWORD PUBLICLY.
-          <br />
-          It's ok to share privately if you believe another artist should be a part of this exhibition.
+      {/* Blue instruction box moved from SitePassword component */}
+      <div className="mt-4 p-3 border-2 border-zap-blue rounded-md bg-zap-blue/10">
+        <p className="text-center font-bold text-black">
+          If you need a password, please fill out the form below
         </p>
       </div>
       
