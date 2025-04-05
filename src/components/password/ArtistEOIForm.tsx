@@ -6,7 +6,7 @@ export const ArtistEOIForm: React.FC = () => {
     <div className="mt-6 bg-white p-6 rounded-lg shadow-md border-2 border-zap-blue">
       <h3 className="text-center font-bold text-lg text-gray-800 mb-4">Don't have a password?</h3>
       <p className="text-center text-gray-600 mb-4">
-        If you're an artist interested in 247.art, please fill out this form to express your interest.
+        If you're an artist interested in learning more about 247.art, please fill out this form to express your interest.
       </p>
       
       {/* Tally embedded form with zap blue styling */}
