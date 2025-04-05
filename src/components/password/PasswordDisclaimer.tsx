@@ -13,7 +13,7 @@ export const PasswordDisclaimer: React.FC = () => {
         <p className="text-black font-bold text-center">
           PLEASE DO NOT SHARE YOUR PASSWORD PUBLICLY.
           <br />
-          It's ok to share privately if you believe another artist should be a part of this exhibition. After all, we would love nothing more than this exhibition to be curated by artists. So lets keep it solid!
+          It's ok to share privately if you believe another artist should be a part of this exhibition.
         </p>
       </div>
       

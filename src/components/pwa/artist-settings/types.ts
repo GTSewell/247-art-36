@@ -1,4 +1,3 @@
-
 // For the ArtistProfileFormData interface, add or update these fields
 export interface ArtistProfileFormData {
   name: string;
@@ -25,4 +24,24 @@ export interface ArtistProfileHookReturn {
   removeSocialPlatform: (index: number) => void;
   handleImageChange: (imageUrl: string | null) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
+}
+
+// Add ArtistProfile type if it doesn't exist
+export interface ArtistProfile {
+  id?: number;
+  user_id?: string;
+  name: string;
+  bio?: string;
+  image?: string;
+  website?: string;
+  social_links?: Record<string, string>;
+  city?: string;
+  country?: string;
+  location?: string;
+  techniques?: string[];
+  styles?: string[];
+  artist_tags?: string[];
+  artwork_files?: Record<string, any>;
+  artworks?: any[];
+  [key: string]: any;
 }

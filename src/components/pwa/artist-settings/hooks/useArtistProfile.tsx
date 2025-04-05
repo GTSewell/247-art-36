@@ -1,55 +1,66 @@
 
-import { useState } from "react";
-import { ArtistProfileHookReturn } from "../types";
-import { useFetchArtistProfile } from "./useFetchArtistProfile";
-import { useFormHandling } from "./useFormHandling";
-import { useSaveArtistProfile } from "./useSaveArtistProfile";
+import { useState, useEffect } from 'react';
+import { useSaveArtistProfile } from './useSaveArtistProfile';
+import { useFormHandling } from './useFormHandling';
+import { useFetchArtistProfile } from './useFetchArtistProfile';
+import { ArtistProfile } from '../types';
+import { logger } from '@/utils/logger';
+import { toast } from 'sonner';
+import { mapArtistToFormData } from '../utils/formDataMapper';
 
-export const useArtistProfile = (artistId: string | null): ArtistProfileHookReturn => {
-  // Initialize the artist state first to fix the TypeScript error
-  const [artist, setArtist] = useState<any>(null);
+export const useArtistProfile = (artistId: string | null) => {
+  const [artist, setArtist] = useState<ArtistProfile | null>(null);
+  const { formData, setFormData, handleChange } = useFormHandling();
+  const { fetchProfile, isLoading } = useFetchArtistProfile();
+  const { saveProfile, isSaving } = useSaveArtistProfile();
+
+  useEffect(() => {
+    const loadArtistProfile = async () => {
+      if (!artistId) return;
+      
+      try {
+        const fetchedArtist = await fetchProfile(artistId);
+        if (fetchedArtist) {
+          setArtist(fetchedArtist);
+          setFormData(mapArtistToFormData(fetchedArtist));
+        }
+      } catch (error) {
+        logger.error("Error loading artist profile:", error);
+        toast.error("Failed to load artist profile");
+      }
+    };
+
+    loadArtistProfile();
+  }, [artistId, fetchProfile]);
   
-  // Use the fetch hook to get artist data
-  const { 
-    loading, 
-    artist: fetchedArtist, 
-    formData, 
-    setFormData 
-  } = useFetchArtistProfile(artistId);
-  
-  // Update our local artist state when the fetched artist changes
-  useState(() => {
-    if (fetchedArtist) {
-      setArtist(fetchedArtist);
-    }
-  });
-  
-  // Use the form handling hook
-  const {
-    handleChange,
-    handleSocialPlatformChange,
-    addSocialPlatform,
-    removeSocialPlatform,
-    handleImageChange
-  } = useFormHandling(formData, setFormData);
-  
-  // Use the save hook
-  const {
-    saving,
-    handleSubmit
-  } = useSaveArtistProfile(artistId, artist, setArtist, formData, setFormData);
-  
-  // Return all required properties
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!artistId) return;
+    
+    const isDemo = artistId === "demo";
+    const effectiveArtistId = isDemo ? "25" : artistId;
+    
+    const result = await saveProfile(formData as any, effectiveArtistId, (updatedArtist: ArtistProfile) => {
+      setArtist(updatedArtist);
+      
+      // For new artists, update the URL
+      if (!artistId || artistId === 'new') {
+        window.location.href = window.location.href.replace('isCreatingNew=true', 
+          `selectedArtistId=${updatedArtist.id}`);
+      }
+    });
+    
+    return result;
+  };
+
   return {
-    loading,
-    saving,
     artist,
     formData,
+    setFormData,
     handleChange,
-    handleSocialPlatformChange,
-    addSocialPlatform,
-    removeSocialPlatform,
-    handleImageChange,
-    handleSubmit
+    handleSubmit,
+    isLoading,
+    isSaving
   };
 };
