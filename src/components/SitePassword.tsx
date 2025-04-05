@@ -18,10 +18,6 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8 mb-6">
         <PasswordPageLogo />
         
-        <p className="mb-2 text-center text-gray-600">
-          This site is password protected. Please enter the password to continue.
-        </p>
-        
         {/* Added zap blue box around instruction text */}
         <div className="mb-4 p-3 border-2 border-zap-blue rounded-md bg-zap-blue/10">
           <p className="text-center font-bold text-black">

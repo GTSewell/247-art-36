@@ -21,9 +21,6 @@ export const PasswordDisclaimer: React.FC = () => {
         <p className="text-xs text-center text-gray-700 font-medium">
           After entering the password, you'll be automatically logged in to our artist demo account
         </p>
-        <p className="text-xs text-center text-gray-700 mt-1">
-          Note: Passwords are not case sensitive (uppercase and lowercase letters are treated the same)
-        </p>
       </div>
     </div>
   );

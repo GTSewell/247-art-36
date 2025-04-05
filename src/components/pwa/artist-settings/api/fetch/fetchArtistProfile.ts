@@ -59,6 +59,9 @@ export const fetchArtistProfile = async (artistId: string): Promise<{ data: Arti
         : [],
       social_platforms: Array.isArray(processedArtist.social_platforms)
         ? processedArtist.social_platforms
+        : [],
+      artworks: Array.isArray(processedArtist.artworks) 
+        ? processedArtist.artworks 
         : []
     };
     
