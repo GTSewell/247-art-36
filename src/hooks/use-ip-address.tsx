@@ -17,12 +17,13 @@ export const useIpAddress = () => {
       logger.info("Browser information:", browserInfo);
       
       try {
-        // Instead of Promise.any, use Promise.allSettled and take the first resolved promise
+        // Try multiple IP services with extended timeout and fallback mechanisms
         const ipPromises = [
-          fetchWithTimeout('https://api.ipify.org?format=json', 3000),
-          fetchWithTimeout('https://ipinfo.io/json', 3000),
-          fetchWithTimeout('https://api.ip.sb/jsonip', 3000),
-          fetchWithTimeout('https://api64.ipify.org?format=json', 3000)
+          fetchWithTimeout('https://api.ipify.org?format=json', 5000),
+          fetchWithTimeout('https://ipinfo.io/json', 5000),
+          fetchWithTimeout('https://api.ip.sb/jsonip', 5000),
+          fetchWithTimeout('https://api64.ipify.org?format=json', 5000),
+          fetchWithTimeout('https://ifconfig.me/all.json', 5000)
         ];
         
         const results = await Promise.allSettled(ipPromises);
@@ -46,11 +47,13 @@ export const useIpAddress = () => {
           }
         }
         
-        // If we get here, no service worked
-        throw new Error("All IP services failed");
+        // If all services failed, provide a fallback value
+        logger.warn("All IP services failed - using fallback IP");
+        setIpAddress("unknown-ip");
+        setIsLoading(false);
       } catch (error) {
         logger.warn("IP detection failed - proceeding without IP:", { error, browser: browserInfo.browser });
-        setIpAddress(null);
+        setIpAddress("detection-failed");
         setIsLoading(false);
       }
     };
@@ -64,7 +67,13 @@ export const useIpAddress = () => {
 // Helper function to add timeout to fetch
 const fetchWithTimeout = (url: string, timeout: number) => {
   return Promise.race([
-    fetch(url),
+    fetch(url, { 
+      mode: 'cors',
+      credentials: 'omit',
+      headers: {
+        'Accept': 'application/json'
+      }
+    }),
     new Promise<Response>((_, reject) => 
       setTimeout(() => reject(new Error(`Timeout after ${timeout}ms`)), timeout)
     )
