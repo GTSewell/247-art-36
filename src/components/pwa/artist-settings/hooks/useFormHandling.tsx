@@ -3,10 +3,20 @@ import { useState } from "react";
 import { logger } from "@/utils/logger";
 import { ArtistProfileFormData } from "../types";
 
-export const useFormHandling = (
-  initialFormData: ArtistProfileFormData,
-  setFormData: React.Dispatch<React.SetStateAction<ArtistProfileFormData>>
-) => {
+export const useFormHandling = () => {
+  const [formData, setFormData] = useState<ArtistProfileFormData>({
+    name: "",
+    specialty: "",
+    bio: "",
+    city: "",
+    country: "",
+    techniques: "",
+    styles: "",
+    social_platforms: [""],
+    image: null,
+    published: false
+  });
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     logger.info(`Form field changed: ${name} = ${value}`);
@@ -17,7 +27,7 @@ export const useFormHandling = (
   };
   
   const handleSocialPlatformChange = (index: number, value: string) => {
-    const updatedPlatforms = [...initialFormData.social_platforms];
+    const updatedPlatforms = [...formData.social_platforms];
     updatedPlatforms[index] = value;
     logger.info(`Social platform ${index} changed to: ${value}`);
     setFormData(prev => ({
@@ -35,10 +45,10 @@ export const useFormHandling = (
   };
   
   const removeSocialPlatform = (index: number) => {
-    if (initialFormData.social_platforms.length <= 1) return;
+    if (formData.social_platforms.length <= 1) return;
     
     logger.info(`Removing social platform at index ${index}`);
-    const updatedPlatforms = [...initialFormData.social_platforms];
+    const updatedPlatforms = [...formData.social_platforms];
     updatedPlatforms.splice(index, 1);
     setFormData(prev => ({
       ...prev,
@@ -55,6 +65,8 @@ export const useFormHandling = (
   };
   
   return {
+    formData,
+    setFormData,
     handleChange,
     handleSocialPlatformChange,
     addSocialPlatform,

@@ -1,11 +1,12 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
+import { ArtistProfile } from "../../types";
 
 /**
  * Fetch artist profile from Supabase
  */
-export const fetchArtistProfile = async (artistId: string) => {
+export const fetchArtistProfile = async (artistId: string): Promise<{ data: ArtistProfile | null, error: any }> => {
   try {
     logger.info("Fetching artist with ID:", artistId);
     

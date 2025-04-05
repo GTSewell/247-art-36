@@ -1,5 +1,6 @@
+
 import { supabase } from "@/integrations/supabase/client";
-import { ArtistProfileFormData } from "../../types";
+import { ArtistProfileFormData, ArtistProfile } from "../../types";
 import { logger } from "@/utils/logger";
 import { processStringToArray, getNextArtistId } from "../utils/dataProcessingUtils";
 import { processSocialPlatforms } from "../../utils/socialPlatformUtils";
@@ -54,7 +55,7 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
     }
   } catch (error: any) {
     logger.error("Error saving artist profile:", error);
-    return { success: false, message: error.message };
+    return { success: false, message: error.message, data: null };
   }
 };
 
@@ -100,11 +101,12 @@ const updateExistingArtist = async (artistId: string, processedData: any) => {
       throw error;
     }
     
-    logger.info("Updated artist data:", data);
-    return { success: true, message: "Profile updated successfully", data };
+    const updatedArtist = data ? data[0] : null;
+    logger.info("Updated artist data:", updatedArtist);
+    return { success: true, message: "Profile updated successfully", data: updatedArtist };
   } catch (error: any) {
     logger.error("Error updating artist:", error);
-    throw error;
+    return { success: false, message: error.message, data: null };
   }
 };
 
@@ -139,10 +141,11 @@ const createNewArtist = async (processedData: any) => {
       throw error;
     }
     
-    logger.info("Created artist data:", data);
-    return { success: true, message: "Profile created successfully", data };
+    const createdArtist = data ? data[0] : null;
+    logger.info("Created artist data:", createdArtist);
+    return { success: true, message: "Profile created successfully", data: createdArtist };
   } catch (error: any) {
     logger.error("Error creating artist:", error);
-    throw error;
+    return { success: false, message: error.message, data: null };
   }
 };
