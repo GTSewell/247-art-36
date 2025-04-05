@@ -30,7 +30,7 @@ export default {
         zap: {
           yellow: "#f7cf1e",
           red: "#ef3f36",
-          blue: "#00baef",
+          blue: "#00baef", // Using the existing zap blue color
           green: "#05a732",
         },
         border: "hsl(var(--border))",

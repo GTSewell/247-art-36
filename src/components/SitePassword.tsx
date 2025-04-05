@@ -22,17 +22,17 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
           This site is password protected. Please enter the password to continue.
         </p>
         
-        {/* Moved instruction text here, right after the main instruction and before the form */}
-        <p className="mb-4 text-center font-bold text-black">
-          If you need a password, please fill out the form below
-        </p>
+        {/* Added zap blue box around instruction text */}
+        <div className="mb-4 p-3 border-2 border-zap-blue rounded-md bg-zap-blue/10">
+          <p className="text-center font-bold text-black">
+            If you need a password, please fill out the form below
+          </p>
+        </div>
         
         <PasswordForm setIsPasswordCorrect={setIsPasswordCorrect} />
         
         <PasswordDisclaimer />
       </div>
-      
-      {/* Removed the previously added instruction div that was between the password form and the EOI form */}
       
       {/* Artist Expression of Interest Form */}
       <div className="relative z-10 w-full max-w-md mb-10">
