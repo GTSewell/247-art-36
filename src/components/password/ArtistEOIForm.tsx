@@ -14,7 +14,7 @@ export const ArtistEOIForm: React.FC = () => {
         <iframe 
           src="https://tally.so/embed/3xzD9E?hideTitle=1&transparentBackground=1&dynamicHeight=1" 
           width="100%" 
-          height="100%" 
+          height="300" 
           frameBorder="0" 
           marginHeight={0} 
           marginWidth={0} 
