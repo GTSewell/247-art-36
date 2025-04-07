@@ -42,13 +42,15 @@ export const useArtists = () => {
           return featuredArtistIds.indexOf(a.id) - featuredArtistIds.indexOf(b.id);
         });
         
-        // Sort additional artists to show signature artists (ID >= 26) first
+        // Sort additional artists to show newest artists first (highest ID first)
+        // This is the main change - reversing the sort order to show highest IDs first
         const sortedAdditional = [...additional].sort((a, b) => {
-          // If both are signature artists or both are not, maintain original order
+          // If both are signature artists or both are not, sort by ID descending
           if ((a.id >= 26 && b.id >= 26) || (a.id < 26 && b.id < 26)) {
-            return a.id - b.id;
+            // Sort by ID in descending order (highest/newest first)
+            return b.id - a.id;
           }
-          // Signature artists come first
+          // Signature artists still come first
           return a.id >= 26 ? -1 : 1;
         });
         

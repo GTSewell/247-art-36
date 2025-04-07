@@ -30,7 +30,10 @@ const PWAArtists = () => {
     refreshArtists 
   } = useArtists();
 
-  const allArtists = [...featuredArtists, ...additionalArtists];
+  const allArtists = [
+    ...featuredArtists,
+    ...additionalArtists.sort((a, b) => b.id - a.id)
+  ];
 
   const filteredArtists = allArtists.filter(artist => {
     const matchesSearch = !searchTerm || 
@@ -58,7 +61,6 @@ const PWAArtists = () => {
   };
 
   const navigateToArtistPage = (artist: Artist) => {
-    // Remove spaces from artist name for URL
     const formattedName = artist.name.replace(/\s+/g, '');
     logger.info(`Navigating to artist page: ${formattedName}`);
     navigate(`/artists/${formattedName}`);
