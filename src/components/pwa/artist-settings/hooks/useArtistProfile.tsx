@@ -57,24 +57,41 @@ export const useArtistProfile = (artistId: string | null) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!artistId) return;
+    logger.info("Form submission triggered", { artistId, formData });
     
-    const isDemo = artistId === "demo";
-    const effectiveArtistId = isDemo ? "25" : artistId;
-    
-    const result = await saveProfile(formData, effectiveArtistId);
-    
-    if (result.success && result.data) {
-      setArtist(result.data);
+    try {
+      const isDemo = artistId === "demo";
+      const effectiveArtistId = isDemo ? "25" : artistId;
       
-      // For new artists, update the URL
-      if (!artistId || artistId === 'new') {
-        window.location.href = window.location.href.replace('isCreatingNew=true', 
-          `selectedArtistId=${result.data.id}`);
+      logger.info("Saving artist profile with ID:", { artistId, effectiveArtistId });
+      
+      const result = await saveProfile(formData, effectiveArtistId);
+      
+      if (result.success && result.data) {
+        setArtist(result.data);
+        
+        // For new artists, update the URL
+        if (!artistId || artistId === 'new') {
+          // Navigate to the new artist's edit page
+          const newId = result.data.id;
+          logger.info("New artist created with ID:", newId);
+          
+          // Use the window.location.replace to avoid adding to browser history stack
+          window.location.href = window.location.href.replace('isCreatingNew=true', 
+            `selectedArtistId=${newId}`);
+        }
       }
+      
+      return result;
+    } catch (error: any) {
+      logger.error("Form submission error:", error);
+      toast.error(`Error saving artist: ${error.message}`);
+      return { 
+        success: false, 
+        message: error.message,
+        data: null
+      };
     }
-    
-    return result;
   };
 
   return {

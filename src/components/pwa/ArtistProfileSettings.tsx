@@ -7,6 +7,7 @@ import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
 import { useArtistProfile } from "./artist-settings/hooks/useArtistProfile";
+import { toast } from "sonner";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
@@ -33,6 +34,20 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
   const isDemo = artistId === "demo";
   const displayText = isDemo ? "Demo Artist Profile" : (artistId ? "Artist Profile" : "Create New Artist Profile");
   
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const result = await handleSubmit(e);
+      
+      if (!result?.success) {
+        toast.error(`Failed to save: ${result?.message || "Unknown error"}`);
+      }
+    } catch (error: any) {
+      console.error("Form submission error:", error);
+      toast.error(`Form submission error: ${error.message}`);
+    }
+  };
+  
   return (
     <Card>
       <CardHeader>
@@ -42,7 +57,7 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={onSubmit} className="space-y-4">
           <BasicInfoForm 
             formData={formData} 
             handleChange={handleChange}

@@ -1,51 +1,59 @@
 
+import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/utils/logger";
 
 /**
- * Helper function to process comma or space separated string to array
- */
-export const processStringToArray = (input: string): string[] => {
-  if (!input || input.trim() === '') return [];
-  
-  // First check if it contains commas
-  if (input.includes(',')) {
-    return input
-      .split(',')
-      .map(item => item.trim())
-      .filter(item => item.length > 0);
-  }
-  
-  // If no commas, try splitting by spaces, but be careful with multi-word phrases
-  return input
-    .split(/\s+/)
-    .filter(item => item.length > 0);
-};
-
-/**
- * Get the next available artist ID
+ * Get the next available ID for a new artist
  */
 export const getNextArtistId = async (): Promise<number> => {
   try {
+    logger.info("Getting next available artist ID");
+    
+    // Get the highest artist ID currently in the database
     const { data, error } = await supabase
       .from('artists')
       .select('id')
       .order('id', { ascending: false })
-      .limit(1)
-      .single();
-      
+      .limit(1);
+    
     if (error) {
-      if (error.message.includes('No rows found')) {
-        return 1; // Start with ID 1 if no artists exist
-      }
+      logger.error("Error fetching highest artist ID:", error);
       throw error;
     }
     
-    return data.id + 1;
-  } catch (error: any) {
+    // Start from ID 26 for signature artist accounts
+    const highestId = data && data.length > 0 ? data[0].id : 25;
+    const nextId = highestId + 1;
+    
+    logger.info(`Next available artist ID: ${nextId}`);
+    return nextId;
+  } catch (error) {
     logger.error("Error getting next artist ID:", error);
-    throw error;
+    // Fallback to a safe starting ID if there's an error
+    return 26;
   }
 };
 
-// Add supabase import at the top
-import { supabase } from "@/integrations/supabase/client";
+/**
+ * Convert string input to an array, handling various format possibilities
+ */
+export const processStringToArray = (input: string | string[] | null | undefined): string[] => {
+  if (!input) return [];
+  
+  // If already an array, return as is
+  if (Array.isArray(input)) return input;
+  
+  try {
+    // Try to parse as JSON if it's a string representation of an array
+    if (input.trim().startsWith('[') && input.trim().endsWith(']')) {
+      return JSON.parse(input);
+    }
+    
+    // Split by commas and trim each item
+    return input.split(',').map(item => item.trim()).filter(Boolean);
+  } catch (e) {
+    logger.warn("Error processing string to array:", e);
+    // If parsing fails, try simple comma split
+    return input.split(',').map(item => item.trim()).filter(Boolean);
+  }
+};
