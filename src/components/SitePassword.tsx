@@ -3,7 +3,7 @@ import React from 'react';
 import { PasswordForm } from './password/PasswordForm';
 import { PasswordDisclaimer } from './password/PasswordDisclaimer';
 import { PasswordPageLogo } from './password/PasswordPageLogo';
-import { PasswordPageBackground } from './password/PasswordPageBackground';
+import { PasswordGateLayeredBackground } from './password/PasswordGateLayeredBackground';
 import { ArtistEOIForm } from './password/ArtistEOIForm';
 
 interface SitePasswordProps {
@@ -13,9 +13,9 @@ interface SitePasswordProps {
 export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect }) => {
   return (
     <div className="min-h-screen overflow-auto py-10 flex flex-col items-center justify-center bg-zap-yellow relative">
-      <PasswordPageBackground />
+      <PasswordGateLayeredBackground />
       
-      <div className="relative z-10 w-full max-w-md bg-white rounded-lg shadow-xl p-8 mb-6">
+      <div className="relative z-20 w-full max-w-md bg-white rounded-lg shadow-xl p-8 mb-6">
         <PasswordPageLogo />
         
         <PasswordForm setIsPasswordCorrect={setIsPasswordCorrect} />
@@ -24,7 +24,7 @@ export const SitePassword: React.FC<SitePasswordProps> = ({ setIsPasswordCorrect
       </div>
       
       {/* Artist Expression of Interest Form */}
-      <div className="relative z-10 w-full max-w-md mb-10">
+      <div className="relative z-20 w-full max-w-md mb-10">
         <ArtistEOIForm />
       </div>
     </div>

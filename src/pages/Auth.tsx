@@ -12,6 +12,7 @@ import DemoAccountInfo from "@/components/auth/DemoAccountInfo";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Pattern247Background } from "@/components/password/Pattern247Background";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -73,10 +74,26 @@ const Auth = () => {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-zap-yellow p-4 ${useMobileUI ? 'pt-16' : ''}`}>
+    <div className={`min-h-screen flex items-center justify-center bg-zap-yellow p-4 ${useMobileUI ? 'pt-16' : ''} relative`}>
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-zap-yellow z-0"></div>
+      <Pattern247Background />
+      <div 
+        className="absolute inset-0 z-10"
+        style={{
+          backgroundImage: `url('/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          mixBlendMode: 'normal',
+          pointerEvents: 'none',
+          opacity: 0.8,
+        }}
+      />
+      
       {isPWA && <PWANavigation />}
       
-      <div className="w-full max-w-md space-y-6 bg-white p-6 rounded-xl shadow-lg">
+      <div className="w-full max-w-md space-y-6 bg-white p-6 rounded-xl shadow-lg relative z-20">
         <div className="text-center">
           <Button 
             variant="ghost" 
