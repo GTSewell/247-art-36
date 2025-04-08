@@ -8,6 +8,7 @@ import ArtworkInputForm from "./ArtworkInputForm";
 import PackageSelector from "./PackageSelector";
 import { Artwork, STUDIO_ARTIST_SQCM, FEATURE_ARTIST_SQCM } from "./types/artwork-types";
 import { generateId, calculateTotalAreaWithFits } from "./utils/artwork-calculations";
+import { toast } from "sonner";
 
 const ArtworkSizeCalculator: React.FC = () => {
   const [selectedPackage, setSelectedPackage] = useState<'signature'>('signature');
@@ -17,6 +18,7 @@ const ArtworkSizeCalculator: React.FC = () => {
   const [totalArea, setTotalArea] = useState<number>(0);
   const [maxAllowedArea, setMaxAllowedArea] = useState<number>(FEATURE_ARTIST_SQCM);
   const [maxArtworks, setMaxArtworks] = useState<number>(4);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Always use Feature Artist values for Signature Artist
@@ -27,43 +29,65 @@ const ArtworkSizeCalculator: React.FC = () => {
   }, [selectedPackage]);
 
   const updateCalculations = (updatedArtworks: Artwork[]) => {
-    const { artworks: calculatedArtworks, totalArea: calculatedTotalArea } = 
-      calculateTotalAreaWithFits(updatedArtworks, maxAllowedArea);
-    
-    setTotalArea(calculatedTotalArea);
-    setArtworks(calculatedArtworks);
+    try {
+      const { artworks: calculatedArtworks, totalArea: calculatedTotalArea } = 
+        calculateTotalAreaWithFits(updatedArtworks, maxAllowedArea);
+      
+      setTotalArea(calculatedTotalArea);
+      setArtworks(calculatedArtworks);
+      setError(null); // Clear any previous errors
+    } catch (err) {
+      console.error('Error calculating artwork areas:', err);
+      setError('Failed to calculate artwork areas');
+      toast.error("Failed to save changes");
+    }
   };
 
   const addArtwork = () => {
     if (artworks.length < maxArtworks) {
-      const newArtworks = [
-        ...artworks,
-        { id: generateId(), width: '', height: '', fits: true, area: 0 }
-      ];
-      updateCalculations(newArtworks);
+      try {
+        const newArtworks = [
+          ...artworks,
+          { id: generateId(), width: '', height: '', fits: true, area: 0 }
+        ];
+        updateCalculations(newArtworks);
+      } catch (err) {
+        console.error('Error adding artwork:', err);
+        toast.error("Failed to add artwork");
+      }
     }
   };
 
   const removeArtwork = (id: number) => {
-    const filteredArtworks = artworks.filter(artwork => artwork.id !== id);
-    updateCalculations(filteredArtworks);
+    try {
+      const filteredArtworks = artworks.filter(artwork => artwork.id !== id);
+      updateCalculations(filteredArtworks);
+    } catch (err) {
+      console.error('Error removing artwork:', err);
+      toast.error("Failed to remove artwork");
+    }
   };
 
   const handleDimensionChange = (id: number, dimension: 'width' | 'height', value: string) => {
-    const numValue = value === '' ? '' : Math.max(0, Number(value) || 0);
-    
-    const updatedArtworks = artworks.map(artwork => 
-      artwork.id === id ? { ...artwork, [dimension]: numValue } : artwork
-    );
-    
-    updateCalculations(updatedArtworks);
+    try {
+      const numValue = value === '' ? '' : Math.max(0, Number(value) || 0);
+      
+      const updatedArtworks = artworks.map(artwork => 
+        artwork.id === id ? { ...artwork, [dimension]: numValue } : artwork
+      );
+      
+      updateCalculations(updatedArtworks);
+    } catch (err) {
+      console.error('Error updating dimension:', err);
+      toast.error("Failed to save changes");
+    }
   };
 
   return (
     <div className="w-full max-w-4xl mx-auto">
       <Card className="w-full mb-8">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Calculate You Artwork Space</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Calculate Your Artwork Space</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -81,6 +105,12 @@ const ArtworkSizeCalculator: React.FC = () => {
                   </span>
                 </div>
               </div>
+              
+              {error && (
+                <div className="bg-red-50 text-red-600 p-2 rounded-md text-sm mb-2">
+                  {error}
+                </div>
+              )}
               
               {artworks.map((artwork, index) => (
                 <ArtworkInputForm 
