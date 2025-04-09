@@ -7,6 +7,16 @@ export const useClientIp = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
+    // Check if we've already gone through authentication
+    const isAlreadyAuthenticated = localStorage.getItem("isPasswordCorrect") === "true";
+    
+    // If already authenticated, don't make unnecessary IP requests
+    if (isAlreadyAuthenticated) {
+      setClientIp('auth-completed');
+      setIsLoading(false);
+      return;
+    }
+    
     const fetchIpAddress = async () => {
       try {
         // Use only one trusted service with increased timeout

@@ -7,6 +7,16 @@ export const useIpAddress = () => {
   const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
+    // Check if we've already gone through authentication
+    const isAlreadyAuthenticated = localStorage.getItem("isPasswordCorrect") === "true";
+    
+    // If already authenticated, don't make unnecessary IP requests
+    if (isAlreadyAuthenticated) {
+      setIpAddress('auth-completed');
+      setIsLoading(false);
+      return;
+    }
+    
     const getIpAddress = async () => {
       // Log browser information to help debug
       const browserInfo = {
@@ -17,43 +27,22 @@ export const useIpAddress = () => {
       logger.info("Browser information:", browserInfo);
       
       try {
-        // Try multiple IP services with extended timeout and fallback mechanisms
-        const ipPromises = [
-          fetchWithTimeout('https://api.ipify.org?format=json', 5000),
-          fetchWithTimeout('https://ipinfo.io/json', 5000),
-          fetchWithTimeout('https://api.ip.sb/jsonip', 5000),
-          fetchWithTimeout('https://api64.ipify.org?format=json', 5000),
-          fetchWithTimeout('https://ifconfig.me/all.json', 5000)
-        ];
+        // Only try the most reliable service
+        const response = await fetchWithTimeout('https://api.ipify.org?format=json', 8000);
+        const data = await response.json();
+        const ip = data.ip;
         
-        const results = await Promise.allSettled(ipPromises);
-        
-        // Find the first fulfilled promise
-        const fulfilledResult = results.find(
-          (result): result is PromiseFulfilledResult<Response> => 
-            result.status === 'fulfilled'
-        );
-        
-        if (fulfilledResult) {
-          const response = fulfilledResult.value;
-          const data = await response.json();
-          const ip = data.ip;
-          
-          if (ip) {
-            setIpAddress(ip);
-            logger.info("Successfully obtained IP address", { ip });
-            setIsLoading(false);
-            return;
-          }
+        if (ip) {
+          setIpAddress(ip);
+          logger.info("Successfully obtained IP address", { ip });
+        } else {
+          logger.warn("IP data missing from response");
+          setIpAddress("ip-data-missing");
         }
-        
-        // If all services failed, provide a fallback value
-        logger.warn("All IP services failed - using fallback IP");
-        setIpAddress("unknown-ip");
-        setIsLoading(false);
       } catch (error) {
         logger.warn("IP detection failed - proceeding without IP:", { error, browser: browserInfo.browser });
         setIpAddress("detection-failed");
+      } finally {
         setIsLoading(false);
       }
     };

@@ -56,8 +56,13 @@ export const validatePassword = async ({
         logger.error("Failed to update recipient name:", { error: updateError });
       }
       
-      // Log access with original and new recipient name
-      await logPasswordAccess(lowerPassword, clientIp, currentRecipientName, recipientName.trim());
+      // Only log access if a valid client IP is provided that's not a placeholder
+      if (clientIp && !clientIp.includes('auth-completed') && !clientIp.includes('detection-failed')) {
+        await logPasswordAccess(lowerPassword, clientIp, currentRecipientName, recipientName.trim());
+      } else {
+        // Log without IP info if there's an issue
+        await logPasswordAccess(lowerPassword, 'ip-tracking-disabled', currentRecipientName, recipientName.trim());
+      }
     }
     
     return { isValid: true, currentRecipientName };
@@ -103,25 +108,13 @@ const logPasswordAccess = async (
     } else {
       logger.info("Password access logged successfully", { success: true });
       
-      // Update the unique_ip_count in site_settings
-      await updateUniqueIpCount(password);
+      // Only update unique IP count if we're still tracking IPs
+      if (!clientIp.includes('ip-tracking-disabled')) {
+        await updateUniqueIpCount(password);
+      }
     }
   } catch (logError) {
     logger.error("Error with access logging:", { error: logError });
-    
-    // Fallback logging without IP
-    const { error: fallbackLogError } = await supabase
-      .from('password_access_logs')
-      .insert({ 
-        site_password: password,
-        ip_address: 'client-side-fallback', 
-        original_recipient_name: originalRecipientName,
-        user_provided_name: userProvidedName
-      });
-      
-    if (fallbackLogError) {
-      logger.error("Error with fallback logging:", { error: fallbackLogError });
-    }
   }
 };
 
