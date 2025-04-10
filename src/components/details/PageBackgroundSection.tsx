@@ -4,11 +4,11 @@ import Navigation from "@/components/navigation/Navigation";
 const PageBackgroundSection = () => {
   return (
     <>
-      {/* Top Red Halftone Background - Full Width */}
+      {/* Top Halftone Background - Full Width */}
       <div className="absolute top-0 left-0 right-0 w-full z-10">
         <img 
-          src="/lovable-uploads/41f4bd11-64e7-4a89-bc4f-730883fb8f4e.png" 
-          alt="Red Halftone Background Top" 
+          src="/lovable-uploads/ed143886-c147-4ae1-980b-dc9c0d7118c4.png" 
+          alt="Halftone Background Top" 
           className="w-full h-auto object-cover" 
         />
       </div>
