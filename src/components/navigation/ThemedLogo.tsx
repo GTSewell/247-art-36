@@ -25,7 +25,7 @@ const ThemedLogo: React.FC<ThemedLogoProps> = ({
   if (isStorePage) {
     return <Link to="/" className="flex items-center">
         <img src={darkMode ? "/lovable-uploads/497cd833-3789-4550-973a-128aae5dd9f1.png" // white logo for dark mode
-      : "/lovable-uploads/73430fc3-154a-4d2e-8417-18a402fe7806.png" // black logo for light mode
+      : "/lovable-uploads/8ab30670-5940-4832-9fcd-b89cfed952e6.png" // new logo for light mode
       } alt="247art" className="h-8" />
       </Link>;
   }
