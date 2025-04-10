@@ -1,7 +1,5 @@
-
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-
 const JoinUndergroundSection = () => {
   return <section className="px-4 relative bg-[#7e7e7e] py-[27px]">
       {/* Halftone Background Image */}
@@ -53,7 +51,7 @@ const JoinUndergroundSection = () => {
           
           {/* Changed from external link to Link component pointing to details page */}
           <Link to="/details" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
-            <img src="/lovable-uploads/d18c3542-cbb6-47d7-a6cd-b1d9d0f5fffe.png" alt="TLDR; SIGN ME UP!" className="w-full h-auto" />
+            
           </Link>
         </div>
       </motion.div>
