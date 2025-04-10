@@ -1,11 +1,13 @@
-
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import VideoPlayer from "@/components/VideoPlayer";
+
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -29,6 +31,7 @@ const Hero = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
+
   const handleInstallClick = async () => {
     setIsClicked(true);
     if (!deferredPrompt) {
@@ -56,6 +59,7 @@ const Hero = () => {
       setIsClicked(false);
     }
   };
+
   return <div className="relative min-h-screen overflow-hidden bg-white">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -77,8 +81,12 @@ const Hero = () => {
         opacity: 1
       }} transition={{
         duration: 0.5
-      }} className="inline-block">
-          <img alt="ZAP!" className="h-32 md:h-48 mx-auto animate-float" src="/lovable-uploads/10585327-7129-43c2-a90b-0544e7a9a420.png" />
+      }} className="inline-block w-full max-w-md mx-auto">
+          <VideoPlayer 
+            src="https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/product_images/247art-font-flip.mp4"
+            className="h-32 md:h-48 mx-auto"
+            controls={false}
+          />
         </motion.div>
         
         <motion.div initial={{
@@ -191,4 +199,5 @@ const Hero = () => {
       </div>
     </div>;
 };
+
 export default Hero;
