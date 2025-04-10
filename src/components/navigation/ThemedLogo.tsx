@@ -12,8 +12,24 @@ const ThemedLogo: React.FC<ThemedLogoProps> = ({ darkMode }) => {
   const isArtistsPage = location.pathname === '/artists';
   const isStorePage = location.pathname === '/store';
   
-  // Use special themed logos only on artists and store pages
-  if (isArtistsPage || isStorePage) {
+  // For Artists page specifically, use the new image in light mode
+  if (isArtistsPage) {
+    return (
+      <Link to="/" className="flex items-center">
+        <img 
+          src={darkMode 
+            ? "/lovable-uploads/497cd833-3789-4550-973a-128aae5dd9f1.png" // white logo for dark mode
+            : "/lovable-uploads/5e6262ca-40b4-465a-96a0-05cf01a9050d.png" // new custom logo for light mode
+          } 
+          alt="247art"
+          className="h-8"
+        />
+      </Link>
+    );
+  }
+  
+  // For Store page
+  if (isStorePage) {
     return (
       <Link to="/" className="flex items-center">
         <img 
