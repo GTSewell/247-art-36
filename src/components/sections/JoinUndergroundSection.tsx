@@ -1,8 +1,7 @@
 
 import { motion } from "framer-motion";
-import FaqAccordion from "./underground/FaqAccordion";
-import { faqItems } from "./underground/faqData";
 import { Link } from "react-router-dom";
+
 const JoinUndergroundSection = () => {
   return <section className="px-4 relative bg-[#7e7e7e] py-[27px]">
       {/* Halftone Background Image */}
@@ -51,9 +50,6 @@ const JoinUndergroundSection = () => {
         }} className="text-center">
             <img src="/lovable-uploads/2a729dda-550e-4a9f-9b77-b04246fe65d6.png" alt="Built By Artists For Artists" className="w-full max-w-2xl mx-auto animate-float" />
           </motion.div>
-
-          {/* FAQ Accordion */}
-          <FaqAccordion items={faqItems} />
           
           {/* Changed from external link to Link component pointing to details page */}
           <Link to="/details" className="block w-full max-w-lg mx-auto hover:opacity-90 transition-opacity">
