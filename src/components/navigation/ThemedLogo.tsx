@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -32,7 +31,7 @@ const ThemedLogo: React.FC<ThemedLogoProps> = ({
 
   // Default logo for other pages
   return <Link to="/" className="flex items-center">
-      <img src="/lovable-uploads/fd6ed9ef-16de-4047-baa1-b7d7ef1c8200.png" alt="247art" className="h-8" />
+      <img alt="247art" className="h-8" src="/lovable-uploads/b55eb0db-8612-4bc4-9587-0fdd9ad6f519.png" />
     </Link>;
 };
 export default ThemedLogo;
