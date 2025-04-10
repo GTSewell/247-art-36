@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -15,7 +16,7 @@ const ThemedLogo: React.FC<ThemedLogoProps> = ({
   if (isArtistsPage) {
     return <Link to="/" className="flex items-center">
         <img src={darkMode ? "/lovable-uploads/497cd833-3789-4550-973a-128aae5dd9f1.png" // white logo for dark mode
-      : "/lovable-uploads/5e6262ca-40b4-465a-96a0-05cf01a9050d.png" // new custom logo for light mode
+      : "/lovable-uploads/5c5291d2-a3c1-4822-a6e9-60b578b99d08.png" // new custom logo for light mode
       } alt="247art" className="h-8 object-fill" />
       </Link>;
   }
