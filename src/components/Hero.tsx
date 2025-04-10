@@ -77,7 +77,7 @@ const Hero = () => {
       }} transition={{
         duration: 0.5
       }} className="inline-block">
-          <img alt="ZAP!" className="h-32 md:h-48 mx-auto animate-float" src="/lovable-uploads/c0d13303-e602-4245-afe5-4e7171d56201.png" />
+          <img alt="ZAP!" className="h-32 md:h-48 mx-auto animate-float" src="/lovable-uploads/10585327-7129-43c2-a90b-0544e7a9a420.png" />
         </motion.div>
         
         <motion.div initial={{
