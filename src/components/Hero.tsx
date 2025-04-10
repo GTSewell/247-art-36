@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -141,20 +142,20 @@ const Hero = () => {
         duration: 0.5
       }} className="w-full mt-12 px-4 md:px-8 flex flex-col md:flex-row gap-6 justify-center items-center">
           <div className="w-full md:w-1/3 max-w-md">
-            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/6acfd1a8-557c-46d1-8723-9a2de5589601.png" alt="Gallery Commission" className="w-full h-auto" />
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-zap-yellow p-2">
+              <img src="/lovable-uploads/6acfd1a8-557c-46d1-8723-9a2de5589601.png" alt="Gallery Commission" className="w-full h-auto rounded" />
             </div>
           </div>
           
           <div className="w-full md:w-1/3 max-w-md">
-            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/36943b5d-defa-44e3-b4d3-0c03082b4abe.png" alt="Artist Profile" className="w-full h-auto" />
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-zap-yellow p-2">
+              <img src="/lovable-uploads/36943b5d-defa-44e3-b4d3-0c03082b4abe.png" alt="Artist Profile" className="w-full h-auto rounded" />
             </div>
           </div>
           
           <div className="w-full md:w-1/3 max-w-md">
-            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/7ab2b4e1-a00b-4cd8-b039-5863c96b000f.png" alt="Artist Dashboard" className="w-full h-auto" />
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-zap-yellow p-2">
+              <img src="/lovable-uploads/7ab2b4e1-a00b-4cd8-b039-5863c96b000f.png" alt="Artist Dashboard" className="w-full h-auto rounded" />
             </div>
           </div>
         </motion.div>
@@ -170,20 +171,20 @@ const Hero = () => {
         duration: 0.5
       }} className="w-full mt-6 px-4 md:px-8 flex flex-col md:flex-row gap-6 justify-center items-center">
           <div className="w-full md:w-1/3 max-w-md">
-            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/91d913c0-84aa-4722-a729-eddcbe1386cb.png" alt="World Class Exhibition Space" className="w-full h-auto" />
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-zap-yellow p-2">
+              <img src="/lovable-uploads/91d913c0-84aa-4722-a729-eddcbe1386cb.png" alt="World Class Exhibition Space" className="w-full h-auto rounded" />
             </div>
           </div>
           
           <div className="w-full md:w-1/3 max-w-md">
-            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/ee6879a0-42e7-4b20-bd65-45c5dedecef9.png" alt="Fine Art Print House" className="w-full h-auto" />
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-zap-yellow p-2">
+              <img src="/lovable-uploads/ee6879a0-42e7-4b20-bd65-45c5dedecef9.png" alt="Fine Art Print House" className="w-full h-auto rounded" />
             </div>
           </div>
           
           <div className="w-full md:w-1/3 max-w-md">
-            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img src="/lovable-uploads/3e059aec-6e10-4d98-8e77-940f0edd0dd9.png" alt="STP: Stickers | T-Shirt | Print" className="w-full h-auto" />
+            <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-zap-yellow p-2">
+              <img src="/lovable-uploads/3e059aec-6e10-4d98-8e77-940f0edd0dd9.png" alt="STP: Stickers | T-Shirt | Print" className="w-full h-auto rounded" />
             </div>
           </div>
         </motion.div>
