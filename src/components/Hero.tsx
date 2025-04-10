@@ -1,13 +1,10 @@
-
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
-
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -31,7 +28,6 @@ const Hero = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
-
   const handleInstallClick = async () => {
     setIsClicked(true);
     if (!deferredPrompt) {
@@ -59,7 +55,6 @@ const Hero = () => {
       setIsClicked(false);
     }
   };
-
   return <div className="relative min-h-screen overflow-hidden bg-white">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -112,7 +107,7 @@ const Hero = () => {
         delay: 0.3,
         duration: 0.5
       }} className="mt-6 text-xl md:text-2xl text-gray-600 max-w-md mx-auto font-bold text-center px-4 md:px-0 w-full">
-          <p className="mb-6 font-extrabold uppercase">IT'S TIME FOR A REVOLUTION IN THE ART WORLD ...</p>
+          
           
           <motion.div initial={{
           y: 20,
@@ -132,7 +127,7 @@ const Hero = () => {
             </div>
           </motion.div>
           
-          <p className="font-extrabold mt-6">YOU CREATE. WE CREATE. TOGETHER WE KICK ASS!</p>
+          
         </motion.div>
 
         <motion.div initial={{
@@ -195,5 +190,4 @@ const Hero = () => {
       </div>
     </div>;
 };
-
 export default Hero;
