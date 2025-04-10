@@ -1,22 +1,38 @@
 
 import { motion } from "framer-motion";
+
 interface InterestFormProps {
   introText: string;
 }
+
 const InterestForm = ({
   introText
 }: InterestFormProps) => {
-  return <div className="p-6 rounded-lg bg-zap-blue px-[4px] py-[10px] my-[35px]">
-      <h2 className="font-bold text-2xl text-neutral-700 px-[33px] pt-[20px]">Would you like to know more?</h2>
-      <p className="whitespace-pre-wrap font-semibold text-neutral-700 px-[33px] text-lg py-[20px]">{introText}</p>
+  return (
+    <div className="p-4 md:p-6 rounded-lg bg-zap-blue px-2 md:px-[4px] py-[10px] my-[35px]">
+      <h2 className="font-bold text-xl md:text-2xl text-neutral-700 px-4 md:px-[33px] pt-[20px]">Would you like to know more?</h2>
+      <p className="whitespace-pre-wrap font-semibold text-neutral-700 px-4 md:px-[33px] text-base md:text-lg py-[20px]">{introText}</p>
       
-      {/* Embedded Tally form */}
+      {/* Embedded Tally form with responsive styling */}
       <div className="mt-6">
-        <iframe src="https://tally.so/embed/3X8q5Y?hideTitle=1&transparentBackground=1&dynamicHeight=1" width="100%" frameBorder="0" marginHeight={0} marginWidth={0} title="Expression of Interest" className="rounded-lg w-full" style={{
-        minHeight: "500px",
-        height: "auto"
-      }}></iframe>
+        <iframe 
+          src="https://tally.so/embed/3X8q5Y?hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+          width="100%" 
+          frameBorder="0" 
+          marginHeight={0} 
+          marginWidth={0} 
+          title="Expression of Interest" 
+          className="rounded-lg w-full" 
+          style={{
+            minHeight: "500px",
+            height: "auto",
+            maxWidth: "100%",
+            overflow: "hidden"
+          }}
+        ></iframe>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default InterestForm;

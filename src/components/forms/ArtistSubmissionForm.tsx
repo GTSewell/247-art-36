@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const formSchema = z.object({
   artistName: z.string().min(2, {
@@ -29,6 +30,7 @@ const formSchema = z.object({
 });
 
 export function ArtistSubmissionForm() {
+  const isMobile = useIsMobile();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,17 +67,17 @@ export function ArtistSubmissionForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="artistName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Artist Name</FormLabel>
+              <FormLabel className="text-sm md:text-base">Artist Name</FormLabel>
               <FormControl>
-                <Input placeholder="Enter artist name" {...field} />
+                <Input placeholder="Enter artist name" {...field} className="text-sm md:text-base" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs md:text-sm" />
             </FormItem>
           )}
         />
@@ -85,11 +87,11 @@ export function ArtistSubmissionForm() {
           name="instagramHandle"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Instagram Handle (optional)</FormLabel>
+              <FormLabel className="text-sm md:text-base">Instagram Handle (optional)</FormLabel>
               <FormControl>
-                <Input placeholder="@yourhandle" {...field} />
+                <Input placeholder="@yourhandle" {...field} className="text-sm md:text-base" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs md:text-sm" />
             </FormItem>
           )}
         />
@@ -99,11 +101,11 @@ export function ArtistSubmissionForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel className="text-sm md:text-base">Email</FormLabel>
               <FormControl>
-                <Input placeholder="your@email.com" type="email" {...field} />
+                <Input placeholder="your@email.com" type="email" {...field} className="text-sm md:text-base" />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs md:text-sm" />
             </FormItem>
           )}
         />
@@ -113,20 +115,20 @@ export function ArtistSubmissionForm() {
           name="comments"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Additional Comments (optional)</FormLabel>
+              <FormLabel className="text-sm md:text-base">Additional Comments (optional)</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Tell us more about your art..."
-                  className="resize-none"
+                  className="resize-none text-sm md:text-base"
                   {...field}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs md:text-sm" />
             </FormItem>
           )}
         />
 
-        <Button type="submit">Submit Application</Button>
+        <Button type="submit" className="w-full md:w-auto">Submit Application</Button>
       </form>
     </Form>
   );
