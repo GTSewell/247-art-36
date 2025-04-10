@@ -4,7 +4,7 @@ import FaqAccordion from "./underground/FaqAccordion";
 import { faqItems } from "./underground/faqData";
 import { Link } from "react-router-dom";
 const JoinUndergroundSection = () => {
-  return <section className="px-4 relative bg-zap-blue py-[27px]">
+  return <section className="px-4 relative bg-[#7e7e7e] py-[27px]">
       {/* Halftone Background Image */}
       <img src="/lovable-uploads/6fadf1da-55ba-4d36-8571-a0af3c64c197.png" alt="Halftone Pattern" className="absolute inset-0 w-full h-full object-cover z-10 opacity-100 pointer-events-none" />
       
