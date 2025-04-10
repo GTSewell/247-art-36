@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -9,10 +10,31 @@ const Hero = () => {
   const [isInstallable, setIsInstallable] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fontImages, setFontImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchFontImages = async () => {
       try {
+        setIsLoading(true);
+        // Check if the bucket exists
+        const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
+        
+        if (bucketError) {
+          console.error('Error fetching buckets:', bucketError);
+          toast.error('Could not access storage');
+          setIsLoading(false);
+          return;
+        }
+        
+        const productImagesBucket = buckets.find(b => b.name === 'product-images');
+        
+        if (!productImagesBucket) {
+          console.error('product-images bucket not found');
+          toast.error('Image storage not found');
+          setIsLoading(false);
+          return;
+        }
+        
         const { data, error } = await supabase.storage
           .from('product-images')
           .list('font images', {
@@ -22,9 +44,19 @@ const Hero = () => {
         if (error) {
           console.error('Error fetching font images:', error);
           toast.error('Could not load font images');
+          setIsLoading(false);
           return;
         }
 
+        if (!data || data.length === 0) {
+          console.error('No font images found');
+          toast.error('No font images found');
+          setIsLoading(false);
+          return;
+        }
+
+        console.log('Font images data:', data);
+        
         const pngFiles = data
           .filter(file => file.name.endsWith('.png'))
           .map(file => {
@@ -34,11 +66,20 @@ const Hero = () => {
             return publicUrl;
           });
         
+        if (pngFiles.length === 0) {
+          console.error('No PNG images found in font images folder');
+          toast.error('No images found');
+          setIsLoading(false);
+          return;
+        }
+        
+        console.log('Processed font images:', pngFiles);
         setFontImages(pngFiles);
-        console.log('Loaded font images:', pngFiles);
       } catch (err) {
         console.error('Unexpected error loading font images:', err);
         toast.error('Failed to load font images');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -140,13 +181,25 @@ const Hero = () => {
           }} 
           className="inline-block"
         >
-          {fontImages.length > 0 ? (
-            <img 
-              src={fontImages[currentImageIndex]} 
-              alt="ZAP! Logo Animation" 
-              className="h-32 md:h-48 mx-auto animate-float"
-              key={currentImageIndex}
-            />
+          {isLoading ? (
+            <div className="h-32 md:h-48 w-48 md:w-64 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-zap-red"></div>
+            </div>
+          ) : fontImages.length > 0 ? (
+            <div className="relative h-32 md:h-48">
+              <img 
+                src={fontImages[currentImageIndex]} 
+                alt="ZAP! Logo Animation" 
+                className="h-32 md:h-48 mx-auto animate-float"
+                key={currentImageIndex}
+                onError={(e) => {
+                  console.error(`Error loading image: ${fontImages[currentImageIndex]}`);
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = "/lovable-uploads/10585327-7129-43c2-a90b-0544e7a9a420.png";
+                }}
+              />
+            </div>
           ) : (
             <img 
               alt="ZAP!" 
