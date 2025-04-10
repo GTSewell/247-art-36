@@ -15,8 +15,8 @@ const ThemedLogo: React.FC<ThemedLogoProps> = ({
   // For Artists page specifically, use the new image in light mode
   if (isArtistsPage) {
     return <Link to="/" className="flex items-center">
-        <img src={darkMode ? "/lovable-uploads/497cd833-3789-4550-973a-128aae5dd9f1.png" // white logo for dark mode
-      : "/lovable-uploads/5c5291d2-a3c1-4822-a6e9-60b578b99d08.png" // new custom logo for light mode
+        <img src={darkMode ? "/lovable-uploads/d3dedc40-56a1-411a-9e13-268b900336df.png" // new dark mode logo for artists page
+      : "/lovable-uploads/5c5291d2-a3c1-4822-a6e9-60b578b99d08.png" // custom logo for light mode
       } alt="247art" className="h-8 object-fill" />
       </Link>;
   }
