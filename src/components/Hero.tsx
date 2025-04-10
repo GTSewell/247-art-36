@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
+
 const Hero = () => {
   const [isClicked, setIsClicked] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -28,6 +30,7 @@ const Hero = () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
+
   const handleInstallClick = async () => {
     setIsClicked(true);
     if (!deferredPrompt) {
@@ -55,6 +58,7 @@ const Hero = () => {
       setIsClicked(false);
     }
   };
+
   return <div className="relative min-h-screen overflow-hidden bg-zap-yellow">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
@@ -64,7 +68,7 @@ const Hero = () => {
       </div>
 
       <div className="absolute inset-0">
-        <img src="/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png" alt="Halftone Pattern" className="w-full h-full object-cover" />
+        <img src="/lovable-uploads/5275fee6-9936-449c-bb71-730600ae1475.png" alt="Halftone Pattern" className="w-full h-full object-cover" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center pt-24 md:pt-28">
@@ -190,4 +194,5 @@ const Hero = () => {
       </div>
     </div>;
 };
+
 export default Hero;

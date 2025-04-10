@@ -81,7 +81,7 @@ const Auth = () => {
       <div 
         className="absolute inset-0 z-10"
         style={{
-          backgroundImage: `url('/lovable-uploads/e16074dd-11b0-4f2e-bcc8-06b5fa6c282a.png')`,
+          backgroundImage: `url('/lovable-uploads/5275fee6-9936-449c-bb71-730600ae1475.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
