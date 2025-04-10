@@ -10,7 +10,7 @@ const PageBackgroundSection = () => {
       {/* Top Halftone Background - Full Width */}
       <div className="absolute top-0 left-0 right-0 w-full z-10">
         <img 
-          src="/lovable-uploads/38021187-f807-4cb5-adb2-840a75f8050f.png" 
+          src="/lovable-uploads/80e592b3-212e-4274-a7c2-6b8ff577e451.png" 
           alt="Halftone Background Top" 
           className="w-full h-auto object-cover" 
         />
