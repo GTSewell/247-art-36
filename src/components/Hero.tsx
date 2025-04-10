@@ -1,3 +1,4 @@
+
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
@@ -59,7 +60,7 @@ const Hero = () => {
     }
   };
 
-  return <div className="relative min-h-screen overflow-hidden bg-zap-yellow">
+  return <div className="relative min-h-screen overflow-hidden bg-white">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0" style={{
         backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)',
