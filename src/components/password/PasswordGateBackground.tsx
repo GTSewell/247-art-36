@@ -7,11 +7,11 @@ export const PasswordGateBackground: React.FC = () => {
       {/* Base yellow background */}
       <div className="absolute inset-0 bg-zap-yellow z-0" />
       
-      {/* Halftone overlay */}
+      {/* Halftone overlay - replaced with new blue halftone */}
       <div 
         className="absolute inset-0 z-10"
         style={{
-          backgroundImage: `url('/lovable-uploads/5275fee6-9936-449c-bb71-730600ae1475.png')`,
+          backgroundImage: `url('/lovable-uploads/08903113-968a-4ec9-828b-08adc61cd6d5.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
