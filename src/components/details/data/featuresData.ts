@@ -64,9 +64,7 @@ export const features: Feature[] = [
     studioArtist: "Up to 2", 
     featureArtist: "Up to 4", 
     signatureArtist: "Display up to 4 works in your space",
-    description: "Rotate your works, update stockroom pieces, swap out styles—your space is alive and flexible. Keeping it fresh and dynamic. 
-
-"
+    description: "Rotate your works, update stockroom pieces, swap out styles—your space is alive and flexible. Keeping it fresh and dynamic. "
   },
   { 
     name: "👕 Unsure how to turn your art into great merch?", 
