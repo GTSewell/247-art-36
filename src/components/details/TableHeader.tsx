@@ -6,7 +6,7 @@ const TableHeaderComponent = () => {
       transition: 'none'
     }}>
         <TableHead className="font-bold text-lg text-white p-1">
-          <span className="text-[0.85rem] sm:text-lg">Benefits: Click title for more info</span>
+          <span className="text-[0.85rem] sm:text-lg">⚡Benefits: Click title for more info</span>
         </TableHead>
         <TableHead className="text-center p-1">
           <div className="flex flex-col items-center justify-center">
