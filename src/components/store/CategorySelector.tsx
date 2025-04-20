@@ -21,13 +21,26 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
           <button 
             key={category.id} 
             onClick={() => onCategoryChange(category.id)} 
-            className={`py-[15px] px-2 rounded-md transition-all duration-200 hover:bg-opacity-80 border-2 ${
-              selectedCategory === category.id 
+            className={`
+              py-[15px] px-2 
+              rounded-md 
+              transition-all 
+              duration-200 
+              border-2 
+              ${selectedCategory === category.id 
                 ? `${getCategoryColor(category.id)} text-black border-black` 
-                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
-            }`}
+                : 'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'}
+            `}
           >
-            <span className={`font-nove text-xs leading-tight ${selectedCategory === category.id ? 'text-black font-semibold' : 'text-gray-800 dark:text-gray-200 font-normal'} md:text-lg`}>
+            <span className={`
+              font-nove 
+              text-xs 
+              leading-tight 
+              ${selectedCategory === category.id 
+                ? 'text-black font-semibold' 
+                : 'text-gray-800 dark:text-gray-200 font-normal hover:text-black dark:hover:text-white'}
+              md:text-lg
+            `}>
               {category.label}
             </span>
           </button>
