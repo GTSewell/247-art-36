@@ -49,7 +49,7 @@ export const features: Feature[] = [
     name: "💰 Hands-off revenue streams sound good?", 
     studioArtist: "100%", 
     featureArtist: "We'll take care of it, you take the cash!", 
-    signatureArtist: "",
+    signatureArtist: "We've got you covered!",
     description: "Not only do we produce all the retail merch at a premium quality we are known for, we give you and the collector options to choose from. Oh, and you keep 100% of the retail profits after production."
   },
   { 
