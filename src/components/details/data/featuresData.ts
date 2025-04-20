@@ -10,7 +10,7 @@ interface Feature {
 
 export const features: Feature[] = [
   { 
-    name: "Genesis Price", 
+    name: "Price", 
     studioArtist: "$995", 
     featureArtist: "$1495", 
     signatureArtist: "$1295",
