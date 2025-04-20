@@ -42,30 +42,23 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
               <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg">
                 <div className="space-y-4">
                   {feature.description && (
-                    <div dangerouslySetInnerHTML={{ __html: feature.description }} />
+                    <div 
+                      className="mb-4" 
+                      dangerouslySetInnerHTML={{ __html: feature.description }} 
+                    />
                   )}
-                  <div className="mt-4 space-y-2">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {feature.signatureArtist && (
-                        <div className="flex flex-col items-center p-3 bg-white rounded-lg">
-                          <span className="font-bold">Signature Artist</span>
-                          <span>{feature.signatureArtist === true ? "✓" : feature.signatureArtist}</span>
-                        </div>
-                      )}
-                      {feature.studioArtist && (
-                        <div className="flex flex-col items-center p-3 bg-white rounded-lg">
-                          <span className="font-bold">Studio Artist</span>
-                          <span>{feature.studioArtist === true ? "✓" : feature.studioArtist}</span>
-                        </div>
-                      )}
-                      {feature.featureArtist && (
-                        <div className="flex flex-col items-center p-3 bg-white rounded-lg">
-                          <span className="font-bold">Feature Artist</span>
-                          <span>{feature.featureArtist === true ? "✓" : feature.featureArtist}</span>
-                        </div>
-                      )}
+                  {feature.signatureArtist && (
+                    <div className="grid grid-cols-1 gap-4">
+                      <div className="flex flex-col items-center p-3 bg-white rounded-lg">
+                        <span className="font-bold">Signature Artist</span>
+                        <span>
+                          {feature.signatureArtist === true 
+                            ? "✓" 
+                            : feature.signatureArtist}
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>
@@ -77,4 +70,3 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
 };
 
 export default FeaturesAccordion;
-
