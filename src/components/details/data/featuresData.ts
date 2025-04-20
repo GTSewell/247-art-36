@@ -110,11 +110,11 @@ export const features: Feature[] = [
     hidden: true
   },
   { 
-    name: "📽 Art should be seen around the clock?", 
+    name: "📽 After hours?", 
     studioArtist: "1 rotation every 3", 
     featureArtist: "2 rotations every 3", 
-    signatureArtist: "Your work projected 24/7 on our video wall and MASSIVE projection space. All day. Every day.",
-    description: "Art Never Sleeps! Your artwork will be featured night and day, 24/7 on our HUGE Video Wall & Projection Space throughout the gallery."
+    signatureArtist: "24/7 Video Wall & Projection Space",
+    description: "Art never sleeps! Your artwork will featured 24/7 on our HUGE Video Wall & Projection Space throughout the gallery."
   },
   { 
     name: "🧳 Want to rotate your work easily?", 
