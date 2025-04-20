@@ -81,10 +81,10 @@ export const features: Feature[] = [
     description: "Sold a piece? We’ll replace it instantly with your stockroom work, and you can keep the cycle going. Fresh work, new momentum, no stress.<br /><br /> Maybe you just created a dope new piece, on a timely matter that's poppin off, then bring it in and let's change it up ASAP! After all, this IS your gallery."
   },
   { 
-    name: "📖 Want to be remembered by collectors?", 
+    name: "📖 How do I leave a legacy?", 
     studioArtist: "Single Page", 
     featureArtist: "Double Page spread", 
-    signatureArtist: "Double-Page spread in The ATLAS coffee table book",
+    signatureArtist: "The ATLAS coffee table book",
     description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts to enjoy for years to come. #legacy"
   },
   { 
