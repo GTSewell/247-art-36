@@ -10,96 +10,98 @@ interface Feature {
 
 export const features: Feature[] = [
   { 
-    name: "Price", 
+    name: "💥 Signature Artist", 
     studioArtist: "$995", 
     featureArtist: "$1495", 
     signatureArtist: "$1295",
-    description: "One-time payment to join our 247 artist community. This includes all of your retail print & merch production stocked in our space ready for sales, gallery sales staffing, customer management etc. We will take care of everything for you, including the 5 P's, Printing | Packing | Posting | Payments | and of course solving any Problems for you. You focus on creating art, we will take care of the rest.<br /><br />We will pre-print, your T-shirts & Stickers etc. alongside any other prints on offer to stock in our retail space, this also includes 25x A4 prints on the ultra premium Bauhaus 310gsm 100% cotton rag, museum grade fine art paper for you to sign & number ready for your STP Collector packs.",
+    description: "A once-in-a-lifetime 'ALL-INCLUSIVE' opportunity to become part of the first 100 artists in the 247 movement. Your one-time payment unlocks full access to the 247 ecosystem: we handle the logistics, sales, and customer service so you can focus on your art.<br /><br /> We print, pack, post, manage payments, and even solve problems. You just create—we handle the hustle.<br /><br /> As a Signature Artist, you’ll have your original works exhibited, your own in-house production team for prints and merch all taken care of and stocked in our very own retail space. It's the smartest way to show, sell, and scale your practice—all in one place.",
     hasDiscount: true
   },
   { 
-    name: "Limited Spaces", 
+    name: "🔐 Limited Spaces Available", 
     studioArtist: "50 Artists", 
     featureArtist: "50 Artists", 
-    signatureArtist: "100 Artists", 
-    description: "Limited spaces ensure we can offer personalized attention for all artists for duration of the exhibition."
+    signatureArtist: "Only 100 spots available", 
+    description: "We’re keeping it tight to give every artist the attention they deserve. A tight, curated group of emerging and established talent. Quality over quantity—always."
   },
   { 
-    name: "Exhibition Duration", 
+    name: "⏳ Time To Shine", 
     studioArtist: "~100 Days\n(3 months)", 
     featureArtist: "~100 Days\n(3 months)", 
     signatureArtist: "~100 Days\n(3 months)",
-    description: "We believe standard exhibition lengths are too short for maximum impact. You don't see the NGV launch 1 week pop-ups, why? Because the cultural and financial impact in most cases is not worth it. Your work will be displayed in our gallery for approximately 100 days, providing maximum exposure to collectors and art enthusiasts."
+    description: "Forget short-term pop-ups. Your work deserves a real stage and real time to be seen, collected, and remembered. We give your work a real platform with a 3+ month feature in our flagship gallery. More eyeballs, more sales, more impact."
   },
   { 
-    name: "Gallery Commission (Original Artwork)", 
+    name: "💸 Commissions cutting too deep?", 
     studioArtist: "25% to 0%", 
     featureArtist: "10% to 0%", 
-    signatureArtist: "25%\nto\n 0%",
-    description: "Gallery commission on sales of original artworks. Artists can lower their gallery commission to 0% by selling STP Collector packs (See STP below). Lower percentages mean more profit for you as an artist."
+    signatureArtist: "How about 0%?",
+    description: "We reward hustle. For every STP Collector pack you sell (See below) we remove 1% from the gallery commission rate.<br /><br /> Start at 25%, drop to 0%. The more you engage collectors through STP Collector Packs, the less commission you pay.<br /><br />Sell 25 packs on day 1? That's 0% commission on your all of your original artwork sold for the next 3 months! You keep 100%."
   },
   { 
-    name: "STP Collector Pack Sales = 0% commission", 
+    name: "📦 Custom Artist STP collector packs?", 
     studioArtist: "25", 
     featureArtist: "10", 
-    signatureArtist: "25",
-    description: "What is an STP Collector pack? Simple, 'Stickers | T-shirt | Print' with your own individual artist designed packaging. To start, We produce 25x A4 fine art prints for each artist to sign & edition. Your minimum STP Collector pack edition size is '25/25'.<br /><br /> For every STP Collector pack you sell, 1% is deducted from your gallery commission. Example: If you sell 15x STP Collector packs, your commission becomes 10% (25 - 15 (STP) = 10) from that point onwards. So if you sell 25x STP Collector packs on day 1, your effective gallery commission will be 0% for the next 3 months.<br /><br /> You can choose to make the editions larger if you are a high selling artist, Edition 50, 100, 250 etc, or even make it a signed open edition. It is completely up to you. If you are not sure, we will help guide you.<br /><br /> Each STP pack will retail at $124.95, and your commission is ~$50 each pack sold. Consider STP packs a gateway for the new gen collectors to purchase your art."
+    signatureArtist: "Your way to 0% commission!",
+    description: "We produce your Stickers, T-Shirt & Print into your very own retail ready collectible editioned set, including customised packaging with your art on it. Retailing at $124.95 with ~$50 profit per pack to you. Each STP Pack you sell to a new wave of collectors reduces your gallery commission by 1%!"
   },
   { 
-    name: "Artist Commission (Retail Production)", 
+    name: "💰 Hands-off revenue streams sound good?", 
     studioArtist: "100%", 
-    featureArtist: "100%", 
-    signatureArtist: "100%",
-    description: "After retail production costs, you receive 100% of the profits on all retail production items featuring your artwork. Artists will also receive a distributed share of profits of the Artist 247 ATLAS Genesis book"
+    featureArtist: "We'll take care of it, you take the cash!", 
+    signatureArtist: "",
+    description: "Not only do we produce all the retail merch at a premium quality we are known for, we give you and the collector options to choose from. Oh, and you keep 100% of the retail profits after production."
   },
   { 
-    name: "Artwork Space", 
+    name: "🧱 Need a dedicated space?", 
     studioArtist: "0.75 sqm area", 
     featureArtist: "1 sqm area", 
-    signatureArtist: "0.75 sqm to 1 sqm area",
+    signatureArtist: "Earlybird gets the SQM",
     description: "The first 50 artists to sign up will recieve larger wall space up to 1 sqm, after that it will be 0.75 sqm.<br /><br />Your wall space is calculated by the size of your artwork, it's your dedicated wall space in our gallery for displaying your artwork. Example: An artwork that is 75cm (0.75m) x 122cm (1.22m) = 0.9 sqm. This fits with the 1 sqm space. See our artwork calculator below.<br /><br />If you require a larger space for your artwork, you can purchase 2x Signature artist spots, though, we will be limiting this. Please reach out to us beforehand to see if we can accomodate."
   },
   { 
-    name: "Artworks Per Space", 
+    name: "🎨 Full Control on Exhibited Works", 
     studioArtist: "Up to 2", 
     featureArtist: "Up to 4", 
-    signatureArtist: "1 to 4",
-    description: "Number of different artworks you can display in your allocated space in the feature gallery. All must fit within your allocated area. See our artwork size calculator below."
+    signatureArtist: "Display up to 4 works in your space",
+    description: "Rotate your works, update stockroom pieces, swap out styles—your space is alive and flexible. Keeping it fresh and dynamic. 
+
+"
   },
   { 
-    name: "Apparel & Print Options", 
+    name: "👕 Unsure how to turn your art into great merch?", 
     studioArtist: "Full Range", 
     featureArtist: "Full Range", 
-    signatureArtist: "Full Range",
-    description: "Not only will you have your very own STP Collector pack, we will also produce individual retail items (Stickers/T-shirts/Prints etc) for sale and stock in our retail space. Your artwork can be featured on our complete apparel collection, including t-shirts, hoodies, Totes, and more, along with all of our other printing options. We will add new items for your choice.<br /><br />We will also help artists with apparel design where needed. The apparel game is a different beast, and we know how to make the best of it!"
+    signatureArtist: "We design and produce for you",
+    description: "Not only will you have your very own STP Collector pack, we will also produce individual retail items (Stickers/T-shirts/Prints etc) for sale and stock in our retail space. From shirts, hoodies, totes to stickers and more, we handle the production and even help you design for what works in retail. The apparel game is a different beast, and we know how to make the best of it!"
   },
   { 
-    name: "Artwork Changes", 
+    name: "🔄 Want to keep things fresh without starting over?", 
     studioArtist: "1 per Month", 
     featureArtist: "Up to 2 per month", 
-    signatureArtist: "2 per month",
-    description: "Frequency at which you can rotate or update your displayed artwork. When your artwork sells, we will pack the artwork straight away and ship to your the collector, or, they can take your art on the spot. We will then place one of your stockroom works in place of the sold artwork. You can then add another new work to the stockroom if you choose to do so. We can change out your in-house stockroom works each month to keep the gallery dynamic, or, you can bring in new works to swap around. After all, this IS your gallery"
+    signatureArtist: "Change your artwork up to twice a month",
+    description: "Sold a piece? We’ll replace it instantly with your stockroom work, and you can keep the cycle going. Fresh work, new momentum, no stress.<br /><br /> Maybe you just created a dope new piece, on a timely matter that's poppin off, then bring it in and let's change it up ASAP! After all, this IS your gallery."
   },
   { 
-    name: "Genesis Artist 'ATLAS' Book", 
+    name: "📖 Want to be remembered by collectors?", 
     studioArtist: "Single Page", 
     featureArtist: "Double Page spread", 
-    signatureArtist: "Double Page spread",
-    description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts to enjoy."
+    signatureArtist: "Double-Page spread in The ATLAS coffee table book",
+    description: "You will be featured in our Limited Edition 200+ page '247 ATLAS' exhibition coffee table book for collectors and art enthusiasts to enjoy for years to come. #legacy"
   },
   { 
-    name: "Priority Art Hanging", 
+    name: "🎯 Want better gallery placement?", 
     studioArtist: "true", 
     featureArtist: "true", 
-    signatureArtist: "The first 50 artists",
+    signatureArtist: "First 50 artists get priority wall positions",
     description: "Your artwork will be given priority placement during gallery rotations in the exhibition."
   },
   { 
-    name: "Artist Dashboard: Profile, Trade & Sales", 
+    name: "📊 Feel out of the loop after you sell?", 
     studioArtist: "true", 
     featureArtist: "true", 
-    signatureArtist: true,
-    description: "You will receive your very own Artist Dashboard which will include sales analytics, your collector information and details (If they choose not to be Anon), along with the ability to trade your retail artworks with other artists!<br /><br /> Visit the 'Profile icon' (Top right of screen) and go to 'Artist Dashboard' in the dropdown menu. Click around a see what you think<br /><br />Note: Although we have the prototype functioning smoothly, the 'artist-to-artist' trades may not be available on day 1, though, you will be the first to use it when it's ready!"
+    signatureArtist: "Real-time dashboard with sales, insights & collector info",
+    description: "Log in anytime to track your sales, merch, collectors, and artist trades. Even generate 1-click invoices for payments. Think of it like your art career’s command center.!"
   },
   { 
     name: "Artist Care Package", 
@@ -110,46 +112,46 @@ export const features: Feature[] = [
     hidden: true
   },
   { 
-    name: "24/7 Video Wall & Projection Profile", 
+    name: "📽 Art should be seen around the clock?", 
     studioArtist: "1 rotation every 3", 
     featureArtist: "2 rotations every 3", 
-    signatureArtist: true,
+    signatureArtist: "Your work projected 24/7 on our video wall and MASSIVE projection space. All day. Every day.",
     description: "Art Never Sleeps! Your artwork will be featured night and day, 24/7 on our HUGE Video Wall & Projection Space throughout the gallery."
   },
   { 
-    name: "Additional Artworks x2 (Stockroom)", 
+    name: "🧳 Want to rotate your work easily?", 
     studioArtist: true, 
     featureArtist: true, 
-    signatureArtist: true,
-    description: "Store additional artwork in our upstairs stockroom, available for viewing upon request by interested collectors."
+    signatureArtist: "Store 2 extra artworks in our on-site stockroom",
+    description: "Store additional artwork in our upstairs stockroom. You never know when 'the right' collector wants to take it all.<br /><br /> Note: If you only have 1 artwork available for the Feature Gallery, that's fine. You can always send us extra stockroom works at a later date if you wish."
   },
   { 
-    name: "24hr Timed Edition Drops", 
+    name: "⏰ Need help building hype?", 
     studioArtist: true, 
     featureArtist: true, 
-    signatureArtist: true,
-    description: "Participate in exclusive 24-hour limited edition releases, a fun and exciting way to find new collectors."
+    signatureArtist: "Join our exclusive 24-hour drops",
+    description: "Fast, limited, and collector-focused. A great way to spark new interest and test demand ... as nerve-wracking as it is exciting!"
   },
   { 
-    name: "Custom Artist 'Link in BIO' Profile", 
+    name: "🌐 How's that website coming along?", 
     studioArtist: true, 
     featureArtist: true, 
-    signatureArtist: true,
-    description: "Receive a personalized URL '[artistname].247.art' for your online sales profile, making it easier for collectors to find, follow and purchase your work.<br /><br />As Genesis Artists you will have your online profile foreever and be the first to test & receive any new updates/perks etc"
+    signatureArtist: "Your own custom 247 artist URL",
+    description: "Think BIO + portfolio + shop + collector packs—all on a clean, custom page: yourname.247.art.<br /><br /> Ps, There's a few little surprises that will come with it later 😉 "
   },
   { 
-    name: "Sculpture Display Option (TBD)", 
+    name: "🗿 Work in 3D? We’ve got a space for that too.", 
     studioArtist: false, 
     featureArtist: true, 
-    signatureArtist: true,
-    description: "Option to display three-dimensional artwork, expanding the media types you can showcase. There are limited sizes & spots for sculptural works.<br /><br />There will be limited availabilty for sculptural display. Please contact us using the form below for more information"
+    signatureArtist: "Limited sculptural display available",
+    description: "We support more than just 2D artworks. Spots are limited, so reach out early!"
   },
   { 
-    name: "Shop-front Feature Display", 
+    name: "🚦 Want real foot traffic exposure?", 
     studioArtist: false, 
     featureArtist: true, 
-    signatureArtist: true,
-    description: "Each week we will feature 7 artists on our shopfront, visible to the 50,000 daily passersby on Smith Street each day."
+    signatureArtist: "50,000+ people a day",
+    description: "Not only will we feature 7 artists weekly on our shopfront—your artwork front and center, the gallery will have a high-resolution 3D lidar scan for our interstate, and, international friends to view and directly interact with your artwork."
   },
 ];
 
