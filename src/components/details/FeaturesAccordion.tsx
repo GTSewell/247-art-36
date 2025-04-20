@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Feature } from "./data/featuresData";
+import { useRef } from "react";
 
 interface FeaturesAccordionProps {
   features: Feature[];
@@ -16,6 +17,7 @@ interface FeaturesAccordionProps {
 const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
   // Filter out hidden features
   const visibleFeatures = features.filter(feature => !feature.hidden);
+  const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   return (
     <div className="py-8">
@@ -26,10 +28,15 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
+            ref={el => itemRefs.current[`item-${index}`] = el}
           >
             <AccordionItem
               value={`item-${index}`}
               className="border-black border-2 rounded-lg overflow-hidden"
+              onSelect={(e) => {
+                // Prevent default scroll behavior
+                e?.preventDefault();
+              }}
             >
               <AccordionTrigger
                 className="px-4 py-3 bg-zap-blue text-white hover:bg-zap-red hover:no-underline group data-[state=open]:bg-zap-red"

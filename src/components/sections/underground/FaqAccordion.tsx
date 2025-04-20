@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
@@ -46,22 +47,7 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
     };
   }, []);
   
-  useEffect(() => {
-    if (!openItem || !isMobile) return;
-    
-    const itemRef = itemRefs.current[openItem];
-    if (itemRef) {
-      setTimeout(() => {
-        const yOffset = -80;
-        const y = itemRef.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        
-        window.scrollTo({
-          top: y,
-          behavior: 'smooth'
-        });
-      }, 100);
-    }
-  }, [openItem, isMobile]);
+  // Remove the automatic scrolling effect when item is opened
   
   return (
     <div className="py-8" ref={accordionRef}>
@@ -83,6 +69,10 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
             <AccordionItem 
               value={`item-${index}`} 
               className="border-black border-2 rounded-lg overflow-hidden"
+              onSelect={(e) => {
+                // Prevent default scroll behavior
+                e?.preventDefault();
+              }}
             >
               <AccordionTrigger 
                 className="px-4 py-3 bg-zap-blue text-white hover:bg-zap-red hover:no-underline group data-[state=open]:bg-zap-red"
