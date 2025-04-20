@@ -13,7 +13,7 @@ const TableFooterComponent = () => {
         transition: 'none'
       }}>
         <TableCell>
-          <span className="text-white text-xs font-extrabold sm:text-lg">Purchase your 'Signature Artist' package here ... 👉</span>
+          <span className="text-white text-xs font-extrabold sm:text-lg">Secure your 'Signature Artist' spot here ... 👉</span>
         </TableCell>
         <TableCell className="text-center p-1">
           <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
