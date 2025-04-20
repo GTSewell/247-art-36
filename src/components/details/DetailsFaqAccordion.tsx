@@ -47,7 +47,22 @@ const DetailsFaqAccordion = ({ items }: DetailsFaqAccordionProps) => {
     };
   }, []);
   
-  // Remove the automatic scrolling effect when item is opened
+  // Handle accordion clicks to prevent scroll jumping
+  const handleItemClick = (e: React.MouseEvent) => {
+    // Store current scroll position
+    const currentScrollPos = window.scrollY;
+    
+    // After a short delay to allow the accordion to toggle
+    setTimeout(() => {
+      // Restore scroll position
+      window.scrollTo({
+        top: currentScrollPos,
+        behavior: "auto" // Use "auto" to prevent smooth scrolling animation
+      });
+    }, 50);
+    
+    // We don't prevent default here as we want the accordion to toggle
+  };
   
   return (
     <div className="py-8" ref={accordionRef}>
@@ -69,10 +84,7 @@ const DetailsFaqAccordion = ({ items }: DetailsFaqAccordionProps) => {
             <AccordionItem 
               value={`item-${index}`} 
               className="border-black border-2 rounded-lg overflow-hidden"
-              onSelect={(e) => {
-                // Prevent default scroll behavior
-                e?.preventDefault();
-              }}
+              onClick={handleItemClick}
             >
               <AccordionTrigger 
                 className="px-4 py-3 bg-zap-blue text-white hover:bg-zap-red hover:no-underline group data-[state=open]:bg-zap-red"
