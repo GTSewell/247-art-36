@@ -49,19 +49,16 @@ const FaqAccordion = ({ items }: FaqAccordionProps) => {
   
   // Handle accordion clicks to prevent scroll jumping
   const handleItemClick = (e: React.MouseEvent) => {
-    // Store current scroll position
+    // Get the current scroll position before any changes
     const currentScrollPos = window.scrollY;
     
-    // After a short delay to allow the accordion to toggle
+    // Use a timeout to restore the scroll position after the DOM has been updated
     setTimeout(() => {
-      // Restore scroll position
       window.scrollTo({
         top: currentScrollPos,
-        behavior: "auto" // Use "auto" to prevent smooth scrolling animation
+        behavior: "auto" // Instant jump with no animation
       });
     }, 50);
-    
-    // We don't prevent default here as we want the accordion to toggle
   };
   
   return (

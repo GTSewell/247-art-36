@@ -25,9 +25,6 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
     // Store current scroll position
     const currentScrollPos = window.scrollY;
     
-    // Set flag to indicate we're handling an accordion click
-    setScrollPositionLocked(true);
-    
     // After a short delay to allow the accordion to toggle
     setTimeout(() => {
       // Restore scroll position
@@ -35,14 +32,9 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
         top: currentScrollPos,
         behavior: "auto" // Use "auto" to prevent smooth scrolling animation
       });
-      
-      // Reset the flag
-      setScrollPositionLocked(false);
     }, 50);
     
-    // Prevent default behavior
-    e.preventDefault();
-    e.stopPropagation();
+    // We don't prevent default here as we want the accordion to toggle
   };
 
   return (
