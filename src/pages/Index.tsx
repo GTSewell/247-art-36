@@ -22,7 +22,7 @@ const Index = () => {
         <meta name="twitter:description" content="247.ART - Art Never Sleeps" />
         <meta name="twitter:image" content="https://247.art/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png" />
       </Helmet>
-      <main className={`min-h-screen ${isPWA ? "overflow-hidden" : ""} bg-[#ebebdc]`}>
+      <main className={`min-h-screen ${isPWA ? "overflow-hidden" : ""} bg-[#f0f0e7]`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
         <Hero />
         <JoinUndergroundSection />
