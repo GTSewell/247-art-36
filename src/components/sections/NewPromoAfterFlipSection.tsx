@@ -1,21 +1,23 @@
 
 import React from "react";
 
-/**
- * NewPromoAfterFlipSection:
- * Displays an attached image, full width and height (natural, not cut off).
- */
 const NewPromoAfterFlipSection = () => {
   return (
-    <section className="relative w-full bg-transparent">
+    <div className="relative w-full">
+      {/* Full width bottom image */}
       <img
-        src="/lovable-uploads/ad88dc71-d072-4b16-9572-a77add22c403.png"
-        alt="Promo Full Height"
-        className="w-full h-auto"
-        style={{ display: "block", width: "100vw", maxWidth: "100%" }}
+        src="/lovable-uploads/0d1d9757-2d61-4242-9d9c-b28d760acdc1.png"
+        alt="247art Gallery Promotion"
+        className="w-full h-auto object-cover"
+        style={{
+          userSelect: "none",
+          display: "block",
+          width: "100vw",
+          maxWidth: "100%"
+        }}
         draggable={false}
       />
-    </section>
+    </div>
   );
 };
 
