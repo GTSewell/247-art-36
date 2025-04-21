@@ -1,4 +1,3 @@
-
 import React from "react";
 
 /**
@@ -9,20 +8,10 @@ import React from "react";
  */
 const NewPromoAfterFlipSection = () => {
   // Suppose the new image's dimensions are 1700x700; adjust if needed
-  return (
-    <section className="relative w-full flex justify-center items-center bg-transparent">
+  return <section className="relative w-full flex justify-center items-center bg-transparent">
       <div className="w-full max-w-7xl mx-auto">
-        <div className="relative w-full aspect-[1700/700]">
-          <img
-            src="/lovable-uploads/91d913c0-84aa-4722-a729-eddcbe1386cb.png"
-            alt="Promo section image (exhibit your art after OUT WITH THE OLD)"
-            className="absolute inset-0 w-full h-full object-cover"
-            draggable={false}
-          />
-        </div>
+        
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default NewPromoAfterFlipSection;
