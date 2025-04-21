@@ -5,7 +5,7 @@ const Hero = () => {
   return <div className="relative min-h-screen bg-background flex flex-col w-full">
       {/* Full-bleed background image at top */}
       <div className="absolute top-0 left-0 w-full h-auto z-0 overflow-visible">
-        <img src="/lovable-uploads/c693ca44-0cc1-4657-b8ec-fdeae1a36b19.png" alt="247art-Gallery-Melbourne-EPIC 100-DAY EXHIBITION" className="object-cover w-full h-auto object-top" draggable={false} style={{
+        <img src="/lovable-uploads/61844a65-76b3-461e-a68c-9bccec8942c9.png" alt="247art-Gallery-Melbourne-EPIC 100-DAY EXHIBITION" className="object-cover w-full h-auto object-top" draggable={false} style={{
         userSelect: "none"
       }} />
       </div>
@@ -25,4 +25,3 @@ const Hero = () => {
     </div>;
 };
 export default Hero;
-
