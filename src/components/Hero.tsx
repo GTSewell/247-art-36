@@ -5,7 +5,7 @@ const Hero = () => {
   return <div className="relative min-h-screen bg-background flex flex-col justify-between w-full">
       {/* Full-bleed background image at top */}
       <div className="absolute top-0 left-0 w-full h-[min(65vw,500px)] z-0 overflow-visible">
-        <img src="/lovable-uploads/61844a65-76b3-461e-a68c-9bccec8942c9.png" alt="EPIC 100-DAY EXHIBITION" className="object-cover w-full h-full object-top" draggable={false} style={{
+        <img src="/lovable-uploads/61844a65-76b3-461e-a68c-9bccec8942c9.png" alt="247art-Gallery-Melbourne-EPIC 100-DAY EXHIBITION" className="object-cover w-full h-full object-top" draggable={false} style={{
         userSelect: "none"
       }} />
       </div>
