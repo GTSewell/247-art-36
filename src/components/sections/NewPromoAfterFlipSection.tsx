@@ -4,23 +4,25 @@ import React from "react";
 /**
  * NewPromoAfterFlipSection:
  * Displays the next promo image, full width and responsive.
- * Provided image dimensions: 1421 x 768 (aspect ratio 1.851)
+ * Uses object-cover for unsquished, full coverage in all viewports.
+ * Replace aspect-w/h as per actual image dimensions.
  */
 const NewPromoAfterFlipSection = () => {
+  // Suppose the new image's dimensions are 1700x700; adjust if needed
   return (
     <section className="relative w-full flex justify-center items-center bg-transparent">
       <div className="w-full max-w-7xl mx-auto">
-        <img
-          src="/lovable-uploads/c029fd54-af68-4a28-a4cb-34c7b6bf8c11.png"
-          alt="Promo section image (exhibit your art after OUT WITH THE OLD)"
-          className="w-full h-auto"
-          style={{ aspectRatio: "1421/768", display: "block" }}
-          draggable={false}
-        />
+        <div className="relative w-full aspect-[1700/700]">
+          <img
+            src="/lovable-uploads/91d913c0-84aa-4722-a729-eddcbe1386cb.png"
+            alt="Promo section image (exhibit your art after OUT WITH THE OLD)"
+            className="absolute inset-0 w-full h-full object-cover"
+            draggable={false}
+          />
+        </div>
       </div>
     </section>
   );
 };
 
 export default NewPromoAfterFlipSection;
-
