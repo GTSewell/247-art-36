@@ -7,16 +7,14 @@ import React from "react";
  */
 const NewPromoAfterFlipSection = () => {
   return (
-    <section className="relative w-full flex justify-center items-center bg-transparent">
-      <div className="w-full max-w-7xl mx-auto">
-        <img
-          src="/lovable-uploads/ad88dc71-d072-4b16-9572-a77add22c403.png"
-          alt="Promo Full Height"
-          className="w-full h-auto block"
-          draggable={false}
-          style={{ maxHeight: "none", width: "100%", height: "auto", display: "block" }}
-        />
-      </div>
+    <section className="relative w-full bg-transparent">
+      <img
+        src="/lovable-uploads/ad88dc71-d072-4b16-9572-a77add22c403.png"
+        alt="Promo Full Height"
+        className="w-full h-auto"
+        style={{ display: "block", width: "100vw", maxWidth: "100%" }}
+        draggable={false}
+      />
     </section>
   );
 };
