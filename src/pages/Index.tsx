@@ -3,6 +3,7 @@ import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
 import ReadyToHustleSection from "@/components/sections/ReadyToHustleSection";
 import FlipTheOldSection from "@/components/sections/FlipTheOldSection";
+import NewPromoAfterFlipSection from "@/components/sections/NewPromoAfterFlipSection";
 import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Helmet } from "react-helmet";
@@ -26,6 +27,7 @@ const Index = () => {
         <JoinUndergroundSection />
         <ReadyToHustleSection />
         <FlipTheOldSection />
+        <NewPromoAfterFlipSection />
       </main>
     </>
   );
