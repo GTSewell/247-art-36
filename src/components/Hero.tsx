@@ -4,17 +4,13 @@ import React from "react";
 const Hero = () => {
   return (
     <div className="relative w-full" style={{ backgroundColor: "#f0f0e7" }}>
-      {/* Full-bleed top hero image (NO LOGO FLOATS) */}
       <img
-        src="/lovable-uploads/61844a65-76b3-461e-a68c-9bccec8942c9.png"
-        alt="247art-Gallery-Melbourne-EPIC 100-DAY EXHIBITION"
-        className="w-full h-auto"
+        src="/lovable-uploads/15739276-28db-43e5-a9eb-b535e07a2903.png"
+        alt="247art Gallery - EPIC 100-DAY EXHIBITION"
+        className="w-full h-auto shadow-lg rounded-2xl mx-auto max-w-4xl my-8"
         style={{ 
-          userSelect: "none", 
-          aspectRatio: "1408/873", 
-          display: "block",
-          width: "100vw",
-          maxWidth: "100%"
+          userSelect: "none",
+          display: "block"
         }}
         draggable={false}
       />

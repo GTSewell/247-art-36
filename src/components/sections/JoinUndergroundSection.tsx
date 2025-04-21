@@ -3,12 +3,12 @@ import React from "react";
 
 const JoinUndergroundSection = () => {
   return (
-    <section className="relative w-full bg-transparent">
+    <section className="relative w-full bg-transparent px-4 md:px-8">
       <img
-        src="/lovable-uploads/4ee54cf3-40c1-4def-8aa6-f65d3d8a231e.png"
+        src="/lovable-uploads/eca0516a-cd10-4702-86ed-e68f32d645d1.png"
         alt="EXHIBIT YOUR ARTWORK promo"
-        className="w-full h-auto"
-        style={{ display: "block", width: "100vw", maxWidth: "100%" }}
+        className="w-full h-auto shadow-lg rounded-2xl mx-auto max-w-4xl my-8"
+        style={{ display: "block" }}
         draggable={false}
       />
     </section>

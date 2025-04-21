@@ -1,18 +1,14 @@
 
 import React from "react";
 
-/**
- * ReadyToHustleSection: 
- * Displays the "READY TO HUSTLE" promo image, matching full width and aspect ratio.
- */
 const ReadyToHustleSection = () => {
   return (
-    <section className="relative w-full bg-transparent">
+    <section className="relative w-full bg-transparent px-4 md:px-8">
       <img
-        src="/lovable-uploads/e2a5c091-f205-438c-96b2-be72ef184ee2.png"
+        src="/lovable-uploads/4dfff885-bec1-4258-8655-52eefb47b3a1.png"
         alt="READY TO HUSTLE promo"
-        className="w-full h-auto"
-        style={{ display: "block", width: "100vw", maxWidth: "100%" }}
+        className="w-full h-auto shadow-lg rounded-2xl mx-auto max-w-4xl my-8"
+        style={{ display: "block" }}
         draggable={false}
       />
     </section>
