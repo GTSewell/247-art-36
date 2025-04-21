@@ -1,74 +1,21 @@
+
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import { toast } from "sonner";
 
 const Hero = () => {
-  const [isClicked, setIsClicked] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [isInstallable, setIsInstallable] = useState(false);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setIsInstallable(true);
-      console.log('PWA installation prompt captured');
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstallable(false);
-      setIsClicked(true);
-      console.log('App is already in standalone mode');
-    }
-
-    const isStandalone = (window.navigator as any).standalone;
-    if (isStandalone === true || window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstallable(false);
-      setIsClicked(true);
-      console.log('App is in standalone mode (iOS or Android)');
-    }
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    setIsClicked(true);
-    if (!deferredPrompt) {
-      toast.info("You can install this app by tapping the browser menu and selecting 'Add to Home Screen'", {
-        duration: 5000
-      });
-      return;
-    }
-
-    try {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        toast.success("ZAP! has been installed successfully!");
-        setDeferredPrompt(null);
-        setIsInstallable(false);
-      } else {
-        toast.info("Installation cancelled");
-        setIsClicked(false);
-      }
-    } catch (error) {
-      console.error('Installation error:', error);
-      toast.error("There was a problem installing the app");
-      setIsClicked(false);
-    }
-  };
-
-  // Off-white background is now handled by Tailwind (global styles)
-
-  // Remove all content except the bouncing logo
   return (
-    <div className="relative min-h-screen flex flex-col justify-between bg-background">
-      {/* Bouncing 247art Logo in the center */}
-      <div className="flex-1 flex items-center justify-center pt-24 md:pt-28">
+    <div className="relative min-h-screen bg-background flex flex-col justify-between w-full">
+      {/* Full-bleed background image at top */}
+      <div className="absolute top-0 left-0 w-full h-[min(65vw,500px)] z-0">
+        <img
+          src="/lovable-uploads/61844a65-76b3-461e-a68c-9bccec8942c9.png"
+          alt="EPIC 100-DAY EXHIBITION"
+          className="object-cover w-full h-full"
+          draggable={false}
+          style={{ userSelect: "none" }}
+        />
+      </div>
+      {/* Floating 247art Logo (above the image, centered) */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center min-h-[60vh]">
         <motion.img
           alt="ZAP!"
           className="h-32 md:h-48 mx-auto animate-float"
@@ -78,7 +25,7 @@ const Hero = () => {
           transition={{ duration: 0.5 }}
         />
       </div>
-      {/* Footer: "Built by artist" logo (footer remains unchanged, shown if present elsewhere) */}
+      {/* Footer (the "Built by artist" logo) is expected to be rendered elsewhere as before */}
     </div>
   );
 };
