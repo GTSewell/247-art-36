@@ -7,8 +7,11 @@ const JoinUndergroundSection = () => {
       <img
         src="/lovable-uploads/eca0516a-cd10-4702-86ed-e68f32d645d1.png"
         alt="EXHIBIT YOUR ARTWORK promo"
-        className="w-full h-auto shadow-lg rounded-2xl mx-auto max-w-4xl my-4"
-        style={{ display: "block" }}
+        className="w-full h-auto shadow-lg mx-auto max-w-4xl my-4"
+        style={{ 
+          display: "block",
+          borderRadius: "8px"
+        }}
         draggable={false}
       />
     </section>

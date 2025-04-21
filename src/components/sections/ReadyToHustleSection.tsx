@@ -7,8 +7,11 @@ const ReadyToHustleSection = () => {
       <img
         src="/lovable-uploads/4dfff885-bec1-4258-8655-52eefb47b3a1.png"
         alt="READY TO HUSTLE promo"
-        className="w-full h-auto shadow-lg rounded-2xl mx-auto max-w-4xl my-4"
-        style={{ display: "block" }}
+        className="w-full h-auto shadow-lg mx-auto max-w-4xl my-4"
+        style={{ 
+          display: "block",
+          borderRadius: "8px"
+        }}
         draggable={false}
       />
     </section>
