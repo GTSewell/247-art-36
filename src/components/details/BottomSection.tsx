@@ -22,7 +22,7 @@ const BottomSection = () => {
       {/* Red Halftone Background Image - Full Width */}
       <div className="w-full">
         <img 
-          src="/lovable-uploads/62678d13-ce9f-4fd5-9413-5597613f364d.png" 
+          src="/lovable-uploads/4f0a0104-d2a7-44af-8d8d-4f63a83075bf.png" 
           alt="Red Halftone Background" 
           className="w-full h-auto object-cover" 
         />
