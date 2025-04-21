@@ -9,8 +9,8 @@ const Hero = () => {
         userSelect: "none"
       }} />
       </div>
-      {/* Floating 247art Logo (above the image, centered and 50px below header bar) */}
-      <div className="relative z-10 flex flex-1 flex-col items-center justify-start pt-[50px] min-h-[60vh]">
+      {/* Floating 247art Logo (above the image, centered and 100px below header bar) */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-start pt-[100px] min-h-[60vh]">
         <motion.img alt="ZAP!" initial={{
         scale: 0.5,
         opacity: 0
@@ -25,3 +25,4 @@ const Hero = () => {
     </div>;
 };
 export default Hero;
+
