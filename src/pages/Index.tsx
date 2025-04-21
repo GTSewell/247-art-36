@@ -1,7 +1,7 @@
-
 import Hero from "@/components/Hero";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
+import ReadyToHustleSection from "@/components/sections/ReadyToHustleSection";
 import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Helmet } from "react-helmet";
@@ -23,6 +23,7 @@ const Index = () => {
         {isPWA ? <PWANavigation /> : <Navigation />}
         <Hero />
         <JoinUndergroundSection />
+        <ReadyToHustleSection />
       </main>
     </>
   );
