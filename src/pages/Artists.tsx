@@ -9,6 +9,7 @@ import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [artistSearch, setArtistSearch] = useState("");
@@ -23,6 +24,7 @@ const Artists = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
+
   const {
     featuredArtists,
     additionalArtists,
@@ -31,12 +33,15 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
+
   const handleThemeToggle = (isDark: boolean) => {
     setDarkMode(isDark);
   };
+
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
   };
+
   const handleClearFilters = () => {
     setArtistSearch("");
     setLocationSearch("");
@@ -47,9 +52,11 @@ const Artists = () => {
     setSelectedSocials([]);
     toast.success('Filters cleared');
   };
+
   const refreshArtist = async (artistId: number): Promise<void> => {
     await refreshArtists(artistId);
   };
+
   const filteredFeaturedArtists = filterArtists({
     artists: featuredArtists,
     allArtistsSearch,
@@ -60,6 +67,7 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
+
   const filteredAdditionalArtists = filterArtists({
     artists: additionalArtists,
     allArtistsSearch,
@@ -70,6 +78,7 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
+
   if (isLoading) {
     return <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
@@ -80,18 +89,18 @@ const Artists = () => {
         </div>
       </div>;
   }
-  return <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+
+  return (
+    <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
       <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
         
         <div className="container mx-auto pt-20 px-4 pb-16">
+          <div className="w-full bg-zap-yellow py-2 text-center text-black font-bold mb-4">
+            This is a mock-up artist page for demonstration purposes.
+          </div>
+          
           <div className="flex items-center justify-between mb-4">
-            <Alert className="bg-zap-yellow border-zap-yellow text-black py-[2px] px-[9px]">
-              <AlertDescription className="text-lg px-[240px] mx-[116px]">
-                <span className="font-bold">This is a mock-up artist page for demonstration purposes.</span>
-              </AlertDescription>
-            </Alert>
-            
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
@@ -102,6 +111,8 @@ const Artists = () => {
           <AllArtists artists={filteredAdditionalArtists} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Artists;
