@@ -1,4 +1,3 @@
-
 import PageBackgroundSection from "@/components/details/PageBackgroundSection";
 import HeroSection from "@/components/details/HeroSection";
 import CalculatorsSection from "@/components/details/CalculatorsSection";
@@ -22,7 +21,7 @@ const Details = () => {
           <img 
             src="/lovable-uploads/0c0aeefe-a528-4295-987e-ad28e9224f84.png" 
             alt="A New Gallery Experience Built for Artists & Collectors" 
-            className="w-full animate-float"
+            className="w-full max-w-[625px] animate-float"
           />
         </div>
 
