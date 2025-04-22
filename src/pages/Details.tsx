@@ -17,6 +17,15 @@ const Details = () => {
         {/* Intro paragraph */}
         <HeroSection />
 
+        {/* Gallery Experience Banner */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <img 
+            src="/lovable-uploads/0c0aeefe-a528-4295-987e-ad28e9224f84.png" 
+            alt="A New Gallery Experience Built for Artists & Collectors" 
+            className="w-full animate-float"
+          />
+        </div>
+
         {/* Features Accordion */}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
@@ -43,4 +52,3 @@ const Details = () => {
 };
 
 export default Details;
-
