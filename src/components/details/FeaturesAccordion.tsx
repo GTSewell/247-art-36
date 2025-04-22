@@ -37,7 +37,7 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-3">
-                    <span className="text-lg font-medium">{feature.name}</span>
+                    <span className="text-lg font-normal">{feature.name}</span>
                   </div>
                   <div className="text-right text-lg font-medium">
                     {feature.signatureArtist}
