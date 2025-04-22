@@ -57,18 +57,19 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
     <div className={`md:hidden bg-white dark:bg-gray-900 border-t border-border/20 w-full ${isWhoAreYouPage ? 'mt-4' : ''}`}>
       <div className="max-w-full mx-auto px-6 py-2 space-y-1">
         {/* Page navigation links */}
+        <MobileNavLink to="/details" isActive={isActive("/details")}>
+          The Exhibition
+        </MobileNavLink>
         <MobileNavLink to="/artists" isActive={isActive("/artists")}>
-          Artists
+          The Artists
         </MobileNavLink>
         <MobileNavLink to="/store" isActive={isActive("/store")}>
-          Store
+          The Store
         </MobileNavLink>
         <MobileNavLink to="/who-are-you" isActive={isActive("/who-are-you")}>
           About Us
         </MobileNavLink>
-        <MobileNavLink to="/details" isActive={isActive("/details")}>
-          Sign Up
-        </MobileNavLink>
+        
         
         {/* User menu items - Only show if user is logged in */}
         {user && (
