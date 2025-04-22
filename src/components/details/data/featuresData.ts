@@ -10,7 +10,7 @@ interface Feature {
 export const features: Feature[] = [
   { 
     name: "💥 Signature Artist", 
-    signatureArtist: "$̶1̶4̶9̶5̶  $1295",
+    signatureArtist: "$̵1̵4̵9̵5̵  $1295",
     description: "Think of it like a 100 day 'Art Fair', except we manage everything for you. An 'ALL-INCLUSIVE' opportunity to become part of the first 100 artists in the 247 movement. Your one-time payment unlocks full access to the 247 ecosystem: we handle the logistics, sales, print production, and customer service so you can focus on your art.<br /><br /> We print, pack, post, manage payments, and even solve problems. You just create—we handle the hustle.<br /><br /> As a Signature Artist, you'll have your original works exhibited, your own in-house production team for prints and merch all taken care of, all included, and stocked in our very own retail space. It's the smartest way to show, sell, and scale your practice—all in one place.",
     hasDiscount: true
   },
