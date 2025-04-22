@@ -44,7 +44,7 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
                   </div>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg border border-black">
+              <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg border border-black rounded-b-lg">
                 {feature.description && (
                   <div dangerouslySetInnerHTML={{ __html: feature.description }} />
                 )}
@@ -58,4 +58,3 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
 };
 
 export default FeaturesAccordion;
-
