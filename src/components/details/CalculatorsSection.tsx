@@ -25,6 +25,17 @@ const CalculatorsSection = () => {
         <SalesCalculator />
       </motion.div>
       
+      {/* LFG Link Image */}
+      <div className="flex justify-center items-center my-12">
+        <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
+          <img 
+            src="/lovable-uploads/4afecec6-716f-4e98-9fd0-e5ad357b925e.png" 
+            alt="LFG, I'M IN!" 
+            className="w-full max-w-[500px] animate-float cursor-pointer" 
+          />
+        </a>
+      </div>
+      
       {/* Artwork Size Calculator */}
       <motion.div 
         initial={{
@@ -48,3 +59,4 @@ const CalculatorsSection = () => {
 };
 
 export default CalculatorsSection;
+
