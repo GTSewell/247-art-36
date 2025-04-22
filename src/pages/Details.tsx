@@ -1,4 +1,3 @@
-
 import PageBackgroundSection from "@/components/details/PageBackgroundSection";
 import HeroSection from "@/components/details/HeroSection";
 import CalculatorsSection from "@/components/details/CalculatorsSection";
@@ -7,6 +6,8 @@ import CallToActionSection from "@/components/details/CallToActionSection";
 import BottomSection from "@/components/details/BottomSection";
 import FeaturesAccordion from "@/components/details/FeaturesAccordion";
 import { features } from "@/components/details/data/featuresData";
+import InterestForm from "@/components/sections/underground/InterestForm";
+import { outroText } from "@/components/sections/underground/faqData";
 
 const Details = () => {
   return (
@@ -34,6 +35,17 @@ const Details = () => {
           </div>
           <FeaturesAccordion features={features} />
         </div>
+
+        {/* LFG Image */}
+        <div className="flex justify-center items-center my-12">
+          <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
+            <img 
+              src="/lovable-uploads/125e0b0f-15c8-4d5a-a182-4a1dc5d0594c.png" 
+              alt="LFG, I Want In!" 
+              className="w-full max-w-[500px] animate-float cursor-pointer" 
+            />
+          </a>
+        </div>
         
         {/* Calculators Section */}
         <CalculatorsSection />
@@ -41,8 +53,10 @@ const Details = () => {
         {/* FAQ Accordion */}
         <FaqSection />
 
-        {/* Call to Action and Interest Form */}
-        <CallToActionSection />
+        {/* Interest Form */}
+        <div className="max-w-4xl mx-auto mt-16 mb-0 my-0 py-0">
+          <InterestForm introText={outroText} />
+        </div>
       </div>
 
       {/* Full-width Red Halftone Background with Rocket */}
