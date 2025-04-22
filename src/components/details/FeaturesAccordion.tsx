@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Feature } from "./data/featuresData";
 import { useRef } from "react";
+import { Button } from "@/components/ui/button";
 
 interface FeaturesAccordionProps {
   features: Feature[];
@@ -73,11 +74,9 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
           rel="noopener noreferrer" 
           className="block w-full"
         >
-          <img
-            src="/lovable-uploads/f3a7cf43-9d36-4c14-9815-181b95ad0b23.png"
-            alt="Secure Your Spot Here"
-            className="w-full max-w-[500px] mx-auto hover:scale-105 transition-transform duration-300"
-          />
+          <button className="w-full px-4 py-3 text-black font-bold text-xl bg-zap-green hover:bg-zap-green/90 rounded-lg border-2 border-black transition-all duration-200 shadow-md hover:shadow-lg">
+            SECURE YOUR SPOT HERE
+          </button>
         </a>
       </motion.div>
     </div>
