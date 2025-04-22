@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { toast } from "sonner";
@@ -10,13 +9,11 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import ThemeToggle from "@/components/ThemeToggle";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
 import { logger } from "@/utils/logger";
-
 interface TimerState {
   hours: number;
   minutes: number;
   seconds: number;
 }
-
 const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('print');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
@@ -24,14 +21,12 @@ const GeneralStore = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
-  
   const {
     featuredProducts,
     getProductsForCategory,
     isLoading,
     isGeneratingImages
   } = usePWAStoreProducts();
-
   const handleThemeToggle = (isDark: boolean) => {
     setDarkMode(isDark);
   };
@@ -40,20 +35,15 @@ const GeneralStore = () => {
   useEffect(() => {
     logger.info(`Category changed to: ${selectedCategory}`);
   }, [selectedCategory]);
-
   const filteredProducts = getProductsForCategory(selectedCategory);
-
   const handleProductSelect = (product: any, timerState: TimerState) => {
     setSelectedProduct(product);
     setSelectedTimerState(timerState);
   };
-
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
   };
-
-  return (
-    <TimerProvider>
+  return <TimerProvider>
       <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           <Navigation />
@@ -63,43 +53,28 @@ const GeneralStore = () => {
             </div>
             
             <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
-              <AlertDescription className="text-lg font-bold">
-                This is a mock-up Storefront page, purely for demonstration purposes. It will display ALL artists original artworks, merch & fine art prints & limited timed edition drops etc. Each artist will have their artworks & prints available on your very own ATLAS 'Link in Bio' profile.
-              </AlertDescription>
+              <AlertDescription className="text-lg font-bold px-0">This is a mock-up store page for demonstration purposes.</AlertDescription>
             </Alert>
             
-            <FeaturedProducts 
-              products={featuredProducts}
-              onProductSelect={handleProductSelect}
-            />
+            <FeaturedProducts products={featuredProducts} onProductSelect={handleProductSelect} />
 
-            <TimedEditionModal
-              isOpen={!!selectedProduct}
-              onClose={() => {
-                setSelectedProduct(null);
-                setSelectedTimerState(null);
-              }}
-              product={selectedProduct}
-              timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
-            />
+            <TimedEditionModal isOpen={!!selectedProduct} onClose={() => {
+            setSelectedProduct(null);
+            setSelectedTimerState(null);
+          }} product={selectedProduct} timeLeft={selectedTimerState || {
+            hours: 0,
+            minutes: 0,
+            seconds: 0
+          }} />
 
-            <FilteredProducts
-              products={filteredProducts}
-              selectedCategory={selectedCategory}
-              onCategoryChange={handleCategoryChange}
-              isGeneratingImages={isGeneratingImages}
-            />
+            <FilteredProducts products={filteredProducts} selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} isGeneratingImages={isGeneratingImages} />
 
-            {isLoading && !isGeneratingImages && (
-              <div className="flex justify-center items-center h-64">
+            {isLoading && !isGeneratingImages && <div className="flex justify-center items-center h-64">
                 <div className="animate-pulse text-zap-blue dark:text-zap-blue">Loading products...</div>
-              </div>
-            )}
+              </div>}
           </main>
         </div>
       </div>
-    </TimerProvider>
-  );
+    </TimerProvider>;
 };
-
 export default GeneralStore;
