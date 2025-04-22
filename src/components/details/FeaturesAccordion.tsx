@@ -40,7 +40,14 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
                     <span className="text-lg font-normal">{feature.name}</span>
                   </div>
                   <div className="text-right text-lg font-normal">
-                    {feature.signatureArtist}
+                    {feature.name === "💥 Signature Artist" ? (
+                      <div className="flex items-center space-x-2">
+                        <span className="line-through text-gray-500">$1495 AUD</span>
+                        <span>{feature.signatureArtist}</span>
+                      </div>
+                    ) : (
+                      feature.signatureArtist
+                    )}
                   </div>
                 </div>
               </AccordionTrigger>
