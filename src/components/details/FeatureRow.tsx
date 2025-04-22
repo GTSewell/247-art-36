@@ -37,12 +37,14 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
         onClick={() => toggleRow(index)}
       >
         <TableCell className="font-medium">
-          <div className="flex items-center w-full">
-            {isExpanded ? (
-              <ChevronUp className="h-4 w-4 text-gray-500 mr-1 flex-shrink-0" />
-            ) : (
-              <ChevronDown className="h-4 w-4 text-gray-500 mr-1 flex-shrink-0" />
-            )}
+          <div className="flex items-start sm:items-center w-full">
+            <div className="flex-shrink-0 mt-1 sm:mt-0 mr-1">
+              {isExpanded ? (
+                <ChevronUp className="h-4 w-4 text-gray-500" />
+              ) : (
+                <ChevronDown className="h-4 w-4 text-gray-500" />
+              )}
+            </div>
             <span className="text-sm sm:text-base font-medium">{feature.name}</span>
           </div>
         </TableCell>
@@ -50,7 +52,7 @@ const FeatureRow = ({ feature, index, isExpanded, toggleRow }: FeatureRowProps) 
           value={feature.signatureArtist} 
           hasDiscount={feature.hasDiscount}
           type="signatureArtist" 
-          stackText={needsStacking}
+          stackText={needsStacking || true} // Force stacking on mobile for all features
         />
       </TableRow>
       

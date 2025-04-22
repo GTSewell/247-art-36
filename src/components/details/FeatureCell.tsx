@@ -24,7 +24,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
     if (type === 'signatureArtist') {
       return (
         <TableCell className="text-center p-1">
-          <div className="flex items-center justify-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-2">
             <span className="line-through text-gray-500 text-xs sm:text-sm">{originalPrice}</span>
             <span className="text-sm sm:text-base font-medium">{value} AUD</span>
           </div>
@@ -51,7 +51,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       
       return (
         <TableCell className="text-center p-1">
-          <div className="stacked-text items-center">
+          <div className="flex flex-col items-center">
             <span className="font-medium">{parts[0]}</span>
             <span>({parts[1]})</span>
           </div>
@@ -64,7 +64,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       
       return (
         <TableCell className="text-center p-1">
-          <div className="stacked-text items-center">
+          <div className="flex flex-col items-center">
             <span className="font-medium">{parts[0]}</span>
             <span>to {parts[1]}</span>
           </div>
@@ -77,7 +77,7 @@ const FeatureCell = ({ value, hasDiscount, type, stackText }: FeatureCellProps) 
       
       return (
         <TableCell className="text-center p-1">
-          <div className="stacked-text items-center">
+          <div className="flex flex-col items-center">
             <span className="font-medium">{parts[0]}</span>
             <span>every {parts[1]}</span>
           </div>

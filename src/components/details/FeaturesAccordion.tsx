@@ -36,8 +36,8 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
               <AccordionTrigger
                 className="px-4 py-3 text-black hover:no-underline group bg-[#33C3F0] hover:bg-zap-red data-[state=open]:bg-zap-red"
               >
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
+                  <div className="flex items-center gap-3 mb-1 sm:mb-0">
                     <span className="text-lg font-normal">{feature.name}</span>
                   </div>
                   <div className="text-right text-lg font-normal">
@@ -47,7 +47,7 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
                         <span>{feature.signatureArtist}</span>
                       </div>
                     ) : (
-                      feature.signatureArtist
+                      <span className="block text-left sm:text-right">{feature.signatureArtist}</span>
                     )}
                   </div>
                 </div>
