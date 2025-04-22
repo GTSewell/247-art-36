@@ -38,7 +38,7 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full">
                   <div className="flex items-center gap-3 mb-1 sm:mb-0">
-                    <span className="text-lg font-normal">{feature.name}</span>
+                    <span className="text-lg font-bold">{feature.name}</span>
                   </div>
                   <div className="text-right text-lg font-normal">
                     {feature.name === "💥 Signature Artist" ? (
