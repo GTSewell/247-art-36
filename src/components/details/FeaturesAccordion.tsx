@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Feature } from "./data/featuresData";
 import { useRef } from "react";
+import { Button } from "@/components/ui/button";
 
 interface FeaturesAccordionProps {
   features: Feature[];
@@ -60,6 +61,24 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
           </motion.div>
         ))}
       </Accordion>
+      
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mt-6"
+      >
+        <a 
+          href="https://print.oshi.id/products/feature-247-art-exhibition" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="block w-full"
+        >
+          <button className="w-full px-4 py-3 text-black font-bold text-xl bg-zap-green hover:bg-zap-green/90 rounded-lg border-2 border-black transition-all duration-200 shadow-md hover:shadow-lg">
+            SECURE YOUR SPOT HERE
+          </button>
+        </a>
+      </motion.div>
     </div>
   );
 };
