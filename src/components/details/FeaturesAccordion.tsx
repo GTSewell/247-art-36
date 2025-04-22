@@ -8,34 +8,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Feature } from "./data/featuresData";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 interface FeaturesAccordionProps {
   features: Feature[];
 }
 
 const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
-  // Filter out hidden features
   const visibleFeatures = features.filter(feature => !feature.hidden);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [scrollPositionLocked, setScrollPositionLocked] = useState(false);
-
-  // Handler for preventing scroll position changes when clicking accordion
-  const handleItemClick = (e: React.MouseEvent) => {
-    // Store current scroll position
-    const currentScrollPos = window.scrollY;
-    
-    // After a short delay to allow the accordion to toggle
-    setTimeout(() => {
-      // Restore scroll position
-      window.scrollTo({
-        top: currentScrollPos,
-        behavior: "auto" // Use "auto" to prevent smooth scrolling animation
-      });
-    }, 50);
-    
-    // We don't prevent default here as we want the accordion to toggle
-  };
 
   return (
     <div className="py-8">
@@ -50,38 +31,25 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
           >
             <AccordionItem
               value={`item-${index}`}
-              className="border-black border-2 rounded-lg overflow-hidden"
-              onClick={handleItemClick}
+              className={`border-none rounded-lg overflow-hidden ${index === 0 ? 'bg-zap-red' : 'bg-[#33C3F0]'}`}
             >
               <AccordionTrigger
-                className="px-4 py-3 bg-zap-blue text-white hover:bg-zap-red hover:no-underline group data-[state=open]:bg-zap-red"
+                className="px-4 py-3 text-white hover:no-underline group"
               >
-                <div className="flex items-center gap-3">
-                  <Zap className="w-5 h-5 text-zap-yellow flex-shrink-0" />
-                  <span className="text-lg font-medium">{feature.name}</span>
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center gap-3">
+                    <Zap className="w-5 h-5 text-zap-yellow flex-shrink-0" />
+                    <span className="text-lg font-medium">{feature.name}</span>
+                  </div>
+                  <div className="text-right text-lg font-medium">
+                    {feature.signatureArtist}
+                  </div>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg">
-                <div className="space-y-4">
-                  {feature.description && (
-                    <div 
-                      className="mb-4" 
-                      dangerouslySetInnerHTML={{ __html: feature.description }} 
-                    />
-                  )}
-                  {feature.signatureArtist && (
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="flex flex-col items-center p-3 bg-white rounded-lg">
-                        <span className="font-bold">Signature Artist</span>
-                        <span>
-                          {feature.signatureArtist === true 
-                            ? "✓" 
-                            : feature.signatureArtist}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                {feature.description && (
+                  <div dangerouslySetInnerHTML={{ __html: feature.description }} />
+                )}
               </AccordionContent>
             </AccordionItem>
           </motion.div>
