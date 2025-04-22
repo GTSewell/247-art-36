@@ -1,3 +1,4 @@
+
 import PageBackgroundSection from "@/components/details/PageBackgroundSection";
 import HeroSection from "@/components/details/HeroSection";
 import CalculatorsSection from "@/components/details/CalculatorsSection";
@@ -8,6 +9,7 @@ import FeaturesAccordion from "@/components/details/FeaturesAccordion";
 import { features } from "@/components/details/data/featuresData";
 import InterestForm from "@/components/sections/underground/InterestForm";
 import { outroText } from "@/components/sections/underground/faqData";
+import { motion } from "framer-motion";
 
 const Details = () => {
   return (
@@ -15,9 +17,6 @@ const Details = () => {
       <PageBackgroundSection />
       
       <div className="container mx-auto px-4 pt-24 pb-0 relative z-10">
-        {/* Intro paragraph */}
-        <HeroSection />
-
         {/* Gallery Experience Banner */}
         <div className="max-w-4xl mx-auto mb-8">
           <img 
@@ -35,20 +34,20 @@ const Details = () => {
           </div>
           <FeaturesAccordion features={features} />
         </div>
-
-        {/* LFG Image */}
+        
+        {/* Calculators Section */}
+        <CalculatorsSection />
+        
+        {/* FK IT Image with Link */}
         <div className="flex justify-center items-center my-12">
           <a href="https://print.oshi.id/products/feature-247-art-exhibition" target="_blank" rel="noopener noreferrer">
             <img 
-              src="/lovable-uploads/125e0b0f-15c8-4d5a-a182-4a1dc5d0594c.png" 
-              alt="LFG, I Want In!" 
+              src="/lovable-uploads/aa85567b-cb83-4628-a421-7e362fae431e.png" 
+              alt="FK IT. LET'S DO THIS!" 
               className="w-full max-w-[500px] animate-float cursor-pointer" 
             />
           </a>
         </div>
-        
-        {/* Calculators Section */}
-        <CalculatorsSection />
         
         {/* FAQ Accordion */}
         <FaqSection />
