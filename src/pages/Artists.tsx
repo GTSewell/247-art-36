@@ -8,7 +8,6 @@ import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
@@ -96,19 +95,58 @@ const Artists = () => {
         <Navigation />
         
         <div className="container mx-auto pt-20 px-4 pb-16">
-          <div className="w-full bg-zap-yellow py-2 text-center text-black font-bold mb-4">
-            This is a mock-up artist page for demonstration purposes.
-          </div>
-          
           <div className="flex items-center justify-between mb-4">
+            <div className="bg-zap-yellow px-2 py-1 rounded text-black text-center">
+              <span className="text-lg font-bold">This is a mock-up artist page for demonstration purposes.</span>
+            </div>
+            
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
-          <ArtistsHeader artistSearch={artistSearch} setArtistSearch={setArtistSearch} locationSearch={locationSearch} setLocationSearch={setLocationSearch} techniqueSearch={techniqueSearch} setTechniqueSearch={setTechniqueSearch} styleSearch={styleSearch} setStyleSearch={setStyleSearch} selectedTechniques={selectedTechniques} setSelectedTechniques={setSelectedTechniques} selectedStyles={selectedStyles} setSelectedStyles={setSelectedStyles} selectedSocials={selectedSocials} setSelectedSocials={setSelectedSocials} onUpdateSelection={handleUpdateSelection} onClearFilters={handleClearFilters} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} />
+          <ArtistsHeader 
+            artistSearch={artistSearch} 
+            setArtistSearch={setArtistSearch} 
+            locationSearch={locationSearch} 
+            setLocationSearch={setLocationSearch} 
+            techniqueSearch={techniqueSearch} 
+            setTechniqueSearch={setTechniqueSearch} 
+            styleSearch={styleSearch} 
+            setStyleSearch={setStyleSearch} 
+            selectedTechniques={selectedTechniques} 
+            setSelectedTechniques={setSelectedTechniques} 
+            selectedStyles={selectedStyles} 
+            setSelectedStyles={setSelectedStyles} 
+            selectedSocials={selectedSocials} 
+            setSelectedSocials={setSelectedSocials} 
+            onUpdateSelection={handleUpdateSelection} 
+            onClearFilters={handleClearFilters} 
+            allArtistsSearch={allArtistsSearch} 
+            setAllArtistsSearch={setAllArtistsSearch} 
+            showFavorites={showFavorites} 
+            setShowFavorites={setShowFavorites} 
+          />
 
-          <FeaturedArtists artists={filteredFeaturedArtists} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
+          <FeaturedArtists 
+            artists={filteredFeaturedArtists} 
+            onSelect={setSelectedArtist} 
+            onFavoriteToggle={handleFavoriteToggle} 
+            favoriteArtists={favoriteArtists} 
+            refreshArtists={() => refreshArtists()} 
+            refreshArtist={refreshArtist} 
+          />
 
-          <AllArtists artists={filteredAdditionalArtists} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
+          <AllArtists 
+            artists={filteredAdditionalArtists} 
+            allArtistsSearch={allArtistsSearch} 
+            setAllArtistsSearch={setAllArtistsSearch} 
+            showFavorites={showFavorites} 
+            setShowFavorites={setShowFavorites} 
+            onSelect={setSelectedArtist} 
+            onFavoriteToggle={handleFavoriteToggle} 
+            favoriteArtists={favoriteArtists} 
+            refreshArtists={() => refreshArtists()} 
+            refreshArtist={refreshArtist} 
+          />
         </div>
       </div>
     </div>
