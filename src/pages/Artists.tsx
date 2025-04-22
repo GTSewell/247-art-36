@@ -8,7 +8,6 @@ import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
-
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [artistSearch, setArtistSearch] = useState("");
@@ -23,7 +22,6 @@ const Artists = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
-
   const {
     featuredArtists,
     additionalArtists,
@@ -32,15 +30,12 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
-
   const handleThemeToggle = (isDark: boolean) => {
     setDarkMode(isDark);
   };
-
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
   };
-
   const handleClearFilters = () => {
     setArtistSearch("");
     setLocationSearch("");
@@ -51,11 +46,9 @@ const Artists = () => {
     setSelectedSocials([]);
     toast.success('Filters cleared');
   };
-
   const refreshArtist = async (artistId: number): Promise<void> => {
     await refreshArtists(artistId);
   };
-
   const filteredFeaturedArtists = filterArtists({
     artists: featuredArtists,
     allArtistsSearch,
@@ -66,7 +59,6 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
-
   const filteredAdditionalArtists = filterArtists({
     artists: additionalArtists,
     allArtistsSearch,
@@ -77,7 +69,6 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
-
   if (isLoading) {
     return <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
@@ -88,69 +79,26 @@ const Artists = () => {
         </div>
       </div>;
   }
-
-  return (
-    <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+  return <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
       <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
         
         <div className="container mx-auto pt-20 px-4 pb-16">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-zap-yellow px-2 py-1 rounded text-black text-center">
-              <span className="text-lg font-bold">This is a mock-up artist page for demonstration purposes.</span>
+              <span className="text-lg font-bold">Mock-up page for demonstration</span>
             </div>
             
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
-          <ArtistsHeader 
-            artistSearch={artistSearch} 
-            setArtistSearch={setArtistSearch} 
-            locationSearch={locationSearch} 
-            setLocationSearch={setLocationSearch} 
-            techniqueSearch={techniqueSearch} 
-            setTechniqueSearch={setTechniqueSearch} 
-            styleSearch={styleSearch} 
-            setStyleSearch={setStyleSearch} 
-            selectedTechniques={selectedTechniques} 
-            setSelectedTechniques={setSelectedTechniques} 
-            selectedStyles={selectedStyles} 
-            setSelectedStyles={setSelectedStyles} 
-            selectedSocials={selectedSocials} 
-            setSelectedSocials={setSelectedSocials} 
-            onUpdateSelection={handleUpdateSelection} 
-            onClearFilters={handleClearFilters} 
-            allArtistsSearch={allArtistsSearch} 
-            setAllArtistsSearch={setAllArtistsSearch} 
-            showFavorites={showFavorites} 
-            setShowFavorites={setShowFavorites} 
-          />
+          <ArtistsHeader artistSearch={artistSearch} setArtistSearch={setArtistSearch} locationSearch={locationSearch} setLocationSearch={setLocationSearch} techniqueSearch={techniqueSearch} setTechniqueSearch={setTechniqueSearch} styleSearch={styleSearch} setStyleSearch={setStyleSearch} selectedTechniques={selectedTechniques} setSelectedTechniques={setSelectedTechniques} selectedStyles={selectedStyles} setSelectedStyles={setSelectedStyles} selectedSocials={selectedSocials} setSelectedSocials={setSelectedSocials} onUpdateSelection={handleUpdateSelection} onClearFilters={handleClearFilters} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} />
 
-          <FeaturedArtists 
-            artists={filteredFeaturedArtists} 
-            onSelect={setSelectedArtist} 
-            onFavoriteToggle={handleFavoriteToggle} 
-            favoriteArtists={favoriteArtists} 
-            refreshArtists={() => refreshArtists()} 
-            refreshArtist={refreshArtist} 
-          />
+          <FeaturedArtists artists={filteredFeaturedArtists} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
 
-          <AllArtists 
-            artists={filteredAdditionalArtists} 
-            allArtistsSearch={allArtistsSearch} 
-            setAllArtistsSearch={setAllArtistsSearch} 
-            showFavorites={showFavorites} 
-            setShowFavorites={setShowFavorites} 
-            onSelect={setSelectedArtist} 
-            onFavoriteToggle={handleFavoriteToggle} 
-            favoriteArtists={favoriteArtists} 
-            refreshArtists={() => refreshArtists()} 
-            refreshArtist={refreshArtist} 
-          />
+          <AllArtists artists={filteredAdditionalArtists} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Artists;
