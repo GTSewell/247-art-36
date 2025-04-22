@@ -1,6 +1,5 @@
 
 import { motion } from "framer-motion";
-import { Zap } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -34,11 +33,10 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
               className={`border-none rounded-lg overflow-hidden ${index === 0 ? 'bg-zap-red' : 'bg-[#33C3F0]'}`}
             >
               <AccordionTrigger
-                className="px-4 py-3 text-white hover:no-underline group"
+                className="px-4 py-3 text-black hover:no-underline group"
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-3">
-                    <Zap className="w-5 h-5 text-zap-yellow flex-shrink-0" />
                     <span className="text-lg font-medium">{feature.name}</span>
                   </div>
                   <div className="text-right text-lg font-medium">
