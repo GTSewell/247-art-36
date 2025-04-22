@@ -91,7 +91,7 @@ const Artists = () => {
           
           <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
             <AlertDescription className="text-lg">
-              <span className="font-bold">This is a mock-up artist page to show you how the 247 artist profile will look. Please play around with it, click on things. When you sign up, we will add your profile with a 'Signature Artist' badge into the 'All Artists' profiles. Enjoy!</span>
+              <span className="font-bold py-0 mx-[240px] px-[110px]">This is a mock-up artist page to show you how the 247 artist profile will look. Please play around with it, click on things. When you sign up, we will add your profile with a 'Signature Artist' badge into the 'All Artists' profiles. Enjoy!</span>
               <br />
               
             </AlertDescription>
