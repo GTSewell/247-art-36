@@ -9,7 +9,6 @@ import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [artistSearch, setArtistSearch] = useState("");
@@ -24,7 +23,6 @@ const Artists = () => {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") === "dark";
   });
-
   const {
     featuredArtists,
     additionalArtists,
@@ -33,15 +31,12 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
-
   const handleThemeToggle = (isDark: boolean) => {
     setDarkMode(isDark);
   };
-
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
   };
-
   const handleClearFilters = () => {
     setArtistSearch("");
     setLocationSearch("");
@@ -52,11 +47,9 @@ const Artists = () => {
     setSelectedSocials([]);
     toast.success('Filters cleared');
   };
-
   const refreshArtist = async (artistId: number): Promise<void> => {
     await refreshArtists(artistId);
   };
-
   const filteredFeaturedArtists = filterArtists({
     artists: featuredArtists,
     allArtistsSearch,
@@ -67,7 +60,6 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
-
   const filteredAdditionalArtists = filterArtists({
     artists: additionalArtists,
     allArtistsSearch,
@@ -78,22 +70,17 @@ const Artists = () => {
     showFavorites,
     favoriteArtists
   });
-
   if (isLoading) {
-    return (
-      <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
+    return <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
         <div className="container mx-auto pt-20 px-4">
           <div className="flex justify-center items-center h-64">
             <p className="text-lg">Loading artists...</p>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+  return <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
       <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
         
@@ -106,58 +93,17 @@ const Artists = () => {
             <AlertDescription className="text-lg">
               <span className="font-bold">This is a mock-up artist page to show you how the 247 artist profile will look. Please play around with it, click on things. When you sign up, we will add your profile with a 'Signature Artist' badge into the 'All Artists' profiles. Enjoy!</span>
               <br />
-              <span className="font-normal">Note: All 'Signature Artist' sign-ups are currently temporary placeholder profiles. Full functionality will be released when we launch.</span>
+              
             </AlertDescription>
           </Alert>
           
-          <ArtistsHeader
-            artistSearch={artistSearch}
-            setArtistSearch={setArtistSearch}
-            locationSearch={locationSearch}
-            setLocationSearch={setLocationSearch}
-            techniqueSearch={techniqueSearch}
-            setTechniqueSearch={setTechniqueSearch}
-            styleSearch={styleSearch}
-            setStyleSearch={setStyleSearch}
-            selectedTechniques={selectedTechniques}
-            setSelectedTechniques={setSelectedTechniques}
-            selectedStyles={selectedStyles}
-            setSelectedStyles={setSelectedStyles}
-            selectedSocials={selectedSocials}
-            setSelectedSocials={setSelectedSocials}
-            onUpdateSelection={handleUpdateSelection}
-            onClearFilters={handleClearFilters}
-            allArtistsSearch={allArtistsSearch}
-            setAllArtistsSearch={setAllArtistsSearch}
-            showFavorites={showFavorites}
-            setShowFavorites={setShowFavorites}
-          />
+          <ArtistsHeader artistSearch={artistSearch} setArtistSearch={setArtistSearch} locationSearch={locationSearch} setLocationSearch={setLocationSearch} techniqueSearch={techniqueSearch} setTechniqueSearch={setTechniqueSearch} styleSearch={styleSearch} setStyleSearch={setStyleSearch} selectedTechniques={selectedTechniques} setSelectedTechniques={setSelectedTechniques} selectedStyles={selectedStyles} setSelectedStyles={setSelectedStyles} selectedSocials={selectedSocials} setSelectedSocials={setSelectedSocials} onUpdateSelection={handleUpdateSelection} onClearFilters={handleClearFilters} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} />
 
-          <FeaturedArtists
-            artists={filteredFeaturedArtists}
-            onSelect={setSelectedArtist}
-            onFavoriteToggle={handleFavoriteToggle}
-            favoriteArtists={favoriteArtists}
-            refreshArtists={() => refreshArtists()}
-            refreshArtist={refreshArtist}
-          />
+          <FeaturedArtists artists={filteredFeaturedArtists} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
 
-          <AllArtists
-            artists={filteredAdditionalArtists}
-            allArtistsSearch={allArtistsSearch}
-            setAllArtistsSearch={setAllArtistsSearch}
-            showFavorites={showFavorites}
-            setShowFavorites={setShowFavorites}
-            onSelect={setSelectedArtist}
-            onFavoriteToggle={handleFavoriteToggle}
-            favoriteArtists={favoriteArtists}
-            refreshArtists={() => refreshArtists()}
-            refreshArtist={refreshArtist}
-          />
+          <AllArtists artists={filteredAdditionalArtists} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} onSelect={setSelectedArtist} onFavoriteToggle={handleFavoriteToggle} favoriteArtists={favoriteArtists} refreshArtists={() => refreshArtists()} refreshArtist={refreshArtist} />
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Artists;
