@@ -48,7 +48,7 @@ const GeneralStore = () => {
           <main className="container px-4 pt-24 pb-12 mx-0 py-[73px]">
             <div className="flex items-center justify-between mb-4">
               <Alert className="inline-block mb-0 bg-zap-yellow border-zap-yellow text-black py-[3px]">
-                <AlertDescription className="text-lg font-bold px-0">This is a mock-up store page for demonstration purposes.</AlertDescription>
+                <AlertDescription className="text-lg font-bold mx-[240px] px-[77px]">This is a mock-up store page for demonstration purposes.</AlertDescription>
               </Alert>
               <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
             </div>
