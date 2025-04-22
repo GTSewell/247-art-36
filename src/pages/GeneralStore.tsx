@@ -52,7 +52,7 @@ const GeneralStore = () => {
               <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
             </div>
             
-            <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
+            <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black py-[3px]">
               <AlertDescription className="text-lg font-bold px-0">This is a mock-up store page for demonstration purposes.</AlertDescription>
             </Alert>
             
