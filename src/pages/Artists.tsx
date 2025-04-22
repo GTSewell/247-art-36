@@ -89,7 +89,7 @@ const Artists = () => {
             <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
           </div>
           
-          <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black">
+          <Alert className="mb-6 bg-zap-yellow border-zap-yellow text-black py-[2px] mx-0 px-[9px]">
             <AlertDescription className="text-lg">
               <span className="font-bold py-0 px-[116px] mx-[234px]">This is a mock-up artist page for demonstration purposes.</span>
               <br />
