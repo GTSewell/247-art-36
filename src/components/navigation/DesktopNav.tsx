@@ -27,17 +27,17 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   
   return (
     <div className="hidden md:flex items-center space-x-4 w-full justify-end">
+      <NavLink to="/details" isActive={isActive("/details")}>
+        The Exhibition
+      </NavLink>
       <NavLink to="/artists" isActive={isActive("/artists")}>
-        Artists
+        The Artists
       </NavLink>
       <NavLink to="/store" isActive={isActive("/store")}>
-        Store
+        The Store
       </NavLink>
       <NavLink to="/who-are-you" isActive={isActive("/who-are-you")}>
         About Us
-      </NavLink>
-      <NavLink to="/details" isActive={isActive("/details")}>
-        The Exhibition
       </NavLink>
       
       {/* Cart Icon with solid background for better contrast */}
