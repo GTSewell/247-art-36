@@ -19,7 +19,7 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
 
   return (
     <div className="py-8">
-      <Accordion type="single" collapsible className="space-y-4">
+      <Accordion type="single" collapsible defaultValue="item-0" className="space-y-4">
         {visibleFeatures.map((feature, index) => (
           <motion.div
             key={index}
@@ -30,21 +30,21 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
           >
             <AccordionItem
               value={`item-${index}`}
-              className={`border-none rounded-lg overflow-hidden ${index === 0 ? 'bg-zap-red' : 'bg-[#33C3F0]'}`}
+              className="border-none rounded-lg overflow-hidden group"
             >
               <AccordionTrigger
-                className="px-4 py-3 text-black hover:no-underline group"
+                className="px-4 py-3 text-black hover:no-underline group bg-[#33C3F0] hover:bg-zap-red data-[state=open]:bg-zap-red"
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-3">
-                    <span className="text-lg font-medium">{feature.name}</span>
+                    <span className="text-lg font-normal">{feature.name}</span>
                   </div>
                   <div className="text-right text-lg font-normal">
                     {feature.signatureArtist}
                   </div>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg">
+              <AccordionContent className="px-4 py-4 bg-zap-yellow text-black text-lg border border-black">
                 {feature.description && (
                   <div dangerouslySetInnerHTML={{ __html: feature.description }} />
                 )}
@@ -58,3 +58,4 @@ const FeaturesAccordion = ({ features }: FeaturesAccordionProps) => {
 };
 
 export default FeaturesAccordion;
+
