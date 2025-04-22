@@ -38,7 +38,7 @@ const CarouselNavigation: React.FC<CarouselNavigationProps> = ({
         opacity: 0
       }} transition={{
         duration: 0.2
-      }} className="absolute z-50 right-2 top-1/2 -translate-y-1/2">
+      }} className="absolute z-50 right-2 top-1/2 -translate-y-1/2 bg-zap-blue rounded text-7xl font-extrabold">
             <Button variant="ghost" size="icon" onClick={onNext} className="h-8 w-8 rounded-full bg-white/80 hover:bg-white shadow-md transition-colors">
               <ChevronRight className="h-5 w-5" />
             </Button>
