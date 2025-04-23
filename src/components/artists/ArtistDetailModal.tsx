@@ -123,60 +123,71 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
           />
         </div>
       )}
-      
-      <DialogContent 
-        className={`${isMobile ? 'w-[95vw] max-w-[95%] mx-auto mt-16' : 'max-w-5xl w-[80vw]'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
-        style={{ boxSizing: 'border-box', background: 'white' }}
-      >
-        <DialogTitle className="sr-only">Artist Details</DialogTitle>
-        <DialogDescription className="sr-only">Detailed information about the artist</DialogDescription>
-        
-        {isMobile ? (
-          <Carousel
-            setApi={setApi}
-            opts={{
-              align: "start",
-              loop: true,
-              skipSnaps: false,
-              startIndex: selectedArtistIndex,
-            }}
-            className="w-full min-w-0 overflow-visible"
-            onSelect={handleSelect}
+
+      {/* Make the content wrapper flex-center ONLY on mobile */}
+      {isMobile && open ? (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center min-h-screen px-2 pb-8 bg-black/80">
+          <DialogContent 
+            className="w-[95vw] max-w-[95%] mx-auto mt-0 p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0"
+            style={{ boxSizing: 'border-box', background: 'white' }}
           >
-            <CarouselContent className="-ml-1 min-w-0 overflow-visible">
-              {artists.map((artist, index) => (
-                <CarouselItem key={artist.id} className="pl-1 w-full min-w-0 overflow-visible">
-                  <div className="w-full min-w-0 overflow-visible">
-                    <ArtistModalContent
-                      artists={[artist]} // Pass as single artist array
-                      selectedArtistIndex={0} // Always 0 since we're in a CarouselItem
-                      selectedArtist={artist} // Pass the current artist explicitly
-                      onArtistChange={() => {}} // Handled by carousel now
-                      onFavoriteToggle={onFavoriteToggle}
-                      favoriteArtists={favoriteArtists}
-                      refreshArtists={refreshArtists}
-                      onSelect={onSelect}
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        ) : (
-          selectedArtist && (
-            <ArtistModalContent
-              artists={artists}
-              selectedArtistIndex={selectedArtistIndex}
-              selectedArtist={selectedArtist}
-              onArtistChange={onArtistChange}
-              onFavoriteToggle={onFavoriteToggle}
-              favoriteArtists={favoriteArtists}
-              refreshArtists={refreshArtists}
-              onSelect={onSelect}
-            />
-          )
-        )}
-      </DialogContent>
+            <DialogTitle className="sr-only">Artist Details</DialogTitle>
+            <DialogDescription className="sr-only">Detailed information about the artist</DialogDescription>
+            <Carousel
+              setApi={setApi}
+              opts={{
+                align: "start",
+                loop: true,
+                skipSnaps: false,
+                startIndex: selectedArtistIndex,
+              }}
+              className="w-full min-w-0 overflow-visible"
+              onSelect={handleSelect}
+            >
+              <CarouselContent className="-ml-1 min-w-0 overflow-visible">
+                {artists.map((artist, index) => (
+                  <CarouselItem key={artist.id} className="pl-1 w-full min-w-0 overflow-visible">
+                    <div className="w-full min-w-0 overflow-visible">
+                      <ArtistModalContent
+                        artists={[artist]} // Pass as single artist array
+                        selectedArtistIndex={0} // Always 0 since we're in a CarouselItem
+                        selectedArtist={artist} // Pass the current artist explicitly
+                        onArtistChange={() => {}} // Handled by carousel now
+                        onFavoriteToggle={onFavoriteToggle}
+                        favoriteArtists={favoriteArtists}
+                        refreshArtists={refreshArtists}
+                        onSelect={onSelect}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </DialogContent>
+        </div>
+      ) : (
+        open && (
+          <DialogContent 
+            className={`${isMobile ? 'w-[95vw] max-w-[95%] mx-auto mt-16' : 'max-w-5xl w-[80vw]'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
+            style={{ boxSizing: 'border-box', background: 'white' }}
+          >
+            <DialogTitle className="sr-only">Artist Details</DialogTitle>
+            <DialogDescription className="sr-only">Detailed information about the artist</DialogDescription>
+            {selectedArtist && (
+              <ArtistModalContent
+                artists={artists}
+                selectedArtistIndex={selectedArtistIndex}
+                selectedArtist={selectedArtist}
+                onArtistChange={onArtistChange}
+                onFavoriteToggle={onFavoriteToggle}
+                favoriteArtists={favoriteArtists}
+                refreshArtists={refreshArtists}
+                onSelect={onSelect}
+              />
+            )}
+          </DialogContent>
+        )
+      )}
     </Dialog>
   );
 };
