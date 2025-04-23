@@ -113,7 +113,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {/* Mobile badges positioned above the modal */}
       {isMobile && open && currentArtist && (
-        <div className="fixed z-[999] top-[10%] left-0 right-0 flex justify-center pointer-events-none">
+        <div className="fixed z-[999] top-[6vh] left-0 right-0 flex justify-center pointer-events-none">
           <ArtistBadges 
             isSignatureArtist={isSignatureArtist}
             isDemo={isDemo}
@@ -125,7 +125,7 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
       )}
       
       <DialogContent 
-        className={`${isMobile ? 'w-[95vw] max-w-[95%] mx-auto mt-12' : 'max-w-5xl w-[80vw]'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
+        className={`${isMobile ? 'w-[95vw] max-w-[95%] mx-auto mt-16' : 'max-w-5xl w-[80vw]'} p-0 overflow-hidden bg-white rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.1)] max-h-[85vh] min-w-0`}
         style={{ boxSizing: 'border-box', background: 'white' }}
       >
         <DialogTitle className="sr-only">Artist Details</DialogTitle>

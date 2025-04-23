@@ -4,7 +4,6 @@ import { Artist } from '@/data/types/artist';
 import ArtistHeaderInfo from './ArtistHeaderInfo';
 import ArtistImagePanel from './ArtistImagePanel';
 import ArtistActions from './ArtistActions';
-import ArtistBadges from './ArtistBadges';
 
 interface MobileArtistContentProps {
   artist: Artist;
@@ -27,8 +26,12 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 }) => {
   return (
     <div 
-      className={`flex flex-col w-full min-h-[80vh] ${isSignatureArtist ? 'border-4 border-zap-yellow' : ''}`}
-      style={{ background: 'white' }}
+      className="flex flex-col w-full min-h-[80vh] overflow-hidden"
+      style={{ 
+        background: 'white',
+        border: isSignatureArtist ? '4px solid #FFC700' : 'none',
+        borderRadius: isSignatureArtist ? '0.75rem' : '0'
+      }}
     >
       {/* Header Section */}
       <div className="px-6 pt-6 pb-3">
