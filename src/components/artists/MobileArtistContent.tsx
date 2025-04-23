@@ -43,8 +43,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Artworks Grid Section - Reduced bottom margin */}
-      <div className="px-6 flex-grow overflow-y-auto mb-0">
+      {/* Artworks Grid Section - Making it more compact */}
+      <div className="px-6 flex-shrink-0">
         <ArtistImagePanel
           artist={artist}
           onFavoriteToggle={onFavoriteToggle}
@@ -53,7 +53,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Bottom Action Buttons - Reduced vertical padding */}
+      {/* Bottom Action Buttons */}
       <div className="px-6 py-2 mt-auto">
         <ArtistActions
           domainName={artist.name}
@@ -69,4 +69,3 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 };
 
 export default MobileArtistContent;
-
