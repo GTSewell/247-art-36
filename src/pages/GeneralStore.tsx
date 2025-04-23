@@ -45,8 +45,8 @@ const GeneralStore = () => {
       <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           <Navigation />
-          <main className="w-full px-0 pt-24 pb-12">
-            <div className="flex items-center justify-between mb-4 w-full px-4 py-[14px]">
+          <main className="w-full pt-24 pb-12 mx-0 px-[50px]">
+            <div className="flex items-center justify-between mb-4 w-full px-4">
               <div className="bg-zap-yellow px-2 py-1 rounded text-black text-center">
                 <span className="text-lg font-bold">Mock-up page for demonstration</span>
               </div>
