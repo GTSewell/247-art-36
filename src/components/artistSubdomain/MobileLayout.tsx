@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { Artist } from '@/data/types/artist';
 import { ArtistProfile } from '@/data/types/artistProfile';
@@ -6,6 +7,7 @@ import { Tabs } from '@/components/ui/tabs';
 import useEmblaCarousel from 'embla-carousel-react';
 import MobileNavigation from './MobileNavigation';
 import MobileCarousel from './MobileCarousel';
+
 interface MobileLayoutProps {
   artist: Artist;
   profile: ArtistProfile | null;
@@ -24,6 +26,7 @@ interface MobileLayoutProps {
   };
   backgroundImage?: string | null;
 }
+
 const MobileLayout: React.FC<MobileLayoutProps> = ({
   artist,
   profile,
@@ -36,6 +39,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("about");
+  
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: false,
@@ -47,6 +51,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   // Synchronize carousel position with tab selection
   useEffect(() => {
     if (!emblaApi) return;
+    
     const onSelect = () => {
       const currentSlide = emblaApi.selectedScrollSnap();
       const tabs = ["about", "links", "artwork"];
@@ -54,7 +59,9 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
         setActiveTab(tabs[currentSlide]);
       }
     };
+    
     emblaApi.on('select', onSelect);
+    
     return () => {
       emblaApi.off('select', onSelect);
     };
@@ -63,37 +70,65 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
   // Handle tab change and scroll carousel to matching slide
   const handleTabChange = useCallback((value: string) => {
     setActiveTab(value);
+    
     if (emblaApi) {
       const slideIndex = value === "about" ? 0 : value === "links" ? 1 : 2;
       emblaApi.scrollTo(slideIndex);
     }
   }, [emblaApi]);
+
   const handleReturnToArtists = () => {
     navigate('/artists');
   };
-  const panelHeight = "calc(100vh - 7rem)";
 
+  const panelHeight = "calc(100vh - 7rem)";
+  
   // Use explicitly set background image if available, otherwise fallback to profile background
   const bgImage = backgroundImage || profile?.background_image || undefined;
-  return <div
-  // Increased bottom padding
-  style={{
-    backgroundColor: colorTheme.background,
-    backgroundImage: bgImage ? `url(${bgImage})` : 'none',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    height: '100vh',
-    width: '100%'
-  }} className="flex items-center justify-center overflow-hidden pb-8">
+
+  return (
+    <div 
+      className="flex items-center justify-center overflow-hidden pb-16" // Increased bottom padding
+      style={{ 
+        backgroundColor: colorTheme.background,
+        backgroundImage: bgImage ? `url(${bgImage})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        height: '100vh',
+        width: '100%'
+      }}
+    >
       <div className="w-full h-full px-4 py-4 flex flex-col">
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full h-full flex flex-col">
-          <MobileNavigation activeTab={activeTab} handleTabChange={handleTabChange} handleReturnToArtists={handleReturnToArtists} colorTheme={colorTheme} />
+        <Tabs 
+          value={activeTab} 
+          onValueChange={handleTabChange} 
+          className="w-full h-full flex flex-col"
+        >
+          <MobileNavigation 
+            activeTab={activeTab}
+            handleTabChange={handleTabChange}
+            handleReturnToArtists={handleReturnToArtists}
+            colorTheme={colorTheme}
+          />
           
           <div className="flex-grow overflow-hidden">
-            <MobileCarousel emblaApi={emblaApi} emblaRef={emblaRef} artist={artist} profile={profile} techniques={techniques} styles={styles} socialPlatforms={socialPlatforms} artworks={artworks} panelHeight={panelHeight} colorTheme={colorTheme} />
+            <MobileCarousel 
+              emblaApi={emblaApi}
+              emblaRef={emblaRef}
+              artist={artist}
+              profile={profile}
+              techniques={techniques}
+              styles={styles}
+              socialPlatforms={socialPlatforms}
+              artworks={artworks}
+              panelHeight={panelHeight}
+              colorTheme={colorTheme}
+            />
           </div>
         </Tabs>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default MobileLayout;
