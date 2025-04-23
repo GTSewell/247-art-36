@@ -1,4 +1,3 @@
-
 import Hero from "@/components/Hero";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
@@ -24,6 +23,28 @@ const Index = () => {
       <main className={`min-h-screen ${isPWA ? "overflow-hidden" : ""} bg-[#f0f0e7]`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="relative bg-[#f0f0e7] py-[82px]">
+          <div
+            className="absolute top-0 left-0 z-10 w-full flex"
+            style={{
+              pointerEvents: "none",
+              height: 0,
+            }}
+            aria-hidden
+          >
+            <img
+              src="/lovable-uploads/1f33d064-8cd9-4cb0-8c3b-85aab3f611b5.png"
+              alt="TWO FOUR SEVEN Text"
+              className="w-[38vw] min-w-[140px] max-w-[350px] h-auto md:w-[260px] lg:w-[320px] object-contain"
+              style={{
+                marginTop: 0,
+                marginLeft: 0,
+                userSelect: "none",
+                display: "block"
+              }}
+              draggable={false}
+              aria-hidden
+            />
+          </div>
           <div className="pointer-events-none absolute left-0 right-0 bottom-0 w-full flex justify-center z-0">
             <img
               src="/lovable-uploads/a7629789-a919-4934-843e-d9f412959134.png"
@@ -62,4 +83,3 @@ const Index = () => {
 };
 
 export default Index;
-
