@@ -28,7 +28,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
   return (
     <div 
       className={`flex flex-col w-full max-h-[85vh] overflow-y-auto relative ${isSignatureArtist ? 'border-4 border-zap-yellow' : ''}`}
-      style={{ background: 'white', overflow: 'visible' }}
+      style={{ background: 'white', overflow: 'visible', display: 'flex', height: '100%' }}
     >
       {/* Artist badges are now handled outside the modal in ArtistDetailModal.tsx */}
       
@@ -43,7 +43,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
       </div>
       
       {/* Artworks Grid Section */}
-      <div className="px-6 flex-grow">
+      <div className="px-6 flex-grow overflow-y-auto">
         <ArtistImagePanel
           artist={artist}
           onFavoriteToggle={onFavoriteToggle}
@@ -52,7 +52,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Bottom Action Buttons */}
+      {/* Bottom Action Buttons - Fixed to bottom with mt-auto */}
       <div className="px-6 pb-6 pt-4 mt-auto">
         <ArtistActions
           domainName={artist.name}
