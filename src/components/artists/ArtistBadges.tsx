@@ -36,24 +36,7 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
   
   // For mobile view within the modal (we'll hide this in MobileArtistContent)
   if (isMobile && !overrideStyle) {
-    return (
-      <>
-        {/* Keep hidden badges for structural consistency but don't display them */}
-        <div className="hidden">
-          {isSignatureArtist && (
-            <div className="absolute left-6 -top-5 z-20 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
-              Signature Artist
-            </div>
-          )}
-          
-          {!isSignatureArtist && isDemo && (
-            <div className="absolute left-6 -top-5 z-20 bg-[#00baef] text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]">
-              Demo
-            </div>
-          )}
-        </div>
-      </>
-    );
+    return null; // Don't render badges inside the modal for mobile
   }
 
   // For desktop view, keep the original positioning
