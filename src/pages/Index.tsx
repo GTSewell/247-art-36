@@ -7,6 +7,7 @@ import FlipTheOldSection from "@/components/sections/FlipTheOldSection";
 import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const { isPWA } = useAppMode();
@@ -29,16 +30,18 @@ const Index = () => {
           <FlipTheOldSection />
           {/* Floating banner at the bottom */}
           <div className="flex justify-center items-center mt-16 mb-0">
-            <img
-              src="/lovable-uploads/96c594a0-80b9-4675-b599-deb4ad4802b8.png"
-              alt="BUILT BY ARTISTS FOR ARTISTS"
-              className="w-full max-w-[480px] animate-float"
-              style={{
-                userSelect: "none",
-                display: "block"
-              }}
-              draggable={false}
-            />
+            <Link to="/details" className="cursor-pointer">
+              <img
+                src="/lovable-uploads/96c594a0-80b9-4675-b599-deb4ad4802b8.png"
+                alt="BUILT BY ARTISTS FOR ARTISTS"
+                className="w-full max-w-[480px] animate-float"
+                style={{
+                  userSelect: "none",
+                  display: "block"
+                }}
+                draggable={false}
+              />
+            </Link>
           </div>
         </div>
       </main>
@@ -47,4 +50,3 @@ const Index = () => {
 };
 
 export default Index;
-
