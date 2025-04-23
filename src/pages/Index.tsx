@@ -1,3 +1,4 @@
+
 import Hero from "@/components/Hero";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
@@ -27,7 +28,7 @@ const Index = () => {
             <img
               src="/lovable-uploads/a7629789-a919-4934-843e-d9f412959134.png"
               alt=""
-              className="animate-float w-full max-w-full opacity-90"
+              className="w-full max-w-full opacity-90"
               style={{
                 userSelect: "none",
                 display: "block"
@@ -61,3 +62,4 @@ const Index = () => {
 };
 
 export default Index;
+
