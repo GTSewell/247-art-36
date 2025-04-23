@@ -6,7 +6,7 @@ export const detailsFaqItems = [
     title: "When will the exhibition start?",
     content: (
       <span>
-        The exhibition is scheduled to start in May-June 2025. We need to allow enough time, preferebly 1 month prior to exhibition launch, to allow artists and ourselves prepare all artworks and let the world know we're coming. We will finalise exact dates and will announce them directly to each artist and across all our channels as soon as they're confirmed. All participating artists will receive advance notice before the public announcement. 
+        The exhibition is scheduled to start in June 2025. We need to allow enough time, for you and ourselves prepare all artworks and let the world know we're coming. We will finalise exact dates and will announce them directly to each artist and across all our channels as soon as they're confirmed. All participating artists will receive advance notice before the public announcement. 
       </span>
     )
   },
