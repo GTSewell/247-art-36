@@ -63,7 +63,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
 
   return (
     <div className="w-full h-auto">
-      <div className="grid grid-cols-2 gap-2 max-h-fit">
+      <div className="grid grid-cols-2 gap-1 max-h-fit">
         {processedArtworks.length > 0 ? (
           processedArtworks.map((artwork, index) => (
             <div 

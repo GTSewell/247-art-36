@@ -65,7 +65,7 @@ const PWAStore = () => {
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           {isPWA ? <PWANavigation /> : <Navigation />}
           
-          <main className={`${isPWA ? 'pt-4 pb-20' : 'container mx-auto px-4 pt-24 pb-20'}`}>
+          <main className={`${isPWA ? 'pt-4 pb-20 w-full' : 'container mx-auto px-4 pt-24 pb-20'}`}>
             {!isPWA && (
               <div className="flex justify-end mb-4">
                 <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
