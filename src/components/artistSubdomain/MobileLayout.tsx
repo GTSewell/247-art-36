@@ -88,7 +88,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 
   return (
     <div 
-      className="flex items-center justify-center overflow-hidden pb-4" 
+      className="flex items-center justify-center overflow-hidden pb-0" 
       style={{ 
         backgroundColor: colorTheme.background,
         backgroundImage: bgImage ? `url(${bgImage})` : 'none',
