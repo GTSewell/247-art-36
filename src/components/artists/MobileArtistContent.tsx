@@ -44,7 +44,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
       </div>
       
       {/* Artworks Grid Section - Reduced bottom margin */}
-      <div className="px-6 flex-grow overflow-y-auto mb-3">
+      <div className="px-6 flex-grow overflow-y-auto mb-0">
         <ArtistImagePanel
           artist={artist}
           onFavoriteToggle={onFavoriteToggle}
@@ -69,3 +69,4 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 };
 
 export default MobileArtistContent;
+
