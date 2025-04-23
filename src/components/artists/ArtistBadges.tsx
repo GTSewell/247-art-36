@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface ArtistBadgesProps {
@@ -34,9 +35,9 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
     );
   }
   
-  // For mobile view within the modal (we'll hide this in MobileArtistContent)
+  // For mobile view within the modal (don't render)
   if (isMobile && !overrideStyle) {
-    return null; // Don't render badges inside the modal for mobile
+    return null;
   }
 
   // For desktop view, keep the original positioning

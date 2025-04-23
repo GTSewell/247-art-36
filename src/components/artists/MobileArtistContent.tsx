@@ -27,11 +27,11 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
 }) => {
   return (
     <div 
-      className={`flex flex-col w-full h-full min-h-[70vh] ${isSignatureArtist ? 'border-4 border-zap-yellow' : ''}`}
+      className={`flex flex-col w-full min-h-[80vh] ${isSignatureArtist ? 'border-4 border-zap-yellow' : ''}`}
       style={{ background: 'white' }}
     >
       {/* Header Section */}
-      <div className="px-6 pt-6 pb-2">
+      <div className="px-6 pt-6 pb-3">
         <ArtistHeaderInfo
           name={artist.name}
           specialty={artist.specialty}
@@ -50,8 +50,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Bottom Action Buttons - Fixed to bottom */}
-      <div className="px-6 pb-6 pt-4 mt-auto">
+      {/* Bottom Action Buttons - Fixed to bottom with spacing */}
+      <div className="px-6 py-6 mt-auto">
         <ArtistActions
           domainName={artist.name}
           artistId={artist.id}

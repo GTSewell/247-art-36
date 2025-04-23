@@ -62,7 +62,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
   }, [artist.artworks, artist.id]);
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-8">
       <div className="grid grid-cols-2 gap-3">
         {processedArtworks.length > 0 ? (
           processedArtworks.map((artwork, index) => (
