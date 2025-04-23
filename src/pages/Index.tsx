@@ -23,13 +23,28 @@ const Index = () => {
       </Helmet>
       <main className={`min-h-screen ${isPWA ? "overflow-hidden" : ""} bg-[#f0f0e7]`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
-        <div className="bg-[#f0f0e7] py-[82px]">
+        {/* Relative container to position background image without affecting layout */}
+        <div className="relative bg-[#f0f0e7] py-[82px]">
+          {/* Absolutely positioned, floating, centered background image at the bottom */}
+          <div className="pointer-events-none absolute left-0 right-0 bottom-0 flex justify-center z-0">
+            <img
+              src="/lovable-uploads/a7629789-a919-4934-843e-d9f412959134.png"
+              alt=""
+              className="animate-float w-full max-w-[825px] opacity-90"
+              style={{
+                userSelect: "none",
+                display: "block"
+              }}
+              draggable={false}
+              aria-hidden
+            />
+          </div>
           <Hero />
           <JoinUndergroundSection />
           <ReadyToHustleSection />
           <FlipTheOldSection />
           {/* Floating banner at the bottom */}
-          <div className="flex justify-center items-center mt-16 mb-0">
+          <div className="flex justify-center items-center mt-16 mb-0 relative z-10">
             <Link to="/details" className="cursor-pointer">
               <img
                 src="/lovable-uploads/96c594a0-80b9-4675-b599-deb4ad4802b8.png"
@@ -50,3 +65,4 @@ const Index = () => {
 };
 
 export default Index;
+
