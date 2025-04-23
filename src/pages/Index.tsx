@@ -25,7 +25,7 @@ const Index = () => {
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="relative bg-[#f0f0e7] py-[82px]">
           <div
-            className="absolute top-0 left-0 z-20 w-full flex"
+            className="absolute top-0 left-0 z-15 w-full flex"
             style={{
               pointerEvents: "none",
             }}
