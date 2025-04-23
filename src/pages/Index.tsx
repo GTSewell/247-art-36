@@ -1,3 +1,4 @@
+
 import Hero from "@/components/Hero";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
@@ -24,10 +25,9 @@ const Index = () => {
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="relative bg-[#f0f0e7] py-[82px]">
           <div
-            className="absolute top-0 left-0 z-10 w-full flex"
+            className="absolute top-0 left-0 z-20 w-full flex"
             style={{
               pointerEvents: "none",
-              height: 0,
             }}
             aria-hidden
           >
@@ -36,8 +36,8 @@ const Index = () => {
               alt="TWO FOUR SEVEN Text"
               className="w-[38vw] min-w-[140px] max-w-[350px] h-auto md:w-[260px] lg:w-[320px] object-contain"
               style={{
-                marginTop: 0,
-                marginLeft: 0,
+                marginTop: "30px",
+                marginLeft: "20px",
                 userSelect: "none",
                 display: "block"
               }}
@@ -67,7 +67,7 @@ const Index = () => {
               <img
                 src="/lovable-uploads/96c594a0-80b9-4675-b599-deb4ad4802b8.png"
                 alt="BUILT BY ARTISTS FOR ARTISTS"
-                className="w-full max-w-[480px] animate-float"
+                className="w-full max-w-[480px]"
                 style={{
                   userSelect: "none",
                   display: "block"
