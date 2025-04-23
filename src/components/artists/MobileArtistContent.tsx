@@ -53,8 +53,8 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
         />
       </div>
       
-      {/* Bottom Action Buttons - Fixed to bottom with spacing */}
-      <div className="px-6 py-6 mt-auto">
+      {/* Bottom Action Buttons - Reduced vertical padding */}
+      <div className="px-6 py-4 mt-auto">
         <ArtistActions
           domainName={artist.name}
           artistId={artist.id}

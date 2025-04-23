@@ -21,7 +21,7 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
     return (
       <div className="flex flex-col items-center gap-2">
         {isSignatureArtist && (
-          <div className="bg-[#FFC700] text-black font-bold text-lg shadow-md rounded-lg py-1 px-3 z-50">
+          <div className="bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-1 px-3 z-50">
             Signature Artist
           </div>
         )}
@@ -47,7 +47,7 @@ const ArtistBadges: React.FC<ArtistBadgesProps> = ({
     <>
       {/* Signature Artist Badge */}
       {isSignatureArtist && (
-        <div className={`absolute ${positionClass} z-10 bg-[#FFC700] text-black font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]`}>
+        <div className={`absolute ${positionClass} z-10 bg-zap-red text-white font-bold text-lg shadow-md rounded-lg py-[2px] px-[10px]`}>
           Signature Artist
         </div>
       )}
