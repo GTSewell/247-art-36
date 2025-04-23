@@ -1,4 +1,3 @@
-
 import Hero from "@/components/Hero";
 import Navigation from "@/components/navigation/Navigation";
 import JoinUndergroundSection from "@/components/sections/JoinUndergroundSection";
@@ -23,14 +22,12 @@ const Index = () => {
       </Helmet>
       <main className={`min-h-screen ${isPWA ? "overflow-hidden" : ""} bg-[#f0f0e7]`}>
         {isPWA ? <PWANavigation /> : <Navigation />}
-        {/* Relative container to position background image without affecting layout */}
         <div className="relative bg-[#f0f0e7] py-[82px]">
-          {/* Absolutely positioned, floating, centered background image at the bottom */}
-          <div className="pointer-events-none absolute left-0 right-0 bottom-0 flex justify-center z-0">
+          <div className="pointer-events-none absolute left-0 right-0 bottom-0 w-full flex justify-center z-0">
             <img
               src="/lovable-uploads/a7629789-a919-4934-843e-d9f412959134.png"
               alt=""
-              className="animate-float w-full max-w-[825px] opacity-90"
+              className="animate-float w-full max-w-full opacity-90"
               style={{
                 userSelect: "none",
                 display: "block"
@@ -43,7 +40,6 @@ const Index = () => {
           <JoinUndergroundSection />
           <ReadyToHustleSection />
           <FlipTheOldSection />
-          {/* Floating banner at the bottom */}
           <div className="flex justify-center items-center mt-16 mb-0 relative z-10">
             <Link to="/details" className="cursor-pointer">
               <img
@@ -65,4 +61,3 @@ const Index = () => {
 };
 
 export default Index;
-
