@@ -88,7 +88,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 
   return (
     <div 
-      className="flex items-center justify-center overflow-hidden pb-24" // Increased bottom padding to 24 (6rem) from 16 (4rem)
+      className="flex items-center justify-center overflow-hidden pb-4" 
       style={{ 
         backgroundColor: colorTheme.background,
         backgroundImage: bgImage ? `url(${bgImage})` : 'none',
