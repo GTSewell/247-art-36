@@ -35,7 +35,7 @@ export const features: Feature[] = [
     description: "We produce your Stickers, T-Shirt & Print into your very own retail ready collectible editioned set, including customised packaging with your art on it. Retailing at $124.95 with ~$50 profit per pack to you. Each STP Pack you sell to a new wave of collectors reduces your gallery commission by 1%!"
   },
   { 
-    name: "💰 Hands-off revenue streams sound good", 
+    name: "💰 Hands-off revenue streams", 
     signatureArtist: "We've got you covered!",
     description: "Not only do we produce all the retail merch at a premium quality we are known for, we give you and the collector options to choose from. Oh, and you keep 100% of the retail profits after production."
   },
@@ -50,12 +50,12 @@ export const features: Feature[] = [
     description: "Rotate your works, update stockroom pieces, swap out styles—your space is alive and flexible. Keeping it fresh and dynamic."
   },
   { 
-    name: "👕 Unsure how to turn your art into great merch", 
+    name: "👕 Your art, great merch", 
     signatureArtist: "We design and produce for you",
     description: "Not only will you have your very own STP Collector pack, we will also produce individual retail items (Stickers/T-shirts/Prints etc) for sale and stock in our retail space. From shirts, hoodies, totes to stickers and more, we handle the production and even help you design for what works in retail. The apparel game is a different beast, and we know how to make the best of it!"
   },
   { 
-    name: "🔄 Want to keep things fresh without starting over", 
+    name: "🔄 Let's keep things fresh", 
     signatureArtist: "Change your artwork up to twice a month",
     description: "Sold a piece? We'll replace it instantly with your stockroom work, and you can keep the cycle going. Fresh work, new momentum, no stress.<br /><br /> Maybe you just created a dope new piece, on a timely matter that's poppin off, then bring it in and let's change it up ASAP! After all, this IS your gallery."
   },
@@ -71,7 +71,7 @@ export const features: Feature[] = [
   },
   { 
     name: "📊 Stay in the loop after you sell", 
-    signatureArtist: "Real-time dashboard with sales, insights & collector info",
+    signatureArtist: "Real-time dashboard for sales, insights & collector info",
     description: "Log in anytime to track your sales, merch, collectors, and artist trades. Even generate 1-click invoices for payments. Think of it like your art career's command center.!"
   },
   { 
@@ -83,7 +83,7 @@ export const features: Feature[] = [
   { 
     name: "📽 Art Never Sleeps", 
     signatureArtist: "Your art displayed 24/7 on our video wall and projection space.",
-    description: "Your artwork will be featured night and day, 24/7 on our HUGE Video Wall & Projection Space throughout the gallery."
+    description: "Your artwork will be featured night and day, 24/7 on our HUGE Video Wall & Projection Space throughout the gallery.<br /><br />We will have a high-resolution 3D lidar scan for our interstate, and, international friends to view and directly interact with your artwork."
   },
   { 
     name: "🧳 Need to change your work easily", 
@@ -96,7 +96,7 @@ export const features: Feature[] = [
     description: "Fast, limited, and collector-focused. A great way to spark new interest and test demand ... as nerve-wracking as it is exciting!"
   },
   { 
-    name: "🌐 How's your website coming along", 
+    name: "🌐 How's your website going?", 
     signatureArtist: "Your own custom 247 artist URL",
     description: "Think BIO + portfolio + shop + dashboard—all on a clean, custom page: yourname.247.art.<br /><br /> Ps, For all the Genesis Exhibition artists there's a few surprises that will come with it later 😉<br /><br />Pps, You keep your 247.art bio forever."
   },
@@ -108,7 +108,7 @@ export const features: Feature[] = [
   { 
     name: "🚦 Smith St ain't no back street", 
     signatureArtist: "50,000+ people a day",
-    description: "Not only will we feature 7 artists weekly on our shopfront—your artwork front and center, the gallery will have a high-resolution 3D lidar scan for our interstate, and, international friends to view and directly interact with your artwork."
+    description: "Not only will we feature 7 artists weekly on our shopfront—your artwork front and center in front of 50K people a day!"
   },
 ];
 
