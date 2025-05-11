@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -23,6 +24,7 @@ import ArtistSubdomain from "@/pages/ArtistSubdomain";
 import NotFound from "@/pages/NotFound";
 import ArtistSubmission from "@/pages/ArtistSubmission";
 import TallyFormPage from "@/pages/TallyFormPage";
+import LFG from "@/pages/LFG"; // Import the new LFG page
 
 // Admin pages
 import ArtistManagement from "@/pages/admin/ArtistManagement";
@@ -90,6 +92,7 @@ const App = () => {
         <Route path="/virtual-tour" element={<VirtualTour />} />
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/submit" element={<ArtistSubmission />} />
+        <Route path="/lfg" element={<LFG />} /> {/* Add the new LFG route */}
         
         {/* Admin routes */}
         <Route 
