@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -70,9 +71,7 @@ const LFG = () => {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button className="w-full">Become a Patron</Button>
-              </CardFooter>
+              {/* Removed the CardFooter with Button */}
             </Card>
             
             <Card className="border-2 border-zap-blue">
@@ -126,9 +125,7 @@ const LFG = () => {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full">Apply as an Artist</Button>
-              </CardFooter>
+              {/* Removed the CardFooter with Button */}
             </Card>
           </div>
           
