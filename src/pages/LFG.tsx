@@ -77,7 +77,7 @@ const LFG = () => {
             
             <Card className="border-2 border-zap-blue">
               <CardHeader>
-                <CardTitle className="text-2xl">For Artists</CardTitle>
+                <CardTitle className="text-2xl">The Artist</CardTitle>
                 <CardDescription>What you get when sponsored</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
