@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -7,12 +6,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { useAppMode } from '@/contexts/AppModeContext';
 import PWANavigation from '@/components/pwa/PWANavigation';
-
 const LFG = () => {
-  const { isPWA } = useAppMode();
-  
-  return (
-    <>
+  const {
+    isPWA
+  } = useAppMode();
+  return <>
       <Helmet>
         <title>247.ART | Artist Sponsorship Program</title>
         <meta name="description" content="Sponsor an artist for the 247.ART exhibition and get exclusive rewards" />
@@ -32,7 +30,7 @@ const LFG = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <Card className="border-2 border-zap-yellow">
               <CardHeader>
-                <CardTitle className="text-2xl">For Collectors & Patrons</CardTitle>
+                <CardTitle className="text-2xl">The Patron</CardTitle>
                 <CardDescription>Exclusive rewards for your sponsorship</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -185,8 +183,6 @@ const LFG = () => {
           </div>
         </div>
       </main>
-    </>
-  );
+    </>;
 };
-
 export default LFG;
