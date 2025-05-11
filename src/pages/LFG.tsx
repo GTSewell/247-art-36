@@ -129,12 +129,12 @@ const LFG = () => {
             </Card>
           </div>
           
-          <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+          <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md border-2 border-zap-red">
             <h2 className="text-3xl font-bold mb-6 text-center">How It Works</h2>
             
             <div className="space-y-8">
               <div className="flex flex-col md:flex-row gap-6 items-center">
-                <div className="bg-zap-yellow flex items-center justify-center w-16 h-16 rounded-full text-2xl font-bold flex-shrink-0">1</div>
+                <div className="bg-zap-red flex items-center justify-center w-16 h-16 rounded-full text-2xl font-bold flex-shrink-0 text-white">1</div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Patrons Curate The Exhibition</h3>
                   <p className="text-gray-700">
@@ -145,7 +145,7 @@ const LFG = () => {
               </div>
               
               <div className="flex flex-col md:flex-row gap-6 items-center">
-                <div className="bg-zap-yellow flex items-center justify-center w-16 h-16 rounded-full text-2xl font-bold flex-shrink-0">2</div>
+                <div className="bg-zap-red flex items-center justify-center w-16 h-16 rounded-full text-2xl font-bold flex-shrink-0 text-white">2</div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">We Handle Production</h3>
                   <p className="text-gray-700">
@@ -156,7 +156,7 @@ const LFG = () => {
               </div>
               
               <div className="flex flex-col md:flex-row gap-6 items-center">
-                <div className="bg-zap-yellow flex items-center justify-center w-16 h-16 rounded-full text-2xl font-bold flex-shrink-0">3</div>
+                <div className="bg-zap-red flex items-center justify-center w-16 h-16 rounded-full text-2xl font-bold flex-shrink-0 text-white">3</div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Everyone Benefits</h3>
                   <p className="text-gray-700">
