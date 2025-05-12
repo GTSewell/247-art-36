@@ -1,17 +1,12 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
-
 const ArtistExhibitSection = () => {
-  return (
-    <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
+  return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">Join 420 Artists At 247.ART</h2>
-        <p className="text-lg md:text-xl max-w-3xl mx-auto">
-          Exhibit your work in our Melbourne gallery and online store for 3 months
-        </p>
+        <p className="text-lg md:text-xl max-w-3xl mx-auto">Exhibit your work in our Melbourne gallery for 3 months, and your digital profile ... FOREVER!</p>
         
         <div className="mt-6 bg-zap-yellow text-black inline-flex items-center px-6 py-3 rounded-lg font-bold text-xl md:text-2xl">
           $299 AUD / $191 USD
@@ -92,16 +87,10 @@ const ArtistExhibitSection = () => {
         <Button size="lg" className="px-8 py-6 text-lg bg-zap-yellow text-black hover:bg-yellow-400">
           Apply as an Artist
         </Button>
-        <Button 
-          size="lg" 
-          variant="outline" 
-          className="px-8 py-6 text-lg border-2 border-zap-yellow text-black hover:bg-yellow-100"
-        >
+        <Button size="lg" variant="outline" className="px-8 py-6 text-lg border-2 border-zap-yellow text-black hover:bg-yellow-100">
           Sponsor an Artist
         </Button>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ArtistExhibitSection;
