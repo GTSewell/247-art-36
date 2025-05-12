@@ -32,10 +32,7 @@ const ArtistExhibitSection = () => {
                 <span className="bg-zap-yellow text-black w-8 h-8 inline-flex items-center justify-center rounded-full mr-2">2</span>
                 Digital Artist Profile & Shop
               </h3>
-              <p className="ml-10">
-                Get your own online 247 "Link-in-Bio" profile with a direct sales funnel for prints, merch, 
-                stickers, or originals. You keep 80–85%.
-              </p>
+              <p className="ml-10">Get your own online 247 &quot;Link-in-Bio&quot; profile with a direct sales funnel for prints, merch, stickers, or originals. You keep 100% of the profits!</p>
             </div>
             
             <div>
