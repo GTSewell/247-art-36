@@ -1,4 +1,3 @@
-
 import React from "react";
 import MobileNavLink from "./MobileNavLink";
 import { useLocation } from "react-router-dom";
@@ -56,10 +55,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
   return (
     <div className={`md:hidden bg-white dark:bg-gray-900 border-t border-border/20 w-full ${isWhoAreYouPage ? 'mt-4' : ''}`}>
       <div className="max-w-full mx-auto px-6 py-2 space-y-1">
-        {/* Page navigation links */}
-        <MobileNavLink to="/details" isActive={isActive("/details")}>
-          The Exhibition
-        </MobileNavLink>
+        {/* Page navigation links - Removed "The Exhibition" link */}
         <MobileNavLink to="/artists" isActive={isActive("/artists")}>
           The Artists
         </MobileNavLink>
@@ -69,7 +65,6 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
         <MobileNavLink to="/who-are-you" isActive={isActive("/who-are-you")}>
           About Us
         </MobileNavLink>
-        
         
         {/* User menu items - Only show if user is logged in */}
         {user && (
