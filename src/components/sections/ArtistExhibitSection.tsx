@@ -1,7 +1,9 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
+
 const ArtistExhibitSection = () => {
   return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
@@ -77,12 +79,13 @@ const ArtistExhibitSection = () => {
       
       <div className="flex flex-col md:flex-row justify-center gap-4">
         <Button size="lg" className="px-8 py-6 text-lg bg-zap-yellow text-black hover:bg-yellow-400">
-          Apply as an Artist
+          I'm an Artist. LFG!
         </Button>
         <Button size="lg" variant="outline" className="px-8 py-6 text-lg border-2 border-zap-yellow text-black hover:bg-yellow-100">
-          Sponsor an Artist
+          I'd like to sponsor an artist
         </Button>
       </div>
     </section>;
 };
+
 export default ArtistExhibitSection;
