@@ -2,11 +2,11 @@
 import React from "react";
 import SalesBreakdownCard from "./analytics/SalesBreakdownCard";
 import SalesAnalyticsCard from "./analytics/SalesAnalyticsCard";
-import STPSetsCard from "./analytics/STPSetsCard";
 import ProfileViewsCard from "./analytics/ProfileViewsCard";
 import SalesConversionsCard from "./analytics/SalesConversionsCard";
 import MyCollectorsCard from "./analytics/MyCollectorsCard";
 import ActionButtons from "./analytics/ActionButtons";
+// STPSetsCard import is kept but not used for now
 
 interface ArtistSalesAnalyticsProps {
   artistId: string | null;
@@ -15,7 +15,8 @@ interface ArtistSalesAnalyticsProps {
 const ArtistSalesAnalytics: React.FC<ArtistSalesAnalyticsProps> = ({ artistId }) => {
   return (
     <div className="space-y-6">
-      <STPSetsCard />
+      {/* STPSetsCard temporarily hidden
+      <STPSetsCard /> */}
       <MyCollectorsCard />
       <SalesBreakdownCard />
       <SalesAnalyticsCard />
