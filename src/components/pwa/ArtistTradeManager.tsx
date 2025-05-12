@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import MyTrades from "./trade/MyTrades";
 import ArtistTrades from "./trade/ArtistTrades";
 import TradedHistory from "./trade/TradedHistory";
@@ -30,6 +31,13 @@ const ArtistTradeManager: React.FC<ArtistTradeManagerProps> = ({ artistId }) => 
     <div className="space-y-4">
       <Card>
         <CardContent className="p-4">
+          {/* Feature announcement alert banner */}
+          <Alert className="mb-6 bg-zap-yellow border-zap-yellow">
+            <AlertDescription className="text-black font-medium text-center">
+              Artist trade feature to be released in the future
+            </AlertDescription>
+          </Alert>
+          
           <Tabs 
             value={activeSection} 
             onValueChange={setActiveSection} 
