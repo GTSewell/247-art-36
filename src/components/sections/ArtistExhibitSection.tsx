@@ -1,18 +1,39 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 const ArtistExhibitSection = () => {
-  return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
+  return (
+    <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Join 420 Artists At 247.ART</h2>
-        <p className="text-lg md:text-xl max-w-3xl mx-auto">Exhibit your work in our Melbourne gallery for 3 months, and your digital profile ... FOREVER!</p>
+        <motion.h2 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl md:text-4xl font-bold mb-6"
+        >
+          Join up to 420 Artists. One EPIC movement
+        </motion.h2>
         
-        <div className="mt-6 bg-zap-yellow text-black inline-flex items-center px-6 py-3 rounded-lg font-bold text-xl md:text-2xl">
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-lg md:text-xl max-w-3xl mx-auto"
+        >
+          Exhibit your work in our Melbourne gallery for 3 months, and your digital profile ... FOREVER!
+        </motion.p>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mt-6 bg-zap-yellow text-black inline-flex items-center px-6 py-3 rounded-lg font-bold text-xl md:text-2xl"
+        >
           $299 AUD / $191 USD
-        </div>
+        </motion.div>
       </div>
       
       <Card className="border-2 border-zap-yellow mb-12">
@@ -85,7 +106,8 @@ const ArtistExhibitSection = () => {
           I'd like to sponsor an artist
         </Button>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default ArtistExhibitSection;

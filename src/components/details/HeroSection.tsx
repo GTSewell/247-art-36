@@ -10,7 +10,7 @@ const HeroSection = () => {
         transition={{ duration: 0.5 }}
         className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
       >
-        Join 420 Artists At 247.ART
+        Join up to 420 Artists. One EPIC movement
       </motion.h1>
       
       <motion.p
