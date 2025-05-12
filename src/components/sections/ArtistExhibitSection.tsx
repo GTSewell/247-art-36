@@ -48,10 +48,7 @@ const ArtistExhibitSection = () => {
                 <span className="bg-zap-yellow text-black w-8 h-8 inline-flex items-center justify-center rounded-full mr-2">4</span>
                 Global Exposure
               </h3>
-              <p className="ml-10">
-                We're tapping into both Web3/NFT and traditional art audiences, uniting worlds through 
-                Twitter, Instagram, gallery events, and collectors.
-              </p>
+              <p className="ml-10">Not everyone can make it IRL to one of Melbourne's busiest (and coolest) streets, so we'll bring the exhibition to you via 3D lidar scan (See our previous gallery scan below)</p>
             </div>
             
             <div>
