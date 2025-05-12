@@ -8,6 +8,7 @@ import { useAppMode } from "@/contexts/AppModeContext";
 import PWANavigation from "@/components/pwa/PWANavigation";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import MatterportViewer from "@/components/MatterportViewer";
 
 const Index = () => {
   const { isPWA } = useAppMode();
@@ -75,6 +76,21 @@ const Index = () => {
                 draggable={false}
               />
             </Link>
+          </div>
+          
+          {/* Added Matterport Viewer Section */}
+          <div className="mt-16 mb-8 px-4 max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">Virtual Gallery Tour</h2>
+            <p className="text-lg mb-8 text-center max-w-2xl mx-auto">
+              Take a virtual tour of our innovative art space and see where the magic happens.
+            </p>
+            <div className="w-full h-[500px] md:h-[600px] shadow-lg rounded-lg overflow-hidden">
+              <MatterportViewer 
+                modelId="SxQL3iGyoDi" 
+                width="100%" 
+                height="100%" 
+              />
+            </div>
           </div>
         </div>
       </main>
