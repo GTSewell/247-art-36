@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
@@ -17,6 +18,7 @@ import { useCart } from '@/contexts/CartContext';
 import UserAvatar from './UserAvatar';
 import UserMenuItems from './UserMenuItems';
 import UserProfileHeader from './UserProfileHeader';
+import CurrencySelector from './CurrencySelector';
 
 function getInitials(name: string): string {
   if (!name) return 'U';
@@ -109,6 +111,12 @@ const MobileUserMenu = () => {
           initials={initials}
         />
 
+        {/* Currency selector */}
+        <div className="p-2 border-b">
+          <DropdownMenuLabel className="px-1 text-xs text-gray-500">Currency</DropdownMenuLabel>
+          <CurrencySelector className="mt-1 py-1" />
+        </div>
+        
         <DropdownMenuSeparator />
         
         <UserMenuItems 

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +8,8 @@ import { toast } from "sonner";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import PWANavigation from "@/components/pwa/PWANavigation";
+import CurrencySelector from "@/components/navigation/CurrencySelector";
+import { Separator } from "@/components/ui/separator";
 
 const AccountPage = () => {
   const { user, isLoading } = useAuth();
@@ -64,6 +65,14 @@ const AccountPage = () => {
             <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
           </div>
         </div>
+        
+        {/* Currency Preference */}
+        <div className="mb-4">
+          <h2 className="font-medium text-sm text-gray-500 mb-2">Currency Preference</h2>
+          <CurrencySelector className="w-full border rounded-md" />
+        </div>
+        
+        <Separator className="my-4" />
 
         <div className="mb-6">
           <Button 

@@ -6,7 +6,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,6 +16,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { isUserAdmin } from '@/utils/admin-utils';
+import CurrencySelector from './CurrencySelector';
 
 function getInitials(name: string): string {
   if (!name) return 'U';
@@ -125,6 +128,12 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
             </AvatarFallback>
           </Avatar>
           <span className="text-sm font-medium truncate">{user.email}</span>
+        </div>
+        
+        {/* Currency selector */}
+        <div className="p-2 border-b">
+          <DropdownMenuLabel className="px-1 text-xs text-gray-500">Currency</DropdownMenuLabel>
+          <CurrencySelector className="mt-1 py-1" />
         </div>
         
         <Link to="/cart">
