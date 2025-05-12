@@ -40,9 +40,7 @@ const ArtistExhibitSection = () => {
                 <span className="bg-zap-yellow text-black w-8 h-8 inline-flex items-center justify-center rounded-full mr-2">3</span>
                 Retail Placement
               </h3>
-              <p className="ml-10">
-                Your work is also turned into print, sticker, and merch products, sold in-gallery and online.
-              </p>
+              <p className="ml-10">Your art produced at the highest retail quality as Fine Art Prints, Stickers, T-shirts &amp; more. Sold in-gallery and online directly through your own 247.art profile.</p>
             </div>
             
             <div>
