@@ -5,11 +5,7 @@ const Hero = () => {
       userSelect: "none",
       display: "block"
     }} draggable={false} />
-      <img src="/lovable-uploads/15739276-28db-43e5-a9eb-b535e07a2903.png" alt="247art Gallery - EPIC 100-DAY EXHIBITION" className="w-full h-auto shadow-lg mx-auto max-w-4xl my-4" style={{
-      userSelect: "none",
-      display: "block",
-      borderRadius: "8px"
-    }} draggable={false} />
+      
     </div>;
 };
 export default Hero;
