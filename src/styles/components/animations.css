@@ -1,5 +1,3 @@
-
-/* Animation styles */
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -14,19 +12,4 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
-}
-
-@keyframes flip {
-  0% {
-    transform: perspective(400px) rotateX(90deg);
-    opacity: 0;
-  }
-  100% {
-    transform: perspective(400px) rotateX(0deg);
-    opacity: 1;
-  }
-}
-
-.animate-flip {
-  animation: flip 1s ease-out forwards;
 }
