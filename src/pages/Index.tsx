@@ -46,19 +46,7 @@ const Index = () => {
               aria-hidden
             />
           </div>
-          <div className="pointer-events-none absolute left-0 right-0 bottom-0 w-full flex justify-center z-0">
-            <img
-              src="/lovable-uploads/a7629789-a919-4934-843e-d9f412959134.png"
-              alt=""
-              className="w-full max-w-full opacity-90"
-              style={{
-                userSelect: "none",
-                display: "block"
-              }}
-              draggable={false}
-              aria-hidden
-            />
-          </div>
+          {/* Removed the overlapping background image that was here */}
           <Hero />
           <JoinUndergroundSection />
           <ReadyToHustleSection />
