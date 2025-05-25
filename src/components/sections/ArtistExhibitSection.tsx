@@ -1,39 +1,44 @@
-
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-
 const ArtistExhibitSection = () => {
-  return (
-    <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
+  return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl md:text-4xl font-bold mb-6"
-        >
+        <motion.h2 initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="text-3xl md:text-4xl font-bold mb-6">
           Join up to 420 Artists. One EPIC movement
         </motion.h2>
         
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-lg md:text-xl max-w-3xl mx-auto"
-        >
+        <motion.p initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="text-lg md:text-xl max-w-3xl mx-auto">
           Exhibit your work in our Melbourne gallery for 3 months, and your digital profile ... FOREVER!
         </motion.p>
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mt-6 bg-zap-yellow text-black inline-flex items-center px-6 py-3 rounded-lg font-bold text-xl md:text-2xl"
-        >
+        <motion.div initial={{
+        opacity: 0,
+        y: 20
+      }} animate={{
+        opacity: 1,
+        y: 0
+      }} transition={{
+        duration: 0.5
+      }} className="mt-6 bg-zap-yellow text-black inline-flex items-center px-6 py-3 rounded-lg font-bold text-xl md:text-2xl">
           $365 AUD / $225 USD / ~0.091 Ξ
         </motion.div>
       </div>
@@ -46,10 +51,7 @@ const ArtistExhibitSection = () => {
                 <span className="bg-zap-yellow text-black w-8 h-8 inline-flex items-center justify-center rounded-full mr-2">1</span>
                 Your Art, Printed & Exhibited
               </h3>
-              <p className="ml-10">
-                We print your work as a stunning 400mm x 500mm ChromaLuxe metal panel — museum-quality, 
-                ultra-durable, and gallery-ready.
-              </p>
+              <p className="ml-10">We print your work on your choice of premium archival museum grade paper (giclee) and frame it in a 50x70cm / 19.75x27.5in box frame. On exhibition in front of 50k people per day in our Melbourne gallery for 3 months.</p>
             </div>
             
             <div>
@@ -108,9 +110,6 @@ const ArtistExhibitSection = () => {
           I'd like to sponsor an artist
         </Button>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ArtistExhibitSection;
-
