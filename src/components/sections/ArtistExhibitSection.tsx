@@ -14,9 +14,7 @@ const ArtistExhibitSection = () => {
         y: 0
       }} transition={{
         duration: 0.5
-      }} className="text-3xl md:text-4xl font-bold mb-6">
-          Join up to 420 Artists. One EPIC movement
-        </motion.h2>
+      }} className="text-3xl md:text-4xl font-bold mb-6">247 Artists. One EPIC movement</motion.h2>
         
         <motion.p initial={{
         opacity: 0,
