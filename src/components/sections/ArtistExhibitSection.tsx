@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -16,7 +15,8 @@ const ArtistExhibitSection = () => {
     }
   }, []);
 
-  return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
+  return (
+    <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
         <motion.h2 initial={{
         opacity: 0,
@@ -116,20 +116,23 @@ const ArtistExhibitSection = () => {
         </Button>
       </div>
       
-      {/* Tally Form */}
-      <div className="mt-12">
-        <iframe 
-          data-tally-src="https://tally.so/r/nGy8AO" 
-          width="100%" 
-          height="1200" 
-          frameBorder="0" 
-          marginHeight={0} 
-          marginWidth={0} 
-          title="Artist Registration Form"
-          className="rounded-lg border"
-        ></iframe>
-      </div>
-    </section>;
+      {/* Tally Form - Styled to match website */}
+      <Card className="mt-12 border-2 border-zap-yellow">
+        <CardContent className="p-0">
+          <iframe 
+            data-tally-src="https://tally.so/r/nGy8AO" 
+            width="100%" 
+            height="1800" 
+            frameBorder="0" 
+            marginHeight={0} 
+            marginWidth={0} 
+            title="Artist Registration Form"
+            className="rounded-lg"
+          ></iframe>
+        </CardContent>
+      </Card>
+    </section>
+  );
 };
 
 export default ArtistExhibitSection;
