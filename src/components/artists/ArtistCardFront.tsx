@@ -22,13 +22,13 @@ const ArtistCardFront: React.FC<ArtistCardFrontProps> = ({
   };
 
   return (
-    <div className="w-full h-full overflow-hidden">
+    <div className={`w-full h-full overflow-hidden transition-all duration-300 ${isArtistsPage ? 'grayscale hover:grayscale-0' : ''}`}>
       <img 
         src={image} 
         alt={name} 
         onError={onImageError} 
         onClick={handleClick}
-        className={`w-full h-full object-cover transition-all duration-300 ${isArtistsPage ? 'grayscale hover:grayscale-0' : ''}`} 
+        className="w-full h-full object-cover" 
       />
     </div>
   );
