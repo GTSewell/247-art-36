@@ -1,11 +1,20 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
 const ArtistExhibitSection = () => {
+  useEffect(() => {
+    // Load Tally script if not already loaded
+    if (!document.querySelector('script[src*="tally.so"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://tally.so/widgets/embed.js';
+      script.async = true;
+      document.head.appendChild(script);
+    }
+  }, []);
+
   return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
         <motion.h2 initial={{
@@ -111,12 +120,12 @@ const ArtistExhibitSection = () => {
         <iframe 
           data-tally-src="https://tally.so/r/nGy8AO" 
           width="100%" 
-          height="500" 
+          height="600" 
           frameBorder="0" 
           marginHeight={0} 
           marginWidth={0} 
           title="Artist Registration Form"
-          className="rounded-lg"
+          className="rounded-lg border"
         ></iframe>
       </div>
     </section>;
