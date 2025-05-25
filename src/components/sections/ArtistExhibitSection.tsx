@@ -1,4 +1,5 @@
 
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -33,7 +34,7 @@ const ArtistExhibitSection = () => {
           transition={{ duration: 0.5 }}
           className="mt-6 bg-zap-yellow text-black inline-flex items-center px-6 py-3 rounded-lg font-bold text-xl md:text-2xl"
         >
-          $299 AUD / $191 USD / ~Ξ0.075
+          $365 AUD / $225 USD / ~0.091 Ξ
         </motion.div>
       </div>
       
@@ -112,3 +113,4 @@ const ArtistExhibitSection = () => {
 };
 
 export default ArtistExhibitSection;
+
