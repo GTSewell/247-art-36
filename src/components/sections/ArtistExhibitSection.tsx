@@ -1,8 +1,10 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
+
 const ArtistExhibitSection = () => {
   return <section className="max-w-5xl mx-auto py-10 px-4 md:px-8">
       <div className="text-center mb-12">
@@ -103,6 +105,21 @@ const ArtistExhibitSection = () => {
           I'd like to sponsor an artist
         </Button>
       </div>
+      
+      {/* Tally Form */}
+      <div className="mt-12">
+        <iframe 
+          data-tally-src="https://tally.so/r/nGy8AO" 
+          width="100%" 
+          height="500" 
+          frameBorder="0" 
+          marginHeight={0} 
+          marginWidth={0} 
+          title="Artist Registration Form"
+          className="rounded-lg"
+        ></iframe>
+      </div>
     </section>;
 };
+
 export default ArtistExhibitSection;
