@@ -24,13 +24,13 @@ const ArtistCardFront: React.FC<ArtistCardFrontProps> = ({
   console.log('ArtistCardFront - isArtistsPage:', isArtistsPage, 'pathname:', location.pathname);
 
   return (
-    <div className={`w-full h-full overflow-hidden transition-all duration-300 group ${isArtistsPage ? 'grayscale hover:grayscale-0' : ''}`}>
+    <div className="w-full h-full overflow-hidden transition-all duration-300 group">
       <img 
         src={image} 
         alt={name} 
         onError={onImageError} 
         onClick={handleClick}
-        className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105" 
+        className={`w-full h-full object-cover transition-all duration-300 group-hover:scale-105 ${isArtistsPage ? 'grayscale group-hover:grayscale-0' : ''}`}
       />
     </div>
   );
