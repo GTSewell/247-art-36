@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -122,7 +123,7 @@ const ArtistExhibitSection = () => {
           <iframe 
             data-tally-src="https://tally.so/r/nGy8AO" 
             width="100%" 
-            height="1800" 
+            height="1000" 
             frameBorder="0" 
             marginHeight={0} 
             marginWidth={0} 
