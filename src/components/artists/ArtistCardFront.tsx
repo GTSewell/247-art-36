@@ -28,7 +28,7 @@ const ArtistCardFront: React.FC<ArtistCardFrontProps> = ({
         alt={name} 
         onError={onImageError} 
         onClick={handleClick}
-        className={`w-full h-full object-cover ${isArtistsPage ? 'grayscale' : ''}`} 
+        className={`w-full h-full object-cover transition-all duration-300 ${isArtistsPage ? 'grayscale hover:grayscale-0' : ''}`} 
       />
     </div>
   );
