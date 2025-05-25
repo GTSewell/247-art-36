@@ -24,9 +24,7 @@ const ArtistExhibitSection = () => {
         y: 0
       }} transition={{
         duration: 0.5
-      }} className="text-lg md:text-xl max-w-3xl mx-auto">
-          Exhibit your work in our Melbourne gallery for 3 months, and your digital profile ... FOREVER!
-        </motion.p>
+      }} className="text-lg md:text-xl max-w-3xl mx-auto">Exhibit your work in our Melbourne gallery for 3 months, keep your [dxp] profile ... FOREVER!</motion.p>
         
         <motion.div initial={{
         opacity: 0,
