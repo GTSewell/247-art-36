@@ -83,10 +83,7 @@ const ArtistExhibitSection = () => {
                 <span className="bg-zap-yellow text-black w-8 h-8 inline-flex items-center justify-center rounded-full mr-2">5</span>
                 Community, Not Competition
               </h3>
-              <p className="ml-10">
-                You're not just exhibiting — you're joining a movement of 420 creatives working together 
-                to shift the culture.
-              </p>
+              <p className="ml-10">You're not just exhibiting — you're joining a movement of 247 creatives working together to shift the culture.</p>
             </div>
             
             <div>
