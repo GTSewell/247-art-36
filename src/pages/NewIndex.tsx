@@ -78,13 +78,11 @@ const NewIndex = () => {
         >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <div className="mb-8">
-                <span className="text-sm font-light tracking-widest uppercase">All things</span>
-                <span className="ml-2 inline-flex items-center justify-center w-6 h-6 bg-black rounded-full">
-                  <span className="text-white font-bold text-xs">⚡</span>
-                </span>
-                <span className="ml-2 text-sm font-light tracking-widest uppercase">247 art</span>
-              </div>
+              <span className="text-sm font-light tracking-widest uppercase">All things</span>
+              <span className="ml-2 inline-flex items-center justify-center w-6 h-6 bg-black rounded-full">
+                <span className="text-white font-bold text-xs">⚡</span>
+              </span>
+              <span className="ml-2 text-sm font-light tracking-widest uppercase">247 art</span>
               
               <h1 className="text-8xl md:text-9xl font-black mb-8 tracking-tighter leading-none">
                 247.ART
