@@ -11,6 +11,7 @@ import MessageDetails from "@/pages/MessageDetails";
 import AdminProtectedRoute from "@/components/admin/AdminProtectedRoute";
 
 import Index from "@/pages/Index";
+import NewIndex from "@/pages/NewIndex";
 import Artists from "@/pages/Artists";
 import Auth from "@/pages/Auth";
 import Details from "@/pages/Details";
@@ -72,7 +73,7 @@ const App = () => {
       <Routes>
         <Route 
           path="/" 
-          element={usePWAUI ? <PWAHome /> : <Index />} 
+          element={usePWAUI ? <PWAHome /> : <NewIndex />} 
         />
         <Route 
           path="/artists" 
