@@ -62,10 +62,10 @@ const App = () => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  // If password not correct, show password screen
-  if (!isPasswordCorrect) {
-    return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
-  }
+  // Password protection disabled - uncomment below to re-enable
+  // if (!isPasswordCorrect) {
+  //   return <SitePassword setIsPasswordCorrect={setIsPasswordCorrect} />;
+  // }
 
   return (
     <CartProvider>
