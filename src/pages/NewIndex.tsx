@@ -281,7 +281,7 @@ const NewIndex = () => {
         </section>
 
         {/* EVENTS Section */}
-        <section className="py-20 bg-gray-50">
+        <section className="py-20 bg-transparent">
           <div className="max-w-7xl mx-auto px-4">
             <div className="mb-20">
               <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">EVENTS</h2>
