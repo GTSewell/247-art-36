@@ -18,7 +18,11 @@ const NewIndex = () => {
   const {
     isPWA
   } = useAppMode();
-  const { featuredArtists, additionalArtists, isLoading } = useArtists();
+  const {
+    featuredArtists,
+    additionalArtists,
+    isLoading
+  } = useArtists();
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
@@ -62,13 +66,11 @@ const NewIndex = () => {
   const prevGalleryImage = () => {
     setCurrentGalleryIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
   };
-
   const handleArtistClick = (artist: any, index: number) => {
     setSelectedArtist(artist);
     setSelectedArtistIndex(index);
     setDialogOpen(true);
   };
-
   const handleArtistChange = (index: number) => {
     setSelectedArtistIndex(index);
     setSelectedArtist([...featuredArtists, ...additionalArtists][index]);
@@ -212,21 +214,13 @@ const NewIndex = () => {
             </div>
 
             <div className="text-center mb-8">
-              <button onClick={() => setAudioEnabled(!audioEnabled)} className="px-6 py-2 border border-black rounded-full text-sm font-medium hover:bg-black hover:text-white transition-colors">
-                {audioEnabled ? 'disable audio' : 'enable audio'}
-              </button>
+              
             </div>
 
             {/* Auto-scrolling Artist Thumbnails */}
-            {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && (
-              <div className="mb-16">
-                <AutoScrollCarousel 
-                  artists={[...featuredArtists, ...additionalArtists].slice(0, 12)} 
-                  speed={60}
-                  onArtistClick={handleArtistClick}
-                />
-              </div>
-            )}
+            {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && <div className="mb-16">
+                <AutoScrollCarousel artists={[...featuredArtists, ...additionalArtists].slice(0, 12)} speed={60} onArtistClick={handleArtistClick} />
+              </div>}
 
           </div>
         </section>
@@ -361,18 +355,7 @@ const NewIndex = () => {
         </section>
 
         {/* Artist Detail Modal */}
-        <ArtistDetailModal
-          artists={[...featuredArtists, ...additionalArtists]}
-          selectedArtist={selectedArtist}
-          selectedArtistIndex={selectedArtistIndex}
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onArtistChange={handleArtistChange}
-          onFavoriteToggle={() => {}}
-          favoriteArtists={favoriteArtists}
-          refreshArtists={() => {}}
-          onSelect={setSelectedArtist}
-        />
+        <ArtistDetailModal artists={[...featuredArtists, ...additionalArtists]} selectedArtist={selectedArtist} selectedArtistIndex={selectedArtistIndex} open={dialogOpen} onOpenChange={setDialogOpen} onArtistChange={handleArtistChange} onFavoriteToggle={() => {}} favoriteArtists={favoriteArtists} refreshArtists={() => {}} onSelect={setSelectedArtist} />
       </main>
     </>;
 };
