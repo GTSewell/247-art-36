@@ -5,11 +5,13 @@ import { Artist } from '@/data/types/artist';
 interface AutoScrollCarouselProps {
   artists: Artist[];
   speed?: number;
+  onArtistClick?: (artist: Artist, index: number) => void;
 }
 
 const AutoScrollCarousel: React.FC<AutoScrollCarouselProps> = ({ 
   artists, 
-  speed = 50 
+  speed = 50,
+  onArtistClick
 }) => {
   // Duplicate the artists array to create seamless loop
   const duplicatedArtists = [...artists, ...artists];
@@ -35,6 +37,7 @@ const AutoScrollCarousel: React.FC<AutoScrollCarouselProps> = ({
           <div
             key={`${artist.id}-${index}`}
             className="flex-shrink-0 w-32 h-32 rounded-full overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            onClick={() => onArtistClick?.(artist, index % artists.length)}
           >
             <img
               src={artist.image || '/placeholder.svg'}

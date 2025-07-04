@@ -10,6 +10,7 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { motion, AnimatePresence } from "framer-motion";
 import { useArtists } from "@/hooks/use-artists";
 import AutoScrollCarousel from "@/components/ui/auto-scroll-carousel";
+import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
 import halftoneYellow from "@/assets/halftone-yellow.jpg";
 import halftoneBlue from "@/assets/halftone-blue.jpg";
 import halftoneRed from "@/assets/halftone-red.jpg";
@@ -21,6 +22,10 @@ const NewIndex = () => {
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
+  const [selectedArtist, setSelectedArtist] = useState<any>(null);
+  const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [favoriteArtists] = useState<Set<number>>(new Set());
   const backgrounds = [halftoneYellow, halftoneBlue, halftoneRed];
   useEffect(() => {
     const handleScroll = () => {
@@ -56,6 +61,17 @@ const NewIndex = () => {
   };
   const prevGalleryImage = () => {
     setCurrentGalleryIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length);
+  };
+
+  const handleArtistClick = (artist: any, index: number) => {
+    setSelectedArtist(artist);
+    setSelectedArtistIndex(index);
+    setDialogOpen(true);
+  };
+
+  const handleArtistChange = (index: number) => {
+    setSelectedArtistIndex(index);
+    setSelectedArtist([...featuredArtists, ...additionalArtists][index]);
   };
   return <>
       <Helmet>
@@ -207,6 +223,7 @@ const NewIndex = () => {
                 <AutoScrollCarousel 
                   artists={[...featuredArtists, ...additionalArtists].slice(0, 12)} 
                   speed={60}
+                  onArtistClick={handleArtistClick}
                 />
               </div>
             )}
@@ -374,6 +391,20 @@ const NewIndex = () => {
             </div>
           </div>
         </section>
+
+        {/* Artist Detail Modal */}
+        <ArtistDetailModal
+          artists={[...featuredArtists, ...additionalArtists]}
+          selectedArtist={selectedArtist}
+          selectedArtistIndex={selectedArtistIndex}
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onArtistChange={handleArtistChange}
+          onFavoriteToggle={() => {}}
+          favoriteArtists={favoriteArtists}
+          refreshArtists={() => {}}
+          onSelect={setSelectedArtist}
+        />
       </main>
     </>;
 };
