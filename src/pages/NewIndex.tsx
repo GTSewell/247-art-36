@@ -74,20 +74,20 @@ const NewIndex = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="pt-24 pb-20 px-4"
+          className="pt-32 pb-32 px-8"
         >
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h1 className="text-8xl md:text-9xl font-black mb-8 tracking-tighter leading-none">
+            <div className="mb-20">
+              <h1 className="text-[12rem] md:text-[16rem] font-black tracking-tighter leading-none text-left">
                 247.ART
               </h1>
               
-              <div className="max-w-md mx-auto mb-12">
-                <p className="text-lg font-light mb-6">
+              <div className="mt-8 max-w-lg">
+                <p className="text-xl font-light mb-8">
                   The official home for all creative minds.
                 </p>
-                <button className="px-6 py-2 border border-black rounded-full text-sm font-medium hover:bg-black hover:text-white transition-colors">
-                  artist bio
+                <button className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
+                  Enter Gallery
                 </button>
               </div>
             </div>
@@ -148,15 +148,15 @@ const NewIndex = () => {
         {/* ARTISTS Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-start mb-12">
-              <div>
-                <h2 className="text-6xl font-black mb-4 tracking-tight">ARTISTS</h2>
-                <p className="text-lg text-gray-600 mb-6">
+            <div className="mb-20">
+              <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">ARTISTS</h2>
+              <div className="flex justify-between items-end">
+                <p className="text-2xl font-light text-gray-600 max-w-xl">
                   Discover emerging talent and established creators
                 </p>
                 <Link 
                   to="/artists"
-                  className="text-black hover:text-gray-600 underline font-medium"
+                  className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors"
                 >
                   view all
                 </Link>
@@ -210,15 +210,15 @@ const NewIndex = () => {
         {/* GALLERY Section */}
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-start mb-12">
-              <div>
-                <h2 className="text-6xl font-black mb-4 tracking-tight">GALLERY</h2>
-                <p className="text-lg text-gray-600 mb-6">
+            <div className="mb-20">
+              <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">GALLERY</h2>
+              <div className="flex justify-between items-end">
+                <p className="text-2xl font-light text-gray-600 max-w-xl">
                   Physical and virtual exhibitions, plus professional printing
                 </p>
                 <Link 
                   to="/tour"
-                  className="text-black hover:text-gray-600 underline font-medium"
+                  className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors"
                 >
                   view all
                 </Link>
@@ -262,15 +262,15 @@ const NewIndex = () => {
         {/* EVENTS Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex justify-between items-start mb-12">
-              <div>
-                <h2 className="text-6xl font-black mb-4 tracking-tight">EVENTS</h2>
-                <p className="text-lg text-gray-600 mb-6">
+            <div className="mb-20">
+              <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">EVENTS</h2>
+              <div className="flex justify-between items-end">
+                <p className="text-2xl font-light text-gray-600 max-w-xl">
                   Workshops, exhibitions, and community gatherings
                 </p>
                 <Link 
                   to="/store"
-                  className="text-black hover:text-gray-600 underline font-medium"
+                  className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors"
                 >
                   view all
                 </Link>
