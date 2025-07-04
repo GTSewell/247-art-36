@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Users, Palette, Calendar, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { motion, AnimatePresence } from "framer-motion";
+import { useArtists } from "@/hooks/use-artists";
+import AutoScrollCarousel from "@/components/ui/auto-scroll-carousel";
 import halftoneYellow from "@/assets/halftone-yellow.jpg";
 import halftoneBlue from "@/assets/halftone-blue.jpg";
 import halftoneRed from "@/assets/halftone-red.jpg";
@@ -15,6 +17,7 @@ const NewIndex = () => {
   const {
     isPWA
   } = useAppMode();
+  const { featuredArtists, additionalArtists, isLoading } = useArtists();
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
@@ -197,6 +200,16 @@ const NewIndex = () => {
                 {audioEnabled ? 'disable audio' : 'enable audio'}
               </button>
             </div>
+
+            {/* Auto-scrolling Artist Thumbnails */}
+            {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && (
+              <div className="mb-16">
+                <AutoScrollCarousel 
+                  artists={[...featuredArtists, ...additionalArtists].slice(0, 12)} 
+                  speed={60}
+                />
+              </div>
+            )}
 
             {/* Featured Artists Carousel */}
             <Carousel className="w-full">
