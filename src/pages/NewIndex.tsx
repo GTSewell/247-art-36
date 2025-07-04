@@ -228,38 +228,6 @@ const NewIndex = () => {
               </div>
             )}
 
-            {/* Featured Artists Carousel */}
-            <Carousel className="w-full">
-              <CarouselContent>
-                {featuredArtworks.map((artwork, index) => <CarouselItem key={artwork.id}>
-                    <motion.div initial={{
-                  opacity: 0,
-                  scale: 0.9
-                }} animate={{
-                  opacity: 1,
-                  scale: 1
-                }} transition={{
-                  duration: 0.5
-                }} className="text-center">
-                      <div className="relative mx-auto mb-8" style={{
-                    width: '200px',
-                    height: '200px'
-                  }}>
-                        <img src={artwork.image} alt={artwork.title} className="w-full h-full object-cover rounded-full" />
-                        <div className="absolute inset-0 border-4 border-black rounded-full animate-spin-slow opacity-20"></div>
-                      </div>
-                      
-                      <h3 className="text-4xl font-bold mb-2">{artwork.title}</h3>
-                      <p className="text-lg text-gray-600 mb-4">({artwork.year})</p>
-                      <p className="text-gray-700 mb-6 max-w-md mx-auto">{artwork.description}</p>
-                      
-                      <button className="px-8 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
-                        view profile
-                      </button>
-                    </motion.div>
-                  </CarouselItem>)}
-              </CarouselContent>
-            </Carousel>
           </div>
         </section>
 
