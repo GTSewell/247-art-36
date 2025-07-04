@@ -5,23 +5,34 @@ import { Artist } from '@/data/types/artist';
 interface AutoScrollCarouselProps {
   artists: Artist[];
   speed?: number;
+  direction?: 'left' | 'right';
+  startOffset?: number;
   onArtistClick?: (artist: Artist, index: number) => void;
 }
 
 const AutoScrollCarousel: React.FC<AutoScrollCarouselProps> = ({ 
   artists, 
   speed = 50,
+  direction = 'left',
+  startOffset = 0,
   onArtistClick
 }) => {
+  // Apply start offset to artists array
+  const offsetArtists = startOffset > 0 
+    ? [...artists.slice(startOffset), ...artists.slice(0, startOffset)]
+    : artists;
+  
   // Duplicate the artists array to create seamless loop
-  const duplicatedArtists = [...artists, ...artists];
+  const duplicatedArtists = [...offsetArtists, ...offsetArtists];
 
   return (
     <div className="overflow-hidden w-full relative">
       <motion.div
         className="flex gap-6"
         animate={{
-          x: [0, -100 * artists.length]
+          x: direction === 'left' 
+            ? [0, -100 * offsetArtists.length]
+            : [-100 * offsetArtists.length, 0]
         }}
         transition={{
           x: {

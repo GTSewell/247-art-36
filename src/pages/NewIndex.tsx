@@ -218,9 +218,36 @@ const NewIndex = () => {
             </div>
 
             {/* Auto-scrolling Artist Thumbnails */}
-            {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && <div className="mb-16">
-                <AutoScrollCarousel artists={[...featuredArtists, ...additionalArtists].slice(0, 12)} speed={60} onArtistClick={handleArtistClick} />
-              </div>}
+            {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && (
+              <div className="space-y-8 mb-16">
+                {/* First row - right direction, offset 0 */}
+                <AutoScrollCarousel 
+                  artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
+                  speed={70} 
+                  direction="right"
+                  startOffset={0}
+                  onArtistClick={handleArtistClick} 
+                />
+                
+                {/* Second row - left direction, offset 5 */}
+                <AutoScrollCarousel 
+                  artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
+                  speed={60} 
+                  direction="left"
+                  startOffset={5}
+                  onArtistClick={handleArtistClick} 
+                />
+                
+                {/* Third row - right direction, offset 10 */}
+                <AutoScrollCarousel 
+                  artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
+                  speed={80} 
+                  direction="right"
+                  startOffset={10}
+                  onArtistClick={handleArtistClick} 
+                />
+              </div>
+            )}
 
           </div>
         </section>
