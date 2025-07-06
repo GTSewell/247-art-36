@@ -5,9 +5,11 @@ import { toast } from "sonner";
 import { logger } from "@/utils/logger";
 import { v4 as uuidv4 } from "@/utils/uuid";
 import { useState } from "react";
+import { useShopifyIntegration } from "@/hooks/useShopifyIntegration";
 
 export const usePWAStoreProducts = () => {
   const [isGeneratingImages, setIsGeneratingImages] = useState(false);
+  const { getShopifyProducts } = useShopifyIntegration();
   
   const {
     data: products,
@@ -18,6 +20,14 @@ export const usePWAStoreProducts = () => {
     queryKey: ['products'],
     queryFn: async () => {
       try {
+        // First try to get Shopify-synced products
+        const shopifyProducts = await getShopifyProducts();
+        if (shopifyProducts.length > 0) {
+          logger.info("Loaded Shopify products:", { count: shopifyProducts.length });
+          return shopifyProducts;
+        }
+
+        // Fallback to regular products if no Shopify products
         const {
           data,
           error
@@ -31,7 +41,7 @@ export const usePWAStoreProducts = () => {
           return [];
         }
         
-        logger.info("Loaded products from Supabase:", { count: data?.length || 0 });
+        logger.info("Loaded regular products from Supabase:", { count: data?.length || 0 });
         return data || [];
       } catch (error) {
         logger.error("Error loading products:", error);

@@ -22,13 +22,16 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
   };
   
   const handleAddToCart = (product: any) => {
-    addItem({
-      id: product.id,
+    // Transform product to ensure proper format for cart
+    const cartItem = {
+      id: product.id.toString(),
       name: product.name,
-      price: parseFloat(product.price),
-      image_url: product.image_url,
-      artist: product.artists
-    });
+      price: typeof product.price === 'string' ? parseFloat(product.price) : product.price,
+      image_url: product.image_url || '/placeholder.svg',
+      artist: product.artists || { name: product.artist_name }
+    };
+    
+    addItem(cartItem);
     toast.success("Added to cart!", {
       description: `${product.name} has been added to your cart.`
     });

@@ -29,6 +29,7 @@ import LFG from "@/pages/LFG"; // Import the new LFG page
 
 // Admin pages
 import ArtistManagement from "@/pages/admin/ArtistManagement";
+import ShopifyAdmin from "@/pages/admin/ShopifyAdmin";
 
 // PWA specific pages
 import PWAHome from "@/pages/pwa/PWAHome";
@@ -101,6 +102,14 @@ const App = () => {
           element={
             <AdminProtectedRoute>
               <ArtistManagement />
+            </AdminProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/shopify" 
+          element={
+            <AdminProtectedRoute>
+              <ShopifyAdmin />
             </AdminProtectedRoute>
           } 
         />

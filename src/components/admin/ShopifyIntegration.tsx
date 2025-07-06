@@ -1,0 +1,231 @@
+import React, { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { RefreshCw, Package, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
+import { useShopifyIntegration } from '@/hooks/useShopifyIntegration';
+import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
+
+const ShopifyIntegration = () => {
+  const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
+  const [syncLogs, setSyncLogs] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    syncedProducts: 0,
+    lastSync: null as string | null
+  });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const [logs, shopifyProducts] = await Promise.all([
+        getSyncLogs(),
+        getShopifyProducts()
+      ]);
+      
+      setSyncLogs(logs);
+      setProducts(shopifyProducts);
+      
+      // Calculate stats
+      const syncedCount = shopifyProducts.length;
+      const lastSyncDate = logs[0]?.created_at || null;
+      
+      setStats({
+        totalProducts: syncedCount,
+        syncedProducts: syncedCount,
+        lastSync: lastSyncDate
+      });
+    } catch (error) {
+      logger.error('Error loading Shopify data:', error);
+      toast.error('Failed to load Shopify integration data');
+    }
+  };
+
+  const handleSync = async () => {
+    try {
+      await syncProducts();
+      await loadData(); // Refresh data after sync
+    } catch (error) {
+      // Error already handled in syncProducts
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString();
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold">Shopify Integration</h2>
+          <p className="text-muted-foreground">
+            Manage your Shopify store integration and product synchronization
+          </p>
+        </div>
+        <Button onClick={handleSync} disabled={isSyncing}>
+          <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+          {isSyncing ? 'Syncing...' : 'Sync Products'}
+        </Button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalProducts}</div>
+            <p className="text-xs text-muted-foreground">
+              Synced from Shopify
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Sync Status</CardTitle>
+            <CheckCircle2 className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">Active</div>
+            <p className="text-xs text-muted-foreground">
+              Integration is working
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Last Sync</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm font-bold">
+              {stats.lastSync ? formatDate(stats.lastSync) : 'Never'}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Most recent sync
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Recent Products */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Shopify Products</CardTitle>
+          <CardDescription>
+            Products synced from your Shopify store
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {products.length > 0 ? (
+            <div className="space-y-4">
+              {products.slice(0, 5).map((product) => (
+                <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    {product.image_url && (
+                      <img 
+                        src={product.image_url} 
+                        alt={product.name}
+                        className="w-12 h-12 object-cover rounded"
+                      />
+                    )}
+                    <div>
+                      <h4 className="font-medium">{product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        ${product.price} • {product.category}
+                      </p>
+                      {product.artist_name && (
+                        <p className="text-xs text-muted-foreground">
+                          By {product.artist_name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
+                      {product.shopify_inventory_quantity || 0} in stock
+                    </Badge>
+                    <Badge variant="outline">
+                      Shopify ID: {product.shopify_product_id}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2">No products synced yet</h3>
+              <p className="text-muted-foreground mb-4">
+                Click "Sync Products" to import your Shopify products
+              </p>
+              <Button onClick={handleSync} disabled={isSyncing}>
+                <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+                Sync Now
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Sync Logs */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Sync History</CardTitle>
+          <CardDescription>
+            Recent synchronization activity
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {syncLogs.length > 0 ? (
+            <div className="space-y-3">
+              {syncLogs.map((log) => (
+                <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <div>
+                      <p className="font-medium">
+                        {log.sync_type} sync completed
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDate(log.created_at)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-green-600">
+                      {log.products_synced} synced
+                    </p>
+                    {log.products_failed > 0 && (
+                      <p className="text-sm text-red-600">
+                        {log.products_failed} failed
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-4">
+              <AlertCircle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-muted-foreground">No sync history available</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default ShopifyIntegration;
