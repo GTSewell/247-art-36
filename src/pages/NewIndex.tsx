@@ -100,7 +100,8 @@ const NewIndex = () => {
           backgroundImage: `url(${backgrounds[currentBgIndex]})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
+          filter: 'grayscale(1)'
         }} />
         </AnimatePresence>
         {/* Contrast overlay for text readability */}
