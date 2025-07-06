@@ -337,8 +337,14 @@ export type Database = {
           image_url: string | null
           is_featured: boolean | null
           is_limited_edition: boolean | null
+          last_synced_at: string | null
           name: string
           price: number
+          shopify_handle: string | null
+          shopify_inventory_quantity: number | null
+          shopify_product_id: string | null
+          shopify_tags: Json | null
+          shopify_variant_id: string | null
         }
         Insert: {
           artist_id?: number | null
@@ -351,8 +357,14 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           is_limited_edition?: boolean | null
+          last_synced_at?: string | null
           name: string
           price: number
+          shopify_handle?: string | null
+          shopify_inventory_quantity?: number | null
+          shopify_product_id?: string | null
+          shopify_tags?: Json | null
+          shopify_variant_id?: string | null
         }
         Update: {
           artist_id?: number | null
@@ -365,8 +377,14 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           is_limited_edition?: boolean | null
+          last_synced_at?: string | null
           name?: string
           price?: number
+          shopify_handle?: string | null
+          shopify_inventory_quantity?: number | null
+          shopify_product_id?: string | null
+          shopify_tags?: Json | null
+          shopify_variant_id?: string | null
         }
         Relationships: [
           {
@@ -384,6 +402,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      shopify_sync_log: {
+        Row: {
+          created_at: string
+          id: string
+          products_failed: number
+          products_synced: number
+          sync_details: Json | null
+          sync_type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          products_failed?: number
+          products_synced?: number
+          sync_details?: Json | null
+          sync_type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          products_failed?: number
+          products_synced?: number
+          sync_details?: Json | null
+          sync_type?: string
+        }
+        Relationships: []
       }
       site_settings: {
         Row: {
