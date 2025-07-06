@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useArtists } from "@/hooks/use-artists";
 import AutoScrollCarousel from "@/components/ui/auto-scroll-carousel";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 const NewIndex = () => {
   const {
     isPWA
@@ -165,162 +166,170 @@ const NewIndex = () => {
           </div>
         </motion.div>
 
-        {/* ARTISTS Section */}
-        <section className="py-20 bg-transparent">
-          <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
-            <div className="mb-20">
-              <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none mb-8">ARTISTS</h2>
-              <div className="flex justify-between items-end">
-                <p className="text-2xl font-light text-gray-600 max-w-xl">
-                  Discover emerging talent and established creators
-                </p>
-                <Link to="/artists" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
-                  view all
-                </Link>
-              </div>
-            </div>
-
-            <div className="text-center mb-8">
-              
-            </div>
-
-            {/* Auto-scrolling Artist Thumbnails */}
-            {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && (
-              <div className="space-y-8 mb-16">
-                {/* First row - right direction, offset 0 */}
-                <AutoScrollCarousel 
-                  artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
-                  speed={70} 
-                  direction="right"
-                  startOffset={0}
-                  onArtistClick={handleArtistClick} 
-                />
-                
-                {/* Second row - left direction, offset 5 */}
-                <AutoScrollCarousel 
-                  artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
-                  speed={60} 
-                  direction="left"
-                  startOffset={5}
-                  onArtistClick={handleArtistClick} 
-                />
-                
-                {/* Third row - right direction, offset 10 */}
-                <AutoScrollCarousel 
-                  artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
-                  speed={80} 
-                  direction="right"
-                  startOffset={10}
-                  onArtistClick={handleArtistClick} 
-                />
-              </div>
-            )}
-
-          </div>
-        </section>
-
-        {/* GALLERY Section */}
-        <section className="py-20">
-          <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
-            <div className="mb-20">
-              <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none mb-8">GALLERY</h2>
-              <div className="flex justify-between items-end">
-                <p className="text-2xl font-light text-gray-600 max-w-xl">
-                  Physical and virtual exhibitions, plus professional printing
-                </p>
-                <Link to="/tour" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
-                  view all
-                </Link>
-              </div>
-            </div>
-
-            {/* Gallery Viewer */}
-            <div className="relative bg-gray-100 rounded-lg overflow-hidden" style={{
-            height: '600px'
-          }}>
-              <AnimatePresence mode="wait">
-                <motion.img key={currentGalleryIndex} src={galleryImages[currentGalleryIndex]} alt="Gallery artwork" initial={{
-                opacity: 0,
-                x: 300
-              }} animate={{
-                opacity: 1,
-                x: 0
-              }} exit={{
-                opacity: 0,
-                x: -300
-              }} transition={{
-                duration: 0.3
-              }} className="w-full h-full object-cover" />
-              </AnimatePresence>
-
-              {/* Navigation Controls */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4">
-                <button onClick={prevGalleryImage} className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
-                  prev
-                </button>
-                <button onClick={nextGalleryImage} className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
-                  next
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* EVENTS Section */}
-        <section className="py-20 bg-transparent">
-          <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
-            <div className="mb-20">
-              <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none mb-8">EVENTS</h2>
-              <div className="flex justify-between items-end">
-                <p className="text-2xl font-light text-gray-600 max-w-xl">
-                  Workshops, exhibitions, and community gatherings
-                </p>
-                <Link to="/store" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
-                  view all
-                </Link>
-              </div>
-            </div>
-
-            {/* Events Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="flex items-center mb-3">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
-                  <span className="text-sm italic">workshop</span>
+        {/* Collapsible Sections */}
+        <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
+          <Accordion type="multiple" className="w-full">
+            
+            {/* ARTISTS Section */}
+            <AccordionItem value="artists" className="border-none">
+              <AccordionTrigger className="hover:no-underline px-0 py-8">
+                <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none">ARTISTS</h2>
+              </AccordionTrigger>
+              <AccordionContent className="px-0 pb-16">
+                <div className="mb-20">
+                  <div className="flex justify-between items-end">
+                    <p className="text-2xl font-light text-gray-600 max-w-xl">
+                      Discover emerging talent and established creators
+                    </p>
+                    <Link to="/artists" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
+                      view all
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Digital Art Masterclass</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Learn advanced techniques from industry professionals
-                </p>
-                <button className="text-sm underline">read more</button>
-              </div>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="flex items-center mb-3">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
-                  <span className="text-sm italic">exhibition</span>
-                </div>
-                <h3 className="text-xl font-bold mb-2">Emerging Voices</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Showcasing the next generation of creative talent
-                </p>
-                <button className="text-sm underline">read more</button>
-              </div>
+                {/* Auto-scrolling Artist Thumbnails */}
+                {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && (
+                  <div className="space-y-8 mb-16">
+                    {/* First row - right direction, offset 0 */}
+                    <AutoScrollCarousel 
+                      artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
+                      speed={70} 
+                      direction="right"
+                      startOffset={0}
+                      onArtistClick={handleArtistClick} 
+                    />
+                    
+                    {/* Second row - left direction, offset 5 */}
+                    <AutoScrollCarousel 
+                      artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
+                      speed={60} 
+                      direction="left"
+                      startOffset={5}
+                      onArtistClick={handleArtistClick} 
+                    />
+                    
+                    {/* Third row - right direction, offset 10 */}
+                    <AutoScrollCarousel 
+                      artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
+                      speed={80} 
+                      direction="right"
+                      startOffset={10}
+                      onArtistClick={handleArtistClick} 
+                    />
+                  </div>
+                )}
+              </AccordionContent>
+            </AccordionItem>
 
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="flex items-center mb-3">
-                  <div className="w-2 h-2 bg-teal-500 rounded-full mr-3"></div>
-                  <span className="text-sm italic">community</span>
+            {/* GALLERY Section */}
+            <AccordionItem value="gallery" className="border-none">
+              <AccordionTrigger className="hover:no-underline px-0 py-8">
+                <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none">GALLERY</h2>
+              </AccordionTrigger>
+              <AccordionContent className="px-0 pb-16">
+                <div className="mb-20">
+                  <div className="flex justify-between items-end">
+                    <p className="text-2xl font-light text-gray-600 max-w-xl">
+                      Physical and virtual exhibitions, plus professional printing
+                    </p>
+                    <Link to="/tour" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
+                      view all
+                    </Link>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Art & Coffee</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Monthly meetups for artists and art lovers
-                </p>
-                <button className="text-sm underline">read more</button>
-              </div>
-            </div>
-          </div>
-        </section>
+
+                {/* Gallery Viewer */}
+                <div className="relative bg-gray-100 rounded-lg overflow-hidden" style={{
+                height: '600px'
+              }}>
+                  <AnimatePresence mode="wait">
+                    <motion.img key={currentGalleryIndex} src={galleryImages[currentGalleryIndex]} alt="Gallery artwork" initial={{
+                    opacity: 0,
+                    x: 300
+                  }} animate={{
+                    opacity: 1,
+                    x: 0
+                  }} exit={{
+                    opacity: 0,
+                    x: -300
+                  }} transition={{
+                    duration: 0.3
+                  }} className="w-full h-full object-cover" />
+                  </AnimatePresence>
+
+                  {/* Navigation Controls */}
+                  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4">
+                    <button onClick={prevGalleryImage} className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
+                      prev
+                    </button>
+                    <button onClick={nextGalleryImage} className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
+                      next
+                    </button>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            {/* EVENTS Section */}
+            <AccordionItem value="events" className="border-none">
+              <AccordionTrigger className="hover:no-underline px-0 py-8">
+                <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none">EVENTS</h2>
+              </AccordionTrigger>
+              <AccordionContent className="px-0 pb-16">
+                <div className="mb-20">
+                  <div className="flex justify-between items-end">
+                    <p className="text-2xl font-light text-gray-600 max-w-xl">
+                      Workshops, exhibitions, and community gatherings
+                    </p>
+                    <Link to="/store" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
+                      view all
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Events Grid */}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <div className="flex items-center mb-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                      <span className="text-sm italic">workshop</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Digital Art Masterclass</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Learn advanced techniques from industry professionals
+                    </p>
+                    <button className="text-sm underline">read more</button>
+                  </div>
+
+                  <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <div className="flex items-center mb-3">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
+                      <span className="text-sm italic">exhibition</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Emerging Voices</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Showcasing the next generation of creative talent
+                    </p>
+                    <button className="text-sm underline">read more</button>
+                  </div>
+
+                  <div className="bg-white p-6 rounded-lg shadow-sm">
+                    <div className="flex items-center mb-3">
+                      <div className="w-2 h-2 bg-teal-500 rounded-full mr-3"></div>
+                      <span className="text-sm italic">community</span>
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">Art & Coffee</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      Monthly meetups for artists and art lovers
+                    </p>
+                    <button className="text-sm underline">read more</button>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            
+          </Accordion>
+        </div>
 
         {/* Join Section */}
         <section className="py-20 bg-black text-white">
