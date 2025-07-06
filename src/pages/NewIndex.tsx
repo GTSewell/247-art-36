@@ -105,7 +105,7 @@ const NewIndex = () => {
             </div>
 
             {/* Latest Updates Cards */}
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-20">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-20 pr-4 md:pr-8 lg:pr-12">
               <motion.div initial={{
               opacity: 0,
               y: 20
@@ -168,7 +168,7 @@ const NewIndex = () => {
 
         {/* Collapsible Sections */}
         <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
-          <Accordion type="multiple" className="w-full">
+          <Accordion type="single" collapsible className="w-full">
             
             {/* PRINT Section */}
             <AccordionItem value="print" className="border-none">
@@ -188,36 +188,36 @@ const NewIndex = () => {
                 </div>
 
                 {/* Print Info Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">premium quality</span>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">premium quality</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Museum Grade Papers</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Museum Grade Papers</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       Archival quality papers that last generations
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">custom sizes</span>
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">custom sizes</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Any Dimension</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Any Dimension</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       From small prints to large format installations
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">fast delivery</span>
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">fast delivery</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Quick Turnaround</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Quick Turnaround</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       Professional printing with fast, reliable delivery
                     </p>
                   </div>
@@ -343,41 +343,41 @@ const NewIndex = () => {
                 </div>
 
                 {/* Events Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">workshop</span>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">workshop</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Digital Art Masterclass</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Digital Art Masterclass</h3>
+                    <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-4">
                       Learn advanced techniques from industry professionals
                     </p>
-                    <button className="text-sm underline">read more</button>
+                    <button className="text-xs sm:text-sm underline">read more</button>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">exhibition</span>
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">exhibition</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Emerging Voices</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Emerging Voices</h3>
+                    <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-4">
                       Showcasing the next generation of creative talent
                     </p>
-                    <button className="text-sm underline">read more</button>
+                    <button className="text-xs sm:text-sm underline">read more</button>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-teal-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">community</span>
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-teal-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">community</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Art & Coffee</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Art & Coffee</h3>
+                    <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-4">
                       Monthly meetups for artists and art lovers
                     </p>
-                    <button className="text-sm underline">read more</button>
+                    <button className="text-xs sm:text-sm underline">read more</button>
                   </div>
                 </div>
               </AccordionContent>
@@ -401,36 +401,36 @@ const NewIndex = () => {
                 </div>
 
                 {/* Services Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-indigo-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">curation</span>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-indigo-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">curation</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Exhibition Curation</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Exhibition Curation</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       Expert curatorial services for galleries and private collections
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-rose-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">management</span>
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-rose-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">management</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Event Management</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Event Management</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       Full-service event planning and execution for art events
                     </p>
                   </div>
 
-                  <div className="bg-white p-6 rounded-lg shadow-sm">
-                    <div className="flex items-center mb-3">
-                      <div className="w-2 h-2 bg-amber-500 rounded-full mr-3"></div>
-                      <span className="text-sm italic">custom builds</span>
+                  <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                    <div className="flex items-center mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-amber-500 rounded-full mr-2 sm:mr-3"></div>
+                      <span className="text-xs sm:text-sm italic">custom builds</span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Installation Design</h3>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Installation Design</h3>
+                    <p className="text-xs sm:text-sm text-gray-300">
                       Bespoke installations and exhibition space design
                     </p>
                   </div>
