@@ -86,8 +86,8 @@ const NewIndex = () => {
         y: 0
       }} transition={{
         duration: 0.8
-      }} className="pt-32 pb-32 px-8">
-          <div className="max-w-7xl mx-auto">
+      }} className="pt-32 pb-32">
+          <div className="w-full pl-4 md:pl-8 lg:pl-12">
             <div className="mb-20">
               <h1 className="text-[12rem] md:text-[16rem] font-black tracking-tighter leading-none text-left">
                 247.ART
@@ -167,7 +167,7 @@ const NewIndex = () => {
 
         {/* ARTISTS Section */}
         <section className="py-20 bg-transparent">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <div className="mb-20">
               <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">ARTISTS</h2>
               <div className="flex justify-between items-end">
@@ -221,7 +221,7 @@ const NewIndex = () => {
 
         {/* GALLERY Section */}
         <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <div className="mb-20">
               <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">GALLERY</h2>
               <div className="flex justify-between items-end">
@@ -268,7 +268,7 @@ const NewIndex = () => {
 
         {/* EVENTS Section */}
         <section className="py-20 bg-transparent">
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <div className="mb-20">
               <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">EVENTS</h2>
               <div className="flex justify-between items-end">
@@ -324,7 +324,7 @@ const NewIndex = () => {
 
         {/* Join Section */}
         <section className="py-20 bg-black text-white">
-          <div className="max-w-4xl mx-auto text-center px-4">
+          <div className="w-full text-center pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <h2 className="text-6xl font-black mb-8 tracking-tight">
               JOIN THE REVOLUTION
             </h2>
