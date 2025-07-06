@@ -1,7 +1,13 @@
 
 import { logger } from "@/utils/logger";
 
-export const getNumberFromProductId = (productId: string): number => {
+export const getNumberFromProductId = (productId: string | number): number => {
+  // If productId is already a number, return it directly
+  if (typeof productId === 'number') {
+    return productId;
+  }
+  
+  // If it's a string, try to parse it
   const parts = productId.split('-');
   const lastPart = parts[parts.length - 1];
   const num = parseInt(lastPart, 10);
@@ -83,7 +89,11 @@ export const getProductImageUrl = (product: any): string => {
 export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   logger.error("Image failed to load", { src: e.currentTarget.src });
   const img = e.currentTarget;
-  const productId = img.getAttribute('data-product-id') || '';
+  const productIdAttr = img.getAttribute('data-product-id') || '';
   const category = img.getAttribute('data-category') || '';
+  
+  // Convert string attribute to number if it's a valid number, otherwise use it as is
+  const productId = productIdAttr && !isNaN(Number(productIdAttr)) ? Number(productIdAttr) : productIdAttr;
+  
   img.src = getArtworkImage(category, getNumberFromProductId(productId));
 };
