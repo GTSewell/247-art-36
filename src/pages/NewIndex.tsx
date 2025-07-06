@@ -105,7 +105,7 @@ const NewIndex = () => {
             </div>
 
             {/* Latest Updates Cards */}
-            <div className="grid md:grid-cols-3 gap-4 mb-20">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-20">
               <motion.div initial={{
               opacity: 0,
               y: 20
@@ -114,13 +114,13 @@ const NewIndex = () => {
               y: 0
             }} transition={{
               delay: 0.2
-            }} className="bg-black text-white p-6 rounded-lg">
-                <div className="flex items-center mb-3">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
-                  <span className="text-sm italic">Latest Exhibition</span>
+            }} className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                <div className="flex items-center mb-2 sm:mb-3">
+                  <div className="w-2 h-2 bg-red-500 rounded-full mr-2 sm:mr-3"></div>
+                  <span className="text-xs sm:text-sm italic">Latest Exhibition</span>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Underground Collective</h3>
-                <p className="text-sm text-gray-300">
+                <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Underground Collective</h3>
+                <p className="text-xs sm:text-sm text-gray-300">
                   Featuring emerging artists from around the globe...
                 </p>
               </motion.div>
@@ -133,13 +133,13 @@ const NewIndex = () => {
               y: 0
             }} transition={{
               delay: 0.3
-            }} className="bg-black text-white p-6 rounded-lg">
-                <div className="flex items-center mb-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                  <span className="text-sm italic">Latest Feature</span>
+            }} className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                <div className="flex items-center mb-2 sm:mb-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 sm:mr-3"></div>
+                  <span className="text-xs sm:text-sm italic">Latest Feature</span>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Artist Profiles 2.0</h3>
-                <p className="text-sm text-gray-300">
+                <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Artist Profiles 2.0</h3>
+                <p className="text-xs sm:text-sm text-gray-300">
                   Enhanced artist dashboard with live preview...
                 </p>
               </motion.div>
@@ -152,13 +152,13 @@ const NewIndex = () => {
               y: 0
             }} transition={{
               delay: 0.4
-            }} className="bg-black text-white p-6 rounded-lg">
-                <div className="flex items-center mb-3">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                  <span className="text-sm italic">Latest Story</span>
+            }} className="bg-black text-white p-3 sm:p-6 rounded-lg">
+                <div className="flex items-center mb-2 sm:mb-3">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 sm:mr-3"></div>
+                  <span className="text-xs sm:text-sm italic">Latest Story</span>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Art Never Sleeps</h3>
-                <p className="text-sm text-gray-300">
+                <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Art Never Sleeps</h3>
+                <p className="text-xs sm:text-sm text-gray-300">
                   The story behind 247.ART and our mission...
                 </p>
               </motion.div>
