@@ -11,9 +11,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useArtists } from "@/hooks/use-artists";
 import AutoScrollCarousel from "@/components/ui/auto-scroll-carousel";
 import ArtistDetailModal from "@/components/artists/ArtistDetailModal";
-import halftoneYellow from "@/assets/halftone-yellow.jpg";
-import halftoneBlue from "@/assets/halftone-blue.jpg";
-import halftoneRed from "@/assets/halftone-red.jpg";
 const NewIndex = () => {
   const {
     isPWA
@@ -25,21 +22,10 @@ const NewIndex = () => {
   } = useArtists();
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
   const [audioEnabled, setAudioEnabled] = useState(false);
-  const [currentBgIndex, setCurrentBgIndex] = useState(0);
   const [selectedArtist, setSelectedArtist] = useState<any>(null);
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [favoriteArtists] = useState<Set<number>>(new Set());
-  const backgrounds = [halftoneYellow, halftoneBlue, halftoneRed];
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-      const bgIndex = Math.floor(scrollPercent * backgrounds.length);
-      setCurrentBgIndex(Math.min(bgIndex, backgrounds.length - 1));
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
   const featuredArtworks = [{
     id: 1,
     image: "/lovable-uploads/b9d20e81-12cd-4c2e-ade0-6590c3338fa7.png",
@@ -85,28 +71,8 @@ const NewIndex = () => {
         <meta name="twitter:image" content="https://247.art/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png" />
       </Helmet>
       
-      {/* Dynamic Halftone Background */}
-      <div className="fixed inset-0 -z-10">
-        <AnimatePresence mode="wait">
-          <motion.div key={currentBgIndex} initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} exit={{
-          opacity: 0
-        }} transition={{
-          duration: 0.8
-        }} className="absolute inset-0" style={{
-          backgroundImage: `url(${backgrounds[currentBgIndex]})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          filter: 'grayscale(1)'
-        }} />
-        </AnimatePresence>
-        {/* Contrast overlay for text readability */}
-        <div className="absolute inset-0 bg-white/80 backdrop-blur-[1px]" />
-      </div>
+      {/* Simple White Background */}
+      <div className="fixed inset-0 -z-10 bg-white" />
 
       <main className="min-h-screen relative text-black">
         {isPWA ? <PWANavigation /> : <Navigation />}
