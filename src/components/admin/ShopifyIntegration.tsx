@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const ShopifyIntegration = () => {
   const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
@@ -21,6 +22,7 @@ const ShopifyIntegration = () => {
   });
   const [autoActivateProducts, setAutoActivateProducts] = useState(false);
   const [showAllProducts, setShowAllProducts] = useState(false);
+  const [activeProducts, setActiveProducts] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     loadData();
@@ -62,6 +64,13 @@ const ShopifyIntegration = () => {
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString();
+  };
+
+  const handleActiveToggle = (productId: number, isActive: boolean) => {
+    setActiveProducts(prev => ({
+      ...prev,
+      [productId]: isActive
+    }));
   };
 
   return (
@@ -294,6 +303,16 @@ NOTES
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`active-${product.id}`}
+                        checked={activeProducts[product.id] || false}
+                        onCheckedChange={(checked) => handleActiveToggle(product.id, checked as boolean)}
+                      />
+                      <Label htmlFor={`active-${product.id}`} className="text-sm">
+                        Active
+                      </Label>
+                    </div>
                     <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
                       {product.shopify_inventory_quantity || 0} in stock
                     </Badge>
