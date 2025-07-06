@@ -7,6 +7,8 @@ import { RefreshCw, Package, AlertCircle, CheckCircle2, Clock } from 'lucide-rea
 import { useShopifyIntegration } from '@/hooks/useShopifyIntegration';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const ShopifyIntegration = () => {
   const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
@@ -17,6 +19,8 @@ const ShopifyIntegration = () => {
     syncedProducts: 0,
     lastSync: null as string | null
   });
+  const [autoActivateProducts, setAutoActivateProducts] = useState(false);
+  const [showAllProducts, setShowAllProducts] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -49,7 +53,7 @@ const ShopifyIntegration = () => {
 
   const handleSync = async () => {
     try {
-      await syncProducts();
+      await syncProducts(autoActivateProducts);
       await loadData(); // Refresh data after sync
     } catch (error) {
       // Error already handled in syncProducts
@@ -69,10 +73,20 @@ const ShopifyIntegration = () => {
             Manage your Shopify store integration and product synchronization
           </p>
         </div>
-        <Button onClick={handleSync} disabled={isSyncing}>
-          <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
-          {isSyncing ? 'Syncing...' : 'Sync Products'}
-        </Button>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="auto-activate"
+              checked={autoActivateProducts}
+              onCheckedChange={setAutoActivateProducts}
+            />
+            <Label htmlFor="auto-activate">Auto-activate new products</Label>
+          </div>
+          <Button onClick={handleSync} disabled={isSyncing}>
+            <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+            {isSyncing ? 'Syncing...' : 'Sync Products'}
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -122,15 +136,27 @@ const ShopifyIntegration = () => {
       {/* Recent Products */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Shopify Products</CardTitle>
-          <CardDescription>
-            Products synced from your Shopify store
-          </CardDescription>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Shopify Products</CardTitle>
+              <CardDescription>
+                Products synced from your Shopify store
+              </CardDescription>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="show-all"
+                checked={showAllProducts}
+                onCheckedChange={setShowAllProducts}
+              />
+              <Label htmlFor="show-all">Show all products</Label>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           {products.length > 0 ? (
             <div className="space-y-4">
-              {products.slice(0, 5).map((product) => (
+              {(showAllProducts ? products : products.slice(0, 5)).map((product) => (
                 <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
                   <div className="flex items-center space-x-4">
                     {product.image_url && (
@@ -156,12 +182,22 @@ const ShopifyIntegration = () => {
                     <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
                       {product.shopify_inventory_quantity || 0} in stock
                     </Badge>
+                    <Badge variant={product.is_featured ? "default" : "outline"}>
+                      {product.is_featured ? "Featured" : "Not Featured"}
+                    </Badge>
                     <Badge variant="outline">
                       Shopify ID: {product.shopify_product_id}
                     </Badge>
                   </div>
                 </div>
               ))}
+              {!showAllProducts && products.length > 5 && (
+                <div className="text-center pt-4">
+                  <p className="text-sm text-muted-foreground">
+                    Showing 5 of {products.length} products. Toggle "Show all products" to see more.
+                  </p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-center py-8">

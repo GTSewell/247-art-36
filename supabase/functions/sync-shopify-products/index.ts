@@ -38,6 +38,17 @@ serve(async (req) => {
     console.log('Starting Shopify sync...')
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
+    // Get request body for auto-activate setting
+    let autoActivate = false
+    try {
+      const body = await req.json()
+      autoActivate = body?.autoActivate || false
+      console.log('Auto-activate new products:', autoActivate)
+    } catch (e) {
+      // No body or invalid JSON, use default
+      console.log('No request body, using default settings')
+    }
+
     // Fetch products from Shopify
     console.log(`Fetching products from: https://${shopifyDomain}/admin/api/2024-01/products.json`)
     const shopifyResponse = await fetch(
@@ -80,7 +91,8 @@ serve(async (req) => {
           shopify_inventory_quantity: product.variants[0]?.inventory_quantity || 0,
           shopify_handle: product.handle,
           shopify_tags: product.tags.split(',').map(tag => tag.trim()),
-          last_synced_at: new Date().toISOString()
+          last_synced_at: new Date().toISOString(),
+          is_featured: autoActivate // Set featured status based on auto-activate setting
         }
 
         console.log(`Syncing product: ${product.title}`)

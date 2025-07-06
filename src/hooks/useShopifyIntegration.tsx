@@ -9,12 +9,14 @@ export const useShopifyIntegration = () => {
   const [isSyncing, setIsSyncing] = useState(false);
 
   // Sync products from Shopify to local database
-  const syncProducts = useCallback(async () => {
+  const syncProducts = useCallback(async (autoActivate = false) => {
     setIsSyncing(true);
     try {
       logger.info('Starting Shopify product sync...');
       
-      const { data, error } = await supabase.functions.invoke('sync-shopify-products');
+      const { data, error } = await supabase.functions.invoke('sync-shopify-products', {
+        body: { autoActivate }
+      });
       
       if (error) {
         throw error;
