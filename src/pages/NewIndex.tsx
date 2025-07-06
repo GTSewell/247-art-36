@@ -86,7 +86,7 @@ const NewIndex = () => {
         y: 0
       }} transition={{
         duration: 0.8
-      }} className="pt-32 pb-32">
+      }} className="pt-20 pb-32">
           <div className="w-full pl-4 md:pl-8 lg:pl-12">
             <div className="mb-20">
               <h1 className="text-[12rem] md:text-[16rem] font-black tracking-tighter leading-none text-left">
