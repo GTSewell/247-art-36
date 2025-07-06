@@ -89,7 +89,7 @@ const NewIndex = () => {
       }} className="pt-20 pb-32">
           <div className="w-full pl-4 md:pl-8 lg:pl-12">
             <div className="mb-20">
-              <h1 className="text-[12rem] md:text-[16rem] font-black tracking-tighter leading-none text-left">
+              <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none text-left">
                 247.ART
               </h1>
               
@@ -169,7 +169,7 @@ const NewIndex = () => {
         <section className="py-20 bg-transparent">
           <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <div className="mb-20">
-              <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">ARTISTS</h2>
+              <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none mb-8">ARTISTS</h2>
               <div className="flex justify-between items-end">
                 <p className="text-2xl font-light text-gray-600 max-w-xl">
                   Discover emerging talent and established creators
@@ -223,7 +223,7 @@ const NewIndex = () => {
         <section className="py-20">
           <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <div className="mb-20">
-              <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">GALLERY</h2>
+              <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none mb-8">GALLERY</h2>
               <div className="flex justify-between items-end">
                 <p className="text-2xl font-light text-gray-600 max-w-xl">
                   Physical and virtual exhibitions, plus professional printing
@@ -270,7 +270,7 @@ const NewIndex = () => {
         <section className="py-20 bg-transparent">
           <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
             <div className="mb-20">
-              <h2 className="text-[8rem] md:text-[10rem] font-black tracking-tighter leading-none mb-8">EVENTS</h2>
+              <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none mb-8">EVENTS</h2>
               <div className="flex justify-between items-end">
                 <p className="text-2xl font-light text-gray-600 max-w-xl">
                   Workshops, exhibitions, and community gatherings
