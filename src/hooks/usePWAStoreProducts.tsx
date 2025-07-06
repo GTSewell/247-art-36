@@ -118,38 +118,6 @@ export const usePWAStoreProducts = () => {
 
   const getProductsForCategory = (categoryId: string) => {
     const categoryProducts = products?.filter(p => p.category === categoryId) || [];
-    
-    if (categoryProducts.length === 0 && !isLoading) {
-      const sampleProducts = [];
-      const categoryNames = {
-        'original': 'Original Artwork',
-        'signed': 'Signed Print',
-        'sticker': 'Sticker',
-        'merch': 'T-Shirt',
-        'print': 'Art Print',
-        'collection': '247 Collection'
-      };
-      
-      // Generate sample products with proper data for client-side use
-      // These won't be saved to the database but will be displayed in the UI
-      for (let i = 1; i <= 6; i++) {
-        const productId = `sample-${categoryId}-${i}`;
-        const isLimitedEdition = i % 2 === 0;
-        
-        sampleProducts.push({
-          id: productId,
-          name: `${categoryNames[categoryId as keyof typeof categoryNames]} ${i}`,
-          price: (Math.random() * 100 + 20).toFixed(2),
-          category: categoryId,
-          artists: { name: 'Demo Artist' },
-          is_limited_edition: isLimitedEdition
-        });
-      }
-      
-      logger.info(`Generated ${sampleProducts.length} sample products for category ${categoryId}`);
-      return sampleProducts;
-    }
-    
     return categoryProducts;
   };
 
