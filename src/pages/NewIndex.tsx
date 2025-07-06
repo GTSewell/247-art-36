@@ -168,7 +168,25 @@ const NewIndex = () => {
 
         {/* Collapsible Sections */}
         <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion 
+            type="single" 
+            collapsible 
+            className="w-full"
+            onValueChange={(value) => {
+              if (value) {
+                setTimeout(() => {
+                  const element = document.querySelector(`[data-state="open"] .accordion-trigger`);
+                  if (element) {
+                    element.scrollIntoView({ 
+                      behavior: 'smooth', 
+                      block: 'start',
+                      inline: 'nearest'
+                    });
+                  }
+                }, 100);
+              }
+            }}
+          >
             
             {/* PRINT Section */}
             <AccordionItem value="print" className="border-none">
