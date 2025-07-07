@@ -111,18 +111,6 @@ const ArtistDetailModal: React.FC<ArtistDetailModalProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* Mobile badges positioned above the modal */}
-      {isMobile && open && currentArtist && (
-        <div className="fixed z-[999] top-[6vh] left-0 right-0 flex justify-center pointer-events-none">
-          <ArtistBadges 
-            isSignatureArtist={isSignatureArtist}
-            isDemo={isDemo}
-            position="top-left"
-            isMobile={true}
-            overrideStyle={true}
-          />
-        </div>
-      )}
 
       {/* Make the content wrapper flex-center ONLY on mobile */}
       {isMobile && open ? (

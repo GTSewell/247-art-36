@@ -106,7 +106,7 @@ const ArtistCard = ({
   return (
     <div className="relative">
       <div 
-        className={`group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`} 
+        className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" 
         onClick={isFlipped ? stopPropagation : onSelect}
       >
         <div className="aspect-square overflow-hidden relative">
@@ -128,11 +128,6 @@ const ArtistCard = ({
             />
           )}
           
-          <ArtistBadges 
-            isSignatureArtist={isSignatureArtist} 
-            isDemo={isDemo} 
-            position="top-left"
-          />
           
           {showNameOverlay && (
             <ArtistCardNameOverlay 

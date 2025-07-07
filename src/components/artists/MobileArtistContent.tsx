@@ -27,11 +27,7 @@ const MobileArtistContent: React.FC<MobileArtistContentProps> = ({
   return (
     <div 
       className="flex flex-col w-full min-h-[80vh] overflow-hidden"
-      style={{ 
-        background: 'white',
-        border: isSignatureArtist ? '4px solid #FFC700' : 'none',
-        borderRadius: isSignatureArtist ? '0.75rem' : '0'
-      }}
+      style={{ background: 'white' }}
     >
       {/* Header Section */}
       <div className="px-6 pt-6 pb-3">

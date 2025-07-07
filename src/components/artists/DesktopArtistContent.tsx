@@ -34,14 +34,9 @@ const DesktopArtistContent: React.FC<DesktopArtistContentProps> = ({
 }) => {
   return (
     <div className="relative overflow-hidden bg-white">
-      {/* Artist badges */}
-      <ArtistBadges 
-        isSignatureArtist={isSignatureArtist} 
-        isDemo={isDemo}
-      />
       
       <div 
-        className={`flex flex-row max-h-[70vh] ${isSignatureArtist ? 'border-2 border-zap-yellow' : ''}`}
+        className="flex flex-row max-h-[70vh]"
         style={{ background: 'white' }}
       >
         {/* Left side: Artwork grid */}
