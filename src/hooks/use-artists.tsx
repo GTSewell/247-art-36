@@ -17,6 +17,7 @@ export const useArtists = () => {
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
+        .eq('published', true)
         .order('id', { ascending: true });
 
       if (error) {
@@ -148,6 +149,7 @@ export const useArtists = () => {
           .from('artists')
           .select('*')
           .eq('id', artistId)
+          .eq('published', true)
           .single();
           
         if (error) throw error;
