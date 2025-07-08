@@ -25,7 +25,6 @@ export default {
       fontFamily: {
         'digital': ['Digital Clock', 'monospace'],
         'nove': ['nove', 'sans-serif'],
-        'londrina': ['Londrina Solid', 'cursive'],
       },
       colors: {
         zap: {

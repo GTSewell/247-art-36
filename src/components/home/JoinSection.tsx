@@ -6,7 +6,7 @@ const JoinSection: React.FC = () => {
   return (
     <section className="py-20 bg-black text-white">
       <div className="w-full text-center pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
-        <h2 className="text-6xl font-londrina font-black mb-8 tracking-tight">
+        <h2 className="text-6xl font-black mb-8 tracking-tight">
           JOIN THE REVOLUTION
         </h2>
         <p className="text-xl mb-8 font-light italic max-w-2xl mx-auto">
