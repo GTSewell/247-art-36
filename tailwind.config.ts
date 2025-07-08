@@ -25,6 +25,7 @@ export default {
       fontFamily: {
         'digital': ['Digital Clock', 'monospace'],
         'nove': ['nove', 'sans-serif'],
+        'honk': ['Honk', 'cursive'],
       },
       colors: {
         zap: {
