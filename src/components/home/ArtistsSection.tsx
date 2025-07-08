@@ -19,7 +19,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
   return (
     <AccordionItem value="artists" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-8">
-        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-honk tracking-tighter leading-none">ARTISTS</h2>
+        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-fascinate tracking-tighter leading-none">ARTISTS</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">

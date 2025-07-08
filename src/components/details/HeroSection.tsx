@@ -8,7 +8,7 @@ const HeroSection = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-4xl md:text-5xl lg:text-6xl font-honk mb-6"
+        className="text-4xl md:text-5xl lg:text-6xl font-fascinate mb-6"
       >
         Join up to 420 Artists. One EPIC movement
       </motion.h1>
