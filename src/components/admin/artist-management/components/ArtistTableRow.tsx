@@ -20,35 +20,49 @@ const ArtistTableRow: React.FC<ArtistTableRowProps> = ({
 }) => {
   return (
     <tr key={artist.id} className="hover:bg-gray-50">
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{artist.id}</td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        {artist.id}
+      </td>
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
         <div className="flex items-center">
-          <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
             {artist.image ? (
               <img src={artist.image} alt={artist.name} className="h-full w-full object-cover" />
             ) : (
-              <div className="h-full w-full flex items-center justify-center text-gray-400">N/A</div>
+              <div className="h-full w-full flex items-center justify-center text-gray-400 text-xs">N/A</div>
             )}
           </div>
-          <div className="ml-4">
-            <div className="text-sm font-medium text-gray-900">{artist.name}</div>
+          <div className="ml-2 sm:ml-4 min-w-0">
+            <div className="text-sm font-medium text-gray-900 truncate max-w-[120px] sm:max-w-none">
+              {artist.name}
+            </div>
+            {/* Show specialty on mobile as a subtitle */}
+            <div className="sm:hidden text-xs text-gray-500 truncate max-w-[120px]">
+              {artist.specialty || 'N/A'}
+            </div>
           </div>
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{artist.specialty || 'N/A'}</td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      <td className="hidden sm:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <div className="max-w-[120px] truncate">
+          {artist.specialty || 'N/A'}
+        </div>
+      </td>
+      <td className="hidden md:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {artist.user_id ? (
-          <span className="max-w-[200px] inline-block overflow-hidden text-ellipsis">{artist.user_id}</span>
+          <span className="max-w-[150px] inline-block overflow-hidden text-ellipsis">
+            {artist.user_id}
+          </span>
         ) : 'N/A'}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center space-x-2">
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center space-x-1 sm:space-x-2">
           <Switch
             checked={publishingStatus}
             onCheckedChange={() => onPublishToggle(artist.id, publishingStatus)}
             className="data-[state=checked]:bg-green-500"
           />
-          <span className="text-sm text-gray-500">
+          <span className="hidden sm:inline text-sm text-gray-500">
             {publishingStatus ? (
               <span className="flex items-center text-green-600">
                 <Check size={16} className="mr-1" />
@@ -61,17 +75,25 @@ const ArtistTableRow: React.FC<ArtistTableRowProps> = ({
               </span>
             )}
           </span>
+          {/* Mobile status indicator */}
+          <span className="sm:hidden">
+            {publishingStatus ? (
+              <Check size={16} className="text-green-600" />
+            ) : (
+              <X size={16} className="text-gray-500" />
+            )}
+          </span>
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+      <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
         <Button
           variant="ghost"
           size="sm"
           onClick={() => onSelect(artist.id)}
           className="text-primary hover:text-primary-dark"
         >
-          <Edit2 className="h-4 w-4 mr-1" />
-          Edit
+          <Edit2 className="h-4 w-4 sm:mr-1" />
+          <span className="hidden sm:inline">Edit</span>
         </Button>
       </td>
     </tr>
