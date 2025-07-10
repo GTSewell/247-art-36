@@ -4,8 +4,9 @@ import OverviewSection from "./sections/OverviewSection";
 import AppearanceSection from "./sections/AppearanceSection";
 import AnalyticsSection from "./sections/AnalyticsSection";
 import SettingsSection from "./sections/SettingsSection";
+import AssignedProductsSection from "./sections/AssignedProductsSection";
 
-type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings";
+type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings" | "products";
 
 interface DashboardContentProps {
   activeSection: DashboardSection;
@@ -22,6 +23,8 @@ const DashboardContent: React.FC<DashboardContentProps> = ({
     switch (activeSection) {
       case "overview":
         return <OverviewSection artistId={artistId} isDemo={isDemo} />;
+      case "products":
+        return <AssignedProductsSection artistId={artistId} isDemo={isDemo} />;
       case "links":
         return <LinksManager artistId={artistId} isDemo={isDemo} />;
       case "appearance":

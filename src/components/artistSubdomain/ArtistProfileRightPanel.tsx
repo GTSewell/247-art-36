@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useImageErrors } from '@/components/artists/hooks/useImageErrors';
+import { useAssignedProducts } from '@/hooks/useAssignedProducts';
 
 interface ArtworkDetails {
   image: string;
@@ -46,6 +47,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     artist.id || 0, 
     artist.name || 'Unknown Artist'
   );
+  const { products: assignedProducts } = useAssignedProducts(artist.id || null);
   
   // State to track valid artworks (not broken)
   const [validArtworks, setValidArtworks] = useState<string[]>([]);
@@ -67,8 +69,24 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const isRealArtist = artist.id ? artist.id >= 26 : false;
   
   const getArtworkDetails = (artworkUrl: string, index: number): ArtworkDetails => {
-    if (isRealArtist) {
-      // For real artists (ID 26+), just show empty fields
+    // Check if this is an assigned product
+    const matchingProduct = assignedProducts?.find(p => p.image_url === artworkUrl);
+    
+    if (matchingProduct) {
+      // This is an assigned product, use real product data
+      return {
+        image: artworkUrl,
+        title: matchingProduct.name,
+        description: matchingProduct.description || `${matchingProduct.name} from the 247 Art Store.`,
+        specifications: {
+          medium: matchingProduct.category,
+          size: 'Available in Store',
+          year: new Date().getFullYear().toString()
+        },
+        price: `$${matchingProduct.price.toFixed(2)}`
+      };
+    } else if (isRealArtist) {
+      // For real artists (ID 26+), just show empty fields for traditional artworks
       return {
         image: artworkUrl,
         title: `${artist.name}'s Art`,
@@ -81,7 +99,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         price: "$"
       };
     } else {
-      // For demo artists (ID below 26), show sample data
+      // For demo artists (ID below 26), show sample data for traditional artworks
       return {
         image: artworkUrl,
         title: `${artist.name}'s Art`,
@@ -102,8 +120,22 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   };
   
   const handleAddToCart = () => {
-    if (selectedArtwork && !isRealArtist) {
-      // Convert price string (e.g. "$1500") to number
+    if (!selectedArtwork) return;
+    
+    // Check if this is an assigned product
+    const matchingProduct = assignedProducts?.find(p => p.image_url === selectedArtwork.image);
+    
+    if (matchingProduct) {
+      // This is an assigned product, add it to cart with real product data
+      addItem({
+        id: `product-${matchingProduct.id}`,
+        name: matchingProduct.name,
+        price: matchingProduct.price,
+        image_url: matchingProduct.image_url || selectedArtwork.image,
+        artist: { name: artist.name }
+      });
+    } else if (!isRealArtist) {
+      // This is a demo artwork for demo artists
       const price = selectedArtwork.price ? parseFloat(selectedArtwork.price.replace('$', '')) : 1000;
       
       addItem({
@@ -113,10 +145,10 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         image_url: selectedArtwork.image,
         artist: { name: artist.name }
       });
-      
-      // Close the modal after adding to cart
-      setIsModalOpen(false);
     }
+    
+    // Close the modal after adding to cart
+    setIsModalOpen(false);
   };
 
   return (
@@ -228,36 +260,47 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
               </p>
             </div>
             
-            {isRealArtist ? (
-              <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} space-y-4`}>
-                <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
-                  <p className="text-sm text-amber-800 font-medium">
-                    This artwork is displayed for preview purposes only and is not currently available for purchase.
-                  </p>
-                </div>
-                <div className="flex items-center justify-between mt-2">
+            {(() => {
+              // Check if this is an assigned product
+              const matchingProduct = assignedProducts?.find(p => p.image_url === selectedArtwork?.image);
+              const isAssignedProduct = !!matchingProduct;
+              const canAddToCart = isAssignedProduct || !isRealArtist;
+              
+              if (!canAddToCart) {
+                return (
+                  <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} space-y-4`}>
+                    <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
+                      <p className="text-sm text-amber-800 font-medium">
+                        This artwork is displayed for preview purposes only and is not currently available for purchase.
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="font-bold text-lg">{selectedArtwork?.price}</span>
+                      <Button 
+                        disabled={true}
+                        className="bg-gray-400 hover:bg-gray-400 text-white transition-colors rounded-lg cursor-not-allowed"
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-2" />
+                        Add to Cart
+                      </Button>
+                    </div>
+                  </div>
+                );
+              }
+              
+              return (
+                <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} flex items-center justify-between mt-2`}>
                   <span className="font-bold text-lg">{selectedArtwork?.price}</span>
                   <Button 
-                    disabled={true}
-                    className="bg-gray-400 hover:bg-gray-400 text-white transition-colors rounded-lg cursor-not-allowed"
+                    onClick={handleAddToCart}
+                    className="bg-[#ea384c] hover:bg-[#d41f33] text-white transition-colors rounded-lg"
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    Add to Cart
+                    {isAssignedProduct ? 'Add to Cart' : 'Add to Cart'}
                   </Button>
                 </div>
-              </div>
-            ) : (
-              <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} flex items-center justify-between mt-2`}>
-                <span className="font-bold text-lg">{selectedArtwork?.price}</span>
-                <Button 
-                  onClick={handleAddToCart}
-                  className="bg-[#ea384c] hover:bg-[#d41f33] text-white transition-colors rounded-lg"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Add to Cart
-                </Button>
-              </div>
-            )}
+              );
+            })()}
           </div>
         </DialogContent>
       </Dialog>

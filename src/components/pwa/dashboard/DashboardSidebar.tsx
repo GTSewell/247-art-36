@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings";
+type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings" | "products";
 
 interface DashboardSidebarProps {
   activeSection: DashboardSection;
@@ -33,6 +33,12 @@ const navigationItems = [
     label: "Profile",
     icon: User,
     description: "Profile settings"
+  },
+  {
+    id: "products" as const,
+    label: "Assigned Products",
+    icon: Store,
+    description: "Your store products"
   },
   {
     id: "links" as const,

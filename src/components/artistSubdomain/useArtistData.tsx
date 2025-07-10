@@ -42,15 +42,20 @@ export function useArtistData(artistName: string | undefined) {
           if (processedArtist) {
             setArtist(processedArtist);
             
-            // Try to load artist profile data from the new table
+            // Try to load artist profile data and assigned products
             try {
-              const [linksResult, profileResult] = await Promise.allSettled([
+              const [linksResult, profileResult, productsResult] = await Promise.allSettled([
                 fetchArtistProfileLinks(processedArtist.id.toString()),
                 supabase
                   .from('artist_profiles')
                   .select('background_image, background_color, panel_color')
                   .eq('artist_id', processedArtist.id)
-                  .maybeSingle()
+                  .maybeSingle(),
+                supabase
+                  .from('products')
+                  .select('id, name, price, image_url, category')
+                  .eq('artist_id', processedArtist.id)
+                  .order('created_at', { ascending: false })
               ]);
               
               // Create profile with real data if available
@@ -73,6 +78,20 @@ export function useArtistData(artistName: string | undefined) {
                 if (profileData.panel_color) {
                   defaultProfile.panel_color = profileData.panel_color;
                 }
+              }
+              
+              // Add assigned products to artworks if available
+              if (productsResult.status === 'fulfilled' && productsResult.value.data && productsResult.value.data.length > 0) {
+                const productImages = productsResult.value.data
+                  .filter(product => product.image_url)
+                  .map(product => product.image_url);
+                
+                // Combine existing artworks with product images
+                const existingArtworks = Array.isArray(processedArtist.artworks) ? processedArtist.artworks : [];
+                const combinedArtworks = [...existingArtworks, ...productImages].slice(0, 8); // Limit to 8 total
+                processedArtist.artworks = combinedArtworks;
+                
+                logger.info(`Added ${productImages.length} product images to artist artworks`);
               }
               
               setProfile(defaultProfile);

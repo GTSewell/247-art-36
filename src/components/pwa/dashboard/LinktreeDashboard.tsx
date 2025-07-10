@@ -10,7 +10,7 @@ import DashboardSidebar from "./DashboardSidebar";
 import DashboardContent from "./DashboardContent";
 import LivePreviewPanel from "./LivePreviewPanel";
 
-type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings";
+type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings" | "products";
 
 interface LinktreeDashboardProps {
   artistId: string | null;

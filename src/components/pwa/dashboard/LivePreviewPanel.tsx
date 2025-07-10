@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "@/components/ui/card";
 import { Smartphone } from "lucide-react";
 
-type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings";
+type DashboardSection = "overview" | "links" | "appearance" | "analytics" | "settings" | "products";
 
 interface LivePreviewPanelProps {
   artistId: string | null;
