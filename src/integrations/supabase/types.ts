@@ -553,7 +553,10 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      is_admin: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
     }
     Enums: {
       gallery_style: "contemporary" | "modern" | "classical" | "experimental"
