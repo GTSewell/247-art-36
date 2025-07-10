@@ -96,11 +96,9 @@ const ProductList = ({
                   <span className="text-xs bg-muted px-2 py-1 rounded">
                     Section: {product.category ? storeCategories.find(c => c.id === product.category)?.label || product.category : 'Unassigned'}
                   </span>
-                  {product.artist_name && (
-                    <span className="text-xs bg-primary/10 px-2 py-1 rounded">
-                      Artist: {product.artist_name}
-                    </span>
-                  )}
+                  <span className="text-xs bg-primary/10 px-2 py-1 rounded">
+                    Artist: {product.artist_name || 'Unassigned'}
+                  </span>
                 </div>
               </div>
             </div>

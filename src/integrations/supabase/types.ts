@@ -603,7 +603,13 @@ export type Database = {
     Enums: {
       gallery_style: "contemporary" | "modern" | "classical" | "experimental"
       gallery_type: "commercial" | "non_profit" | "museum" | "artist_run"
-      product_category: "print" | "merch" | "sticker"
+      product_category:
+        | "print"
+        | "merch"
+        | "sticker"
+        | "original"
+        | "signed"
+        | "collection"
       social_platform: "instagram" | "facebook" | "twitter" | "linkedin"
     }
     CompositeTypes: {
@@ -734,7 +740,14 @@ export const Constants = {
     Enums: {
       gallery_style: ["contemporary", "modern", "classical", "experimental"],
       gallery_type: ["commercial", "non_profit", "museum", "artist_run"],
-      product_category: ["print", "merch", "sticker"],
+      product_category: [
+        "print",
+        "merch",
+        "sticker",
+        "original",
+        "signed",
+        "collection",
+      ],
       social_platform: ["instagram", "facebook", "twitter", "linkedin"],
     },
   },
