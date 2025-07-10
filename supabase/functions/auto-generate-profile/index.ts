@@ -20,9 +20,21 @@ serve(async (req) => {
   }
 
   try {
+    console.log('Function started, checking environment variables...');
+    
+    if (!openAIApiKey) {
+      console.error('OpenAI API key not found in environment');
+      return new Response(JSON.stringify({ error: 'OpenAI API key not configured' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const { urls, artistId } = await req.json();
+    console.log('Request body parsed successfully');
 
     if (!urls || !Array.isArray(urls) || urls.length === 0) {
+      console.log('No URLs provided in request');
       return new Response(JSON.stringify({ error: 'No URLs provided' }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -32,17 +44,24 @@ serve(async (req) => {
     console.log('Processing auto-profile generation for artist:', artistId);
     console.log('URLs to process:', urls);
 
-    // Fetch content from provided URLs
+    // Fetch content from provided URLs with timeout handling
     const urlContents = await Promise.allSettled(
       urls.map(async (url: string) => {
         try {
+          console.log(`Fetching content from: ${url}`);
+          
+          // Create timeout controller
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 10000);
+          
           const response = await fetch(url, {
             headers: {
               'User-Agent': 'Mozilla/5.0 (compatible; ArtistProfileBot/1.0)',
             },
-            // Add timeout
-            signal: AbortSignal.timeout(10000)
+            signal: controller.signal
           });
+          
+          clearTimeout(timeoutId);
           
           if (!response.ok) {
             throw new Error(`Failed to fetch ${url}: ${response.status}`);
@@ -103,6 +122,8 @@ Guidelines:
 
 Respond ONLY with the JSON object, no additional text.`;
 
+    console.log('Calling OpenAI API...');
+    
     // Call OpenAI API
     const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -120,8 +141,12 @@ Respond ONLY with the JSON object, no additional text.`;
       }),
     });
 
+    console.log('OpenAI API response status:', aiResponse.status);
+
     if (!aiResponse.ok) {
-      throw new Error(`OpenAI API error: ${aiResponse.status}`);
+      const errorText = await aiResponse.text();
+      console.error('OpenAI API error details:', errorText);
+      throw new Error(`OpenAI API error: ${aiResponse.status} - ${errorText}`);
     }
 
     const aiData = await aiResponse.json();
