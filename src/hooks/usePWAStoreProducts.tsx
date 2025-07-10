@@ -118,6 +118,15 @@ export const usePWAStoreProducts = () => {
 
   const getProductsForCategory = (categoryId: string) => {
     const categoryProducts = products?.filter(p => p.category === categoryId) || [];
+    logger.info(`Getting products for category ${categoryId}:`, { 
+      count: categoryProducts.length,
+      sampleProducts: categoryProducts.slice(0, 3).map(p => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        artist_name: (p as any).artist_name || p.artists?.name
+      }))
+    });
     return categoryProducts;
   };
 

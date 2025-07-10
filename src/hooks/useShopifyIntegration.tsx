@@ -113,12 +113,24 @@ export const useShopifyIntegration = () => {
         throw error;
       }
 
-      // Transform the data to match ProductWithShopify interface
+      // Transform the data to match ProductWithShopify interface with proper artist name
       const products = data?.map(product => ({
         ...product,
         status: 'active' as const,
-        artist_name: product.artists?.name
+        artist_name: product.artists?.name || 'Unassigned'
       })) || [];
+
+      logger.info('Fetched Shopify products:', { 
+        count: products.length, 
+        categoryFilter: category,
+        sampleProduct: products[0] ? {
+          id: products[0].id,
+          name: products[0].name,
+          category: products[0].category,
+          artist_id: products[0].artist_id,
+          artist_name: products[0].artist_name
+        } : null
+      });
 
       return products;
     } catch (error) {

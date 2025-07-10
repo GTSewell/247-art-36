@@ -106,7 +106,7 @@ const ShopifyIntegration = () => {
     assignmentType: 'category' | 'artist',
     value: string
   ) => {
-    console.log('handleBulkAssignment called:', { assignmentType, value, selectedProducts: Array.from(selectedProducts) });
+    logger.info('handleBulkAssignment called:', { assignmentType, value, selectedProducts: Array.from(selectedProducts) });
     
     if (selectedProducts.size === 0) {
       toast.error('Please select products first');
@@ -115,49 +115,71 @@ const ShopifyIntegration = () => {
 
     setIsUpdating(true);
     try {
-      const updates = Array.from(selectedProducts).map(async (productId) => {
+      // Process updates sequentially to avoid overwhelming the database
+      const updateResults = [];
+      
+      for (const productId of Array.from(selectedProducts)) {
         const updateData: any = {};
         
         if (assignmentType === 'category') {
           updateData.category = value;
-          console.log(`Updating product ${productId} category to:`, value);
+          logger.info(`Updating product ${productId} category to:`, value);
         } else if (assignmentType === 'artist') {
-          updateData.artist_id = parseInt(value);
-          console.log(`Updating product ${productId} artist_id to:`, parseInt(value));
+          const artistId = parseInt(value);
+          updateData.artist_id = artistId;
+          logger.info(`Updating product ${productId} artist_id to:`, artistId);
         }
         
-        console.log('Update data for product', productId, ':', updateData);
+        logger.info('Update data for product ' + productId + ':', updateData);
         
         const { data, error } = await supabase
           .from('products')
           .update(updateData)
           .eq('id', productId)
-          .select();
+          .select(`
+            *,
+            artists (
+              id,
+              name,
+              image
+            )
+          `);
           
         if (error) {
-          console.error('Database error for product', productId, ':', error);
+          logger.error('Database error for product ' + productId + ':', error);
           throw error;
         }
         
-        console.log('Successfully updated product', productId, ':', data);
-        return { productId, success: true };
-      });
-
-      await Promise.all(updates);
+        logger.info('Successfully updated product ' + productId + ':', data);
+        updateResults.push({ productId, success: true, data });
+      }
       
       const assignmentLabel = assignmentType === 'category' 
         ? storeCategories.find(c => c.id === value)?.label
         : artists.find(a => a.id.toString() === value)?.name;
       
-      toast.success(`Assigned ${selectedProducts.size} products to ${assignmentLabel}`);
+      toast.success(`Successfully assigned ${selectedProducts.size} products to ${assignmentLabel}`);
       
-      console.log('Reloading data after bulk assignment...');
-      // Don't clear selection to allow multiple assignments
-      await loadData(); // Refresh products to show updated assignments
-      console.log('Data reloaded successfully');
+      logger.info('Bulk assignment completed successfully, reloading data...');
+      
+      // Force refresh of products to show updated assignments
+      await loadData();
+      
+      // Verify the updates worked by checking a sample product
+      if (updateResults.length > 0) {
+        const sampleProductId = updateResults[0].productId;
+        const { data: verifyData } = await supabase
+          .from('products')
+          .select('id, name, category, artist_id')
+          .eq('id', sampleProductId)
+          .single();
+        
+        logger.info('Verification check - product after update:', verifyData);
+      }
+      
+      logger.info('Data reload completed');
     } catch (error) {
       logger.error('Error updating products:', error);
-      console.error('Bulk assignment error:', error);
       toast.error('Failed to update products');
     } finally {
       setIsUpdating(false);

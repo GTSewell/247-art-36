@@ -95,11 +95,11 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
                     <ShoppingCart className="h-4 w-4" />
                   </Button>
                 </div>
-                {product.artists && (
-                  <p className="text-xs text-gray-700 mt-1 truncate">
-                    By {product.artists.name}
-                  </p>
-                )}
+                 {(product.artists?.name || (product as any).artist_name) && (
+                   <p className="text-xs text-gray-700 mt-1 truncate">
+                     By {product.artists?.name || (product as any).artist_name}
+                   </p>
+                 )}
               </div>
             ))}
           </div>
