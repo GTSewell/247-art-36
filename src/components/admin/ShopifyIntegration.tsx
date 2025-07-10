@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { RefreshCw, Package, AlertCircle, CheckCircle2, Clock, Settings } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { useShopifyIntegration } from '@/hooks/useShopifyIntegration';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
+import SyncStats from './shopify/SyncStats';
+import ProductBulkActions from './shopify/ProductBulkActions';
+import ProductList from './shopify/ProductList';
+import SyncLogs from './shopify/SyncLogs';
 
 const ShopifyIntegration = () => {
   const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
@@ -144,12 +144,6 @@ const ShopifyIntegration = () => {
       setIsUpdating(false);
     }
   };
-
-  const storeCategories = [
-    { value: 'print', label: 'Prints & Reproductions' },
-    { value: 'merch', label: 'Merchandise' },
-    { value: 'sticker', label: 'Stickers & Decals' }
-  ];
 
   return (
     <div className="space-y-6">
@@ -292,48 +286,7 @@ NOTES
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalProducts}</div>
-            <p className="text-xs text-muted-foreground">
-              Synced from Shopify
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sync Status</CardTitle>
-            <CheckCircle2 className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">Active</div>
-            <p className="text-xs text-muted-foreground">
-              Integration is working
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Last Sync</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm font-bold">
-              {stats.lastSync ? formatDate(stats.lastSync) : 'Never'}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Most recent sync
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+      <SyncStats stats={stats} formatDate={formatDate} />
 
       {/* Product Management */}
       <Card>
@@ -356,187 +309,28 @@ NOTES
           </div>
         </CardHeader>
         <CardContent>
-          {products.length > 0 ? (
-            <div className="space-y-4">
-              {/* Bulk Actions */}
-              {selectedProducts.size > 0 && (
-                <div className="bg-muted/50 p-4 rounded-lg border">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-2">
-                      <Settings className="h-4 w-4" />
-                      <span className="font-medium">
-                        {selectedProducts.size} product{selectedProducts.size > 1 ? 's' : ''} selected
-                      </span>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setSelectedProducts(new Set())}
-                    >
-                      Clear Selection
-                    </Button>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>Assign to Store Section</Label>
-                      <Select onValueChange={(value) => handleBulkAssignment('category', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select store section" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {storeCategories.map((category) => (
-                            <SelectItem key={category.value} value={category.value}>
-                              {category.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label>Assign to Artist</Label>
-                      <Select onValueChange={(value) => handleBulkAssignment('artist', value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select artist" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {artists.map((artist) => (
-                            <SelectItem key={artist.id} value={artist.id.toString()}>
-                              {artist.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Select All Checkbox */}
-              <div className="flex items-center space-x-2 py-2 border-b">
-                <Checkbox
-                  id="select-all"
-                  checked={products.length > 0 && selectedProducts.size === products.length}
-                  onCheckedChange={handleSelectAll}
-                />
-                <Label htmlFor="select-all" className="font-medium">
-                  Select All Products
-                </Label>
-              </div>
-
-              {/* Product List */}
-              <div className="space-y-3">
-                {(showAllProducts ? products : products.slice(0, 5)).map((product) => (
-                  <div key={product.id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-                    <Checkbox
-                      id={`product-${product.id}`}
-                      checked={selectedProducts.has(product.id)}
-                      onCheckedChange={(checked) => handleProductSelect(product.id, checked as boolean)}
-                    />
-                    
-                    <div className="flex items-center space-x-4 flex-1">
-                      {product.image_url && (
-                        <img 
-                          src={product.image_url} 
-                          alt={product.name}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                      )}
-                      <div className="flex-1">
-                        <h4 className="font-medium">{product.name}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          ${product.price} • Current: {product.category}
-                        </p>
-                        {product.artist_name && (
-                          <p className="text-xs text-muted-foreground">
-                            Assigned to: {product.artist_name}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-2">
-                      <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
-                        {product.shopify_inventory_quantity || 0} in stock
-                      </Badge>
-                      <Badge variant={product.is_featured ? "default" : "outline"}>
-                        {product.is_featured ? "Featured" : "Standard"}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {!showAllProducts && products.length > 5 && (
-                <div className="text-center pt-4">
-                  <p className="text-sm text-muted-foreground">
-                    Showing 5 of {products.length} products. Toggle "Show all products" to see more.
-                  </p>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No products synced yet</h3>
-              <p className="text-muted-foreground mb-4">
-                Click "Sync Products" to import your Shopify products
-              </p>
-              <Button onClick={handleSync} disabled={isSyncing}>
-                <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
-                Sync Now
-              </Button>
-            </div>
-          )}
+          <ProductBulkActions
+            selectedProducts={selectedProducts}
+            artists={artists}
+            isUpdating={isUpdating}
+            onClearSelection={() => setSelectedProducts(new Set())}
+            onBulkAssignment={handleBulkAssignment}
+          />
+          
+          <ProductList
+            products={products}
+            selectedProducts={selectedProducts}
+            showAllProducts={showAllProducts}
+            isSyncing={isSyncing}
+            onProductSelect={handleProductSelect}
+            onSelectAll={handleSelectAll}
+            onSync={handleSync}
+          />
         </CardContent>
       </Card>
 
       {/* Sync Logs */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Sync History</CardTitle>
-          <CardDescription>
-            Recent synchronization activity
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {syncLogs.length > 0 ? (
-            <div className="space-y-3">
-              {syncLogs.map((log) => (
-                <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                    <div>
-                      <p className="font-medium">
-                        {log.sync_type} sync completed
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDate(log.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-green-600">
-                      {log.products_synced} synced
-                    </p>
-                    {log.products_failed > 0 && (
-                      <p className="text-sm text-red-600">
-                        {log.products_failed} failed
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-4">
-              <AlertCircle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-muted-foreground">No sync history available</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <SyncLogs syncLogs={syncLogs} formatDate={formatDate} />
     </div>
   );
 };
