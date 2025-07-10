@@ -6,6 +6,7 @@ import { User } from "lucide-react";
 import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
+import BackgroundUpload from "./artist-settings/BackgroundUpload";
 import { useArtistProfile } from "./artist-settings/hooks/useArtistProfile";
 import { toast } from "sonner";
 
@@ -19,11 +20,13 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     saving,
     artist,
     formData,
+    backgroundImage,
     handleChange,
     handleSocialPlatformChange,
     addSocialPlatform,
     removeSocialPlatform,
     handleImageChange,
+    handleBackgroundChange,
     handleSubmit
   } = useArtistProfile(artistId);
   
@@ -76,6 +79,13 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
             handleSocialPlatformChange={handleSocialPlatformChange}
             addSocialPlatform={addSocialPlatform}
             removeSocialPlatform={removeSocialPlatform}
+          />
+
+          <BackgroundUpload
+            currentBackground={backgroundImage}
+            onBackgroundChange={handleBackgroundChange}
+            artistName={formData.name || "Artist"}
+            artistId={artistId}
           />
           
           <div className="pt-4">

@@ -3,6 +3,8 @@ export interface ArtistProfileFormData {
   name: string;
   specialty: string;
   bio: string;
+  profileImage: string;
+  backgroundImage: string;
   city: string;
   country: string;
   techniques: string;

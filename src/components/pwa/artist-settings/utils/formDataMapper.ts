@@ -11,6 +11,8 @@ export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
       name: "",
       specialty: "",
       bio: "",
+      profileImage: "",
+      backgroundImage: "",
       city: "",
       country: "",
       techniques: "",
@@ -44,6 +46,8 @@ export const mapArtistToFormData = (artist: any): ArtistProfileFormData => {
     name: artist.name || "",
     specialty: artist.specialty || "",
     bio: artist.bio || "",
+    profileImage: artist.profile_image_url || artist.image || "",
+    backgroundImage: "", // Will be loaded separately from artist_profiles table
     city: artist.city || "",
     country: artist.country || "",
     techniques: techniquesString,

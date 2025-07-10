@@ -13,12 +13,15 @@ export const useFetchArtistProfile = (artistId: string | null) => {
     name: "",
     specialty: "",
     bio: "",
+    profileImage: "",
+    backgroundImage: "",
     city: "",
     country: "",
     techniques: "",
     styles: "",
     social_platforms: [""],
-    image: null
+    image: null,
+    published: false
   });
   
   useEffect(() => {

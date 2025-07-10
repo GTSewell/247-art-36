@@ -8,6 +8,8 @@ export const useFormHandling = () => {
     name: "",
     specialty: "",
     bio: "",
+    profileImage: "",
+    backgroundImage: "",
     city: "",
     country: "",
     techniques: "",
@@ -60,7 +62,16 @@ export const useFormHandling = () => {
     logger.info(`Image URL changed to: ${imageUrl}`);
     setFormData(prev => ({
       ...prev,
+      profileImage: imageUrl || "",
       image: imageUrl
+    }));
+  };
+
+  const handleBackgroundChange = (backgroundUrl: string | null) => {
+    logger.info(`Background URL changed to: ${backgroundUrl}`);
+    setFormData(prev => ({
+      ...prev,
+      backgroundImage: backgroundUrl || ""
     }));
   };
   
@@ -71,6 +82,7 @@ export const useFormHandling = () => {
     handleSocialPlatformChange,
     addSocialPlatform,
     removeSocialPlatform,
-    handleImageChange
+    handleImageChange,
+    handleBackgroundChange
   };
 };

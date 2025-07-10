@@ -6,20 +6,22 @@ import { ensureBucketExists } from "./storage/storageUtils";
 
 const BUCKET_NAME = 'artists';
 
-export const uploadImage = async (file: File, artistName: string, isProfileImage: boolean): Promise<string | null> => {
+export const uploadImage = async (file: File, artistName: string, isProfileImage: boolean, customFolder?: string): Promise<string | null> => {
   try {
     // Sanitize artist name for folder path
     const sanitizedArtistName = artistName.replace(/\s+/g, '_');
     
     // Construct the storage path - standardize to use the same structure across all uploads
-    const folderPath = isProfileImage 
-      ? `${sanitizedArtistName}/Profile_Image` 
-      : `${sanitizedArtistName}/Artworks`;
+    const folderPath = customFolder 
+      ? `${sanitizedArtistName}/${customFolder}`
+      : isProfileImage 
+        ? `${sanitizedArtistName}/Profile_Image` 
+        : `${sanitizedArtistName}/Artworks`;
     
     const fileName = `${uuidv4()}-${file.name}`;
     const filePath = `${folderPath}/${fileName}`;
     
-    logger.info(`Uploading ${isProfileImage ? 'profile' : 'artwork'} image to: ${filePath}`);
+    logger.info(`Uploading ${customFolder || (isProfileImage ? 'profile' : 'artwork')} image to: ${filePath}`);
     
     // Ensure the bucket exists
     await ensureBucketExists(BUCKET_NAME);

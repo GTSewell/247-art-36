@@ -7,11 +7,13 @@ import { ArtistProfile, ArtistProfileFormData } from '../types';
 import { logger } from '@/utils/logger';
 import { toast } from 'sonner';
 import { mapArtistToFormData } from '../utils/formDataMapper';
+import { supabase } from '@/integrations/supabase/client';
 
 export const useArtistProfile = (artistId: string | null) => {
   const [artist, setArtist] = useState<ArtistProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const { formData, setFormData, handleChange, handleSocialPlatformChange, addSocialPlatform, removeSocialPlatform, handleImageChange } = useFormHandling();
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+  const { formData, setFormData, handleChange, handleSocialPlatformChange, addSocialPlatform, removeSocialPlatform, handleImageChange, handleBackgroundChange } = useFormHandling();
   const { saveProfile, isSaving } = useSaveArtistProfile();
 
   useEffect(() => {
@@ -42,6 +44,25 @@ export const useArtistProfile = (artistId: string | null) => {
           const mappedFormData = mapArtistToFormData(data);
           logger.info("Mapped form data:", mappedFormData);
           setFormData(mappedFormData);
+
+          // Fetch background image from artist_profiles table
+          const numericId = parseInt(effectiveId, 10);
+          if (!isNaN(numericId)) {
+            try {
+              const { data: profileData } = await supabase
+                .from('artist_profiles')
+                .select('background_image')
+                .eq('artist_id', numericId)
+                .maybeSingle();
+              
+              if (profileData?.background_image) {
+                setBackgroundImage(profileData.background_image);
+                setFormData(prev => ({ ...prev, backgroundImage: profileData.background_image }));
+              }
+            } catch (profileError) {
+              console.error("Error fetching artist profile background:", profileError);
+            }
+          }
         }
       } catch (error: any) {
         logger.error("Error loading artist profile:", error);
@@ -99,11 +120,13 @@ export const useArtistProfile = (artistId: string | null) => {
     formData,
     loading,
     saving: isSaving,
+    backgroundImage,
     handleChange,
     handleSocialPlatformChange,
     addSocialPlatform,
     removeSocialPlatform,
     handleImageChange,
+    handleBackgroundChange,
     handleSubmit
   };
 };
