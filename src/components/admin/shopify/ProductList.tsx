@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
+import { storeCategories } from '@/components/store/utils/categoryUtils';
 
 interface Product {
   id: number;
@@ -93,7 +94,7 @@ const ProductList = ({
                 </p>
                 <div className="flex gap-2 mt-1">
                   <span className="text-xs bg-muted px-2 py-1 rounded">
-                    Section: {product.category || 'Unassigned'}
+                    Section: {product.category ? storeCategories.find(c => c.id === product.category)?.label || product.category : 'Unassigned'}
                   </span>
                   {product.artist_name && (
                     <span className="text-xs bg-primary/10 px-2 py-1 rounded">
