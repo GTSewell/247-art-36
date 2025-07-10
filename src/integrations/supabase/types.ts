@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      artist_profiles: {
+        Row: {
+          artist_id: number
+          background_color: string | null
+          background_image: string | null
+          created_at: string
+          id: string
+          links: Json | null
+          panel_color: string | null
+          updated_at: string
+        }
+        Insert: {
+          artist_id: number
+          background_color?: string | null
+          background_image?: string | null
+          created_at?: string
+          id?: string
+          links?: Json | null
+          panel_color?: string | null
+          updated_at?: string
+        }
+        Update: {
+          artist_id?: number
+          background_color?: string | null
+          background_image?: string | null
+          created_at?: string
+          id?: string
+          links?: Json | null
+          panel_color?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "artist_profiles_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: true
+            referencedRelation: "artist_stp_packs"
+            referencedColumns: ["artist_id"]
+          },
+          {
+            foreignKeyName: "artist_profiles_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: true
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       artist_submissions: {
         Row: {
           artist_name: string
