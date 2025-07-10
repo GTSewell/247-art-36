@@ -135,6 +135,14 @@ const ShopifyIntegration = () => {
     const errors: string[] = [];
 
     try {
+      // Check authentication first
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) {
+        throw new Error('Authentication required. Please refresh the page and try again.');
+      }
+      
+      logger.info('🔐 User authenticated:', { userId: user.id, email: user.email });
+
       // Process updates with comprehensive error handling
       for (const productId of Array.from(selectedProducts)) {
         try {
@@ -167,33 +175,18 @@ const ShopifyIntegration = () => {
           
           logger.info(`📋 Product ${productId} before update:`, existingProduct);
           
-          // Perform the update
-          const { data, error } = await supabase
+          // Perform the update with simple response
+          const { error: updateError, count } = await supabase
             .from('products')
             .update(updateData)
-            .eq('id', productId)
-            .select(`
-              id,
-              name,
-              category,
-              artist_id,
-              artists (
-                id,
-                name,
-                image
-              )
-            `);
+            .eq('id', productId);
             
-          if (error) {
-            logger.error(`❌ Database error for product ${productId}:`, error);
-            throw new Error(`Failed to update product ${productId}: ${error.message}`);
+          if (updateError) {
+            logger.error(`❌ Database error for product ${productId}:`, updateError);
+            throw new Error(`Failed to update product ${productId}: ${updateError.message}`);
           }
           
-          if (!data || data.length === 0) {
-            throw new Error(`No data returned for product ${productId} update`);
-          }
-          
-          logger.info(`✅ Successfully updated product ${productId}:`, data[0]);
+          logger.info(`✅ Update completed for product ${productId}, affected rows:`, count);
           
           // Immediate verification
           const { data: verifyData, error: verifyError } = await supabase
@@ -204,6 +197,7 @@ const ShopifyIntegration = () => {
             
           if (verifyError) {
             logger.error(`⚠️ Verification failed for product ${productId}:`, verifyError);
+            throw new Error(`Verification failed: ${verifyError.message}`);
           } else {
             logger.info(`🔍 Verification for product ${productId}:`, verifyData);
             
@@ -221,7 +215,7 @@ const ShopifyIntegration = () => {
           
         } catch (productError) {
           failureCount++;
-          const errorMsg = `Product ${productId}: ${productError.message}`;
+          const errorMsg = `Product ${productId}: ${productError instanceof Error ? productError.message : 'Unknown error'}`;
           errors.push(errorMsg);
           logger.error(`❌ Individual product update failed:`, errorMsg);
         }
@@ -247,7 +241,7 @@ const ShopifyIntegration = () => {
       logger.info('🔄 Reloading product data...');
       
       // Force refresh of products to show updated assignments
-      await loadData();
+      await loadData(true);
       
       // Clear selection if all updates succeeded
       if (successCount > 0 && failureCount === 0) {
