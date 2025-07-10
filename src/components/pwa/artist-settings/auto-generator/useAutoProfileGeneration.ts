@@ -100,7 +100,16 @@ export const useAutoProfileGeneration = (
       }
     } catch (error: any) {
       console.error('Error generating profile:', error);
-      toast.error(`Failed to generate profile: ${error.message}`);
+      
+      // Enhanced error message for better user experience
+      let errorMessage = error.message;
+      if (error.message.includes('non-2xx status code')) {
+        errorMessage = 'Unable to analyze the provided URLs. Social media profiles (Instagram, X/Twitter) cannot be automatically analyzed due to privacy restrictions. Please try using:\n\n• Personal website URLs\n• Portfolio sites (Behance, Dribbble)\n• LinkedIn profiles\n• Art gallery websites';
+      }
+      
+      toast.error(`Failed to generate profile: ${errorMessage}`, {
+        duration: 8000,
+      });
     } finally {
       setIsGenerating(false);
       setGenerationProgress('');

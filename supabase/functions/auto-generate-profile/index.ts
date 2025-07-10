@@ -66,12 +66,17 @@ serve(async (req) => {
           
           const response = await fetch(url, {
             headers: {
-              'User-Agent': 'Mozilla/5.0 (compatible; ArtistProfileBot/1.0; +https://lovable.dev)',
-              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-              'Accept-Language': 'en-US,en;q=0.5',
-              'Accept-Encoding': 'gzip, deflate',
-              'DNT': '1',
-              'Connection': 'keep-alive',
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.9',
+              'Accept-Encoding': 'gzip, deflate, br',
+              'Cache-Control': 'no-cache',
+              'Pragma': 'no-cache',
+              'Sec-Fetch-Dest': 'document',
+              'Sec-Fetch-Mode': 'navigate',
+              'Sec-Fetch-Site': 'none',
+              'Sec-Fetch-User': '?1',
+              'Upgrade-Insecure-Requests': '1'
             },
             signal: controller.signal
           });
@@ -79,7 +84,14 @@ serve(async (req) => {
           clearTimeout(timeoutId);
           
           if (!response.ok) {
-            throw new Error(`Failed to fetch ${url}: ${response.status}`);
+            console.warn(`⚠️ HTTP ${response.status} for ${url}: ${response.statusText}`);
+            
+            // For social media platforms, provide helpful guidance
+            if (platform === 'instagram' || platform === 'twitter') {
+              throw new Error(`${platform.charAt(0).toUpperCase() + platform.slice(1)} profiles are difficult to analyze automatically. Try using a personal website or portfolio URL instead.`);
+            }
+            
+            throw new Error(`Failed to fetch ${url}: HTTP ${response.status} ${response.statusText}`);
           }
           
           const text = await response.text();
@@ -94,7 +106,16 @@ serve(async (req) => {
           };
         } catch (error) {
           console.error(`❌ Error fetching ${url}:`, error);
-          return { url, error: error.message, platform: 'unknown' };
+          
+          // Provide more helpful error messages for common platforms
+          let errorMessage = error.message;
+          if (url.includes('instagram.com')) {
+            errorMessage = 'Instagram profiles cannot be automatically analyzed due to privacy restrictions. Try using a personal website, portfolio, or LinkedIn profile instead.';
+          } else if (url.includes('twitter.com') || url.includes('x.com')) {
+            errorMessage = 'X/Twitter profiles cannot be automatically analyzed. Try using a personal website, portfolio, or LinkedIn profile instead.';
+          }
+          
+          return { url, error: errorMessage, platform: platform || 'unknown' };
         }
       })
     );
@@ -107,7 +128,19 @@ serve(async (req) => {
       .map(result => result.value);
 
     if (validContents.length === 0) {
-      return new Response(JSON.stringify({ error: 'Could not fetch content from any provided URLs' }), {
+      // Collect all error messages to provide helpful feedback
+      const errorMessages = urlContents
+        .filter(result => result.status === 'fulfilled' && result.value.error)
+        .map(result => `${result.value.url}: ${result.value.error}`)
+        .join('\n');
+      
+      console.log('❌ No URLs could be processed:', errorMessages);
+      
+      return new Response(JSON.stringify({ 
+        error: 'Could not fetch content from any provided URLs',
+        details: errorMessages,
+        suggestion: 'Try using personal websites, portfolio sites, or LinkedIn profiles which are more accessible for analysis.'
+      }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
