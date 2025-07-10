@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { normalizeSocialPlatforms, getSocialIcon } from './utils/socialPlatformUtils.tsx';
-import { MessageSquare } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import ArtistMessageModal from './ArtistMessageModal';
 import { Artist } from '@/data/types/artist';
 
@@ -63,10 +63,11 @@ const ArtistConnectSection: React.FC<ArtistConnectSectionProps> = ({
           </Button>
         ))}
         
-        {/* 247 Messaging Button */}
+        {/* 247 Button */}
         <Button
           variant="outline"
-          className="rounded-md px-3 h-9 flex items-center gap-1"
+          size="icon"
+          className="h-9 w-9 rounded-full"
           style={{
             backgroundColor: buttonColor,
             color: buttonTextColor,
@@ -84,8 +85,7 @@ const ArtistConnectSection: React.FC<ArtistConnectSectionProps> = ({
             }
           }}
         >
-          <MessageSquare className="h-4 w-4 mr-1" />
-          247 Messaging
+          <Zap className="h-4 w-4" />
         </Button>
       </div>
       

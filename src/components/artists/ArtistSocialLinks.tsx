@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { normalizeSocialPlatforms, getSocialIcon } from '@/components/artistSubdomain/utils/socialPlatformUtils.tsx';
-import { MessageSquare } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import ArtistMessageModal from '@/components/artistSubdomain/ArtistMessageModal';
 import { Artist } from '@/data/types/artist';
 
@@ -70,7 +70,7 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
           <>
             <button
               onClick={() => setMessageModalOpen(true)}
-              className="flex items-center gap-1 text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 rounded-md border border-gray-200"
+              className="text-gray-600 hover:text-gray-900 transition-colors p-2 rounded-full border border-gray-200"
               style={buttonStyle}
               onMouseOver={e => {
                 if (buttonHoverColor) {
@@ -83,8 +83,7 @@ const ArtistSocialLinks: React.FC<ArtistSocialLinksProps> = ({
                 }
               }}
             >
-              <MessageSquare size={16} />
-              <span>247 Messaging</span>
+              <Zap size={16} />
             </button>
             
             <ArtistMessageModal 

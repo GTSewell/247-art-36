@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { MessageSquare } from 'lucide-react';
+import { Zap } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/use-auth';
@@ -129,50 +129,27 @@ const ArtistMessageModal: React.FC<ArtistMessageModalProps> = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5" />
-            Message {artist.name}
+            <Zap className="h-5 w-5" />
+            247 Artist Messaging
           </DialogTitle>
           <DialogDescription>
-            Send a direct message to this artist for a 24-hour response. See details below on how 247 messaging works.
+            Direct messaging with artists
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-4 py-4">
-          <div className="bg-muted p-4 rounded-lg">
-            <h3 className="font-medium text-sm mb-2">How 247 Messaging works:</h3>
-            <ul className="text-sm space-y-2 list-disc pl-5">
-              <li>Pay $5 to send a message to this artist</li>
-              <li>Get a reply in 24 hours, you get $5 credit on their art/prints</li>
-              <li>No reply? You can spend your credit on any artist</li>
-              <li>Credit must be spent before end of current exhibition</li>
-            </ul>
+        <div className="space-y-4 py-8 text-center">
+          <div className="flex justify-center">
+            <Zap className="h-16 w-16 text-muted-foreground" />
           </div>
-          
-          <textarea 
-            className="w-full p-3 border rounded-md h-32 resize-none"
-            placeholder="Type your message here..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            // Stop propagation of keydown events directly on the textarea
-            onKeyDown={(e) => {
-              if (e.key === 'ArrowLeft' || e.key === 'ArrowRight' || 
-                  e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                e.stopPropagation();
-              }
-            }}
-          />
+          <h3 className="text-lg font-medium">Coming Soon</h3>
+          <p className="text-muted-foreground">
+            247 artist messaging feature is currently in development. Stay tuned for updates!
+          </p>
         </div>
         
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button 
-            onClick={handleSendMessage} 
-            className="bg-blue-500 hover:bg-blue-600 text-white"
-            disabled={sending || !message.trim() || !user}
-          >
-            {sending ? "Sending..." : "Pay $5 & Send Message"}
+          <Button variant="outline" onClick={() => onOpenChange(false)} className="w-full">
+            Got it
           </Button>
         </DialogFooter>
       </DialogContent>
