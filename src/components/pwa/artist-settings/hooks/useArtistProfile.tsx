@@ -118,6 +118,7 @@ export const useArtistProfile = (artistId: string | null) => {
   return {
     artist,
     formData,
+    setFormData,
     loading,
     saving: isSaving,
     backgroundImage,

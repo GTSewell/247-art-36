@@ -7,8 +7,10 @@ import BasicInfoForm from "./artist-settings/BasicInfoForm";
 import LocationForm from "./artist-settings/LocationForm";
 import ArtistTags from "./artist-settings/ArtistTags";
 import BackgroundUpload from "./artist-settings/BackgroundUpload";
+import AutoProfileGenerator from "./artist-settings/AutoProfileGenerator";
 import { useArtistProfile } from "./artist-settings/hooks/useArtistProfile";
 import { toast } from "sonner";
+import { ArtistProfileFormData } from "./artist-settings/types";
 
 interface ArtistProfileSettingsProps {
   artistId: string | null;
@@ -27,8 +29,17 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
     removeSocialPlatform,
     handleImageChange,
     handleBackgroundChange,
-    handleSubmit
+    handleSubmit,
+    setFormData
   } = useArtistProfile(artistId);
+
+  const handleAutoProfileGenerated = (profileData: Partial<ArtistProfileFormData>) => {
+    setFormData(prev => ({
+      ...prev,
+      ...profileData
+    }));
+    toast.success('Profile auto-generated! Review the information below and make any changes.');
+  };
   
   if (loading) {
     return <div className="p-8 text-center">Loading artist profile...</div>;
@@ -60,6 +71,11 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         </CardTitle>
       </CardHeader>
       <CardContent>
+        <AutoProfileGenerator 
+          onProfileGenerated={handleAutoProfileGenerated}
+          artistId={artistId}
+        />
+        
         <form onSubmit={onSubmit} className="space-y-4">
           <BasicInfoForm 
             formData={formData} 
