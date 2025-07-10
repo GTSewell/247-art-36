@@ -111,6 +111,8 @@ const ShopifyIntegration = () => {
     assignmentType: 'category' | 'artist',
     value: string
   ) => {
+    console.log('handleBulkAssignment called:', { assignmentType, value, selectedProducts: Array.from(selectedProducts) });
+    
     if (selectedProducts.size === 0) {
       toast.error('Please select products first');
       return;
@@ -123,16 +125,26 @@ const ShopifyIntegration = () => {
         
         if (assignmentType === 'category') {
           updateData.category = value;
+          console.log(`Updating product ${productId} category to:`, value);
         } else if (assignmentType === 'artist') {
           updateData.artist_id = parseInt(value);
+          console.log(`Updating product ${productId} artist_id to:`, parseInt(value));
         }
         
-        const { error } = await supabase
+        console.log('Update data for product', productId, ':', updateData);
+        
+        const { data, error } = await supabase
           .from('products')
           .update(updateData)
-          .eq('id', productId);
+          .eq('id', productId)
+          .select();
           
-        if (error) throw error;
+        if (error) {
+          console.error('Database error for product', productId, ':', error);
+          throw error;
+        }
+        
+        console.log('Successfully updated product', productId, ':', data);
         return { productId, success: true };
       });
 
@@ -144,10 +156,13 @@ const ShopifyIntegration = () => {
       
       toast.success(`Assigned ${selectedProducts.size} products to ${assignmentLabel}`);
       
+      console.log('Reloading data after bulk assignment...');
       // Don't clear selection to allow multiple assignments
       await loadData(); // Refresh products to show updated assignments
+      console.log('Data reloaded successfully');
     } catch (error) {
       logger.error('Error updating products:', error);
+      console.error('Bulk assignment error:', error);
       toast.error('Failed to update products');
     } finally {
       setIsUpdating(false);
