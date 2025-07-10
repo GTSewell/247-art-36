@@ -88,9 +88,15 @@ export const useShopifyIntegration = () => {
     }
   }, []);
 
-  // Get products with Shopify data
-  const getShopifyProducts = useCallback(async (category?: 'print' | 'merch' | 'sticker') => {
+  // Get products with Shopify data with forced refresh
+  const getShopifyProducts = useCallback(async (category?: 'print' | 'merch' | 'sticker' | 'original' | 'signed' | 'collection', forceRefresh = false) => {
     try {
+      logger.info('🔍 Fetching Shopify products:', { 
+        category, 
+        forceRefresh,
+        timestamp: new Date().toISOString()
+      });
+      
       let query = supabase
         .from('products')
         .select(`
@@ -110,6 +116,7 @@ export const useShopifyIntegration = () => {
       const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) {
+        logger.error('❌ Error fetching products:', error);
         throw error;
       }
 
@@ -120,21 +127,23 @@ export const useShopifyIntegration = () => {
         artist_name: product.artists?.name || 'Unassigned'
       })) || [];
 
-      logger.info('Fetched Shopify products:', { 
+      logger.info('📦 Fetched Shopify products:', { 
         count: products.length, 
         categoryFilter: category,
-        sampleProduct: products[0] ? {
-          id: products[0].id,
-          name: products[0].name,
-          category: products[0].category,
-          artist_id: products[0].artist_id,
-          artist_name: products[0].artist_name
-        } : null
+        categoriesFound: [...new Set(products.map(p => p.category))],
+        artistsAssigned: products.filter(p => p.artist_id).length,
+        sampleProducts: products.slice(0, 3).map(p => ({
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          artist_id: p.artist_id,
+          artist_name: p.artist_name
+        }))
       });
 
       return products;
     } catch (error) {
-      logger.error('Error fetching Shopify products:', error);
+      logger.error('❌ Error fetching Shopify products:', error);
       return [];
     }
   }, []);

@@ -61,6 +61,20 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
     }
   };
 
+  // Debug logging for category products
+  React.useEffect(() => {
+    console.log(`🏪 CategoryProducts for ${categoryName}:`, {
+      categoryName,
+      productCount: products.length,
+      products: products.map(p => ({
+        id: p.id,
+        name: p.name,
+        category: p.category,
+        artist: p.artists?.name || (p as any).artist_name
+      }))
+    });
+  }, [products, categoryName]);
+
   return (
     <div className="bg-zap-yellow rounded-lg border-4 border-white overflow-hidden h-full">
       <ScrollArea className="h-[calc(100vh-130px)]">

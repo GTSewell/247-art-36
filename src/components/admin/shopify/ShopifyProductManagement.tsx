@@ -4,6 +4,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import ProductBulkActions from './ProductBulkActions';
 import ProductList from './ProductList';
+import DebugPanel from './DebugPanel';
 
 interface ShopifyProductManagementProps {
   products: any[];
@@ -54,7 +55,7 @@ const ShopifyProductManagement = ({
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
         <ProductBulkActions
           selectedProducts={selectedProducts}
           artists={artists}
@@ -62,6 +63,10 @@ const ShopifyProductManagement = ({
           onClearSelection={onClearSelection}
           onBulkAssignment={onBulkAssignment}
         />
+        
+        {selectedProducts.size > 0 && (
+          <DebugPanel selectedProducts={selectedProducts} />
+        )}
         
         <ProductList
           products={products}

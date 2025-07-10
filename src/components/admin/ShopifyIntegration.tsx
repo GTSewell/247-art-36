@@ -29,11 +29,13 @@ const ShopifyIntegration = () => {
     loadArtists();
   }, []);
 
-  const loadData = async () => {
+  const loadData = async (forceRefresh = false) => {
     try {
+      logger.info('🔄 Loading Shopify data...', { forceRefresh });
+      
       const [logs, shopifyProducts] = await Promise.all([
         getSyncLogs(),
-        getShopifyProducts()
+        getShopifyProducts(undefined, forceRefresh)
       ]);
       
       setSyncLogs(logs);
@@ -48,8 +50,17 @@ const ShopifyIntegration = () => {
         syncedProducts: syncedCount,
         lastSync: lastSyncDate
       });
+      
+      logger.info('📊 Data loaded:', { 
+        productCount: syncedCount, 
+        lastSync: lastSyncDate,
+        categoriesSummary: shopifyProducts.reduce((acc, p) => {
+          acc[p.category] = (acc[p.category] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>)
+      });
     } catch (error) {
-      logger.error('Error loading Shopify data:', error);
+      logger.error('❌ Error loading Shopify data:', error);
       toast.error('Failed to load Shopify integration data');
     }
   };
@@ -106,7 +117,12 @@ const ShopifyIntegration = () => {
     assignmentType: 'category' | 'artist',
     value: string
   ) => {
-    logger.info('handleBulkAssignment called:', { assignmentType, value, selectedProducts: Array.from(selectedProducts) });
+    logger.info('🚀 BULK ASSIGNMENT STARTED:', { 
+      assignmentType, 
+      value, 
+      selectedProducts: Array.from(selectedProducts),
+      selectedCount: selectedProducts.size
+    });
     
     if (selectedProducts.size === 0) {
       toast.error('Please select products first');
@@ -114,73 +130,139 @@ const ShopifyIntegration = () => {
     }
 
     setIsUpdating(true);
+    let successCount = 0;
+    let failureCount = 0;
+    const errors: string[] = [];
+
     try {
-      // Process updates sequentially to avoid overwhelming the database
-      const updateResults = [];
-      
+      // Process updates with comprehensive error handling
       for (const productId of Array.from(selectedProducts)) {
-        const updateData: any = {};
-        
-        if (assignmentType === 'category') {
-          updateData.category = value;
-          logger.info(`Updating product ${productId} category to:`, value);
-        } else if (assignmentType === 'artist') {
-          const artistId = parseInt(value);
-          updateData.artist_id = artistId;
-          logger.info(`Updating product ${productId} artist_id to:`, artistId);
-        }
-        
-        logger.info('Update data for product ' + productId + ':', updateData);
-        
-        const { data, error } = await supabase
-          .from('products')
-          .update(updateData)
-          .eq('id', productId)
-          .select(`
-            *,
-            artists (
+        try {
+          const updateData: any = {};
+          
+          if (assignmentType === 'category') {
+            updateData.category = value;
+            logger.info(`📦 Updating product ${productId} category to: ${value}`);
+          } else if (assignmentType === 'artist') {
+            const artistId = parseInt(value);
+            if (isNaN(artistId)) {
+              throw new Error(`Invalid artist ID: ${value}`);
+            }
+            updateData.artist_id = artistId;
+            logger.info(`👨‍🎨 Updating product ${productId} artist_id to: ${artistId}`);
+          }
+          
+          logger.info(`💾 Update data for product ${productId}:`, updateData);
+          
+          // First, verify the product exists
+          const { data: existingProduct, error: checkError } = await supabase
+            .from('products')
+            .select('id, name, category, artist_id')
+            .eq('id', productId)
+            .single();
+            
+          if (checkError) {
+            throw new Error(`Product ${productId} not found: ${checkError.message}`);
+          }
+          
+          logger.info(`📋 Product ${productId} before update:`, existingProduct);
+          
+          // Perform the update
+          const { data, error } = await supabase
+            .from('products')
+            .update(updateData)
+            .eq('id', productId)
+            .select(`
               id,
               name,
-              image
-            )
-          `);
+              category,
+              artist_id,
+              artists (
+                id,
+                name,
+                image
+              )
+            `);
+            
+          if (error) {
+            logger.error(`❌ Database error for product ${productId}:`, error);
+            throw new Error(`Failed to update product ${productId}: ${error.message}`);
+          }
           
-        if (error) {
-          logger.error('Database error for product ' + productId + ':', error);
-          throw error;
+          if (!data || data.length === 0) {
+            throw new Error(`No data returned for product ${productId} update`);
+          }
+          
+          logger.info(`✅ Successfully updated product ${productId}:`, data[0]);
+          
+          // Immediate verification
+          const { data: verifyData, error: verifyError } = await supabase
+            .from('products')
+            .select('id, name, category, artist_id')
+            .eq('id', productId)
+            .single();
+            
+          if (verifyError) {
+            logger.error(`⚠️ Verification failed for product ${productId}:`, verifyError);
+          } else {
+            logger.info(`🔍 Verification for product ${productId}:`, verifyData);
+            
+            // Check if the update actually took effect
+            const updateWorked = assignmentType === 'category' 
+              ? verifyData.category === value
+              : verifyData.artist_id === parseInt(value);
+              
+            if (!updateWorked) {
+              throw new Error(`Update verification failed - ${assignmentType} not updated correctly`);
+            }
+          }
+          
+          successCount++;
+          
+        } catch (productError) {
+          failureCount++;
+          const errorMsg = `Product ${productId}: ${productError.message}`;
+          errors.push(errorMsg);
+          logger.error(`❌ Individual product update failed:`, errorMsg);
         }
-        
-        logger.info('Successfully updated product ' + productId + ':', data);
-        updateResults.push({ productId, success: true, data });
       }
       
-      const assignmentLabel = assignmentType === 'category' 
-        ? storeCategories.find(c => c.id === value)?.label
-        : artists.find(a => a.id.toString() === value)?.name;
+      // Show results
+      if (successCount > 0) {
+        const assignmentLabel = assignmentType === 'category' 
+          ? storeCategories.find(c => c.id === value)?.label || value
+          : artists.find(a => a.id.toString() === value)?.name || value;
+        
+        toast.success(`✅ Successfully updated ${successCount} products to ${assignmentLabel}`, {
+          description: failureCount > 0 ? `${failureCount} products failed to update` : undefined
+        });
+      }
       
-      toast.success(`Successfully assigned ${selectedProducts.size} products to ${assignmentLabel}`);
+      if (failureCount > 0) {
+        toast.error(`❌ Failed to update ${failureCount} products`, {
+          description: errors.slice(0, 3).join('; ') + (errors.length > 3 ? '...' : '')
+        });
+      }
       
-      logger.info('Bulk assignment completed successfully, reloading data...');
+      logger.info('🔄 Reloading product data...');
       
       // Force refresh of products to show updated assignments
       await loadData();
       
-      // Verify the updates worked by checking a sample product
-      if (updateResults.length > 0) {
-        const sampleProductId = updateResults[0].productId;
-        const { data: verifyData } = await supabase
-          .from('products')
-          .select('id, name, category, artist_id')
-          .eq('id', sampleProductId)
-          .single();
-        
-        logger.info('Verification check - product after update:', verifyData);
+      // Clear selection if all updates succeeded
+      if (successCount > 0 && failureCount === 0) {
+        setSelectedProducts(new Set());
       }
       
-      logger.info('Data reload completed');
+      logger.info('📊 Bulk assignment completed:', { 
+        successCount, 
+        failureCount, 
+        errors: errors.length 
+      });
+      
     } catch (error) {
-      logger.error('Error updating products:', error);
-      toast.error('Failed to update products');
+      logger.error('💥 Bulk assignment failed completely:', error);
+      toast.error('❌ Bulk assignment failed: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setIsUpdating(false);
     }
