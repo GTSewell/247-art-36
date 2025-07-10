@@ -20,6 +20,9 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
   const [urls, setUrls] = useState<string[]>(['']);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState<string>('');
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [totalSteps, setTotalSteps] = useState<number>(0);
 
   const addUrlField = () => {
     setUrls([...urls, '']);
@@ -55,8 +58,29 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
     }
 
     setIsGenerating(true);
+    setTotalSteps(validUrls.length + 2); // URLs + AI generation + formatting
+    setCurrentStep(0);
+    setGenerationProgress('🚀 Starting enhanced profile generation...');
 
     try {
+      // Simulate progress updates for each URL
+      for (let i = 0; i < validUrls.length; i++) {
+        setCurrentStep(i + 1);
+        const url = validUrls[i];
+        const platform = url.includes('instagram.com') ? 'Instagram' :
+                        url.includes('twitter.com') || url.includes('x.com') ? 'X (Twitter)' :
+                        url.includes('linkedin.com') ? 'LinkedIn' :
+                        url.includes('behance.net') ? 'Behance' :
+                        url.includes('dribbble.com') ? 'Dribbble' :
+                        new URL(url).hostname;
+        
+        setGenerationProgress(`🔍 Reading your ${platform} profile...`);
+        await new Promise(resolve => setTimeout(resolve, 800)); // Visual delay for UX
+      }
+
+      setCurrentStep(totalSteps - 1);
+      setGenerationProgress('🎨 Crafting your professional artist profile...');
+
       const { data, error } = await supabase.functions.invoke('auto-generate-profile', {
         body: {
           urls: validUrls,
@@ -72,29 +96,44 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
         throw new Error(data.error || 'Failed to generate profile');
       }
 
+      setCurrentStep(totalSteps);
+      setGenerationProgress('✨ Finalizing your profile...');
+
       const { profileData } = data;
       
-      // Convert the AI response to our form data format
+      // Convert the AI response to our form data format with enhanced mapping
       const formattedData: Partial<ArtistProfileFormData> = {
         name: profileData.name || '',
         bio: profileData.bio || '',
+        highlight_bio: profileData.highlight_bio || '',
         specialty: profileData.specialty || '',
         city: profileData.city || '',
         country: profileData.country || '',
-        techniques: profileData.techniques || [],
-        styles: profileData.styles || [],
+        techniques: Array.isArray(profileData.techniques) ? profileData.techniques.join(', ') : (profileData.techniques || ''),
+        styles: Array.isArray(profileData.styles) ? profileData.styles.join(', ') : (profileData.styles || ''),
         social_platforms: profileData.social_platforms || []
       };
 
       onProfileGenerated(formattedData);
       
-      toast.success(`Profile generated successfully! Processed ${data.processedUrls} of ${data.totalUrls} URLs.`);
+      // Enhanced success message with detailed results
+      const filledFields = Object.values(formattedData).filter(value => {
+        if (!value) return false;
+        if (typeof value === 'string') return value.trim().length > 0;
+        if (Array.isArray(value)) return value.length > 0;
+        return true;
+      }).length;
+      
+      toast.success(`🎉 Profile generated successfully! Filled ${filledFields} fields from ${data.processedUrls} of ${data.totalUrls} URLs.`);
       setIsExpanded(false);
     } catch (error: any) {
       console.error('Error generating profile:', error);
       toast.error(`Failed to generate profile: ${error.message}`);
     } finally {
       setIsGenerating(false);
+      setGenerationProgress('');
+      setCurrentStep(0);
+      setTotalSteps(0);
     }
   };
 
@@ -175,6 +214,26 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
           Add Another Link
         </Button>
 
+        {/* Enhanced Progress Indicator */}
+        {isGenerating && (
+          <div className="space-y-3 p-4 bg-muted/30 rounded-lg border">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-foreground">
+                {generationProgress}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {currentStep}/{totalSteps}
+              </span>
+            </div>
+            <div className="w-full bg-muted rounded-full h-2">
+              <div 
+                className="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${totalSteps > 0 ? (currentStep / totalSteps) * 100 : 0}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-2 pt-2">
           <Button
             onClick={generateProfile}
@@ -184,12 +243,12 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
             {isGenerating ? (
               <>
                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                Generating...
+                {generationProgress || 'Generating...'}
               </>
             ) : (
               <>
                 <Sparkles className="h-4 w-4 mr-2" />
-                Generate Profile
+                Generate Enhanced Profile
               </>
             )}
           </Button>

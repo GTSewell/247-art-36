@@ -44,19 +44,34 @@ serve(async (req) => {
     console.log('Processing auto-profile generation for artist:', artistId);
     console.log('URLs to process:', urls);
 
-    // Fetch content from provided URLs with timeout handling
+    // Enhanced content fetching with progress tracking
     const urlContents = await Promise.allSettled(
-      urls.map(async (url: string) => {
+      urls.map(async (url: string, index: number) => {
         try {
-          console.log(`Fetching content from: ${url}`);
+          console.log(`[${index + 1}/${urls.length}] 🔍 Reading content from: ${url}`);
           
-          // Create timeout controller
+          // Determine platform type for better extraction
+          const platform = url.includes('instagram.com') ? 'instagram' :
+                          url.includes('twitter.com') || url.includes('x.com') ? 'twitter' :
+                          url.includes('linkedin.com') ? 'linkedin' :
+                          url.includes('behance.net') ? 'behance' :
+                          url.includes('dribbble.com') ? 'dribbble' :
+                          'website';
+          
+          console.log(`📱 Detected platform: ${platform}`);
+          
+          // Extended timeout for thorough content loading
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000);
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
           
           const response = await fetch(url, {
             headers: {
-              'User-Agent': 'Mozilla/5.0 (compatible; ArtistProfileBot/1.0)',
+              'User-Agent': 'Mozilla/5.0 (compatible; ArtistProfileBot/1.0; +https://lovable.dev)',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.5',
+              'Accept-Encoding': 'gzip, deflate',
+              'DNT': '1',
+              'Connection': 'keep-alive',
             },
             signal: controller.signal
           });
@@ -68,10 +83,18 @@ serve(async (req) => {
           }
           
           const text = await response.text();
-          return { url, content: text.substring(0, 5000) }; // Limit content length
+          console.log(`✅ Successfully fetched ${text.length} characters from ${url}`);
+          
+          // Massive content analysis - 50,000 characters per URL
+          return { 
+            url, 
+            content: text.substring(0, 50000),
+            platform,
+            contentLength: text.length
+          };
         } catch (error) {
-          console.error(`Error fetching ${url}:`, error);
-          return { url, error: error.message };
+          console.error(`❌ Error fetching ${url}:`, error);
+          return { url, error: error.message, platform: 'unknown' };
         }
       })
     );
@@ -90,63 +113,85 @@ serve(async (req) => {
       });
     }
 
-    // Create AI prompt for profile generation with artistic focus
+    console.log('🎨 Now crafting your professional artist profile...');
+
+    // Enhanced AI prompt for comprehensive extraction
     const prompt = `
-You are an AI assistant specialized in creating professional artist profiles. Your task is to analyze web content and extract ONLY artistic and professional information, filtering out personal social media content.
+You are an elite AI specialist in creating exceptional artist profiles. Your mission is to perform DEEP ANALYSIS of web content and extract COMPREHENSIVE artistic and professional information.
+
+🎯 MANDATORY EXTRACTION REQUIREMENTS:
+YOU MUST FILL EVERY POSSIBLE FIELD. Do not leave fields empty unless absolutely no relevant information exists.
+
+PLATFORM-SPECIFIC ANALYSIS:
+${validContents.map(content => `
+PLATFORM: ${content.platform.toUpperCase()} (${content.url})
+CONTENT LENGTH: ${content.contentLength} characters
+ANALYSIS DEPTH: Deep scan for artistic content, bio information, contact details, and professional data
+---`).join('\n')}
 
 ARTISTIC CONTENT PRIORITY RULES:
-1. FOCUS ON: Artwork posts, studio shots, process videos, exhibition announcements, art-related descriptions, professional achievements, artistic techniques, creative processes, gallery features, art sales, commission work
-2. IGNORE: Food photos, personal life events, parties, travel unrelated to art, family photos, everyday activities, non-art related opinions, casual selfies, random retweets/shares
+1. HIGH PRIORITY: Artwork posts, studio documentation, exhibition announcements, artistic process videos, technique discussions, professional achievements, artistic education, gallery features, commission work, art sales, creative collaborations
+2. MEDIUM PRIORITY: Art-related travel, artistic inspirations, studio setup, art supply discussions, creative challenges
+3. IGNORE: Personal food photos, family events, unrelated travel, casual social content, non-art opinions
 
-CONTENT FILTERING INSTRUCTIONS:
-- Prioritize posts with art-related hashtags (#painting, #sculpture, #digitalart, #exhibition, etc.)
-- Look for descriptions of artistic techniques, materials, and processes
-- Extract information from captions that describe artistic work or creative journey
-- Focus on professional achievements, awards, exhibitions, and artistic education
-- Ignore content that doesn't relate to the artist's creative practice
+COMPREHENSIVE EXTRACTION STRATEGY:
+- SCAN EVERY: Profile descriptions, bio sections, post captions, hashtags, linked websites, contact information
+- EXTRACT: Names from profiles and professional contexts
+- IDENTIFY: Artistic specialties from work displayed and descriptions
+- LOCATE: Geographic information from location tags, bio mentions, exhibition venues
+- COMPILE: Techniques from process videos, tutorials, and artwork descriptions
+- CATEGORIZE: Styles from artwork analysis and self-descriptions
+- HARVEST: Social handles directly from URLs and cross-references
 
-Web Content:
-${validContents.map(content => `URL: ${content.url}\nContent: ${content.content}\n---`).join('\n')}
+WEB CONTENT TO ANALYZE:
+${validContents.map(content => `
+========== ${content.platform.toUpperCase()}: ${content.url} ==========
+${content.content}
+==================================================
+`).join('\n')}
 
-ARTISTIC TERMINOLOGY GUIDANCE:
-- Use proper art medium names (e.g., "Oil Painting", "Watercolor", "Digital Illustration", "Sculpture", "Mixed Media")
-- Include specific techniques (e.g., "Impasto", "Glazing", "Collage", "Printmaking", "3D Modeling")
-- Use art style terminology (e.g., "Contemporary", "Abstract", "Realism", "Surrealism", "Minimalism")
+ARTISTIC TERMINOLOGY MASTERY:
+- MEDIUMS: Oil Painting, Watercolor, Acrylic, Digital Art, Digital Illustration, 3D Modeling, Sculpture, Ceramics, Photography, Printmaking, Mixed Media, Collage, Graphic Design, Typography, Murals
+- TECHNIQUES: Impasto, Glazing, Wet-on-wet, Dry brush, Stippling, Cross-hatching, Perspective drawing, Color theory, Composition, Lighting, Texture work, Layering
+- STYLES: Contemporary, Modern, Abstract, Realism, Surrealism, Minimalism, Pop Art, Street Art, Fine Art, Commercial Art, Conceptual Art, Expressionism
 
-Please extract and generate the following information in valid JSON format, focusing ONLY on artistic content:
+GENERATE COMPREHENSIVE ARTIST PROFILE (JSON FORMAT):
 {
-  "name": "Artist's full name (from artistic contexts, not casual mentions)",
-  "highlight_bio": "Concise, engaging 1-2 sentence artist introduction perfect for quick displays and previews",
-  "bio": "Comprehensive 1-3 paragraph artist story including background, artistic journey, achievements, and style",
-  "specialty": "Primary artistic medium (e.g., 'Oil Painter', 'Digital Artist', 'Sculptor', 'Mixed Media Artist')",
-  "city": "City name if mentioned in artistic/professional context",
-  "country": "Country name if mentioned in artistic/professional context", 
-  "techniques": ["artistic technique1", "technique2", "technique3"],
-  "styles": ["art style1", "style2", "style3"],
-  "social_platforms": [
-    {"platform": "instagram", "handle": "@username", "url": "full_url"},
-    {"platform": "website", "handle": "Website", "url": "full_url"}
-  ]
+  "name": "REQUIRED: Extract full artist name from profile sections, about pages, professional mentions, exhibition credits",
+  "highlight_bio": "REQUIRED: Create punchy 1-2 sentence introduction capturing essence and specialty",
+  "bio": "REQUIRED: Write comprehensive 2-3 paragraph story including background, artistic journey, achievements, style, and professional experience",
+  "specialty": "REQUIRED: Identify primary medium/specialty from work shown and descriptions", 
+  "city": "REQUIRED: Extract from location tags, bio mentions, exhibition venues, contact info",
+  "country": "REQUIRED: Extract from location data, bio information, exhibition locations",
+  "techniques": "REQUIRED: Extract 3-6 specific artistic techniques from content analysis",
+  "styles": "REQUIRED: Identify 3-5 artistic styles/movements from artwork and descriptions", 
+  "social_platforms": "REQUIRED: Extract ALL social handles and website URLs with proper formatting"
 }
 
-CONTENT SCORING PRIORITY (High to Low):
-1. Posts showing actual artworks with descriptions
-2. Studio/workspace content and process documentation
-3. Exhibition announcements and gallery features
-4. Artistic technique discussions and tutorials
-5. Professional achievements and artistic education
-6. Art-related collaborations and commissions
+EXTRACTION INTENSITY LEVELS:
+🔍 BASIC: Obvious profile information and main posts
+🔎 DETAILED: Deep dive into captions, comments, tagged locations, linked content  
+🔬 COMPREHENSIVE: Meta analysis of artistic progression, style evolution, professional network
+🧠 EXPERT: Cross-reference multiple sources, infer professional trajectory, synthesize complete picture
 
-QUALITY GUIDELINES:
-- Highlight bio should be 1-2 sentences, punchy and memorable (similar to Instagram bio style)
-- Main bio should be 1-3 paragraphs focusing exclusively on artistic practice and professional experience
-- Techniques should be actual artistic methods, not general skills
-- Styles should be recognized art movements or aesthetic approaches
-- Only extract information that demonstrates artistic professionalism
-- If limited artistic content is found, focus on the most professional aspects available
-- Use null for fields where no relevant artistic information exists
+USE LEVEL: 🧠 EXPERT ANALYSIS
 
-Respond ONLY with the JSON object, no additional text.`;
+MANDATORY COMPLETION CHECKLIST:
+✅ Name extracted from multiple sources and verified
+✅ Specialty identified from primary body of work
+✅ Location data cross-referenced and confirmed  
+✅ Techniques compiled from process documentation
+✅ Styles identified from artistic analysis
+✅ Social platforms harvested from all available sources
+✅ Bios crafted with professional tone and compelling narrative
+
+FINAL VALIDATION:
+- ALL fields must contain meaningful, accurate information
+- NO generic or placeholder content
+- VERIFY artistic authenticity and professional relevance
+- ENSURE compelling and memorable presentation
+
+Respond ONLY with the comprehensive JSON object containing ALL extracted information.`;
 
     console.log('Calling OpenAI API...');
     
@@ -162,8 +207,8 @@ Respond ONLY with the JSON object, no additional text.`;
         messages: [
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7,
-        max_tokens: 1000,
+        temperature: 0.5,
+        max_tokens: 10000,
       }),
     });
 
