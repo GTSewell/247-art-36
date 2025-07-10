@@ -90,35 +90,59 @@ serve(async (req) => {
       });
     }
 
-    // Create AI prompt for profile generation
+    // Create AI prompt for profile generation with artistic focus
     const prompt = `
-You are an AI assistant that helps create professional artist profiles. Analyze the following web content from an artist's social media and websites, then extract and generate structured profile information.
+You are an AI assistant specialized in creating professional artist profiles. Your task is to analyze web content and extract ONLY artistic and professional information, filtering out personal social media content.
+
+ARTISTIC CONTENT PRIORITY RULES:
+1. FOCUS ON: Artwork posts, studio shots, process videos, exhibition announcements, art-related descriptions, professional achievements, artistic techniques, creative processes, gallery features, art sales, commission work
+2. IGNORE: Food photos, personal life events, parties, travel unrelated to art, family photos, everyday activities, non-art related opinions, casual selfies, random retweets/shares
+
+CONTENT FILTERING INSTRUCTIONS:
+- Prioritize posts with art-related hashtags (#painting, #sculpture, #digitalart, #exhibition, etc.)
+- Look for descriptions of artistic techniques, materials, and processes
+- Extract information from captions that describe artistic work or creative journey
+- Focus on professional achievements, awards, exhibitions, and artistic education
+- Ignore content that doesn't relate to the artist's creative practice
 
 Web Content:
 ${validContents.map(content => `URL: ${content.url}\nContent: ${content.content}\n---`).join('\n')}
 
-Please extract and generate the following information in valid JSON format:
+ARTISTIC TERMINOLOGY GUIDANCE:
+- Use proper art medium names (e.g., "Oil Painting", "Watercolor", "Digital Illustration", "Sculpture", "Mixed Media")
+- Include specific techniques (e.g., "Impasto", "Glazing", "Collage", "Printmaking", "3D Modeling")
+- Use art style terminology (e.g., "Contemporary", "Abstract", "Realism", "Surrealism", "Minimalism")
+
+Please extract and generate the following information in valid JSON format, focusing ONLY on artistic content:
 {
-  "name": "Artist's full name",
-  "bio": "Professional 2-3 sentence biography highlighting their artistic focus and experience",
-  "specialty": "Primary artistic medium or focus (e.g., 'Oil Painter', 'Digital Artist')",
-  "city": "City name if mentioned",
-  "country": "Country name if mentioned", 
-  "techniques": ["technique1", "technique2", "technique3"],
-  "styles": ["style1", "style2", "style3"],
+  "name": "Artist's full name (from artistic contexts, not casual mentions)",
+  "bio": "Professional 2-3 sentence biography highlighting ONLY artistic focus, experience, and creative practice",
+  "specialty": "Primary artistic medium (e.g., 'Oil Painter', 'Digital Artist', 'Sculptor', 'Mixed Media Artist')",
+  "city": "City name if mentioned in artistic/professional context",
+  "country": "Country name if mentioned in artistic/professional context", 
+  "techniques": ["artistic technique1", "technique2", "technique3"],
+  "styles": ["art style1", "style2", "style3"],
   "social_platforms": [
     {"platform": "instagram", "handle": "@username", "url": "full_url"},
     {"platform": "website", "handle": "Website", "url": "full_url"}
   ]
 }
 
-Guidelines:
-- Extract only factual information found in the content
-- Keep bio professional and concise (2-3 sentences max)
-- Include 2-5 techniques and styles based on what you find
-- Only include social platforms that are explicitly mentioned
-- If information is not available, use null for that field
-- Ensure all JSON is properly formatted and valid
+CONTENT SCORING PRIORITY (High to Low):
+1. Posts showing actual artworks with descriptions
+2. Studio/workspace content and process documentation
+3. Exhibition announcements and gallery features
+4. Artistic technique discussions and tutorials
+5. Professional achievements and artistic education
+6. Art-related collaborations and commissions
+
+QUALITY GUIDELINES:
+- Bio must focus exclusively on artistic practice and professional experience
+- Techniques should be actual artistic methods, not general skills
+- Styles should be recognized art movements or aesthetic approaches
+- Only extract information that demonstrates artistic professionalism
+- If limited artistic content is found, focus on the most professional aspects available
+- Use null for fields where no relevant artistic information exists
 
 Respond ONLY with the JSON object, no additional text.`;
 
