@@ -7,6 +7,7 @@ import { logger } from "@/utils/logger";
 import { findArtistByName } from './utils/artistSearchStrategies';
 import { processArtistData, createDefaultProfile, extractArtistData } from './utils/artistDataProcessor';
 import { fetchArtistProfileLinks } from '@/components/pwa/artist-settings/api/fetch/fetchArtistProfileLinks';
+import { supabase } from '@/integrations/supabase/client';
 
 export function useArtistData(artistName: string | undefined) {
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -41,19 +42,43 @@ export function useArtistData(artistName: string | undefined) {
           if (processedArtist) {
             setArtist(processedArtist);
             
-            // Try to load artist profile links from the new table
+            // Try to load artist profile data from the new table
             try {
-              const { data: links } = await fetchArtistProfileLinks(processedArtist.id.toString());
+              const [linksResult, profileResult] = await Promise.allSettled([
+                fetchArtistProfileLinks(processedArtist.id.toString()),
+                supabase
+                  .from('artist_profiles')
+                  .select('background_image, background_color, panel_color')
+                  .eq('artist_id', processedArtist.id)
+                  .maybeSingle()
+              ]);
               
-              // Create profile with real links if available
+              // Create profile with real data if available
               const defaultProfile = createDefaultProfile(processedArtist);
-              if (links && links.length > 0) {
-                defaultProfile.links = links;
+              
+              // Add links if available
+              if (linksResult.status === 'fulfilled' && linksResult.value.data && linksResult.value.data.length > 0) {
+                defaultProfile.links = linksResult.value.data;
               }
+              
+              // Add profile data (background image, colors) if available
+              if (profileResult.status === 'fulfilled' && profileResult.value.data) {
+                const profileData = profileResult.value.data;
+                if (profileData.background_image) {
+                  defaultProfile.background_image = profileData.background_image;
+                }
+                if (profileData.background_color) {
+                  defaultProfile.background_color = profileData.background_color;
+                }
+                if (profileData.panel_color) {
+                  defaultProfile.panel_color = profileData.panel_color;
+                }
+              }
+              
               setProfile(defaultProfile);
             } catch (error) {
-              logger.warn("Could not load artist profile links (table may not exist yet):", error);
-              // Create a default profile without links
+              logger.warn("Could not load artist profile data (table may not exist yet):", error);
+              // Create a default profile without additional data
               const defaultProfile = createDefaultProfile(processedArtist);
               setProfile(defaultProfile);
             }
