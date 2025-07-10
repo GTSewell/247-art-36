@@ -6,6 +6,7 @@ import { uploadImage } from "./api/imageUploadAPI";
 import { updateArtistProfileImage } from "./api/profile/profileImageAPI";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ImageCropDialog from "./ImageCropDialog";
 
 interface ImageUploadProps {
   currentImage: string | null;
@@ -21,16 +22,30 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   artistId
 }) => {
   const [uploading, setUploading] = useState(false);
+  const [showCropDialog, setShowCropDialog] = useState(false);
+  const [selectedImageForCrop, setSelectedImageForCrop] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
   
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    
+
+    const file = files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setSelectedImageForCrop(imageUrl);
+    setShowCropDialog(true);
+
+    // Clear the input so the same file can be selected again if needed
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleCropComplete = async (croppedImageBlob: Blob) => {
     try {
       setUploading(true);
       
@@ -39,7 +54,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       
       console.log("Uploading image for artist:", safeArtistName, "ID:", artistId);
       
-      const imageUrl = await uploadImage(files[0], safeArtistName, true);
+      // Convert blob to file for upload
+      const croppedFile = new File([croppedImageBlob], 'profile.jpg', { type: 'image/jpeg' });
+      
+      const imageUrl = await uploadImage(croppedFile, safeArtistName, true);
       if (imageUrl) {
         // Update the local state
         onImageChange(imageUrl);
@@ -83,10 +101,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       toast.error(`Upload failed: ${error.message}`);
     } finally {
       setUploading(false);
-      // Clear the input so the same file can be selected again if needed
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     }
   };
   
@@ -117,7 +131,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
       <input
         type="file"
         ref={fileInputRef}
-        onChange={handleImageUpload}
+        onChange={handleFileSelect}
         className="hidden"
         accept="image/*"
       />
@@ -142,6 +156,20 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </>
         )}
       </Button>
+
+      {selectedImageForCrop && (
+        <ImageCropDialog
+          isOpen={showCropDialog}
+          onClose={() => {
+            setShowCropDialog(false);
+            setSelectedImageForCrop(null);
+          }}
+          imageSrc={selectedImageForCrop}
+          onCropComplete={handleCropComplete}
+          aspectRatio={1}
+          title="Crop Profile Image"
+        />
+      )}
     </div>
   );
 };

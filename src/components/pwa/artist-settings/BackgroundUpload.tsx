@@ -1,9 +1,10 @@
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Upload, ImageIcon, X } from "lucide-react";
+import { Upload, ImageIcon, X, Crop } from "lucide-react";
 import { uploadImage } from "./api/imageUploadAPI";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ImageCropDialog from "./ImageCropDialog";
 
 interface BackgroundUploadProps {
   currentBackground: string | null;
@@ -19,16 +20,30 @@ const BackgroundUpload: React.FC<BackgroundUploadProps> = ({
   artistId
 }) => {
   const [uploading, setUploading] = useState(false);
+  const [showCropDialog, setShowCropDialog] = useState(false);
+  const [selectedImageForCrop, setSelectedImageForCrop] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const handleImageClick = () => {
     fileInputRef.current?.click();
   };
   
-  const handleBackgroundUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    
+
+    const file = files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setSelectedImageForCrop(imageUrl);
+    setShowCropDialog(true);
+
+    // Clear the input so the same file can be selected again if needed
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleCropComplete = async (croppedImageBlob: Blob) => {
     try {
       setUploading(true);
       
@@ -37,7 +52,10 @@ const BackgroundUpload: React.FC<BackgroundUploadProps> = ({
       
       console.log("Uploading background image for artist:", safeArtistName, "ID:", artistId);
       
-      const imageUrl = await uploadImage(files[0], safeArtistName, false, "Background_Image");
+      // Convert blob to file for upload
+      const croppedFile = new File([croppedImageBlob], 'background.jpg', { type: 'image/jpeg' });
+      
+      const imageUrl = await uploadImage(croppedFile, safeArtistName, false, "Background_Image");
       if (imageUrl) {
         // Update the local state
         onBackgroundChange(imageUrl);
@@ -101,10 +119,6 @@ const BackgroundUpload: React.FC<BackgroundUploadProps> = ({
       toast.error(`Upload failed: ${error.message}`);
     } finally {
       setUploading(false);
-      // Clear the input so the same file can be selected again if needed
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     }
   };
 
@@ -186,7 +200,7 @@ const BackgroundUpload: React.FC<BackgroundUploadProps> = ({
       <input
         type="file"
         ref={fileInputRef}
-        onChange={handleBackgroundUpload}
+        onChange={handleFileSelect}
         className="hidden"
         accept="image/*"
       />
@@ -211,6 +225,20 @@ const BackgroundUpload: React.FC<BackgroundUploadProps> = ({
           </>
         )}
       </Button>
+
+      {selectedImageForCrop && (
+        <ImageCropDialog
+          isOpen={showCropDialog}
+          onClose={() => {
+            setShowCropDialog(false);
+            setSelectedImageForCrop(null);
+          }}
+          imageSrc={selectedImageForCrop}
+          onCropComplete={handleCropComplete}
+          aspectRatio={16 / 9}
+          title="Crop Background Image"
+        />
+      )}
     </div>
   );
 };
