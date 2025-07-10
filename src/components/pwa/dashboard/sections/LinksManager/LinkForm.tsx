@@ -7,8 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { LINK_TYPES } from "./linkTypes";
 
 interface LinkFormProps {
-  newLink: { title: string; url: string; type: string };
-  setNewLink: (link: { title: string; url: string; type: string }) => void;
+  newLink: { title: string; url: string; type: string; customCategory?: string };
+  setNewLink: (link: { title: string; url: string; type: string; customCategory?: string }) => void;
   onAdd: () => void;
   onCancel: () => void;
   saving: boolean;
@@ -47,6 +47,17 @@ export const LinkForm: React.FC<LinkFormProps> = ({
             </SelectContent>
           </Select>
         </div>
+        {newLink.type === 'other' && (
+          <div>
+            <Label htmlFor="custom-category">Custom Category</Label>
+            <Input
+              id="custom-category"
+              placeholder="e.g. Blog, Portfolio, etc."
+              value={newLink.customCategory || ""}
+              onChange={(e) => setNewLink({ ...newLink, customCategory: e.target.value })}
+            />
+          </div>
+        )}
         <div>
           <Label htmlFor="link-title">Link Title</Label>
           <Input

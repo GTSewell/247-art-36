@@ -24,16 +24,21 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
   
   const [showAddLink, setShowAddLink] = useState(false);
   const [editingLink, setEditingLink] = useState<string | null>(null);
-  const [newLink, setNewLink] = useState({ title: "", url: "", type: "website" });
+  const [newLink, setNewLink] = useState({ title: "", url: "", type: "website", customCategory: "" });
 
   const handleAddLink = () => {
     if (newLink.title && newLink.url) {
+      // Determine the effective type - use custom category if "other" is selected and custom category is provided
+      const effectiveType = newLink.type === 'other' && newLink.customCategory 
+        ? newLink.customCategory.toLowerCase().replace(/\s+/g, '_')
+        : newLink.type;
+      
       if (editingLink) {
         // Update existing link
         updateLink(editingLink, {
           title: newLink.title,
           url: newLink.url,
-          type: newLink.type
+          type: effectiveType
         });
         setEditingLink(null);
       } else {
@@ -41,11 +46,11 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
         addLink({
           title: newLink.title,
           url: newLink.url,
-          type: newLink.type,
+          type: effectiveType,
           active: true
         });
       }
-      setNewLink({ title: "", url: "", type: "website" });
+      setNewLink({ title: "", url: "", type: "website", customCategory: "" });
       setShowAddLink(false);
     }
   };
@@ -54,14 +59,15 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
     setNewLink({
       title: link.title,
       url: link.url,
-      type: link.type || "website"
+      type: link.type || "website",
+      customCategory: ""
     });
     setEditingLink(link.id);
     setShowAddLink(true);
   };
 
   const handleCancel = () => {
-    setNewLink({ title: "", url: "", type: "website" });
+    setNewLink({ title: "", url: "", type: "website", customCategory: "" });
     setEditingLink(null);
     setShowAddLink(false);
   };
@@ -102,7 +108,7 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
       {showAddLink && (
         <LinkForm
           newLink={newLink}
-          setNewLink={setNewLink}
+          setNewLink={(link) => setNewLink({ ...link, customCategory: link.customCategory || "" })}
           onAdd={handleAddLink}
           onCancel={handleCancel}
           saving={saving}
