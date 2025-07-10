@@ -89,13 +89,18 @@ const ProductList = ({
               <div className="flex-1">
                 <h4 className="font-medium">{product.name}</h4>
                 <p className="text-sm text-muted-foreground">
-                  ${product.price} • Current: {product.category}
+                  ${product.price}
                 </p>
-                {product.artist_name && (
-                  <p className="text-xs text-muted-foreground">
-                    Assigned to: {product.artist_name}
-                  </p>
-                )}
+                <div className="flex gap-2 mt-1">
+                  <span className="text-xs bg-muted px-2 py-1 rounded">
+                    Section: {product.category || 'Unassigned'}
+                  </span>
+                  {product.artist_name && (
+                    <span className="text-xs bg-primary/10 px-2 py-1 rounded">
+                      Artist: {product.artist_name}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             

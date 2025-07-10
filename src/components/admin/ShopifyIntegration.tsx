@@ -8,6 +8,7 @@ import { logger } from '@/utils/logger';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
+import { storeCategories } from '@/components/store/utils/categoryUtils';
 import SyncStats from './shopify/SyncStats';
 import ProductBulkActions from './shopify/ProductBulkActions';
 import ProductList from './shopify/ProductList';
@@ -117,8 +118,8 @@ const ShopifyIntegration = () => {
 
     setIsUpdating(true);
     try {
-      const updates = Array.from(selectedProducts).map(productId => {
-        const updateData: any = { id: productId };
+      const updates = Array.from(selectedProducts).map(async (productId) => {
+        const updateData: any = {};
         
         if (assignmentType === 'category') {
           updateData.category = value;
@@ -126,17 +127,25 @@ const ShopifyIntegration = () => {
           updateData.artist_id = parseInt(value);
         }
         
-        return supabase
+        const { error } = await supabase
           .from('products')
           .update(updateData)
           .eq('id', productId);
+          
+        if (error) throw error;
+        return { productId, success: true };
       });
 
       await Promise.all(updates);
       
-      toast.success(`Updated ${selectedProducts.size} products`);
-      setSelectedProducts(new Set());
-      await loadData(); // Refresh products
+      const assignmentLabel = assignmentType === 'category' 
+        ? storeCategories.find(c => c.id === value)?.label
+        : artists.find(a => a.id.toString() === value)?.name;
+      
+      toast.success(`Assigned ${selectedProducts.size} products to ${assignmentLabel}`);
+      
+      // Don't clear selection to allow multiple assignments
+      await loadData(); // Refresh products to show updated assignments
     } catch (error) {
       logger.error('Error updating products:', error);
       toast.error('Failed to update products');
