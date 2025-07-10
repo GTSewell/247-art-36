@@ -3,13 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { RefreshCw, Package, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
+import { RefreshCw, Package, AlertCircle, CheckCircle2, Clock, Settings } from 'lucide-react';
 import { useShopifyIntegration } from '@/hooks/useShopifyIntegration';
 import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { supabase } from '@/integrations/supabase/client';
 
 const ShopifyIntegration = () => {
   const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
@@ -22,10 +24,13 @@ const ShopifyIntegration = () => {
   });
   const [autoActivateProducts, setAutoActivateProducts] = useState(false);
   const [showAllProducts, setShowAllProducts] = useState(false);
-  const [activeProducts, setActiveProducts] = useState<Record<number, boolean>>({});
+  const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
+  const [artists, setArtists] = useState<any[]>([]);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     loadData();
+    loadArtists();
   }, []);
 
   const loadData = async () => {
@@ -66,12 +71,85 @@ const ShopifyIntegration = () => {
     return new Date(dateString).toLocaleString();
   };
 
-  const handleActiveToggle = (productId: number, isActive: boolean) => {
-    setActiveProducts(prev => ({
-      ...prev,
-      [productId]: isActive
-    }));
+  const loadArtists = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('artists')
+        .select('id, name')
+        .eq('published', true)
+        .order('name');
+      
+      if (error) throw error;
+      setArtists(data || []);
+    } catch (error) {
+      logger.error('Error loading artists:', error);
+    }
   };
+
+  const handleProductSelect = (productId: number, selected: boolean) => {
+    setSelectedProducts(prev => {
+      const newSelected = new Set(prev);
+      if (selected) {
+        newSelected.add(productId);
+      } else {
+        newSelected.delete(productId);
+      }
+      return newSelected;
+    });
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedProducts(new Set(products.map(p => p.id)));
+    } else {
+      setSelectedProducts(new Set());
+    }
+  };
+
+  const handleBulkAssignment = async (
+    assignmentType: 'category' | 'artist',
+    value: string
+  ) => {
+    if (selectedProducts.size === 0) {
+      toast.error('Please select products first');
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      const updates = Array.from(selectedProducts).map(productId => {
+        const updateData: any = { id: productId };
+        
+        if (assignmentType === 'category') {
+          updateData.category = value;
+        } else if (assignmentType === 'artist') {
+          updateData.artist_id = parseInt(value);
+        }
+        
+        return supabase
+          .from('products')
+          .update(updateData)
+          .eq('id', productId);
+      });
+
+      await Promise.all(updates);
+      
+      toast.success(`Updated ${selectedProducts.size} products`);
+      setSelectedProducts(new Set());
+      await loadData(); // Refresh products
+    } catch (error) {
+      logger.error('Error updating products:', error);
+      toast.error('Failed to update products');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const storeCategories = [
+    { value: 'print', label: 'Prints & Reproductions' },
+    { value: 'merch', label: 'Merchandise' },
+    { value: 'sticker', label: 'Stickers & Decals' }
+  ];
 
   return (
     <div className="space-y-6">
@@ -257,14 +335,14 @@ NOTES
         </Card>
       </div>
 
-      {/* Recent Products */}
+      {/* Product Management */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Shopify Products</CardTitle>
+              <CardTitle>Product Management</CardTitle>
               <CardDescription>
-                Products synced from your Shopify store
+                Select products and assign them to store sections and artists
               </CardDescription>
             </div>
             <div className="flex items-center space-x-2">
@@ -280,51 +358,116 @@ NOTES
         <CardContent>
           {products.length > 0 ? (
             <div className="space-y-4">
-              {(showAllProducts ? products : products.slice(0, 5)).map((product) => (
-                <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    {product.image_url && (
-                      <img 
-                        src={product.image_url} 
-                        alt={product.name}
-                        className="w-12 h-12 object-cover rounded"
-                      />
-                    )}
-                    <div>
-                      <h4 className="font-medium">{product.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        ${product.price} • {product.category}
-                      </p>
-                      {product.artist_name && (
-                        <p className="text-xs text-muted-foreground">
-                          By {product.artist_name}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
+              {/* Bulk Actions */}
+              {selectedProducts.size > 0 && (
+                <div className="bg-muted/50 p-4 rounded-lg border">
+                  <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id={`active-${product.id}`}
-                        checked={activeProducts[product.id] || false}
-                        onCheckedChange={(checked) => handleActiveToggle(product.id, checked as boolean)}
-                      />
-                      <Label htmlFor={`active-${product.id}`} className="text-sm">
-                        Active
-                      </Label>
+                      <Settings className="h-4 w-4" />
+                      <span className="font-medium">
+                        {selectedProducts.size} product{selectedProducts.size > 1 ? 's' : ''} selected
+                      </span>
                     </div>
-                    <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
-                      {product.shopify_inventory_quantity || 0} in stock
-                    </Badge>
-                    <Badge variant={product.is_featured ? "default" : "outline"}>
-                      {product.is_featured ? "Featured" : "Not Featured"}
-                    </Badge>
-                    <Badge variant="outline">
-                      Shopify ID: {product.shopify_product_id}
-                    </Badge>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setSelectedProducts(new Set())}
+                    >
+                      Clear Selection
+                    </Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Assign to Store Section</Label>
+                      <Select onValueChange={(value) => handleBulkAssignment('category', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select store section" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {storeCategories.map((category) => (
+                            <SelectItem key={category.value} value={category.value}>
+                              {category.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>Assign to Artist</Label>
+                      <Select onValueChange={(value) => handleBulkAssignment('artist', value)}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select artist" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {artists.map((artist) => (
+                            <SelectItem key={artist.id} value={artist.id.toString()}>
+                              {artist.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </div>
-              ))}
+              )}
+
+              {/* Select All Checkbox */}
+              <div className="flex items-center space-x-2 py-2 border-b">
+                <Checkbox
+                  id="select-all"
+                  checked={products.length > 0 && selectedProducts.size === products.length}
+                  onCheckedChange={handleSelectAll}
+                />
+                <Label htmlFor="select-all" className="font-medium">
+                  Select All Products
+                </Label>
+              </div>
+
+              {/* Product List */}
+              <div className="space-y-3">
+                {(showAllProducts ? products : products.slice(0, 5)).map((product) => (
+                  <div key={product.id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                    <Checkbox
+                      id={`product-${product.id}`}
+                      checked={selectedProducts.has(product.id)}
+                      onCheckedChange={(checked) => handleProductSelect(product.id, checked as boolean)}
+                    />
+                    
+                    <div className="flex items-center space-x-4 flex-1">
+                      {product.image_url && (
+                        <img 
+                          src={product.image_url} 
+                          alt={product.name}
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      )}
+                      <div className="flex-1">
+                        <h4 className="font-medium">{product.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          ${product.price} • Current: {product.category}
+                        </p>
+                        {product.artist_name && (
+                          <p className="text-xs text-muted-foreground">
+                            Assigned to: {product.artist_name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
+                        {product.shopify_inventory_quantity || 0} in stock
+                      </Badge>
+                      <Badge variant={product.is_featured ? "default" : "outline"}>
+                        {product.is_featured ? "Featured" : "Standard"}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               {!showAllProducts && products.length > 5 && (
                 <div className="text-center pt-4">
                   <p className="text-sm text-muted-foreground">
