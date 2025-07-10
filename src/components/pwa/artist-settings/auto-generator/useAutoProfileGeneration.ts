@@ -70,7 +70,15 @@ export const useAutoProfileGeneration = (
         country: profileData.country || '',
         techniques: Array.isArray(profileData.techniques) ? profileData.techniques.join(', ') : (profileData.techniques || ''),
         styles: Array.isArray(profileData.styles) ? profileData.styles.join(', ') : (profileData.styles || ''),
-        social_platforms: profileData.social_platforms || []
+        profileImage: profileData.profile_image || '',
+        social_platforms: Array.isArray(profileData.social_platforms) 
+          ? profileData.social_platforms.map((platform: any) => {
+              if (typeof platform === 'object' && platform.url) {
+                return platform.url;
+              }
+              return typeof platform === 'string' ? platform : '';
+            }).filter(Boolean)
+          : []
       };
 
       onProfileGenerated(formattedData);

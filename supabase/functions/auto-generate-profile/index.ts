@@ -165,7 +165,8 @@ GENERATE COMPREHENSIVE ARTIST PROFILE (JSON FORMAT):
   "country": "REQUIRED: Extract from location data, bio information, exhibition locations",
   "techniques": "REQUIRED: Extract 3-6 specific artistic techniques from content analysis",
   "styles": "REQUIRED: Identify 3-5 artistic styles/movements from artwork and descriptions", 
-  "social_platforms": "REQUIRED: Extract ALL social handles and website URLs with proper formatting"
+  "profile_image": "REQUIRED: Extract profile image URL from social media platforms",
+  "social_platforms": "REQUIRED: Extract ALL social handles and website URLs as array of objects with format [{\"platform\": \"instagram\", \"url\": \"https://instagram.com/username\", \"username\": \"username\"}, {\"platform\": \"twitter\", \"url\": \"https://twitter.com/username\", \"username\": \"username\"}]"
 }
 
 EXTRACTION INTENSITY LEVELS:
