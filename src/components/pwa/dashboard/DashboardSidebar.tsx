@@ -6,7 +6,7 @@ import {
   Link as LinkIcon, 
   Palette, 
   BarChart3, 
-  Settings,
+  User,
   Store
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -29,6 +29,12 @@ const navigationItems = [
     description: "Dashboard home"
   },
   {
+    id: "settings" as const,
+    label: "Profile",
+    icon: User,
+    description: "Profile settings"
+  },
+  {
     id: "links" as const,
     label: "Links",
     icon: LinkIcon,
@@ -45,12 +51,6 @@ const navigationItems = [
     label: "Analytics",
     icon: BarChart3,
     description: "View insights"
-  },
-  {
-    id: "settings" as const,
-    label: "Settings",
-    icon: Settings,
-    description: "Profile settings"
   }
 ];
 
