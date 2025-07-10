@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Settings } from 'lucide-react';
+import { storeCategories } from '@/components/store/utils/categoryUtils';
 
 interface ProductBulkActionsProps {
   selectedProducts: Set<number>;
@@ -19,11 +20,6 @@ const ProductBulkActions = ({
   onClearSelection, 
   onBulkAssignment 
 }: ProductBulkActionsProps) => {
-  const storeCategories = [
-    { value: 'print', label: 'Prints & Reproductions' },
-    { value: 'merch', label: 'Merchandise' },
-    { value: 'sticker', label: 'Stickers & Decals' }
-  ];
 
   if (selectedProducts.size === 0) return null;
 
@@ -58,7 +54,7 @@ const ProductBulkActions = ({
             </SelectTrigger>
             <SelectContent>
               {storeCategories.map((category) => (
-                <SelectItem key={category.value} value={category.value}>
+                <SelectItem key={category.id} value={category.id}>
                   {category.label}
                 </SelectItem>
               ))}
