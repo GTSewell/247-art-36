@@ -1,0 +1,122 @@
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+
+const ShopifyFormatGuide = () => {
+  const handleDownloadGuide = () => {
+    const guideContent = `SHOPIFY PRODUCT FORMAT GUIDE
+================================
+
+This guide outlines the recommended format for creating products in Shopify 
+to ensure proper synchronization with the 247 system.
+
+PRODUCT TITLE FORMAT
+-------------------
+Format: [Artist Name] - [Artwork Title]
+Examples:
+- "John Smith - Sunset Dreams"
+- "Jane Doe - Abstract Flow #3"
+- "Mike Wilson - City Lights Original"
+
+PRODUCT TYPE FIELD
+-----------------
+Use broad categories:
+- Original Artwork
+- Print
+- Apparel  
+- Sticker
+- Accessories
+
+TAGS FORMAT
+----------
+Use these specific tag formats (comma-separated):
+
+1. ARTIST TAG (Required)
+   Format: artist:[Artist Name]
+   Example: artist:John Smith
+
+2. CATEGORY TAGS (Required - choose one)
+   - category:original-artwork (for original pieces)
+   - category:print (for prints, posters, giclee)
+   - category:sticker (for stickers, decals)
+   - category:merch (for t-shirts, apparel, accessories)
+
+3. CLASSIFICATION TAGS (Optional)
+   - featured (will be highlighted on homepage)
+   - limited-edition (shows limited badge)
+   - artist-exclusive (exclusive to specific artist)
+   - new-release (for recent additions)
+
+DESCRIPTION FORMAT
+-----------------
+Include relevant details such as:
+- Artwork dimensions
+- Materials used
+- Print specifications
+- Care instructions
+- Edition information (if limited)
+
+EXAMPLE PRODUCTS
+---------------
+
+Original Artwork:
+Title: Sarah Johnson - Ocean Waves
+Product Type: Original Artwork
+Tags: artist:Sarah Johnson, category:original-artwork, featured
+Description: Original acrylic painting on canvas, 24" x 36", signed by artist
+
+Art Print:
+Title: Sarah Johnson - Ocean Waves Print
+Product Type: Print
+Tags: artist:Sarah Johnson, category:print, limited-edition
+Description: High-quality giclee print on archival paper, 18" x 24", limited edition of 100
+
+T-Shirt:
+Title: Mike Davis - Street Art Design Tee
+Product Type: Apparel
+Tags: artist:Mike Davis, category:merch, new-release
+Description: 100% cotton t-shirt featuring original street art design, available in S-XXL
+
+Sticker Pack:
+Title: Amy Chen - Floral Sticker Set
+Product Type: Sticker
+Tags: artist:Amy Chen, category:sticker, featured
+Description: Set of 6 waterproof vinyl stickers, perfect for laptops and water bottles
+
+SYSTEM MAPPING
+-------------
+The sync system will automatically:
+- Extract artist name from artist: tags
+- Map Product Type to internal categories
+- Set featured status based on tags
+- Track inventory and pricing
+- Generate product URLs
+
+NOTES
+-----
+- Always include the artist: tag for proper attribution
+- Use consistent naming for artist tags across products
+- Featured tag will make products appear on homepage
+- Limited-edition tag adds special badge display
+- Product Type determines main category classification`;
+    
+    const blob = new Blob([guideContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'shopify-product-format-guide.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast.success('Format guide downloaded!');
+  };
+
+  return (
+    <Button variant="outline" onClick={handleDownloadGuide}>
+      Download Format Guide
+    </Button>
+  );
+};
+
+export default ShopifyFormatGuide;
