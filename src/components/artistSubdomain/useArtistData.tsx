@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { logger } from "@/utils/logger";
 import { findArtistByName } from './utils/artistSearchStrategies';
 import { processArtistData, createDefaultProfile, extractArtistData } from './utils/artistDataProcessor';
+import { fetchArtistProfileLinks } from '@/components/pwa/artist-settings/api/fetch/fetchArtistProfileLinks';
 
 export function useArtistData(artistName: string | undefined) {
   const [artist, setArtist] = useState<Artist | null>(null);
@@ -40,9 +41,22 @@ export function useArtistData(artistName: string | undefined) {
           if (processedArtist) {
             setArtist(processedArtist);
             
-            // Create a default profile
-            const defaultProfile = createDefaultProfile(processedArtist);
-            setProfile(defaultProfile);
+            // Try to load artist profile links from the new table
+            try {
+              const { data: links } = await fetchArtistProfileLinks(processedArtist.id.toString());
+              
+              // Create profile with real links if available
+              const defaultProfile = createDefaultProfile(processedArtist);
+              if (links && links.length > 0) {
+                defaultProfile.links = links;
+              }
+              setProfile(defaultProfile);
+            } catch (error) {
+              logger.warn("Could not load artist profile links (table may not exist yet):", error);
+              // Create a default profile without links
+              const defaultProfile = createDefaultProfile(processedArtist);
+              setProfile(defaultProfile);
+            }
           }
         } else {
           logger.warn(`No artist found with name: ${artistName}`);

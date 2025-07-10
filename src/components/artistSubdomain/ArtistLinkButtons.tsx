@@ -35,16 +35,12 @@ const ArtistLinkButtons: React.FC<ArtistLinkButtonsProps> = ({
   buttonHoverColor,
   buttonBorderColor
 }) => {
-  // Sample links for demo purposes
+  // Sample links for demo purposes when no real links are available
   const sampleLinks = [
     { type: 'website', title: 'Portfolio Website', url: '#' },
     { type: 'exhibition', title: 'Next Exhibition', url: '#' },
-    { type: 'installation', title: 'Public Art Installation', url: '#' },
     { type: 'shop', title: 'Online Art Shop', url: '#' },
-    { type: 'gallery', title: 'Gallery Representation', url: '#' },
-    { type: 'contact', title: 'Contact for Commissions', url: '#' },
     { type: 'video', title: 'Studio Tour Video', url: '#' },
-    { type: 'award', title: 'Recent Awards', url: '#' },
   ];
   
   // Use provided links or sample links for demo
@@ -141,7 +137,7 @@ const ArtistLinkButtons: React.FC<ArtistLinkButtonsProps> = ({
       {/* Show message if no links available */}
       {links.length === 0 && (
         <p className="text-xs text-gray-500 italic mt-2 text-center">
-          These are sample links to show how artist links would appear
+          No additional links available for this artist
         </p>
       )}
     </>

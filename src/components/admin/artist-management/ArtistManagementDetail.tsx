@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
 import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
+import LinksManager from '@/components/pwa/dashboard/sections/LinksManager';
 
 interface ArtistManagementDetailProps {
   selectedArtistId: string | null;
@@ -33,6 +34,13 @@ const ArtistManagementDetail: React.FC<ArtistManagementDetailProps> = ({
             {isCreatingNew ? "Create New Artist" : "Edit Artist Profile"}
           </h2>
           <ArtistProfileSettings artistId={selectedArtistId} />
+        </div>
+      </div>
+      
+      <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div className="p-6">
+          <h2 className="text-xl font-semibold mb-4">Manage Artist Links</h2>
+          <LinksManager artistId={selectedArtistId} isDemo={false} />
         </div>
       </div>
       

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Plus, 
   GripVertical, 
@@ -11,18 +12,35 @@ import {
   Eye, 
   EyeOff,
   Pencil,
-  Trash2
+  Trash2,
+  Globe,
+  Store,
+  Video,
+  Music,
+  Building,
+  Award
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { useArtistProfileLinks } from "@/hooks/useArtistProfileLinks";
 
 interface Link {
   id: string;
   title: string;
   url: string;
   active: boolean;
-  icon?: string;
+  type?: string;
   clicks?: number;
 }
+
+const LINK_TYPES = [
+  { value: 'website', label: 'Website', icon: Globe },
+  { value: 'shop', label: 'Shop', icon: Store },
+  { value: 'exhibition', label: 'Exhibition', icon: Building },
+  { value: 'video', label: 'Video', icon: Video },
+  { value: 'music', label: 'Music', icon: Music },
+  { value: 'nft', label: 'NFT Collection', icon: Award },
+  { value: 'other', label: 'Other', icon: ExternalLink }
+];
 
 interface LinksManagerProps {
   artistId: string | null;
@@ -30,58 +48,45 @@ interface LinksManagerProps {
 }
 
 const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
-  const [links, setLinks] = useState<Link[]>([
-    {
-      id: "1",
-      title: "Instagram",
-      url: "https://instagram.com/artist",
-      active: true,
-      icon: "instagram",
-      clicks: 245
-    },
-    {
-      id: "2", 
-      title: "Portfolio Website",
-      url: "https://artist-portfolio.com",
-      active: true,
-      clicks: 189
-    },
-    {
-      id: "3",
-      title: "Art Shop",
-      url: "https://shop.artist.com",
-      active: false,
-      clicks: 67
-    }
-  ]);
-
+  const { 
+    links, 
+    loading, 
+    saving, 
+    addLink, 
+    deleteLink, 
+    toggleLinkActive 
+  } = useArtistProfileLinks(artistId);
+  
   const [showAddLink, setShowAddLink] = useState(false);
-  const [newLink, setNewLink] = useState({ title: "", url: "" });
+  const [newLink, setNewLink] = useState({ title: "", url: "", type: "website" });
 
-  const toggleLinkActive = (id: string) => {
-    setLinks(links.map(link => 
-      link.id === id ? { ...link, active: !link.active } : link
-    ));
-  };
-
-  const addLink = () => {
+  const handleAddLink = () => {
     if (newLink.title && newLink.url) {
-      const link: Link = {
-        id: Date.now().toString(),
+      addLink({
         title: newLink.title,
         url: newLink.url,
-        active: true,
-        clicks: 0
-      };
-      setLinks([...links, link]);
-      setNewLink({ title: "", url: "" });
+        type: newLink.type,
+        active: true
+      });
+      setNewLink({ title: "", url: "", type: "website" });
       setShowAddLink(false);
     }
   };
 
-  const deleteLink = (id: string) => {
-    setLinks(links.filter(link => link.id !== id));
+  const getLinkIcon = (type?: string) => {
+    const linkType = LINK_TYPES.find(t => t.value === type);
+    return linkType ? linkType.icon : ExternalLink;
   };
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-3xl">
+        <div className="text-center py-12">
+          <div className="animate-pulse text-muted-foreground">Loading links...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-3xl">
@@ -113,10 +118,28 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
+              <Label htmlFor="link-type">Link Type</Label>
+              <Select value={newLink.type} onValueChange={(value) => setNewLink({ ...newLink, type: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select link type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {LINK_TYPES.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      <div className="flex items-center gap-2">
+                        <type.icon className="h-4 w-4" />
+                        {type.label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
               <Label htmlFor="link-title">Link Title</Label>
               <Input
                 id="link-title"
-                placeholder="e.g. My Instagram"
+                placeholder="e.g. My Portfolio Website"
                 value={newLink.title}
                 onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
               />
@@ -131,8 +154,8 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
               />
             </div>
             <div className="flex gap-2">
-              <Button onClick={addLink} disabled={!newLink.title || !newLink.url}>
-                Add Link
+              <Button onClick={handleAddLink} disabled={!newLink.title || !newLink.url || saving}>
+                {saving ? "Adding..." : "Add Link"}
               </Button>
               <Button variant="outline" onClick={() => setShowAddLink(false)}>
                 Cancel
@@ -155,11 +178,7 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
 
                 {/* Link Icon */}
                 <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
-                  {link.icon === "instagram" ? (
-                    <Instagram className="h-5 w-5" />
-                  ) : (
-                    <ExternalLink className="h-5 w-5" />
-                  )}
+                  {React.createElement(getLinkIcon(link.type), { className: "h-5 w-5" })}
                 </div>
 
                 {/* Link Info */}
@@ -176,7 +195,7 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
                     {link.url}
                   </p>
                   <div className="text-xs text-muted-foreground mt-1">
-                    {link.clicks} clicks
+                    {link.clicks || 0} clicks • {LINK_TYPES.find(t => t.value === link.type)?.label || 'Link'}
                   </div>
                 </div>
 
@@ -204,6 +223,7 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
                     size="sm" 
                     className="h-8 w-8 p-0 text-destructive hover:text-destructive"
                     onClick={() => deleteLink(link.id)}
+                    disabled={saving}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

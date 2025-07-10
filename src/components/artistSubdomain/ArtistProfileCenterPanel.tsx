@@ -58,29 +58,17 @@ const ArtistProfileCenterPanel: React.FC<ArtistProfileCenterPanelProps> = ({
             buttonBorderColor={buttonBorderColor}
           />
           
-          {/* Show real links if available */}
-          {links.length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-base font-bold mb-3">Links</h3>
-              <ArtistLinkButtons 
-                links={links}
-                buttonColor={buttonColor}
-                buttonTextColor={buttonTextColor}
-                buttonHoverColor={buttonHoverColor}
-                buttonBorderColor={buttonBorderColor}
-              />
-            </div>
-          )}
-          
-          {/* Show sample links if no real links are available */}
-          {links.length === 0 && (
-            <SampleLinksContainer
+          {/* Show artist links */}
+          <div className="mt-6">
+            <h3 className="text-base font-bold mb-3">Links</h3>
+            <ArtistLinkButtons 
+              links={links}
               buttonColor={buttonColor}
               buttonTextColor={buttonTextColor}
               buttonHoverColor={buttonHoverColor}
               buttonBorderColor={buttonBorderColor}
             />
-          )}
+          </div>
         </div>
       </ScrollArea>
     </div>
