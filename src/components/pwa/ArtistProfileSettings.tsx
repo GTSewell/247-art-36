@@ -74,6 +74,8 @@ const ArtistProfileSettings: React.FC<ArtistProfileSettingsProps> = ({ artistId 
         <AutoProfileGenerator 
           onProfileGenerated={handleAutoProfileGenerated}
           artistId={artistId}
+          onSaveProfile={() => handleSubmit(new Event('submit') as any)}
+          isSaving={saving}
         />
         
         <form onSubmit={onSubmit} className="space-y-4">

@@ -6,7 +6,8 @@ import { isValidUrl, getPlatformName } from "./utils";
 
 export const useAutoProfileGeneration = (
   onProfileGenerated: (profileData: Partial<ArtistProfileFormData>) => void,
-  artistId: string | null
+  artistId: string | null,
+  onShowSaveModal?: () => void
 ) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationProgress, setGenerationProgress] = useState<string>('');
@@ -92,6 +93,11 @@ export const useAutoProfileGeneration = (
       }).length;
       
       toast.success(`🎉 Profile generated successfully! Filled ${filledFields} fields from ${data.processedUrls} of ${data.totalUrls} URLs.`);
+      
+      // Show save modal if callback is provided
+      if (onShowSaveModal) {
+        onShowSaveModal();
+      }
     } catch (error: any) {
       console.error('Error generating profile:', error);
       toast.error(`Failed to generate profile: ${error.message}`);

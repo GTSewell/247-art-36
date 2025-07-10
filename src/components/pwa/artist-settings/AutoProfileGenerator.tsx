@@ -7,13 +7,17 @@ import CollapsedView from "./auto-generator/CollapsedView";
 import UrlInputFields from "./auto-generator/UrlInputFields";
 import ProgressIndicator from "./auto-generator/ProgressIndicator";
 import AutoProfileActions from "./auto-generator/AutoProfileActions";
+import SaveAutoGenModal from "./auto-generator/SaveAutoGenModal";
 
 const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
   onProfileGenerated,
-  artistId
+  artistId,
+  onSaveProfile,
+  isSaving
 }) => {
   const [urls, setUrls] = useState<string[]>(['']);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
   
   const {
     isGenerating,
@@ -21,11 +25,22 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
     currentStep,
     totalSteps,
     generateProfile
-  } = useAutoProfileGeneration(onProfileGenerated, artistId);
+  } = useAutoProfileGeneration(onProfileGenerated, artistId, () => setShowSaveModal(true));
 
   const handleGenerate = () => {
     generateProfile(urls);
     setIsExpanded(false);
+  };
+
+  const handleSaveAutoGen = () => {
+    if (onSaveProfile) {
+      onSaveProfile();
+    }
+    setShowSaveModal(false);
+  };
+
+  const handleCancelSave = () => {
+    setShowSaveModal(false);
   };
 
   if (!isExpanded) {
@@ -66,6 +81,14 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
           <p>• Only accessible content will be used</p>
         </div>
       </CardContent>
+
+      <SaveAutoGenModal
+        open={showSaveModal}
+        onOpenChange={setShowSaveModal}
+        onSave={handleSaveAutoGen}
+        onCancel={handleCancelSave}
+        isSaving={isSaving || false}
+      />
     </Card>
   );
 };

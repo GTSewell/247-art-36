@@ -1,6 +1,8 @@
 export interface AutoProfileGeneratorProps {
   onProfileGenerated: (profileData: Partial<import('../types').ArtistProfileFormData>) => void;
   artistId: string | null;
+  onSaveProfile?: () => void;
+  isSaving?: boolean;
 }
 
 export interface ProgressIndicatorProps {
