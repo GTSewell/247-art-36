@@ -9,14 +9,25 @@ import {
 
 interface ArtistBioProps {
   bio: string;
+  highlightBio?: string;
   isMobile: boolean;
   useAccordion?: boolean;
+  useHighlightBio?: boolean;
 }
 
-const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = false }) => {
+const ArtistBio: React.FC<ArtistBioProps> = ({ 
+  bio, 
+  highlightBio, 
+  isMobile, 
+  useAccordion = false, 
+  useHighlightBio = false 
+}) => {
   const [expanded, setExpanded] = useState(false);
   
-  if (!bio) {
+  // Determine which bio to use
+  const displayBio = useHighlightBio && highlightBio ? highlightBio : bio;
+  
+  if (!displayBio) {
     return null;
   }
 
@@ -39,10 +50,10 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
   };
 
   // Create a bio preview for long bios
-  const isBioLong = bio.length > 120;
+  const isBioLong = displayBio.length > 120;
   const bioPreview = isBioLong 
-    ? `${bio.substring(0, 120)}...` 
-    : bio;
+    ? `${displayBio.substring(0, 120)}...` 
+    : displayBio;
 
   // If using accordion and bio is long, render with accordion
   if (useAccordion && isBioLong) {
@@ -55,7 +66,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
             </AccordionTrigger>
             <AccordionContent>
               <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full min-w-0">
-                {formatBioText(bio)}
+                {formatBioText(displayBio)}
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -69,7 +80,7 @@ const ArtistBio: React.FC<ArtistBioProps> = ({ bio, isMobile, useAccordion = fal
     <div className="mb-4 w-full min-w-0">
       <h3 className="font-bold text-base mb-1">Bio</h3>
       <div className="text-gray-700 leading-relaxed w-full overflow-hidden text-wrap break-words max-w-full min-w-0">
-        {formatBioText(bio)}
+        {formatBioText(displayBio)}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ export interface ArtistProfileFormData {
   name: string;
   specialty: string;
   bio: string;
+  highlight_bio: string;
   profileImage: string;
   backgroundImage: string;
   city: string;
@@ -34,6 +35,7 @@ export interface ArtistProfile {
   user_id?: string;
   name: string;
   bio?: string;
+  highlight_bio?: string;
   image?: string;
   website?: string;
   social_links?: Record<string, string>;

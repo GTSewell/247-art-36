@@ -35,6 +35,7 @@ export const saveArtistProfile = async (formData: ArtistProfileFormData, artistI
       name: formData.name,
       specialty: formData.specialty,
       bio: formData.bio,
+      highlight_bio: formData.highlight_bio,
       city: formData.city,
       country: formData.country,
       techniques: techniques,

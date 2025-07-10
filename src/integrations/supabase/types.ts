@@ -99,6 +99,7 @@ export type Database = {
           bio: string | null
           city: string | null
           country: string | null
+          highlight_bio: string | null
           id: number
           image: string | null
           location: string | null
@@ -118,6 +119,7 @@ export type Database = {
           bio?: string | null
           city?: string | null
           country?: string | null
+          highlight_bio?: string | null
           id: number
           image?: string | null
           location?: string | null
@@ -137,6 +139,7 @@ export type Database = {
           bio?: string | null
           city?: string | null
           country?: string | null
+          highlight_bio?: string | null
           id?: number
           image?: string | null
           location?: string | null

@@ -116,7 +116,8 @@ ARTISTIC TERMINOLOGY GUIDANCE:
 Please extract and generate the following information in valid JSON format, focusing ONLY on artistic content:
 {
   "name": "Artist's full name (from artistic contexts, not casual mentions)",
-  "bio": "Professional 2-3 sentence biography highlighting ONLY artistic focus, experience, and creative practice",
+  "highlight_bio": "Concise, engaging 1-2 sentence artist introduction perfect for quick displays and previews",
+  "bio": "Comprehensive 1-3 paragraph artist story including background, artistic journey, achievements, and style",
   "specialty": "Primary artistic medium (e.g., 'Oil Painter', 'Digital Artist', 'Sculptor', 'Mixed Media Artist')",
   "city": "City name if mentioned in artistic/professional context",
   "country": "Country name if mentioned in artistic/professional context", 
@@ -137,7 +138,8 @@ CONTENT SCORING PRIORITY (High to Low):
 6. Art-related collaborations and commissions
 
 QUALITY GUIDELINES:
-- Bio must focus exclusively on artistic practice and professional experience
+- Highlight bio should be 1-2 sentences, punchy and memorable (similar to Instagram bio style)
+- Main bio should be 1-3 paragraphs focusing exclusively on artistic practice and professional experience
 - Techniques should be actual artistic methods, not general skills
 - Styles should be recognized art movements or aesthetic approaches
 - Only extract information that demonstrates artistic professionalism

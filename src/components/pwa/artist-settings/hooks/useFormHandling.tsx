@@ -8,6 +8,7 @@ export const useFormHandling = () => {
     name: "",
     specialty: "",
     bio: "",
+    highlight_bio: "",
     profileImage: "",
     backgroundImage: "",
     city: "",

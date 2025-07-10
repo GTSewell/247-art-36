@@ -9,3 +9,6 @@ export type SiteSettingsRow = Tables["site_settings"]["Row"];
 
 // Password access logs table row type
 export type PasswordAccessLogRow = Tables["password_access_logs"]["Row"];
+
+// Artists table row type
+export type ArtistsRow = Tables["artists"]["Row"];

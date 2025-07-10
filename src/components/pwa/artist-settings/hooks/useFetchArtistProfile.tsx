@@ -13,6 +13,7 @@ export const useFetchArtistProfile = (artistId: string | null) => {
     name: "",
     specialty: "",
     bio: "",
+    highlight_bio: "",
     profileImage: "",
     backgroundImage: "",
     city: "",

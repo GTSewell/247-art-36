@@ -56,15 +56,34 @@ const BasicInfoForm: React.FC<BasicInfoFormProps> = ({
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="bio">Biography</Label>
+        <Label htmlFor="highlight_bio">Highlight Bio</Label>
+        <Textarea
+          id="highlight_bio"
+          name="highlight_bio"
+          value={formData.highlight_bio || ""}
+          onChange={handleChange}
+          placeholder="Short, engaging 1-2 sentence artist introduction for previews and modals"
+          rows={2}
+          maxLength={200}
+        />
+        <p className="text-xs text-muted-foreground">
+          Used in artist cards, modals, and quick previews (max 200 characters)
+        </p>
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="bio">Full Biography</Label>
         <Textarea
           id="bio"
           name="bio"
           value={formData.bio || ""}
           onChange={handleChange}
-          placeholder="A brief description of the artist's background, experience, and artistic philosophy"
-          rows={5}
+          placeholder="Detailed 1-3 paragraph artist biography including background, artistic journey, achievements, and style"
+          rows={6}
         />
+        <p className="text-xs text-muted-foreground">
+          Used on full artist profile pages and detailed information sections
+        </p>
       </div>
     </div>
   );
