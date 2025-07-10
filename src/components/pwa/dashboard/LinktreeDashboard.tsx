@@ -17,7 +17,7 @@ interface LinktreeDashboardProps {
 }
 
 const LinktreeDashboard: React.FC<LinktreeDashboardProps> = ({ artistId }) => {
-  const [activeSection, setActiveSection] = useState<DashboardSection>("links");
+  const [activeSection, setActiveSection] = useState<DashboardSection>("overview");
   const { user, isLoading } = useAuth();
   const { isPWA } = useAppMode();
   const navigate = useNavigate();
