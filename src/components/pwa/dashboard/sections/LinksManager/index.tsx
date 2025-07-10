@@ -17,24 +17,53 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
     loading, 
     saving, 
     addLink, 
+    updateLink,
     deleteLink, 
     toggleLinkActive 
   } = useArtistProfileLinks(artistId);
   
   const [showAddLink, setShowAddLink] = useState(false);
+  const [editingLink, setEditingLink] = useState<string | null>(null);
   const [newLink, setNewLink] = useState({ title: "", url: "", type: "website" });
 
   const handleAddLink = () => {
     if (newLink.title && newLink.url) {
-      addLink({
-        title: newLink.title,
-        url: newLink.url,
-        type: newLink.type,
-        active: true
-      });
+      if (editingLink) {
+        // Update existing link
+        updateLink(editingLink, {
+          title: newLink.title,
+          url: newLink.url,
+          type: newLink.type
+        });
+        setEditingLink(null);
+      } else {
+        // Add new link
+        addLink({
+          title: newLink.title,
+          url: newLink.url,
+          type: newLink.type,
+          active: true
+        });
+      }
       setNewLink({ title: "", url: "", type: "website" });
       setShowAddLink(false);
     }
+  };
+
+  const handleEditLink = (link: any) => {
+    setNewLink({
+      title: link.title,
+      url: link.url,
+      type: link.type || "website"
+    });
+    setEditingLink(link.id);
+    setShowAddLink(true);
+  };
+
+  const handleCancel = () => {
+    setNewLink({ title: "", url: "", type: "website" });
+    setEditingLink(null);
+    setShowAddLink(false);
   };
 
   if (loading) {
@@ -75,8 +104,9 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
           newLink={newLink}
           setNewLink={setNewLink}
           onAdd={handleAddLink}
-          onCancel={() => setShowAddLink(false)}
+          onCancel={handleCancel}
           saving={saving}
+          isEditing={!!editingLink}
         />
       )}
 
@@ -88,6 +118,7 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
             link={link}
             onToggleActive={toggleLinkActive}
             onDelete={deleteLink}
+            onEdit={handleEditLink}
             saving={saving}
           />
         ))}

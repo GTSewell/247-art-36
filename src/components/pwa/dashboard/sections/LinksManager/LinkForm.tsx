@@ -12,6 +12,7 @@ interface LinkFormProps {
   onAdd: () => void;
   onCancel: () => void;
   saving: boolean;
+  isEditing?: boolean;
 }
 
 export const LinkForm: React.FC<LinkFormProps> = ({
@@ -19,12 +20,13 @@ export const LinkForm: React.FC<LinkFormProps> = ({
   setNewLink,
   onAdd,
   onCancel,
-  saving
+  saving,
+  isEditing = false
 }) => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle>Add New Link</CardTitle>
+        <CardTitle>{isEditing ? "Edit Link" : "Add New Link"}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
@@ -65,7 +67,7 @@ export const LinkForm: React.FC<LinkFormProps> = ({
         </div>
         <div className="flex gap-2">
           <Button onClick={onAdd} disabled={!newLink.title || !newLink.url || saving}>
-            {saving ? "Adding..." : "Add Link"}
+            {saving ? (isEditing ? "Updating..." : "Adding...") : (isEditing ? "Update Link" : "Add Link")}
           </Button>
           <Button variant="outline" onClick={onCancel}>
             Cancel

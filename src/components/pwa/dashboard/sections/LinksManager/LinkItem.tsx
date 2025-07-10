@@ -23,6 +23,7 @@ interface LinkItemProps {
   link: Link;
   onToggleActive: (id: string) => void;
   onDelete: (id: string) => void;
+  onEdit: (link: Link) => void;
   saving: boolean;
 }
 
@@ -30,6 +31,7 @@ export const LinkItem: React.FC<LinkItemProps> = ({
   link,
   onToggleActive,
   onDelete,
+  onEdit,
   saving
 }) => {
   const getLinkIcon = (type?: string) => {
@@ -83,7 +85,12 @@ export const LinkItem: React.FC<LinkItemProps> = ({
             </div>
 
             {/* Edit Button */}
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-8 w-8 p-0"
+              onClick={() => onEdit(link)}
+            >
               <Pencil className="h-4 w-4" />
             </Button>
 
