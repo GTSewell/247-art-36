@@ -1,0 +1,104 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { useArtistProfileLinks } from "@/hooks/useArtistProfileLinks";
+import { LinkForm } from "./LinkForm";
+import { LinkItem } from "./LinkItem";
+import { EmptyState } from "./EmptyState";
+
+interface LinksManagerProps {
+  artistId: string | null;
+  isDemo: boolean;
+}
+
+const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
+  const { 
+    links, 
+    loading, 
+    saving, 
+    addLink, 
+    deleteLink, 
+    toggleLinkActive 
+  } = useArtistProfileLinks(artistId);
+  
+  const [showAddLink, setShowAddLink] = useState(false);
+  const [newLink, setNewLink] = useState({ title: "", url: "", type: "website" });
+
+  const handleAddLink = () => {
+    if (newLink.title && newLink.url) {
+      addLink({
+        title: newLink.title,
+        url: newLink.url,
+        type: newLink.type,
+        active: true
+      });
+      setNewLink({ title: "", url: "", type: "website" });
+      setShowAddLink(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="p-6 max-w-3xl">
+        <div className="text-center py-12">
+          <div className="animate-pulse text-muted-foreground">Loading links...</div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 max-w-3xl">
+      {/* Header */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-foreground mb-2">Links</h2>
+        <p className="text-muted-foreground">
+          Add, edit and organize your links. Drag to reorder.
+        </p>
+      </div>
+
+      {/* Add Link Button */}
+      <div className="mb-6">
+        <Button 
+          onClick={() => setShowAddLink(!showAddLink)}
+          className="w-full h-14 border-2 border-dashed border-muted-foreground/30 bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground"
+          variant="ghost"
+        >
+          <Plus className="h-5 w-5 mr-2" />
+          Add link
+        </Button>
+      </div>
+
+      {/* Add Link Form */}
+      {showAddLink && (
+        <LinkForm
+          newLink={newLink}
+          setNewLink={setNewLink}
+          onAdd={handleAddLink}
+          onCancel={() => setShowAddLink(false)}
+          saving={saving}
+        />
+      )}
+
+      {/* Links List */}
+      <div className="space-y-3">
+        {links.map((link) => (
+          <LinkItem
+            key={link.id}
+            link={link}
+            onToggleActive={toggleLinkActive}
+            onDelete={deleteLink}
+            saving={saving}
+          />
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {links.length === 0 && (
+        <EmptyState onAddClick={() => setShowAddLink(true)} />
+      )}
+    </div>
+  );
+};
+
+export default LinksManager;
