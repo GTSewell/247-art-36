@@ -38,6 +38,8 @@ import PWAStore from "@/pages/pwa/PWAStore";
 import ArtistDashboard from "@/pages/pwa/ArtistDashboard";
 import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
 import AccountPage from "@/pages/pwa/AccountPage";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import DataDeletion from "@/pages/DataDeletion";
 
 import "./App.css";
 
@@ -95,6 +97,8 @@ const App = () => {
         <Route path="/who-are-you" element={<WhoAreYou />} />
         <Route path="/submit" element={<ArtistSubmission />} />
         <Route path="/lfg" element={<LFG />} /> {/* Add the new LFG route */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/data-deletion" element={<DataDeletion />} />
         
         {/* Admin routes */}
         <Route 
