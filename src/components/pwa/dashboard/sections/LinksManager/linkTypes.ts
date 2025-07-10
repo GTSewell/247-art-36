@@ -6,7 +6,8 @@ import {
   Building,
   Award,
   ExternalLink,
-  FileText
+  FileText,
+  Radio
 } from "lucide-react";
 
 export const LINK_TYPES = [
@@ -15,6 +16,7 @@ export const LINK_TYPES = [
   { value: 'exhibition', label: 'Exhibition', icon: Building },
   { value: 'video', label: 'Video', icon: Video },
   { value: 'music', label: 'Music', icon: Music },
+  { value: 'podcast', label: 'Podcast', icon: Radio },
   { value: 'articles', label: 'Articles', icon: FileText },
   { value: 'nft', label: 'NFT Collection', icon: Award },
   { value: 'other', label: 'Other', icon: ExternalLink }
