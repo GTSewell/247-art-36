@@ -84,7 +84,27 @@ Respond only with valid JSON.`;
       }
 
       const aiData = await aiResponse.json();
-      const profileData = JSON.parse(aiData.choices[0].message.content);
+      
+      let profileData;
+      try {
+        const rawContent = aiData.choices[0].message.content;
+        console.log('Raw AI response for manual Instagram:', rawContent);
+        
+        // Extract JSON from response (handle cases where AI adds extra text)
+        let jsonContent = rawContent;
+        const jsonStart = rawContent.indexOf('{');
+        const jsonEnd = rawContent.lastIndexOf('}');
+        
+        if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+          jsonContent = rawContent.substring(jsonStart, jsonEnd + 1);
+        }
+        
+        profileData = JSON.parse(jsonContent);
+      } catch (error) {
+        console.error('Failed to parse AI response as JSON:', error);
+        console.error('Raw AI response:', aiData.choices[0].message.content);
+        throw new Error('Invalid response format from AI');
+      }
 
       return new Response(JSON.stringify({ 
         success: true, 
@@ -223,7 +243,19 @@ Respond only with valid JSON. Fill all fields based on available information.`;
 
     let profileData;
     try {
-      profileData = JSON.parse(aiData.choices[0].message.content);
+      const rawContent = aiData.choices[0].message.content;
+      console.log('Raw AI response:', rawContent);
+      
+      // Extract JSON from response (handle cases where AI adds extra text)
+      let jsonContent = rawContent;
+      const jsonStart = rawContent.indexOf('{');
+      const jsonEnd = rawContent.lastIndexOf('}');
+      
+      if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+        jsonContent = rawContent.substring(jsonStart, jsonEnd + 1);
+      }
+      
+      profileData = JSON.parse(jsonContent);
     } catch (parseError) {
       console.error('JSON parse error:', parseError);
       console.error('Raw AI response:', aiData.choices[0].message.content);
