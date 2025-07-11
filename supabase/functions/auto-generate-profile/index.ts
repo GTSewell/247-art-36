@@ -327,7 +327,7 @@ Respond ONLY with the comprehensive JSON object containing ALL extracted informa
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-2025-04-14',
+        model: 'gpt-4o',
         messages: [
           { role: 'user', content: prompt }
         ],
@@ -372,9 +372,14 @@ Respond ONLY with the comprehensive JSON object containing ALL extracted informa
 
   } catch (error) {
     console.error('Error in auto-generate-profile function:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    
     return new Response(JSON.stringify({ 
       error: error.message || 'Internal server error',
-      success: false 
+      success: false,
+      errorType: error.name || 'UnknownError'
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
