@@ -45,7 +45,12 @@ export const formatManualInstagramData = (profileData: any, manualData: any): Pa
 };
 
 export const getEnhancedErrorMessage = (error: any, validUrls: string[]): string => {
+  console.log('Processing error for URLs:', validUrls);
+  console.log('Error details:', error.message);
+  
   let errorMessage = error.message;
+  
+  // Don't immediately categorize as link-in-bio error - let's see the actual error first
   if (error.message.includes('non-2xx status code') || error.message.includes('Failed to fetch') || error.message.includes('Network error')) {
     // Check if it's actually a social media platform
     const isSocialMedia = validUrls.some(url => 
@@ -55,20 +60,13 @@ export const getEnhancedErrorMessage = (error: any, validUrls: string[]): string
       url.includes('facebook.com')
     );
     
-    const isLinkInBio = validUrls.some(url =>
-      url.includes('linktr.ee') ||
-      url.includes('solo.to') ||
-      url.includes('bio.link') ||
-      url.includes('beacons.ai')
-    );
-    
     if (isSocialMedia) {
       errorMessage = 'Social media profiles (Instagram, X/Twitter, Facebook) cannot be automatically analyzed due to privacy restrictions. Please try using:\n\n• Personal website URLs\n• Portfolio sites (Behance, Dribbble)\n• LinkedIn profiles\n• Art gallery websites';
-    } else if (isLinkInBio) {
-      errorMessage = 'Link-in-bio services (solo.to, Linktree, etc.) may block automated access. Please try:\n\n• Using your direct website URL instead\n• Portfolio sites (Behance, Dribbble)\n• LinkedIn profile\n• Individual social platform URLs if accessible';
     } else {
-      errorMessage = `Unable to access one or more of the provided URLs. This could be due to:\n\n• Website blocking automated requests\n• Temporary server issues\n• Network connectivity problems\n\nPlease try:\n• Checking if the URLs are publicly accessible\n• Using different portfolio or website URLs\n• Trying again in a few minutes\n\nURLs attempted: ${validUrls.join(', ')}`;
+      // For all other cases including Linktree, show more detailed error info
+      errorMessage = `Unable to access the provided URL(s). Error details: ${error.message}\n\nThis could be due to:\n• Website blocking automated requests\n• Temporary server issues\n• Network connectivity problems\n\nURLs attempted: ${validUrls.join(', ')}\n\nPlease try:\n• Checking if the URLs are publicly accessible\n• Using different portfolio or website URLs\n• Trying again in a few minutes`;
     }
   }
+  
   return errorMessage;
 };

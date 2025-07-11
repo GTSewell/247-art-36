@@ -79,6 +79,12 @@ export const useUrlProfileGeneration = (
       }
     } catch (error: any) {
       console.error('Error generating profile:', error);
+      console.error('Full error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+        cause: error.cause
+      });
       
       const errorMessage = getEnhancedErrorMessage(error, validUrls);
       
