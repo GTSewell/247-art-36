@@ -34,7 +34,7 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
 
   const handleGenerate = () => {
     generateProfile(urls);
-    setIsExpanded(false);
+    // Don't collapse immediately - let it stay open during generation
   };
 
   const handleSaveAutoGen = () => {

@@ -103,7 +103,7 @@ export const useAutoProfileGeneration = (
       
       // Enhanced error message for better user experience
       let errorMessage = error.message;
-      if (error.message.includes('non-2xx status code')) {
+      if (error.message.includes('non-2xx status code') || error.message.includes('Failed to fetch') || error.message.includes('Network error')) {
         // Check if it's actually a social media platform
         const isSocialMedia = validUrls.some(url => 
           url.includes('instagram.com') || 
@@ -124,7 +124,7 @@ export const useAutoProfileGeneration = (
         } else if (isLinkInBio) {
           errorMessage = 'Link-in-bio services (solo.to, Linktree, etc.) may block automated access. Please try:\n\n• Using your direct website URL instead\n• Portfolio sites (Behance, Dribbble)\n• LinkedIn profile\n• Individual social platform URLs if accessible';
         } else {
-          errorMessage = 'Unable to access the provided URL. The website may be blocking automated requests or temporarily unavailable. Please try:\n\n• Checking if the URL is publicly accessible\n• Using a direct portfolio or website URL\n• Trying again later if the site is temporarily down';
+          errorMessage = `Unable to access one or more of the provided URLs. This could be due to:\n\n• Website blocking automated requests\n• Temporary server issues\n• Network connectivity problems\n\nPlease try:\n• Checking if the URLs are publicly accessible\n• Using different portfolio or website URLs\n• Trying again in a few minutes\n\nURLs attempted: ${validUrls.join(', ')}`;
         }
       }
       
