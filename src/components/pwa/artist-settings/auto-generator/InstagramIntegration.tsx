@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Instagram, User, Calendar, ExternalLink, Upload, AlertCircle } from 'lucide-react';
+import { Instagram, User, Calendar, ExternalLink, Upload } from 'lucide-react';
 import { useInstagramAuth } from '@/hooks/useInstagramAuth';
 import { useManualInstagram } from '@/hooks/useManualInstagram';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -154,15 +155,15 @@ const InstagramIntegration: React.FC<InstagramIntegrationProps> = ({
                   </p>
                 </div>
 
-                <Button onClick={connectInstagram} className="w-full" disabled>
-                  <AlertCircle className="h-4 w-4 mr-2" />
-                  Instagram OAuth Currently Unavailable
+                <Button onClick={connectInstagram} className="w-full">
+                  <Instagram className="h-4 w-4 mr-2" />
+                  Connect Instagram Account
                 </Button>
 
-                <div className="text-xs text-muted-foreground bg-orange-50 dark:bg-orange-950/20 p-3 rounded-lg border border-orange-200 dark:border-orange-800">
-                  <p className="font-medium mb-1 text-orange-800 dark:text-orange-200">⚠️ Temporary Limitation:</p>
-                  <p className="text-orange-700 dark:text-orange-300 mb-2">Instagram auto-connect is temporarily unavailable due to API restrictions.</p>
-                  <p className="text-orange-700 dark:text-orange-300">Please use the "Manual Input" tab to enter your Instagram information manually.</p>
+                <div className="text-xs text-muted-foreground bg-green-50 dark:bg-green-950/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                  <p className="font-medium mb-1 text-green-800 dark:text-green-200">🎉 Instagram Auto-Connect Now Available!</p>
+                  <p className="text-green-700 dark:text-green-300 mb-2">Instagram OAuth integration is now fully configured and ready to use.</p>
+                  <p className="text-green-700 dark:text-green-300">Click "Connect Instagram Account" to automatically import your profile data and recent posts.</p>
                 </div>
               </div>
             )}
@@ -261,7 +262,7 @@ const InstagramIntegration: React.FC<InstagramIntegrationProps> = ({
                 <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded-lg">
                   <p className="font-medium mb-1">💡 Manual Input Benefits:</p>
                   <ul className="space-y-1">
-                    <li>• Works when Instagram OAuth is unavailable</li>
+                    <li>• Works when you prefer manual control</li>
                     <li>• You control exactly what information is used</li>
                     <li>• No need for Instagram API permissions</li>
                     <li>• AI will still enhance your profile based on the bio you provide</li>
