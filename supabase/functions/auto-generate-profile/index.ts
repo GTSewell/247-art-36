@@ -6,6 +6,13 @@ const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
+console.log('Environment check:', {
+  hasOpenAI: !!openAIApiKey,
+  hasSupabaseUrl: !!supabaseUrl,
+  hasServiceKey: !!supabaseServiceKey,
+  openAIKeyLength: openAIApiKey?.length || 0
+});
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -79,7 +86,7 @@ Respond ONLY with the comprehensive JSON object.`;
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4o-2024-08-06',
+          model: 'gpt-4o',
           messages: [
             { role: 'user', content: prompt }
           ],
