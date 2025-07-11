@@ -72,11 +72,6 @@ export const useUrlProfileGeneration = (
       }).length;
       
       toast.success(`🎉 Profile generated successfully! Filled ${filledFields} fields from ${data.processedUrls} of ${data.totalUrls} URLs.`);
-      
-      // Show save modal if callback is provided
-      if (onShowSaveModal) {
-        onShowSaveModal();
-      }
     } catch (error: any) {
       console.error('Error generating profile:', error);
       console.error('Full error details:', {

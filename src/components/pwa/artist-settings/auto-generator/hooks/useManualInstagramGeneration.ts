@@ -47,11 +47,6 @@ export const useManualInstagramGeneration = (
       onProfileGenerated(formattedData);
       
       toast.success('🎉 Profile generated from your Instagram data! AI enhanced your manual input to create a professional profile.');
-      
-      // Show save modal if callback is provided
-      if (onShowSaveModal) {
-        onShowSaveModal();
-      }
     } catch (error: any) {
       console.error('Error generating profile from manual Instagram data:', error);
       

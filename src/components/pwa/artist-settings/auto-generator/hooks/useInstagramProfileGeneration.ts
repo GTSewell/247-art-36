@@ -50,11 +50,6 @@ export const useInstagramProfileGeneration = (
       onProfileGenerated(formattedData);
       
       toast.success(`🎉 Profile generated from Instagram! Analyzed ${data.posts_analyzed} posts to create your professional profile.`);
-      
-      // Show save modal if callback is provided
-      if (onShowSaveModal) {
-        onShowSaveModal();
-      }
     } catch (error: any) {
       console.error('Error generating profile from Instagram:', error);
       
