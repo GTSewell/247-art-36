@@ -68,12 +68,10 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        {isConnected && (
-          <InstagramIntegration 
-            onUseInstagramData={handleUseInstagramData}
-            className="mb-4"
-          />
-        )}
+        <InstagramIntegration 
+          onUseInstagramData={handleUseInstagramData}
+          className="mb-4"
+        />
 
         <UrlInputFields urls={urls} onUrlsChange={setUrls} />
 
