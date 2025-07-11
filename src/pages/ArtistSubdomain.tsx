@@ -23,6 +23,9 @@ const ArtistSubdomain = () => {
     artistName && artistName.trim() !== '' ? artistName : undefined
   );
 
+  // Generate color theme using the hook - must be called before any early returns
+  const { colorTheme: generatedColorTheme } = useColorTheme(artist, profile, artist ? ensureArray((getArtistData()?.artworks || [])) : []);
+
   useEffect(() => {
     // Check if artistName exists and is not empty
     if (artistName && artistName.trim() !== '') {
@@ -63,9 +66,6 @@ const ArtistSubdomain = () => {
     backgroundImage = artist.artwork_files.background_image;
     logger.info(`Using explicitly set background image: ${backgroundImage}`);
   }
-  
-  // Generate color theme using the hook
-  const { colorTheme: generatedColorTheme } = useColorTheme(artist, profile, parsedArtworks);
   
   // Use custom color theme for Demo Artist, otherwise use the generated theme
   const customColorTheme = artistName.toLowerCase() === 'demo artist' ? {
