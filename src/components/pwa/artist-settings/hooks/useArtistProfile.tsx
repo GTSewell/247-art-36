@@ -13,7 +13,13 @@ export const useArtistProfile = (artistId: string | null) => {
   const [artist, setArtist] = useState<ArtistProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
-  const { formData, setFormData, handleChange, handleSocialPlatformChange, addSocialPlatform, removeSocialPlatform, handleImageChange, handleBackgroundChange } = useFormHandling();
+  const { formData, setFormData, handleChange, handleSocialPlatformChange, addSocialPlatform, removeSocialPlatform, handleImageChange, handleBackgroundChange: originalHandleBackgroundChange } = useFormHandling();
+
+  // Create a wrapper for handleBackgroundChange that also updates the backgroundImage state
+  const handleBackgroundChange = (backgroundUrl: string | null) => {
+    originalHandleBackgroundChange(backgroundUrl);
+    setBackgroundImage(backgroundUrl);
+  };
   const { saveProfile, isSaving } = useSaveArtistProfile();
 
   useEffect(() => {
