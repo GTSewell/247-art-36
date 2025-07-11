@@ -3,11 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
 import { AutoProfileGeneratorProps } from "./auto-generator/types";
 import { useAutoProfileGeneration } from "./auto-generator/useAutoProfileGeneration";
+import { useInstagramAuth } from "@/hooks/useInstagramAuth";
 import CollapsedView from "./auto-generator/CollapsedView";
 import UrlInputFields from "./auto-generator/UrlInputFields";
 import ProgressIndicator from "./auto-generator/ProgressIndicator";
 import AutoProfileActions from "./auto-generator/AutoProfileActions";
 import SaveAutoGenModal from "./auto-generator/SaveAutoGenModal";
+import InstagramIntegration from "./auto-generator/InstagramIntegration";
 
 const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
   onProfileGenerated,
@@ -18,13 +20,15 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
   const [urls, setUrls] = useState<string[]>(['']);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const { isConnected } = useInstagramAuth();
   
   const {
     isGenerating,
     generationProgress,
     currentStep,
     totalSteps,
-    generateProfile
+    generateProfile,
+    generateFromInstagram
   } = useAutoProfileGeneration(onProfileGenerated, artistId, () => setShowSaveModal(true));
 
   const handleGenerate = () => {
@@ -37,6 +41,11 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
       onSaveProfile();
     }
     setShowSaveModal(false);
+  };
+
+  const handleUseInstagramData = () => {
+    generateFromInstagram();
+    setIsExpanded(false);
   };
 
   const handleCancelSave = () => {
@@ -59,6 +68,13 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
+        {isConnected && (
+          <InstagramIntegration 
+            onUseInstagramData={handleUseInstagramData}
+            className="mb-4"
+          />
+        )}
+
         <UrlInputFields urls={urls} onUrlsChange={setUrls} />
 
         <ProgressIndicator
