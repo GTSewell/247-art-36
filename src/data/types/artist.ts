@@ -4,6 +4,7 @@ export interface Artist {
   name: string;
   specialty: string;
   image: string;
+  profile_image_url?: string;
   bio: string;
   location?: string;
   city?: string;

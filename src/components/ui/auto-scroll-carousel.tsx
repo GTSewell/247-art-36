@@ -51,8 +51,8 @@ const AutoScrollCarousel: React.FC<AutoScrollCarouselProps> = ({
             onClick={() => onArtistClick?.(artist, index % artists.length)}
           >
             <img
-              src={artist.image || '/placeholder.svg'}
-              alt={artist.name}
+              src={artist.profile_image_url || artist.image || '/placeholder.svg'}
+              alt={artist.name || 'Artist'}
               className="w-full h-full object-cover"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
