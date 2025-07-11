@@ -123,6 +123,11 @@ export const useArtistProfileLinks = (artistId: string | null) => {
     updateLink(id, { active: !links.find(l => l.id === id)?.active });
   };
 
+  const reorderLinks = (reorderedLinks: Link[]) => {
+    setLinks(reorderedLinks);
+    saveLinks(reorderedLinks);
+  };
+
   return {
     links,
     loading,
@@ -131,6 +136,7 @@ export const useArtistProfileLinks = (artistId: string | null) => {
     updateLink,
     deleteLink,
     toggleLinkActive,
+    reorderLinks,
     saveLinks
   };
 };

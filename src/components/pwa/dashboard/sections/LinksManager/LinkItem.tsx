@@ -9,6 +9,10 @@ import {
   Trash2
 } from "lucide-react";
 import { LINK_TYPES } from "./linkTypes";
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Link {
   id: string;
@@ -34,17 +38,39 @@ export const LinkItem: React.FC<LinkItemProps> = ({
   onEdit,
   saving
 }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({id: link.id});
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const getLinkIcon = (type?: string) => {
     const linkType = LINK_TYPES.find(t => t.value === type);
     return linkType ? linkType.icon : LINK_TYPES[LINK_TYPES.length - 1].icon; // Default to 'Other'
   };
 
   return (
-    <Card className="group hover:shadow-md transition-shadow">
+    <Card 
+      ref={setNodeRef}
+      style={style}
+      className={`group hover:shadow-md transition-shadow ${isDragging ? 'opacity-50' : ''}`}
+    >
       <CardContent className="p-4">
         <div className="flex items-center gap-4">
           {/* Drag Handle */}
-          <div className="cursor-grab text-muted-foreground hover:text-foreground">
+          <div 
+            className="cursor-grab text-muted-foreground hover:text-foreground active:cursor-grabbing"
+            {...attributes}
+            {...listeners}
+          >
             <GripVertical className="h-5 w-5" />
           </div>
 

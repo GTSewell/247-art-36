@@ -260,14 +260,17 @@ export async function generateColorTheme(artist: Artist, profile: ArtistProfile 
   }
 
   // Use hash of artist id and name to create a more unique theme
-  const idHash = hashCode(String(artist.id) + artist.name);
+  const idHash = hashCode(String(artist.id) + (artist.name || ''));
   
   // Select a theme based on artist specialty or name
   const specialty = artist.specialty?.toLowerCase() || '';
   const name = artist.name?.toLowerCase() || '';
 
+  console.log(`Generating color theme for artist ${artist.name} (ID: ${artist.id}), hash: ${idHash}`);
+
   // Ahmad Hassan - Desert theme
   if (name.includes('ahmad') && name.includes('hassan')) {
+    console.log('Using desert theme for Ahmad Hassan');
     return defaultColorThemes.desert;
   }
 
@@ -332,6 +335,9 @@ export async function generateColorTheme(artist: Artist, profile: ArtistProfile 
   
   // Generate a custom color based on artist id if none of the specific themes match
   const selectedTheme = allThemes[themeIndex];
+  
+  console.log(`Selected theme index ${themeIndex} from ${allThemes.length} themes for hash ${idHash}`);
+  console.log(`Theme background: ${selectedTheme.background} -> ${adjustColorSlightly(selectedTheme.background, idHash)}`);
   
   // Adjust the colors slightly to make them more unique per artist
   return {

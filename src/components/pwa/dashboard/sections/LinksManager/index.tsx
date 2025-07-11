@@ -5,6 +5,21 @@ import { useArtistProfileLinks } from "@/hooks/useArtistProfileLinks";
 import { LinkForm } from "./LinkForm";
 import { LinkItem } from "./LinkItem";
 import { EmptyState } from "./EmptyState";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 interface LinksManagerProps {
   artistId: string | null;
@@ -19,8 +34,16 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
     addLink, 
     updateLink,
     deleteLink, 
-    toggleLinkActive 
+    toggleLinkActive,
+    reorderLinks
   } = useArtistProfileLinks(artistId);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   
   const [showAddLink, setShowAddLink] = useState(false);
   const [editingLink, setEditingLink] = useState<string | null>(null);
@@ -72,6 +95,18 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
     setShowAddLink(false);
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = links.findIndex((link) => link.id === active.id);
+      const newIndex = links.findIndex((link) => link.id === over?.id);
+
+      const reorderedLinks = arrayMove(links, oldIndex, newIndex);
+      reorderLinks(reorderedLinks);
+    }
+  };
+
   if (loading) {
     return (
       <div className="p-6 max-w-3xl">
@@ -117,18 +152,29 @@ const LinksManager: React.FC<LinksManagerProps> = ({ artistId, isDemo }) => {
       )}
 
       {/* Links List */}
-      <div className="space-y-3">
-        {links.map((link) => (
-          <LinkItem
-            key={link.id}
-            link={link}
-            onToggleActive={toggleLinkActive}
-            onDelete={deleteLink}
-            onEdit={handleEditLink}
-            saving={saving}
-          />
-        ))}
-      </div>
+      <DndContext 
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext 
+          items={links.map(link => link.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="space-y-3">
+            {links.map((link) => (
+              <LinkItem
+                key={link.id}
+                link={link}
+                onToggleActive={toggleLinkActive}
+                onDelete={deleteLink}
+                onEdit={handleEditLink}
+                saving={saving}
+              />
+            ))}
+          </div>
+        </SortableContext>
+      </DndContext>
 
       {/* Empty State */}
       {links.length === 0 && (
