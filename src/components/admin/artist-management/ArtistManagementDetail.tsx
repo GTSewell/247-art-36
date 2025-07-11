@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import ArtistProfileSettings from '@/components/pwa/ArtistProfileSettings';
 import ArtistArtworkManager from '@/components/pwa/ArtistArtworkManager';
 import LinksManager from '@/components/pwa/dashboard/sections/LinksManager';
-import ColorStyleSection from './components/ColorStyleSection';
+import ColorStyleSection from './components/color-style';
 
 interface ArtistManagementDetailProps {
   selectedArtistId: string | null;
