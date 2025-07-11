@@ -228,6 +228,81 @@ export const useAutoProfileGeneration = (
     currentStep,
     totalSteps,
     generateProfile,
-    generateFromInstagram
+    generateFromInstagram,
+    generateFromManualInstagram: async (manualData: any) => {
+      setIsGenerating(true);
+      setTotalSteps(2); // Manual data processing + AI generation
+      setCurrentStep(0);
+      setGenerationProgress('📝 Processing your manual Instagram data...');
+
+      try {
+        setCurrentStep(1);
+        setGenerationProgress('🎨 Creating your AI-enhanced profile...');
+
+        // Use the manual Instagram data directly with AI enhancement
+        const { data, error } = await supabase.functions.invoke('auto-generate-profile', {
+          body: {
+            manualInstagramData: manualData,
+            artistId
+          }
+        });
+
+        if (error) {
+          throw error;
+        }
+
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to generate profile from manual Instagram data');
+        }
+
+        setCurrentStep(2);
+        setGenerationProgress('✨ Finalizing your Instagram-powered profile...');
+
+        const { profileData } = data;
+        
+        // Convert the AI response to our form data format
+        const formattedData: Partial<ArtistProfileFormData> = {
+          name: profileData.name || manualData.name || '',
+          bio: profileData.bio || manualData.bio || '',
+          highlight_bio: profileData.highlight_bio || '',
+          specialty: profileData.specialty || '',
+          city: profileData.city || '',
+          country: profileData.country || '',
+          techniques: Array.isArray(profileData.techniques) ? profileData.techniques.join(', ') : (profileData.techniques || ''),
+          styles: Array.isArray(profileData.styles) ? profileData.styles.join(', ') : (profileData.styles || ''),
+          profileImage: profileData.profile_image || manualData.profile_image || '',
+          social_platforms: Array.isArray(profileData.social_platforms) 
+            ? profileData.social_platforms.map((platform: any) => {
+                if (typeof platform === 'object' && platform.url) {
+                  return platform.url;
+                }
+                return typeof platform === 'string' ? platform : '';
+              }).filter(Boolean)
+            : manualData.social_platforms || []
+        };
+
+        onProfileGenerated(formattedData);
+        
+        toast.success('🎉 Profile generated from your Instagram data! AI enhanced your manual input to create a professional profile.');
+        
+        // Show save modal if callback is provided
+        if (onShowSaveModal) {
+          onShowSaveModal();
+        }
+      } catch (error: any) {
+        console.error('Error generating profile from manual Instagram data:', error);
+        
+        let errorMessage = error.message;
+        
+        toast.error(`Failed to generate profile: ${errorMessage}`, {
+          duration: 8000,
+        });
+      } finally {
+        setIsGenerating(false);
+        setGenerationProgress('');
+        setCurrentStep(0);
+        setTotalSteps(0);
+      }
+    }
   };
 };

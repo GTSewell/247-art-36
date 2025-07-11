@@ -62,7 +62,7 @@ export const useInstagramAuth = () => {
       });
 
       if (error) {
-        toast.error(`Failed to connect Instagram: ${error.message}`);
+        toast.error(`Instagram connection failed: ${error.message}. Please use manual input instead.`);
         return;
       }
 

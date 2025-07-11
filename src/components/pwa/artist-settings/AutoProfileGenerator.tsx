@@ -28,7 +28,8 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
     currentStep,
     totalSteps,
     generateProfile,
-    generateFromInstagram
+    generateFromInstagram,
+    generateFromManualInstagram
   } = useAutoProfileGeneration(onProfileGenerated, artistId, () => setShowSaveModal(true));
 
   const handleGenerate = () => {
@@ -45,6 +46,11 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
 
   const handleUseInstagramData = () => {
     generateFromInstagram();
+    setIsExpanded(false);
+  };
+
+  const handleUseManualInstagramData = (manualData: any) => {
+    generateFromManualInstagram(manualData);
     setIsExpanded(false);
   };
 
@@ -70,6 +76,7 @@ const AutoProfileGenerator: React.FC<AutoProfileGeneratorProps> = ({
       <CardContent className="space-y-4">
         <InstagramIntegration 
           onUseInstagramData={handleUseInstagramData}
+          onUseManualData={handleUseManualInstagramData}
           className="mb-4"
         />
 

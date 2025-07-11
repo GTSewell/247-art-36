@@ -30,8 +30,91 @@ serve(async (req) => {
       });
     }
 
-    const { urls, artistId } = await req.json();
+    const { urls, artistId, manualInstagramData } = await req.json();
     console.log('Request body parsed successfully');
+
+    // Handle manual Instagram data
+    if (manualInstagramData) {
+      console.log('Processing manual Instagram data:', manualInstagramData);
+      
+      const prompt = `
+You are an AI specialist in creating professional artist profiles. You have been given manual Instagram data from an artist. Your task is to enhance and expand this information to create a comprehensive artist profile.
+
+MANUAL INSTAGRAM DATA PROVIDED:
+- Name: ${manualInstagramData.name || 'Not provided'}
+- Bio: ${manualInstagramData.bio || 'Not provided'}
+- Profile Image: ${manualInstagramData.profile_image ? 'Provided' : 'Not provided'}
+- Instagram URL: ${manualInstagramData.social_platforms?.[0] || 'Not provided'}
+
+ENHANCEMENT INSTRUCTIONS:
+1. Use the provided bio to intelligently infer artistic specialties, techniques, and styles
+2. If bio mentions location/city, extract geographic information
+3. If bio is minimal, create a professional enhancement based on available information
+4. Fill in missing fields with intelligent inferences from the bio content
+5. If bio mentions specific art mediums, techniques, or styles, extract those
+6. Create a professional highlight bio (1-2 sentences) and expanded bio (2-3 paragraphs)
+
+GENERATE COMPREHENSIVE ARTIST PROFILE (JSON FORMAT):
+{
+  "name": "Use provided name or enhance if needed",
+  "highlight_bio": "Create compelling 1-2 sentence introduction",
+  "bio": "Expand into 2-3 professional paragraphs using provided bio as foundation",
+  "specialty": "Infer from bio content or use 'Visual Artist' if unclear", 
+  "city": "Extract from bio if mentioned, otherwise leave empty",
+  "country": "Extract from bio if mentioned, otherwise leave empty",
+  "techniques": "Extract/infer 3-6 techniques from bio content",
+  "styles": "Extract/infer 3-5 artistic styles from bio content", 
+  "profile_image": "Use provided profile image URL",
+  "social_platforms": "Include the Instagram URL and any others mentioned in bio"
+}
+
+Respond ONLY with the comprehensive JSON object.`;
+
+      console.log('Calling OpenAI API for manual Instagram data...');
+      
+      const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-2024-08-06',
+          messages: [
+            { role: 'user', content: prompt }
+          ],
+          temperature: 0.7,
+          max_tokens: 4000,
+        }),
+      });
+
+      if (!aiResponse.ok) {
+        const errorText = await aiResponse.text();
+        console.error('OpenAI API error details:', errorText);
+        throw new Error(`OpenAI API error: ${aiResponse.status} - ${errorText}`);
+      }
+
+      const aiData = await aiResponse.json();
+      const generatedContent = aiData.choices[0].message.content;
+
+      let profileData;
+      try {
+        profileData = JSON.parse(generatedContent);
+      } catch (error) {
+        console.error('Failed to parse AI response as JSON:', error);
+        throw new Error('Invalid response format from AI');
+      }
+
+      console.log('Successfully generated profile from manual Instagram data:', profileData);
+
+      return new Response(JSON.stringify({ 
+        success: true, 
+        profileData,
+        source: 'manual_instagram'
+      }), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     if (!urls || !Array.isArray(urls) || urls.length === 0) {
       console.log('No URLs provided in request');
