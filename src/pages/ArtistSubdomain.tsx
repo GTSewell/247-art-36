@@ -7,7 +7,8 @@ import LoadingState from '@/components/artistSubdomain/LoadingState';
 import NotFoundState from '@/components/artistSubdomain/NotFoundState';
 import DesktopLayout from '@/components/artistSubdomain/DesktopLayout';
 import MobileLayout from '@/components/artistSubdomain/MobileLayout';
-import { generateColorTheme } from '@/utils/colorExtraction';
+import { useColorTheme } from '@/hooks/useColorTheme';
+import { defaultColorThemes } from '@/utils/colorExtraction';
 import { logger } from '@/utils/logger';
 import { toast } from 'sonner';
 import { ensureArray } from '@/utils/ensureArray';
@@ -63,7 +64,10 @@ const ArtistSubdomain = () => {
     logger.info(`Using explicitly set background image: ${backgroundImage}`);
   }
   
-  // Use custom color theme for Demo Artist
+  // Generate color theme using the hook
+  const { colorTheme: generatedColorTheme } = useColorTheme(artist, profile, parsedArtworks);
+  
+  // Use custom color theme for Demo Artist, otherwise use the generated theme
   const customColorTheme = artistName.toLowerCase() === 'demo artist' ? {
     background: '#e5d0b9', // Beige/tan background
     panel: '#FEF9F4',      // Off-white panel
@@ -72,7 +76,7 @@ const ArtistSubdomain = () => {
     buttonHover: '#7A9CC2',// Darker blue on hover
     buttonBorder: '#95B3D2',// Blue border
     badgeBg: '#f7f4f0'     // Light beige badge
-  } : generateColorTheme(artist, profile, parsedArtworks);
+  } : generatedColorTheme;
 
   return isMobile ? (
     <MobileLayout

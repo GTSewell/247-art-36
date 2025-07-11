@@ -4,6 +4,98 @@ import { ArtistProfile } from '@/data/types/artistProfile';
 import { Artist } from '@/data/types/artist';
 import { logger } from '@/utils/logger';
 
+// Image color extraction utilities
+interface ColorCount {
+  color: string;
+  count: number;
+}
+
+// Extract dominant colors from an image
+export async function extractImageColors(imageUrl: string): Promise<string[]> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+        
+        // Scale down image for performance
+        const scale = Math.min(200 / img.width, 200 / img.height);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const colors = extractColorsFromImageData(imageData);
+        
+        resolve(colors);
+      } catch (error) {
+        logger.error('Error extracting colors from image:', error);
+        reject(error);
+      }
+    };
+    
+    img.onerror = () => {
+      reject(new Error('Failed to load image'));
+    };
+    
+    img.src = imageUrl;
+  });
+}
+
+// Extract colors from image data
+function extractColorsFromImageData(imageData: ImageData): string[] {
+  const data = imageData.data;
+  const colorMap = new Map<string, number>();
+  
+  // Sample every 4th pixel for performance
+  for (let i = 0; i < data.length; i += 16) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const alpha = data[i + 3];
+    
+    // Skip transparent pixels
+    if (alpha < 128) continue;
+    
+    // Quantize colors to reduce noise
+    const quantR = Math.round(r / 32) * 32;
+    const quantG = Math.round(g / 32) * 32;
+    const quantB = Math.round(b / 32) * 32;
+    
+    const color = `rgb(${quantR}, ${quantG}, ${quantB})`;
+    colorMap.set(color, (colorMap.get(color) || 0) + 1);
+  }
+  
+  // Sort by frequency and return top colors
+  const sortedColors = Array.from(colorMap.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10)
+    .map(([color]) => rgbToHex(color));
+  
+  return sortedColors;
+}
+
+// Convert RGB string to hex
+function rgbToHex(rgb: string): string {
+  const match = rgb.match(/rgb\((\d+), (\d+), (\d+)\)/);
+  if (!match) return '#000000';
+  
+  const r = parseInt(match[1]);
+  const g = parseInt(match[2]);
+  const b = parseInt(match[3]);
+  
+  return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
 // Default color themes that can be used as fallbacks
 export const defaultColorThemes = {
   // Desert theme (Ahmad Hassan)
@@ -114,7 +206,7 @@ export const defaultColorThemes = {
 };
 
 // Generate a color theme based on artist specialty and artworks
-export function generateColorTheme(artist: Artist, profile: ArtistProfile | null, artworks: string[]): {
+export async function generateColorTheme(artist: Artist, profile: ArtistProfile | null, artworks: string[]): Promise<{
   background: string;
   panel: string;
   button: string;
@@ -122,7 +214,7 @@ export function generateColorTheme(artist: Artist, profile: ArtistProfile | null
   buttonHover: string;
   buttonBorder: string;
   badgeBg: string;
-} {
+}> {
   // If profile already has custom colors, use those
   if (profile?.background_color && profile?.background_color !== '#f7cf1e') {
     // Custom background color exists, derive other colors
@@ -138,6 +230,33 @@ export function generateColorTheme(artist: Artist, profile: ArtistProfile | null
       buttonBorder: isLightColor(bgColor) ? '#000000' : '#ffffff',
       badgeBg: isLightColor(panelColor) ? adjustBrightness(panelColor, -5) : adjustBrightness(panelColor, 10)
     };
+  }
+
+  // Try to extract colors from background image first
+  if (profile?.background_image) {
+    try {
+      const dominantColors = await extractImageColors(profile.background_image);
+      if (dominantColors.length > 0) {
+        const primaryColor = dominantColors[0];
+        const secondaryColor = dominantColors[1] || primaryColor;
+        
+        // Create a lighter version for panel
+        const panelColor = isLightColor(primaryColor) ? '#ffffff' : adjustBrightness(primaryColor, 80);
+        
+        return {
+          background: primaryColor,
+          panel: panelColor,
+          button: secondaryColor,
+          buttonText: isLightColor(secondaryColor) ? '#000000' : '#ffffff',
+          buttonHover: adjustBrightness(secondaryColor, -15),
+          buttonBorder: isLightColor(secondaryColor) ? '#000000' : '#ffffff',
+          badgeBg: isLightColor(panelColor) ? adjustBrightness(panelColor, -8) : adjustBrightness(panelColor, 15)
+        };
+      }
+    } catch (error) {
+      logger.warn('Failed to extract colors from background image:', error);
+      // Continue to fallback themes
+    }
   }
 
   // Use hash of artist id and name to create a more unique theme

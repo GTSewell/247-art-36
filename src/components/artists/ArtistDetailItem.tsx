@@ -4,7 +4,7 @@ import { Artist } from "@/data/types/artist";
 import { CarouselItem } from "@/components/ui/carousel";
 import ArtistImagePanel from "./ArtistImagePanel";
 import ArtistDetailsPanel from "./ArtistDetailsPanel";
-import { generateColorTheme } from "@/utils/colorExtraction";
+import { useColorTheme } from "@/hooks/useColorTheme";
 
 interface ArtistDetailItemProps {
   artist: Artist;
@@ -31,18 +31,16 @@ const ArtistDetailItem: React.FC<ArtistDetailItemProps> = ({
       : [];
       
   // Generate a color theme for this specific artist
-  const colorTheme = generateColorTheme(
-    processedArtist, 
-    { 
-      id: '',
-      artist_id: String(processedArtist.id),
-      background_image: artworks[0] || null,
-      background_color: '#f7cf1e',
-      panel_color: '#ffffff',
-      links: []
-    }, 
-    artworks
-  );
+  const profile = { 
+    id: '',
+    artist_id: String(processedArtist.id),
+    background_image: artworks[0] || null,
+    background_color: '#f7cf1e',
+    panel_color: '#ffffff',
+    links: []
+  };
+  
+  const { colorTheme } = useColorTheme(processedArtist, profile, artworks);
   
   return (
     <CarouselItem className="pl-0 sm:pl-2 w-full">
