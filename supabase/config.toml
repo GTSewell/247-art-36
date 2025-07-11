@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.auto-generate-profile]
 verify_jwt = true
+
+[functions.webhook-instagram-updates]
+verify_jwt = false
