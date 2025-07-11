@@ -169,9 +169,16 @@ Respond ONLY with the comprehensive JSON object.`;
           if (!response.ok) {
             console.warn(`⚠️ HTTP ${response.status} for ${url}: ${response.statusText}`);
             
+            // Check for link-in-bio services
+            const isLinkInBio = url.includes('linktr.ee') || url.includes('solo.to') || 
+                              url.includes('bio.link') || url.includes('beacons.ai') ||
+                              url.includes('linkin.bio') || url.includes('tap.bio');
+            
             // For social media platforms, provide helpful guidance
             if (platform === 'instagram' || platform === 'twitter') {
               throw new Error(`${platform.charAt(0).toUpperCase() + platform.slice(1)} profiles are difficult to analyze automatically. Try using a personal website or portfolio URL instead.`);
+            } else if (isLinkInBio) {
+              throw new Error(`Link-in-bio services like Linktree often block automated access for privacy/security. Please try using your direct website URL, portfolio site (Behance, Dribbble), or LinkedIn profile instead.`);
             }
             
             throw new Error(`Failed to fetch ${url}: HTTP ${response.status} ${response.statusText}`);
