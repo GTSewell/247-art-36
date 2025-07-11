@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
 import { RefreshCw, Palette } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -19,6 +20,7 @@ interface ColorTheme {
   buttonHover: string;
   buttonBorder: string;
   badgeBg: string;
+  useBackgroundImage: boolean;
 }
 
 const DEFAULT_THEME: ColorTheme = {
@@ -28,13 +30,15 @@ const DEFAULT_THEME: ColorTheme = {
   buttonText: '#ffffff',
   buttonHover: '#7A9CC2',
   buttonBorder: '#95B3D2',
-  badgeBg: '#f7f4f0'
+  badgeBg: '#f7f4f0',
+  useBackgroundImage: true
 };
 
 const ColorStyleSection: React.FC<ColorStyleSectionProps> = ({ artistId }) => {
   const [colorTheme, setColorTheme] = useState<ColorTheme>(DEFAULT_THEME);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (artistId) {
@@ -51,17 +55,21 @@ const ColorStyleSection: React.FC<ColorStyleSectionProps> = ({ artistId }) => {
         .from('artist_profiles')
         .select('*')
         .eq('artist_id', parseInt(artistId))
-        .single();
+        .maybeSingle();
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error loading color theme:', error);
         return;
       }
 
-      if (profile?.links && typeof profile.links === 'object' && profile.links !== null && 'colorTheme' in profile.links) {
-        const savedTheme = (profile.links as any).colorTheme;
-        if (savedTheme) {
-          setColorTheme({ ...DEFAULT_THEME, ...savedTheme });
+      if (profile) {
+        setBackgroundImage(profile.background_image);
+        
+        if (profile.links && typeof profile.links === 'object' && profile.links !== null && 'colorTheme' in profile.links) {
+          const savedTheme = (profile.links as any).colorTheme;
+          if (savedTheme) {
+            setColorTheme({ ...DEFAULT_THEME, ...savedTheme });
+          }
         }
       }
     } catch (error) {
@@ -79,13 +87,14 @@ const ColorStyleSection: React.FC<ColorStyleSectionProps> = ({ artistId }) => {
 
     try {
       setSaving(true);
+      console.log('Saving color theme for artist:', artistId, colorTheme);
 
       // First, get the current profile to preserve existing links
       const { data: currentProfile, error: fetchError } = await supabase
         .from('artist_profiles')
         .select('links')
         .eq('artist_id', parseInt(artistId))
-        .single();
+        .maybeSingle();
 
       if (fetchError && fetchError.code !== 'PGRST116') {
         throw fetchError;
@@ -123,7 +132,7 @@ const ColorStyleSection: React.FC<ColorStyleSectionProps> = ({ artistId }) => {
     setColorTheme(DEFAULT_THEME);
   };
 
-  const handleColorChange = (field: keyof ColorTheme, value: string) => {
+  const handleColorChange = (field: keyof ColorTheme, value: string | boolean) => {
     setColorTheme(prev => ({
       ...prev,
       [field]: value
@@ -197,6 +206,23 @@ const ColorStyleSection: React.FC<ColorStyleSectionProps> = ({ artistId }) => {
             </div>
           </div>
         </div>
+
+        {/* Background Source Toggle */}
+        {backgroundImage && (
+          <div className="space-y-4">
+            <Label className="text-sm font-medium">Background Source</Label>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="use-background-image"
+                checked={colorTheme.useBackgroundImage}
+                onCheckedChange={(checked) => handleColorChange('useBackgroundImage', checked)}
+              />
+              <Label htmlFor="use-background-image" className="text-sm">
+                Use uploaded background image (when unchecked, uses background color)
+              </Label>
+            </div>
+          </div>
+        )}
 
         {/* Color Controls */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
