@@ -8,6 +8,7 @@ import {
   Dribbble, 
   Github, 
   Linkedin,
+  Camera,
   ExternalLink
 } from 'lucide-react';
 import TikTokIcon from '@/components/icons/TikTokIcon';
@@ -71,6 +72,8 @@ export const normalizeSocialPlatforms = (socialPlatforms: string[]): NormalizedP
         type = 'dribbble';
       } else if (hostname.includes('tiktok')) {
         type = 'tiktok';
+      } else if (hostname.includes('flickr')) {
+        type = 'flickr';
       }
       
       // Make sure the URL hasn't been duplicated
@@ -133,6 +136,8 @@ export const getSocialIcon = (type: string) => {
       return <Linkedin />;
     case 'tiktok':
       return <TikTokIcon />;
+    case 'flickr':
+      return <Camera />;
     default:
       return <ExternalLink />;
   }
