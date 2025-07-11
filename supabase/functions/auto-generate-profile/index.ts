@@ -6,13 +6,6 @@ const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
-console.log('Environment check:', {
-  hasOpenAI: !!openAIApiKey,
-  hasSupabaseUrl: !!supabaseUrl,
-  hasServiceKey: !!supabaseServiceKey,
-  openAIKeyLength: openAIApiKey?.length || 0
-});
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -27,58 +20,49 @@ serve(async (req) => {
   }
 
   try {
-    console.log('Function started, checking environment variables...');
+    console.log('Auto-generate profile function started');
     
     if (!openAIApiKey) {
       console.error('OpenAI API key not found in environment');
-      return new Response(JSON.stringify({ error: 'OpenAI API key not configured' }), {
+      return new Response(JSON.stringify({ 
+        error: 'OpenAI API key not configured',
+        success: false 
+      }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    const { urls, artistId, manualInstagramData } = await req.json();
-    console.log('Request body parsed successfully');
+    const body = await req.json();
+    const { urls, artistId, manualInstagramData } = body;
+    console.log('Processing request:', { urlsCount: urls?.length, artistId, hasManualData: !!manualInstagramData });
 
-    // Handle manual Instagram data
+    // Handle manual Instagram data (simplified)
     if (manualInstagramData) {
-      console.log('Processing manual Instagram data:', manualInstagramData);
+      console.log('Processing manual Instagram data');
       
-      const prompt = `
-You are an AI specialist in creating professional artist profiles. You have been given manual Instagram data from an artist. Your task is to enhance and expand this information to create a comprehensive artist profile.
+      const prompt = `Create a professional artist profile from this Instagram data:
 
-MANUAL INSTAGRAM DATA PROVIDED:
-- Name: ${manualInstagramData.name || 'Not provided'}
-- Bio: ${manualInstagramData.bio || 'Not provided'}
-- Profile Image: ${manualInstagramData.profile_image ? 'Provided' : 'Not provided'}
-- Instagram URL: ${manualInstagramData.social_platforms?.[0] || 'Not provided'}
+Name: ${manualInstagramData.name || 'Unknown'}
+Bio: ${manualInstagramData.bio || 'No bio provided'}
+Instagram: ${manualInstagramData.social_platforms?.[0] || 'No URL'}
 
-ENHANCEMENT INSTRUCTIONS:
-1. Use the provided bio to intelligently infer artistic specialties, techniques, and styles
-2. If bio mentions location/city, extract geographic information
-3. If bio is minimal, create a professional enhancement based on available information
-4. Fill in missing fields with intelligent inferences from the bio content
-5. If bio mentions specific art mediums, techniques, or styles, extract those
-6. Create a professional highlight bio (1-2 sentences) and expanded bio (2-3 paragraphs)
-
-GENERATE COMPREHENSIVE ARTIST PROFILE (JSON FORMAT):
+Create a JSON response with these fields:
 {
-  "name": "Use provided name or enhance if needed",
-  "highlight_bio": "Create compelling 1-2 sentence introduction",
-  "bio": "Expand into 2-3 professional paragraphs using provided bio as foundation",
-  "specialty": "Infer from bio content or use 'Visual Artist' if unclear", 
-  "city": "Extract from bio if mentioned, otherwise leave empty",
-  "country": "Extract from bio if mentioned, otherwise leave empty",
-  "techniques": "Extract/infer 3-6 techniques from bio content",
-  "styles": "Extract/infer 3-5 artistic styles from bio content", 
-  "profile_image": "Use provided profile image URL",
-  "social_platforms": "Include the Instagram URL and any others mentioned in bio"
+  "name": "Artist name",
+  "highlight_bio": "Short compelling intro (1-2 sentences)",
+  "bio": "Professional bio (2-3 paragraphs)",
+  "specialty": "Primary artistic medium",
+  "city": "City if mentioned",
+  "country": "Country if mentioned", 
+  "techniques": ["technique1", "technique2", "technique3"],
+  "styles": ["style1", "style2", "style3"],
+  "profile_image": "${manualInstagramData.profile_image || ''}",
+  "social_platforms": [{"platform": "instagram", "url": "${manualInstagramData.social_platforms?.[0] || ''}", "username": "${manualInstagramData.username || ''}"}]
 }
 
-Respond ONLY with the comprehensive JSON object.`;
+Respond only with valid JSON.`;
 
-      console.log('Calling OpenAI API for manual Instagram data...');
-      
       const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -86,33 +70,21 @@ Respond ONLY with the comprehensive JSON object.`;
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [
-            { role: 'user', content: prompt }
-          ],
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }],
           temperature: 0.7,
-          max_tokens: 4000,
+          max_tokens: 2000,
         }),
       });
 
       if (!aiResponse.ok) {
         const errorText = await aiResponse.text();
-        console.error('OpenAI API error details:', errorText);
-        throw new Error(`OpenAI API error: ${aiResponse.status} - ${errorText}`);
+        console.error('OpenAI API error:', errorText);
+        throw new Error(`OpenAI API error: ${aiResponse.status}`);
       }
 
       const aiData = await aiResponse.json();
-      const generatedContent = aiData.choices[0].message.content;
-
-      let profileData;
-      try {
-        profileData = JSON.parse(generatedContent);
-      } catch (error) {
-        console.error('Failed to parse AI response as JSON:', error);
-        throw new Error('Invalid response format from AI');
-      }
-
-      console.log('Successfully generated profile from manual Instagram data:', profileData);
+      const profileData = JSON.parse(aiData.choices[0].message.content);
 
       return new Response(JSON.stringify({ 
         success: true, 
@@ -123,50 +95,32 @@ Respond ONLY with the comprehensive JSON object.`;
       });
     }
 
+    // Validate URLs
     if (!urls || !Array.isArray(urls) || urls.length === 0) {
-      console.log('No URLs provided in request');
-      return new Response(JSON.stringify({ error: 'No URLs provided' }), {
+      return new Response(JSON.stringify({ 
+        error: 'No URLs provided',
+        success: false 
+      }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('Processing auto-profile generation for artist:', artistId);
-    console.log('URLs to process:', urls);
+    console.log('Fetching content from URLs:', urls);
 
-    // Enhanced content fetching with progress tracking
+    // Simplified content fetching
     const urlContents = await Promise.allSettled(
-      urls.map(async (url: string, index: number) => {
+      urls.map(async (url: string) => {
         try {
-          console.log(`[${index + 1}/${urls.length}] 🔍 Reading content from: ${url}`);
+          console.log(`Fetching: ${url}`);
           
-          // Determine platform type for better extraction
-          const platform = url.includes('instagram.com') ? 'instagram' :
-                          url.includes('twitter.com') || url.includes('x.com') ? 'twitter' :
-                          url.includes('linkedin.com') ? 'linkedin' :
-                          url.includes('behance.net') ? 'behance' :
-                          url.includes('dribbble.com') ? 'dribbble' :
-                          'website';
-          
-          console.log(`📱 Detected platform: ${platform}`);
-          
-          // Extended timeout for thorough content loading
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 30000);
+          const timeoutId = setTimeout(() => controller.abort(), 15000); // Reduced timeout
           
           const response = await fetch(url, {
             headers: {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-              'Accept-Language': 'en-US,en;q=0.9',
-              'Accept-Encoding': 'gzip, deflate, br',
-              'Cache-Control': 'no-cache',
-              'Pragma': 'no-cache',
-              'Sec-Fetch-Dest': 'document',
-              'Sec-Fetch-Mode': 'navigate',
-              'Sec-Fetch-Site': 'none',
-              'Sec-Fetch-User': '?1',
-              'Upgrade-Insecure-Requests': '1'
+              'User-Agent': 'Mozilla/5.0 (compatible; ProfileBot/1.0)',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             },
             signal: controller.signal
           });
@@ -174,159 +128,74 @@ Respond ONLY with the comprehensive JSON object.`;
           clearTimeout(timeoutId);
           
           if (!response.ok) {
-            console.warn(`⚠️ HTTP ${response.status} for ${url}: ${response.statusText}`);
-            
-            // Check for link-in-bio services
-            const isLinkInBio = url.includes('linktr.ee') || url.includes('solo.to') || 
-                              url.includes('bio.link') || url.includes('beacons.ai') ||
-                              url.includes('linkin.bio') || url.includes('tap.bio');
-            
-            // For social media platforms, provide helpful guidance
-            if (platform === 'instagram' || platform === 'twitter') {
-              throw new Error(`${platform.charAt(0).toUpperCase() + platform.slice(1)} profiles are difficult to analyze automatically. Try using a personal website or portfolio URL instead.`);
-            } else if (isLinkInBio) {
-              throw new Error(`Link-in-bio services like Linktree often block automated access for privacy/security. Please try using your direct website URL, portfolio site (Behance, Dribbble), or LinkedIn profile instead.`);
-            }
-            
-            throw new Error(`Failed to fetch ${url}: HTTP ${response.status} ${response.statusText}`);
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
           
           const text = await response.text();
-          console.log(`✅ Successfully fetched ${text.length} characters from ${url}`);
+          console.log(`✅ Fetched ${text.length} characters from ${url}`);
           
-          // Massive content analysis - 50,000 characters per URL
+          // Reduced content size for better processing
           return { 
             url, 
-            content: text.substring(0, 50000),
-            platform,
-            contentLength: text.length
+            content: text.substring(0, 5000), // Reduced from 50,000
+            success: true
           };
         } catch (error) {
-          console.error(`❌ Error fetching ${url}:`, error);
-          
-          // Provide more helpful error messages for common platforms
-          let errorMessage = error.message;
-          if (url.includes('instagram.com')) {
-            errorMessage = 'Instagram profiles cannot be automatically analyzed due to privacy restrictions. Try using a personal website, portfolio, or LinkedIn profile instead.';
-          } else if (url.includes('twitter.com') || url.includes('x.com')) {
-            errorMessage = 'X/Twitter profiles cannot be automatically analyzed. Try using a personal website, portfolio, or LinkedIn profile instead.';
-          }
-          
-          return { url, error: errorMessage, platform: platform || 'unknown' };
+          console.error(`❌ Error fetching ${url}:`, error.message);
+          return { url, error: error.message, success: false };
         }
       })
     );
 
-    // Extract successful content
+    // Get successful fetches
     const validContents = urlContents
       .filter((result): result is PromiseFulfilledResult<any> => 
-        result.status === 'fulfilled' && !result.value.error
+        result.status === 'fulfilled' && result.value.success
       )
       .map(result => result.value);
 
     if (validContents.length === 0) {
-      // Collect all error messages to provide helpful feedback
-      const errorMessages = urlContents
-        .filter(result => result.status === 'fulfilled' && result.value.error)
+      const errors = urlContents
+        .filter(result => result.status === 'fulfilled' && !result.value.success)
         .map(result => `${result.value.url}: ${result.value.error}`)
-        .join('\n');
-      
-      console.log('❌ No URLs could be processed:', errorMessages);
+        .join('; ');
       
       return new Response(JSON.stringify({ 
-        error: 'Could not fetch content from any provided URLs',
-        details: errorMessages,
-        suggestion: 'Try using personal websites, portfolio sites, or LinkedIn profiles which are more accessible for analysis.'
+        error: 'Unable to access the provided URL(s). Error details: ' + errors,
+        success: false,
+        suggestion: 'Please check if the URLs are publicly accessible and try again.'
       }), {
         status: 400,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('🎨 Now crafting your professional artist profile...');
+    console.log('Generating profile with AI...');
 
-    // Enhanced AI prompt for comprehensive extraction
-    const prompt = `
-You are an elite AI specialist in creating exceptional artist profiles. Your mission is to perform DEEP ANALYSIS of web content and extract COMPREHENSIVE artistic and professional information.
+    // Simplified AI prompt
+    const combinedContent = validContents.map(c => `URL: ${c.url}\nContent: ${c.content}`).join('\n\n---\n\n');
+    
+    const prompt = `Analyze this web content and create an artist profile. Extract information about the artist's name, bio, location, artistic style, techniques, and social media.
 
-🎯 MANDATORY EXTRACTION REQUIREMENTS:
-YOU MUST FILL EVERY POSSIBLE FIELD. Do not leave fields empty unless absolutely no relevant information exists.
+Web Content:
+${combinedContent}
 
-PLATFORM-SPECIFIC ANALYSIS:
-${validContents.map(content => `
-PLATFORM: ${content.platform.toUpperCase()} (${content.url})
-CONTENT LENGTH: ${content.contentLength} characters
-ANALYSIS DEPTH: Deep scan for artistic content, bio information, contact details, and professional data
----`).join('\n')}
-
-ARTISTIC CONTENT PRIORITY RULES:
-1. HIGH PRIORITY: Artwork posts, studio documentation, exhibition announcements, artistic process videos, technique discussions, professional achievements, artistic education, gallery features, commission work, art sales, creative collaborations
-2. MEDIUM PRIORITY: Art-related travel, artistic inspirations, studio setup, art supply discussions, creative challenges
-3. IGNORE: Personal food photos, family events, unrelated travel, casual social content, non-art opinions
-
-COMPREHENSIVE EXTRACTION STRATEGY:
-- SCAN EVERY: Profile descriptions, bio sections, post captions, hashtags, linked websites, contact information
-- EXTRACT: Names from profiles and professional contexts
-- IDENTIFY: Artistic specialties from work displayed and descriptions
-- LOCATE: Geographic information from location tags, bio mentions, exhibition venues
-- COMPILE: Techniques from process videos, tutorials, and artwork descriptions
-- CATEGORIZE: Styles from artwork analysis and self-descriptions
-- HARVEST: Social handles directly from URLs and cross-references
-
-WEB CONTENT TO ANALYZE:
-${validContents.map(content => `
-========== ${content.platform.toUpperCase()}: ${content.url} ==========
-${content.content}
-==================================================
-`).join('\n')}
-
-ARTISTIC TERMINOLOGY MASTERY:
-- MEDIUMS: Oil Painting, Watercolor, Acrylic, Digital Art, Digital Illustration, 3D Modeling, Sculpture, Ceramics, Photography, Printmaking, Mixed Media, Collage, Graphic Design, Typography, Murals
-- TECHNIQUES: Impasto, Glazing, Wet-on-wet, Dry brush, Stippling, Cross-hatching, Perspective drawing, Color theory, Composition, Lighting, Texture work, Layering
-- STYLES: Contemporary, Modern, Abstract, Realism, Surrealism, Minimalism, Pop Art, Street Art, Fine Art, Commercial Art, Conceptual Art, Expressionism
-
-GENERATE COMPREHENSIVE ARTIST PROFILE (JSON FORMAT):
+Create a JSON response with these exact fields:
 {
-  "name": "REQUIRED: Extract full artist name from profile sections, about pages, professional mentions, exhibition credits",
-  "highlight_bio": "REQUIRED: Create punchy 1-2 sentence introduction capturing essence and specialty",
-  "bio": "REQUIRED: Write comprehensive 2-3 paragraph story including background, artistic journey, achievements, style, and professional experience",
-  "specialty": "REQUIRED: Identify primary medium/specialty from work shown and descriptions", 
-  "city": "REQUIRED: Extract from location tags, bio mentions, exhibition venues, contact info",
-  "country": "REQUIRED: Extract from location data, bio information, exhibition locations",
-  "techniques": "REQUIRED: Extract 3-6 specific artistic techniques from content analysis",
-  "styles": "REQUIRED: Identify 3-5 artistic styles/movements from artwork and descriptions", 
-  "profile_image": "REQUIRED: Extract profile image URL from social media platforms",
-  "social_platforms": "REQUIRED: Extract ALL social handles and website URLs as array of objects with format [{\"platform\": \"instagram\", \"url\": \"https://instagram.com/username\", \"username\": \"username\"}, {\"platform\": \"twitter\", \"url\": \"https://twitter.com/username\", \"username\": \"username\"}]"
+  "name": "Artist's full name",
+  "highlight_bio": "Compelling 1-2 sentence introduction", 
+  "bio": "Professional bio (2-3 paragraphs)",
+  "specialty": "Primary artistic medium/focus",
+  "city": "City name if found",
+  "country": "Country name if found",
+  "techniques": ["technique1", "technique2", "technique3"],
+  "styles": ["style1", "style2", "style3"],
+  "profile_image": "Profile image URL if found",
+  "social_platforms": [{"platform": "platform_name", "url": "full_url", "username": "username"}]
 }
 
-EXTRACTION INTENSITY LEVELS:
-🔍 BASIC: Obvious profile information and main posts
-🔎 DETAILED: Deep dive into captions, comments, tagged locations, linked content  
-🔬 COMPREHENSIVE: Meta analysis of artistic progression, style evolution, professional network
-🧠 EXPERT: Cross-reference multiple sources, infer professional trajectory, synthesize complete picture
+Respond only with valid JSON. Fill all fields based on available information.`;
 
-USE LEVEL: 🧠 EXPERT ANALYSIS
-
-MANDATORY COMPLETION CHECKLIST:
-✅ Name extracted from multiple sources and verified
-✅ Specialty identified from primary body of work
-✅ Location data cross-referenced and confirmed  
-✅ Techniques compiled from process documentation
-✅ Styles identified from artistic analysis
-✅ Social platforms harvested from all available sources
-✅ Bios crafted with professional tone and compelling narrative
-
-FINAL VALIDATION:
-- ALL fields must contain meaningful, accurate information
-- NO generic or placeholder content
-- VERIFY artistic authenticity and professional relevance
-- ENSURE compelling and memorable presentation
-
-Respond ONLY with the comprehensive JSON object containing ALL extracted information.`;
-
-    console.log('Calling OpenAI API...');
-    
-    // Call OpenAI API
     const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -334,39 +203,34 @@ Respond ONLY with the comprehensive JSON object containing ALL extracted informa
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
-        messages: [
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.5,
-        max_tokens: 10000,
+        model: 'gpt-4o-mini', // More reliable model
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+        max_tokens: 3000, // Reduced from 10,000
       }),
     });
 
-    console.log('OpenAI API response status:', aiResponse.status);
+    console.log('OpenAI response status:', aiResponse.status);
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
-      console.error('OpenAI API error details:', errorText);
+      console.error('OpenAI API error:', errorText);
       throw new Error(`OpenAI API error: ${aiResponse.status} - ${errorText}`);
     }
 
     const aiData = await aiResponse.json();
-    const generatedContent = aiData.choices[0].message.content;
+    console.log('AI response received, parsing...');
 
-    console.log('AI generated content:', generatedContent);
-
-    // Parse the JSON response
     let profileData;
     try {
-      profileData = JSON.parse(generatedContent);
-    } catch (error) {
-      console.error('Failed to parse AI response as JSON:', error);
-      throw new Error('Invalid response format from AI');
+      profileData = JSON.parse(aiData.choices[0].message.content);
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError);
+      console.error('Raw AI response:', aiData.choices[0].message.content);
+      throw new Error('Failed to parse AI response as JSON');
     }
 
-    // Log the successful generation
-    console.log('Successfully generated profile data:', profileData);
+    console.log('Successfully generated profile:', Object.keys(profileData));
 
     return new Response(JSON.stringify({ 
       success: true, 
@@ -378,15 +242,11 @@ Respond ONLY with the comprehensive JSON object containing ALL extracted informa
     });
 
   } catch (error) {
-    console.error('Error in auto-generate-profile function:', error);
-    console.error('Error stack:', error.stack);
-    console.error('Error name:', error.name);
-    console.error('Error message:', error.message);
+    console.error('Function error:', error);
     
     return new Response(JSON.stringify({ 
       error: error.message || 'Internal server error',
-      success: false,
-      errorType: error.name || 'UnknownError'
+      success: false
     }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
