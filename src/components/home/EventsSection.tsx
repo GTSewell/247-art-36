@@ -4,7 +4,16 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/
 const EventsSection: React.FC = () => {
   return <AccordionItem value="events" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0">
-        <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase w-full">EVENTS</h2>
+        <h2 
+          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/events-rotated.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            WebkitTextStroke: '2px black'
+          } as React.CSSProperties}
+        >EVENTS</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
