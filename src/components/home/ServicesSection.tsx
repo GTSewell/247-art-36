@@ -4,7 +4,14 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/
 const ServicesSection: React.FC = () => {
   return <AccordionItem value="services" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0">
-        <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase" style={{ display: 'inline-block', WebkitTextStroke: '2px black' } as React.CSSProperties}>SERVICES</h2>
+        <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]" style={{ 
+          display: 'inline-block', 
+          backgroundImage: 'url(/lovable-uploads/1ee57292-3d04-435d-8a93-f2dddf632a7e.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          WebkitTextStroke: '2px black' 
+        } as React.CSSProperties}>SERVICES</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
