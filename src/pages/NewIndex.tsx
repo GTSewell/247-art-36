@@ -13,6 +13,7 @@ import GallerySection from "@/components/home/GallerySection";
 import EventsSection from "@/components/home/EventsSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import JoinSection from "@/components/home/JoinSection";
+import { useAccordionScroll } from "@/hooks/useAccordionScroll";
 const NewIndex = () => {
   const { isPWA } = useAppMode();
   const { featuredArtists, additionalArtists, isLoading } = useArtists();
@@ -21,6 +22,8 @@ const NewIndex = () => {
   const [selectedArtistIndex, setSelectedArtistIndex] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [favoriteArtists] = useState<Set<number>>(new Set());
+  const [selectedSection, setSelectedSection] = useState<string>('');
+  const { handleAccordionChange } = useAccordionScroll();
   
   const galleryImages = [
     "/lovable-uploads/69af7803-27d7-4f04-b312-6169327229b3.png",
@@ -72,19 +75,9 @@ const NewIndex = () => {
             type="single" 
             collapsible 
             className="w-full"
+            value={selectedSection}
             onValueChange={(value) => {
-              if (value) {
-                setTimeout(() => {
-                  const element = document.querySelector(`[data-state="open"] .accordion-trigger`);
-                  if (element) {
-                    element.scrollIntoView({ 
-                      behavior: 'smooth', 
-                      block: 'start',
-                      inline: 'nearest'
-                    });
-                  }
-                }, 100);
-              }
+              handleAccordionChange(value, selectedSection, setSelectedSection);
             }}
           >
             <HeroSection />

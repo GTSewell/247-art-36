@@ -2,6 +2,7 @@ import React from 'react';
 import { Accordion } from "@/components/ui/accordion";
 import { storeCategories } from './utils/categoryUtils';
 import StoreCategorySection from './StoreCategorySection';
+import { useAccordionScroll } from '@/hooks/useAccordionScroll';
 
 interface StoreAccordionProps {
   selectedCategory: string;
@@ -16,11 +17,12 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
   getProductsForCategory,
   isGeneratingImages
 }) => {
+  const { registerTrigger, handleAccordionChange } = useAccordionScroll();
+
   const handleValueChange = (value: string) => {
     // The accordion returns an array, but we only allow single selection
     const newValue = Array.isArray(value) ? value[0] : value;
-    // Allow collapsing by calling onCategoryChange with the new value (which could be empty)
-    onCategoryChange(newValue || '');
+    handleAccordionChange(newValue, selectedCategory, onCategoryChange);
   };
 
   return (
@@ -42,6 +44,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
               isActive={selectedCategory === category.id}
               isGeneratingImages={isGeneratingImages && selectedCategory === category.id}
               productCount={products.length}
+              onTriggerRef={(element) => registerTrigger(category.id, element)}
             />
           );
         })}

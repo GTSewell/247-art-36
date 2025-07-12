@@ -14,6 +14,7 @@ interface StoreCategorySectionProps {
   isActive: boolean;
   isGeneratingImages: boolean;
   productCount: number;
+  onTriggerRef?: (element: HTMLElement | null) => void;
 }
 
 const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
@@ -21,11 +22,15 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   products,
   isActive,
   isGeneratingImages,
-  productCount
+  productCount,
+  onTriggerRef
 }) => {
   return (
     <AccordionItem value={category.id} className="border-none">
-      <AccordionTrigger className="hover:no-underline group px-0">
+      <AccordionTrigger 
+        ref={onTriggerRef}
+        className="hover:no-underline group px-0"
+      >
         <h2 
           className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
           style={{
