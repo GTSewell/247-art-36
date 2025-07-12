@@ -66,10 +66,8 @@ const NewIndex = () => {
       <main className="min-h-screen relative text-black">
         {isPWA ? <PWANavigation /> : <Navigation />}
         
-        <HeroSection />
-
         {/* Collapsible Sections */}
-        <div className="w-full pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
+        <div className="w-full">
           <Accordion 
             type="single" 
             collapsible 
@@ -89,21 +87,24 @@ const NewIndex = () => {
               }
             }}
           >
-            <PrintSection />
-            <ArtistsSection
-              featuredArtists={featuredArtists}
-              additionalArtists={additionalArtists}
-              isLoading={isLoading}
-              onArtistClick={handleArtistClick}
-            />
-            <GallerySection
-              galleryImages={galleryImages}
-              currentGalleryIndex={currentGalleryIndex}
-              onNextImage={nextGalleryImage}
-              onPrevImage={prevGalleryImage}
-            />
-            <EventsSection />
-            <ServicesSection />
+            <HeroSection />
+            <div className="pl-4 md:pl-8 lg:pl-12 pr-4 md:pr-8 lg:pr-12">
+              <PrintSection />
+              <ArtistsSection
+                featuredArtists={featuredArtists}
+                additionalArtists={additionalArtists}
+                isLoading={isLoading}
+                onArtistClick={handleArtistClick}
+              />
+              <GallerySection
+                galleryImages={galleryImages}
+                currentGalleryIndex={currentGalleryIndex}
+                onNextImage={nextGalleryImage}
+                onPrevImage={prevGalleryImage}
+              />
+              <EventsSection />
+              <ServicesSection />
+            </div>
           </Accordion>
         </div>
 
