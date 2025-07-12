@@ -5,8 +5,9 @@ const EventsSection: React.FC = () => {
   return <AccordionItem value="events" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0">
         <h2 
-          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
+          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
           style={{
+            display: 'inline-block',
             backgroundImage: 'url(/lovable-uploads/f53b5c82-3350-4fa4-8bdc-34fa94e9841d.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',

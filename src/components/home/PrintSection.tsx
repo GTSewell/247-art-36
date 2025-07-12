@@ -5,8 +5,9 @@ const PrintSection: React.FC = () => {
   return <AccordionItem value="print" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0">
         <h2 
-          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
+          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
           style={{
+            display: 'inline-block',
             backgroundImage: 'url(/lovable-uploads/256584f7-359c-43fe-81ae-15cf6ae32493.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',

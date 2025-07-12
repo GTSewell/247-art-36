@@ -17,8 +17,9 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
   return <AccordionItem value="artists" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0">
         <h2 
-          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
+          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
           style={{
+            display: 'inline-block',
             backgroundImage: 'url(/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
