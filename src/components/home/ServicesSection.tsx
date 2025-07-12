@@ -4,7 +4,7 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/
 const ServicesSection: React.FC = () => {
   return <AccordionItem value="services" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0">
-        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">SERVICES</h2>
+        <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase w-full">SERVICES</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">

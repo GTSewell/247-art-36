@@ -14,7 +14,7 @@ const HeroSection: React.FC = () => {
       <AccordionItem value="hero" className="border-none">
         <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0">
           <h1 
-            className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
             style={{
               backgroundImage: 'url(/lovable-uploads/962ca824-a496-4210-8240-a2d0070f4f30.png)',
               backgroundSize: 'cover',
