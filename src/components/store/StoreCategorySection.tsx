@@ -31,22 +31,20 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
-        className="hover:no-underline group px-0 flex-col items-end md:flex-row md:items-center md:justify-end"
+        className="hover:no-underline group px-0 flex-col items-start md:flex-row md:items-center md:justify-between"
       >
-        <div className="flex flex-col md:flex-row md:items-center w-full md:justify-end">
-          <div className="md:order-2 text-right">
-            <h2 
-              className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
-              style={{
-                '--category-bg-image': `url(${category.image})`
-              } as React.CSSProperties}
-              data-category={category.id}
-              data-editable="store-title"
-            >
-              {category.label}
-            </h2>
-          </div>
-          <p className="text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 md:mr-8 md:max-w-md md:order-1 text-center md:text-right">
+        <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
+          <h2 
+            className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+            style={{
+              '--category-bg-image': `url(${category.image})`
+            } as React.CSSProperties}
+            data-category={category.id}
+            data-editable="store-title"
+          >
+            {category.label}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 md:max-w-md text-left md:text-right">
             {category.description}
           </p>
         </div>
