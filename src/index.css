@@ -22,7 +22,7 @@
 
 /* Store Category Title Styles */
 .store-category-title {
-  font-size: 8rem;
+  font-size: 4rem;
   background-image: var(--category-bg-image);
   background-size: cover;
   background-position: center;
@@ -32,30 +32,30 @@
 
 @media (min-width: 640px) {
   .store-category-title {
-    font-size: 12rem;
+    font-size: 6rem;
   }
 }
 
 @media (min-width: 768px) {
   .store-category-title {
-    font-size: 16rem;
+    font-size: 8rem;
   }
 }
 
 @media (min-width: 1024px) {
   .store-category-title {
-    font-size: 20rem;
+    font-size: 10rem;
   }
 }
 
 @media (min-width: 1280px) {
   .store-category-title {
-    font-size: 24rem;
+    font-size: 12rem;
   }
 }
 
 @media (min-width: 1536px) {
   .store-category-title {
-    font-size: 32rem;
+    font-size: 16rem;
   }
 }
