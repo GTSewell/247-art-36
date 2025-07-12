@@ -2,23 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AutoScrollCarousel from '@/components/ui/auto-scroll-carousel';
-
 interface ArtistsSectionProps {
   featuredArtists: any[];
   additionalArtists: any[];
   isLoading: boolean;
   onArtistClick: (artist: any, index: number) => void;
 }
-
 const ArtistsSection: React.FC<ArtistsSectionProps> = ({
   featuredArtists,
   additionalArtists,
   isLoading,
   onArtistClick
 }) => {
-  return (
-    <AccordionItem value="artists" className="border-none">
-      <AccordionTrigger className="hover:no-underline px-0 py-8">
+  return <AccordionItem value="artists" className="border-none">
+      <AccordionTrigger className="hover:no-underline px-0 py-0">
         <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">ARTISTS</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
@@ -34,39 +31,17 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
         </div>
 
         {/* Auto-scrolling Artist Thumbnails */}
-        {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && (
-          <div className="space-y-8 mb-16">
+        {!isLoading && (featuredArtists.length > 0 || additionalArtists.length > 0) && <div className="space-y-8 mb-16">
             {/* First row - right direction, offset 0 */}
-            <AutoScrollCarousel 
-              artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
-              speed={70} 
-              direction="right"
-              startOffset={0}
-              onArtistClick={onArtistClick} 
-            />
+            <AutoScrollCarousel artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} speed={70} direction="right" startOffset={0} onArtistClick={onArtistClick} />
             
             {/* Second row - left direction, offset 5 */}
-            <AutoScrollCarousel 
-              artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
-              speed={60} 
-              direction="left"
-              startOffset={5}
-              onArtistClick={onArtistClick} 
-            />
+            <AutoScrollCarousel artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} speed={60} direction="left" startOffset={5} onArtistClick={onArtistClick} />
             
             {/* Third row - right direction, offset 10 */}
-            <AutoScrollCarousel 
-              artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} 
-              speed={80} 
-              direction="right"
-              startOffset={10}
-              onArtistClick={onArtistClick} 
-            />
-          </div>
-        )}
+            <AutoScrollCarousel artists={[...featuredArtists, ...additionalArtists].slice(0, 15)} speed={80} direction="right" startOffset={10} onArtistClick={onArtistClick} />
+          </div>}
       </AccordionContent>
-    </AccordionItem>
-  );
+    </AccordionItem>;
 };
-
 export default ArtistsSection;
