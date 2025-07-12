@@ -48,6 +48,7 @@
   letter-spacing: -0.05em; /* Overlapping letters */
   display: inline-block; /* Fit content exactly */
   width: auto; /* Let it size naturally */
+  padding: 0 0.05em; /* Compensate for negative letter spacing overflow */
 }
 
 .dark .homepage-accordion-title {
