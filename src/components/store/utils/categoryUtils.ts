@@ -34,7 +34,7 @@ export const storeCategories: CategoryType[] = [{
   description: 'Playful stickers and fun collectibles to brighten your day'
 }, {
   id: 'merch',
-  label: 'T-SHIRTS & APPAREL',
+  label: 'ARTIST APPAREL',
   color: 'bg-zap-yellow',
   image: storeTshirtsApparel,
   description: 'Wearable art featuring designs from our featured artists'
