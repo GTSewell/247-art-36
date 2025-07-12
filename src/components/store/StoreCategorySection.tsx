@@ -31,7 +31,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
-        className="hover:no-underline group px-0 flex-col items-start md:flex-row md:items-center md:justify-between w-screen -mx-[50vw] left-[50%] relative px-[50vw]"
+        className="hover:no-underline group px-0 flex-col items-start md:flex-row md:items-center md:justify-between w-full"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h2 
