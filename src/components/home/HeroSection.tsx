@@ -19,18 +19,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
       <AccordionItem value="hero" className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
-        className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0 homepage-accordion-group group"
+        className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0 homepage-accordion-group group flex-col items-start md:flex-row md:items-center md:justify-between w-full"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h1 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             style={{
               '--homepage-bg-image': 'url(/lovable-uploads/9a07fa2e-5c8f-4eda-b8d1-7bf410ac5619.png)'
             } as React.CSSProperties}
           >
             247.ART
           </h1>
-          <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
+          <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
             The official home for all creative minds
           </p>
         </div>
