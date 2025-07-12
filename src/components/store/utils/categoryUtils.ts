@@ -22,7 +22,7 @@ export const storeCategories: CategoryType[] = [{
   description: 'Unique, one-of-a-kind original pieces from talented artists'
 }, {
   id: 'signed',
-  label: 'SIGNED & NUMBERED',
+  label: 'Limited Editions',
   color: 'bg-zap-blue',
   image: storeSignedNumbered,
   description: 'Limited edition pieces personally signed and numbered by the artist'
