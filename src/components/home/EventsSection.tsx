@@ -7,7 +7,7 @@ const EventsSection: React.FC = () => {
         <h2 
           className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
           style={{
-            backgroundImage: 'url(/lovable-uploads/events-rotated.png)',
+            backgroundImage: 'url(/lovable-uploads/f53b5c82-3350-4fa4-8bdc-34fa94e9841d.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
