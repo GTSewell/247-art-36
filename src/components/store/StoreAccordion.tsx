@@ -17,7 +17,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
   getProductsForCategory,
   isGeneratingImages
 }) => {
-  const { registerTrigger, handleAccordionChange } = useAccordionScroll();
+  const { registerTrigger, registerContent, handleAccordionChange } = useAccordionScroll();
 
   const handleValueChange = (value: string) => {
     // The accordion returns an array, but we only allow single selection
@@ -45,6 +45,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
               isGeneratingImages={isGeneratingImages && selectedCategory === category.id}
               productCount={products.length}
               onTriggerRef={(element) => registerTrigger(category.id, element)}
+              onContentRef={(element) => registerContent(category.id, element)}
             />
           );
         })}

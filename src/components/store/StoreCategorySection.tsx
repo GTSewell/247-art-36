@@ -15,6 +15,7 @@ interface StoreCategorySectionProps {
   isGeneratingImages: boolean;
   productCount: number;
   onTriggerRef?: (element: HTMLElement | null) => void;
+  onContentRef?: (element: HTMLElement | null) => void;
 }
 
 const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
@@ -23,7 +24,8 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   isActive,
   isGeneratingImages,
   productCount,
-  onTriggerRef
+  onTriggerRef,
+  onContentRef
 }) => {
   return (
     <AccordionItem value={category.id} className="border-none">
@@ -42,7 +44,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           {category.label}
         </h2>
       </AccordionTrigger>
-      <AccordionContent className="px-0 pb-16">
+      <AccordionContent ref={onContentRef} className="px-0 pb-16">
         <div className="mb-8">
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-4 font-nove">
             {category.description}

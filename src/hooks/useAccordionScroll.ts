@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 
 export const useAccordionScroll = () => {
   const triggerRefs = useRef<Map<string, HTMLElement>>(new Map());
+  const contentRefs = useRef<Map<string, HTMLElement>>(new Map());
   const isChangingRef = useRef(false);
 
   const registerTrigger = useCallback((value: string, element: HTMLElement | null) => {
@@ -9,6 +10,14 @@ export const useAccordionScroll = () => {
       triggerRefs.current.set(value, element);
     } else {
       triggerRefs.current.delete(value);
+    }
+  }, []);
+
+  const registerContent = useCallback((value: string, element: HTMLElement | null) => {
+    if (element) {
+      contentRefs.current.set(value, element);
+    } else {
+      contentRefs.current.delete(value);
     }
   }, []);
 
@@ -28,38 +37,63 @@ export const useAccordionScroll = () => {
         return;
       }
 
-      // If we're expanding a new item, preserve the clicked trigger's viewport position
-      const triggerElement = triggerRefs.current.get(newValue);
+      // Get elements for the new trigger and current expanded content
+      const newTriggerElement = triggerRefs.current.get(newValue);
+      const currentContentElement = currentValue ? contentRefs.current.get(currentValue) : null;
       
-      if (triggerElement && newValue) {
-        // Store the trigger's position relative to the viewport BEFORE the change
-        const triggerRect = triggerElement.getBoundingClientRect();
-        const initialViewportTop = triggerRect.top;
+      if (newTriggerElement && newValue) {
+        // Pre-calculate the height of content that will collapse
+        let collapsingHeight = 0;
+        let shouldCompensate = false;
+        
+        if (currentContentElement && currentValue) {
+          // Get the full height of the currently expanded content
+          const contentRect = currentContentElement.getBoundingClientRect();
+          collapsingHeight = contentRect.height;
+          
+          // Check if the collapsing content is above the new trigger
+          const currentTriggerElement = triggerRefs.current.get(currentValue);
+          if (currentTriggerElement) {
+            const currentTriggerRect = currentTriggerElement.getBoundingClientRect();
+            const newTriggerRect = newTriggerElement.getBoundingClientRect();
+            
+            // If current trigger (and its content) is above the new trigger, we need to compensate
+            shouldCompensate = currentTriggerRect.top < newTriggerRect.top;
+          }
+        }
+        
+        // Store the new trigger's current position
+        const newTriggerRect = newTriggerElement.getBoundingClientRect();
+        const targetViewportTop = newTriggerRect.top;
         const currentScrollY = window.scrollY;
         
-        // Call the value change handler (this will cause layout shifts)
+        // Calculate proactive scroll adjustment
+        let proactiveScrollAdjustment = 0;
+        if (shouldCompensate && collapsingHeight > 0) {
+          proactiveScrollAdjustment = collapsingHeight;
+        }
+        
+        // Make the accordion change
         onValueChange(newValue);
         
-        // Immediately after the DOM change, compensate for any layout shift
-        requestAnimationFrame(() => {
-          // Get the trigger's new position
-          const newTriggerRect = triggerElement.getBoundingClientRect();
-          const newViewportTop = newTriggerRect.top;
+        // Use setTimeout for better timing with Radix UI animations
+        setTimeout(() => {
+          // Calculate final scroll position to keep trigger in same viewport position
+          const finalScrollY = currentScrollY - proactiveScrollAdjustment;
           
-          // Calculate how much the trigger moved in the viewport
-          const viewportShift = newViewportTop - initialViewportTop;
+          // Verify the trigger hasn't moved too far from expected position
+          const currentTriggerRect = newTriggerElement.getBoundingClientRect();
+          const actualViewportTop = currentTriggerRect.top;
+          const unexpectedShift = actualViewportTop - targetViewportTop;
           
-          // If there was a significant shift, adjust scroll to compensate
-          if (Math.abs(viewportShift) > 5) {
-            // Adjust scroll by the opposite amount to keep trigger in same viewport position
-            window.scrollTo({
-              top: currentScrollY - viewportShift,
-              behavior: 'instant'
-            });
-          }
+          // Apply scroll correction
+          window.scrollTo({
+            top: finalScrollY - unexpectedShift,
+            behavior: 'instant'
+          });
           
           isChangingRef.current = false;
-        });
+        }, 50);
       } else {
         onValueChange(newValue);
         isChangingRef.current = false;
@@ -68,6 +102,7 @@ export const useAccordionScroll = () => {
 
   return {
     registerTrigger,
+    registerContent,
     handleAccordionChange
   };
 };
