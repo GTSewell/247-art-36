@@ -10,7 +10,7 @@ const HeroSection: React.FC = () => {
     y: 0
   }} transition={{
     duration: 0.8
-  }} className="pt-20 pb-32 py-0">
+  }} className="">
       <AccordionItem value="hero" className="border-none">
         <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0">
           <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">
