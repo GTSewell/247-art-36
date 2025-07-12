@@ -11,7 +11,7 @@ const HeroSection: React.FC = () => {
     >
       <div className="w-full pl-4 md:pl-8 lg:pl-12">
         <div className="mb-20">
-          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-aeroxys font-black tracking-tighter leading-none text-left uppercase">
+          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-memesique font-black tracking-tighter leading-none text-left uppercase">
             247.ART
           </h1>
           
