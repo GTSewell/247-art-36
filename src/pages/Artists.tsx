@@ -7,7 +7,7 @@ import ArtistsHeader from "@/components/artists/ArtistsHeader";
 import { useArtists } from "@/hooks/use-artists";
 import type { Artist } from "@/data/types/artist";
 import { toast } from "sonner";
-import ThemeToggle from "@/components/ThemeToggle";
+import { GlobalThemeToggle } from "@/components/GlobalThemeToggle";
 const Artists = () => {
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [artistSearch, setArtistSearch] = useState("");
@@ -85,7 +85,7 @@ const Artists = () => {
         
         <div className="container mx-auto pt-20 px-4 pb-16">
           <div className="flex items-center justify-end mb-4">
-            <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
+            <GlobalThemeToggle />
           </div>
           
           <ArtistsHeader artistSearch={artistSearch} setArtistSearch={setArtistSearch} locationSearch={locationSearch} setLocationSearch={setLocationSearch} techniqueSearch={techniqueSearch} setTechniqueSearch={setTechniqueSearch} styleSearch={styleSearch} setStyleSearch={setStyleSearch} selectedTechniques={selectedTechniques} setSelectedTechniques={setSelectedTechniques} selectedStyles={selectedStyles} setSelectedStyles={setSelectedStyles} selectedSocials={selectedSocials} setSelectedSocials={setSelectedSocials} onUpdateSelection={handleUpdateSelection} onClearFilters={handleClearFilters} allArtistsSearch={allArtistsSearch} setAllArtistsSearch={setAllArtistsSearch} showFavorites={showFavorites} setShowFavorites={setShowFavorites} />

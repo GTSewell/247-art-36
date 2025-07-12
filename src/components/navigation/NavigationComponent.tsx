@@ -10,7 +10,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import ThemedLogo from "./ThemedLogo";
-import ThemeToggle from "@/components/ThemeToggle";
+import { GlobalThemeToggle } from "@/components/GlobalThemeToggle";
 const NavigationComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -68,12 +68,12 @@ const NavigationComponent = () => {
           {/* Desktop Navigation with Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
             <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
-            <ThemeToggle />
+            <GlobalThemeToggle />
           </div>
 
           {/* Mobile menu button - with cart badge and theme toggle */}
           <div className="md:hidden flex items-center gap-2">
-            <ThemeToggle />
+            <GlobalThemeToggle />
             <div className="relative">
               <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="p-0" /* Removed padding to eliminate the button outline */>
                 {isOpen ? <X className="h-6 w-6" /> : <div className="relative">
