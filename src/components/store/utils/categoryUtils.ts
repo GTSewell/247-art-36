@@ -28,7 +28,7 @@ export const storeCategories: CategoryType[] = [{
   description: 'Limited edition pieces personally signed and numbered by the artist'
 }, {
   id: 'sticker',
-  label: 'STICKERS & FUN STUFF',
+  label: 'Stickers & Stuff',
   color: 'bg-zap-red',
   image: storeStickersFun,
   description: 'Playful stickers and fun collectibles to brighten your day'
