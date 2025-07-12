@@ -16,7 +16,7 @@ type CategoryType = {
 
 export const storeCategories: CategoryType[] = [{
   id: 'original',
-  label: 'original artworks',
+  label: 'original artwork',
   color: 'bg-zap-yellow',
   image: storeOriginalArtwork,
   description: 'Unique, one-of-a-kind original pieces from talented artists'
