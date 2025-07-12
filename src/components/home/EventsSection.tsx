@@ -13,7 +13,7 @@ const EventsSection: React.FC = () => {
               } as React.CSSProperties}
             >EVENTS</h2>
           </div>
-          <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
+          <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
             Workshops, exhibitions, and community gatherings
           </p>
         </div>
@@ -21,7 +21,7 @@ const EventsSection: React.FC = () => {
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl">
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
               Workshops, exhibitions, and community gatherings
             </p>
             <Link to="/store" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">

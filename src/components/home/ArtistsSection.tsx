@@ -23,7 +23,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
               '--homepage-bg-image': 'url(/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png)'
             } as React.CSSProperties}
           >ARTISTS</h2>
-          <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
+          <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
             Discover emerging talent and established creators
           </p>
         </div>
@@ -31,7 +31,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl">
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
               Discover emerging talent and established creators
             </p>
             <Link to="/artists" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">

@@ -23,7 +23,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
               '--homepage-bg-image': 'url(/lovable-uploads/a662ceca-c266-417e-a1c0-9473bea6da08.png)'
             } as React.CSSProperties}
           >GALLERY</h2>
-          <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
+          <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
             Physical and virtual exhibitions
           </p>
         </div>
@@ -31,7 +31,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl">
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
               Physical and virtual exhibitions, plus professional printing
             </p>
             <Link to="/tour" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
