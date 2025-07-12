@@ -63,10 +63,10 @@ const NewIndex = () => {
         <meta name="twitter:image" content="https://247.art/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png" />
       </Helmet>
       
-      {/* Simple White Background */}
-      <div className="fixed inset-0 -z-10 bg-white" />
+      {/* Theme-aware Background */}
+      <div className="fixed inset-0 -z-10 bg-background" />
 
-      <main className="min-h-screen relative text-black">
+      <main className="min-h-screen relative text-foreground">
         {isPWA ? <PWANavigation /> : <Navigation />}
         
         {/* Collapsible Sections */}
