@@ -23,7 +23,7 @@ const NewIndex = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [favoriteArtists] = useState<Set<number>>(new Set());
   const [selectedSection, setSelectedSection] = useState<string>('');
-  const { handleAccordionChange } = useAccordionScroll();
+  const { registerTrigger, registerContent, handleAccordionChange } = useAccordionScroll();
   
   const galleryImages = [
     "/lovable-uploads/69af7803-27d7-4f04-b312-6169327229b3.png",
@@ -80,22 +80,38 @@ const NewIndex = () => {
               handleAccordionChange(value, selectedSection, setSelectedSection);
             }}
           >
-            <HeroSection />
-            <PrintSection />
+            <HeroSection 
+              onTriggerRef={(element) => registerTrigger('hero', element)}
+              onContentRef={(element) => registerContent('hero', element)}
+            />
+            <PrintSection 
+              onTriggerRef={(element) => registerTrigger('print', element)}
+              onContentRef={(element) => registerContent('print', element)}
+            />
             <ArtistsSection
               featuredArtists={featuredArtists}
               additionalArtists={additionalArtists}
               isLoading={isLoading}
               onArtistClick={handleArtistClick}
+              onTriggerRef={(element) => registerTrigger('artists', element)}
+              onContentRef={(element) => registerContent('artists', element)}
             />
             <GallerySection
               galleryImages={galleryImages}
               currentGalleryIndex={currentGalleryIndex}
               onNextImage={nextGalleryImage}
               onPrevImage={prevGalleryImage}
+              onTriggerRef={(element) => registerTrigger('gallery', element)}
+              onContentRef={(element) => registerContent('gallery', element)}
             />
-            <EventsSection />
-            <ServicesSection />
+            <EventsSection 
+              onTriggerRef={(element) => registerTrigger('events', element)}
+              onContentRef={(element) => registerContent('events', element)}
+            />
+            <ServicesSection 
+              onTriggerRef={(element) => registerTrigger('services', element)}
+              onContentRef={(element) => registerContent('services', element)}
+            />
           </Accordion>
         </div>
 

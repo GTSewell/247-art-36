@@ -1,9 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-const ServicesSection: React.FC = () => {
+interface ServicesSectionProps {
+  onTriggerRef?: (element: HTMLElement | null) => void;
+  onContentRef?: (element: HTMLElement | null) => void;
+}
+
+const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onContentRef }) => {
   return <AccordionItem value="services" className="border-none">
-      <AccordionTrigger className="hover:no-underline px-0 py-0 homepage-accordion-group group">
+      <AccordionTrigger 
+        ref={onTriggerRef}
+        className="hover:no-underline px-0 py-0 homepage-accordion-group group"
+      >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <div className="inline-block">
             <h2 
@@ -18,7 +26,7 @@ const ServicesSection: React.FC = () => {
           </p>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="px-0 pb-16">
+      <AccordionContent ref={onContentRef} className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
             <p className="text-2xl font-light text-gray-600 max-w-xl">

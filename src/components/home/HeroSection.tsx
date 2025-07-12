@@ -1,7 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  onTriggerRef?: (element: HTMLElement | null) => void;
+  onContentRef?: (element: HTMLElement | null) => void;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef }) => {
   return <motion.div initial={{
     opacity: 0,
     y: 20
@@ -12,7 +17,10 @@ const HeroSection: React.FC = () => {
     duration: 0.8
   }} className="">
       <AccordionItem value="hero" className="border-none">
-      <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0 homepage-accordion-group group">
+      <AccordionTrigger 
+        ref={onTriggerRef}
+        className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0 homepage-accordion-group group"
+      >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h1 
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
@@ -27,7 +35,7 @@ const HeroSection: React.FC = () => {
           </p>
         </div>
       </AccordionTrigger>
-        <AccordionContent className="px-0 pb-16">
+        <AccordionContent ref={onContentRef} className="px-0 pb-16">
           <div className="mb-20">
             <div className="mt-8 max-w-lg">
               <p className="text-xl font-light mb-8 font-sans">

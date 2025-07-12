@@ -59,8 +59,10 @@
   -webkit-text-stroke: 1px white;
 }
 
+/* Image overlay states: hover OR when parent accordion item is expanded */
 .homepage-accordion-title.with-background,
-.homepage-accordion-group:hover .homepage-accordion-title {
+.homepage-accordion-group:hover .homepage-accordion-title,
+.homepage-accordion-group[data-state="open"] .homepage-accordion-title {
   background-image: var(--homepage-bg-image);
   background-size: cover;
   background-position: center;
