@@ -24,7 +24,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            WebkitTextStroke: '2px black'
+            WebkitTextStroke: '1px black'
           } as React.CSSProperties}
         >GALLERY</h2>
       </AccordionTrigger>

@@ -10,7 +10,7 @@ const ServicesSection: React.FC = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          WebkitTextStroke: '2px black' 
+          WebkitTextStroke: '1px black' 
         } as React.CSSProperties}>SERVICES</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">

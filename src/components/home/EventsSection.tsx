@@ -12,7 +12,7 @@ const EventsSection: React.FC = () => {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            WebkitTextStroke: '2px black'
+            WebkitTextStroke: '1px black'
           } as React.CSSProperties}
         >EVENTS</h2>
       </AccordionTrigger>
