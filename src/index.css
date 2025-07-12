@@ -19,3 +19,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Store Category Title Styles */
+.store-category-title {
+  font-size: 8rem;
+  background-image: var(--category-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-text-stroke: 1px black;
+}
+
+@media (min-width: 640px) {
+  .store-category-title {
+    font-size: 12rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .store-category-title {
+    font-size: 16rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .store-category-title {
+    font-size: 20rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .store-category-title {
+    font-size: 24rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .store-category-title {
+    font-size: 32rem;
+  }
+}

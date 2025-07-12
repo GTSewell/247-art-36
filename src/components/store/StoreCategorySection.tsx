@@ -27,14 +27,12 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger className="hover:no-underline group px-0">
         <h2 
-          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] 2xl:text-[32rem] font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+          className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
           style={{
-            backgroundImage: `url(${category.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            WebkitTextStroke: '1px black'
+            '--category-bg-image': `url(${category.image})`
           } as React.CSSProperties}
+          data-category={category.id}
+          data-editable="store-title"
         >
           {category.label}
         </h2>
