@@ -13,7 +13,7 @@ const HeroSection: React.FC = () => {
   }} className="">
       <AccordionItem value="hero" className="border-none">
         <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0">
-          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">
+          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
             247.ART
           </h1>
         </AccordionTrigger>
