@@ -25,7 +25,7 @@ export default {
       fontFamily: {
         'digital': ['Digital Clock', 'monospace'],
         'nove': ['nove', 'sans-serif'],
-        'memesique': ['Memesique', 'sans-serif'],
+        'agharti': ['Agharti', 'sans-serif'],
       },
       colors: {
         zap: {

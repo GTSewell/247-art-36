@@ -8,9 +8,9 @@
 }
 
 @font-face {
-  font-family: 'Memesique';
-  src: url('https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/fonts/Memesique-Regular.ttf') format('truetype');
-  font-weight: normal;
+  font-family: 'Agharti';
+  src: url('https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/fonts/Agharti-BlackUltraCondensed.ttf') format('truetype');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }

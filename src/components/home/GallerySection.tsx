@@ -19,7 +19,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
   return (
     <AccordionItem value="gallery" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-8">
-        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-memesique font-black tracking-wide leading-none uppercase">GALLERY</h2>
+        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">GALLERY</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
