@@ -22,7 +22,7 @@ const HeroSection: React.FC = () => {
           >
             247.ART
           </h1>
-          <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
+          <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
             The official home for all creative minds
           </p>
         </div>
@@ -30,7 +30,7 @@ const HeroSection: React.FC = () => {
         <AccordionContent className="px-0 pb-16">
           <div className="mb-20">
             <div className="mt-8 max-w-lg">
-              <p className="text-xl font-light mb-8">
+              <p className="text-xl font-light mb-8 font-nove">
                 The official home for all creative minds.
               </p>
               <button className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
