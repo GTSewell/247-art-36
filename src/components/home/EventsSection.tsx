@@ -17,7 +17,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
             <h2 
               className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
               style={{
-                '--homepage-bg-image': 'url(/lovable-uploads/63533300-a607-4556-a960-6d73cffc50ce.png)'
+                '--homepage-bg-image': 'url(/lovable-uploads/36efb961-ff42-413a-a30c-2e3ab8982bb5.png)'
               } as React.CSSProperties}
             >EVENTS</h2>
           </div>
