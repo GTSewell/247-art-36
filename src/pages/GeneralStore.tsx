@@ -56,11 +56,7 @@ const GeneralStore = () => {
           <Navigation />
           
           <main className="container mx-auto px-4 pt-24 pb-20">
-            <div className="flex items-center justify-between mb-4">
-              <div className="bg-zap-yellow px-2 py-1 rounded text-black text-center">
-                <span className="text-lg font-bold">Mock-up page for demonstration</span>
-              </div>
-              
+            <div className="flex items-center justify-end mb-4">
               <ThemeToggle localOnly={true} onToggle={handleThemeToggle} />
             </div>
 
