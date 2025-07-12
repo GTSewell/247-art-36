@@ -31,11 +31,11 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
-        className="hover:no-underline group px-0 flex-col items-start md:flex-row md:items-center md:justify-between"
+        className="hover:no-underline group px-0 flex-col items-start md:flex-row md:items-center md:justify-between w-screen -mx-[50vw] left-[50%] relative px-[50vw]"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h2 
-            className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
+            className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105 whitespace-nowrap"
             style={{
               '--category-bg-image': `url(${category.image})`
             } as React.CSSProperties}
