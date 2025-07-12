@@ -20,7 +20,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
           className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
           style={{
             backgroundImage: 'url(/lovable-uploads/a662ceca-c266-417e-a1c0-9473bea6da08.png)',
-            backgroundSize: 'contain',
+            backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             WebkitTextStroke: '2px black'
