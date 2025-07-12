@@ -6,7 +6,7 @@ const ServicesSection: React.FC = () => {
   return (
     <AccordionItem value="services" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-8">
-        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none">SERVICES</h2>
+        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-aeroxys font-black tracking-tighter leading-none lowercase">services</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">

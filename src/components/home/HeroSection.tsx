@@ -11,8 +11,8 @@ const HeroSection: React.FC = () => {
     >
       <div className="w-full pl-4 md:pl-8 lg:pl-12">
         <div className="mb-20">
-          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-black tracking-tighter leading-none text-left">
-            247.ART
+          <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-aeroxys font-black tracking-tighter leading-none text-left lowercase">
+            247.art
           </h1>
           
           <div className="mt-8 max-w-lg">
