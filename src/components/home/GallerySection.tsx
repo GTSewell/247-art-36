@@ -17,12 +17,14 @@ const GallerySection: React.FC<GallerySectionProps> = ({
   return <AccordionItem value="gallery" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0 homepage-accordion-group group">
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
-            style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/a662ceca-c266-417e-a1c0-9473bea6da08.png)'
-            } as React.CSSProperties}
-          >GALLERY</h2>
+          <div className="inline-block">
+            <h2 
+              className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
+              style={{
+                '--homepage-bg-image': 'url(/lovable-uploads/a662ceca-c266-417e-a1c0-9473bea6da08.png)'
+              } as React.CSSProperties}
+            >GALLERY</h2>
+          </div>
           <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
             Physical and virtual exhibitions
           </p>

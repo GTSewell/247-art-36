@@ -14,14 +14,16 @@ const HeroSection: React.FC = () => {
       <AccordionItem value="hero" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0 homepage-accordion-group group">
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h1 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
-            style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/962ca824-a496-4210-8240-a2d0070f4f30.png)'
-            } as React.CSSProperties}
-          >
-            247.ART
-          </h1>
+          <div className="inline-block">
+            <h1 
+              className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
+              style={{
+                '--homepage-bg-image': 'url(/lovable-uploads/962ca824-a496-4210-8240-a2d0070f4f30.png)'
+              } as React.CSSProperties}
+            >
+              247.ART
+            </h1>
+          </div>
           <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
             The official home for all creative minds
           </p>

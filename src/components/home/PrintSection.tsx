@@ -5,12 +5,14 @@ const PrintSection: React.FC = () => {
   return <AccordionItem value="print" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0 homepage-accordion-group group">
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
-            style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/256584f7-359c-43fe-81ae-15cf6ae32493.png)'
-            } as React.CSSProperties}
-          >PRINT</h2>
+          <div className="inline-block">
+            <h2 
+              className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
+              style={{
+                '--homepage-bg-image': 'url(/lovable-uploads/256584f7-359c-43fe-81ae-15cf6ae32493.png)'
+              } as React.CSSProperties}
+            >PRINT</h2>
+          </div>
           <p className="hidden md:block text-xl font-light text-gray-600 ml-8">
             Professional printing services for artists
           </p>
