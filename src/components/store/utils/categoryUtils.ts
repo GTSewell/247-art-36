@@ -46,7 +46,7 @@ export const storeCategories: CategoryType[] = [{
   description: 'High-quality prints and posters perfect for any space'
 }, {
   id: 'collection',
-  label: 'THE 247 COLLECTION',
+  label: '247 merch',
   color: 'bg-zap-red',
   image: store247Collection,
   description: 'Exclusive curated collection showcasing the best of 247.ART'
