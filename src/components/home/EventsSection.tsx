@@ -21,8 +21,8 @@ const EventsSection: React.FC = () => {
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
-              Workshops, exhibitions, and community gatherings
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
+              Join a vibrant community of creators through exclusive workshops, opening nights, and collaborative sessions. Connect with like-minded artists and art enthusiasts in spaces designed to inspire and educate.
             </p>
             <Link to="/store" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
               view all

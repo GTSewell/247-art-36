@@ -31,8 +31,8 @@ const GallerySection: React.FC<GallerySectionProps> = ({
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
-              Physical and virtual exhibitions, plus professional printing
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
+              Immerse yourself in carefully curated exhibitions that blur the lines between physical and digital spaces. Experience art in its purest form through our state-of-the-art gallery environments and virtual showcases.
             </p>
             <Link to="/tour" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
               view all

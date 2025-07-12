@@ -21,8 +21,8 @@ const PrintSection: React.FC = () => {
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
-              Professional printing services for artists and collectors
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
+              Transform digital masterpieces into tangible works of art with our museum-grade printing technology. From intimate prints to large-scale installations, we ensure every detail preserves the artist's original vision.
             </p>
             <Link to="/details" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
               learn more

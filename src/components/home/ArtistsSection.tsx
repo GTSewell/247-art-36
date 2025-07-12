@@ -31,8 +31,8 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
           <div className="flex justify-between items-end">
-            <p className="text-2xl font-light text-gray-600 max-w-xl font-nove">
-              Discover emerging talent and established creators
+            <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
+              Explore an ever-evolving roster of visionary artists pushing creative boundaries. From street art pioneers to digital innovators, our platform connects you with the voices shaping tomorrow's art landscape.
             </p>
             <Link to="/artists" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
               view all
