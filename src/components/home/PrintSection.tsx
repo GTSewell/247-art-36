@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 const PrintSection: React.FC = () => {
   return <AccordionItem value="print" className="border-none">
-      <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-[28px]">
+      <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0">
         <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">PRINT</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
