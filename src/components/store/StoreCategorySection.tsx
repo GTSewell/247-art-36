@@ -25,7 +25,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
 }) => {
   return (
     <AccordionItem value={category.id} className="border-none">
-      <AccordionTrigger className="hover:no-underline group py-8 px-0">
+      <AccordionTrigger className="hover:no-underline group px-0">
         <h2 
           className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] 2xl:text-[32rem] font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105"
           style={{
