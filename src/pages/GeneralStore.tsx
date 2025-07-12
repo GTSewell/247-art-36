@@ -4,7 +4,7 @@ import Navigation from "@/components/navigation/Navigation";
 import { toast } from "sonner";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
-import FilteredProducts from "@/components/store/FilteredProducts";
+import StoreAccordion from "@/components/store/StoreAccordion";
 import { TimerProvider } from "@/contexts/TimerContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -81,11 +81,11 @@ const GeneralStore = () => {
                 }} 
               />
 
-              <FilteredProducts 
-                products={filteredProducts} 
-                selectedCategory={selectedCategory} 
-                onCategoryChange={handleCategoryChange} 
-                isGeneratingImages={isGeneratingImages} 
+              <StoreAccordion
+                selectedCategory={selectedCategory}
+                onCategoryChange={handleCategoryChange}
+                getProductsForCategory={getProductsForCategory}
+                isGeneratingImages={isGeneratingImages}
               />
 
               {isLoading && !isGeneratingImages && (

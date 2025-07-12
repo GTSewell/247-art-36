@@ -1,34 +1,55 @@
 
+import storeOriginalArtwork from '@/assets/store-original-artwork.jpg';
+import storeSignedNumbered from '@/assets/store-signed-numbered.jpg';
+import storeStickersFun from '@/assets/store-stickers-fun.jpg';
+import storeTshirtsApparel from '@/assets/store-tshirts-apparel.jpg';
+import storePrintsPosters from '@/assets/store-prints-posters.jpg';
+import store247Collection from '@/assets/store-247-collection.jpg';
+
 type CategoryType = {
   id: string;
   label: string;
   color: string;
+  image: string;
+  description: string;
 };
 
 export const storeCategories: CategoryType[] = [{
   id: 'original',
   label: 'ORIGINAL ARTWORK',
-  color: 'bg-zap-yellow'
+  color: 'bg-zap-yellow',
+  image: storeOriginalArtwork,
+  description: 'Unique, one-of-a-kind original pieces from talented artists'
 }, {
   id: 'signed',
   label: 'SIGNED & NUMBERED',
-  color: 'bg-zap-blue'
+  color: 'bg-zap-blue',
+  image: storeSignedNumbered,
+  description: 'Limited edition pieces personally signed and numbered by the artist'
 }, {
   id: 'sticker',
   label: 'STICKERS & FUN STUFF',
-  color: 'bg-zap-red'
+  color: 'bg-zap-red',
+  image: storeStickersFun,
+  description: 'Playful stickers and fun collectibles to brighten your day'
 }, {
   id: 'merch',
   label: 'T-SHIRTS & APPAREL',
-  color: 'bg-zap-yellow'
+  color: 'bg-zap-yellow',
+  image: storeTshirtsApparel,
+  description: 'Wearable art featuring designs from our featured artists'
 }, {
   id: 'print',
   label: 'ART PRINTS & POSTERS',
-  color: 'bg-zap-blue'
+  color: 'bg-zap-blue',
+  image: storePrintsPosters,
+  description: 'High-quality prints and posters perfect for any space'
 }, {
   id: 'collection',
   label: 'THE 247 COLLECTION',
-  color: 'bg-zap-red'
+  color: 'bg-zap-red',
+  image: store247Collection,
+  description: 'Exclusive curated collection showcasing the best of 247.ART'
 }];
 
 export const getCategoryColor = (categoryId: string): string => {
