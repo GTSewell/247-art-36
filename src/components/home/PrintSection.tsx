@@ -17,7 +17,7 @@ const PrintSection: React.FC<PrintSectionProps> = ({ onTriggerRef, onContentRef 
             <h2 
               className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
               style={{
-                '--homepage-bg-image': 'url(/lovable-uploads/256584f7-359c-43fe-81ae-15cf6ae32493.png)'
+                '--homepage-bg-image': 'url(/lovable-uploads/74dcd042-cc32-4e03-9897-a8f73536b520.png)'
               } as React.CSSProperties}
             >PRINT</h2>
           </div>
