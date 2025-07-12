@@ -18,7 +18,7 @@ interface TimerState {
 }
 
 const GeneralStore = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('print');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
   const {
