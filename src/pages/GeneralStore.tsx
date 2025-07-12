@@ -21,6 +21,9 @@ const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('print');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
   const {
     featuredProducts,
     getProductsForCategory,
@@ -28,6 +31,9 @@ const GeneralStore = () => {
     isGeneratingImages
   } = usePWAStoreProducts();
 
+  const handleThemeToggle = (isDark: boolean) => {
+    setDarkMode(isDark);
+  };
 
   useEffect(() => {
     logger.info(`Category changed to: ${selectedCategory}`);
@@ -45,7 +51,7 @@ const GeneralStore = () => {
   };
 
   return <TimerProvider>
-      <div className="min-h-screen transition-colors duration-200">
+      <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           <Navigation />
           
