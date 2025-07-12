@@ -20,10 +20,11 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
           className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] w-full"
           style={{
             backgroundImage: 'url(/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png)',
-            backgroundSize: 'cover',
+            backgroundSize: '100% auto',
             backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
+            backgroundRepeat: 'no-repeat',
+            WebkitTextStroke: '2px black'
+          } as React.CSSProperties}
         >ARTISTS</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
