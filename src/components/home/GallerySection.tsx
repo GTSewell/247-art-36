@@ -16,7 +16,15 @@ const GallerySection: React.FC<GallerySectionProps> = ({
 }) => {
   return <AccordionItem value="gallery" className="border-none">
       <AccordionTrigger className="hover:no-underline px-0 py-0">
-        <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">GALLERY</h2>
+        <h2 
+          className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
+          style={{
+            backgroundImage: 'url(/lovable-uploads/a662ceca-c266-417e-a1c0-9473bea6da08.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        >GALLERY</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
         <div className="mb-20">
