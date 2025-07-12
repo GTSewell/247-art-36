@@ -23,9 +23,6 @@ const PWAStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
   const { isPWA } = useAppMode();
   const { featuredProducts, getProductsForCategory, isLoading } = usePWAStoreProducts();
   
@@ -46,9 +43,6 @@ const PWAStore = () => {
     setSelectedCategory(null);
   };
 
-  const handleThemeToggle = (isDark: boolean) => {
-    setDarkMode(isDark);
-  };
 
   return (
     <TimerProvider>
@@ -61,7 +55,7 @@ const PWAStore = () => {
         <link rel="icon" href="https://247.art/lovable-uploads/15e8cb31-73b1-4d72-9d9b-0dac8bf0baed.png" />
       </Helmet>
       
-      <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+      <div className="min-h-screen transition-colors duration-200">
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           {isPWA ? <PWANavigation /> : <Navigation />}
           
