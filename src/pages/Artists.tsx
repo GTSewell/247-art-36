@@ -19,9 +19,6 @@ const Artists = () => {
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
   const [showFavorites, setShowFavorites] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
   const {
     featuredArtists,
     additionalArtists,
@@ -30,9 +27,6 @@ const Artists = () => {
     handleFavoriteToggle,
     refreshArtists
   } = useArtists();
-  const handleThemeToggle = (isDark: boolean) => {
-    setDarkMode(isDark);
-  };
   const handleUpdateSelection = () => {
     toast.success('Filters applied successfully');
   };
@@ -79,7 +73,7 @@ const Artists = () => {
         </div>
       </div>;
   }
-  return <div className={`min-h-screen transition-colors duration-200 ${darkMode ? 'dark' : ''}`}>
+  return <div className="min-h-screen transition-colors duration-200">
       <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
         <Navigation />
         
