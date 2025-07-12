@@ -1,15 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-
 const HeroSection: React.FC = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="pt-20 pb-32"
-    >
+  return <motion.div initial={{
+    opacity: 0,
+    y: 20
+  }} animate={{
+    opacity: 1,
+    y: 0
+  }} transition={{
+    duration: 0.8
+  }} className="pt-20 pb-32 py-0">
       <AccordionItem value="hero" className="border-none">
         <AccordionTrigger className="hover:no-underline px-0 my-0 font-extrabold text-9xl py-0">
           <h1 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">
@@ -30,12 +31,15 @@ const HeroSection: React.FC = () => {
 
           {/* Latest Updates Cards */}
           <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-20">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-black text-white p-3 sm:p-6 rounded-lg"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            delay: 0.2
+          }} className="bg-black text-white p-3 sm:p-6 rounded-lg">
               <div className="flex items-center mb-2 sm:mb-3">
                 <div className="w-2 h-2 bg-red-500 rounded-full mr-2 sm:mr-3"></div>
                 <span className="text-xs sm:text-sm italic">Latest Exhibition</span>
@@ -46,12 +50,15 @@ const HeroSection: React.FC = () => {
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-black text-white p-3 sm:p-6 rounded-lg"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            delay: 0.3
+          }} className="bg-black text-white p-3 sm:p-6 rounded-lg">
               <div className="flex items-center mb-2 sm:mb-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mr-2 sm:mr-3"></div>
                 <span className="text-xs sm:text-sm italic">Latest Feature</span>
@@ -62,12 +69,15 @@ const HeroSection: React.FC = () => {
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-black text-white p-3 sm:p-6 rounded-lg"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            delay: 0.4
+          }} className="bg-black text-white p-3 sm:p-6 rounded-lg">
               <div className="flex items-center mb-2 sm:mb-3">
                 <div className="w-2 h-2 bg-green-500 rounded-full mr-2 sm:mr-3"></div>
                 <span className="text-xs sm:text-sm italic">Latest Story</span>
@@ -80,8 +90,6 @@ const HeroSection: React.FC = () => {
           </div>
         </AccordionContent>
       </AccordionItem>
-    </motion.div>
-  );
+    </motion.div>;
 };
-
 export default HeroSection;
