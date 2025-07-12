@@ -35,7 +35,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h2 
-            className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105 whitespace-nowrap w-full text-left md:w-auto"
+            className="store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text text-transparent transition-all duration-300 group-hover:scale-105 md:whitespace-nowrap w-full text-left md:w-auto"
             style={{
               '--category-bg-image': `url(${category.image})`
             } as React.CSSProperties}
