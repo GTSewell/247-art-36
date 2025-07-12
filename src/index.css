@@ -32,7 +32,8 @@
   -webkit-text-stroke: 1px white;
 }
 
-.store-category-title.with-background {
+.store-category-title.with-background,
+.group:hover .store-category-title {
   background-image: var(--category-bg-image);
   background-size: cover;
   background-position: center;
