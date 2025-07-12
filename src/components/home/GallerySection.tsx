@@ -27,7 +27,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
           <h2 
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
             style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/3a411cba-fb60-43b4-a15d-269fe83e5d75.png)'
+              '--homepage-bg-image': 'url(/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png)'
             } as React.CSSProperties}
           >GALLERY</h2>
           <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
