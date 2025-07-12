@@ -19,9 +19,8 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
   const handleValueChange = (value: string) => {
     // The accordion returns an array, but we only allow single selection
     const newValue = Array.isArray(value) ? value[0] : value;
-    if (newValue && newValue !== selectedCategory) {
-      onCategoryChange(newValue);
-    }
+    // Allow collapsing by calling onCategoryChange with the new value (which could be empty)
+    onCategoryChange(newValue || '');
   };
 
   return (
