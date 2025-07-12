@@ -61,7 +61,7 @@ const GeneralStore = () => {
             </div>
 
             <div className="w-full">
-              <FeaturedProducts products={featuredProducts} onProductSelect={handleProductSelect} />
+              {/* <FeaturedProducts products={featuredProducts} onProductSelect={handleProductSelect} /> */}
 
               <TimedEditionModal 
                 isOpen={!!selectedProduct} 
