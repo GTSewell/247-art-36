@@ -40,7 +40,7 @@ export const storeCategories: CategoryType[] = [{
   description: 'Wearable art featuring designs from our featured artists'
 }, {
   id: 'print',
-  label: 'ART PRINTS & POSTERS',
+  label: 'ART POSTERS',
   color: 'bg-zap-blue',
   image: storePrintsPosters,
   description: 'High-quality prints and posters perfect for any space'
