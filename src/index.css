@@ -40,6 +40,26 @@
   background-repeat: no-repeat;
 }
 
+/* Homepage Accordion Title Styles */
+.homepage-accordion-title {
+  -webkit-text-stroke: 1px black;
+  color: transparent;
+  transition: all 0.3s ease;
+  letter-spacing: -0.05em; /* Overlapping letters */
+}
+
+.dark .homepage-accordion-title {
+  -webkit-text-stroke: 1px white;
+}
+
+.homepage-accordion-title.with-background,
+.homepage-accordion-group:hover .homepage-accordion-title {
+  background-image: var(--homepage-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 @media (min-width: 640px) {
   .store-category-title {
     font-size: 8rem;

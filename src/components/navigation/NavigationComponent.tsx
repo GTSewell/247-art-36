@@ -10,6 +10,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useCart } from "@/contexts/CartContext";
 import { Badge } from "@/components/ui/badge";
 import ThemedLogo from "./ThemedLogo";
+import ThemeToggle from "@/components/ThemeToggle";
 const NavigationComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -64,19 +65,25 @@ const NavigationComponent = () => {
           {/* Logo with theme awareness */}
           <ThemedLogo darkMode={darkMode} />
 
-          {/* Desktop Navigation */}
-          <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
+          {/* Desktop Navigation with Theme Toggle */}
+          <div className="hidden md:flex items-center gap-4">
+            <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
+            <ThemeToggle />
+          </div>
 
-          {/* Mobile menu button - with cart badge */}
-          <div className="md:hidden relative">
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="p-0" /* Removed padding to eliminate the button outline */>
-              {isOpen ? <X className="h-6 w-6" /> : <div className="relative">
-                  <img alt="Menu" className="h-8 w-8" src="/lovable-uploads/52048c59-1bc7-4152-897e-7af9c8695f63.png" />
-                  {itemCount > 0 && <Badge className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs">
-                      {itemCount}
-                    </Badge>}
-                </div>}
-            </Button>
+          {/* Mobile menu button - with cart badge and theme toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <div className="relative">
+              <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="p-0" /* Removed padding to eliminate the button outline */>
+                {isOpen ? <X className="h-6 w-6" /> : <div className="relative">
+                    <img alt="Menu" className="h-8 w-8" src="/lovable-uploads/52048c59-1bc7-4152-897e-7af9c8695f63.png" />
+                    {itemCount > 0 && <Badge className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs">
+                        {itemCount}
+                      </Badge>}
+                  </div>}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
