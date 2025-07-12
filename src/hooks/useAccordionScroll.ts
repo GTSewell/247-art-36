@@ -28,33 +28,38 @@ export const useAccordionScroll = () => {
         return;
       }
 
-      // If we're expanding a new item, preserve scroll position
+      // If we're expanding a new item, preserve the clicked trigger's viewport position
       const triggerElement = triggerRefs.current.get(newValue);
       
       if (triggerElement && newValue) {
-        // Get the trigger's position before the change
+        // Store the trigger's position relative to the viewport BEFORE the change
         const triggerRect = triggerElement.getBoundingClientRect();
-        const triggerTopOffset = triggerRect.top + window.scrollY;
+        const initialViewportTop = triggerRect.top;
+        const currentScrollY = window.scrollY;
         
-        // Call the value change handler
+        // Call the value change handler (this will cause layout shifts)
         onValueChange(newValue);
         
-        // After a brief delay to allow DOM updates, scroll to maintain position
-        setTimeout(() => {
-          // Calculate where to scroll to keep the trigger in the same relative position
+        // Immediately after the DOM change, compensate for any layout shift
+        requestAnimationFrame(() => {
+          // Get the trigger's new position
           const newTriggerRect = triggerElement.getBoundingClientRect();
-          const currentTriggerTop = newTriggerRect.top + window.scrollY;
+          const newViewportTop = newTriggerRect.top;
           
-          // If the trigger moved, adjust scroll to compensate
-          if (Math.abs(currentTriggerTop - triggerTopOffset) > 10) {
+          // Calculate how much the trigger moved in the viewport
+          const viewportShift = newViewportTop - initialViewportTop;
+          
+          // If there was a significant shift, adjust scroll to compensate
+          if (Math.abs(viewportShift) > 5) {
+            // Adjust scroll by the opposite amount to keep trigger in same viewport position
             window.scrollTo({
-              top: triggerTopOffset - 100, // 100px offset from top for breathing room
-              behavior: 'smooth'
+              top: currentScrollY - viewportShift,
+              behavior: 'instant'
             });
           }
           
           isChangingRef.current = false;
-        }, 150);
+        });
       } else {
         onValueChange(newValue);
         isChangingRef.current = false;
