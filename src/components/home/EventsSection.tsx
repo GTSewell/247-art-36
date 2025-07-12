@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-
 const EventsSection: React.FC = () => {
-  return (
-    <AccordionItem value="events" className="border-none">
-      <AccordionTrigger className="hover:no-underline px-0 py-8">
+  return <AccordionItem value="events" className="border-none">
+      <AccordionTrigger className="hover:no-underline px-0 py-0">
         <h2 className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase">EVENTS</h2>
       </AccordionTrigger>
       <AccordionContent className="px-0 pb-16">
@@ -59,8 +57,6 @@ const EventsSection: React.FC = () => {
           </div>
         </div>
       </AccordionContent>
-    </AccordionItem>
-  );
+    </AccordionItem>;
 };
-
 export default EventsSection;
