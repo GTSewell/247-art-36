@@ -7,7 +7,7 @@ import FeaturedProducts from "@/components/store/FeaturedProducts";
 import StoreAccordion from "@/components/store/StoreAccordion";
 import { TimerProvider } from "@/contexts/TimerContext";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { GlobalThemeToggle } from "@/components/GlobalThemeToggle";
+
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
 import { logger } from "@/utils/logger";
 
@@ -50,10 +50,6 @@ const GeneralStore = () => {
           <Navigation />
           
           <main className="container mx-auto px-4 pt-24 pb-20">
-            <div className="flex items-center justify-end mb-4">
-              <GlobalThemeToggle />
-            </div>
-
             <div className="w-full">
               {/* <FeaturedProducts products={featuredProducts} onProductSelect={handleProductSelect} /> */}
 

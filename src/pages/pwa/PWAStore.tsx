@@ -11,7 +11,7 @@ import StoreHomeView from "@/components/pwa/store/StoreHomeView";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Helmet } from "react-helmet";
-import { GlobalThemeToggle } from "@/components/GlobalThemeToggle";
+
 
 interface TimerState {
   hours: number;
@@ -61,8 +61,7 @@ const PWAStore = () => {
           
           <main className={`${isPWA ? 'pt-4 pb-20 w-full' : 'container mx-auto px-4 pt-24 pb-20'}`}>
             {!isPWA && (
-              <div className="flex justify-end mb-4">
-                <GlobalThemeToggle />
+              <div className="mb-4">
               </div>
             )}
             
