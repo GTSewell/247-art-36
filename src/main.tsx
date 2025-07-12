@@ -2,6 +2,7 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from 'next-themes'
 import React from 'react'
 import App from './App.tsx'
 import './index.css'
@@ -41,11 +42,18 @@ const renderApp = () => {
       <React.StrictMode>
         <BrowserRouter>
           <QueryClientProvider client={queryClient}>
-            <AppModeProvider>
-              <PasswordProtectionProvider>
-                <App />
-              </PasswordProtectionProvider>
-            </AppModeProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <AppModeProvider>
+                <PasswordProtectionProvider>
+                  <App />
+                </PasswordProtectionProvider>
+              </AppModeProvider>
+            </ThemeProvider>
           </QueryClientProvider>
         </BrowserRouter>
       </React.StrictMode>
