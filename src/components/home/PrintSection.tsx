@@ -7,7 +7,7 @@ const PrintSection: React.FC = () => {
         <h2 
           className="text-[4rem] sm:text-[6rem] md:text-[8rem] lg:text-[12rem] xl:text-[16rem] font-agharti font-black tracking-normal leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]"
           style={{
-            backgroundImage: 'url(/lovable-uploads/5ac4a4e4-565c-4f2e-9039-1d63e1850a04.png)',
+            backgroundImage: 'url(/lovable-uploads/256584f7-359c-43fe-81ae-15cf6ae32493.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'
