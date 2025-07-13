@@ -27,34 +27,6 @@ const DesktopNav = ({ isActive, user, isLoading }: DesktopNavProps) => {
   
   return (
     <div className="hidden md:flex items-center space-x-4 w-full justify-end">
-      {/* Removed "The Exhibition" link */}
-      <NavLink to="/artists" isActive={isActive("/artists")}>
-        The Artists
-      </NavLink>
-      <NavLink to="/store" isActive={isActive("/store")}>
-        The Store
-      </NavLink>
-      {/* Removed "About Us" link */}
-      
-      {/* Cart Icon with solid background for better contrast */}
-      <Link to="/cart" className="relative">
-        <Button 
-          variant="secondary" 
-          size="icon" 
-          className="p-0 rounded-md"
-          title="Shopping Cart"
-        >
-          <ShoppingCart className="h-5 w-5" />
-          {itemCount > 0 && (
-            <Badge 
-              className="absolute -top-2 -right-2 px-1.5 py-0.5 text-xs bg-zap-red text-white rounded-full"
-            >
-              {itemCount}
-            </Badge>
-          )}
-        </Button>
-      </Link>
-      
       <UserMenu isCartPage={isCartPage} isArtistDashboard={isArtistDashboard} />
     </div>
   );

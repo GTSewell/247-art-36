@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -116,7 +116,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
           <span className="hidden md:inline">{displayName}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-white">
+      <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background border shadow-md">
         <div className="flex items-center gap-2 p-3 border-b">
           <Avatar className="h-8 w-8">
             <AvatarImage 
@@ -130,35 +130,59 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
           <span className="text-sm font-medium truncate">{user.email}</span>
         </div>
         
+        {/* Navigation Links */}
+        <Link to="/">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
+            <Home className="mr-2 h-5 w-5" />
+            <span>Home</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/artists">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
+            <Palette className="mr-2 h-5 w-5" />
+            <span>The Artists</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <Link to="/store">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            <span>The Store</span>
+          </DropdownMenuItem>
+        </Link>
+        
+        <DropdownMenuSeparator />
+        
         {/* Currency selector */}
         <div className="p-2 border-b">
-          <DropdownMenuLabel className="px-1 text-xs text-gray-500">Currency</DropdownMenuLabel>
+          <DropdownMenuLabel className="px-1 text-xs text-muted-foreground">Currency</DropdownMenuLabel>
           <CurrencySelector className="mt-1 py-1" />
         </div>
         
         <Link to="/cart">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
             <ShoppingCart className="mr-2 h-5 w-5" />
             <span>Cart</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/messages">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
             <MessageSquare className="mr-2 h-5 w-5" />
             <span>Messages</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/dashboard/artist">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Artist Dashboard</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/dashboard/collector">
-          <DropdownMenuItem className="p-3 hover:bg-gray-100">
+          <DropdownMenuItem className="p-3 hover:bg-muted">
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Collector Dashboard</span>
           </DropdownMenuItem>
@@ -166,14 +190,14 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         
         {isAdmin && (
           <Link to="/admin/artists">
-            <DropdownMenuItem className="p-3 hover:bg-gray-100">
+            <DropdownMenuItem className="p-3 hover:bg-muted">
               <Shield className="mr-2 h-5 w-5" />
               <span>Artist Management</span>
             </DropdownMenuItem>
           </Link>
         )}
         
-        <DropdownMenuItem onClick={handleSignOut} className="p-3 hover:bg-gray-100 text-red-500 border-t">
+        <DropdownMenuItem onClick={handleSignOut} className="p-3 hover:bg-muted text-destructive border-t">
           <LogOut className="mr-2 h-5 w-5" />
           <span>Sign out</span>
         </DropdownMenuItem>

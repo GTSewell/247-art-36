@@ -53,22 +53,24 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className={`md:hidden bg-white dark:bg-gray-900 border-t border-border/20 w-full ${isWhoAreYouPage ? 'mt-4' : ''}`}>
+    <div className={`md:hidden bg-background border-t border-border/20 w-full ${isWhoAreYouPage ? 'mt-4' : ''}`}>
       <div className="max-w-full mx-auto px-6 py-2 space-y-1">
-        {/* Page navigation links - Removed "The Exhibition" and "About Us" links */}
+        {/* Navigation links for all users */}
+        <MobileNavLink to="/" isActive={isActive("/")}>
+          Home
+        </MobileNavLink>
         <MobileNavLink to="/artists" isActive={isActive("/artists")}>
           The Artists
         </MobileNavLink>
         <MobileNavLink to="/store" isActive={isActive("/store")}>
           The Store
         </MobileNavLink>
-        {/* Removed "About Us" link */}
         
         {/* User menu items - Only show if user is logged in */}
         {user && (
           <>
             {/* User profile info */}
-            <div className="flex items-center p-2 mb-2 bg-gray-100 dark:bg-gray-800 rounded-md">
+            <div className="flex items-center p-2 mb-2 bg-muted rounded-md">
               <div className="h-10 w-10 rounded-full overflow-hidden mr-3 bg-primary">
                 <img 
                   src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
@@ -77,15 +79,15 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
                 />
               </div>
               <div className="flex flex-col">
-                <p className="font-medium text-sm dark:text-white">
+                <p className="font-medium text-sm text-foreground">
                   {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
                 </p>
-                <p className="text-xs text-gray-500 dark:text-gray-300 truncate max-w-[150px]">{user.email}</p>
+                <p className="text-xs text-muted-foreground truncate max-w-[150px]">{user.email}</p>
               </div>
             </div>
             
-            {/* User menu options - Improved contrast for dark mode */}
-            <Link to="/cart" className="flex items-center p-2 rounded-md text-foreground dark:text-white hover:bg-accent dark:hover:bg-gray-800">
+            {/* User menu options */}
+            <Link to="/cart" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
               <ShoppingCart className="mr-2 h-4 w-4" />
               <span>Cart</span>
               {itemCount > 0 && (
@@ -95,30 +97,30 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
               )}
             </Link>
             
-            <Link to="/messages" className="flex items-center p-2 rounded-md text-foreground dark:text-white hover:bg-accent dark:hover:bg-gray-800">
+            <Link to="/messages" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
               <MessageSquare className="mr-2 h-4 w-4" />
               <span>Messages</span>
             </Link>
             
-            <Link to="/dashboard/artist" className="flex items-center p-2 rounded-md text-foreground dark:text-white hover:bg-accent dark:hover:bg-gray-800">
+            <Link to="/dashboard/artist" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
               <Settings className="mr-2 h-4 w-4" />
               <span>Artist Dashboard</span>
             </Link>
             
-            <Link to="/dashboard/collector" className="flex items-center p-2 rounded-md text-foreground dark:text-white hover:bg-accent dark:hover:bg-gray-800">
+            <Link to="/dashboard/collector" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
               <Settings className="mr-2 h-4 w-4" />
               <span>Collector Dashboard</span>
             </Link>
             
             {isAdmin && (
-              <Link to="/admin/artists" className="flex items-center p-2 rounded-md text-foreground dark:text-white hover:bg-accent dark:hover:bg-gray-800">
+              <Link to="/admin/artists" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
                 <Shield className="mr-2 h-4 w-4" />
                 <span>Artist Management</span>
               </Link>
             )}
             
             <button 
-              className="flex items-center w-full p-2 rounded-md text-red-500 hover:bg-accent dark:hover:bg-gray-800"
+              className="flex items-center w-full p-2 rounded-md text-destructive hover:bg-muted"
               onClick={handleSignOut}
             >
               <LogOut className="mr-2 h-4 w-4" />

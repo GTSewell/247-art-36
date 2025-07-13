@@ -62,8 +62,8 @@ const NavigationComponent = () => {
   return <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent w-full`}>
       <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
         <div className={`flex justify-between items-center ${navExtraClass} w-full`}>
-          {/* Logo with theme awareness */}
-          <ThemedLogo darkMode={darkMode} />
+          {/* Empty left side for minimalistic design */}
+          <div></div>
 
           {/* Desktop Navigation with Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
