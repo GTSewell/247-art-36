@@ -23,9 +23,9 @@ export const PriceRangeFilter: React.FC<PriceRangeFilterProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2 w-[180px] justify-start">
           <Filter className="h-4 w-4" />
-          Price: ${priceRange[0]}-${priceRange[1]}
+          <span className="truncate">Price: ${priceRange[0]}-${priceRange[1]}</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
@@ -33,14 +33,16 @@ export const PriceRangeFilter: React.FC<PriceRangeFilterProps> = ({
           <Label className="text-sm font-medium">Price Range</Label>
           
           {/* Range Slider with dual handles */}
-          <Slider
-            value={priceRange}
-            onValueChange={(value) => onPriceRangeChange(value as [number, number])}
-            max={maxRange[1]}
-            min={maxRange[0]}
-            step={5}
-            className="w-full"
-          />
+          <div className="px-2">
+            <Slider
+              value={priceRange}
+              onValueChange={(value) => onPriceRangeChange(value as [number, number])}
+              max={maxRange[1]}
+              min={maxRange[0]}
+              step={5}
+              className="w-full [&>span:first-child]:h-2 [&>span:first-child]:bg-primary [&_[role=slider]]:border-2 [&_[role=slider]]:border-primary [&_[role=slider]]:bg-background [&_[role=slider]]:shadow-md [&_[role=slider]]:w-5 [&_[role=slider]]:h-5"
+            />
+          </div>
           
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>${priceRange[0]}</span>
