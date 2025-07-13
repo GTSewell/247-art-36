@@ -82,14 +82,14 @@ const ProductBasicInfoTab: React.FC<ProductBasicInfoTabProps> = ({
         <div className="space-y-2">
           <Label htmlFor="artist">Artist</Label>
           <Select
-            value={formData.artist_id?.toString() || ''}
-            onValueChange={(value) => handleChange('artist_id', value ? parseInt(value) : null)}
+            value={formData.artist_id?.toString() || 'none'}
+            onValueChange={(value) => handleChange('artist_id', value === 'none' ? null : parseInt(value))}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select artist" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">No artist assigned</SelectItem>
+              <SelectItem value="none">No artist assigned</SelectItem>
               {artists.map((artist) => (
                 <SelectItem key={artist.id} value={artist.id.toString()}>
                   {artist.name}
