@@ -73,7 +73,10 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
           src={images[currentImageIndex]}
           alt={`Product image ${currentImageIndex + 1}`}
           className="w-full h-full object-cover cursor-pointer"
-          onClick={() => handleImageClick(currentImageIndex)}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageClick(currentImageIndex);
+          }}
         />
         
         {/* Zoom overlay */}

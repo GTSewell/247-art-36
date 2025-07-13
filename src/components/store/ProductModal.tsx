@@ -86,24 +86,24 @@ const ProductModal: React.FC<ProductModalProps> = ({
             onClick={handlePrevious}
             disabled={currentIndex === 0}
             aria-label="Previous product"
-            className="fixed left-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-sm shadow-lg transition-colors z-50 bg-background/90 hover:bg-muted border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+            className="fixed left-[calc(50%-505px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            <ChevronLeft className="h-6 w-6 text-foreground" />
+            <ChevronLeft className="h-6 w-6" />
           </button>
           <button 
             onClick={handleNext}
             disabled={currentIndex === products.length - 1}
             aria-label="Next product"
-            className="fixed right-4 top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-sm shadow-lg transition-colors z-50 bg-background/90 hover:bg-muted border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+            className="fixed right-[calc(50%-505px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            <ChevronRight className="h-6 w-6 text-foreground" />
+            <ChevronRight className="h-6 w-6" />
           </button>
         </>
       )}
       
       {/* Product counter outside modal */}
       {showNavigation && (
-        <div className="fixed top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-sm shadow-lg bg-background/90 border border-border z-50">
+        <div className="fixed top-[calc(50vh-45vh-5px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-50">
           <span className="text-sm text-foreground font-medium">
             {currentIndex + 1} of {products.length}
           </span>
