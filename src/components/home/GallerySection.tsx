@@ -47,33 +47,21 @@ const GallerySection: React.FC<GallerySectionProps> = ({
           </div>
         </div>
 
-        {/* Gallery Viewer */}
-        <div className="relative bg-gray-100 rounded-lg overflow-hidden" style={{
-        height: '600px'
-      }}>
-          <AnimatePresence mode="wait">
-            <motion.img key={currentGalleryIndex} src={galleryImages[currentGalleryIndex]} alt="Gallery artwork" initial={{
-            opacity: 0,
-            x: 300
-          }} animate={{
-            opacity: 1,
-            x: 0
-          }} exit={{
-            opacity: 0,
-            x: -300
-          }} transition={{
-            duration: 0.3
-          }} className="w-full h-full object-cover" />
-          </AnimatePresence>
-
-          {/* Navigation Controls */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4">
-            <button onClick={onPrevImage} className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
-              prev
-            </button>
-            <button onClick={onNextImage} className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors">
-              next
-            </button>
+        {/* Film Strip Auto Scroll */}
+        <div className="relative overflow-hidden bg-black rounded-lg p-4" style={{
+          height: '200px' // Constrained height to not exceed gallery title height
+        }}>
+          <div className="flex animate-[scroll-left_20s_linear_infinite] gap-4 h-full">
+            {/* Duplicate gallery images for seamless loop */}
+            {[...galleryImages, ...galleryImages, ...galleryImages].map((image, index) => (
+              <div key={index} className="flex-shrink-0 h-full aspect-[4/3] bg-white rounded-md overflow-hidden shadow-lg border-2 border-white">
+                <img 
+                  src={image} 
+                  alt={`Gallery image ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </AccordionContent>
