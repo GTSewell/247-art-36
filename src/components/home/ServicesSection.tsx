@@ -43,49 +43,36 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
           <div 
             className="flex h-full"
             style={{
-              width: '200%',
-              animation: 'scroll-left 25s linear infinite'
+              width: 'calc(200% + 16rem)', // Extra width for proper spacing
+              animation: 'scroll-left 30s linear infinite'
             }}
           >
             {/* First set */}
-            <div className="flex shrink-0 items-center h-full space-x-8" style={{ width: '50%' }}>
-              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain" />
+            <div className="flex shrink-0 items-center h-full space-x-16 pr-16" style={{ minWidth: 'calc(50% + 8rem)' }}>
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
             </div>
             {/* Second set - exact duplicate for seamless loop */}
-            <div className="flex shrink-0 items-center h-full space-x-8" style={{ width: '50%' }}>
-              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain" />
-              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain" />
+            <div className="flex shrink-0 items-center h-full space-x-16 pr-16" style={{ minWidth: 'calc(50% + 8rem)' }}>
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
+              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain flex-shrink-0" />
             </div>
           </div>
         </div>
-        
-        <style>
-          {`
-            @keyframes scroll-left {
-              0% {
-                transform: translateX(0);
-              }
-              100% {
-                transform: translateX(-50%);
-              }
-            }
-          `}
-        </style>
       </AccordionContent>
     </AccordionItem>;
 };
