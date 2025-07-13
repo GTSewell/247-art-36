@@ -19,23 +19,36 @@ const GeneralStore = () => {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
   const [selectedRegularProduct, setSelectedRegularProduct] = useState<any>(null);
+  const [selectedRegularProductIndex, setSelectedRegularProductIndex] = useState<number>(0);
   const {
     featuredProducts,
     getProductsForCategory,
     isLoading,
     isGeneratingImages
   } = usePWAStoreProducts();
+  
   useEffect(() => {
     logger.info(`Category changed to: ${selectedCategory}`);
   }, [selectedCategory]);
+  
   const filteredProducts = getProductsForCategory(selectedCategory);
+  
   const handleProductSelect = (product: any, timerState: TimerState) => {
     setSelectedProduct(product);
     setSelectedTimerState(timerState);
   };
 
   const handleRegularProductClick = (product: any) => {
+    const productIndex = filteredProducts.findIndex(p => p.id === product.id);
     setSelectedRegularProduct(product);
+    setSelectedRegularProductIndex(productIndex >= 0 ? productIndex : 0);
+  };
+
+  const handleRegularProductNavigate = (newIndex: number) => {
+    if (newIndex >= 0 && newIndex < filteredProducts.length) {
+      setSelectedRegularProduct(filteredProducts[newIndex]);
+      setSelectedRegularProductIndex(newIndex);
+    }
   };
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
@@ -61,7 +74,10 @@ const GeneralStore = () => {
               <ProductModal 
                 isOpen={!!selectedRegularProduct} 
                 onClose={() => setSelectedRegularProduct(null)} 
-                product={selectedRegularProduct} 
+                product={selectedRegularProduct}
+                products={filteredProducts}
+                currentIndex={selectedRegularProductIndex}
+                onNavigate={handleRegularProductNavigate}
               />
 
               <StoreAccordion 
