@@ -22,15 +22,11 @@ export const useEnhancedAccordionScroll = () => {
   }, []);
 
   const scrollToTop = useCallback((element: HTMLElement) => {
-    // Get the actual header height dynamically
-    const header = document.querySelector('header') || document.querySelector('nav');
-    const headerHeight = header ? header.offsetHeight : 0;
-    
+    // Position the element exactly at the top of the viewport with no offset
     const elementTop = element.getBoundingClientRect().top + window.pageYOffset;
-    const scrollTop = elementTop - headerHeight;
     
     window.scrollTo({
-      top: Math.max(0, scrollTop),
+      top: elementTop,
       behavior: 'smooth'
     });
   }, []);
