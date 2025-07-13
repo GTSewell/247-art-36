@@ -50,14 +50,14 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product }) => {
         )}
       </div>
       <div className="flex flex-col flex-1">
-        <h3 className="font-agharti font-normal mb-0.5 text-sm leading-tight truncate">{product.name}</h3>
+        <h3 className="font-medium mb-0.5 text-sm leading-tight truncate">{product.name}</h3>
         {(product.artists?.name || (product as any).artist_name) && (
-          <p className="text-xs text-gray-700 mt-1 font-agharti font-bold leading-none truncate">
+          <p className="text-xs text-gray-700 mt-1 font-semibold leading-none truncate">
             By {product.artists?.name || (product as any).artist_name}
           </p>
         )}
         <div className="flex items-center justify-between mt-auto pt-2">
-          <p className="text-gray-800 text-base font-agharti font-thin leading-none">
+          <p className="text-gray-800 text-base font-light leading-none">
             ${typeof product.price === 'string' ? product.price : product.price.toFixed(2)}
           </p>
           <Button 

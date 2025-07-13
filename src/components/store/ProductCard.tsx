@@ -33,14 +33,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
       </div>
       <div className="flex flex-col flex-1">
-        <h3 className="font-agharti font-normal mb-0.5 text-sm md:text-base dark:text-white leading-tight truncate">{product.name}</h3>
+        <h3 className="font-medium mb-0.5 text-sm md:text-base dark:text-white leading-tight truncate">{product.name}</h3>
         {product.artists && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-agharti font-bold leading-none truncate">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-semibold leading-none truncate">
             By {product.artists.name}
           </p>
         )}
         <div className="flex items-center justify-between mt-auto pt-2">
-          <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base font-agharti font-thin leading-none">${product.price}</p>
+          <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base font-light leading-none">${product.price}</p>
           <Button size={isMobile ? "icon" : "sm"} className="bg-slate-700 hover:bg-slate-600 text-white h-8 w-8 md:w-auto md:h-8">
             {isMobile ? <ShoppingCart className="h-4 w-4" /> : (
               <>
