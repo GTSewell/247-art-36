@@ -22,7 +22,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
             SERVICES
           </h2>
           <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
-            PROFESSIONAL CURATION AND EVENT MANAGEMENT. ART ACTIVATIONS, KICK-ASS INSTALLATIONS. YOU DREAM IT. WE'LL BUILD IT!
+            KICK-ASS ART ACTIVATIONS & INSTALLATIONS. YOU DREAM IT. WE BUILD IT!
           </p>
         </div>
       </AccordionTrigger>
