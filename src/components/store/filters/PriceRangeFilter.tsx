@@ -23,8 +23,8 @@ export const PriceRangeFilter: React.FC<PriceRangeFilterProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="gap-2 w-[180px] justify-start">
-          <Filter className="h-4 w-4" />
+        <Button variant="outline" className="gap-2 w-[200px] justify-start min-w-[200px]">
+          <Filter className="h-4 w-4 flex-shrink-0" />
           <span className="truncate">Price: ${priceRange[0]}-${priceRange[1]}</span>
         </Button>
       </PopoverTrigger>
