@@ -26,12 +26,13 @@ const NewIndex = () => {
   const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
   
   const galleryImages = [
-    "/lovable-uploads/69af7803-27d7-4f04-b312-6169327229b3.png",
-    "/lovable-uploads/71405033-4f8a-40d6-b459-a95523ca10f8.png", 
-    "/lovable-uploads/77d6eca3-c8ee-469f-8975-11645265224b.png",
-    "/lovable-uploads/80693eda-1198-40da-8f3e-795e24bb4897.png",
-    "/lovable-uploads/96c594a0-80b9-4675-b599-deb4ad4802b8.png",
-    "/lovable-uploads/b4d254c3-2988-4d1a-97ad-beb4e333e55c.png"
+    "/lovable-uploads/7d317cc0-5f48-4fee-900a-e34d88b885e4.png",
+    "/lovable-uploads/05961de3-7b21-4c2e-926e-77068d8d2afa.png", 
+    "/lovable-uploads/3d9d2624-e707-4078-b191-5ddfbc0f13df.png",
+    "/lovable-uploads/545e1c86-4b62-4984-8848-a199a3680d7d.png",
+    "/lovable-uploads/10d7209a-20b1-45b0-afe3-61990d0d37f1.png",
+    "/lovable-uploads/f6ef7840-2e05-4248-950f-06fd5cf01e6f.png",
+    "/lovable-uploads/6335b203-485c-47c6-8717-0b6fac321826.png"
   ];
 
   const nextGalleryImage = () => {
