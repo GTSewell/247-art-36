@@ -38,39 +38,27 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
           </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
-          <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
-            <div className="flex items-center mb-2 sm:mb-3">
-              <div className="w-2 h-2 bg-indigo-500 rounded-full mr-2 sm:mr-3"></div>
-              <span className="text-xs sm:text-sm italic">curation</span>
+        {/* Logo Slideshow */}
+        <div className="h-24 sm:h-32 overflow-hidden relative">
+          <div className="flex animate-[scroll-left_20s_linear_infinite] h-full">
+            <div className="flex shrink-0 items-center h-full space-x-8">
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/9be7f7df-0132-4b34-ac9d-e068d9bb0358.png" alt="MetaMask" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/626c7a49-4159-4311-9c1e-3a37a6bdd319.png" alt="Sony Music" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-16 sm:h-20 w-auto object-contain" />
             </div>
-            <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Exhibition Curation</h3>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Expert curatorial services for galleries and private collections
-            </p>
-          </div>
-
-          <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
-            <div className="flex items-center mb-2 sm:mb-3">
-              <div className="w-2 h-2 bg-rose-500 rounded-full mr-2 sm:mr-3"></div>
-              <span className="text-xs sm:text-sm italic">management</span>
+            <div className="flex shrink-0 items-center h-full space-x-8 ml-8">
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/9be7f7df-0132-4b34-ac9d-e068d9bb0358.png" alt="MetaMask" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/626c7a49-4159-4311-9c1e-3a37a6bdd319.png" alt="Sony Music" className="h-16 sm:h-20 w-auto object-contain" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-16 sm:h-20 w-auto object-contain" />
             </div>
-            <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Event Management</h3>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Full-service event planning and execution for art events
-            </p>
-          </div>
-
-          <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
-            <div className="flex items-center mb-2 sm:mb-3">
-              <div className="w-2 h-2 bg-amber-500 rounded-full mr-2 sm:mr-3"></div>
-              <span className="text-xs sm:text-sm italic">custom builds</span>
-            </div>
-            <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Installation Design</h3>
-            <p className="text-xs sm:text-sm text-gray-300">
-              Bespoke installations and exhibition space design
-            </p>
           </div>
         </div>
       </AccordionContent>
