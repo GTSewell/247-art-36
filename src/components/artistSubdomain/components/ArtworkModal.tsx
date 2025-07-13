@@ -1,14 +1,11 @@
-import React from 'react';
-import { ShoppingCart } from 'lucide-react';
-import { 
-  Dialog, 
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from '@/hooks/use-mobile';
+import React, { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useIsMobile } from "@/hooks/use-mobile";
+import ProductImageGallery from '@/components/store/ProductImageGallery';
+import RegularProductHeader from '@/components/store/RegularProductHeader';
+import ProductInfoAccordion from '@/components/store/ProductInfoAccordion';
+import AddToCartButton from '@/components/store/AddToCartButton';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Artist } from '@/data/types/artist';
 import { AssignedProduct } from '@/hooks/useAssignedProducts';
 import { ArtworkDetails } from '../types/ArtworkTypes';
@@ -33,83 +30,106 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
   onAddToCart
 }) => {
   const isMobile = useIsMobile();
-  const isRealArtist = artist.id ? artist.id >= 26 : false;
+  const [openAccordions, setOpenAccordions] = useState<string[]>([]);
   
+  const isRealArtist = artist.id ? artist.id >= 26 : false;
   const matchingProduct = assignedProducts?.find(p => p.image_url === selectedArtwork?.image);
   const isAssignedProduct = !!matchingProduct;
   const canAddToCart = isAssignedProduct || !isRealArtist;
 
+  useEffect(() => {
+    if (!isMobile) {
+      setOpenAccordions(['details']);
+    } else {
+      setOpenAccordions([]);
+    }
+  }, [isMobile, isOpen]);
+
+  const handleAccordionChange = (value: string) => {
+    setOpenAccordions(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
+  };
+
+  if (!selectedArtwork) return null;
+
+  // Create artwork images array (for now just the single image, but could be expanded)
+  const artworkImages = [selectedArtwork.image];
+
+  // Convert artwork data to product-like structure for components
+  const artworkAsProduct = {
+    id: selectedArtwork.image, // Use image as unique ID
+    name: selectedArtwork.title,
+    price: parseFloat(selectedArtwork.price?.replace('$', '') || '0'),
+    image_url: selectedArtwork.image,
+    artists: { name: artist.name },
+    is_limited_edition: false,
+    custom_description: selectedArtwork.description,
+    specifications: selectedArtwork.specifications
+  };
+
+  // Convert specifications to the expected format
+  const specifications = {
+    'Medium': selectedArtwork.specifications.medium || 'N/A',
+    'Size': selectedArtwork.specifications.size || 'N/A', 
+    'Year': selectedArtwork.specifications.year || 'N/A'
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className={`sm:max-w-md ${isMobile ? 'max-h-[90vh] p-3 overflow-hidden' : ''}`} 
-        style={{ backgroundColor: panelColor }}
-      >
-        <DialogHeader className="pb-1">
-          <DialogTitle>{selectedArtwork?.title}</DialogTitle>
-          <DialogDescription className="line-clamp-2">
-            {selectedArtwork?.description}
-          </DialogDescription>
-        </DialogHeader>
-        
-        <div className={`${isMobile ? 'flex flex-col overflow-y-auto max-h-[calc(90vh-8rem)]' : 'grid gap-4 py-4'}`}>
-          <div className={`rounded-md overflow-hidden ${isMobile ? 'flex-shrink-0 mb-3' : 'mb-4'}`}>
-            {selectedArtwork && (
-              <div className="artwork-container">
-                <img 
-                  src={selectedArtwork.image} 
-                  alt={selectedArtwork.title}
-                  className="w-full max-h-[50vh] object-contain rounded-md"
-                  onError={(e) => {
-                    e.currentTarget.src = '/placeholder.svg';
-                  }}
+    <div className="relative">
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className={`p-0 overflow-hidden bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
+          <DialogTitle className="sr-only">Artwork Details</DialogTitle>
+          
+          {/* Close button */}
+          <button 
+            onClick={onClose} 
+            aria-label="Close dialog" 
+            className="absolute right-2 top-2 p-2 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 bg-background/90 hover:bg-muted border border-border"
+          >
+            <X className="h-4 w-4 text-foreground" />
+          </button>
+          
+          <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
+            <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
+              <ProductImageGallery images={artworkImages} />
+            </div>
+            <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
+              <div className="flex-grow space-y-3 md:space-y-4">
+                <RegularProductHeader 
+                  name={selectedArtwork.title} 
+                  artistName={artist.name} 
+                  price={parseFloat(selectedArtwork.price?.replace('$', '') || '0')}
+                  isLimitedEdition={false}
+                />
+                
+                <ProductInfoAccordion 
+                  description={selectedArtwork.description} 
+                  specifications={specifications}
+                  production_info={isRealArtist ? undefined : "This artwork is displayed for preview purposes only and is not currently available for purchase."}
+                  shipping_info={canAddToCart ? undefined : "Not available for shipping"}
+                  openAccordions={openAccordions} 
+                  onAccordionChange={handleAccordionChange} 
                 />
               </div>
-            )}
-          </div>
-          
-          <div className={`${isMobile ? 'flex-shrink-0' : ''} space-y-2`}>
-            <h4 className="font-semibold text-sm">Specifications</h4>
-            <p className="text-sm">
-              Medium: {isRealArtist ? '' : selectedArtwork?.specifications.medium}<br />
-              Size: {isRealArtist ? '' : selectedArtwork?.specifications.size}<br />
-              Year: {isRealArtist ? '' : selectedArtwork?.specifications.year}
-            </p>
-          </div>
-          
-          {!canAddToCart ? (
-            <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} space-y-4`}>
-              <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
-                <p className="text-sm text-amber-800 font-medium">
-                  This artwork is displayed for preview purposes only and is not currently available for purchase.
-                </p>
-              </div>
-              <div className="flex items-center justify-between mt-2">
-                <span className="font-bold text-lg">{selectedArtwork?.price}</span>
-                <Button 
-                  disabled={true}
-                  className="bg-gray-400 hover:bg-gray-400 text-white transition-colors rounded-lg cursor-not-allowed"
-                >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Add to Cart
-                </Button>
+              
+              <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-border">
+                {canAddToCart ? (
+                  <AddToCartButton product={artworkAsProduct} />
+                ) : (
+                  <div className="space-y-4">
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+                      <p className="text-sm text-amber-800 font-medium">
+                        This artwork is displayed for preview purposes only and is not currently available for purchase.
+                      </p>
+                    </div>
+                    <AddToCartButton product={artworkAsProduct} isDisabled={true} />
+                  </div>
+                )}
               </div>
             </div>
-          ) : (
-            <div className={`${isMobile ? 'flex-shrink-0 mt-auto' : ''} flex items-center justify-between mt-2`}>
-              <span className="font-bold text-lg">{selectedArtwork?.price}</span>
-              <Button 
-                onClick={onAddToCart}
-                className="bg-[#ea384c] hover:bg-[#d41f33] text-white transition-colors rounded-lg"
-              >
-                <ShoppingCart className="h-4 w-4 mr-2" />
-                Add to Cart
-              </Button>
-            </div>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 };
 
