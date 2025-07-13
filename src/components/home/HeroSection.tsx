@@ -25,7 +25,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
           <h1 
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/9a07fa2e-5c8f-4eda-b8d1-7bf410ac5619.png)'
+              '--homepage-bg-image': 'url(/lovable-uploads/2736fe3a-9709-4b59-9445-0a7d3575de74.png)'
             } as React.CSSProperties}
           >
             247.ART
