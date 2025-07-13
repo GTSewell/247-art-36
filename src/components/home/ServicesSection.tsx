@@ -42,10 +42,10 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
         <div className="h-32 sm:h-48 md:h-64 overflow-hidden relative">
           <div 
             className="flex h-full animate-[scroll-seamless_30s_linear_infinite]"
-            style={{ width: '200%' }}
+            style={{ width: '220%' }}
           >
-            {/* First set - exactly 50% width */}
-            <div className="flex shrink-0 items-center h-full px-4 md:px-8" style={{ width: '50%' }}>
+            {/* First set - exactly 50% of total width */}
+            <div className="flex shrink-0 items-center h-full px-4 md:px-8" style={{ width: 'calc(100% / 2.2)' }}>
               {/* Mobile: Show 3 logos */}
               <div className="flex md:hidden items-center w-full gap-8">
                 <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-16 w-auto object-contain flex-shrink-0" />
@@ -65,8 +65,8 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
                 <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
               </div>
             </div>
-            {/* Second set - exactly 50% width, identical to first */}
-            <div className="flex shrink-0 items-center h-full px-4 md:px-8" style={{ width: '50%' }}>
+            {/* Second set - exactly 50% of total width, identical to first */}
+            <div className="flex shrink-0 items-center h-full px-4 md:px-8" style={{ width: 'calc(100% / 2.2)' }}>
               {/* Mobile: Show 3 logos */}
               <div className="flex md:hidden items-center w-full gap-8">
                 <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-16 w-auto object-contain flex-shrink-0" />
