@@ -42,10 +42,14 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top of grid when page changes
-    const gridElement = document.querySelector('[data-pagination-grid]');
-    if (gridElement) {
-      gridElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Scroll to the accordion title at the top of viewport when page changes
+    const activeAccordionTrigger = document.querySelector('[data-state="open"] h2');
+    if (activeAccordionTrigger) {
+      const elementTop = activeAccordionTrigger.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementTop,
+        behavior: 'smooth'
+      });
     }
   };
 
