@@ -133,7 +133,10 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 />
                 
                 <ProductInfoAccordion 
-                  description={product.description} 
+                  description={product.custom_description || product.description} 
+                  specifications={product.specifications}
+                  production_info={product.production_info}
+                  shipping_info={product.shipping_info}
                   openAccordions={openAccordions} 
                   onAccordionChange={handleAccordionChange} 
                 />

@@ -422,12 +422,15 @@ export type Database = {
       }
       products: {
         Row: {
+          additional_images: Json | null
           artist_id: number | null
           available_quantity: number | null
           category: Database["public"]["Enums"]["product_category"]
           created_at: string
+          custom_description: string | null
           description: string | null
           end_time: string | null
+          hero_image_url: string | null
           id: number
           image_url: string | null
           is_featured: boolean | null
@@ -435,19 +438,25 @@ export type Database = {
           last_synced_at: string | null
           name: string
           price: number
+          production_info: string | null
+          shipping_info: string | null
           shopify_handle: string | null
           shopify_inventory_quantity: number | null
           shopify_product_id: string | null
           shopify_tags: Json | null
           shopify_variant_id: string | null
+          specifications: Json | null
         }
         Insert: {
+          additional_images?: Json | null
           artist_id?: number | null
           available_quantity?: number | null
           category: Database["public"]["Enums"]["product_category"]
           created_at?: string
+          custom_description?: string | null
           description?: string | null
           end_time?: string | null
+          hero_image_url?: string | null
           id?: number
           image_url?: string | null
           is_featured?: boolean | null
@@ -455,19 +464,25 @@ export type Database = {
           last_synced_at?: string | null
           name: string
           price: number
+          production_info?: string | null
+          shipping_info?: string | null
           shopify_handle?: string | null
           shopify_inventory_quantity?: number | null
           shopify_product_id?: string | null
           shopify_tags?: Json | null
           shopify_variant_id?: string | null
+          specifications?: Json | null
         }
         Update: {
+          additional_images?: Json | null
           artist_id?: number | null
           available_quantity?: number | null
           category?: Database["public"]["Enums"]["product_category"]
           created_at?: string
+          custom_description?: string | null
           description?: string | null
           end_time?: string | null
+          hero_image_url?: string | null
           id?: number
           image_url?: string | null
           is_featured?: boolean | null
@@ -475,11 +490,14 @@ export type Database = {
           last_synced_at?: string | null
           name?: string
           price?: number
+          production_info?: string | null
+          shipping_info?: string | null
           shopify_handle?: string | null
           shopify_inventory_quantity?: number | null
           shopify_product_id?: string | null
           shopify_tags?: Json | null
           shopify_variant_id?: string | null
+          specifications?: Json | null
         }
         Relationships: [
           {

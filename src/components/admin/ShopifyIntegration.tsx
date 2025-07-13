@@ -8,6 +8,7 @@ import SyncStats from './shopify/SyncStats';
 import ShopifyProductManagement from './shopify/ShopifyProductManagement';
 import ShopifySyncControls from './shopify/ShopifySyncControls';
 import SyncLogs from './shopify/SyncLogs';
+import ProductEditModal from './ProductEditModal';
 
 const ShopifyIntegration = () => {
   const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
@@ -23,6 +24,7 @@ const ShopifyIntegration = () => {
   const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
   const [artists, setArtists] = useState<any[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<any>(null);
 
   useEffect(() => {
     loadData();
@@ -296,10 +298,19 @@ const ShopifyIntegration = () => {
         onShowAllProductsChange={setShowAllProducts}
         onClearSelection={() => setSelectedProducts(new Set())}
         onBulkAssignment={handleBulkAssignment}
+        onEditProduct={setEditingProduct}
       />
 
       {/* Sync Logs */}
       <SyncLogs syncLogs={syncLogs} formatDate={formatDate} />
+
+      {/* Product Edit Modal */}
+      <ProductEditModal
+        isOpen={!!editingProduct}
+        onClose={() => setEditingProduct(null)}
+        product={editingProduct}
+        onProductUpdated={() => loadData(true)}
+      />
     </div>
   );
 };

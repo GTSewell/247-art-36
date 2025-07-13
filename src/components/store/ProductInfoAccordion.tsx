@@ -5,12 +5,18 @@ import { Info, Box, Truck } from "lucide-react";
 
 interface ProductInfoAccordionProps {
   description: string;
+  specifications?: Record<string, string>;
+  production_info?: string;
+  shipping_info?: string;
   openAccordions: string[];
   onAccordionChange: (value: string) => void;
 }
 
 const ProductInfoAccordion: React.FC<ProductInfoAccordionProps> = ({
   description,
+  specifications,
+  production_info,
+  shipping_info,
   openAccordions,
   onAccordionChange
 }) => {
@@ -55,26 +61,38 @@ const ProductInfoAccordion: React.FC<ProductInfoAccordionProps> = ({
         </AccordionTrigger>
         <AccordionContent className="px-1">
           <ul className="space-y-1 text-sm text-muted-foreground">
-            <li className="flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
-              Signed and numbered by the artist
-            </li>
-            <li className="flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
-              310gsm 100% cotton-rag
-            </li>
-            <li className="flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
-              200yr archival inks
-            </li>
-            <li className="flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
-              Embossed
-            </li>
-            <li className="flex items-center">
-              <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
-              NFC chipped
-            </li>
+            {specifications && Object.keys(specifications).length > 0 ? (
+              Object.entries(specifications).map(([key, value]) => (
+                <li key={key} className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
+                  <span className="font-medium mr-2">{key}:</span>
+                  <span>{value}</span>
+                </li>
+              ))
+            ) : (
+              <>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
+                  Signed and numbered by the artist
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
+                  310gsm 100% cotton-rag
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
+                  200yr archival inks
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
+                  Embossed
+                </li>
+                <li className="flex items-center">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 mr-2"></span>
+                  NFC chipped
+                </li>
+              </>
+            )}
           </ul>
         </AccordionContent>
       </AccordionItem>
@@ -88,9 +106,24 @@ const ProductInfoAccordion: React.FC<ProductInfoAccordionProps> = ({
         </AccordionTrigger>
         <AccordionContent className="px-1">
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>We offer standard and express shipping options, as well as international delivery. Local pickup is also available in Melbourne.</p>
+            {production_info && (
+              <div>
+                <h4 className="font-medium text-foreground mb-1">Production Details</h4>
+                <p>{production_info}</p>
+              </div>
+            )}
             
-            <p>Shipping costs and delivery times will be calculated at checkout based on your location and selected shipping method.</p>
+            {shipping_info ? (
+              <div>
+                <h4 className="font-medium text-foreground mb-1">Shipping Information</h4>
+                <p>{shipping_info}</p>
+              </div>
+            ) : (
+              <>
+                <p>We offer standard and express shipping options, as well as international delivery. Local pickup is also available in Melbourne.</p>
+                <p>Shipping costs and delivery times will be calculated at checkout based on your location and selected shipping method.</p>
+              </>
+            )}
           </div>
         </AccordionContent>
       </AccordionItem>

@@ -61,7 +61,14 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
                   <span className="text-lg font-medium tracking-wide uppercase">CLOSED</span>
                 </div>}
               
-              <ProductInfoAccordion description={product.description} openAccordions={openAccordions} onAccordionChange={handleAccordionChange} />
+              <ProductInfoAccordion 
+                description={product.custom_description || product.description}
+                specifications={product.specifications}
+                production_info={product.production_info}
+                shipping_info={product.shipping_info}
+                openAccordions={openAccordions} 
+                onAccordionChange={handleAccordionChange} 
+              />
             </div>
             
             <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-gray-100">

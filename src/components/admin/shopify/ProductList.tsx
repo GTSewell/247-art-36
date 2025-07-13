@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Package } from 'lucide-react';
+import { Package, Edit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
 import { storeCategories } from '@/components/store/utils/categoryUtils';
@@ -26,6 +26,7 @@ interface ProductListProps {
   onProductSelect: (productId: number, selected: boolean) => void;
   onSelectAll: (checked: boolean) => void;
   onSync: () => void;
+  onEditProduct?: (product: Product) => void;
 }
 
 const ProductList = ({ 
@@ -35,7 +36,8 @@ const ProductList = ({
   isSyncing,
   onProductSelect, 
   onSelectAll,
-  onSync 
+  onSync,
+  onEditProduct
 }: ProductListProps) => {
   if (products.length === 0) {
     return (
@@ -110,6 +112,15 @@ const ProductList = ({
               <Badge variant={product.is_featured ? "default" : "outline"}>
                 {product.is_featured ? "Featured" : "Standard"}
               </Badge>
+              {onEditProduct && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEditProduct(product)}
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
         ))}

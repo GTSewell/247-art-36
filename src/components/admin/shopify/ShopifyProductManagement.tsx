@@ -19,6 +19,7 @@ interface ShopifyProductManagementProps {
   onShowAllProductsChange: (checked: boolean) => void;
   onClearSelection: () => void;
   onBulkAssignment: (type: 'category' | 'artist', value: string) => void;
+  onEditProduct: (product: any) => void;
 }
 
 const ShopifyProductManagement = ({
@@ -33,7 +34,8 @@ const ShopifyProductManagement = ({
   onSync,
   onShowAllProductsChange,
   onClearSelection,
-  onBulkAssignment
+  onBulkAssignment,
+  onEditProduct
 }: ShopifyProductManagementProps) => {
   return (
     <Card>
@@ -76,6 +78,7 @@ const ShopifyProductManagement = ({
           onProductSelect={onProductSelect}
           onSelectAll={onSelectAll}
           onSync={onSync}
+          onEditProduct={onEditProduct}
         />
       </CardContent>
     </Card>
