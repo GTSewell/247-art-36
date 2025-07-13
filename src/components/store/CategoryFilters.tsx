@@ -31,23 +31,6 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="space-y-3">
-      {/* Active Filters Notification */}
-      {hasActiveFilters && (
-        <div className="flex items-center gap-2 p-3 bg-orange-500/20 border border-orange-500/40 rounded-lg text-orange-100 animate-pulse">
-          <AlertCircle className="h-4 w-4 text-orange-300" />
-          <span className="text-sm font-medium">
-            Filters active - Some artworks may be hidden. {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} applied.
-          </span>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={clearFilters}
-            className="ml-auto text-orange-200 hover:text-orange-100 hover:bg-orange-500/20 h-6 px-2"
-          >
-            Clear all
-          </Button>
-        </div>
-      )}
       {/* Filter Controls and Search in One Row */}
       <div className="flex flex-wrap items-center gap-3">
         <SearchFilter
@@ -73,6 +56,14 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
           maxRange={filterOptions.priceRange}
           onPriceRangeChange={(value) => updateFilter('priceRange', value)}
         />
+
+        {/* Filters Active Indicator */}
+        {hasActiveFilters && (
+          <div className="flex items-center gap-1 px-2 py-1 bg-black rounded text-yellow-400 animate-pulse">
+            <AlertCircle className="h-3 w-3" />
+            <span className="text-xs font-medium">FILTERS ACTIVE</span>
+          </div>
+        )}
 
         {/* Clear Filters */}
         {hasActiveFilters && (
