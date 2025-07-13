@@ -13,14 +13,14 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
         className="hover:no-underline px-0 py-0 homepage-accordion-group group"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <div className="inline-block">
-            <h2 
-              className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
+          <h2 
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             style={{
               '--homepage-bg-image': 'url(/lovable-uploads/6a02808c-6f26-4b2b-81ca-342a5be9d9b9.png)'
             } as React.CSSProperties}
-            >SERVICES</h2>
-          </div>
+          >
+            SERVICES
+          </h2>
           <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
             PROFESSIONAL CURATION AND EVENT MANAGEMENT. ART ACTIVATIONS, KICK-ASS INSTALLATIONS. YOU DREAM IT. WE'LL BUILD IT!
           </p>
