@@ -58,7 +58,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
                 <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
-                <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
+                <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-24 lg:h-30 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
@@ -79,7 +79,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
                 <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
-                <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
+                <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-24 lg:h-30 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
                 <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 lg:h-40 w-auto object-contain flex-shrink-0" />
