@@ -40,13 +40,13 @@ const AddToCartButton: React.FC<AddToCartButtonProps> = ({
       className={`w-full py-3 flex items-center justify-center space-x-2 rounded-lg ${
         isDisabled 
           ? 'bg-gray-400 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-600 cursor-not-allowed text-white dark:text-gray-200' 
-          : 'bg-[#ea384c] hover:bg-red-600 transition-colors text-white'
+          : 'bg-slate-700 hover:bg-slate-800 transition-colors text-white'
       }`}
       onClick={handleAddToCart}
       disabled={isDisabled}
     >
       <ShoppingCart size={18} />
-      <span>{isDisabled ? 'Edition Closed' : 'Add to Cart'}</span>
+      <span>{isDisabled ? 'Edition Closed' : 'Add to Art'}</span>
     </Button>
   );
 };

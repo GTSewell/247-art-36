@@ -87,19 +87,10 @@ const ProductInfoAccordion: React.FC<ProductInfoAccordionProps> = ({
           </div>
         </AccordionTrigger>
         <AccordionContent className="px-1">
-          <div className="bg-yellow-50 p-3 rounded-lg">
-            <div className="flex items-start gap-2">
-              <Info className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
-              <div className="space-y-1.5">
-                <p className="text-xs text-yellow-800 font-medium">
-                  Final edition count is determined on the conclusion of the countdown.
-                </p>
-                <p className="text-xs text-yellow-700">
-                  As we need to run production and organize artist/s to sign. Expect arrival of your artwork up to 8 weeks. 
-                  (Though, we'll do our best to make that happen waaay quicker!)
-                </p>
-              </div>
-            </div>
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <p>We offer standard and express shipping options, as well as international delivery. Local pickup is also available in Melbourne.</p>
+            
+            <p>Shipping costs and delivery times will be calculated at checkout based on your location and selected shipping method.</p>
           </div>
         </AccordionContent>
       </AccordionItem>
