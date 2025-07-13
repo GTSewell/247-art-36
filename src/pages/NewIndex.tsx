@@ -13,7 +13,7 @@ import GallerySection from "@/components/home/GallerySection";
 import EventsSection from "@/components/home/EventsSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import JoinSection from "@/components/home/JoinSection";
-import { useAccordionScroll } from "@/hooks/useAccordionScroll";
+import { useEnhancedAccordionScroll } from "@/hooks/useEnhancedAccordionScroll";
 const NewIndex = () => {
   const { isPWA } = useAppMode();
   const { featuredArtists, additionalArtists, isLoading } = useArtists();
@@ -23,7 +23,7 @@ const NewIndex = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [favoriteArtists] = useState<Set<number>>(new Set());
   const [selectedSection, setSelectedSection] = useState<string>('');
-  const { registerTrigger, registerContent, handleAccordionChange } = useAccordionScroll();
+  const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
   
   const galleryImages = [
     "/lovable-uploads/69af7803-27d7-4f04-b312-6169327229b3.png",
