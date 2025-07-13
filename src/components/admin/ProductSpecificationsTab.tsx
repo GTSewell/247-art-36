@@ -9,6 +9,16 @@ interface ProductSpecificationsTabProps {
   onChange: (data: any) => void;
 }
 
+// Standard specifications that should always be displayed in order
+const COMMON_SPECS = [
+  'Material',
+  'Dimensions', 
+  'Weight',
+  'Color',
+  'Style',
+  'Edition Size'
+];
+
 const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
   formData,
   onChange
@@ -32,18 +42,31 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
   };
 
   const removeSpecification = (key: string) => {
+    // Don't allow removing common specs, just clear their value
+    if (COMMON_SPECS.includes(key)) {
+      const updatedSpecs = { ...specifications };
+      updatedSpecs[key] = '';
+      onChange({ ...formData, specifications: updatedSpecs });
+    } else {
+      const updatedSpecs = { ...specifications };
+      delete updatedSpecs[key];
+      onChange({ ...formData, specifications: updatedSpecs });
+    }
+  };
+
+  const updateSpecification = (key: string, value: string) => {
     const updatedSpecs = { ...specifications };
-    delete updatedSpecs[key];
+    updatedSpecs[key] = value;
     onChange({ ...formData, specifications: updatedSpecs });
   };
 
-  const updateSpecification = (oldKey: string, newKey: string, value: string) => {
-    const updatedSpecs = { ...specifications };
-    if (oldKey !== newKey) {
-      delete updatedSpecs[oldKey];
-    }
-    updatedSpecs[newKey] = value;
-    onChange({ ...formData, specifications: updatedSpecs });
+  // Get additional specs (not in common specs)
+  const additionalSpecs = Object.entries(specifications).filter(
+    ([key]) => !COMMON_SPECS.includes(key)
+  );
+
+  const getDisplayValue = (value: string) => {
+    return value && value.trim() ? value : 'N/A';
   };
 
   return (
@@ -51,23 +74,72 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
       <div>
         <Label className="text-lg font-medium">Product Specifications</Label>
         <p className="text-sm text-muted-foreground">
-          Add custom specifications that will be displayed to customers
+          Standard specifications are always displayed. Additional specs can be added below.
         </p>
       </div>
 
+      {/* Common Specifications Section */}
       <div className="space-y-4">
-        {Object.entries(specifications).map(([key, value]) => (
+        <div>
+          <Label className="text-base font-medium">Standard Specifications</Label>
+          <p className="text-sm text-muted-foreground mb-4">
+            These specifications are always displayed in order
+          </p>
+        </div>
+        
+        {COMMON_SPECS.map((specKey) => (
+          <div key={specKey} className="flex items-center space-x-2 p-3 border rounded bg-muted/20">
+            <div className="flex-1 grid grid-cols-2 gap-2">
+              <Input
+                value={specKey}
+                disabled
+                className="bg-muted/50 font-medium"
+              />
+              <Input
+                placeholder={`Enter ${specKey.toLowerCase()} or leave empty for N/A`}
+                value={specifications[specKey] || ''}
+                onChange={(e) => updateSpecification(specKey, e.target.value)}
+              />
+            </div>
+            <div className="w-[72px] text-center">
+              <span className="text-xs text-muted-foreground">
+                Display: <strong>{getDisplayValue(specifications[specKey] || '')}</strong>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Additional Specifications Section */}
+      <div className="space-y-4">
+        <div>
+          <Label className="text-base font-medium">Additional Specifications</Label>
+          <p className="text-sm text-muted-foreground mb-4">
+            Custom specifications for this product
+          </p>
+        </div>
+
+        {additionalSpecs.map(([key, value]) => (
           <div key={key} className="flex items-center space-x-2 p-3 border rounded">
             <div className="flex-1 grid grid-cols-2 gap-2">
               <Input
                 placeholder="Specification name"
                 value={key}
-                onChange={(e) => updateSpecification(key, e.target.value, value as string)}
+                onChange={(e) => {
+                  const oldKey = key;
+                  const newKey = e.target.value;
+                  const updatedSpecs = { ...specifications };
+                  if (oldKey !== newKey) {
+                    delete updatedSpecs[oldKey];
+                  }
+                  updatedSpecs[newKey] = value as string;
+                  onChange({ ...formData, specifications: updatedSpecs });
+                }}
               />
               <Input
                 placeholder="Specification value"
                 value={value as string}
-                onChange={(e) => updateSpecification(key, key, e.target.value)}
+                onChange={(e) => updateSpecification(key, e.target.value)}
               />
             </div>
             <Button
@@ -83,12 +155,12 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-4">
           <div className="flex items-center space-x-2">
             <Input
-              placeholder="Specification name (e.g., Material)"
+              placeholder="Specification name (e.g., Texture, Finish)"
               value={newKey}
               onChange={(e) => setNewKey(e.target.value)}
             />
             <Input
-              placeholder="Specification value (e.g., Cotton blend)"
+              placeholder="Specification value"
               value={newValue}
               onChange={(e) => setNewValue(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && addSpecification()}
@@ -104,43 +176,43 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
       </div>
 
       <div className="bg-muted/50 p-4 rounded">
-        <h4 className="font-medium mb-2">Common Specifications</h4>
+        <h4 className="font-medium mb-2">Quick Add to Additional Specs</h4>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
           <button
-            onClick={() => setNewKey('Material')}
+            onClick={() => setNewKey('Texture')}
             className="text-left text-muted-foreground hover:text-foreground"
           >
-            Material
+            Texture
           </button>
           <button
-            onClick={() => setNewKey('Dimensions')}
+            onClick={() => setNewKey('Finish')}
             className="text-left text-muted-foreground hover:text-foreground"
           >
-            Dimensions
+            Finish
           </button>
           <button
-            onClick={() => setNewKey('Weight')}
+            onClick={() => setNewKey('Packaging')}
             className="text-left text-muted-foreground hover:text-foreground"
           >
-            Weight
+            Packaging
           </button>
           <button
-            onClick={() => setNewKey('Color')}
+            onClick={() => setNewKey('Care Instructions')}
             className="text-left text-muted-foreground hover:text-foreground"
           >
-            Color
+            Care Instructions
           </button>
           <button
-            onClick={() => setNewKey('Style')}
+            onClick={() => setNewKey('Origin')}
             className="text-left text-muted-foreground hover:text-foreground"
           >
-            Style
+            Origin
           </button>
           <button
-            onClick={() => setNewKey('Edition Size')}
+            onClick={() => setNewKey('Frame Included')}
             className="text-left text-muted-foreground hover:text-foreground"
           >
-            Edition Size
+            Frame Included
           </button>
         </div>
       </div>
