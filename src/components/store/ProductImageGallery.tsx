@@ -38,12 +38,15 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
             onClick={() => setSelectedImage(null)}
           >
             <button 
-              className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full"
-              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full z-[101] hover:bg-white/30 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage(null);
+              }}
             >
               <X className="h-5 w-5 text-white" />
             </button>
@@ -51,12 +54,13 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className={`relative ${isMobile ? 'max-h-[80vh] overflow-y-auto' : 'max-w-3xl max-h-[80vh]'} w-full`}
+              className="relative max-w-4xl max-h-[90vh] w-full"
+              onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={images[selectedImage]}
                 alt={`Enlarged variation ${selectedImage + 1}`}
-                className={`w-full ${isMobile ? 'object-contain max-h-full' : 'object-contain'} rounded-lg`}
+                className="w-full h-full object-contain rounded-lg"
               />
             </motion.div>
           </motion.div>
