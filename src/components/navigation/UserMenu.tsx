@@ -87,12 +87,76 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
     );
   }
   
+  
   if (!user) {
     return (
-      <Button variant="outline" onClick={() => navigate('/auth')}>
-        <User className="h-4 w-4 mr-2" />
-        Sign In
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="flex items-center gap-2 rounded-md">
+            <User className="h-4 w-4" />
+            <span className="hidden md:inline">Menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background border shadow-md">
+          {/* Navigation Links */}
+          <Link to="/">
+            <DropdownMenuItem className="p-3 hover:bg-muted">
+              <Home className="mr-2 h-5 w-5" />
+              <span>Home</span>
+            </DropdownMenuItem>
+          </Link>
+          
+          <Link to="/artists">
+            <DropdownMenuItem className="p-3 hover:bg-muted">
+              <Palette className="mr-2 h-5 w-5" />
+              <span>The Artists</span>
+            </DropdownMenuItem>
+          </Link>
+          
+          <Link to="/store">
+            <DropdownMenuItem className="p-3 hover:bg-muted">
+              <Store className="mr-2 h-5 w-5" />
+              <span>The Store</span>
+            </DropdownMenuItem>
+          </Link>
+          
+          <DropdownMenuSeparator />
+          
+          {/* Theme Toggle */}
+          <DropdownMenuItem 
+            className="p-3 hover:bg-muted cursor-pointer"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            <Sun className="mr-2 h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Moon className="mr-2 h-5 w-5 absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span>Toggle theme</span>
+          </DropdownMenuItem>
+          
+          <DropdownMenuSeparator />
+          
+          {/* Currency selector */}
+          <div className="p-2 border-b">
+            <DropdownMenuLabel className="px-1 text-xs text-muted-foreground">Currency</DropdownMenuLabel>
+            <CurrencySelector className="mt-1 py-1" />
+          </div>
+          
+          <Link to="/cart">
+            <DropdownMenuItem className="p-3 hover:bg-muted">
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              <span>Cart</span>
+            </DropdownMenuItem>
+          </Link>
+          
+          <DropdownMenuSeparator />
+          
+          <Link to="/auth">
+            <DropdownMenuItem className="p-3 hover:bg-muted">
+              <User className="mr-2 h-5 w-5" />
+              <span>Sign In</span>
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuContent>
+      </DropdownMenu>
     );
   }
   
