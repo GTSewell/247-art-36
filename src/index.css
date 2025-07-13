@@ -30,6 +30,16 @@
   }
 }
 
+/* Seamless Logo Slideshow Animation */
+@keyframes scroll-seamless {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Move exactly half the container width */
+  }
+}
+
 /* Store Category Title Styles */
 .store-category-title {
   font-size: 5rem;
