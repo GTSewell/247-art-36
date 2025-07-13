@@ -16,9 +16,9 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
           <div className="inline-block">
             <h2 
               className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap"
-              style={{
-                '--homepage-bg-image': 'url(/lovable-uploads/07f6a8d8-39c8-43c9-b4ef-6eb5a69c416d.png)'
-              } as React.CSSProperties}
+            style={{
+              '--homepage-bg-image': 'url(/lovable-uploads/6a02808c-6f26-4b2b-81ca-342a5be9d9b9.png)'
+            } as React.CSSProperties}
             >SERVICES</h2>
           </div>
           <p className="hidden md:block text-xl font-light text-gray-600 ml-8 font-nove">
