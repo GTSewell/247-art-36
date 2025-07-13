@@ -132,20 +132,20 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   ].filter(Boolean).length;
 
   return (
-    <div className="space-y-4 p-4 bg-muted/50 rounded-lg border border-border">
-      {/* Search Bar */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder={`Search in ${categoryName}...`}
-          value={filters.searchTerm}
-          onChange={(e) => updateFilter('searchTerm', e.target.value)}
-          className="pl-10 pr-4"
-        />
-      </div>
+    <div className="space-y-3">
+      {/* Filter Controls and Search in One Row */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Search Bar */}
+        <div className="relative flex-1 min-w-[200px]">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={`Search in ${categoryName}...`}
+            value={filters.searchTerm}
+            onChange={(e) => updateFilter('searchTerm', e.target.value)}
+            className="pl-10 pr-4"
+          />
+        </div>
 
-      {/* Filter Controls */}
-      <div className="flex flex-wrap gap-3">
         {/* Artist Filter */}
         {filterOptions.artists.length > 0 && (
           <Select value={filters.selectedArtist} onValueChange={(value) => updateFilter('selectedArtist', value === 'all' ? '' : value)}>
@@ -210,6 +210,12 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
             Clear {activeFilterCount > 1 ? `(${activeFilterCount})` : ''}
           </Button>
         )}
+
+        {/* Results Count */}
+        <div className="text-sm text-muted-foreground whitespace-nowrap">
+          {filteredProducts.length} of {products.length} products
+          {hasActiveFilters && ' match your filters'}
+        </div>
       </div>
 
       {/* Active Filters */}
@@ -235,12 +241,6 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
           )}
         </div>
       )}
-
-      {/* Results Count */}
-      <div className="text-sm text-muted-foreground">
-        {filteredProducts.length} of {products.length} products
-        {hasActiveFilters && ' match your filters'}
-      </div>
     </div>
   );
 };
