@@ -40,7 +40,7 @@ export const PriceRangeFilter: React.FC<PriceRangeFilterProps> = ({
               max={maxRange[1]}
               min={maxRange[0]}
               step={5}
-              className="w-full [&>span:first-child]:h-2 [&>span:first-child]:bg-primary [&_[role=slider]]:border-2 [&_[role=slider]]:border-primary [&_[role=slider]]:bg-background [&_[role=slider]]:shadow-md [&_[role=slider]]:w-5 [&_[role=slider]]:h-5"
+              className="w-full [&_[role=slider]]:border-2 [&_[role=slider]]:border-primary [&_[role=slider]]:bg-background [&_[role=slider]]:shadow-md [&_[role=slider]]:w-5 [&_[role=slider]]:h-5"
             />
           </div>
           
