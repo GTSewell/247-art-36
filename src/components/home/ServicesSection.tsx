@@ -43,39 +43,39 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
           <div className="flex animate-[scroll-left_30s_linear_infinite] h-full">
             {/* First set */}
             <div className="flex shrink-0 items-center h-full space-x-8">
-              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/9be7f7df-0132-4b34-ac9d-e068d9bb0358.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/626c7a49-4159-4311-9c1e-3a37a6bdd319.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/eb5a6853-9ef1-47ea-9f50-775e1cc20bf4.png" alt="Brand Logo" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/87b1218e-6dfb-4820-a4e4-bfa1614fba95.png" alt="Brand Logo" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain" />
             </div>
             {/* Second set */}
             <div className="flex shrink-0 items-center h-full space-x-8 ml-8">
-              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/9be7f7df-0132-4b34-ac9d-e068d9bb0358.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/626c7a49-4159-4311-9c1e-3a37a6bdd319.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/eb5a6853-9ef1-47ea-9f50-775e1cc20bf4.png" alt="Brand Logo" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/87b1218e-6dfb-4820-a4e4-bfa1614fba95.png" alt="Brand Logo" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain" />
             </div>
             {/* Third set for seamless loop */}
             <div className="flex shrink-0 items-center h-full space-x-8 ml-8">
-              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/9be7f7df-0132-4b34-ac9d-e068d9bb0358.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/626c7a49-4159-4311-9c1e-3a37a6bdd319.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/eb5a6853-9ef1-47ea-9f50-775e1cc20bf4.png" alt="Brand Logo" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
-              <img src="/lovable-uploads/87b1218e-6dfb-4820-a4e4-bfa1614fba95.png" alt="Brand Logo" className="h-32 sm:h-40 w-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_4px_8px_rgba(255,255,255,0.1)]" />
+              <img src="/lovable-uploads/9b8aaaec-260e-4521-97f5-9112b786f964.png" alt="Australian Open" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/a6b1e057-8f66-4644-a891-ea4f59271933.png" alt="Deadfell Az" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/a824492b-297d-4fa8-88b0-05ac55526030.png" alt="Marvel" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/b574e628-0625-4dc5-a6cf-81f6ce3da939.png" alt="MetaMask" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/067f8322-0e67-4b3d-881f-3969238632f5.png" alt="Sony Music" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/c7fafd2b-8e57-462f-952a-374fd506cc2b.png" alt="Warner Music Group" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/ee3c875a-71c6-4583-803f-ccdbc12dd1ea.png" alt="Z Logo" className="h-32 sm:h-40 w-auto object-contain" />
+              <img src="/lovable-uploads/1bc22eef-5c46-4faf-942c-a042e0180553.png" alt="Fed Sq" className="h-32 sm:h-40 w-auto object-contain" />
             </div>
           </div>
         </div>
