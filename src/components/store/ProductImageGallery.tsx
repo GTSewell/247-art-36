@@ -38,29 +38,29 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-8"
             onClick={() => setSelectedImage(null)}
           >
             <button 
-              className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm p-2 rounded-full z-[101] hover:bg-white/30 transition-colors"
+              className="absolute top-6 right-6 bg-background/90 hover:bg-muted border border-border p-3 rounded-full z-[201] transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedImage(null);
               }}
             >
-              <X className="h-5 w-5 text-white" />
+              <X className="h-6 w-6 text-foreground" />
             </button>
             <motion.div 
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="relative max-w-4xl max-h-[90vh] w-full"
+              className="relative w-full h-full flex items-center justify-center"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={images[selectedImage]}
                 alt={`Enlarged variation ${selectedImage + 1}`}
-                className="w-full h-full object-contain rounded-lg"
+                className="max-w-full max-h-full object-contain"
               />
             </motion.div>
           </motion.div>
