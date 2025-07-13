@@ -45,7 +45,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
             style={{ width: '200%' }}
           >
             {/* First set - exactly 50% width */}
-            <div className="flex shrink-0 items-center h-full px-4 md:px-8" style={{ width: '50%' }}>
+            <div className="flex shrink-0 items-center h-full px-4 md:px-8 mr-1" style={{ width: '50%' }}>
               {/* Mobile: Show 3 logos */}
               <div className="flex md:hidden items-center w-full gap-4">
                 <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-16 w-auto object-contain flex-shrink-0" />
@@ -66,7 +66,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
               </div>
             </div>
             {/* Second set - exactly 50% width, identical to first */}
-            <div className="flex shrink-0 items-center h-full px-4 md:px-8" style={{ width: '50%' }}>
+            <div className="flex shrink-0 items-center h-full px-4 md:px-8 ml-1" style={{ width: '50%' }}>
               {/* Mobile: Show 3 logos */}
               <div className="flex md:hidden items-center w-full gap-4">
                 <img src="/lovable-uploads/fcd73dd1-9c16-4eae-bcb5-547cb3ca8394.png" alt="Disney" className="h-16 w-auto object-contain flex-shrink-0" />
