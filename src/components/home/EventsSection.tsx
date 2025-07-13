@@ -32,8 +32,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
             </p>
             <button 
               className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors cursor-pointer bg-transparent"
-              data-tally-open="nPEKwx" 
-              data-tally-emoji-text="📅" 
+              data-tally-open="nPEkWx" 
+              data-tally-emoji-text="👋" 
               data-tally-emoji-animation="wave"
             >
               Book Venue
