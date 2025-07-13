@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, X } from 'lucide-react';
+import { Search, Filter, X, AlertCircle } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -133,6 +133,23 @@ const PWACategoryFilters: React.FC<PWACategoryFiltersProps> = ({
 
   return (
     <div className="space-y-4 p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+      {/* Active Filters Notification */}
+      {hasActiveFilters && (
+        <div className="flex items-center gap-2 p-3 bg-orange-500/20 border border-orange-500/40 rounded-lg text-orange-100 animate-pulse">
+          <AlertCircle className="h-4 w-4 text-orange-300" />
+          <span className="text-sm font-medium">
+            Filters active - Some artworks may be hidden. {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} applied.
+          </span>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={clearFilters}
+            className="ml-auto text-orange-200 hover:text-orange-100 hover:bg-orange-500/20 h-6 px-2"
+          >
+            Clear all
+          </Button>
+        </div>
+      )}
       {/* Search Bar */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
