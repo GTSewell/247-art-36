@@ -20,7 +20,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
             } as React.CSSProperties}
           >EVENTS</h2>
           <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
-            ATTEND OR HOST WORKSHOPS, EXHIBITIONS, AND COMMUNITY GATHERINGS.
+            ATTEND OR HOST WORKSHOPS, EXHIBITIONS, OR POP-UP EVENTS IN THE HEART OF MELBOURNE'S CREATIVE EPICENTRE
           </p>
         </div>
       </AccordionTrigger>
