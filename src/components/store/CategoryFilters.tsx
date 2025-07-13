@@ -1,12 +1,12 @@
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, AlertCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useCategoryFilters } from '@/hooks/useCategoryFilters';
 import { SearchFilter } from './filters/SearchFilter';
 import { ArtistFilter } from './filters/ArtistFilter';
 import { TypeFilter } from './filters/TypeFilter';
 import { PriceRangeFilter } from './filters/PriceRangeFilter';
-import { ActiveFilters } from './filters/ActiveFilters';
+
 
 interface CategoryFiltersProps {
   products: any[];
@@ -31,6 +31,23 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="space-y-3">
+      {/* Active Filters Notification */}
+      {hasActiveFilters && (
+        <div className="flex items-center gap-2 p-3 bg-orange-500/20 border border-orange-500/40 rounded-lg text-orange-100 animate-pulse">
+          <AlertCircle className="h-4 w-4 text-orange-300" />
+          <span className="text-sm font-medium">
+            Filters active - Some artworks may be hidden. {activeFilterCount} filter{activeFilterCount > 1 ? 's' : ''} applied.
+          </span>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={clearFilters}
+            className="ml-auto text-orange-200 hover:text-orange-100 hover:bg-orange-500/20 h-6 px-2"
+          >
+            Clear all
+          </Button>
+        </div>
+      )}
       {/* Filter Controls and Search in One Row */}
       <div className="flex flex-wrap items-center gap-3">
         <SearchFilter
@@ -72,12 +89,6 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
         </div>
       </div>
 
-      {/* Active Filters */}
-      <ActiveFilters
-        filters={filters}
-        hasActiveFilters={hasActiveFilters}
-        onClearFilter={(key, value) => updateFilter(key, value)}
-      />
     </div>
   );
 };
