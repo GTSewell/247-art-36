@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette, Store } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -147,7 +147,7 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         
         <Link to="/store">
           <DropdownMenuItem className="p-3 hover:bg-muted">
-            <ShoppingCart className="mr-2 h-5 w-5" />
+            <Store className="mr-2 h-5 w-5" />
             <span>The Store</span>
           </DropdownMenuItem>
         </Link>
@@ -167,12 +167,13 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
           </DropdownMenuItem>
         </Link>
         
-        <Link to="/messages">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+        <div className="cursor-not-allowed">
+          <DropdownMenuItem className="p-3 text-muted-foreground" disabled>
             <MessageSquare className="mr-2 h-5 w-5" />
             <span>Messages</span>
+            <span className="ml-auto text-xs text-muted-foreground">coming soon</span>
           </DropdownMenuItem>
-        </Link>
+        </div>
         
         <Link to="/dashboard/artist">
           <DropdownMenuItem className="p-3 hover:bg-muted">
