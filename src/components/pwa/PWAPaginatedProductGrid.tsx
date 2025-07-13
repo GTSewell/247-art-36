@@ -21,6 +21,7 @@ interface PWAPaginatedProductGridProps {
   products: any[];
   itemsPerPage?: number;
   onItemsPerPageChange?: (value: number) => void;
+  onProductClick?: (product: any) => void;
 }
 
 const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
@@ -28,7 +29,8 @@ const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 const PWAPaginatedProductGrid: React.FC<PWAPaginatedProductGridProps> = ({ 
   products, 
   itemsPerPage = 10,
-  onItemsPerPageChange 
+  onItemsPerPageChange,
+  onProductClick 
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   
@@ -82,7 +84,7 @@ const PWAPaginatedProductGrid: React.FC<PWAPaginatedProductGridProps> = ({
       {/* Products Grid */}
       <div className="grid grid-cols-2 gap-4">
         {paginatedProducts.map(product => (
-          <PWAProductCard key={product.id} product={product} />
+          <PWAProductCard key={product.id} product={product} onProductClick={onProductClick} />
         ))}
       </div>
 

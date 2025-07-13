@@ -6,9 +6,10 @@ import { toast } from "sonner";
 
 interface PWAProductCardProps {
   product: any;
+  onProductClick?: (product: any) => void;
 }
 
-const PWAProductCard: React.FC<PWAProductCardProps> = ({ product }) => {
+const PWAProductCard: React.FC<PWAProductCardProps> = ({ product, onProductClick }) => {
   const { addItem } = useCart();
   
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -31,8 +32,19 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product }) => {
     });
   };
 
+  const handleCardClick = () => {
+    if (onProductClick) {
+      onProductClick(product);
+    }
+  };
+
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click when button is clicked
+    handleAddToCart(product);
+  };
+
   return (
-    <div className="group h-full flex flex-col">
+    <div className="group h-full flex flex-col cursor-pointer" onClick={handleCardClick}>
       <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-white">
         <img 
           src={product.image_url || '/placeholder.svg'} 
@@ -63,7 +75,7 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product }) => {
           <Button 
             size="icon" 
             className="bg-slate-700 hover:bg-slate-600 text-white h-8 w-8"
-            onClick={() => handleAddToCart(product)}
+            onClick={handleButtonClick}
           >
             <ShoppingCart className="h-4 w-4" />
           </Button>

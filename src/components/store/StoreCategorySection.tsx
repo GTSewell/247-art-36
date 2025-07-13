@@ -17,6 +17,7 @@ interface StoreCategorySectionProps {
   productCount: number;
   onTriggerRef?: (element: HTMLElement | null) => void;
   onContentRef?: (element: HTMLElement | null) => void;
+  onProductClick?: (product: any) => void;
 }
 
 const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
@@ -26,7 +27,8 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   isGeneratingImages,
   productCount,
   onTriggerRef,
-  onContentRef
+  onContentRef,
+  onProductClick
 }) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -81,6 +83,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
               products={filteredProducts}
               itemsPerPage={itemsPerPage}
               onItemsPerPageChange={handleItemsPerPageChange}
+              onProductClick={onProductClick}
             />
           </div>
         )}

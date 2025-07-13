@@ -21,6 +21,7 @@ interface PaginatedProductGridProps {
   products: any[];
   itemsPerPage?: number;
   onItemsPerPageChange?: (value: number) => void;
+  onProductClick?: (product: any) => void;
 }
 
 const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
@@ -28,7 +29,8 @@ const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({ 
   products, 
   itemsPerPage = 10,
-  onItemsPerPageChange 
+  onItemsPerPageChange,
+  onProductClick 
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   
@@ -86,7 +88,7 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
       {/* Products Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {paginatedProducts.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} onProductClick={onProductClick} />
         ))}
       </div>
 

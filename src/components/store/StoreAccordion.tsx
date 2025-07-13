@@ -9,13 +9,15 @@ interface StoreAccordionProps {
   onCategoryChange: (category: string) => void;
   getProductsForCategory: (category: string) => any[];
   isGeneratingImages: boolean;
+  onProductClick?: (product: any) => void;
 }
 
 const StoreAccordion: React.FC<StoreAccordionProps> = ({
   selectedCategory,
   onCategoryChange,
   getProductsForCategory,
-  isGeneratingImages
+  isGeneratingImages,
+  onProductClick
 }) => {
   const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
 
@@ -46,6 +48,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
               productCount={products.length}
               onTriggerRef={(element) => registerTrigger(category.id, element)}
               onContentRef={(element) => registerContent(category.id, element)}
+              onProductClick={onProductClick}
             />
           );
         })}

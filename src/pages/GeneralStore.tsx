@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Navigation from "@/components/navigation/Navigation";
 import { toast } from "sonner";
 import TimedEditionModal from "@/components/store/TimedEditionModal";
+import ProductModal from "@/components/store/ProductModal";
 import FeaturedProducts from "@/components/store/FeaturedProducts";
 import StoreAccordion from "@/components/store/StoreAccordion";
 import { TimerProvider } from "@/contexts/TimerContext";
@@ -17,6 +18,7 @@ const GeneralStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
+  const [selectedRegularProduct, setSelectedRegularProduct] = useState<any>(null);
   const {
     featuredProducts,
     getProductsForCategory,
@@ -31,6 +33,10 @@ const GeneralStore = () => {
     setSelectedProduct(product);
     setSelectedTimerState(timerState);
   };
+
+  const handleRegularProductClick = (product: any) => {
+    setSelectedRegularProduct(product);
+  };
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
   };
@@ -44,15 +50,27 @@ const GeneralStore = () => {
               {/* <FeaturedProducts products={featuredProducts} onProductSelect={handleProductSelect} /> */}
 
               <TimedEditionModal isOpen={!!selectedProduct} onClose={() => {
-              setSelectedProduct(null);
-              setSelectedTimerState(null);
-            }} product={selectedProduct} timeLeft={selectedTimerState || {
-              hours: 0,
-              minutes: 0,
-              seconds: 0
-            }} />
+                setSelectedProduct(null);
+                setSelectedTimerState(null);
+              }} product={selectedProduct} timeLeft={selectedTimerState || {
+                hours: 0,
+                minutes: 0,
+                seconds: 0
+              }} />
 
-              <StoreAccordion selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} getProductsForCategory={getProductsForCategory} isGeneratingImages={isGeneratingImages} />
+              <ProductModal 
+                isOpen={!!selectedRegularProduct} 
+                onClose={() => setSelectedRegularProduct(null)} 
+                product={selectedRegularProduct} 
+              />
+
+              <StoreAccordion 
+                selectedCategory={selectedCategory} 
+                onCategoryChange={handleCategoryChange} 
+                getProductsForCategory={getProductsForCategory} 
+                isGeneratingImages={isGeneratingImages}
+                onProductClick={handleRegularProductClick}
+              />
 
               {isLoading && !isGeneratingImages && <div className="flex justify-center items-center h-64">
                   <div className="animate-pulse text-zap-blue dark:text-zap-blue">
