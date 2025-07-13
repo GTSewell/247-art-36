@@ -68,12 +68,6 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
         </div>
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <span>{productCount} {productCount === 1 ? 'item' : 'items'} available</span>
-          </div>
-        </div>
-        
         {isGeneratingImages ? (
           <LoadingState />
         ) : (
