@@ -32,8 +32,8 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product }) => {
   };
 
   return (
-    <div className="group">
-      <div className="relative aspect-square overflow-hidden rounded-lg mb-2 bg-white">
+    <div className="group h-full flex flex-col">
+      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-white">
         <img 
           src={product.image_url || '/placeholder.svg'} 
           alt={product.name} 
@@ -49,24 +49,26 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product }) => {
           </div>
         )}
       </div>
-      <h3 className="font-medium mb-1 text-sm font-nove truncate">{product.name}</h3>
-      <div className="flex items-center justify-between">
-        <p className="text-gray-800 text-base font-bold">
-          ${typeof product.price === 'string' ? product.price : product.price.toFixed(2)}
-        </p>
-        <Button 
-          size="icon" 
-          className="bg-zap-red hover:bg-zap-blue h-8 w-8"
-          onClick={() => handleAddToCart(product)}
-        >
-          <ShoppingCart className="h-4 w-4" />
-        </Button>
+      <div className="flex flex-col flex-1">
+        <h3 className="font-agharti font-normal mb-0.5 text-sm leading-tight truncate">{product.name}</h3>
+        {(product.artists?.name || (product as any).artist_name) && (
+          <p className="text-xs text-gray-700 mt-1 font-agharti font-bold leading-none truncate">
+            By {product.artists?.name || (product as any).artist_name}
+          </p>
+        )}
+        <div className="flex items-center justify-between mt-auto pt-2">
+          <p className="text-gray-800 text-base font-agharti font-thin leading-none">
+            ${typeof product.price === 'string' ? product.price : product.price.toFixed(2)}
+          </p>
+          <Button 
+            size="icon" 
+            className="bg-slate-700 hover:bg-slate-600 text-white h-8 w-8"
+            onClick={() => handleAddToCart(product)}
+          >
+            <ShoppingCart className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
-      {(product.artists?.name || (product as any).artist_name) && (
-        <p className="text-xs text-gray-700 mt-1 truncate">
-          By {product.artists?.name || (product as any).artist_name}
-        </p>
-      )}
     </div>
   );
 };
