@@ -32,6 +32,26 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({
           </div>
         </div>
 
+        {/* Brand Showreel */}
+        <div className="mb-16 overflow-hidden">
+          <div className="flex animate-scroll" style={{ width: '200%' }}>
+            <div className="flex w-1/2 justify-between items-center gap-4 mr-1">
+              <img src="/lovable-uploads/e712fac8-35fb-4031-94dd-21b5b2d9e2cf.png" alt="Orana" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/3eb1b40c-37b4-447b-aad5-37b22eac7f5c.png" alt="Australian Open" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/fee57e59-e2fb-4b44-bc49-e06f5ddcdce5.png" alt="Fed Square" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/c0f9d87c-8b7b-4c95-8b3e-df7e99a57088.png" alt="Brand 4" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/8b6c9e46-e6b6-4eb6-b945-f73a7de8e5d4.png" alt="Brand 5" className="h-8 sm:h-12 object-contain" />
+            </div>
+            <div className="flex w-1/2 justify-between items-center gap-4 ml-1">
+              <img src="/lovable-uploads/e712fac8-35fb-4031-94dd-21b5b2d9e2cf.png" alt="Orana" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/3eb1b40c-37b4-447b-aad5-37b22eac7f5c.png" alt="Australian Open" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/fee57e59-e2fb-4b44-bc49-e06f5ddcdce5.png" alt="Fed Square" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/c0f9d87c-8b7b-4c95-8b3e-df7e99a57088.png" alt="Brand 4" className="h-8 sm:h-12 object-contain" />
+              <img src="/lovable-uploads/8b6c9e46-e6b6-4eb6-b945-f73a7de8e5d4.png" alt="Brand 5" className="h-8 sm:h-12 object-contain" />
+            </div>
+          </div>
+        </div>
+
         {/* Services Grid */}
         <div className="grid grid-cols-3 gap-2 sm:gap-4">
           <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
