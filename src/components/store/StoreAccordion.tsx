@@ -2,7 +2,7 @@ import React from 'react';
 import { Accordion } from "@/components/ui/accordion";
 import { storeCategories } from './utils/categoryUtils';
 import StoreCategorySection from './StoreCategorySection';
-import { useAccordionScroll } from '@/hooks/useAccordionScroll';
+import { useEnhancedAccordionScroll } from '@/hooks/useEnhancedAccordionScroll';
 
 interface StoreAccordionProps {
   selectedCategory: string;
@@ -17,7 +17,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
   getProductsForCategory,
   isGeneratingImages
 }) => {
-  const { registerTrigger, registerContent, handleAccordionChange } = useAccordionScroll();
+  const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
 
   const handleValueChange = (value: string) => {
     // The accordion returns an array, but we only allow single selection

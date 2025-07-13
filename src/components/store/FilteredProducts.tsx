@@ -4,7 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { logger } from "@/utils/logger";
 import CategorySelector from './CategorySelector';
 import LoadingState from './LoadingState';
-import ProductGrid from './ProductGrid';
+import PaginatedProductGrid from './PaginatedProductGrid';
+import CategoryFilters from './CategoryFilters';
 
 interface FilteredProductsProps {
   products: any[];
@@ -19,6 +20,22 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
   onCategoryChange,
   isGeneratingImages = false
 }) => {
+  const [filteredProducts, setFilteredProducts] = React.useState(products);
+  const [itemsPerPage, setItemsPerPage] = React.useState(10);
+
+  const handleFilteredProductsChange = React.useCallback((filtered: any[]) => {
+    setFilteredProducts(filtered);
+  }, []);
+
+  const handleItemsPerPageChange = React.useCallback((value: number) => {
+    setItemsPerPage(value);
+  }, []);
+
+  // Update filtered products when products change
+  React.useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
+  
   // Log products for debugging
   React.useEffect(() => {
     logger.info(`Rendering FilteredProducts for category: ${selectedCategory}`, {
@@ -40,7 +57,18 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
           {isGeneratingImages ? (
             <LoadingState />
           ) : (
-            <ProductGrid products={products} />
+            <div className="space-y-6">
+              <CategoryFilters
+                products={products}
+                onFilteredProductsChange={handleFilteredProductsChange}
+                categoryName={selectedCategory}
+              />
+              <PaginatedProductGrid
+                products={filteredProducts}
+                itemsPerPage={itemsPerPage}
+                onItemsPerPageChange={handleItemsPerPageChange}
+              />
+            </div>
           )}
         </ScrollArea>
       </section>

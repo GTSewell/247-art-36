@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import ProductGrid from './ProductGrid';
+import PaginatedProductGrid from './PaginatedProductGrid';
+import CategoryFilters from './CategoryFilters';
 import LoadingState from './LoadingState';
 
 interface StoreCategorySectionProps {
@@ -27,6 +28,21 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   onTriggerRef,
   onContentRef
 }) => {
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const handleFilteredProductsChange = useCallback((filtered: any[]) => {
+    setFilteredProducts(filtered);
+  }, []);
+
+  const handleItemsPerPageChange = useCallback((value: number) => {
+    setItemsPerPage(value);
+  }, []);
+
+  // Update filtered products when products change
+  React.useEffect(() => {
+    setFilteredProducts(products);
+  }, [products]);
   return (
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
@@ -61,7 +77,18 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
         {isGeneratingImages ? (
           <LoadingState />
         ) : (
-          <ProductGrid products={products} />
+          <div className="space-y-6">
+            <CategoryFilters
+              products={products}
+              onFilteredProductsChange={handleFilteredProductsChange}
+              categoryName={category.label}
+            />
+            <PaginatedProductGrid
+              products={filteredProducts}
+              itemsPerPage={itemsPerPage}
+              onItemsPerPageChange={handleItemsPerPageChange}
+            />
+          </div>
         )}
       </AccordionContent>
     </AccordionItem>
