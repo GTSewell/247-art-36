@@ -1,7 +1,8 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette, Store } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette, Store, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTheme } from "next-themes";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,6 +38,7 @@ interface UserMenuProps {
 export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
   const [initials, setInitials] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [displayName, setDisplayName] = useState('');
@@ -151,6 +153,18 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
             <span>The Store</span>
           </DropdownMenuItem>
         </Link>
+        
+        <DropdownMenuSeparator />
+        
+        {/* Theme Toggle */}
+        <DropdownMenuItem 
+          className="p-3 hover:bg-muted cursor-pointer"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+          <Sun className="mr-2 h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="mr-2 h-5 w-5 absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span>Toggle theme</span>
+        </DropdownMenuItem>
         
         <DropdownMenuSeparator />
         

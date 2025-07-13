@@ -12,8 +12,11 @@ import {
   MessageSquare, 
   Settings, 
   Shield, 
-  LogOut 
+  LogOut,
+  Sun,
+  Moon
 } from 'lucide-react';
+import { useTheme } from "next-themes";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -27,6 +30,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
   const isWhoAreYouPage = location.pathname === "/who-are-you";
   const navigate = useNavigate();
   const { itemCount } = useCart();
+  const { theme, setTheme } = useTheme();
   const [isAdmin, setIsAdmin] = React.useState(false);
   
   React.useEffect(() => {
@@ -65,6 +69,16 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
         <MobileNavLink to="/store" isActive={isActive("/store")}>
           The Store
         </MobileNavLink>
+        
+        {/* Theme Toggle */}
+        <button 
+          className="flex items-center w-full p-2 rounded-md text-foreground hover:bg-muted"
+          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+          <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="mr-2 h-4 w-4 absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span>Toggle theme</span>
+        </button>
         
         {/* User menu items - Only show if user is logged in */}
         {user && (
