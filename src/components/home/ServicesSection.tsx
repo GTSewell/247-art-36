@@ -21,7 +21,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
           >
             SERVICES
           </h2>
-          <p className="text-xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right">
+          <p className="text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right">
             KICK-ASS ART ACTIVATIONS. YOU DREAM IT. WE'LL BUILD IT!
           </p>
         </div>
