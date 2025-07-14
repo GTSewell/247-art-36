@@ -63,11 +63,11 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
     artists: { name: artist.name },
     is_limited_edition: false,
     custom_description: selectedArtwork.description,
-    specifications: selectedArtwork.specifications
+    specifications: matchingProduct?.specifications || selectedArtwork.specifications
   };
 
-  // Convert specifications to the expected format
-  const specifications = {
+  // Use product specifications if available, otherwise fallback to artwork specs
+  const specifications = matchingProduct?.specifications || {
     'Medium': selectedArtwork.specifications.medium || 'N/A',
     'Size': selectedArtwork.specifications.size || 'N/A', 
     'Year': selectedArtwork.specifications.year || 'N/A'
