@@ -22,6 +22,7 @@ interface PaginatedProductGridProps {
   itemsPerPage?: number;
   onItemsPerPageChange?: (value: number) => void;
   onProductClick?: (product: any) => void;
+  onScrollToTop?: () => void;
 }
 
 const ITEMS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
@@ -30,7 +31,8 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
   products, 
   itemsPerPage = 10,
   onItemsPerPageChange,
-  onProductClick 
+  onProductClick,
+  onScrollToTop
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   
@@ -44,15 +46,8 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to the accordion title at the top of viewport when page changes
-    const activeAccordionTrigger = document.querySelector('[data-state="open"] h2');
-    if (activeAccordionTrigger) {
-      const elementTop = activeAccordionTrigger.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({
-        top: elementTop,
-        behavior: 'smooth'
-      });
-    }
+    // Use the provided scroll function to scroll to the top of the accordion section
+    onScrollToTop?.();
   };
 
   const handleItemsPerPageChange = (value: string) => {

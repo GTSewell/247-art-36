@@ -21,6 +21,21 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
 }) => {
   const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
 
+  const handleScrollToTop = () => {
+    const triggerElement = selectedCategory ? 
+      document.querySelector(`[data-category="${selectedCategory}"]`)?.closest('[data-trigger-ref]') || 
+      document.querySelector(`[data-category="${selectedCategory}"]`)?.parentElement?.parentElement 
+      : null;
+    
+    if (triggerElement) {
+      const elementTop = triggerElement.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementTop,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const handleValueChange = (value: string) => {
     // The accordion returns an array, but we only allow single selection
     const newValue = Array.isArray(value) ? value[0] : value;
@@ -49,6 +64,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
               onTriggerRef={(element) => registerTrigger(category.id, element)}
               onContentRef={(element) => registerContent(category.id, element)}
               onProductClick={onProductClick}
+              onScrollToTop={handleScrollToTop}
             />
           );
         })}

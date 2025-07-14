@@ -18,6 +18,7 @@ interface StoreCategorySectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
   onContentRef?: (element: HTMLElement | null) => void;
   onProductClick?: (product: any) => void;
+  onScrollToTop?: () => void;
 }
 
 const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
@@ -28,7 +29,8 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   productCount,
   onTriggerRef,
   onContentRef,
-  onProductClick
+  onProductClick,
+  onScrollToTop
 }) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -52,6 +54,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
       >
         <div 
           ref={onTriggerRef}
+          data-trigger-ref
           className={`flex w-full pr-4 transition-all duration-300 ${
             isActive 
               ? 'relative items-center min-h-[120px]' 
@@ -92,6 +95,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
               itemsPerPage={itemsPerPage}
               onItemsPerPageChange={handleItemsPerPageChange}
               onProductClick={onProductClick}
+              onScrollToTop={onScrollToTop}
             />
           </div>
         )}
