@@ -45,7 +45,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
             </p>
             <Link
               to="/tour"
-              className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors"
+              className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors"
             >
               view all
             </Link>

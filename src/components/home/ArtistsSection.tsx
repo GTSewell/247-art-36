@@ -41,7 +41,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
             <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
               Explore an ever-evolving roster of visionary artists pushing creative boundaries. From street art pioneers to digital innovators, our platform connects you with the voices shaping tomorrow's art landscape.
             </p>
-            <Link to="/artists" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
+            <Link to="/artists" className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
               view all
             </Link>
           </div>

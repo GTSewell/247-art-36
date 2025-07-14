@@ -32,7 +32,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
             <p className="text-2xl font-light text-gray-600 max-w-xl">
               Working with creative companies to deliver creative experiences is our jam. Professional curation and event management is just the beginning. We help you bring your concepts to creation. From high speed 1 day pop-ups, to long lasting memories. We'll make it happen.
             </p>
-            <Link to="/services" className="text-xl border-b-2 border-black hover:border-gray-600 transition-colors">
+            <Link to="/services" className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
               learn more
             </Link>
           </div>
