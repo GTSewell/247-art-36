@@ -95,7 +95,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
         >
           <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="mr-2 h-4 w-4 absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span>Toggle theme</span>
+          <span>{theme === "dark" ? "Infinite Light Mode" : "Genesis Dark Mode"}</span>
         </button>
         
         {/* User menu items - Only show if user is logged in */}
