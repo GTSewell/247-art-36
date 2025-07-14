@@ -53,11 +53,11 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
       >
         <div className={`flex w-full pr-4 transition-all duration-300 ${
           isActive 
-            ? 'flex-col justify-center items-center min-h-[120px]' 
+            ? 'flex-row justify-center items-center min-h-[120px] gap-4' 
             : 'flex-col md:flex-row md:items-center justify-between'
         }`}>
           <h2 
-            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left flex-shrink-0 ${isActive ? 'self-start' : ''}`}
+            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left flex-shrink-0`}
             style={{
               '--store-category-bg-image': `url(${category.image})`,
               '--category-bg-image': `url(${category.image})`
@@ -69,7 +69,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           </h2>
           <p className={`text-lg text-gray-600 dark:text-gray-300 font-nove flex-shrink-0 transition-all duration-300 ${
             isActive 
-              ? 'text-center mt-4 self-center' 
+              ? 'text-center' 
               : 'text-left md:text-right mt-2 md:mt-0'
           }`}>
             {category.description}
