@@ -53,7 +53,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
       >
         <div className={`flex w-full pr-4 transition-all duration-300 ${
           isActive 
-            ? 'flex-row items-center min-h-[120px] gap-4' 
+            ? 'relative items-center min-h-[120px]' 
             : 'flex-col md:flex-row md:items-center justify-between'
         }`}>
           <h2 
@@ -69,7 +69,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           </h2>
           <p className={`text-lg text-gray-600 dark:text-gray-300 font-nove transition-all duration-300 ${
             isActive 
-              ? 'text-center flex-1' 
+              ? 'absolute left-1/2 transform -translate-x-1/2 text-center' 
               : 'text-left md:text-right mt-2 md:mt-0 flex-shrink-0'
           }`}>
             {category.description}
