@@ -93,8 +93,8 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
           className="flex items-center w-full p-2 rounded-md text-foreground hover:bg-muted"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          <Sun className="mr-2 h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="mr-2 h-4 w-4 absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Moon className="mr-2 h-4 w-4 absolute rotate-0 scale-100 transition-all dark:rotate-90 dark:scale-0" />
           <span>{theme === "dark" ? "Infinite Light Mode" : "Genesis Dark Mode"}</span>
         </button>
         
