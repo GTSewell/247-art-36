@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
 
   return (
     <div className="group h-full flex flex-col cursor-pointer" onClick={handleCardClick}>
-      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-gray-100 dark:bg-gray-700">
+      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-muted border border-border">
         <img 
           src={getProductImageUrl(product)} 
           alt={product.name} 
@@ -44,14 +44,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
         )}
       </div>
       <div className="flex flex-col flex-1">
-        <h3 className="font-medium mb-0.5 text-sm md:text-base dark:text-white leading-tight truncate">{product.name}</h3>
+        <h3 className="font-medium mb-0.5 text-sm md:text-base text-foreground leading-tight truncate">{product.name}</h3>
         {product.artists && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-semibold leading-none truncate">
+          <p className="text-sm text-muted-foreground mt-1 font-semibold leading-none truncate">
             By {product.artists.name}
           </p>
         )}
         <div className="flex items-center justify-between mt-auto pt-2">
-          <p className="text-gray-600 dark:text-gray-300 text-sm md:text-base font-light leading-none">${product.price}</p>
+          <p className="text-muted-foreground text-sm md:text-base font-light leading-none">${product.price}</p>
           <Button 
             size={isMobile ? "icon" : "sm"} 
             className="bg-slate-700 hover:bg-slate-600 text-white h-8 w-8 md:w-auto md:h-8"

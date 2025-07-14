@@ -41,19 +41,19 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
   };
   if (!product) return null;
   return <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`p-0 overflow-hidden bg-white rounded-xl shadow-lg border border-gray-100 ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
+      <DialogContent className={`p-0 overflow-hidden bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
         {/* Close button with improved positioning */}
-        <button onClick={onClose} aria-label="Close dialog" className="absolute right-1 top-1 p-1 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 px-[4px] text-center bg-neutral-300 hover:bg-neutral-200">
-          <X className="h-4 w-4 text-gray-700" />
+        <button onClick={onClose} aria-label="Close dialog" className="absolute right-1 top-1 p-1 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 px-[4px] text-center bg-muted hover:bg-accent">
+          <X className="h-4 w-4 text-foreground" />
         </button>
         
         <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
           <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
             <ProductImageGallery images={variations} />
           </div>
-          <div className={`${isMobile ? 'w-full border-t border-gray-100 p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-gray-100 p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
+          <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
             <div className="flex-grow space-y-3 md:space-y-4">
               <ProductHeader name={product.name} artistName={product.artists?.name} productId={product.id} timeLeft={timeLeft} />
               
@@ -71,7 +71,7 @@ const TimedEditionModal: React.FC<TimedEditionModalProps> = ({
               />
             </div>
             
-            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-gray-100">
+            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-border">
               <AddToCartButton isDisabled={isExpired} />
             </div>
           </div>

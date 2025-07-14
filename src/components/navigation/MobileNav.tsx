@@ -64,7 +64,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
       onClick={onClose}
     >
       {/* Dropdown content area */}
-      <div className="bg-background/95 backdrop-blur-sm border-t border-border/20 w-full pt-16">
+      <div className="bg-background/98 backdrop-blur-sm border-t border-border w-full pt-16">
         {/* Close button in the padding area */}
         <button 
           className="absolute top-4 right-4 p-2 rounded-md text-foreground hover:bg-muted"
