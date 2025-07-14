@@ -49,7 +49,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
-        className="hover:no-underline group px-2 md:px-0 py-0 flex flex-col md:flex-row md:items-start md:justify-between w-full cursor-pointer min-h-fit h-auto"
+        className="hover:no-underline group px-2 md:px-0 py-2 flex flex-col md:flex-row md:items-center md:justify-between w-full cursor-pointer"
       >
         <h2 
           className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap w-full text-left md:w-auto`}
