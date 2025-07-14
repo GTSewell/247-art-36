@@ -61,7 +61,7 @@ const NavigationComponent = () => {
   const navExtraClass = isMobile && isWhoAreYouPage ? "h-20" : "h-16";
   return <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent`}>
       <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
-        <div className="flex justify-end items-center h-16 w-full">
+        <div className="flex justify-end items-center h-16">
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
             <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
