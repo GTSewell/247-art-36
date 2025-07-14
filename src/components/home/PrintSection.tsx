@@ -18,7 +18,7 @@ const PrintSection: React.FC<PrintSectionProps> = ({ onTriggerRef, onContentRef 
             style={{
               '--homepage-bg-image': 'url(/lovable-uploads/74dcd042-cc32-4e03-9897-a8f73536b520.png)'
             } as React.CSSProperties}
-          >IN-HOUSE BESPOKE PRINTING SERVICES</h2>
+          >PRINT</h2>
           <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
             STICKERS TO FINE ART, MERCH TO MURALS, WE OFFER BESPOKE IN-HOUSE PRINTING SERVICES FOR ARTISTS AND BEYOND.
           </p>
