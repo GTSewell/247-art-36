@@ -49,7 +49,7 @@
   letter-spacing: -0.05em; /* Overlapping letters */
   display: inline-block; /* Fit content exactly */
   width: auto; /* Let it size naturally */
-  padding: 0 0.05em; /* Compensate for negative letter spacing overflow */
+  padding: 3px 0.05em; /* Add 3px top/bottom padding, compensate for negative letter spacing overflow */
   line-height: 0.8;
 }
 
