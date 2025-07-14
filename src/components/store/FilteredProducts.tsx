@@ -52,8 +52,8 @@ const FilteredProducts: React.FC<FilteredProductsProps> = ({
         onCategoryChange={onCategoryChange}
       />
 
-      <section className="w-full">
-        <ScrollArea className="h-[800px] rounded-md border-4 border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 py-[32px] px-[32px]">
+      <section className="w-full h-[calc(100vh-280px)]">
+        <ScrollArea className="h-full rounded-md border-4 border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 py-[24px] px-[24px]">
           {isGeneratingImages ? (
             <LoadingState />
           ) : (

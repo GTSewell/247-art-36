@@ -69,11 +69,11 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           </p>
         </div>
       </AccordionTrigger>
-      <AccordionContent ref={onContentRef} className="px-0 pb-16">
+      <AccordionContent ref={onContentRef} className="px-0 pb-8">
         {isGeneratingImages ? (
           <LoadingState />
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <CategoryFilters
               products={products}
               onFilteredProductsChange={handleFilteredProductsChange}

@@ -58,7 +58,7 @@ const GeneralStore = () => {
         <div className="min-h-screen bg-background dark:bg-background text-foreground dark:text-foreground">
           <Navigation />
           
-          <main className="container mx-auto px-4 py-[25px]">
+          <main className="container mx-auto px-4 py-[16px]">
             <div className="w-full">
               {/* <FeaturedProducts products={featuredProducts} onProductSelect={handleProductSelect} /> */}
 
