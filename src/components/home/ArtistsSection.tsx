@@ -30,7 +30,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
               '--homepage-bg-image': 'url(/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png)'
             } as React.CSSProperties}
           >ARTISTS</h2>
-          <p className="text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right">
+          <p className="text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             DISCOVER & SUPPORT
           </p>
         </div>
