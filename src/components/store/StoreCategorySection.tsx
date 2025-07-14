@@ -63,7 +63,11 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           >
             {category.label}
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 text-left md:text-right flex-shrink-0">
+          <p className={`text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 flex-shrink-0 transition-all duration-300 ${
+            isActive 
+              ? 'text-center md:text-center absolute md:relative left-1/2 md:left-auto transform md:transform-none -translate-x-1/2 md:translate-x-0' 
+              : 'text-left md:text-right'
+          }`}>
             {category.description}
           </p>
         </div>

@@ -59,30 +59,23 @@ const NavigationComponent = () => {
   // Add extra padding class for specific pages on mobile
   const isWhoAreYouPage = location.pathname === "/who-are-you";
   const navExtraClass = isMobile && isWhoAreYouPage ? "h-20" : "h-16";
-  return <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent w-full`}>
-      <div className="w-full mx-auto px-4 sm:px-6 md:px-8">
-        <div className={`flex justify-between items-center ${navExtraClass} w-full`}>
-          {/* Empty left side for minimalistic design */}
-          <div></div>
+  return <nav className={`fixed top-0 z-50 bg-transparent`}>
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex items-center gap-4 absolute top-4 right-8">
+        <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
+      </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-4">
-            <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
-          </div>
-
-          {/* Mobile menu button - with cart badge */}
-          <div className="md:hidden flex items-center gap-2">
-            <div className="relative">
-              <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="p-0" /* Removed padding to eliminate the button outline */>
-                {isOpen ? <X className="h-6 w-6" /> : <div className="relative">
-                    <img alt="Menu" className="h-8 w-8" src="/lovable-uploads/52048c59-1bc7-4152-897e-7af9c8695f63.png" />
-                    {itemCount > 0 && <Badge className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs">
-                        {itemCount}
-                      </Badge>}
-                  </div>}
-              </Button>
-            </div>
-          </div>
+      {/* Mobile menu button - positioned in top right */}
+      <div className="md:hidden fixed top-4 right-4">
+        <div className="relative">
+          <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu" className="p-0" /* Removed padding to eliminate the button outline */>
+            {isOpen ? <X className="h-6 w-6" /> : <div className="relative">
+                <img alt="Menu" className="h-8 w-8" src="/lovable-uploads/52048c59-1bc7-4152-897e-7af9c8695f63.png" />
+                {itemCount > 0 && <Badge className="absolute -top-2 -right-2 bg-zap-red text-white h-5 w-5 flex items-center justify-center p-0 text-xs">
+                    {itemCount}
+                  </Badge>}
+              </div>}
+          </Button>
         </div>
       </div>
 
