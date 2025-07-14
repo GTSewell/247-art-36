@@ -69,22 +69,26 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           </p>
         </div>
       </AccordionTrigger>
-      <AccordionContent ref={onContentRef} className="px-0 pb-8">
+      <AccordionContent ref={onContentRef} className="px-0 pb-4">
         {isGeneratingImages ? (
           <LoadingState />
         ) : (
-          <div className="space-y-4">
-            <CategoryFilters
-              products={products}
-              onFilteredProductsChange={handleFilteredProductsChange}
-              categoryName={category.label}
-            />
-            <PaginatedProductGrid
-              products={filteredProducts}
-              itemsPerPage={itemsPerPage}
-              onItemsPerPageChange={handleItemsPerPageChange}
-              onProductClick={onProductClick}
-            />
+          <div className="flex flex-col h-[calc(100vh-400px)] min-h-[500px]">
+            <div className="flex-shrink-0 mb-4">
+              <CategoryFilters
+                products={products}
+                onFilteredProductsChange={handleFilteredProductsChange}
+                categoryName={category.label}
+              />
+            </div>
+            <div className="flex-1 flex flex-col min-h-0">
+              <PaginatedProductGrid
+                products={filteredProducts}
+                itemsPerPage={itemsPerPage}
+                onItemsPerPageChange={handleItemsPerPageChange}
+                onProductClick={onProductClick}
+              />
+            </div>
           </div>
         )}
       </AccordionContent>

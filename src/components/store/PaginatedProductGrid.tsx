@@ -84,16 +84,18 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
   const endItem = Math.min(currentPage * itemsPerPage, products.length);
 
   return (
-    <div className="space-y-6" data-pagination-grid>
-      {/* Products Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {paginatedProducts.map(product => (
-          <ProductCard key={product.id} product={product} onProductClick={onProductClick} />
-        ))}
+    <div className="flex flex-col h-full" data-pagination-grid>
+      {/* Products Grid - takes remaining space */}
+      <div className="flex-1 overflow-y-auto mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {paginatedProducts.map(product => (
+            <ProductCard key={product.id} product={product} onProductClick={onProductClick} />
+          ))}
+        </div>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border">
+      {/* Pagination Controls - fixed at bottom */}
+      <div className="flex-shrink-0 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border bg-background/95 backdrop-blur-sm">
         {/* Results Info & Items Per Page */}
         <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
           <span>
