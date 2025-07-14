@@ -53,10 +53,11 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h2 
-            className={`store-category-title font-agharti font-black leading-none tracking-tighter bg-clip-text transition-all duration-300 group-hover:scale-105 whitespace-nowrap w-full text-left md:w-auto ${
+            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter bg-clip-text transition-all duration-300 group-hover:scale-105 whitespace-nowrap w-full text-left md:w-auto ${
               isActive ? 'with-background' : ''
             }`}
             style={{
+              '--store-category-bg-image': `url(${category.image})`,
               '--category-bg-image': `url(${category.image})`
             } as React.CSSProperties}
             data-category={category.id}
@@ -69,26 +70,22 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           </p>
         </div>
       </AccordionTrigger>
-      <AccordionContent ref={onContentRef} className="px-0 pb-4">
+      <AccordionContent ref={onContentRef} className="px-0 pb-6">
         {isGeneratingImages ? (
           <LoadingState />
         ) : (
-          <div className="flex flex-col h-[calc(100vh-400px)] min-h-[500px]">
-            <div className="flex-shrink-0 mb-4">
-              <CategoryFilters
-                products={products}
-                onFilteredProductsChange={handleFilteredProductsChange}
-                categoryName={category.label}
-              />
-            </div>
-            <div className="flex-1 flex flex-col min-h-0">
-              <PaginatedProductGrid
-                products={filteredProducts}
-                itemsPerPage={itemsPerPage}
-                onItemsPerPageChange={handleItemsPerPageChange}
-                onProductClick={onProductClick}
-              />
-            </div>
+          <div className="space-y-4">
+            <CategoryFilters
+              products={products}
+              onFilteredProductsChange={handleFilteredProductsChange}
+              categoryName={category.label}
+            />
+            <PaginatedProductGrid
+              products={filteredProducts}
+              itemsPerPage={itemsPerPage}
+              onItemsPerPageChange={handleItemsPerPageChange}
+              onProductClick={onProductClick}
+            />
           </div>
         )}
       </AccordionContent>
