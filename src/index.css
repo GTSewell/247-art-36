@@ -63,7 +63,7 @@
 }
 
 .group:hover .store-category-title,
-.store-category-title-expanded.with-background {
+.group[data-state="open"] .store-category-title {
   background-image: var(--category-bg-image);
   background-size: cover;
   background-position: center;
