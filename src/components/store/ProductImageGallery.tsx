@@ -38,11 +38,11 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-8"
+            className="fixed inset-0 z-[300] bg-black/90 flex items-center justify-center p-8"
             onClick={() => setSelectedImage(null)}
           >
             <button 
-              className="absolute top-6 right-6 bg-background/90 hover:bg-muted border border-border p-3 rounded-full z-[201] transition-colors"
+              className="absolute top-6 right-6 bg-background/90 hover:bg-muted border border-border p-3 rounded-full z-[301] transition-colors"
               onClick={(e) => {
                 e.stopPropagation();
                 setSelectedImage(null);
