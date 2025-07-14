@@ -1,27 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import useEmblaCarousel from 'embla-carousel-react';
+
 interface EventsSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
   onContentRef?: (element: HTMLElement | null) => void;
 }
 
-const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRef }) => {
-  return <AccordionItem value="events" className="border-none">
-      <AccordionTrigger 
+const EventsSection: React.FC<EventsSectionProps> = ({
+  onTriggerRef,
+  onContentRef
+}) => {
+  const [emblaRef] = useEmblaCarousel({ 
+    align: 'start',
+    containScroll: 'trimSnaps',
+    dragFree: true
+  });
+
+  const events = [
+    {
+      color: 'bg-purple-500',
+      category: 'workshop',
+      title: 'Digital Art Masterclass',
+      description: 'Learn advanced techniques from industry professionals'
+    },
+    {
+      color: 'bg-orange-500',
+      category: 'exhibition',
+      title: 'Emerging Voices',
+      description: 'Showcasing the next generation of creative talent'
+    },
+    {
+      color: 'bg-teal-500',
+      category: 'community',
+      title: 'Art & Coffee',
+      description: 'Monthly meetups for artists and art lovers'
+    }
+  ];
+
+  return (
+    <AccordionItem value="events" className="border-none">
+      <AccordionTrigger
         ref={onTriggerRef}
         className="hover:no-underline px-0 py-0 homepage-accordion-group group flex-col items-start md:flex-row md:items-center md:justify-between w-full"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
-            style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/4da04b9f-0458-4482-93e2-bf8eac91b95b.png)'
-            } as React.CSSProperties}
-          >EVENTS</h2>
-           <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
-             ATTEND OR HOST YOUR NEXT WORKSHOP | POP-UP | EXHIBITION
-           </p>
+          <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" style={{
+            '--homepage-bg-image': 'url(/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png)'
+          } as React.CSSProperties}>
+            EVENTS
+          </h2>
+          <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
+            ATTEND OR HOST YOUR NEXT WORKSHOP | POP-UP | EXHIBITION
+          </p>
         </div>
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
@@ -57,45 +88,42 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
           </div>
         </div>
 
-        {/* Events Grid */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-4">
-          <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
-            <div className="flex items-center mb-2 sm:mb-3">
-              <div className="w-2 h-2 bg-purple-500 rounded-full mr-2 sm:mr-3"></div>
-              <span className="text-xs sm:text-sm italic">workshop</span>
+        {/* Events - Desktop Grid */}
+        <div className="hidden md:grid grid-cols-3 gap-4">
+          {events.map((event, index) => (
+            <div key={index} className="bg-black text-white p-6 rounded-lg">
+              <div className="flex items-center mb-3">
+                <div className={`w-2 h-2 ${event.color} rounded-full mr-3`}></div>
+                <span className="text-sm italic">{event.category}</span>
+              </div>
+              <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+              <p className="text-sm text-gray-300 mb-4">{event.description}</p>
+              <button className="text-sm underline">read more</button>
             </div>
-            <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Digital Art Masterclass</h3>
-            <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-4">
-              Learn advanced techniques from industry professionals
-            </p>
-            <button className="text-xs sm:text-sm underline">read more</button>
-          </div>
+          ))}
+        </div>
 
-          <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
-            <div className="flex items-center mb-2 sm:mb-3">
-              <div className="w-2 h-2 bg-orange-500 rounded-full mr-2 sm:mr-3"></div>
-              <span className="text-xs sm:text-sm italic">exhibition</span>
+        {/* Events - Mobile Carousel */}
+        <div className="md:hidden">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex gap-4">
+              {events.map((event, index) => (
+                <div key={index} className="bg-black text-white p-6 rounded-lg flex-[0_0_85%] min-w-0">
+                  <div className="flex items-center mb-3">
+                    <div className={`w-2 h-2 ${event.color} rounded-full mr-3`}></div>
+                    <span className="text-sm italic">{event.category}</span>
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{event.title}</h3>
+                  <p className="text-sm text-gray-300 mb-4">{event.description}</p>
+                  <button className="text-sm underline">read more</button>
+                </div>
+              ))}
             </div>
-            <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Emerging Voices</h3>
-            <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-4">
-              Showcasing the next generation of creative talent
-            </p>
-            <button className="text-xs sm:text-sm underline">read more</button>
-          </div>
-
-          <div className="bg-black text-white p-3 sm:p-6 rounded-lg">
-            <div className="flex items-center mb-2 sm:mb-3">
-              <div className="w-2 h-2 bg-teal-500 rounded-full mr-2 sm:mr-3"></div>
-              <span className="text-xs sm:text-sm italic">community</span>
-            </div>
-            <h3 className="text-sm sm:text-xl font-bold mb-1 sm:mb-2">Art & Coffee</h3>
-            <p className="text-xs sm:text-sm text-gray-300 mb-2 sm:mb-4">
-              Monthly meetups for artists and art lovers
-            </p>
-            <button className="text-xs sm:text-sm underline">read more</button>
           </div>
         </div>
       </AccordionContent>
-    </AccordionItem>;
+    </AccordionItem>
+  );
 };
+
 export default EventsSection;
