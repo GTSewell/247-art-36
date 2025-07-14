@@ -31,7 +31,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
               Join a vibrant community of creators through exclusive workshops, opening nights, and collaborative sessions. Connect with like-minded artists and art enthusiasts in spaces designed to inspire and educate.
             </p>
             <button 
-              className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors cursor-pointer bg-transparent"
+              className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors cursor-pointer bg-transparent"
               data-tally-open="nPEkWx"
               data-tally-emoji-text="👋" 
               data-tally-emoji-animation="wave"

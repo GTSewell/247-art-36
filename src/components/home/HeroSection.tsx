@@ -43,7 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
                   Where art transcends boundaries and creativity knows no limits. Discover a curated ecosystem of emerging and established artists, cutting-edge exhibitions, and premium printing services—all designed to elevate the contemporary art experience.
                 </p>
               </div>
-              <button className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors ml-8">
+              <button className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors ml-8">
                 Enter Gallery
               </button>
             </div>

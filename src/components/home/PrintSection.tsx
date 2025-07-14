@@ -30,7 +30,7 @@ const PrintSection: React.FC<PrintSectionProps> = ({ onTriggerRef, onContentRef 
             <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
               Transform digital masterpieces into tangible works of art with our museum-grade printing technology. From intimate prints to large-scale installations, we ensure every detail preserves the artist's original vision.
             </p>
-            <Link to="/details" className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
+            <Link to="/details" className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors">
               learn more
             </Link>
           </div>
