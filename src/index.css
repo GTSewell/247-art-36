@@ -50,15 +50,6 @@
   display: inline-block; /* Fit content exactly */
   width: auto; /* Let it size naturally */
   padding: 0 0.05em; /* Compensate for negative letter spacing overflow */
-  background-image: var(--store-category-bg-image);
-  background-size: cover;
-  background-position: center;
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-repeat: no-repeat;
-  text-transform: uppercase;
-  font-family: "Six Caps", monospace;
-  font-weight: 400;
   line-height: 0.8;
 }
 
@@ -71,12 +62,14 @@
   -webkit-text-stroke: 1px white;
 }
 
-.store-category-title.with-background,
-.group:hover .store-category-title {
+.group:hover .store-category-title,
+.store-category-title-expanded.with-background {
   background-image: var(--category-bg-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* Homepage Accordion Title Styles */
