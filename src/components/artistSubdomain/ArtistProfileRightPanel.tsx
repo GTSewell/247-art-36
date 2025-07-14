@@ -25,6 +25,7 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const isMobile = useIsMobile();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkDetails | null>(null);
+  const [currentArtworkIndex, setCurrentArtworkIndex] = useState(0);
   const { addItem } = useCart();
   const { artworkErrors, handleArtworkImageError } = useImageErrors(
     artist.id || 0, 
@@ -52,8 +53,25 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
   const isRealArtist = artist.id ? artist.id >= 26 : false;
 
   const handleArtworkClick = (artwork: string, index: number) => {
+    const artworkIndex = validArtworks.findIndex(art => art === artwork);
+    setCurrentArtworkIndex(artworkIndex);
     setSelectedArtwork(getArtworkDetails(artwork, index, artist, assignedProducts));
     setIsModalOpen(true);
+  };
+
+  const handleNavigateArtwork = (direction: 'prev' | 'next') => {
+    if (validArtworks.length === 0) return;
+    
+    let newIndex;
+    if (direction === 'prev') {
+      newIndex = currentArtworkIndex > 0 ? currentArtworkIndex - 1 : validArtworks.length - 1;
+    } else {
+      newIndex = currentArtworkIndex < validArtworks.length - 1 ? currentArtworkIndex + 1 : 0;
+    }
+    
+    setCurrentArtworkIndex(newIndex);
+    const newArtwork = validArtworks[newIndex];
+    setSelectedArtwork(getArtworkDetails(newArtwork, newIndex, artist, assignedProducts));
   };
   
   const handleAddToCart = () => {
@@ -113,6 +131,9 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
         artist={artist}
         assignedProducts={assignedProducts}
         onAddToCart={handleAddToCart}
+        artworks={validArtworks}
+        currentIndex={currentArtworkIndex}
+        onNavigate={handleNavigateArtwork}
       />
     </div>
   );
