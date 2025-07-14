@@ -19,9 +19,9 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
               '--homepage-bg-image': 'url(/lovable-uploads/4da04b9f-0458-4482-93e2-bf8eac91b95b.png)'
             } as React.CSSProperties}
           >EVENTS</h2>
-          <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
-            ATTEND OR HOST WORKSHOPS, EXHIBITIONS, OR POP-UP EVENTS IN THE HEART OF MELBOURNE'S CREATIVE EPICENTRE
-          </p>
+           <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
+             ATTEND OR HOST YOUR NEXT WORKSHOP | POP-UP | EXHIBITION
+           </p>
         </div>
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
