@@ -37,11 +37,22 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
         <div className="mb-20">
-          <div className="flex justify-between items-end">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex justify-between items-end">
             <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
               Explore an ever-evolving roster of visionary artists pushing creative boundaries. From street art pioneers to digital innovators, our platform connects you with the voices shaping tomorrow's art landscape.
             </p>
             <Link to="/artists" className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors">
+              view all
+            </Link>
+          </div>
+          
+          {/* Mobile Layout */}
+          <div className="md:hidden">
+            <p className="text-xl font-light text-gray-600 mb-6 font-sans">
+              Explore an ever-evolving roster of visionary artists pushing creative boundaries. From street art pioneers to digital innovators, our platform connects you with the voices shaping tomorrow's art landscape.
+            </p>
+            <Link to="/artists" className="inline-block px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors">
               view all
             </Link>
           </div>

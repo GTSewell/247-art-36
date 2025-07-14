@@ -28,11 +28,22 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
         <div className="mb-20">
-          <div className="flex justify-between items-end">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex justify-between items-end">
             <p className="text-2xl font-light text-gray-600 max-w-xl">
               Working with creative companies to deliver creative experiences is our jam. Professional curation and event management is just the beginning. We help you bring your concepts to creation. From high speed 1 day pop-ups, to long lasting memories. We'll make it happen.
             </p>
             <Link to="/services" className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors">
+              learn more
+            </Link>
+          </div>
+          
+          {/* Mobile Layout */}
+          <div className="md:hidden">
+            <p className="text-xl font-light text-gray-600 mb-6">
+              Working with creative companies to deliver creative experiences is our jam. Professional curation and event management is just the beginning. We help you bring your concepts to creation. From high speed 1 day pop-ups, to long lasting memories. We'll make it happen.
+            </p>
+            <Link to="/services" className="inline-block px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors">
               learn more
             </Link>
           </div>

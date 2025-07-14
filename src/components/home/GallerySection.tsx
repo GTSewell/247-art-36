@@ -39,13 +39,27 @@ const GallerySection: React.FC<GallerySectionProps> = ({
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
         <div className="mb-20">
-          <div className="flex justify-between items-end">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex justify-between items-end">
             <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
               Immerse yourself in carefully curated exhibitions that blur the lines between physical and digital spaces. Experience art in its purest form through our state-of-the-art gallery environments and virtual showcases.
             </p>
             <Link
               to="/tour"
               className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors"
+            >
+              view all
+            </Link>
+          </div>
+          
+          {/* Mobile Layout */}
+          <div className="md:hidden">
+            <p className="text-xl font-light text-gray-600 mb-6 font-sans">
+              Immerse yourself in carefully curated exhibitions that blur the lines between physical and digital spaces. Experience art in its purest form through our state-of-the-art gallery environments and virtual showcases.
+            </p>
+            <Link
+              to="/tour"
+              className="inline-block px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors"
             >
               view all
             </Link>

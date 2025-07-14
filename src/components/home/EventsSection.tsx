@@ -26,8 +26,24 @@ const EventsSection: React.FC<EventsSectionProps> = ({ onTriggerRef, onContentRe
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-16">
         <div className="mb-20">
-          <div className="flex justify-between items-end">
+          {/* Desktop Layout */}
+          <div className="hidden md:flex justify-between items-end">
             <p className="text-2xl font-light text-gray-600 max-w-xl font-sans">
+              Join a vibrant community of creators through exclusive workshops, opening nights, and collaborative sessions. Connect with like-minded artists and art enthusiasts in spaces designed to inspire and educate.
+            </p>
+            <button 
+              className="px-8 py-3 border-2 border-foreground text-lg font-medium hover:bg-foreground hover:text-background transition-colors cursor-pointer bg-transparent"
+              data-tally-open="nPEkWx"
+              data-tally-emoji-text="👋" 
+              data-tally-emoji-animation="wave"
+            >
+              Book Venue
+            </button>
+          </div>
+          
+          {/* Mobile Layout */}
+          <div className="md:hidden">
+            <p className="text-xl font-light text-gray-600 mb-6 font-sans">
               Join a vibrant community of creators through exclusive workshops, opening nights, and collaborative sessions. Connect with like-minded artists and art enthusiasts in spaces designed to inspire and educate.
             </p>
             <button 
