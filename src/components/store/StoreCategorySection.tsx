@@ -51,7 +51,11 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
         ref={onTriggerRef}
         className="hover:no-underline group px-2 md:px-0 py-2 w-full cursor-pointer"
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between w-full pr-4">
+        <div className={`flex w-full pr-4 transition-all duration-300 ${
+          isActive 
+            ? 'flex-col items-center justify-center min-h-[120px]' 
+            : 'flex-col md:flex-row md:items-center justify-between'
+        }`}>
           <h2 
             className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left flex-shrink-0`}
             style={{
@@ -63,10 +67,10 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           >
             {category.label}
           </h2>
-          <p className={`text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 flex-shrink-0 transition-all duration-300 ${
+          <p className={`text-lg text-gray-600 dark:text-gray-300 font-nove flex-shrink-0 transition-all duration-300 ${
             isActive 
-              ? 'w-full flex items-center justify-center text-center' 
-              : 'text-left md:text-right'
+              ? 'text-center mt-4' 
+              : 'text-left md:text-right mt-2 md:mt-0'
           }`}>
             {category.description}
           </p>
