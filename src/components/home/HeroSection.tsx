@@ -41,6 +41,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
               <p className="text-xl font-light mb-8 font-sans">
                 Where art transcends boundaries and creativity knows no limits. Discover a curated ecosystem of emerging and established artists, cutting-edge exhibitions, and premium printing services—all designed to elevate the contemporary art experience.
               </p>
+            </div>
+            <div className="flex justify-end">
               <button className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
                 Enter Gallery
               </button>
