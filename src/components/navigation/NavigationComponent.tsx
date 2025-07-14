@@ -87,7 +87,7 @@ const NavigationComponent = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <MobileNav isOpen={isOpen} isActive={isActive} user={user} isLoading={isLoading} />
+      <MobileNav isOpen={isOpen} isActive={isActive} user={user} isLoading={isLoading} onClose={() => setIsOpen(false)} />
     </nav>;
 };
 export default NavigationComponent;
