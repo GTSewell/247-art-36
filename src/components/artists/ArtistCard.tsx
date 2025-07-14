@@ -106,7 +106,7 @@ const ArtistCard = ({
   return (
     <div className="relative">
       <div 
-        className="group relative overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" 
+        className="group relative overflow-hidden bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" 
         onClick={isFlipped ? stopPropagation : onSelect}
       >
         <div className="aspect-square overflow-hidden relative">

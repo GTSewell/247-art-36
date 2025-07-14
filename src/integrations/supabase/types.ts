@@ -191,6 +191,33 @@ export type Database = {
           },
         ]
       }
+      featured_artists_rotation: {
+        Row: {
+          artist_ids: number[]
+          created_at: string
+          id: string
+          rotation_date: string
+          updated_at: string
+          used_artist_ids: number[] | null
+        }
+        Insert: {
+          artist_ids: number[]
+          created_at?: string
+          id?: string
+          rotation_date?: string
+          updated_at?: string
+          used_artist_ids?: number[] | null
+        }
+        Update: {
+          artist_ids?: number[]
+          created_at?: string
+          id?: string
+          rotation_date?: string
+          updated_at?: string
+          used_artist_ids?: number[] | null
+        }
+        Relationships: []
+      }
       galleries: {
         Row: {
           bio: string | null

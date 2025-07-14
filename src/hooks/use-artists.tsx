@@ -14,6 +14,24 @@ export const useArtists = () => {
   const fetchArtists = async () => {
     try {
       setIsLoading(true);
+      
+      // First, get the current featured artists rotation
+      const { data: rotationData, error: rotationError } = await supabase
+        .from('featured_artists_rotation')
+        .select('artist_ids')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      let featuredArtistIds = [24, 26, 31]; // Default fallback
+      
+      if (rotationData && !rotationError) {
+        featuredArtistIds = rotationData.artist_ids;
+        logger.info('Using rotated featured artists:', featuredArtistIds);
+      } else {
+        logger.info('Using default featured artists (rotation not found):', featuredArtistIds);
+      }
+
       const { data: artists, error } = await supabase
         .from('artists')
         .select('*')
@@ -25,9 +43,6 @@ export const useArtists = () => {
       }
 
       if (artists) {
-        // Featured artist IDs - specific selection
-        const featuredArtistIds = [5, 6, 18]; // Lucas, Nina, Marcus
-        
         // Filter out the featured artists
         const featured = artists.filter(artist => 
           featuredArtistIds.includes(artist.id)
@@ -38,13 +53,12 @@ export const useArtists = () => {
           !featuredArtistIds.includes(artist.id)
         );
         
-        // Sort featured artists to match the requested order: Lucas (5), Nina (6), Marcus (18)
+        // Sort featured artists to match the requested order
         const sortedFeatured = [...featured].sort((a, b) => {
           return featuredArtistIds.indexOf(a.id) - featuredArtistIds.indexOf(b.id);
         });
         
         // Sort additional artists to show newest artists first (highest ID first)
-        // This is the main change - reversing the sort order to show highest IDs first
         const sortedAdditional = [...additional].sort((a, b) => {
           // If both are signature artists or both are not, sort by ID descending
           if ((a.id >= 26 && b.id >= 26) || (a.id < 26 && b.id < 26)) {
