@@ -160,7 +160,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       
       {/* Artwork counter outside modal - desktop only */}
       {onNavigate && artworks.length > 1 && !isMobile && (
-        <div className="fixed top-[calc(50vh-45vh-5px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-[60]">
+        <div className="fixed top-[calc(50vh-45vh-25px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-[60]">
           <span className="text-sm text-foreground font-medium">
             {(currentIndex || 0) + 1} of {artworks.length}
           </span>
