@@ -37,11 +37,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
       </AccordionTrigger>
         <AccordionContent ref={onContentRef} className="px-0 pb-16">
           <div className="mb-20">
-            <div className="mt-8 max-w-lg">
-              <p className="text-xl font-light mb-8 font-sans">
-                Where art transcends boundaries and creativity knows no limits. Discover a curated ecosystem of emerging and established artists, cutting-edge exhibitions, and premium printing services—all designed to elevate the contemporary art experience.
-              </p>
-              <button className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors">
+            <div className="mt-8 flex items-end justify-between">
+              <div className="max-w-lg">
+                <p className="text-xl font-light mb-0 font-sans">
+                  Where art transcends boundaries and creativity knows no limits. Discover a curated ecosystem of emerging and established artists, cutting-edge exhibitions, and premium printing services—all designed to elevate the contemporary art experience.
+                </p>
+              </div>
+              <button className="px-8 py-3 border-2 border-black text-lg font-medium hover:bg-black hover:text-white transition-colors ml-8">
                 Enter Gallery
               </button>
             </div>
