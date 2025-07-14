@@ -49,22 +49,24 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
-        className="hover:no-underline group px-2 md:px-0 py-2 flex flex-col md:flex-row md:items-center md:justify-between w-full cursor-pointer"
+        className="hover:no-underline group px-2 md:px-0 py-2 w-full cursor-pointer"
       >
-        <h2 
-          className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap w-full text-left md:w-auto`}
-          style={{
-            '--store-category-bg-image': `url(${category.image})`,
-            '--category-bg-image': `url(${category.image})`
-          } as React.CSSProperties}
-          data-category={category.id}
-          data-editable="store-title"
-        >
-          {category.label}
-        </h2>
-        <p className="text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 md:max-w-md md:pr-8 text-left md:text-right">
-          {category.description}
-        </p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between w-full pr-4">
+          <h2 
+            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left flex-shrink-0`}
+            style={{
+              '--store-category-bg-image': `url(${category.image})`,
+              '--category-bg-image': `url(${category.image})`
+            } as React.CSSProperties}
+            data-category={category.id}
+            data-editable="store-title"
+          >
+            {category.label}
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-300 font-nove mt-2 md:mt-0 text-left md:text-right flex-shrink-0">
+            {category.description}
+          </p>
+        </div>
       </AccordionTrigger>
       <AccordionContent ref={onContentRef} className="px-0 pb-6">
         {isGeneratingImages ? (
