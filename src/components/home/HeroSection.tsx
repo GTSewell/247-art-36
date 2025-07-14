@@ -58,7 +58,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
               247 ART
             </h1>
             <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
-              ART NEVER SLEEPS ^
+              ART NEVER SLEEPS
             </p>
           </div>
         </AccordionTrigger>
