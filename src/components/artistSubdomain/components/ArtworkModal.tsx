@@ -138,6 +138,35 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
 
   return (
     <div className="relative">
+      {/* Navigation buttons outside modal - desktop only */}
+      {onNavigate && artworks.length > 1 && !isMobile && (
+        <>
+          <button 
+            onClick={() => onNavigate('prev')} 
+            aria-label="Previous artwork" 
+            className="fixed left-[calc(50%-505px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button 
+            onClick={() => onNavigate('next')} 
+            aria-label="Next artwork" 
+            className="fixed right-[calc(50%-505px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </>
+      )}
+      
+      {/* Artwork counter outside modal - desktop only */}
+      {onNavigate && artworks.length > 1 && !isMobile && (
+        <div className="fixed top-[calc(50vh-45vh-5px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-50">
+          <span className="text-sm text-foreground font-medium">
+            {(currentIndex || 0) + 1} of {artworks.length}
+          </span>
+        </div>
+      )}
+
       <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent className={`p-0 overflow-hidden bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
           <DialogTitle className="sr-only">Artwork Details</DialogTitle>
@@ -150,26 +179,6 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
           >
             <X className="h-4 w-4 text-foreground" />
           </button>
-
-          {/* Navigation buttons */}
-          {onNavigate && artworks.length > 1 && (
-            <>
-              <button 
-                onClick={() => onNavigate('prev')} 
-                aria-label="Previous artwork" 
-                className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 bg-background/90 hover:bg-muted border border-border"
-              >
-                <ChevronLeft className="h-5 w-5 text-foreground" />
-              </button>
-              <button 
-                onClick={() => onNavigate('next')} 
-                aria-label="Next artwork" 
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 bg-background/90 hover:bg-muted border border-border"
-              >
-                <ChevronRight className="h-5 w-5 text-foreground" />
-              </button>
-            </>
-          )}
           
           <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
