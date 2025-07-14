@@ -60,21 +60,23 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
 
   return (
     <div 
-      className={`md:hidden fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-t border-border/20 w-full pt-16 z-50 ${isWhoAreYouPage ? 'mt-4' : ''}`}
+      className={`md:hidden fixed top-0 left-0 right-0 bottom-0 z-50 ${isWhoAreYouPage ? 'mt-4' : ''}`}
       onClick={onClose}
     >
-      {/* Close button in the padding area */}
-      <button 
-        className="absolute top-4 right-4 p-2 rounded-md text-foreground hover:bg-muted"
-        onClick={onClose}
-      >
-        <X className="h-5 w-5" />
-      </button>
-      
-      <div 
-        className="max-w-full mx-auto px-6 py-2 space-y-1"
-        onClick={(e) => e.stopPropagation()}
-      >
+      {/* Dropdown content area */}
+      <div className="bg-background/95 backdrop-blur-sm border-t border-border/20 w-full pt-16">
+        {/* Close button in the padding area */}
+        <button 
+          className="absolute top-4 right-4 p-2 rounded-md text-foreground hover:bg-muted"
+          onClick={onClose}
+        >
+          <X className="h-5 w-5" />
+        </button>
+        
+        <div 
+          className="max-w-full mx-auto px-6 py-2 space-y-1"
+          onClick={(e) => e.stopPropagation()}
+        >
         {/* Navigation links for all users */}
         <MobileNavLink to="/" isActive={isActive("/")}>
           Home
@@ -165,6 +167,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
             Sign In
           </MobileNavLink>
         )}
+        </div>
       </div>
     </div>
   );
