@@ -57,7 +57,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading }: MobileNavProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className={`md:hidden bg-background/95 backdrop-blur-sm border-t border-border/20 w-full ${isWhoAreYouPage ? 'mt-4' : ''}`}>
+    <div className={`md:hidden fixed top-0 left-0 right-0 bottom-0 bg-background/95 backdrop-blur-sm z-50 overflow-y-auto`}>
       <div className="max-w-full mx-auto px-6 py-2 space-y-1">
         {/* Navigation links for all users */}
         <MobileNavLink to="/" isActive={isActive("/")}>
