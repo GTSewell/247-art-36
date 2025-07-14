@@ -19,37 +19,37 @@ export const storeCategories: CategoryType[] = [{
   label: 'original artwork',
   color: 'bg-zap-yellow',
   image: storeOriginalArtwork,
-  description: 'Unique, one-of-a-kind original pieces from talented artists'
+  description: 'ONE-OF-A-KIND'
 }, {
   id: 'signed',
   label: 'Limited Editions',
   color: 'bg-zap-blue',
   image: storeSignedNumbered,
-  description: 'Limited edition pieces personally signed and numbered by the artist'
+  description: 'SIGNED & NUMBERED'
 }, {
   id: 'sticker',
   label: 'Stickers & Stuff',
   color: 'bg-zap-red',
   image: storeStickersFun,
-  description: 'Playful stickers and fun collectibles to brighten your day'
+  description: 'THE LITTLE THINGS'
 }, {
   id: 'merch',
   label: 'artist apparel',
   color: 'bg-zap-yellow',
   image: storeTshirtsApparel,
-  description: 'Wearable art featuring designs from our featured artists'
+  description: 'WEARABLE ART'
 }, {
   id: 'print',
   label: 'art posters',
   color: 'bg-zap-blue',
   image: storePrintsPosters,
-  description: 'High-quality prints and posters perfect for any space'
+  description: 'FOR ANY SPACE'
 }, {
   id: 'collection',
   label: '247 merch',
   color: 'bg-zap-red',
   image: store247Collection,
-  description: 'Exclusive curated collection showcasing the best of 247.ART'
+  description: 'EXCLUSIVE SWAG'
 }];
 
 export const getCategoryColor = (categoryId: string): string => {
