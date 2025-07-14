@@ -48,14 +48,15 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   return (
     <AccordionItem value={category.id} className="border-none">
       <AccordionTrigger 
-        ref={onTriggerRef}
         className="hover:no-underline group px-2 md:px-0 py-2 w-full cursor-pointer"
       >
-        <div className={`flex w-full pr-4 transition-all duration-300 ${
-          isActive 
-            ? 'relative items-center min-h-[120px]' 
-            : 'flex-col md:flex-row md:items-center justify-between'
-        }`}>
+        <div 
+          ref={onTriggerRef}
+          className={`flex w-full pr-4 transition-all duration-300 ${
+            isActive 
+              ? 'relative items-center min-h-[120px]' 
+              : 'flex-col md:flex-row md:items-center justify-between'
+          }`}>
           <h2 
             className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left flex-shrink-0`}
             style={{
