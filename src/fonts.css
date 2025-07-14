@@ -33,6 +33,14 @@
 
 @font-face {
   font-family: 'Agharti';
+  src: url('https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/fonts/Agharti-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Agharti';
   src: url('https://iqmskopbhrzqqqjewdzv.supabase.co/storage/v1/object/public/fonts/Agharti-Thin.ttf') format('truetype');
   font-weight: 100;
   font-style: normal;

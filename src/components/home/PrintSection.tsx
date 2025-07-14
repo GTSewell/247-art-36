@@ -51,7 +51,7 @@ const PrintSection: React.FC<PrintSectionProps> = ({
           } as React.CSSProperties}>
             PRINT
           </h2>
-          <p className="text-xl font-light text-gray-600 ml-0 md:ml-8 font-nove mt-2 md:mt-0 text-left md:text-right">
+          <p className="text-xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right">
             CUSTOM STICKERS | TEES | PRINTS & MORE
           </p>
         </div>
