@@ -47,7 +47,7 @@ const PrintSection: React.FC<PrintSectionProps> = ({
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" style={{
-            '--homepage-bg-image': 'url(/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png)'
+            '--homepage-bg-image': 'url(/lovable-uploads/6bb1208f-6ef0-43f9-acd5-c0b77ed0bb0f.png)'
           } as React.CSSProperties}>
             PRINT
           </h2>
