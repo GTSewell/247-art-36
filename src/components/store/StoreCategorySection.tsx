@@ -53,7 +53,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
       >
         <div className={`flex w-full pr-4 transition-all duration-300 ${
           isActive 
-            ? 'flex-row justify-center items-center min-h-[120px] gap-4' 
+            ? 'flex-row items-center min-h-[120px] gap-4' 
             : 'flex-col md:flex-row md:items-center justify-between'
         }`}>
           <h2 
