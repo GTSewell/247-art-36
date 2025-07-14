@@ -93,31 +93,31 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
       </div>
 
       {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border">
-          {/* Results Info & Items Per Page */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
-            <span>
-              Showing {startItem}-{endItem} of {products.length} products
-            </span>
-            <div className="flex items-center gap-2">
-              <span>Show:</span>
-              <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
-                <SelectTrigger className="w-20 h-8">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ITEMS_PER_PAGE_OPTIONS.map(option => (
-                    <SelectItem key={option} value={option.toString()}>
-                      {option}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border">
+        {/* Results Info & Items Per Page */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 text-sm text-muted-foreground">
+          <span>
+            Showing {startItem}-{endItem} of {products.length} products
+          </span>
+          <div className="flex items-center gap-2">
+            <span>Show:</span>
+            <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
+              <SelectTrigger className="w-20 h-8">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ITEMS_PER_PAGE_OPTIONS.map(option => (
+                  <SelectItem key={option} value={option.toString()}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
+        </div>
 
-          {/* Pagination Navigation */}
+        {/* Pagination Navigation - only show if more than one page */}
+        {totalPages > 1 && (
           <Pagination>
             <PaginationContent>
               <PaginationItem>
@@ -160,8 +160,8 @@ const PaginatedProductGrid: React.FC<PaginatedProductGridProps> = ({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
