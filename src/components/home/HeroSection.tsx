@@ -53,7 +53,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
           <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
             <h1 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" 
                 style={{
-                  '--homepage-bg-image': 'url(/lovable-uploads/be055b29-9f0f-43df-ab8e-756b57ff803b.png)'
+                  '--homepage-bg-image': 'url(/lovable-uploads/0f232cf6-8a7d-4117-aaf3-2c79ab5d0f55.png)'
                 } as React.CSSProperties}>
               247 ART
             </h1>
