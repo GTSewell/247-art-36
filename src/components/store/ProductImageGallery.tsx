@@ -77,7 +77,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
         />
         
         {/* Zoom overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100">
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
           <Maximize2 className="h-6 w-6 text-white drop-shadow-md" />
         </div>
 
