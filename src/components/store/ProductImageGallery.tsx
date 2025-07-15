@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from "framer-motion";
 import { Maximize2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -11,7 +12,56 @@ interface ProductImageGalleryProps {
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [zoomButtonPosition, setZoomButtonPosition] = useState<{ top: number; left: number } | null>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+
+  // Update zoom button position when modal opens or window resizes
+  useEffect(() => {
+    const updateZoomButtonPosition = () => {
+      if (imageContainerRef.current) {
+        const rect = imageContainerRef.current.getBoundingClientRect();
+        setZoomButtonPosition({
+          top: rect.top + 12, // 12px from top (top-3 = 0.75rem = 12px)
+          left: rect.left + 12, // 12px from left (left-3 = 0.75rem = 12px)
+        });
+      }
+    };
+
+    // Check if we're in a modal context by looking for dialog elements
+    const isInModal = document.querySelector('[role="dialog"]');
+    
+    if (isInModal) {
+      updateZoomButtonPosition();
+      window.addEventListener('resize', updateZoomButtonPosition);
+      
+      // Use MutationObserver to detect when modal opens/closes
+      const observer = new MutationObserver(updateZoomButtonPosition);
+      observer.observe(document.body, { childList: true, subtree: true });
+      
+      return () => {
+        window.removeEventListener('resize', updateZoomButtonPosition);
+        observer.disconnect();
+      };
+    } else {
+      setZoomButtonPosition(null);
+    }
+  }, []);
+
+  // Update position when current image changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (imageContainerRef.current) {
+        const rect = imageContainerRef.current.getBoundingClientRect();
+        setZoomButtonPosition({
+          top: rect.top + 12,
+          left: rect.left + 12,
+        });
+      }
+    }, 100); // Small delay to ensure layout has updated
+
+    return () => clearTimeout(timer);
+  }, [currentImageIndex]);
 
   const handleImageClick = (index: number) => {
     if (selectedImage === index) {
@@ -68,24 +118,13 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
       </AnimatePresence>
 
       {/* Single image display with navigation */}
-      <div className="relative aspect-square rounded-lg overflow-hidden shadow-sm group">
+      <div ref={imageContainerRef} className="relative aspect-square rounded-lg overflow-hidden shadow-sm group">
         <img
           src={images[currentImageIndex]}
           alt={`Product image ${currentImageIndex + 1}`}
           className="w-full h-full object-contain"
         />
         
-        {/* Dedicated Zoom Button - Always Visible, Top Left Corner */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleImageClick(currentImageIndex);
-          }}
-          className="absolute top-3 left-3 bg-black/60 backdrop-blur-sm p-2 rounded-full opacity-80 hover:opacity-100 transition-all duration-200 hover:bg-black/80 z-[11000] border border-white/20"
-          aria-label="Zoom image"
-        >
-          <Maximize2 className="h-4 w-4 text-white" />
-        </button>
 
         {/* Navigation arrows - only show if multiple images */}
         {images.length > 1 && (
@@ -127,6 +166,25 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
           </>
         )}
       </div>
+
+      {/* Portaled Zoom Button - Rendered outside modal hierarchy */}
+      {zoomButtonPosition && typeof window !== 'undefined' && createPortal(
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageClick(currentImageIndex);
+          }}
+          className="fixed bg-black/60 backdrop-blur-sm p-2 rounded-full opacity-80 hover:opacity-100 transition-all duration-200 hover:bg-black/80 z-[10000] border border-white/20"
+          style={{
+            top: `${zoomButtonPosition.top}px`,
+            left: `${zoomButtonPosition.left}px`,
+          }}
+          aria-label="Zoom image"
+        >
+          <Maximize2 className="h-4 w-4 text-white" />
+        </button>,
+        document.body
+      )}
     </div>
   );
 };
