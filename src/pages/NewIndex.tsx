@@ -14,6 +14,8 @@ import EventsSection from "@/components/home/EventsSection";
 import ServicesSection from "@/components/home/ServicesSection";
 import JoinSection from "@/components/home/JoinSection";
 import { useEnhancedAccordionScroll } from "@/hooks/useEnhancedAccordionScroll";
+import { useAccordionImagePreloader } from "@/hooks/useImagePreloader";
+import ImagePreloader from "@/components/optimization/ImagePreloader";
 const NewIndex = () => {
   const { isPWA } = useAppMode();
   const { featuredArtists, additionalArtists, isLoading } = useArtists();
@@ -24,6 +26,16 @@ const NewIndex = () => {
   const [favoriteArtists] = useState<Set<number>>(new Set());
   const [selectedSection, setSelectedSection] = useState<string>('');
   const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
+  
+  // Preload all homepage accordion images on mount
+  useAccordionImagePreloader();
+  
+  // Critical images for HTML preloading
+  const criticalImages = [
+    '/lovable-uploads/72e52037-cd09-40b1-8993-ea48e64c2f6f.png', // PRINT
+    '/lovable-uploads/5853f257-8088-4bdf-8e60-82e6f6350eb1.png', // EVENTS
+    '/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png'  // ARTISTS
+  ];
   
   const galleryImages = [
     "/lovable-uploads/7d317cc0-5f48-4fee-900a-e34d88b885e4.png",
@@ -64,6 +76,9 @@ const NewIndex = () => {
         <meta name="twitter:image" content="https://247.art/lovable-uploads/c54f87f7-7b02-4bc8-999b-f5a580ad369e.png" />
         <script async src="https://tally.so/widgets/embed.js"></script>
       </Helmet>
+      
+      {/* Preload critical accordion images */}
+      <ImagePreloader images={criticalImages} priority={true} />
       
       {/* Theme-aware Background */}
       <div className="fixed inset-0 -z-10 bg-background" />

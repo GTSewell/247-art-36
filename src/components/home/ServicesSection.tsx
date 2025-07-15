@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
 interface ServicesSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
   onContentRef?: (element: HTMLElement | null) => void;
@@ -13,14 +14,13 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
         className="hover:no-underline px-0 py-0 homepage-accordion-group group"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
-            style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/6a02808c-6f26-4b2b-81ca-342a5be9d9b9.png)'
-            } as React.CSSProperties}
+          <OptimizedAccordionTitle
+            imageUrl="/lovable-uploads/6a02808c-6f26-4b2b-81ca-342a5be9d9b9.png"
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
+            isHomepage={true}
           >
             SERVICES
-          </h2>
+          </OptimizedAccordionTitle>
           <p className="text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             KICK-ASS ART ACTIVATIONS. YOU DREAM IT. WE'LL BUILD IT!
           </p>

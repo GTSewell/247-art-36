@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AutoScrollCarousel from '@/components/ui/auto-scroll-carousel';
+import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
 interface ArtistsSectionProps {
   featuredArtists: any[];
   additionalArtists: any[];
@@ -24,12 +25,13 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
         className="hover:no-underline px-0 py-0 homepage-accordion-group group flex-col items-start md:flex-row md:items-center md:justify-between w-full"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 
-            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
-            style={{
-              '--homepage-bg-image': 'url(/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png)'
-            } as React.CSSProperties}
-          >ARTISTS</h2>
+          <OptimizedAccordionTitle
+            imageUrl="/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png"
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
+            isHomepage={true}
+          >
+            ARTISTS
+          </OptimizedAccordionTitle>
           <p className="text-3xl md:text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             DISCOVER & SUPPORT
           </p>

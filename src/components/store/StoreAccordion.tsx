@@ -3,6 +3,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { storeCategories } from './utils/categoryUtils';
 import StoreCategorySection from './StoreCategorySection';
 import { useEnhancedAccordionScroll } from '@/hooks/useEnhancedAccordionScroll';
+import { useStoreImagePreloader } from '@/hooks/useStoreImagePreloader';
 
 interface StoreAccordionProps {
   selectedCategory: string;
@@ -20,6 +21,9 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
   onProductClick
 }) => {
   const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
+  
+  // Preload all store category images on mount
+  useStoreImagePreloader();
 
   const handleScrollToTop = () => {
     const triggerElement = selectedCategory ? 

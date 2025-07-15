@@ -3,6 +3,7 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from "@/components/
 import PaginatedProductGrid from './PaginatedProductGrid';
 import CategoryFilters from './CategoryFilters';
 import LoadingState from './LoadingState';
+import OptimizedStoreCategoryTitle from '@/components/ui/OptimizedStoreCategoryTitle';
 
 interface StoreCategorySectionProps {
   category: {
@@ -60,17 +61,18 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
               ? 'flex-col md:relative md:items-start md:min-h-[120px]' 
               : 'flex-col md:flex-row md:items-center md:justify-between'
           }`}>
-          <h2 
-            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left md:text-left flex-shrink-0`}
+          <OptimizedStoreCategoryTitle
+            imageUrl={category.image}
+            className="font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left md:text-left flex-shrink-0"
+            isExpanded={isActive}
             style={{
-              '--store-category-bg-image': `url(${category.image})`,
-              '--category-bg-image': `url(${category.image})`
+              '--store-category-bg-image': `url(${category.image})`
             } as React.CSSProperties}
-            data-category={category.id}
-            data-editable="store-title"
           >
-            {category.label}
-          </h2>
+            <span data-category={category.id} data-editable="store-title">
+              {category.label}
+            </span>
+          </OptimizedStoreCategoryTitle>
           <p className={`text-lg md:text-4xl text-gray-600 dark:text-gray-300 font-agharti font-semibold tracking-wide transition-all duration-300 ${
             isActive 
               ? 'text-left md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center mt-2 self-start md:self-auto' 

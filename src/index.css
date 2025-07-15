@@ -40,17 +40,20 @@
   }
 }
 
-/* Store Category Title Styles - Dynamic sizing based on accordion state */
+/* Store Category Title Styles - Optimized for performance */
 .store-category-title {
   font-size: 4.25rem; /* Base collapsed size */
   -webkit-text-stroke: 1px black;
   color: transparent;
-  transition: font-size 0.3s ease-in-out, all 0.3s ease;
+  transition: font-size 0.2s ease-out, background-image 0.1s ease-out;
   letter-spacing: -0.05em; /* Overlapping letters */
   display: inline-block; /* Fit content exactly */
   width: auto; /* Let it size naturally */
   padding: 3px 0.05em; /* Add 3px top/bottom padding, compensate for negative letter spacing overflow */
   line-height: 0.8;
+  will-change: background-image, font-size;
+  backface-visibility: hidden;
+  transform: translateZ(0); /* Force hardware acceleration */
 }
 
 /* Expanded state - much smaller for viewport optimization */
@@ -62,8 +65,8 @@
   -webkit-text-stroke: 1px white;
 }
 
-.group:hover .store-category-title,
-.group[data-state="open"] .store-category-title {
+/* Preloaded background class for instant display */
+.store-category-title.with-background {
   background-image: var(--category-bg-image);
   background-size: cover;
   background-position: center;
@@ -72,25 +75,47 @@
   background-clip: text;
 }
 
-/* Homepage Accordion Title Styles */
+.group:hover .store-category-title.with-background,
+.group[data-state="open"] .store-category-title.with-background {
+  background-image: var(--category-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Homepage Accordion Title Styles - Optimized for performance */
 .homepage-accordion-title {
   -webkit-text-stroke: 1px black;
   color: transparent;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease-out;
   letter-spacing: -0.05em; /* Overlapping letters */
   display: inline-block; /* Fit content exactly */
   width: auto; /* Let it size naturally */
   padding: 0 0.05em; /* Compensate for negative letter spacing overflow */
+  will-change: background-image;
+  backface-visibility: hidden;
+  transform: translateZ(0); /* Force hardware acceleration */
 }
 
 .dark .homepage-accordion-title {
   -webkit-text-stroke: 1px white;
 }
 
+/* Preloaded background class for instant display */
+.homepage-accordion-title.with-background {
+  background-image: var(--homepage-bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 /* Image overlay states: hover OR when parent accordion item is expanded */
-.homepage-accordion-title.with-background,
-.homepage-accordion-group:hover .homepage-accordion-title,
-.homepage-accordion-group[data-state="open"] .homepage-accordion-title {
+.homepage-accordion-group:hover .homepage-accordion-title.with-background,
+.homepage-accordion-group[data-state="open"] .homepage-accordion-title.with-background {
   background-image: var(--homepage-bg-image);
   background-size: cover;
   background-position: center;

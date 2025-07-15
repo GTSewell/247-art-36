@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import useEmblaCarousel from 'embla-carousel-react';
+import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
 
 interface PrintSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
@@ -46,11 +47,13 @@ const PrintSection: React.FC<PrintSectionProps> = ({
         className="hover:no-underline px-0 py-0 homepage-accordion-group group flex-col items-start md:flex-row md:items-center md:justify-between w-full"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" style={{
-            '--homepage-bg-image': 'url(/lovable-uploads/72e52037-cd09-40b1-8993-ea48e64c2f6f.png)'
-          } as React.CSSProperties}>
+          <OptimizedAccordionTitle
+            imageUrl="/lovable-uploads/72e52037-cd09-40b1-8993-ea48e64c2f6f.png"
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
+            isHomepage={true}
+          >
             PRINT
-          </h2>
+          </OptimizedAccordionTitle>
           <p className="text-3xl md:text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             CUSTOM STICKERS | TEES | PRINTS & MORE
           </p>

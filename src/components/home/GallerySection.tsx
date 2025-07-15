@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { motion, AnimatePresence } from 'framer-motion';
+import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
 
 interface GallerySectionProps {
   galleryImages: string[];
@@ -27,11 +28,13 @@ const GallerySection: React.FC<GallerySectionProps> = ({
         className="hover:no-underline px-0 py-0 homepage-accordion-group group flex-col items-start md:flex-row md:items-center md:justify-between w-full"
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-          <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" style={{
-            '--homepage-bg-image': 'url(/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png)'
-          } as React.CSSProperties}>
+          <OptimizedAccordionTitle
+            imageUrl="/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png"
+            className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
+            isHomepage={true}
+          >
             GALLERY
-          </h2>
+          </OptimizedAccordionTitle>
           <p className="text-3xl md:text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             MELBOURNE TO THE METAVERSE
           </p>
