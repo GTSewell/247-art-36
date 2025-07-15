@@ -30,7 +30,13 @@ const ArtistProfileModal: React.FC<ArtistProfileModalProps> = ({
 
   const handleVisitProfile = () => {
     if (artistDomain) {
-      navigate(`/artists/${artistDomain}`);
+      // Transform the artist domain to match the URL format used in the site
+      // Remove spaces, special characters, and convert to uppercase
+      const formattedDomain = artistDomain
+        .replace(/\s+/g, '')
+        .replace(/[^\w]/gi, '')
+        .toUpperCase();
+      navigate(`/artists/${formattedDomain}`);
     }
     onClose();
   };
