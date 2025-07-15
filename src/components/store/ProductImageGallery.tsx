@@ -75,13 +75,13 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
           className="w-full h-full object-contain"
         />
         
-        {/* Dedicated Zoom Button - High Z-Index */}
+        {/* Dedicated Zoom Button - High Z-Index, Top Left Corner */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             handleImageClick(currentImageIndex);
           }}
-          className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-black/70 z-[200]"
+          className="absolute top-3 left-3 bg-black/50 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-black/70 z-[11000]"
           aria-label="Zoom image"
         >
           <Maximize2 className="h-4 w-4 text-white" />
