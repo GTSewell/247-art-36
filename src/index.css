@@ -87,6 +87,7 @@
   will-change: background-image;
   backface-visibility: hidden;
   transform: translateZ(0); /* Force hardware acceleration */
+  text-align: left; /* Ensure left alignment */
 }
 
 .dark .homepage-accordion-title {

@@ -24,7 +24,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
           >
             SERVICES
           </OptimizedAccordionTitle>
-          <p className="text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
+          <p className="text-3xl md:text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             KICK-ASS ART ACTIVATIONS. YOU DREAM IT. WE'LL BUILD IT!
           </p>
         </div>
