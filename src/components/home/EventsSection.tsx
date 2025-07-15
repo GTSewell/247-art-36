@@ -46,7 +46,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <h2 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" style={{
-            '--homepage-bg-image': 'url(/lovable-uploads/f5bcb249-8214-4e6e-8f63-104b8fc16330.png)'
+            '--homepage-bg-image': 'url(/lovable-uploads/5853f257-8088-4bdf-8e60-82e6f6350eb1.png)'
           } as React.CSSProperties}>
             EVENTS
           </h2>
