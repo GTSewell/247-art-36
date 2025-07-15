@@ -81,13 +81,13 @@
   color: transparent;
   transition: all 0.2s ease-out;
   letter-spacing: -0.05em; /* Overlapping letters */
-  display: inline-block; /* Fit content exactly */
-  width: auto; /* Let it size naturally */
+  display: block; /* Changed from inline-block for better alignment control */
+  width: 100%; /* Full width for proper left alignment */
   padding: 0 0.05em; /* Compensate for negative letter spacing overflow */
   will-change: background-image;
   backface-visibility: hidden;
   transform: translateZ(0); /* Force hardware acceleration */
-  text-align: left; /* Ensure left alignment */
+  text-align: left !important; /* Force left alignment on all viewports */
 }
 
 .dark .homepage-accordion-title {
