@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { motion, AnimatePresence } from 'framer-motion';
 import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
+import { useHomepageImagePreloader } from '@/hooks/useHomepageImagePreloader';
 
 interface GallerySectionProps {
   galleryImages: string[];
@@ -21,6 +22,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
   onTriggerRef,
   onContentRef
 }) => {
+  const { shouldFlash } = useHomepageImagePreloader();
   return (
     <AccordionItem value="gallery" className="border-none">
       <AccordionTrigger
@@ -32,6 +34,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({
             imageUrl="/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png"
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             isHomepage={true}
+            isFlashing={shouldFlash('/lovable-uploads/0e792c6e-d4f2-45f3-9de6-f1c897a07f79.png')}
           >
             GALLERY
           </OptimizedAccordionTitle>

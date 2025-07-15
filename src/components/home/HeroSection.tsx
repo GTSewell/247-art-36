@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import useEmblaCarousel from 'embla-carousel-react';
 import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
+import { useHomepageImagePreloader } from '@/hooks/useHomepageImagePreloader';
 
 interface HeroSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
@@ -15,6 +16,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
     containScroll: 'trimSnaps',
     dragFree: true
   });
+
+  const { shouldFlash } = useHomepageImagePreloader();
 
   const latestUpdates = [
     {
@@ -56,6 +59,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
               imageUrl="/lovable-uploads/551c72b7-11f2-4153-bf51-4562bc1a965c.png"
               className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
               isHomepage={true}
+              isFlashing={shouldFlash('/lovable-uploads/551c72b7-11f2-4153-bf51-4562bc1a965c.png')}
             >
               247 ART
             </OptimizedAccordionTitle>

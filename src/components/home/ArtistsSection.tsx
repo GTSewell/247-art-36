@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AutoScrollCarousel from '@/components/ui/auto-scroll-carousel';
 import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
+import { useHomepageImagePreloader } from '@/hooks/useHomepageImagePreloader';
 interface ArtistsSectionProps {
   featuredArtists: any[];
   additionalArtists: any[];
@@ -19,6 +20,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
   onTriggerRef,
   onContentRef
 }) => {
+  const { shouldFlash } = useHomepageImagePreloader();
   return <AccordionItem value="artists" className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
@@ -29,6 +31,7 @@ const ArtistsSection: React.FC<ArtistsSectionProps> = ({
             imageUrl="/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png"
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             isHomepage={true}
+            isFlashing={shouldFlash('/lovable-uploads/8e976936-1c21-424f-86b2-36cfecc6eacd.png')}
           >
             ARTISTS
           </OptimizedAccordionTitle>

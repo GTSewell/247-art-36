@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import useEmblaCarousel from 'embla-carousel-react';
 import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
+import { useHomepageImagePreloader } from '@/hooks/useHomepageImagePreloader';
 
 interface PrintSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
@@ -18,6 +19,8 @@ const PrintSection: React.FC<PrintSectionProps> = ({
     containScroll: 'trimSnaps',
     dragFree: true
   });
+
+  const { shouldFlash } = useHomepageImagePreloader();
 
   const printFeatures = [
     {
@@ -51,6 +54,7 @@ const PrintSection: React.FC<PrintSectionProps> = ({
             imageUrl="/lovable-uploads/72e52037-cd09-40b1-8993-ea48e64c2f6f.png"
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             isHomepage={true}
+            isFlashing={shouldFlash('/lovable-uploads/72e52037-cd09-40b1-8993-ea48e64c2f6f.png')}
           >
             PRINT
           </OptimizedAccordionTitle>

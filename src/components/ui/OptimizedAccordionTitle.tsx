@@ -7,6 +7,7 @@ interface OptimizedAccordionTitleProps {
   className?: string;
   style?: React.CSSProperties;
   isHomepage?: boolean;
+  isFlashing?: boolean;
 }
 
 const OptimizedAccordionTitle: React.FC<OptimizedAccordionTitleProps> = ({
@@ -14,7 +15,8 @@ const OptimizedAccordionTitle: React.FC<OptimizedAccordionTitleProps> = ({
   imageUrl,
   className = '',
   style = {},
-  isHomepage = false
+  isHomepage = false,
+  isFlashing = false
 }) => {
   const { isImageLoaded } = useImagePreloader([imageUrl], { 
     priority: true, 
@@ -24,8 +26,9 @@ const OptimizedAccordionTitle: React.FC<OptimizedAccordionTitleProps> = ({
   const optimizedClassName = useMemo(() => {
     const baseClass = isHomepage ? 'homepage-accordion-title' : 'store-category-title';
     const loadedClass = isImageLoaded ? 'with-background' : '';
-    return `${baseClass} ${loadedClass} ${className}`.trim();
-  }, [isHomepage, isImageLoaded, className]);
+    const flashClass = isFlashing ? 'flash-loading' : '';
+    return `${baseClass} ${loadedClass} ${flashClass} ${className}`.trim();
+  }, [isHomepage, isImageLoaded, isFlashing, className]);
 
   const optimizedStyle = useMemo(() => ({
     ...style,
@@ -37,12 +40,14 @@ const OptimizedAccordionTitle: React.FC<OptimizedAccordionTitleProps> = ({
   }), [style, imageUrl]);
 
   return (
-    <h2 
-      className={optimizedClassName}
-      style={optimizedStyle}
-    >
-      {children}
-    </h2>
+    <div className={isFlashing ? 'flash-loading' : ''}>
+      <h2 
+        className={optimizedClassName}
+        style={optimizedStyle}
+      >
+        {children}
+      </h2>
+    </div>
   );
 };
 

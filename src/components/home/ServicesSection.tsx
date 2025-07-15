@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
+import { useHomepageImagePreloader } from '@/hooks/useHomepageImagePreloader';
 interface ServicesSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
   onContentRef?: (element: HTMLElement | null) => void;
 }
 
 const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onContentRef }) => {
+  const { shouldFlash } = useHomepageImagePreloader();
   return <AccordionItem value="services" className="border-none">
       <AccordionTrigger 
         ref={onTriggerRef}
@@ -18,6 +20,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ onTriggerRef, onConte
             imageUrl="/lovable-uploads/6a02808c-6f26-4b2b-81ca-342a5be9d9b9.png"
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             isHomepage={true}
+            isFlashing={shouldFlash('/lovable-uploads/6a02808c-6f26-4b2b-81ca-342a5be9d9b9.png')}
           >
             SERVICES
           </OptimizedAccordionTitle>

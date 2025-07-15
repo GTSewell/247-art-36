@@ -100,6 +100,46 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+/* Flash loading animation for accordion sections */
+@keyframes flash-load {
+  0% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scale(1.002);
+    box-shadow: 0 0 20px hsla(var(--primary) / 0.3);
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+}
+
+.flash-loading {
+  animation: flash-load 0.15s ease-out;
+}
+
+/* Subtle border flash for visual feedback */
+.flash-loading .homepage-accordion-title {
+  animation: flash-border 0.15s ease-out;
+}
+
+@keyframes flash-border {
+  0% { 
+    -webkit-text-stroke: 1px currentColor;
+  }
+  50% { 
+    -webkit-text-stroke: 2px hsl(var(--primary));
+    filter: drop-shadow(0 0 8px hsla(var(--primary) / 0.5));
+  }
+  100% { 
+    -webkit-text-stroke: 1px currentColor;
+  }
+}
   -webkit-background-clip: text;
   background-clip: text;
 }

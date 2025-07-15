@@ -2,6 +2,7 @@ import React from 'react';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import useEmblaCarousel from 'embla-carousel-react';
 import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
+import { useHomepageImagePreloader } from '@/hooks/useHomepageImagePreloader';
 
 interface EventsSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
@@ -17,6 +18,8 @@ const EventsSection: React.FC<EventsSectionProps> = ({
     containScroll: 'trimSnaps',
     dragFree: true
   });
+
+  const { shouldFlash } = useHomepageImagePreloader();
 
   const events = [
     {
@@ -50,6 +53,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
             imageUrl="/lovable-uploads/43e84cb6-186e-4f87-9513-3625b6a312dd.png"
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             isHomepage={true}
+            isFlashing={shouldFlash('/lovable-uploads/43e84cb6-186e-4f87-9513-3625b6a312dd.png')}
           >
             EVENTS
           </OptimizedAccordionTitle>
