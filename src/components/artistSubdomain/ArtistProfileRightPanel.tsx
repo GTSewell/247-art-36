@@ -59,19 +59,12 @@ const ArtistProfileRightPanel: React.FC<ArtistProfileRightPanelProps> = ({
     setIsModalOpen(true);
   };
 
-  const handleNavigateArtwork = (direction: 'prev' | 'next') => {
-    if (validArtworks.length === 0) return;
+  const handleNavigateArtwork = (index: number) => {
+    if (validArtworks.length === 0 || index < 0 || index >= validArtworks.length) return;
     
-    let newIndex;
-    if (direction === 'prev') {
-      newIndex = currentArtworkIndex > 0 ? currentArtworkIndex - 1 : validArtworks.length - 1;
-    } else {
-      newIndex = currentArtworkIndex < validArtworks.length - 1 ? currentArtworkIndex + 1 : 0;
-    }
-    
-    setCurrentArtworkIndex(newIndex);
-    const newArtwork = validArtworks[newIndex];
-    setSelectedArtwork(getArtworkDetails(newArtwork, newIndex, artist, assignedProducts));
+    setCurrentArtworkIndex(index);
+    const newArtwork = validArtworks[index];
+    setSelectedArtwork(getArtworkDetails(newArtwork, index, artist, assignedProducts));
   };
   
   const handleAddToCart = () => {

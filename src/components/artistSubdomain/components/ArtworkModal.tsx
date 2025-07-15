@@ -20,7 +20,7 @@ interface ArtworkModalProps {
   onAddToCart: () => void;
   artworks?: string[];
   currentIndex?: number;
-  onNavigate?: (direction: 'prev' | 'next') => void;
+  onNavigate?: (index: number) => void;
 }
 
 const ArtworkModal: React.FC<ArtworkModalProps> = ({
@@ -51,27 +51,41 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
     }
   }, [isMobile, isOpen]);
 
+  const handlePrevious = () => {
+    if (onNavigate && currentIndex > 0) {
+      onNavigate(currentIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (onNavigate && currentIndex < artworks.length - 1) {
+      onNavigate(currentIndex + 1);
+    }
+  };
+
+  const showNavigation = artworks.length > 1 && onNavigate;
+
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isOpen || !onNavigate) return;
+      if (!isOpen || !showNavigation) return;
       
-      if (event.key === 'ArrowLeft') {
+      if (event.key === 'ArrowLeft' && currentIndex > 0) {
         event.preventDefault();
-        onNavigate('prev');
-      } else if (event.key === 'ArrowRight') {
+        handlePrevious();
+      } else if (event.key === 'ArrowRight' && currentIndex < artworks.length - 1) {
         event.preventDefault();
-        onNavigate('next');
+        handleNext();
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onNavigate]);
+  }, [isOpen, currentIndex, artworks.length, showNavigation]);
 
   // Handle touch events for swipe navigation
   useEffect(() => {
-    if (!isOpen || !onNavigate || !isMobile || artworks.length <= 1) return;
+    if (!isOpen || !showNavigation || !isMobile) return;
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -90,12 +104,11 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       const deltaY = Math.abs(touchStartY - touchEndY);
       
       // Only trigger swipe if horizontal movement is greater than vertical
-      // and add boundary checks like the store product modal
       if (Math.abs(deltaX) > 50 && deltaY < 100) {
         if (deltaX > 0 && currentIndex < artworks.length - 1) {
-          onNavigate('next');
+          handleNext();
         } else if (deltaX < 0 && currentIndex > 0) {
-          onNavigate('prev');
+          handlePrevious();
         }
       }
     };
@@ -107,7 +120,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isOpen, onNavigate, isMobile, artworks.length, currentIndex]);
+  }, [isOpen, currentIndex, artworks.length, showNavigation, isMobile]);
 
   const handleAccordionChange = (value: string) => {
     setOpenAccordions(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
@@ -140,19 +153,21 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
   return (
     <div className="relative">
       {/* Navigation buttons outside modal - desktop only */}
-      {onNavigate && artworks.length > 1 && !isMobile && (
+      {showNavigation && !isMobile && (
         <>
           <button 
-            onClick={() => onNavigate('prev')} 
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
             aria-label="Previous artwork" 
-            className="fixed left-[calc(50vw-515px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[100] bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground"
+            className="fixed left-[calc(50vw-515px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[100] bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="h-6 w-6" />
           </button>
           <button 
-            onClick={() => onNavigate('next')} 
+            onClick={handleNext}
+            disabled={currentIndex === artworks.length - 1}
             aria-label="Next artwork" 
-            className="fixed right-[calc(50vw-515px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[100] bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground"
+            className="fixed right-[calc(50vw-515px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[100] bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <ChevronRight className="h-6 w-6" />
           </button>
@@ -160,7 +175,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       )}
       
       {/* Artwork counter outside modal - desktop only */}
-      {onNavigate && artworks.length > 1 && !isMobile && (
+      {showNavigation && !isMobile && (
         <div className="fixed top-[calc(50vh-45vh-45px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-[100]">
           <span className="text-sm text-foreground font-medium">
             {(currentIndex || 0) + 1} of {artworks.length}
