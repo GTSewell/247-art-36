@@ -61,7 +61,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
               : 'flex-col md:flex-row md:items-center justify-between'
           }`}>
           <h2 
-            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left flex-shrink-0`}
+            className={`store-category-title ${isActive ? 'store-category-title-expanded' : ''} font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left md:text-left flex-shrink-0`}
             style={{
               '--store-category-bg-image': `url(${category.image})`,
               '--category-bg-image': `url(${category.image})`
