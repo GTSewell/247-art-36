@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import useEmblaCarousel from 'embla-carousel-react';
+import OptimizedAccordionTitle from '@/components/ui/OptimizedAccordionTitle';
 
 interface HeroSectionProps {
   onTriggerRef?: (element: HTMLElement | null) => void;
@@ -51,12 +52,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onTriggerRef, onContentRef })
           className="hover:no-underline px-0 py-0 homepage-accordion-group group flex-col items-start md:flex-row md:items-center md:justify-between w-full"
         >
           <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
-            <h1 className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase homepage-accordion-title bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto" 
-                style={{
-                  '--homepage-bg-image': 'url(/lovable-uploads/0f232cf6-8a7d-4117-aaf3-2c79ab5d0f55.png)'
-                } as React.CSSProperties}>
+            <OptimizedAccordionTitle
+              imageUrl="/lovable-uploads/551c72b7-11f2-4153-bf51-4562bc1a965c.png"
+              className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
+              isHomepage={true}
+            >
               247 ART
-            </h1>
+            </OptimizedAccordionTitle>
             <p className="text-3xl md:text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
               ART NEVER SLEEPS
             </p>
