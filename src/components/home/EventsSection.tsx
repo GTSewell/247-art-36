@@ -50,7 +50,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
           } as React.CSSProperties}>
             EVENTS
           </h2>
-          <p className="text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
+          <p className="text-3xl md:text-5xl font-semibold text-gray-600 ml-0 md:ml-8 font-agharti mt-2 md:mt-0 text-left md:text-right tracking-wide">
             ATTEND OR HOST YOUR NEXT WORKSHOP | POP-UP | EXHIBITION
           </p>
         </div>
