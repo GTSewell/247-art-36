@@ -60,7 +60,7 @@ const NavigationComponent = () => {
   const isWhoAreYouPage = location.pathname === "/who-are-you";
   const navExtraClass = isMobile && isWhoAreYouPage ? "h-20" : "h-16";
   return <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent`}>
-      <div className="absolute top-0 right-0 p-4">
+      <div className="absolute top-0 right-0 p-4 z-[60]">
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
           <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
