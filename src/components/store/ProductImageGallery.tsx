@@ -72,14 +72,20 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
         <img
           src={images[currentImageIndex]}
           alt={`Product image ${currentImageIndex + 1}`}
-          className="w-full h-full object-contain cursor-pointer"
-          onClick={() => handleImageClick(currentImageIndex)}
+          className="w-full h-full object-contain"
         />
         
-        {/* Zoom overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
-          <Maximize2 className="h-6 w-6 text-white drop-shadow-md" />
-        </div>
+        {/* Dedicated Zoom Button - High Z-Index */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageClick(currentImageIndex);
+          }}
+          className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-black/70 z-[200]"
+          aria-label="Zoom image"
+        >
+          <Maximize2 className="h-4 w-4 text-white" />
+        </button>
 
         {/* Navigation arrows - only show if multiple images */}
         {images.length > 1 && (
@@ -89,7 +95,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
                 e.stopPropagation();
                 prevImage();
               }}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white/30"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white/30 z-[150]"
             >
               <ChevronLeft className="h-4 w-4 text-white" />
             </button>
@@ -98,13 +104,13 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
                 e.stopPropagation();
                 nextImage();
               }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white/30"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-white/30 z-[150]"
             >
               <ChevronRight className="h-4 w-4 text-white" />
             </button>
 
             {/* Image indicators */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1 z-[150]">
               {images.map((_, index) => (
                 <button
                   key={index}
