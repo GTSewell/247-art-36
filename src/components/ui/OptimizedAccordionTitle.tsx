@@ -29,14 +29,12 @@ const OptimizedAccordionTitle: React.FC<OptimizedAccordionTitleProps> = ({
 
   const optimizedStyle = useMemo(() => ({
     ...style,
-    ...(isImageLoaded && {
-      '--homepage-bg-image': `url(${imageUrl})`,
-      '--category-bg-image': `url(${imageUrl})`,
-      willChange: 'background-image',
-      backfaceVisibility: 'hidden' as const,
-      transform: 'translateZ(0)', // Force hardware acceleration
-    })
-  }), [style, isImageLoaded, imageUrl]);
+    '--homepage-bg-image': `url(${imageUrl})`,
+    '--category-bg-image': `url(${imageUrl})`,
+    willChange: 'background-image',
+    backfaceVisibility: 'hidden' as const,
+    transform: 'translateZ(0)', // Force hardware acceleration
+  }), [style, imageUrl]);
 
   return (
     <h2 

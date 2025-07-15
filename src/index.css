@@ -65,16 +65,6 @@
   -webkit-text-stroke: 1px white;
 }
 
-/* Preloaded background class for instant display */
-.store-category-title.with-background {
-  background-image: var(--category-bg-image);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
 .group:hover .store-category-title.with-background,
 .group[data-state="open"] .store-category-title.with-background {
   background-image: var(--category-bg-image);
@@ -101,16 +91,6 @@
 
 .dark .homepage-accordion-title {
   -webkit-text-stroke: 1px white;
-}
-
-/* Preloaded background class for instant display */
-.homepage-accordion-title.with-background {
-  background-image: var(--homepage-bg-image);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
 }
 
 /* Image overlay states: hover OR when parent accordion item is expanded */

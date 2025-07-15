@@ -47,7 +47,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({
       >
         <div className="flex flex-col md:flex-row md:items-center w-full md:justify-between">
           <OptimizedAccordionTitle
-            imageUrl="/lovable-uploads/5853f257-8088-4bdf-8e60-82e6f6350eb1.png"
+            imageUrl="/lovable-uploads/72e52037-cd09-40b1-8993-ea48e64c2f6f.png"
             className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[24rem] xl:text-[32rem] font-agharti font-black leading-none uppercase bg-clip-text text-transparent [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] whitespace-nowrap w-full text-left md:w-auto"
             isHomepage={true}
           >
