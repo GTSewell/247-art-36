@@ -7,6 +7,7 @@ interface OptimizedStoreCategoryTitleProps {
   className?: string;
   style?: React.CSSProperties;
   isExpanded?: boolean;
+  isFlashing?: boolean;
 }
 
 const OptimizedStoreCategoryTitle: React.FC<OptimizedStoreCategoryTitleProps> = ({
@@ -14,7 +15,8 @@ const OptimizedStoreCategoryTitle: React.FC<OptimizedStoreCategoryTitleProps> = 
   imageUrl,
   className = '',
   style = {},
-  isExpanded = false
+  isExpanded = false,
+  isFlashing = false
 }) => {
   const { isImageLoaded } = useImagePreloader([imageUrl], { 
     priority: false, // Store images are secondary priority 
@@ -25,8 +27,9 @@ const OptimizedStoreCategoryTitle: React.FC<OptimizedStoreCategoryTitleProps> = 
     const baseClass = 'store-category-title';
     const expandedClass = isExpanded ? 'store-category-title-expanded' : '';
     const loadedClass = isImageLoaded ? 'with-background' : '';
-    return `${baseClass} ${expandedClass} ${loadedClass} ${className}`.trim();
-  }, [isExpanded, isImageLoaded, className]);
+    const flashClass = isFlashing ? 'flash' : '';
+    return `${baseClass} ${expandedClass} ${loadedClass} ${flashClass} ${className}`.trim();
+  }, [isExpanded, isImageLoaded, isFlashing, className]);
 
   const optimizedStyle = useMemo(() => ({
     ...style,

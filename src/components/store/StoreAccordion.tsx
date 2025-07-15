@@ -3,7 +3,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { storeCategories } from './utils/categoryUtils';
 import StoreCategorySection from './StoreCategorySection';
 import { useEnhancedAccordionScroll } from '@/hooks/useEnhancedAccordionScroll';
-import { useStoreImagePreloader } from '@/hooks/useStoreImagePreloader';
+import { useStoreSequentialFlashPreloader } from '@/hooks/useStoreSequentialFlashPreloader';
 
 interface StoreAccordionProps {
   selectedCategory: string;
@@ -22,8 +22,8 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
 }) => {
   const { registerTrigger, registerContent, handleAccordionChange } = useEnhancedAccordionScroll();
   
-  // Preload all store category images on mount
-  useStoreImagePreloader();
+  // Sequential flash preloader for store category images
+  const { flashStates } = useStoreSequentialFlashPreloader();
 
   const handleScrollToTop = () => {
     const triggerElement = selectedCategory ? 
@@ -69,6 +69,7 @@ const StoreAccordion: React.FC<StoreAccordionProps> = ({
               onContentRef={(element) => registerContent(category.id, element)}
               onProductClick={onProductClick}
               onScrollToTop={handleScrollToTop}
+              isFlashing={flashStates[category.id]?.isFlashing || false}
             />
           );
         })}

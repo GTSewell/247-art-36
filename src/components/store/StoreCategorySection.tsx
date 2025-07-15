@@ -20,6 +20,7 @@ interface StoreCategorySectionProps {
   onContentRef?: (element: HTMLElement | null) => void;
   onProductClick?: (product: any) => void;
   onScrollToTop?: () => void;
+  isFlashing?: boolean;
 }
 
 const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
@@ -31,7 +32,8 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
   onTriggerRef,
   onContentRef,
   onProductClick,
-  onScrollToTop
+  onScrollToTop,
+  isFlashing = false
 }) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -65,6 +67,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
             imageUrl={category.image}
             className="font-agharti font-black leading-none tracking-tighter transition-all duration-300 group-hover:scale-105 whitespace-nowrap text-left md:text-left flex-shrink-0"
             isExpanded={isActive}
+            isFlashing={isFlashing}
             style={{
               '--store-category-bg-image': `url(${category.image})`
             } as React.CSSProperties}
