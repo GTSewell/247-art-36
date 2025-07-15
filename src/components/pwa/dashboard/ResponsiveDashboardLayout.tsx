@@ -38,27 +38,36 @@ const ResponsiveDashboardLayout: React.FC<ResponsiveDashboardLayoutProps> = ({
     return (
       <>
         {/* Mobile Header - Fixed positioning to avoid profile icon overlap */}
-        <div className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50 px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {isPWA && (
-              <Button variant="ghost" size="sm" onClick={onBack}>
-                <ArrowLeft className="h-4 w-4" />
-              </Button>
-            )}
-            <div>
-              <h1 className="font-semibold text-foreground">
-                {isDemo ? "Demo Artist" : "Dashboard"}
-              </h1>
+        <div className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {isPWA && (
+                <Button variant="ghost" size="sm" onClick={onBack}>
+                  <ArrowLeft className="h-4 w-4" />
+                </Button>
+              )}
+              <div>
+                <h1 className="font-semibold text-foreground">
+                  {isDemo ? "Demo Artist" : "Dashboard"}
+                </h1>
+              </div>
             </div>
+            
+            {/* Centered Preview Button - leaves space for profile icon */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPreviewOpen(true)}
+              >
+                <Eye className="h-4 w-4 mr-2" />
+                Preview
+              </Button>
+            </div>
+            
+            {/* Empty space for profile icon */}
+            <div className="w-10"></div>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setPreviewOpen(true)}
-          >
-            <Eye className="h-4 w-4 mr-2" />
-            Preview
-          </Button>
         </div>
 
         {/* Mobile Content - Adjusted for fixed header */}
