@@ -37,8 +37,8 @@ const ResponsiveDashboardLayout: React.FC<ResponsiveDashboardLayoutProps> = ({
   if (isMobile) {
     return (
       <>
-        {/* Mobile Header */}
-        <div className="fixed top-16 left-0 right-0 bg-background border-b border-border z-40 px-4 py-3 flex items-center justify-between">
+        {/* Mobile Header - Fixed positioning to avoid profile icon overlap */}
+        <div className="fixed top-0 left-0 right-0 bg-background/95 backdrop-blur-sm border-b border-border z-50 px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {isPWA && (
               <Button variant="ghost" size="sm" onClick={onBack}>
@@ -61,8 +61,8 @@ const ResponsiveDashboardLayout: React.FC<ResponsiveDashboardLayoutProps> = ({
           </Button>
         </div>
 
-        {/* Mobile Content */}
-        <div className="pt-28 pb-20 px-4">
+        {/* Mobile Content - Adjusted for fixed header */}
+        <div className="pt-16 pb-20 px-4">
           <DashboardContent
             activeSection={activeSection}
             artistId={artistId}
