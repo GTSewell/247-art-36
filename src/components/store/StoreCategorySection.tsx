@@ -57,7 +57,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           data-trigger-ref
           className={`flex w-full pr-4 transition-all duration-300 ${
             isActive 
-              ? 'relative items-center min-h-[120px]' 
+              ? 'flex-col md:relative md:items-center md:min-h-[120px]' 
               : 'flex-col md:flex-row md:items-center justify-between'
           }`}>
           <h2 
