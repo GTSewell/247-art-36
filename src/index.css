@@ -140,9 +140,6 @@
     -webkit-text-stroke: 1px currentColor;
   }
 }
-  -webkit-background-clip: text;
-  background-clip: text;
-}
 
 @media (min-width: 640px) {
   .store-category-title {
