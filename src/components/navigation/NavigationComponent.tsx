@@ -59,7 +59,7 @@ const NavigationComponent = () => {
   // Add extra padding class for specific pages on mobile
   const isWhoAreYouPage = location.pathname === "/who-are-you";
   const navExtraClass = isMobile && isWhoAreYouPage ? "h-20" : "h-16";
-  return <nav className={`fixed top-0 left-0 right-0 z-50 bg-transparent`}>
+  return <nav className={`fixed top-0 left-0 right-0 z-[9999] bg-transparent`}>
       <div className="absolute top-0 right-0 p-4 z-[60]">
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-4">
