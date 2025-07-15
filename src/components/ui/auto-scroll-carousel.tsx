@@ -64,8 +64,8 @@ const AutoScrollCarousel: React.FC<AutoScrollCarouselProps> = ({
       </motion.div>
       
       {/* Gradient overlays for fade effect */}
-      <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-white/80 to-transparent pointer-events-none" />
-      <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-white/80 to-transparent pointer-events-none" />
+      <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-background/80 to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-background/80 to-transparent pointer-events-none" />
     </div>
   );
 };
