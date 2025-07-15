@@ -87,8 +87,9 @@ const ResponsiveDashboardLayout: React.FC<ResponsiveDashboardLayoutProps> = ({
     );
   }
 
-  // Tablet Layout (768px - 1024px)
+  // Tablet Layout - More nuanced responsive logic
   const isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+  const isNarrowTablet = window.innerWidth < 900 || (window.innerHeight > window.innerWidth); // Portrait or narrow
   
   if (isTablet) {
     return (
@@ -170,8 +171,25 @@ const ResponsiveDashboardLayout: React.FC<ResponsiveDashboardLayoutProps> = ({
                   isDemo={isDemo}
                 />
               </div>
+            ) : isNarrowTablet ? (
+              // For narrow tablets/portrait - use modal instead of split view
+              <>
+                <div className="flex-1 px-4">
+                  <DashboardContent
+                    activeSection={activeSection}
+                    artistId={artistId}
+                    isDemo={isDemo}
+                  />
+                </div>
+                <PreviewModal
+                  isOpen={showPreview}
+                  onClose={() => setShowPreview(false)}
+                  artistId={artistId}
+                  activeSection={activeSection}
+                />
+              </>
             ) : (
-              // Split view: Content + Preview
+              // Wide tablets - split view with smaller preview panel
               <>
                 <div className="flex-1 border-r border-border px-4">
                   <DashboardContent
@@ -180,7 +198,7 @@ const ResponsiveDashboardLayout: React.FC<ResponsiveDashboardLayoutProps> = ({
                     isDemo={isDemo}
                   />
                 </div>
-                <div className="w-80 bg-muted/30">
+                <div className="w-64 bg-muted/30">
                   <LivePreviewPanel
                     artistId={artistId}
                     activeSection={activeSection}
