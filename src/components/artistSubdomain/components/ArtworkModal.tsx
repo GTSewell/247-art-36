@@ -90,11 +90,11 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       const deltaY = Math.abs(touchStartY - touchEndY);
       
       // Only trigger swipe if horizontal movement is greater than vertical
-      // and we're not at the beginning/end of the collection
+      // and add boundary checks like the store product modal
       if (Math.abs(deltaX) > 50 && deltaY < 100) {
-        if (deltaX > 0) {
+        if (deltaX > 0 && currentIndex < artworks.length - 1) {
           onNavigate('next');
-        } else {
+        } else if (deltaX < 0 && currentIndex > 0) {
           onNavigate('prev');
         }
       }
@@ -107,7 +107,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isOpen, onNavigate, isMobile, artworks.length]);
+  }, [isOpen, onNavigate, isMobile, artworks.length, currentIndex]);
 
   const handleAccordionChange = (value: string) => {
     setOpenAccordions(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
