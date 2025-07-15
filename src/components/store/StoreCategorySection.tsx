@@ -71,10 +71,10 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           >
             {category.label}
           </h2>
-          <p className={`text-4xl text-gray-600 dark:text-gray-300 font-agharti font-semibold tracking-wide transition-all duration-300 ${
+          <p className={`text-lg md:text-4xl text-gray-600 dark:text-gray-300 font-agharti font-semibold tracking-wide transition-all duration-300 ${
             isActive 
-              ? 'md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center text-left mt-2' 
-              : 'text-left md:text-right mt-2 md:mt-0 flex-shrink-0'
+              ? 'text-right md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:text-center mt-2 self-end md:self-auto' 
+              : 'text-right md:text-right mt-2 md:mt-0 flex-shrink-0'
           }`}>
             {category.description}
           </p>
