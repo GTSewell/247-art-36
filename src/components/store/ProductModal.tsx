@@ -75,6 +75,45 @@ const ProductModal: React.FC<ProductModalProps> = ({
     };
   }, [isOpen, currentIndex, products.length, showNavigation]);
 
+  // Touch/swipe navigation for mobile
+  useEffect(() => {
+    if (!isOpen || !showNavigation || !isMobile) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!e.changedTouches[0]) return;
+      
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const deltaX = touchStartX - touchEndX;
+      const deltaY = Math.abs(touchStartY - touchEndY);
+      
+      // Only trigger swipe if horizontal movement is greater than vertical
+      if (Math.abs(deltaX) > 50 && deltaY < 100) {
+        if (deltaX > 0 && currentIndex < products.length - 1) {
+          handleNext();
+        } else if (deltaX < 0 && currentIndex > 0) {
+          handlePrevious();
+        }
+      }
+    };
+
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchend', handleTouchEnd);
+    
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isOpen, currentIndex, products.length, showNavigation, isMobile]);
+
   if (!product) return null;
 
   return (

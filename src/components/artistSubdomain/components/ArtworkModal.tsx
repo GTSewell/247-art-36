@@ -71,7 +71,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
 
   // Handle touch events for swipe navigation
   useEffect(() => {
-    if (!isOpen || !onNavigate || !isMobile) return;
+    if (!isOpen || !onNavigate || !isMobile || artworks.length <= 1) return;
 
     let touchStartX = 0;
     let touchStartY = 0;
@@ -90,6 +90,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       const deltaY = Math.abs(touchStartY - touchEndY);
       
       // Only trigger swipe if horizontal movement is greater than vertical
+      // and we're not at the beginning/end of the collection
       if (Math.abs(deltaX) > 50 && deltaY < 100) {
         if (deltaX > 0) {
           onNavigate('next');
@@ -106,7 +107,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isOpen, onNavigate, isMobile]);
+  }, [isOpen, onNavigate, isMobile, artworks.length]);
 
   const handleAccordionChange = (value: string) => {
     setOpenAccordions(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
