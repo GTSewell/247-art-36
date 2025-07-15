@@ -169,6 +169,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   artistName={product.artists?.name} 
                   price={product.price}
                   isLimitedEdition={product.is_limited_edition}
+                  artistDomain={product.artists?.name ? product.artists.name.toLowerCase().replace(/\s+/g, '-') : undefined}
                 />
                 
                 <ProductInfoAccordion 

@@ -192,6 +192,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
                   artistName={artist.name} 
                   price={parseFloat(selectedArtwork.price?.replace('$', '') || '0')}
                   isLimitedEdition={false}
+                  artistDomain={artist.name ? artist.name.toLowerCase().replace(/\s+/g, '-') : undefined}
                 />
                 
                 <ProductInfoAccordion 
