@@ -151,13 +151,13 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
         </div>
 
         <Tabs defaultValue="basic" className="flex-1 overflow-hidden">
-          <TabsList className="grid w-full grid-cols-6 bg-muted/50 p-1 rounded-lg">
-            <TabsTrigger value="basic" className="text-xs sm:text-sm">Basic Info</TabsTrigger>
-            <TabsTrigger value="images" className="text-xs sm:text-sm">Images</TabsTrigger>
-            <TabsTrigger value="specs" className="text-xs sm:text-sm">Specifications</TabsTrigger>
-            <TabsTrigger value="content" className="text-xs sm:text-sm">Content</TabsTrigger>
-            <TabsTrigger value="timed" className="text-xs sm:text-sm">Timed Edition</TabsTrigger>
-            <TabsTrigger value="shopify" className="text-xs sm:text-sm">Shopify</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6 bg-muted p-1.5 rounded-lg border">
+            <TabsTrigger value="basic" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Basic Info</TabsTrigger>
+            <TabsTrigger value="images" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Images</TabsTrigger>
+            <TabsTrigger value="specs" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Specifications</TabsTrigger>
+            <TabsTrigger value="content" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Content</TabsTrigger>
+            <TabsTrigger value="timed" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Timed Edition</TabsTrigger>
+            <TabsTrigger value="shopify" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Shopify</TabsTrigger>
           </TabsList>
 
           <div className="mt-4 overflow-y-auto max-h-[60vh]">
