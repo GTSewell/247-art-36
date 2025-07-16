@@ -60,7 +60,7 @@ const StoreCategorySection: React.FC<StoreCategorySectionProps> = ({
           data-trigger-ref
           className={`flex w-full pr-4 transition-all duration-300 ${
             isActive 
-              ? 'flex-col md:relative md:items-start md:min-h-[120px]' 
+              ? 'flex-col md:relative md:items-start md:min-h-[120px] md:justify-center' 
               : 'flex-col md:flex-row md:items-center md:justify-between'
           }`}>
           <OptimizedStoreCategoryTitle
