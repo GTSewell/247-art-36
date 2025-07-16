@@ -101,21 +101,21 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background border shadow-md">
           {/* Navigation Links */}
           <Link to="/">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
+            <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/' ? 'bg-zap-blue text-white' : ''}`}>
               <Home className="mr-2 h-5 w-5" />
               <span>Home</span>
             </DropdownMenuItem>
           </Link>
           
           <Link to="/artists">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
+            <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/artists' ? 'bg-zap-blue text-white' : ''}`}>
               <Palette className="mr-2 h-5 w-5" />
               <span>The Artists</span>
             </DropdownMenuItem>
           </Link>
           
           <Link to="/store">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
+            <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/store' ? 'bg-zap-blue text-white' : ''}`}>
               <Store className="mr-2 h-5 w-5" />
               <span>The Store</span>
             </DropdownMenuItem>
@@ -199,21 +199,21 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         
         {/* Navigation Links */}
         <Link to="/">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/' ? 'bg-zap-blue text-white' : ''}`}>
             <Home className="mr-2 h-5 w-5" />
             <span>Home</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/artists">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/artists' ? 'bg-zap-blue text-white' : ''}`}>
             <Palette className="mr-2 h-5 w-5" />
             <span>The Artists</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/store">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/store' ? 'bg-zap-blue text-white' : ''}`}>
             <Store className="mr-2 h-5 w-5" />
             <span>The Store</span>
           </DropdownMenuItem>

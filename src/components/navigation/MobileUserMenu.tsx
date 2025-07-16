@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -32,6 +32,7 @@ function getInitials(name: string): string {
 const MobileUserMenu = () => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { theme, setTheme } = useTheme();
   const [initials, setInitials] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
@@ -93,21 +94,21 @@ const MobileUserMenu = () => {
         <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background border shadow-md z-50">
           {/* Navigation Links */}
           <Link to="/">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
+            <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/' ? 'bg-zap-blue text-white' : ''}`}>
               <Home className="mr-2 h-5 w-5" />
               <span>Home</span>
             </DropdownMenuItem>
           </Link>
           
           <Link to="/artists">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
+            <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/artists' ? 'bg-zap-blue text-white' : ''}`}>
               <Palette className="mr-2 h-5 w-5" />
               <span>The Artists</span>
             </DropdownMenuItem>
           </Link>
           
           <Link to="/store">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
+            <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/store' ? 'bg-zap-blue text-white' : ''}`}>
               <Store className="mr-2 h-5 w-5" />
               <span>The Store</span>
             </DropdownMenuItem>
@@ -188,21 +189,21 @@ const MobileUserMenu = () => {
         
         {/* Navigation Links */}
         <Link to="/">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/' ? 'bg-zap-blue text-white' : ''}`}>
             <Home className="mr-2 h-5 w-5" />
             <span>Home</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/artists">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/artists' ? 'bg-zap-blue text-white' : ''}`}>
             <Palette className="mr-2 h-5 w-5" />
             <span>The Artists</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/store">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/store' ? 'bg-zap-blue text-white' : ''}`}>
             <Store className="mr-2 h-5 w-5" />
             <span>The Store</span>
           </DropdownMenuItem>
