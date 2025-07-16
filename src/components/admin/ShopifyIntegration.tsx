@@ -5,6 +5,10 @@ import { toast } from 'sonner';
 import { logger } from '@/utils/logger';
 import { supabase } from '@/integrations/supabase/client';
 import { storeCategories } from '@/components/store/utils/categoryUtils';
+import { formatInTimeZone } from 'date-fns-tz';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import SyncStats from './shopify/SyncStats';
 import ShopifyProductManagement from './shopify/ShopifyProductManagement';
 import ShopifySyncControls from './shopify/ShopifySyncControls';
@@ -27,6 +31,7 @@ const ShopifyIntegration = () => {
   const [artists, setArtists] = useState<any[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
+  const [statsExpanded, setStatsExpanded] = useState(true);
 
   useEffect(() => {
     loadData();
@@ -79,7 +84,7 @@ const ShopifyIntegration = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
+    return formatInTimeZone(new Date(dateString), 'Australia/Melbourne', 'PPpp');
   };
 
   const loadArtists = async () => {
@@ -314,7 +319,17 @@ const ShopifyIntegration = () => {
       </div>
 
       {/* Stats Cards */}
-      <SyncStats stats={stats} formatDate={formatDate} />
+      <Collapsible open={statsExpanded} onOpenChange={setStatsExpanded}>
+        <CollapsibleTrigger asChild>
+          <Button variant="ghost" className="flex items-center gap-2 p-0 h-auto font-semibold text-lg">
+            {statsExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+            Sync Statistics
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="mt-4">
+          <SyncStats stats={stats} formatDate={formatDate} />
+        </CollapsibleContent>
+      </Collapsible>
 
       {/* Category Recovery Tool */}
       {products.length > 0 && (
