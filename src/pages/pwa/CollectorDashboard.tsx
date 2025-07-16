@@ -42,7 +42,7 @@ const CollectorDashboard = () => {
   
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background">
         {isPWA ? <PWANavigation /> : <Navigation />}
         <div className="container mx-auto px-4 pt-16 pb-20 flex items-center justify-center">
           <div className="animate-spin h-8 w-8 border-t-2 border-b-2 border-primary rounded-full"></div>
@@ -52,7 +52,7 @@ const CollectorDashboard = () => {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {isPWA ? <PWANavigation /> : <Navigation />}
       
       <main className="container mx-auto px-4 pt-16 pb-24">
@@ -66,7 +66,7 @@ const CollectorDashboard = () => {
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
           </Button>
-          <h1 className="text-2xl font-bold">Collector Dashboard</h1>
+          <h1 className="text-2xl font-bold text-foreground">Collector Dashboard</h1>
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
