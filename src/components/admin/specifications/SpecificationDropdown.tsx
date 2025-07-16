@@ -60,7 +60,7 @@ const SpecificationDropdown: React.FC<SpecificationDropdownProps> = ({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0 z-50 bg-background border shadow-md">
+      <PopoverContent className="w-[300px] p-0 z-[70] bg-background border shadow-md">
         <Command>
           <CommandInput placeholder="Search options..." />
           <CommandList>
@@ -81,23 +81,32 @@ const SpecificationDropdown: React.FC<SpecificationDropdownProps> = ({
                 </CommandItem>
               ))}
             </CommandGroup>
-            <CommandGroup>
-              <div className="flex items-center px-2 py-1 gap-2">
-                <CommandInput
+            {/* Custom input section */}
+            <div className="border-t px-2 py-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
                   placeholder="Add custom option..."
                   value={customValue}
-                  onValueChange={setCustomValue}
-                  className="flex-1"
+                  onChange={(e) => setCustomValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddCustom();
+                    }
+                  }}
+                  className="flex-1 px-2 py-1 text-sm border rounded bg-background"
                 />
                 <Button
                   size="sm"
                   onClick={handleAddCustom}
                   disabled={!customValue.trim()}
+                  className="h-6 w-6 p-0"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3 w-3" />
                 </Button>
               </div>
-            </CommandGroup>
+            </div>
           </CommandList>
         </Command>
       </PopoverContent>

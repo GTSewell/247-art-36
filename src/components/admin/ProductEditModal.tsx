@@ -66,26 +66,37 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
   const handleSave = async () => {
     setIsLoading(true);
     try {
+      console.log('Saving product with data:', formData);
+      
+      // Ensure specifications is a valid object
+      const cleanedSpecifications = formData.specifications || {};
+      
+      const updateData = {
+        name: formData.name,
+        custom_description: formData.custom_description,
+        price: Number(formData.price),
+        category: formData.category as "print" | "merch" | "sticker" | "original" | "signed" | "collection",
+        artist_id: formData.artist_id,
+        hero_image_url: formData.hero_image_url,
+        additional_images: formData.additional_images || [],
+        specifications: cleanedSpecifications,
+        production_info: formData.production_info,
+        shipping_info: formData.shipping_info,
+        end_time: formData.end_time,
+        is_visible: formData.is_visible
+      };
+
+      console.log('Update data:', updateData);
+
       const { error } = await supabase
         .from('products')
-        .update({
-          name: formData.name,
-          custom_description: formData.custom_description,
-          price: formData.price,
-          category: formData.category as "print" | "merch" | "sticker" | "original" | "signed" | "collection",
-          artist_id: formData.artist_id,
-          hero_image_url: formData.hero_image_url,
-          additional_images: formData.additional_images,
-          specifications: formData.specifications,
-          production_info: formData.production_info,
-          shipping_info: formData.shipping_info,
-          end_time: formData.end_time,
-          start_time: formData.start_time,
-          is_visible: formData.is_visible
-        })
+        .update(updateData)
         .eq('id', product.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast({
         title: "Product Updated",
@@ -98,7 +109,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
       console.error('Error updating product:', error);
       toast({
         title: "Update Failed",
-        description: "Failed to update product. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to update product. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -140,13 +151,13 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
         </div>
 
         <Tabs defaultValue="basic" className="flex-1 overflow-hidden">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="basic">Basic Info</TabsTrigger>
-            <TabsTrigger value="images">Images</TabsTrigger>
-            <TabsTrigger value="specs">Specifications</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="timed">Timed Edition</TabsTrigger>
-            <TabsTrigger value="shopify">Shopify</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-6 bg-muted/50 p-1 rounded-lg">
+            <TabsTrigger value="basic" className="text-xs sm:text-sm">Basic Info</TabsTrigger>
+            <TabsTrigger value="images" className="text-xs sm:text-sm">Images</TabsTrigger>
+            <TabsTrigger value="specs" className="text-xs sm:text-sm">Specifications</TabsTrigger>
+            <TabsTrigger value="content" className="text-xs sm:text-sm">Content</TabsTrigger>
+            <TabsTrigger value="timed" className="text-xs sm:text-sm">Timed Edition</TabsTrigger>
+            <TabsTrigger value="shopify" className="text-xs sm:text-sm">Shopify</TabsTrigger>
           </TabsList>
 
           <div className="mt-4 overflow-y-auto max-h-[60vh]">
