@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import ProductBulkActions from './ProductBulkActions';
 import ProductList from './ProductList';
 import DebugPanel from './DebugPanel';
+import ProductSearchAndFilter, { FilterState } from './ProductSearchAndFilter';
+import { useProductFilters } from './useProductFilters';
 
 interface ShopifyProductManagementProps {
   products: any[];
@@ -39,6 +41,20 @@ const ShopifyProductManagement = ({
   onEditProduct,
   onToggleVisibility
 }: ShopifyProductManagementProps) => {
+  const [filters, setFilters] = useState<FilterState>({
+    searchText: '',
+    category: '',
+    artistId: '',
+    stockStatus: '',
+    visibilityStatus: '',
+    featuredStatus: '',
+    categorySource: '',
+    sortBy: 'name',
+    sortOrder: 'asc'
+  });
+
+  const filteredProducts = useProductFilters(products, filters, artists);
+
   return (
     <Card>
       <CardHeader>
@@ -60,6 +76,14 @@ const ShopifyProductManagement = ({
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
+        <ProductSearchAndFilter
+          filters={filters}
+          onFiltersChange={setFilters}
+          artists={artists}
+          resultsCount={filteredProducts.length}
+          totalCount={products.length}
+        />
+        
         <ProductBulkActions
           selectedProducts={selectedProducts}
           artists={artists}
@@ -73,7 +97,7 @@ const ShopifyProductManagement = ({
         )}
         
         <ProductList
-          products={products}
+          products={filteredProducts}
           selectedProducts={selectedProducts}
           showAllProducts={showAllProducts}
           isSyncing={isSyncing}
