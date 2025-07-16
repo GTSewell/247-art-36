@@ -15,7 +15,7 @@ interface TimerState {
   seconds: number;
 }
 const GeneralStore = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('merch');
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
   const [selectedRegularProduct, setSelectedRegularProduct] = useState<any>(null);
