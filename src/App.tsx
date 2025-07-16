@@ -37,7 +37,8 @@ import PWAArtists from "@/pages/pwa/PWAArtists";
 import PWAStore from "@/pages/pwa/PWAStore";
 import ArtistDashboard from "@/pages/pwa/ArtistDashboard";
 import CollectorDashboard from "@/pages/pwa/CollectorDashboard";
-import AccountPage from "@/pages/pwa/AccountPage";
+import PWAAccountPage from "@/pages/pwa/AccountPage";
+import AccountPage from "@/pages/AccountPage";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import DataDeletion from "@/pages/DataDeletion";
 
@@ -122,7 +123,10 @@ const App = () => {
         <Route path="/artistsubform" element={<TallyFormPage />} />
         
         {/* Account and Dashboard routes */}
-        <Route path="/account" element={<AccountPage />} />
+        <Route 
+          path="/account" 
+          element={usePWAUI ? <PWAAccountPage /> : <AccountPage />} 
+        />
         <Route path="/dashboard/artist" element={<ArtistDashboard />} />
         <Route path="/dashboard/collector" element={<CollectorDashboard />} />
         
