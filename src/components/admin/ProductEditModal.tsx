@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { X, Save, RefreshCw } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { ModalProvider } from "@/contexts/ModalContext";
 import ProductBasicInfoTab from './ProductBasicInfoTab';
 import ProductImagesTab from './ProductImagesTab';
 import ProductSpecificationsTab from './ProductSpecificationsTab';
@@ -141,85 +142,87 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between border-b pb-4">
-          <DialogTitle className="text-xl font-semibold">
-            Edit Product: {product?.name}
-          </DialogTitle>
-          <Button variant="ghost" size="sm" onClick={handleCancel}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <Tabs defaultValue="basic" className="flex-1 overflow-hidden">
-          <TabsList className="grid w-full grid-cols-6 bg-muted p-1.5 rounded-lg border">
-            <TabsTrigger value="basic" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Basic Info</TabsTrigger>
-            <TabsTrigger value="images" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Images</TabsTrigger>
-            <TabsTrigger value="specs" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Specifications</TabsTrigger>
-            <TabsTrigger value="content" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Content</TabsTrigger>
-            <TabsTrigger value="timed" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Timed Edition</TabsTrigger>
-            <TabsTrigger value="shopify" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Shopify</TabsTrigger>
-          </TabsList>
-
-          <div className="mt-4 overflow-y-auto max-h-[60vh]">
-            <TabsContent value="basic">
-              <ProductBasicInfoTab
-                formData={formData}
-                onChange={setFormData}
-              />
-            </TabsContent>
-
-            <TabsContent value="images">
-              <ProductImagesTab
-                formData={formData}
-                onChange={setFormData}
-              />
-            </TabsContent>
-
-            <TabsContent value="specs">
-              <ProductSpecificationsTab
-                formData={formData}
-                onChange={setFormData}
-              />
-            </TabsContent>
-
-            <TabsContent value="content">
-              <ProductContentTab
-                formData={formData}
-                onChange={setFormData}
-              />
-            </TabsContent>
-
-            <TabsContent value="timed">
-              <ProductTimedEditionTab
-                formData={formData}
-                onChange={setFormData}
-              />
-            </TabsContent>
-
-            <TabsContent value="shopify">
-              <ProductShopifyTab product={product} />
-            </TabsContent>
+        <ModalProvider>
+          <div className="flex items-center justify-between border-b pb-4">
+            <DialogTitle className="text-xl font-semibold">
+              Edit Product: {product?.name}
+            </DialogTitle>
+            <Button variant="ghost" size="sm" onClick={handleCancel}>
+              <X className="h-4 w-4" />
+            </Button>
           </div>
-        </Tabs>
 
-        <div className="flex justify-end space-x-2 border-t pt-4">
-          <Button variant="outline" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave} disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              <>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
-              </>
-            )}
-          </Button>
-        </div>
+          <Tabs defaultValue="basic" className="flex-1 overflow-hidden">
+            <TabsList className="grid w-full grid-cols-6 bg-muted p-1.5 rounded-lg border">
+              <TabsTrigger value="basic" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Basic Info</TabsTrigger>
+              <TabsTrigger value="images" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Images</TabsTrigger>
+              <TabsTrigger value="specs" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Specifications</TabsTrigger>
+              <TabsTrigger value="content" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Content</TabsTrigger>
+              <TabsTrigger value="timed" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Timed Edition</TabsTrigger>
+              <TabsTrigger value="shopify" className="text-xs sm:text-sm px-2 py-2 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm hover:bg-background/50 transition-all font-medium">Shopify</TabsTrigger>
+            </TabsList>
+
+            <div className="mt-4 overflow-y-auto max-h-[60vh]">
+              <TabsContent value="basic">
+                <ProductBasicInfoTab
+                  formData={formData}
+                  onChange={setFormData}
+                />
+              </TabsContent>
+
+              <TabsContent value="images">
+                <ProductImagesTab
+                  formData={formData}
+                  onChange={setFormData}
+                />
+              </TabsContent>
+
+              <TabsContent value="specs">
+                <ProductSpecificationsTab
+                  formData={formData}
+                  onChange={setFormData}
+                />
+              </TabsContent>
+
+              <TabsContent value="content">
+                <ProductContentTab
+                  formData={formData}
+                  onChange={setFormData}
+                />
+              </TabsContent>
+
+              <TabsContent value="timed">
+                <ProductTimedEditionTab
+                  formData={formData}
+                  onChange={setFormData}
+                />
+              </TabsContent>
+
+              <TabsContent value="shopify">
+                <ProductShopifyTab product={product} />
+              </TabsContent>
+            </div>
+          </Tabs>
+
+          <div className="flex justify-end space-x-2 border-t pt-4">
+            <Button variant="outline" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave} disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Save Changes
+                </>
+              )}
+            </Button>
+          </div>
+        </ModalProvider>
       </DialogContent>
     </Dialog>
   );

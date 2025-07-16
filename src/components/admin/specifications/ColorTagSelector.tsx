@@ -75,7 +75,7 @@ const ColorTagSelector: React.FC<ColorTagSelectorProps> = ({
             Add colors
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80 z-[10001]">
+        <PopoverContent className="w-80">
           <div className="space-y-3">
             <div>
               <Label className="text-sm font-medium">Select from options</Label>
