@@ -90,7 +90,7 @@ const MobileUserMenu = () => {
             <span className="hidden md:inline">Menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background border shadow-md">
+        <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background/95 backdrop-blur-sm border shadow-lg z-50">
           {/* Navigation Links */}
           <Link to="/">
             <DropdownMenuItem className="p-3 hover:bg-muted">
@@ -172,7 +172,7 @@ const MobileUserMenu = () => {
           <span className="text-sm sm:inline">{displayName}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background border shadow-md">
+      <DropdownMenuContent align="end" className="w-56 p-0 rounded-md bg-background/95 backdrop-blur-sm border shadow-lg z-50">
         <div className="flex items-center gap-2 p-3 border-b">
           <Avatar className="h-8 w-8">
             <AvatarImage 
