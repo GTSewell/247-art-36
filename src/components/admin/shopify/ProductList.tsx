@@ -16,6 +16,7 @@ interface Product {
   artist_name?: string;
   shopify_inventory_quantity: number;
   is_featured: boolean;
+  category_source?: 'manual' | 'shopify' | 'auto';
 }
 
 interface ProductListProps {
@@ -101,6 +102,18 @@ const ProductList = ({
                   <span className="text-xs bg-primary/10 px-2 py-1 rounded">
                     Artist: {product.artist_name || 'Unassigned'}
                   </span>
+                  {product.category_source && (
+                    <span className={`text-xs px-2 py-1 rounded ${
+                      product.category_source === 'manual' 
+                        ? 'bg-green-100 text-green-800' 
+                        : product.category_source === 'shopify'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {product.category_source === 'manual' ? '🔒 Manual' : 
+                       product.category_source === 'shopify' ? '🛒 Shopify' : '🤖 Auto'}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

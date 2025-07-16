@@ -453,6 +453,7 @@ export type Database = {
           artist_id: number | null
           available_quantity: number | null
           category: Database["public"]["Enums"]["product_category"]
+          category_source: string | null
           created_at: string
           custom_description: string | null
           description: string | null
@@ -479,6 +480,7 @@ export type Database = {
           artist_id?: number | null
           available_quantity?: number | null
           category: Database["public"]["Enums"]["product_category"]
+          category_source?: string | null
           created_at?: string
           custom_description?: string | null
           description?: string | null
@@ -505,6 +507,7 @@ export type Database = {
           artist_id?: number | null
           available_quantity?: number | null
           category?: Database["public"]["Enums"]["product_category"]
+          category_source?: string | null
           created_at?: string
           custom_description?: string | null
           description?: string | null

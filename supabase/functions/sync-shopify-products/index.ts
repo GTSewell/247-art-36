@@ -124,7 +124,6 @@ serve(async (req) => {
           name: product.title,
           description: product.body_html?.replace(/<[^>]*>/g, '') || '', // Strip HTML
           price: parseFloat(product.variants[0]?.price || '0'),
-          category: mapShopifyTypeToCategory(product.product_type) as 'print' | 'merch' | 'sticker',
           shopify_product_id: product.id,
           shopify_variant_id: product.variants[0]?.id || '',
           shopify_inventory_quantity: product.variants[0]?.inventory_quantity || 0,
@@ -135,11 +134,23 @@ serve(async (req) => {
           additional_images: mergedAdditionalImages
         }
 
+        // Only set category for new products or products with 'shopify'/'auto' category_source
+        const shouldUpdateCategory = !existingProduct || 
+          !existingProduct.category_source || 
+          existingProduct.category_source === 'shopify' || 
+          existingProduct.category_source === 'auto'
+
+        if (shouldUpdateCategory) {
+          baseProductData.category = mapShopifyTypeToCategory(product.product_type)
+          baseProductData.category_source = 'shopify'
+        }
+
         // For new products, set defaults
         const productData = existingProduct ? baseProductData : {
           ...baseProductData,
           image_url: heroImage, // Keep for backward compatibility
-          is_featured: autoActivate // Only set featured status for new products
+          is_featured: autoActivate, // Only set featured status for new products
+          category_source: 'shopify' // Mark new products as Shopify-sourced
         }
 
         // Preserve certain fields from existing product if they were manually set
@@ -242,10 +253,19 @@ serve(async (req) => {
   }
 })
 
-function mapShopifyTypeToCategory(productType: string): 'print' | 'merch' | 'sticker' {
+function mapShopifyTypeToCategory(productType: string): 'print' | 'merch' | 'sticker' | 'original' | 'signed' | 'collection' {
   const lowerType = productType.toLowerCase()
   
-  if (lowerType.includes('print') || lowerType.includes('poster') || lowerType.includes('art')) {
+  // Map to valid database enum values
+  if (lowerType.includes('original') || lowerType.includes('one-of-a-kind')) {
+    return 'original'
+  }
+  
+  if (lowerType.includes('limited') || lowerType.includes('signed') || lowerType.includes('numbered')) {
+    return 'signed'
+  }
+  
+  if (lowerType.includes('print') || lowerType.includes('poster') || lowerType.includes('canvas') || lowerType.includes('art print')) {
     return 'print'
   }
   
@@ -253,6 +273,10 @@ function mapShopifyTypeToCategory(productType: string): 'print' | 'merch' | 'sti
     return 'sticker'
   }
   
-  // Default everything else to merch (t-shirts, apparel, accessories, etc.)
+  if (lowerType.includes('collection') || lowerType.includes('247') || lowerType.includes('exclusive')) {
+    return 'collection'
+  }
+  
+  // Default to merch for apparel, accessories, t-shirts, etc.
   return 'merch'
 }

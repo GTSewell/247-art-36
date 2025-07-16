@@ -81,23 +81,32 @@ export function mapShopifyStorefrontProductToInternal(shopifyProduct: ShopifySto
 /**
  * Maps Shopify product type to our internal category system
  */
-export function mapShopifyTypeToCategory(productType: string): string {
-  const typeMap: { [key: string]: string } = {
-    'Original Artwork': 'original-artwork',
-    'Print': 'prints',
-    'Digital Art': 'digital-art',
-    'Sculpture': 'sculpture',
-    'Photography': 'photography',
-    'Mixed Media': 'mixed-media',
-    'Apparel': 'apparel',
-    'Accessories': 'accessories',
-    'Limited Edition': 'limited-edition',
-    'Canvas Print': 'prints',
-    'Poster': 'prints',
-    'Art Print': 'prints'
+export function mapShopifyTypeToCategory(productType: string): 'print' | 'merch' | 'sticker' | 'original' | 'signed' | 'collection' {
+  const lowerType = productType.toLowerCase()
+  
+  // Map to valid database enum values
+  if (lowerType.includes('original') || lowerType.includes('one-of-a-kind')) {
+    return 'original'
   }
   
-  return typeMap[productType] || 'other'
+  if (lowerType.includes('limited') || lowerType.includes('signed') || lowerType.includes('numbered')) {
+    return 'signed'
+  }
+  
+  if (lowerType.includes('print') || lowerType.includes('poster') || lowerType.includes('canvas') || lowerType.includes('art print')) {
+    return 'print'
+  }
+  
+  if (lowerType.includes('sticker') || lowerType.includes('decal')) {
+    return 'sticker'
+  }
+  
+  if (lowerType.includes('collection') || lowerType.includes('247') || lowerType.includes('exclusive')) {
+    return 'collection'
+  }
+  
+  // Default to merch for apparel, accessories, t-shirts, etc.
+  return 'merch'
 }
 
 /**
@@ -105,16 +114,12 @@ export function mapShopifyTypeToCategory(productType: string): string {
  */
 export function mapInternalCategoryToShopifyType(category: string): string {
   const categoryMap: { [key: string]: string } = {
-    'original-artwork': 'Original Artwork',
-    'prints': 'Print',
-    'digital-art': 'Digital Art',
-    'sculpture': 'Sculpture',
-    'photography': 'Photography',
-    'mixed-media': 'Mixed Media',
-    'apparel': 'Apparel',
-    'accessories': 'Accessories',
-    'limited-edition': 'Limited Edition',
-    'other': 'Other'
+    'original': 'Original Artwork',
+    'signed': 'Limited Edition',
+    'print': 'Print',
+    'sticker': 'Sticker',
+    'merch': 'Apparel',
+    'collection': 'Collection'
   }
   
   return categoryMap[category] || 'Other'

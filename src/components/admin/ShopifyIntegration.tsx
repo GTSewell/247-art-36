@@ -9,6 +9,7 @@ import ShopifyProductManagement from './shopify/ShopifyProductManagement';
 import ShopifySyncControls from './shopify/ShopifySyncControls';
 import SyncLogs from './shopify/SyncLogs';
 import ProductEditModal from './ProductEditModal';
+import CategoryRecoveryTool from './shopify/CategoryRecoveryTool';
 
 const ShopifyIntegration = () => {
   const { isSyncing, syncProducts, getSyncLogs, getShopifyProducts } = useShopifyIntegration();
@@ -152,6 +153,7 @@ const ShopifyIntegration = () => {
           
           if (assignmentType === 'category') {
             updateData.category = value;
+            updateData.category_source = 'manual'; // Mark as manually set
             logger.info(`📦 Updating product ${productId} category to: ${value}`);
           } else if (assignmentType === 'artist') {
             const artistId = parseInt(value);
@@ -283,6 +285,14 @@ const ShopifyIntegration = () => {
 
       {/* Stats Cards */}
       <SyncStats stats={stats} formatDate={formatDate} />
+
+      {/* Category Recovery Tool */}
+      {products.length > 0 && (
+        <CategoryRecoveryTool 
+          products={products}
+          onRecoveryComplete={() => loadData(true)}
+        />
+      )}
 
       {/* Product Management */}
       <ShopifyProductManagement
