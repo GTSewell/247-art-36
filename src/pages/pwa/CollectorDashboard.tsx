@@ -62,7 +62,7 @@ const CollectorDashboard = () => {
             variant="ghost" 
             size="sm" 
             className="mr-3 -ml-2" 
-            onClick={() => navigate('/account')}
+            onClick={() => navigate(-1)}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
