@@ -31,9 +31,11 @@ export const usePWAStoreProducts = () => {
         const {
           data,
           error
-        } = await supabase.from('products').select('*, artists(name, image)').order('created_at', {
-          ascending: false
-        });
+        } = await supabase.from('products').select('*, artists(name, image)')
+          .eq('is_visible', true)
+          .order('created_at', {
+            ascending: false
+          });
         
         if (error) {
           logger.error("Failed to load products from Supabase", error);

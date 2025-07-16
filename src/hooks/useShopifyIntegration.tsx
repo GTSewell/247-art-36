@@ -107,7 +107,8 @@ export const useShopifyIntegration = () => {
             image
           )
         `)
-        .not('shopify_product_id', 'is', null);
+        .not('shopify_product_id', 'is', null)
+        .eq('is_visible', true);
 
       if (category) {
         query = query.eq('category', category);
