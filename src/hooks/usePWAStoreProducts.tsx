@@ -9,7 +9,7 @@ import { useShopifyIntegration } from "@/hooks/useShopifyIntegration";
 
 export const usePWAStoreProducts = () => {
   const [isGeneratingImages, setIsGeneratingImages] = useState(false);
-  const { getShopifyProducts } = useShopifyIntegration();
+  const { getVisibleShopifyProducts } = useShopifyIntegration();
   
   const {
     data: products,
@@ -20,8 +20,8 @@ export const usePWAStoreProducts = () => {
     queryKey: ['products'],
     queryFn: async () => {
       try {
-        // First try to get Shopify-synced products
-        const shopifyProducts = await getShopifyProducts();
+        // First try to get visible Shopify-synced products
+        const shopifyProducts = await getVisibleShopifyProducts();
         if (shopifyProducts.length > 0) {
           logger.info("Loaded Shopify products:", { count: shopifyProducts.length });
           return shopifyProducts;

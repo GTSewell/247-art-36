@@ -107,8 +107,7 @@ export const useShopifyIntegration = () => {
             image
           )
         `)
-        .not('shopify_product_id', 'is', null)
-        .eq('is_visible', true);
+        .not('shopify_product_id', 'is', null);
 
       if (category) {
         query = query.eq('category', category);
@@ -149,12 +148,74 @@ export const useShopifyIntegration = () => {
     }
   }, []);
 
+  // Get visible products for public store
+  const getVisibleShopifyProducts = useCallback(async (category?: 'print' | 'merch' | 'sticker' | 'original' | 'signed' | 'collection', forceRefresh = false) => {
+    try {
+      logger.info('🔍 Fetching visible Shopify products for public store:', { 
+        category, 
+        forceRefresh,
+        timestamp: new Date().toISOString()
+      });
+      
+      let query = supabase
+        .from('products')
+        .select(`
+          *,
+          artists (
+            id,
+            name,
+            image
+          )
+        `)
+        .not('shopify_product_id', 'is', null)
+        .eq('is_visible', true);
+
+      if (category) {
+        query = query.eq('category', category);
+      }
+
+      const { data, error } = await query.order('created_at', { ascending: false });
+
+      if (error) {
+        logger.error('❌ Error fetching visible products:', error);
+        throw error;
+      }
+
+      // Transform the data to match ProductWithShopify interface with proper artist name
+      const products = data?.map(product => ({
+        ...product,
+        status: 'active' as const,
+        artist_name: product.artists?.name || 'Unassigned'
+      })) || [];
+
+      logger.info('📦 Fetched visible Shopify products:', { 
+        count: products.length, 
+        categoryFilter: category,
+        categoriesFound: [...new Set(products.map(p => p.category))],
+        artistsAssigned: products.filter(p => p.artist_id).length,
+        sampleProducts: products.slice(0, 3).map(p => ({
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          artist_id: p.artist_id,
+          artist_name: p.artist_name
+        }))
+      });
+
+      return products;
+    } catch (error) {
+      logger.error('❌ Error fetching visible Shopify products:', error);
+      return [];
+    }
+  }, []);
+
   return {
     isLoading,
     isSyncing,
     syncProducts,
     getProductDetails,
     getSyncLogs,
-    getShopifyProducts
+    getShopifyProducts,
+    getVisibleShopifyProducts
   };
 };
