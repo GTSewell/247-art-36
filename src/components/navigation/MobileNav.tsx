@@ -18,7 +18,8 @@ import {
   X,
   Home,
   Palette,
-  Store
+  Store,
+  User
 } from 'lucide-react';
 import { useTheme } from "next-themes";
 
@@ -156,10 +157,23 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
             </Link>
             
             {isAdmin && (
-              <Link to="/admin/artists" className="flex items-center p-3 text-foreground hover:bg-muted">
-                <Shield className="mr-2 h-5 w-5" />
-                <span>Artist Management</span>
-              </Link>
+              <div className="space-y-1">
+                <div className="px-3 py-2 text-xs text-muted-foreground font-medium">
+                  Admin Tools
+                </div>
+                <Link to="/admin/dashboard" className="flex items-center p-3 text-foreground hover:bg-muted">
+                  <Shield className="mr-2 h-5 w-5" />
+                  <span>Admin Dashboard</span>
+                </Link>
+                <Link to="/admin/artists" className="flex items-center p-3 text-foreground hover:bg-muted">
+                  <User className="mr-2 h-5 w-5" />
+                  <span>Artist Management</span>
+                </Link>
+                <Link to="/admin/shopify" className="flex items-center p-3 text-foreground hover:bg-muted">
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  <span>Shopify Admin</span>
+                </Link>
+              </div>
             )}
             
             <button 

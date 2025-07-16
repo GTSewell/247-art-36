@@ -259,12 +259,33 @@ const MobileUserMenu = () => {
         </Link>
         
         {isAdmin && (
-          <Link to="/admin/artists">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
-              <Shield className="mr-2 h-5 w-5" />
-              <span>Artist Management</span>
-            </DropdownMenuItem>
-          </Link>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel className="px-3 py-2 text-xs text-muted-foreground font-medium">
+              Admin Tools
+            </DropdownMenuLabel>
+            
+            <Link to="/admin/dashboard">
+              <DropdownMenuItem className="p-3 hover:bg-muted">
+                <Shield className="mr-2 h-5 w-5" />
+                <span>Admin Dashboard</span>
+              </DropdownMenuItem>
+            </Link>
+            
+            <Link to="/admin/artists">
+              <DropdownMenuItem className="p-3 hover:bg-muted">
+                <User className="mr-2 h-5 w-5" />
+                <span>Artist Management</span>
+              </DropdownMenuItem>
+            </Link>
+            
+            <Link to="/admin/shopify">
+              <DropdownMenuItem className="p-3 hover:bg-muted">
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                <span>Shopify Admin</span>
+              </DropdownMenuItem>
+            </Link>
+          </>
         )}
         
         <DropdownMenuItem onClick={handleSignOut} className="p-3 hover:bg-muted text-destructive border-t">

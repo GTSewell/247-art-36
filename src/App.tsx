@@ -28,6 +28,7 @@ import TallyFormPage from "@/pages/TallyFormPage";
 import LFG from "@/pages/LFG"; // Import the new LFG page
 
 // Admin pages
+import AdminDashboard from "@/pages/admin/AdminDashboard";
 import ArtistManagement from "@/pages/admin/ArtistManagement";
 import ShopifyAdmin from "@/pages/admin/ShopifyAdmin";
 
@@ -102,6 +103,14 @@ const App = () => {
         <Route path="/data-deletion" element={<DataDeletion />} />
         
         {/* Admin routes */}
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          } 
+        />
         <Route 
           path="/admin/artists" 
           element={

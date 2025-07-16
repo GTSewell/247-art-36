@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette, Store, Sun, Moon } from 'lucide-react';
+import { User, LogOut, MessageSquare, ShoppingCart, Settings, Shield, Home, Palette, Store, Sun, Moon, BarChart3, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from "next-themes";
 import {
@@ -268,13 +268,47 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
           </DropdownMenuItem>
         </Link>
         
+        {/* Admin Section */}
         {isAdmin && (
-          <Link to="/admin/artists">
-            <DropdownMenuItem className="p-3 hover:bg-muted">
-              <Shield className="mr-2 h-5 w-5" />
-              <span>Artist Management</span>
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel className="px-3 py-2 text-xs text-muted-foreground font-medium">
+              Admin Tools
+            </DropdownMenuLabel>
+            
+            <Link to="/admin/dashboard">
+              <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/admin/dashboard' ? 'bg-red-500 text-white' : ''}`}>
+                <Shield className="mr-2 h-5 w-5" />
+                <span className="font-medium">Admin Dashboard</span>
+              </DropdownMenuItem>
+            </Link>
+            
+            <Link to="/admin/artists">
+              <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/admin/artists' ? 'bg-red-500 text-white' : ''}`}>
+                <User className="mr-2 h-5 w-5" />
+                <span>Artist Management</span>
+              </DropdownMenuItem>
+            </Link>
+            
+            <Link to="/admin/shopify">
+              <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/admin/shopify' ? 'bg-red-500 text-white' : ''}`}>
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                <span>Shopify Admin</span>
+              </DropdownMenuItem>
+            </Link>
+            
+            <DropdownMenuItem className="p-3 hover:bg-muted text-muted-foreground" disabled>
+              <BarChart3 className="mr-2 h-5 w-5" />
+              <span>Analytics</span>
+              <span className="ml-auto text-xs text-muted-foreground">coming soon</span>
             </DropdownMenuItem>
-          </Link>
+            
+            <DropdownMenuItem className="p-3 hover:bg-muted text-muted-foreground" disabled>
+              <Database className="mr-2 h-5 w-5" />
+              <span>Database</span>
+              <span className="ml-auto text-xs text-muted-foreground">coming soon</span>
+            </DropdownMenuItem>
+          </>
         )}
         
         <DropdownMenuItem onClick={handleSignOut} className="p-3 hover:bg-muted text-destructive border-t">
