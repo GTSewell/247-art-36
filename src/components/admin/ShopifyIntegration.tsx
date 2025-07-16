@@ -32,6 +32,7 @@ const ShopifyIntegration = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [statsExpanded, setStatsExpanded] = useState(true);
+  const [categoryRecoveryExpanded, setCategoryRecoveryExpanded] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -331,14 +332,6 @@ const ShopifyIntegration = () => {
         </CollapsibleContent>
       </Collapsible>
 
-      {/* Category Recovery Tool */}
-      {products.length > 0 && (
-        <CategoryRecoveryTool 
-          products={products}
-          onRecoveryComplete={() => loadData(true)}
-        />
-      )}
-
       {/* Product Management */}
       <ShopifyProductManagement
         products={products}
@@ -356,6 +349,24 @@ const ShopifyIntegration = () => {
         onEditProduct={setEditingProduct}
         onToggleVisibility={handleToggleVisibility}
       />
+
+      {/* Category Recovery Tool */}
+      {products.length > 0 && (
+        <Collapsible open={categoryRecoveryExpanded} onOpenChange={setCategoryRecoveryExpanded}>
+          <CollapsibleTrigger asChild>
+            <Button variant="ghost" className="flex items-center gap-2 p-0 h-auto font-semibold text-lg">
+              {categoryRecoveryExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+              Category Recovery Tool
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="mt-4">
+            <CategoryRecoveryTool 
+              products={products}
+              onRecoveryComplete={() => loadData(true)}
+            />
+          </CollapsibleContent>
+        </Collapsible>
+      )}
 
       {/* Sync Logs */}
       <SyncLogs syncLogs={syncLogs} formatDate={formatDate} />
