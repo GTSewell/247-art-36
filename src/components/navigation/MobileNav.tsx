@@ -78,17 +78,17 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
           onClick={(e) => e.stopPropagation()}
         >
         {/* Navigation links for all users */}
-        <div className="p-3 hover:bg-muted rounded-t-md">
+        <div className="px-3 hover:bg-muted rounded-t-md">
           <MobileNavLink to="/" isActive={isActive("/")}>
             Home
           </MobileNavLink>
         </div>
-        <div className="p-3 hover:bg-muted">
+        <div className="px-3 hover:bg-muted">
           <MobileNavLink to="/artists" isActive={isActive("/artists")}>
             The Artists
           </MobileNavLink>
         </div>
-        <div className="p-3 hover:bg-muted">
+        <div className="px-3 hover:bg-muted">
           <MobileNavLink to="/store" isActive={isActive("/store")}>
             The Store
           </MobileNavLink>
