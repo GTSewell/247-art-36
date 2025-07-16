@@ -25,8 +25,10 @@ export const useCategoryFilters = ({ products, onFilteredProductsChange }: UseCa
     const artists = [...new Set(products.map(p => p.artists?.name).filter(Boolean))];
     const types = [...new Set(products.map(p => p.shopify_tags).flat().filter(Boolean))];
     const prices = products.map(p => parseFloat(p.price)).filter(p => !isNaN(p));
-    const minPrice = Math.min(...prices) || 0;
-    const maxPrice = Math.max(...prices) || 1000;
+    
+    // Handle empty products array gracefully to prevent Infinity values
+    const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
+    const maxPrice = prices.length > 0 ? Math.max(...prices) : 1000;
 
     return {
       artists: artists.sort(),
