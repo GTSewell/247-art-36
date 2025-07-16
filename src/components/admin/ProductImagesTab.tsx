@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -80,6 +81,17 @@ const ProductImagesTab: React.FC<ProductImagesTabProps> = ({
     });
   };
 
+  // Helper function to extract URL from different formats
+  const getImageUrl = (imageItem: any): string => {
+    if (typeof imageItem === 'string') {
+      return imageItem;
+    }
+    if (imageItem && typeof imageItem === 'object') {
+      return imageItem.src || imageItem.url || imageItem.image_url || '';
+    }
+    return '';
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -114,9 +126,12 @@ const ProductImagesTab: React.FC<ProductImagesTabProps> = ({
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {formData.additional_images?.map((imageUrl: string, index: number) => {
-            // Handle both string URLs and objects with src property
-            const displayUrl = typeof imageUrl === 'string' ? imageUrl : imageUrl?.src || imageUrl;
+          {formData.additional_images?.map((imageItem: any, index: number) => {
+            const displayUrl = getImageUrl(imageItem);
+            
+            if (!displayUrl) {
+              return null; // Skip invalid entries
+            }
             
             return (
               <div key={index} className="relative group">

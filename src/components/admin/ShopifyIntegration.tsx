@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useShopifyIntegration } from '@/hooks/useShopifyIntegration';
 import { toast } from 'sonner';
@@ -113,6 +114,33 @@ const ShopifyIntegration = () => {
       setSelectedProducts(new Set(products.map(p => p.id)));
     } else {
       setSelectedProducts(new Set());
+    }
+  };
+
+  const handleToggleVisibility = async (productId: number, isVisible: boolean) => {
+    try {
+      setIsUpdating(true);
+      
+      const { error } = await supabase
+        .from('products')
+        .update({ is_visible: isVisible })
+        .eq('id', productId);
+        
+      if (error) throw error;
+      
+      // Update local state
+      setProducts(prev => 
+        prev.map(p => 
+          p.id === productId ? { ...p, is_visible: isVisible } : p
+        )
+      );
+      
+      toast.success(`Product ${isVisible ? 'shown' : 'hidden'} successfully`);
+    } catch (error) {
+      logger.error('Error toggling product visibility:', error);
+      toast.error('Failed to update product visibility');
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -309,6 +337,7 @@ const ShopifyIntegration = () => {
         onClearSelection={() => setSelectedProducts(new Set())}
         onBulkAssignment={handleBulkAssignment}
         onEditProduct={setEditingProduct}
+        onToggleVisibility={handleToggleVisibility}
       />
 
       {/* Sync Logs */}

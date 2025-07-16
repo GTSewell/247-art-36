@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -135,7 +136,6 @@ const ProductList = ({
                   <Switch
                     checked={product.is_visible !== false}
                     onCheckedChange={(checked) => onToggleVisibility(product.id, checked)}
-                    size="sm"
                   />
                 )}
               </div>
