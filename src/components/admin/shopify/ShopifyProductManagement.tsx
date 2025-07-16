@@ -43,12 +43,12 @@ const ShopifyProductManagement = ({
 }: ShopifyProductManagementProps) => {
   const [filters, setFilters] = useState<FilterState>({
     searchText: '',
-    category: '',
-    artistId: '',
-    stockStatus: '',
-    visibilityStatus: '',
-    featuredStatus: '',
-    categorySource: '',
+    category: 'all',
+    artistId: 'all',
+    stockStatus: 'all',
+    visibilityStatus: 'all',
+    featuredStatus: 'all',
+    categorySource: 'all',
     sortBy: 'name',
     sortOrder: 'asc'
   });

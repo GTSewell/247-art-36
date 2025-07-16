@@ -44,12 +44,12 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
   const clearAllFilters = () => {
     onFiltersChange({
       searchText: '',
-      category: '',
-      artistId: '',
-      stockStatus: '',
-      visibilityStatus: '',
-      featuredStatus: '',
-      categorySource: '',
+      category: 'all',
+      artistId: 'all',
+      stockStatus: 'all',
+      visibilityStatus: 'all',
+      featuredStatus: 'all',
+      categorySource: 'all',
       sortBy: 'name',
       sortOrder: 'asc'
     });
@@ -58,12 +58,12 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
   const getActiveFilterCount = () => {
     let count = 0;
     if (filters.searchText) count++;
-    if (filters.category) count++;
-    if (filters.artistId) count++;
-    if (filters.stockStatus) count++;
-    if (filters.visibilityStatus) count++;
-    if (filters.featuredStatus) count++;
-    if (filters.categorySource) count++;
+    if (filters.category && filters.category !== 'all') count++;
+    if (filters.artistId && filters.artistId !== 'all') count++;
+    if (filters.stockStatus && filters.stockStatus !== 'all') count++;
+    if (filters.visibilityStatus && filters.visibilityStatus !== 'all') count++;
+    if (filters.featuredStatus && filters.featuredStatus !== 'all') count++;
+    if (filters.categorySource && filters.categorySource !== 'all') count++;
     return count;
   };
 
@@ -103,7 +103,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
+              <SelectItem value="all">All Categories</SelectItem>
               {storeCategories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.label}
@@ -121,7 +121,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Artists</SelectItem>
+              <SelectItem value="all">All Artists</SelectItem>
               <SelectItem value="unassigned">Unassigned</SelectItem>
               {artists.map((artist) => (
                 <SelectItem key={artist.id} value={artist.id.toString()}>
@@ -140,7 +140,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Stock</SelectItem>
+              <SelectItem value="all">All Stock</SelectItem>
               <SelectItem value="in-stock">In Stock</SelectItem>
               <SelectItem value="low-stock">Low Stock (&lt;5)</SelectItem>
               <SelectItem value="out-of-stock">Out of Stock</SelectItem>
@@ -156,7 +156,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Products</SelectItem>
+              <SelectItem value="all">All Products</SelectItem>
               <SelectItem value="visible">Visible</SelectItem>
               <SelectItem value="hidden">Hidden</SelectItem>
             </SelectContent>
@@ -171,7 +171,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Products</SelectItem>
+              <SelectItem value="all">All Products</SelectItem>
               <SelectItem value="featured">Featured</SelectItem>
               <SelectItem value="standard">Standard</SelectItem>
             </SelectContent>
@@ -186,7 +186,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
               <SelectValue placeholder="All" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Sources</SelectItem>
+              <SelectItem value="all">All Sources</SelectItem>
               <SelectItem value="auto">Auto-assigned</SelectItem>
               <SelectItem value="manual">Manually Set</SelectItem>
               <SelectItem value="shopify">From Shopify</SelectItem>

@@ -22,12 +22,12 @@ export const useProductFilters = (products: any[], filters: FilterState, artists
     }
 
     // Category filter
-    if (filters.category) {
+    if (filters.category && filters.category !== 'all') {
       filtered = filtered.filter(product => product.category === filters.category);
     }
 
     // Artist filter
-    if (filters.artistId) {
+    if (filters.artistId && filters.artistId !== 'all') {
       if (filters.artistId === 'unassigned') {
         filtered = filtered.filter(product => !product.artist_id);
       } else {
@@ -36,7 +36,7 @@ export const useProductFilters = (products: any[], filters: FilterState, artists
     }
 
     // Stock status filter
-    if (filters.stockStatus) {
+    if (filters.stockStatus && filters.stockStatus !== 'all') {
       filtered = filtered.filter(product => {
         const quantity = product.shopify_inventory_quantity || 0;
         switch (filters.stockStatus) {
@@ -53,7 +53,7 @@ export const useProductFilters = (products: any[], filters: FilterState, artists
     }
 
     // Visibility filter
-    if (filters.visibilityStatus) {
+    if (filters.visibilityStatus && filters.visibilityStatus !== 'all') {
       filtered = filtered.filter(product => {
         if (filters.visibilityStatus === 'visible') {
           return product.is_visible !== false;
@@ -65,7 +65,7 @@ export const useProductFilters = (products: any[], filters: FilterState, artists
     }
 
     // Featured filter
-    if (filters.featuredStatus) {
+    if (filters.featuredStatus && filters.featuredStatus !== 'all') {
       filtered = filtered.filter(product => {
         if (filters.featuredStatus === 'featured') {
           return product.is_featured === true;
@@ -77,7 +77,7 @@ export const useProductFilters = (products: any[], filters: FilterState, artists
     }
 
     // Category source filter
-    if (filters.categorySource) {
+    if (filters.categorySource && filters.categorySource !== 'all') {
       filtered = filtered.filter(product => product.category_source === filters.categorySource);
     }
 
