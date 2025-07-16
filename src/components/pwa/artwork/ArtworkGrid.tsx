@@ -66,7 +66,7 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({
             key={index} 
             className={`group relative aspect-square rounded-md overflow-hidden border ${
               isDragging === index ? 'border-primary ring-2 ring-primary' : 'border-gray-200'
-            } bg-gray-100`}
+            } bg-transparent`}
           >
             <img 
               src={artwork} 

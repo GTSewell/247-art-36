@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
 
   return (
     <div className="group h-full flex flex-col cursor-pointer" onClick={handleCardClick}>
-      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-muted border border-border">
+      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-transparent">
         <img 
           src={getProductImageUrl(product)} 
           alt={product.name} 

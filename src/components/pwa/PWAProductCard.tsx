@@ -45,7 +45,7 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product, onProductClick
 
   return (
     <div className="group h-full flex flex-col cursor-pointer" onClick={handleCardClick}>
-      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-white">
+      <div className="relative aspect-square overflow-hidden rounded-none mb-1 bg-transparent">
         <img 
           src={product.image_url || '/placeholder.svg'} 
           alt={product.name} 

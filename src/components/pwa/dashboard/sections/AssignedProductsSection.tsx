@@ -78,12 +78,12 @@ const AssignedProductsSection: React.FC<AssignedProductsSectionProps> = ({
               <CardContent className="p-4">
                 <div className="flex items-start space-x-4">
                   {/* Product Image */}
-                  <div className="w-20 h-20 bg-muted rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-20 h-20 bg-transparent rounded-lg overflow-hidden flex-shrink-0">
                     {product.image_url ? (
                       <img
                         src={product.image_url}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                         onError={(e) => {
                           e.currentTarget.src = '/placeholder.svg';
                         }}
