@@ -296,19 +296,21 @@ const ShopifyIntegration = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Shopify Integration</h2>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-xl sm:text-2xl font-bold">Shopify Integration</h2>
+          <p className="text-muted-foreground text-sm sm:text-base">
             Manage your Shopify store integration and product synchronization
           </p>
         </div>
-        <ShopifySyncControls
-          autoActivateProducts={autoActivateProducts}
-          isSyncing={isSyncing}
-          onAutoActivateChange={setAutoActivateProducts}
-          onSync={handleSync}
-        />
+        <div className="w-full lg:w-auto lg:flex-shrink-0">
+          <ShopifySyncControls
+            autoActivateProducts={autoActivateProducts}
+            isSyncing={isSyncing}
+            onAutoActivateChange={setAutoActivateProducts}
+            onSync={handleSync}
+          />
+        </div>
       </div>
 
       {/* Stats Cards */}
