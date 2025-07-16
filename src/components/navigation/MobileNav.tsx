@@ -17,7 +17,7 @@ import {
   Moon,
   X,
   Home,
-  Users,
+  Palette,
   Store
 } from 'lucide-react';
 import { useTheme } from "next-themes";
@@ -87,7 +87,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
           </MobileNavLink>
         </div>
         <div className="px-3 hover:bg-muted">
-          <MobileNavLink to="/artists" isActive={isActive("/artists")} icon={<Users className="h-5 w-5" />}>
+          <MobileNavLink to="/artists" isActive={isActive("/artists")} icon={<Palette className="h-5 w-5" />}>
             The Artists
           </MobileNavLink>
         </div>
