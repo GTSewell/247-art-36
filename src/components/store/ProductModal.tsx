@@ -160,7 +160,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
           
           <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
-              <ProductImageGallery images={variations} />
+              <ProductImageGallery product={product} />
             </div>
             <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
               <div className="flex-grow space-y-3 md:space-y-4">

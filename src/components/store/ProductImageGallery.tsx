@@ -4,12 +4,16 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from "framer-motion";
 import { Maximize2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { getAllProductImages } from './utils/imageUtils';
 
 interface ProductImageGalleryProps {
-  images: string[];
+  images?: string[];
+  product?: any; // For automatic image extraction
 }
 
-const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => {
+const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, product }) => {
+  // Use provided images or extract from product
+  const displayImages = images || (product ? getAllProductImages(product) : []);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [zoomButtonPosition, setZoomButtonPosition] = useState<{ top: number; left: number } | null>(null);
@@ -72,11 +76,11 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
   };
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    setCurrentImageIndex((prev) => (prev + 1) % displayImages.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentImageIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
   };
 
   return (
@@ -108,7 +112,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
               onClick={(e) => e.stopPropagation()}
             >
               <img
-                src={images[selectedImage]}
+                src={displayImages[selectedImage]}
                 alt={`Enlarged variation ${selectedImage + 1}`}
                 className="max-w-full max-h-full object-contain"
               />
@@ -120,14 +124,14 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
       {/* Single image display with navigation */}
       <div ref={imageContainerRef} className="relative aspect-square rounded-lg overflow-hidden shadow-sm group">
         <img
-          src={images[currentImageIndex]}
+          src={displayImages[currentImageIndex]}
           alt={`Product image ${currentImageIndex + 1}`}
           className="w-full h-full object-contain"
         />
         
 
         {/* Navigation arrows - only show if multiple images */}
-        {images.length > 1 && (
+        {displayImages.length > 1 && (
           <>
             <button
               onClick={(e) => {
@@ -150,7 +154,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images }) => 
 
             {/* Image indicators */}
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1 z-[150]">
-              {images.map((_, index) => (
+              {displayImages.map((_, index) => (
                 <button
                   key={index}
                   onClick={(e) => {

@@ -79,11 +79,40 @@ export const getArtworkImage = (category: string, index: number = 1): string => 
 };
 
 export const getProductImageUrl = (product: any): string => {
-  if (product.image_url && !product.image_url.includes('undefined') && !product.image_url.includes('lovable-uploads')) {
-    return `${product.image_url}?t=${Date.now()}`;
+  // Prioritize hero_image_url, then image_url, then fallback
+  const primaryImage = product.hero_image_url || product.image_url;
+  
+  if (primaryImage && !primaryImage.includes('undefined') && !primaryImage.includes('lovable-uploads')) {
+    return `${primaryImage}?t=${Date.now()}`;
   }
   
   return getArtworkImage(product.category, getNumberFromProductId(product.id));
+};
+
+// Get all product images including hero and additional images
+export const getAllProductImages = (product: any): string[] => {
+  const images: string[] = [];
+  
+  // Add hero image first
+  const heroImage = product.hero_image_url || product.image_url;
+  if (heroImage && !heroImage.includes('undefined') && !heroImage.includes('lovable-uploads')) {
+    images.push(heroImage);
+  }
+  
+  // Add additional images from Shopify
+  if (product.additional_images && Array.isArray(product.additional_images)) {
+    const additionalUrls = product.additional_images
+      .filter(img => img.src && !img.src.includes('undefined') && !img.src.includes('lovable-uploads'))
+      .map(img => img.src);
+    images.push(...additionalUrls);
+  }
+  
+  // If no images, use fallback
+  if (images.length === 0) {
+    images.push(getArtworkImage(product.category, getNumberFromProductId(product.id)));
+  }
+  
+  return images;
 };
 
 export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {

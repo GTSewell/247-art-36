@@ -106,6 +106,16 @@ export interface ProductWithShopify {
   image_url: string
   status: 'active' | 'inactive' | 'deleted'
   artist_name?: string
+  // Enhanced image fields
+  hero_image_url?: string
+  additional_images?: Array<{
+    src: string
+    alt: string
+    width?: number
+    height?: number
+    position?: number
+    source?: 'shopify' | 'manual'
+  }>
   // Shopify specific fields
   shopify_product_id?: string
   shopify_variant_id?: string

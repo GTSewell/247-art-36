@@ -9,12 +9,26 @@ export function mapShopifyAdminProductToInternal(shopifyProduct: ShopifyProduct)
     .find(tag => tag.trim().startsWith('artist:'))
   const artistName = artistTag ? artistTag.replace('artist:', '').trim() : undefined
 
+  // Process images - sort by position to ensure consistent ordering
+  const sortedImages = shopifyProduct.images.sort((a, b) => (a.position || 0) - (b.position || 0))
+  const heroImage = sortedImages[0]?.src || ''
+  const additionalImages = sortedImages.slice(1).map(img => ({
+    src: img.src,
+    alt: img.alt || '',
+    width: img.width,
+    height: img.height,
+    position: img.position,
+    source: 'shopify' as const
+  }))
+
   return {
     name: shopifyProduct.title,
     description: shopifyProduct.body_html?.replace(/<[^>]*>/g, '') || '', // Strip HTML
     price: parseFloat(shopifyProduct.variants[0]?.price || '0'),
     category: mapShopifyTypeToCategory(shopifyProduct.product_type),
-    image_url: shopifyProduct.images[0]?.src || '',
+    image_url: heroImage, // Keep for backward compatibility
+    hero_image_url: heroImage,
+    additional_images: additionalImages,
     shopify_product_id: shopifyProduct.id,
     shopify_variant_id: shopifyProduct.variants[0]?.id || '',
     shopify_inventory_quantity: shopifyProduct.variants[0]?.inventory_quantity || 0,
@@ -34,12 +48,25 @@ export function mapShopifyStorefrontProductToInternal(shopifyProduct: ShopifySto
   const artistTag = shopifyProduct.tags.find(tag => tag.startsWith('artist:'))
   const artistName = artistTag ? artistTag.replace('artist:', '').trim() : undefined
 
+  // Process images for storefront API
+  const heroImage = shopifyProduct.images[0]?.url || ''
+  const additionalImages = shopifyProduct.images.slice(1).map((img, index) => ({
+    src: img.url,
+    alt: img.altText || '',
+    width: img.width,
+    height: img.height,
+    position: index + 2, // Position starts from 2 since hero is position 1
+    source: 'shopify' as const
+  }))
+
   return {
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     price: parseFloat(shopifyProduct.priceRange.minVariantPrice.amount),
     category: mapShopifyTypeToCategory(shopifyProduct.productType),
-    image_url: shopifyProduct.images[0]?.url || '',
+    image_url: heroImage, // Keep for backward compatibility
+    hero_image_url: heroImage,
+    additional_images: additionalImages,
     shopify_product_id: shopifyProduct.id.replace('gid://shopify/Product/', ''),
     shopify_variant_id: shopifyProduct.variants[0]?.id.replace('gid://shopify/ProductVariant/', '') || '',
     shopify_inventory_quantity: shopifyProduct.totalInventory,
