@@ -64,7 +64,7 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
       onClick={onClose}
     >
       {/* Dropdown content area */}
-      <div className="bg-background/98 backdrop-blur-sm border-t border-border w-full pt-16">
+      <div className="bg-background border shadow-md rounded-md w-full max-w-md mx-auto mt-16 mr-4 ml-auto">
         {/* Close button in the padding area */}
         <button 
           className="absolute top-4 right-4 p-2 rounded-md text-foreground hover:bg-muted"
@@ -74,53 +74,58 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
         </button>
         
         <div 
-          className="max-w-full mx-auto px-6 py-2 space-y-1"
+          className="p-0"
           onClick={(e) => e.stopPropagation()}
         >
         {/* Navigation links for all users */}
-        <MobileNavLink to="/" isActive={isActive("/")}>
-          Home
-        </MobileNavLink>
-        <MobileNavLink to="/artists" isActive={isActive("/artists")}>
-          The Artists
-        </MobileNavLink>
-        <MobileNavLink to="/store" isActive={isActive("/store")}>
-          The Store
-        </MobileNavLink>
+        <div className="p-3 hover:bg-muted rounded-t-md">
+          <MobileNavLink to="/" isActive={isActive("/")}>
+            Home
+          </MobileNavLink>
+        </div>
+        <div className="p-3 hover:bg-muted">
+          <MobileNavLink to="/artists" isActive={isActive("/artists")}>
+            The Artists
+          </MobileNavLink>
+        </div>
+        <div className="p-3 hover:bg-muted">
+          <MobileNavLink to="/store" isActive={isActive("/store")}>
+            The Store
+          </MobileNavLink>
+        </div>
+        
+        <div className="border-t border-border"></div>
         
         {/* Theme Toggle */}
         <button 
-          className="flex items-center w-full p-2 rounded-md text-foreground hover:bg-muted"
+          className="flex items-center w-full p-3 text-foreground hover:bg-muted"
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
         >
-          <Sun className="mr-2 h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <Moon className="mr-2 h-4 w-4 absolute rotate-0 scale-100 transition-all dark:rotate-90 dark:scale-0" />
+          <Sun className="mr-2 h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Moon className="mr-2 h-5 w-5 absolute rotate-0 scale-100 transition-all dark:rotate-90 dark:scale-0" />
           <span>{theme === "dark" ? "Infinite Light Mode" : "Genesis Dark Mode"}</span>
         </button>
         
         {/* User menu items - Only show if user is logged in */}
         {user && (
           <>
+            <div className="border-t border-border"></div>
+            
             {/* User profile info */}
-            <div className="flex items-center p-2 mb-2 bg-muted rounded-md">
-              <div className="h-10 w-10 rounded-full overflow-hidden mr-3 bg-primary">
+            <div className="flex items-center gap-2 p-3 border-b border-border">
+              <div className="h-8 w-8 rounded-full overflow-hidden bg-primary">
                 <img 
-                  src="/lovable-uploads/af63a2ba-f2fc-4794-af1b-a504b0c294de.png" 
+                  src="/lovable-uploads/44e75f5d-9241-4255-87f8-126a4ed04203.png" 
                   alt={user.user_metadata?.full_name || user.email} 
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="flex flex-col">
-                <p className="font-medium text-sm text-foreground">
-                  {user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'}
-                </p>
-                <p className="text-xs text-muted-foreground truncate max-w-[150px]">{user.email}</p>
-              </div>
+              <span className="text-sm font-medium truncate">{user.email}</span>
             </div>
             
             {/* User menu options */}
-            <Link to="/cart" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
-              <ShoppingCart className="mr-2 h-4 w-4" />
+            <Link to="/cart" className="flex items-center p-3 text-foreground hover:bg-muted">
+              <ShoppingCart className="mr-2 h-5 w-5" />
               <span>Cart</span>
               {itemCount > 0 && (
                 <span className="ml-auto bg-zap-red text-white text-xs px-2 py-1 rounded-full">
@@ -129,33 +134,36 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
               )}
             </Link>
             
-            <Link to="/messages" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
-              <MessageSquare className="mr-2 h-4 w-4" />
-              <span>Messages</span>
+            <div className="cursor-not-allowed">
+              <div className="flex items-center p-3 text-muted-foreground">
+                <MessageSquare className="mr-2 h-5 w-5" />
+                <span>Messages</span>
+                <span className="ml-auto text-xs text-muted-foreground">coming soon</span>
+              </div>
+            </div>
+            
+            <Link to="/dashboard/artist" className="flex items-center p-3 text-foreground hover:bg-muted">
+              <Settings className="mr-2 h-5 w-5" />
+              <span className="font-medium">Artist Dashboard</span>
             </Link>
             
-            <Link to="/dashboard/artist" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Artist Dashboard</span>
-            </Link>
-            
-            <Link to="/dashboard/collector" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Collector Dashboard</span>
+            <Link to="/dashboard/collector" className="flex items-center p-3 text-foreground hover:bg-muted">
+              <Settings className="mr-2 h-5 w-5" />
+              <span className="font-medium">Collector Dashboard</span>
             </Link>
             
             {isAdmin && (
-              <Link to="/admin/artists" className="flex items-center p-2 rounded-md text-foreground hover:bg-muted">
-                <Shield className="mr-2 h-4 w-4" />
+              <Link to="/admin/artists" className="flex items-center p-3 text-foreground hover:bg-muted">
+                <Shield className="mr-2 h-5 w-5" />
                 <span>Artist Management</span>
               </Link>
             )}
             
             <button 
-              className="flex items-center w-full p-2 rounded-md text-destructive hover:bg-muted"
+              className="flex items-center w-full p-3 text-destructive hover:bg-muted border-t border-border rounded-b-md"
               onClick={handleSignOut}
             >
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-5 w-5" />
               <span>Sign out</span>
             </button>
           </>
@@ -163,9 +171,14 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
         
         {/* Show sign in link if user is not logged in */}
         {!user && !isLoading && (
-          <MobileNavLink to="/auth" isActive={isActive("/auth")}>
-            Sign In
-          </MobileNavLink>
+          <>
+            <div className="border-t border-border"></div>
+            <div className="p-3 hover:bg-muted rounded-b-md">
+              <MobileNavLink to="/auth" isActive={isActive("/auth")}>
+                Sign In
+              </MobileNavLink>
+            </div>
+          </>
         )}
         </div>
       </div>
