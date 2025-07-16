@@ -20,6 +20,12 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
 
+  // Reset image index when product or images change
+  useEffect(() => {
+    setCurrentImageIndex(0);
+    setSelectedImage(null);
+  }, [product, images]);
+
   // Update zoom button position when modal opens or window resizes
   useEffect(() => {
     const updateZoomButtonPosition = () => {
