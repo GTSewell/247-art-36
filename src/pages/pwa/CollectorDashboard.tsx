@@ -55,36 +55,44 @@ const CollectorDashboard = () => {
     <div className="min-h-screen bg-background">
       {isPWA ? <PWANavigation /> : <Navigation />}
       
-      <main className="container mx-auto px-4 pt-16 pb-24">
-        <div className="flex items-center mb-6">
+      <main className="container max-w-4xl mx-auto px-4 pt-20 pb-24">
+        {/* Header */}
+        <div className="flex items-center mb-8">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="mr-2 -ml-2" 
+            className="mr-3 -ml-2" 
             onClick={() => navigate('/account')}
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back
           </Button>
-          <h1 className="text-2xl font-bold text-foreground">Collector Dashboard</h1>
+          <h1 className="text-3xl font-bold text-foreground">Collector Dashboard</h1>
         </div>
         
+        {/* Clean minimal tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="favorites">Favorites</TabsTrigger>
-            <TabsTrigger value="purchases">Purchases</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-8 h-12 bg-muted/50">
+            <TabsTrigger value="favorites" className="text-sm font-medium">
+              Favorites
+            </TabsTrigger>
+            <TabsTrigger value="purchases" className="text-sm font-medium">
+              Purchases
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="text-sm font-medium">
+              Settings
+            </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="favorites" className="space-y-4">
+          <TabsContent value="favorites" className="mt-0">
             <CollectorFavorites />
           </TabsContent>
           
-          <TabsContent value="purchases" className="space-y-4">
+          <TabsContent value="purchases" className="mt-0">
             <CollectorPurchases />
           </TabsContent>
           
-          <TabsContent value="settings" className="space-y-4">
+          <TabsContent value="settings" className="mt-0">
             <CollectorSettings />
           </TabsContent>
         </Tabs>
