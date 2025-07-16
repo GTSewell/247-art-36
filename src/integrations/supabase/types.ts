@@ -612,6 +612,36 @@ export type Database = {
         }
         Relationships: []
       }
+      specification_options: {
+        Row: {
+          category: string
+          created_at: string | null
+          created_by: string | null
+          id: string
+          option_value: string
+          updated_at: string | null
+          usage_count: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          option_value: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          created_by?: string | null
+          id?: string
+          option_value?: string
+          updated_at?: string | null
+          usage_count?: number | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

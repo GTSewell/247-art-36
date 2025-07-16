@@ -3,21 +3,17 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X, Plus } from 'lucide-react';
+import { SPECIFICATION_CATEGORIES, SPECIFICATION_OPTIONS } from '@/data/specificationOptions';
+import { useSpecificationOptions } from '@/hooks/useSpecificationOptions';
+import SpecificationDropdown from './specifications/SpecificationDropdown';
+import SizeInput from './specifications/SizeInput';
+import ColorTagSelector from './specifications/ColorTagSelector';
+import EditionInput from './specifications/EditionInput';
 
 interface ProductSpecificationsTabProps {
   formData: any;
   onChange: (data: any) => void;
 }
-
-// Standard specifications that should always be displayed in order
-const COMMON_SPECS = [
-  'Material',
-  'Dimensions', 
-  'Weight',
-  'Color',
-  'Style',
-  'Edition Size'
-];
 
 const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
   formData,
@@ -25,6 +21,7 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
 }) => {
   const [newKey, setNewKey] = useState('');
   const [newValue, setNewValue] = useState('');
+  const { options, addOption, incrementUsage } = useSpecificationOptions();
 
   const specifications = formData.specifications || {};
 
@@ -43,7 +40,7 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
 
   const removeSpecification = (key: string) => {
     // Don't allow removing common specs, just clear their value
-    if (COMMON_SPECS.includes(key)) {
+    if (SPECIFICATION_CATEGORIES.includes(key as any)) {
       const updatedSpecs = { ...specifications };
       updatedSpecs[key] = '';
       onChange({ ...formData, specifications: updatedSpecs });
@@ -58,15 +55,39 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
     const updatedSpecs = { ...specifications };
     updatedSpecs[key] = value;
     onChange({ ...formData, specifications: updatedSpecs });
+    
+    // Track usage for predefined options
+    if (SPECIFICATION_CATEGORIES.includes(key as any) && value) {
+      incrementUsage(key, value);
+    }
   };
 
   // Get additional specs (not in common specs)
   const additionalSpecs = Object.entries(specifications).filter(
-    ([key]) => !COMMON_SPECS.includes(key)
+    ([key]) => !SPECIFICATION_CATEGORIES.includes(key as any)
   );
 
   const getDisplayValue = (value: string) => {
     return value && value.trim() ? value : 'N/A';
+  };
+
+  const getAvailableOptions = (category: string) => {
+    const predefinedOptions = SPECIFICATION_OPTIONS[category as keyof typeof SPECIFICATION_OPTIONS] || [];
+    const userOptions = options[category]?.map(opt => opt.option_value) || [];
+    
+    // Combine and deduplicate
+    const allOptions = [...predefinedOptions, ...userOptions];
+    return [...new Set(allOptions)].sort();
+  };
+
+  const handleOptionChange = async (category: string, value: string) => {
+    updateSpecification(category, value);
+    
+    // If this is a new option, add it to the database
+    const allOptions = getAvailableOptions(category);
+    if (value && !allOptions.includes(value)) {
+      await addOption(category, value);
+    }
   };
 
   return (
@@ -87,24 +108,52 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
           </p>
         </div>
         
-        {COMMON_SPECS.map((specKey) => (
-          <div key={specKey} className="flex items-center space-x-2 p-3 border rounded bg-muted/20">
-            <div className="flex-1 grid grid-cols-2 gap-2">
-              <Input
-                value={specKey}
-                disabled
-                className="bg-muted/50 font-medium"
-              />
-              <Input
-                placeholder={`Enter ${specKey.toLowerCase()} or leave empty for N/A`}
+        {SPECIFICATION_CATEGORIES.map((specKey) => (
+          <div key={specKey} className="space-y-2 p-4 border rounded bg-muted/20">
+            <Label className="text-sm font-medium">{specKey}</Label>
+            
+            {specKey === 'Size' ? (
+              <SizeInput
                 value={specifications[specKey] || ''}
-                onChange={(e) => updateSpecification(specKey, e.target.value)}
+                onChange={(value) => updateSpecification(specKey, value)}
+                className="w-full"
               />
-            </div>
-            <div className="w-[72px] text-center">
-              <span className="text-xs text-muted-foreground">
-                Display: <strong>{getDisplayValue(specifications[specKey] || '')}</strong>
-              </span>
+            ) : specKey === 'Color' ? (
+              <ColorTagSelector
+                value={specifications[specKey] || ''}
+                onChange={(value) => handleOptionChange(specKey, value)}
+                options={getAvailableOptions(specKey)}
+                className="w-full"
+              />
+            ) : specKey === 'Edition' ? (
+              <EditionInput
+                value={specifications[specKey] || ''}
+                onChange={(value) => updateSpecification(specKey, value)}
+                productCategory={formData.category}
+                className="w-full"
+              />
+            ) : specKey === 'Weight' ? (
+              <div className="flex items-center space-x-2">
+                <Input
+                  placeholder="Enter weight"
+                  value={specifications[specKey] || ''}
+                  onChange={(e) => updateSpecification(specKey, e.target.value)}
+                  className="flex-1"
+                />
+                <span className="text-sm text-muted-foreground">g</span>
+              </div>
+            ) : (
+              <SpecificationDropdown
+                value={specifications[specKey] || ''}
+                onChange={(value) => handleOptionChange(specKey, value)}
+                options={getAvailableOptions(specKey)}
+                placeholder={`Select ${specKey.toLowerCase()}...`}
+                className="w-full"
+              />
+            )}
+            
+            <div className="text-xs text-muted-foreground">
+              Display: <strong>{getDisplayValue(specifications[specKey] || '')}</strong>
             </div>
           </div>
         ))}
@@ -213,6 +262,18 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
             className="text-left text-muted-foreground hover:text-foreground"
           >
             Frame Included
+          </button>
+          <button
+            onClick={() => setNewKey('Signed')}
+            className="text-left text-muted-foreground hover:text-foreground"
+          >
+            Signed
+          </button>
+          <button
+            onClick={() => setNewKey('Certificate')}
+            className="text-left text-muted-foreground hover:text-foreground"
+          >
+            Certificate
           </button>
         </div>
       </div>
