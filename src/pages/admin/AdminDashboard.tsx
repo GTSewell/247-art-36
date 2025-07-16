@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -15,8 +15,58 @@ import {
 } from 'lucide-react';
 import UserMenu from '@/components/navigation/UserMenu';
 import ErrorBoundary from '@/components/admin/ErrorBoundary';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminDashboard = () => {
+  const [stats, setStats] = useState({
+    totalArtists: 0,
+    activeProducts: 0,
+    recentOrders: 0,
+    siteVisits: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true);
+        
+        // Get total artists count
+        const { count: artistsCount } = await supabase
+          .from('artists')
+          .select('*', { count: 'exact', head: true });
+        
+        // Get active products count
+        const { count: productsCount } = await supabase
+          .from('products')
+          .select('*', { count: 'exact', head: true })
+          .eq('is_visible', true);
+        
+        // Get site visits from password logs (last 30 days)
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const { count: visitsCount } = await supabase
+          .from('password_access_logs')
+          .select('*', { count: 'exact', head: true })
+          .gte('created_at', thirtyDaysAgo.toISOString());
+        
+        setStats({
+          totalArtists: artistsCount || 0,
+          activeProducts: productsCount || 0,
+          recentOrders: 0, // Set to 0 as mentioned by user
+          siteVisits: visitsCount || 0
+        });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   const adminSections = [
     {
       title: "Artist Management",
@@ -73,10 +123,10 @@ const AdminDashboard = () => {
   ];
 
   const quickStats = [
-    { label: "Total Artists", value: "247", change: "+12%" },
-    { label: "Active Products", value: "1,234", change: "+5%" },
-    { label: "Recent Orders", value: "67", change: "+23%" },
-    { label: "System Health", value: "98.5%", change: "Excellent" }
+    { label: "Total Artists", value: loading ? "..." : stats.totalArtists.toString(), change: "" },
+    { label: "Active Products", value: loading ? "..." : stats.activeProducts.toString(), change: "" },
+    { label: "Recent Orders", value: loading ? "..." : stats.recentOrders.toString(), change: "" },
+    { label: "Site Visits (30d)", value: loading ? "..." : stats.siteVisits.toString(), change: "" }
   ];
 
   return (
