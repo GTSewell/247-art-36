@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Check if the current user is an admin
- * Checks the user_roles table for admin role
+ * Uses the is_admin() database function
  */
 export const isUserAdmin = async (): Promise<boolean> => {
   try {
@@ -15,19 +15,15 @@ export const isUserAdmin = async (): Promise<boolean> => {
     
     console.log("Checking admin status for user:", user.email);
     
-    // Check if user has admin role in user_roles table
-    const { data: roles, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin');
+    // Use the existing is_admin() database function
+    const { data, error } = await supabase.rpc('is_admin');
     
     if (error) {
-      console.error("Error querying user roles:", error);
+      console.error("Error calling is_admin function:", error);
       return false;
     }
     
-    const isAdmin = roles && roles.length > 0;
+    const isAdmin = data === true;
     console.log("User is admin:", isAdmin);
     return isAdmin;
   } catch (error) {
