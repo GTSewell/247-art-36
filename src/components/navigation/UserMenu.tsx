@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/use-auth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -38,6 +38,7 @@ interface UserMenuProps {
 export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
   const { user, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { theme, setTheme } = useTheme();
   const [initials, setInitials] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
@@ -254,14 +255,14 @@ export const UserMenu = ({ isCartPage, isArtistDashboard }: UserMenuProps) => {
         </div>
         
         <Link to="/dashboard/artist">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/dashboard/artist' ? 'bg-zap-yellow text-black' : ''}`}>
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Artist Dashboard</span>
           </DropdownMenuItem>
         </Link>
         
         <Link to="/dashboard/collector">
-          <DropdownMenuItem className="p-3 hover:bg-muted">
+          <DropdownMenuItem className={`p-3 hover:bg-muted ${location.pathname === '/dashboard/collector' ? 'bg-zap-yellow text-black' : ''}`}>
             <Settings className="mr-2 h-5 w-5" />
             <span className="font-medium">Collector Dashboard</span>
           </DropdownMenuItem>

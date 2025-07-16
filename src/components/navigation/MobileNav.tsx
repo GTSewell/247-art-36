@@ -145,12 +145,12 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
               </div>
             </div>
             
-            <Link to="/dashboard/artist" className="flex items-center p-3 text-foreground hover:bg-muted">
+            <Link to="/dashboard/artist" className={`flex items-center p-3 text-foreground hover:bg-muted ${location.pathname === '/dashboard/artist' ? 'bg-zap-yellow text-black' : ''}`}>
               <Settings className="mr-2 h-5 w-5" />
               <span className="font-medium">Artist Dashboard</span>
             </Link>
             
-            <Link to="/dashboard/collector" className="flex items-center p-3 text-foreground hover:bg-muted">
+            <Link to="/dashboard/collector" className={`flex items-center p-3 text-foreground hover:bg-muted ${location.pathname === '/dashboard/collector' ? 'bg-zap-yellow text-black' : ''}`}>
               <Settings className="mr-2 h-5 w-5" />
               <span className="font-medium">Collector Dashboard</span>
             </Link>
