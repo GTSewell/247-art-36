@@ -15,7 +15,10 @@ import {
   LogOut,
   Sun,
   Moon,
-  X
+  X,
+  Home,
+  Users,
+  Store
 } from 'lucide-react';
 import { useTheme } from "next-themes";
 
@@ -79,17 +82,17 @@ const MobileNav = ({ isOpen, isActive, user, isLoading, onClose }: MobileNavProp
         >
         {/* Navigation links for all users */}
         <div className="px-3 hover:bg-muted rounded-t-md">
-          <MobileNavLink to="/" isActive={isActive("/")}>
+          <MobileNavLink to="/" isActive={isActive("/")} icon={<Home className="h-5 w-5" />}>
             Home
           </MobileNavLink>
         </div>
         <div className="px-3 hover:bg-muted">
-          <MobileNavLink to="/artists" isActive={isActive("/artists")}>
+          <MobileNavLink to="/artists" isActive={isActive("/artists")} icon={<Users className="h-5 w-5" />}>
             The Artists
           </MobileNavLink>
         </div>
         <div className="px-3 hover:bg-muted">
-          <MobileNavLink to="/store" isActive={isActive("/store")}>
+          <MobileNavLink to="/store" isActive={isActive("/store")} icon={<Store className="h-5 w-5" />}>
             The Store
           </MobileNavLink>
         </div>
