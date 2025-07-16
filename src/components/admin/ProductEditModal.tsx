@@ -104,7 +104,7 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
       });
       
       onProductUpdated();
-      onClose();
+      // Don't auto-close modal - let user close manually after seeing confirmation
     } catch (error) {
       console.error('Error updating product:', error);
       toast({

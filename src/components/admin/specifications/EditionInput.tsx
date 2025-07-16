@@ -29,18 +29,25 @@ const EditionInput: React.FC<EditionInputProps> = ({
     );
   }
 
-  const formatEdition = (val: string) => {
-    if (!val) return val;
+  const handleInputChange = (val: string) => {
+    // Allow free typing, only validate on blur or enter
+    onChange(val);
+  };
+
+  const handleBlur = (val: string) => {
+    if (!val) return;
     
-    // Check if it's already in X/Y format
-    if (val.includes('/')) return val;
-    
-    // If it's just a number, suggest the format
-    if (/^\d+$/.test(val)) {
-      return val + '/';
+    // Validate and suggest proper format on blur
+    if (val.includes('/')) {
+      // Already has format, validate it's X/Y
+      const parts = val.split('/');
+      if (parts.length === 2 && parts[0] && parts[1] && /^\d+$/.test(parts[0]) && /^\d+$/.test(parts[1])) {
+        return; // Valid format
+      }
+    } else if (/^\d+$/.test(val)) {
+      // Just a number, suggest adding total
+      onChange(val + '/');
     }
-    
-    return val;
   };
 
   return (
@@ -49,7 +56,13 @@ const EditionInput: React.FC<EditionInputProps> = ({
       <Input
         placeholder="e.g., 15/100"
         value={value}
-        onChange={(e) => onChange(formatEdition(e.target.value))}
+        onChange={(e) => handleInputChange(e.target.value)}
+        onBlur={(e) => handleBlur(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleBlur(e.currentTarget.value);
+          }
+        }}
         className="text-center"
       />
       <div className="text-xs text-muted-foreground text-center">
