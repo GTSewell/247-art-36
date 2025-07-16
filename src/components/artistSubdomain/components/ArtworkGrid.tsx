@@ -30,7 +30,7 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({
                 <img 
                   src={artwork} 
                   alt={`Artwork ${index + 1}`}
-                  className="w-full object-cover"
+                  className="w-full object-contain"
                   onError={(e) => {
                     onArtworkImageError(e, index, artwork);
                     onRemoveArtwork(artwork);

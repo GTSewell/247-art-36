@@ -119,7 +119,7 @@ const ArtistArtworksSection = ({
               <img
                 src={artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
               />
             </div>
           ))

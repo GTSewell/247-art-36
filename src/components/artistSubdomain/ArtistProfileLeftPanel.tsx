@@ -40,7 +40,7 @@ const ArtistProfileLeftPanel: React.FC<ArtistProfileLeftPanelProps> = ({
             <img 
               src={artist.image || '/placeholder.svg'} 
               alt={artist.name || 'Artist'} 
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>

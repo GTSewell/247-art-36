@@ -76,7 +76,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                   <img
                     src={artwork}
                     alt={`Artwork ${index + 1} by ${artist.name}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     onError={(e) => handleArtworkImageError(e, index, artwork)}
                     data-artwork-image={`image-${index}`}
                   />

@@ -135,7 +135,7 @@ const CollectorFavorites: React.FC = () => {
                   <img
                     src={artist.image || "/placeholder.svg"}
                     alt={artist.name || "Artist"}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "/placeholder.svg";
                     }}
