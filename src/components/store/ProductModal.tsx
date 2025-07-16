@@ -119,7 +119,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
   return (
     <div className="relative">
       {/* Navigation buttons outside modal - desktop only */}
-      {showNavigation && !isMobile && (
+      {showNavigation && !isMobile && isOpen && (
         <>
           <button 
             onClick={handlePrevious}
@@ -141,7 +141,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
       )}
       
       {/* Product counter outside modal - desktop only */}
-      {showNavigation && !isMobile && (
+      {showNavigation && !isMobile && isOpen && (
         <div className="fixed top-[calc(50vh-45vh-45px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-[100]">
           <span className="text-sm text-foreground font-medium">
             {currentIndex + 1} of {products.length}
