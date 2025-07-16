@@ -3,16 +3,33 @@ import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Check if the current user is an admin
- * Currently, only the specified email is considered an admin
+ * Checks the user_roles table for admin role
  */
 export const isUserAdmin = async (): Promise<boolean> => {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return false;
+    if (!user) {
+      console.log("No user found");
+      return false;
+    }
     
-    // For now, we'll use a hardcoded admin email
-    // In the future, this could be replaced with a proper roles system
-    return user.email === 'gtsewell@live.com';
+    console.log("Checking admin status for user:", user.email);
+    
+    // Check if user has admin role in user_roles table
+    const { data: roles, error } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin');
+    
+    if (error) {
+      console.error("Error querying user roles:", error);
+      return false;
+    }
+    
+    const isAdmin = roles && roles.length > 0;
+    console.log("User is admin:", isAdmin);
+    return isAdmin;
   } catch (error) {
     console.error("Error checking admin status:", error);
     return false;

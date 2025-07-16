@@ -1,20 +1,27 @@
 import React from 'react';
 import ShopifyIntegration from '@/components/admin/ShopifyIntegration';
 import UserMenu from '@/components/navigation/UserMenu';
+import ErrorBoundary from '@/components/admin/ErrorBoundary';
 
 const ShopifyAdmin = () => {
+  console.log("ShopifyAdmin: Component rendering");
+  
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Shopify Admin</h1>
-          <UserMenu />
+    <ErrorBoundary>
+      <div className="min-h-screen bg-background text-foreground">
+        <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-foreground">Shopify Admin</h1>
+            <UserMenu />
+          </div>
+        </header>
+        <div className="container mx-auto p-6">
+          <ErrorBoundary>
+            <ShopifyIntegration />
+          </ErrorBoundary>
         </div>
-      </header>
-      <div className="container mx-auto p-6">
-        <ShopifyIntegration />
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

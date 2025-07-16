@@ -17,15 +17,19 @@ const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ children }) =
   useEffect(() => {
     const checkAccess = async () => {
       if (!user) {
+        console.log("AdminProtectedRoute: No user found");
         setChecking(false);
         return;
       }
       
+      console.log("AdminProtectedRoute: Checking access for user:", user.email);
+      
       try {
         const hasAccess = await checkAdminAccess();
+        console.log("AdminProtectedRoute: Admin access result:", hasAccess);
         setIsAdmin(hasAccess);
       } catch (error) {
-        console.error("Error checking admin access:", error);
+        console.error("AdminProtectedRoute: Error checking admin access:", error);
         toast.error("Failed to verify admin status");
         setIsAdmin(false);
       } finally {
@@ -55,10 +59,12 @@ const AdminProtectedRoute: React.FC<AdminProtectedRouteProps> = ({ children }) =
   }
   
   if (!isAdmin) {
+    console.log("AdminProtectedRoute: User is not admin, redirecting");
     toast.error("You don't have admin privileges");
     return <Navigate to="/" replace />;
   }
   
+  console.log("AdminProtectedRoute: User is admin, rendering children");
   return <>{children}</>;
 };
 
