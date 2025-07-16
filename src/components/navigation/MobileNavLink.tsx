@@ -15,7 +15,7 @@ const MobileNavLink = ({ to, isActive, children, icon }: MobileNavLinkProps) => 
     <Link
       to={to}
       className={cn(
-        "flex items-center px-3 py-2 text-base font-medium transition-colors",
+        "flex items-center w-full px-3 py-2 text-base font-medium transition-colors",
         isActive
           ? "text-primary font-semibold"
           : "text-foreground hover:text-primary"
