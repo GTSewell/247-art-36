@@ -61,10 +61,12 @@ const NavigationComponent = () => {
   const navExtraClass = isMobile && isWhoAreYouPage ? "h-20" : "h-16";
   return <nav className={`fixed top-0 left-0 right-0 z-[9999] bg-transparent`}>
       <div className="absolute top-0 right-0 p-4 z-[60]">
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-4">
-          <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
-        </div>
+        {/* Desktop Navigation - Only show on desktop */}
+        {!isMobile && (
+          <div className="flex items-center gap-4">
+            <DesktopNav isActive={isActive} user={user} isLoading={isLoading} />
+          </div>
+        )}
 
         {/* Mobile menu button - with cart badge */}
         <div className="md:hidden flex items-center gap-2">
