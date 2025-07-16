@@ -26,17 +26,19 @@ export const useImagePreloader = (imageUrls: string[], options: UseImagePreloade
 
   const preloadImage = useCallback((url: string): Promise<void> => {
     return new Promise((resolve, reject) => {
-      // Check if image is already loaded
-      if (preloadState[url]?.loaded) {
-        resolve();
-        return;
-      }
-
       // Update loading state
-      setPreloadState(prev => ({
-        ...prev,
-        [url]: { ...prev[url], loading: true, error: false }
-      }));
+      setPreloadState(prev => {
+        // Check if image is already loaded in current state
+        if (prev[url]?.loaded) {
+          resolve();
+          return prev;
+        }
+        
+        return {
+          ...prev,
+          [url]: { ...prev[url], loading: true, error: false }
+        };
+      });
 
       const img = new Image();
       
@@ -59,7 +61,7 @@ export const useImagePreloader = (imageUrls: string[], options: UseImagePreloade
       // Start loading
       img.src = url;
     });
-  }, [preloadState]);
+  }, []); // Remove preloadState from dependencies
 
   const preloadImages = useCallback(async (urls: string[] = imageUrls) => {
     if (priority) {
