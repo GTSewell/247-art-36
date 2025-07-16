@@ -50,7 +50,6 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product, onProductClick
           src={product.image_url || '/placeholder.svg'} 
           alt={product.name} 
           className="w-full h-full object-contain"
-          style={{ mixBlendMode: 'multiply' }}
           onError={handleImageError} 
         />
         {product.is_limited_edition && (
