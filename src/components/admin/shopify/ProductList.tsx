@@ -80,74 +80,162 @@ const ProductList = ({
       {/* Product List */}
       <div className="space-y-3">
         {displayedProducts.map((product) => (
-          <div key={product.id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
-            <Checkbox
-              id={`product-${product.id}`}
-              checked={selectedProducts.has(product.id)}
-              onCheckedChange={(checked) => onProductSelect(product.id, checked as boolean)}
-            />
-            
-            <div className="flex items-center space-x-4 flex-1">
-              {product.image_url && (
-                <img 
-                  src={product.image_url} 
-                  alt={product.name}
-                  className="w-12 h-12 object-cover rounded"
-                />
-              )}
-              <div className="flex-1">
-                <h4 className="font-medium">{product.name}</h4>
-                <p className="text-sm text-muted-foreground">
-                  ${product.price}
-                </p>
-                <div className="flex gap-2 mt-1">
-                  <span className="text-xs bg-muted px-2 py-1 rounded">
-                    Section: {product.category ? storeCategories.find(c => c.id === product.category)?.label || product.category : 'Unassigned'}
-                  </span>
-                  <span className="text-xs bg-primary/10 px-2 py-1 rounded">
-                    Artist: {product.artist_name || 'Unassigned'}
-                  </span>
-                  {product.category_source && (
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      product.category_source === 'manual' 
-                        ? 'bg-green-100 text-green-800' 
-                        : product.category_source === 'shopify'
-                        ? 'bg-blue-100 text-blue-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {product.category_source === 'manual' ? '🔒 Manual' : 
-                       product.category_source === 'shopify' ? '🛒 Shopify' : '🤖 Auto'}
+          <div key={product.id} className="border rounded-lg hover:bg-muted/50 transition-colors">
+            {/* Mobile Layout */}
+            <div className="block md:hidden">
+              <div className="p-3 space-y-3">
+                {/* Header with checkbox and image */}
+                <div className="flex items-start space-x-3">
+                  <Checkbox
+                    id={`product-${product.id}`}
+                    checked={selectedProducts.has(product.id)}
+                    onCheckedChange={(checked) => onProductSelect(product.id, checked as boolean)}
+                    className="mt-1"
+                  />
+                  {product.image_url && (
+                    <img 
+                      src={product.image_url} 
+                      alt={product.name}
+                      className="w-12 h-12 object-cover rounded flex-shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-sm leading-tight">{product.name}</h4>
+                    <p className="text-lg font-semibold text-primary mt-1">
+                      ${product.price}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Product details */}
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-1">
+                    <span className="text-xs bg-muted px-2 py-1 rounded">
+                      Section: {product.category ? storeCategories.find(c => c.id === product.category)?.label || product.category : 'Unassigned'}
                     </span>
+                    <span className="text-xs bg-primary/10 px-2 py-1 rounded">
+                      Artist: {product.artist_name || 'Unassigned'}
+                    </span>
+                    {product.category_source && (
+                      <span className={`text-xs px-2 py-1 rounded ${
+                        product.category_source === 'manual' 
+                          ? 'bg-green-100 text-green-800' 
+                          : product.category_source === 'shopify'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {product.category_source === 'manual' ? '🔒 Manual' : 
+                         product.category_source === 'shopify' ? '🛒 Shopify' : '🤖 Auto'}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"} className="text-xs">
+                      {product.shopify_inventory_quantity || 0} in stock
+                    </Badge>
+                    <Badge variant={product.is_featured ? "default" : "outline"} className="text-xs">
+                      {product.is_featured ? "Featured" : "Standard"}
+                    </Badge>
+                  </div>
+                </div>
+                
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-2 border-t">
+                  <div className="flex items-center space-x-2">
+                    {product.is_visible !== false ? <Eye className="h-4 w-4 text-green-600" /> : <EyeOff className="h-4 w-4 text-red-600" />}
+                    <span className="text-xs">{product.is_visible !== false ? 'Visible' : 'Hidden'}</span>
+                     {onToggleVisibility && (
+                       <Switch
+                         checked={product.is_visible !== false}
+                         onCheckedChange={(checked) => onToggleVisibility(product.id, checked)}
+                       />
+                     )}
+                  </div>
+                  {onEditProduct && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onEditProduct(product)}
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Edit
+                    </Button>
                   )}
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center space-x-2">
-              <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
-                {product.shopify_inventory_quantity || 0} in stock
-              </Badge>
-              <Badge variant={product.is_featured ? "default" : "outline"}>
-                {product.is_featured ? "Featured" : "Standard"}
-              </Badge>
-              <div className="flex items-center space-x-1">
-                {product.is_visible !== false ? <Eye className="h-3 w-3 text-green-600" /> : <EyeOff className="h-3 w-3 text-red-600" />}
-                {onToggleVisibility && (
-                  <Switch
-                    checked={product.is_visible !== false}
-                    onCheckedChange={(checked) => onToggleVisibility(product.id, checked)}
+            {/* Desktop Layout */}
+            <div className="hidden md:flex items-center space-x-4 p-4">
+              <Checkbox
+                id={`product-${product.id}`}
+                checked={selectedProducts.has(product.id)}
+                onCheckedChange={(checked) => onProductSelect(product.id, checked as boolean)}
+              />
+              
+              <div className="flex items-center space-x-4 flex-1">
+                {product.image_url && (
+                  <img 
+                    src={product.image_url} 
+                    alt={product.name}
+                    className="w-12 h-12 object-cover rounded"
                   />
                 )}
+                <div className="flex-1">
+                  <h4 className="font-medium">{product.name}</h4>
+                  <p className="text-sm text-muted-foreground">
+                    ${product.price}
+                  </p>
+                  <div className="flex gap-2 mt-1">
+                    <span className="text-xs bg-muted px-2 py-1 rounded">
+                      Section: {product.category ? storeCategories.find(c => c.id === product.category)?.label || product.category : 'Unassigned'}
+                    </span>
+                    <span className="text-xs bg-primary/10 px-2 py-1 rounded">
+                      Artist: {product.artist_name || 'Unassigned'}
+                    </span>
+                    {product.category_source && (
+                      <span className={`text-xs px-2 py-1 rounded ${
+                        product.category_source === 'manual' 
+                          ? 'bg-green-100 text-green-800' 
+                          : product.category_source === 'shopify'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {product.category_source === 'manual' ? '🔒 Manual' : 
+                         product.category_source === 'shopify' ? '🛒 Shopify' : '🤖 Auto'}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-              {onEditProduct && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onEditProduct(product)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-              )}
+              
+              <div className="flex items-center space-x-2">
+                <Badge variant={product.shopify_inventory_quantity > 0 ? "default" : "secondary"}>
+                  {product.shopify_inventory_quantity || 0} in stock
+                </Badge>
+                <Badge variant={product.is_featured ? "default" : "outline"}>
+                  {product.is_featured ? "Featured" : "Standard"}
+                </Badge>
+                <div className="flex items-center space-x-1">
+                  {product.is_visible !== false ? <Eye className="h-3 w-3 text-green-600" /> : <EyeOff className="h-3 w-3 text-red-600" />}
+                  {onToggleVisibility && (
+                    <Switch
+                      checked={product.is_visible !== false}
+                      onCheckedChange={(checked) => onToggleVisibility(product.id, checked)}
+                    />
+                  )}
+                </div>
+                {onEditProduct && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onEditProduct(product)}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         ))}

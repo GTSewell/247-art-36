@@ -94,7 +94,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
       </div>
 
       {/* Filter Controls */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
         {/* Category Filter */}
         <div className="space-y-1">
           <Label className="text-xs font-medium">Category</Label>
@@ -226,7 +226,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
       </div>
 
       {/* Results Count and Quick Filters */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center space-x-2">
           <Badge variant="secondary" className="text-xs">
             <Filter className="h-3 w-3 mr-1" />
@@ -248,25 +248,28 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
         </div>
 
         {/* Quick Action Buttons */}
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => onFiltersChange({ ...filters, artistId: 'unassigned' })}
+            className="text-xs"
           >
-            Unassigned Products
+            Unassigned
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => onFiltersChange({ ...filters, visibilityStatus: 'hidden' })}
+            className="text-xs"
           >
-            Hidden Products
+            Hidden
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => onFiltersChange({ ...filters, stockStatus: 'out-of-stock' })}
+            className="text-xs"
           >
             Out of Stock
           </Button>
