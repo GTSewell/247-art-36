@@ -10,6 +10,7 @@ import ProductImagesTab from './ProductImagesTab';
 import ProductSpecificationsTab from './ProductSpecificationsTab';
 import ProductContentTab from './ProductContentTab';
 import ProductShopifyTab from './ProductShopifyTab';
+import ProductTimedEditionTab from './ProductTimedEditionTab';
 
 interface ProductEditModalProps {
   isOpen: boolean;
@@ -35,7 +36,10 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
     additional_images: [],
     specifications: {},
     production_info: '',
-    shipping_info: ''
+    shipping_info: '',
+    end_time: null,
+    start_time: null,
+    is_visible: true
   });
   const { toast } = useToast();
 
@@ -51,7 +55,10 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
         additional_images: product.additional_images || [],
         specifications: product.specifications || {},
         production_info: product.production_info || '',
-        shipping_info: product.shipping_info || ''
+        shipping_info: product.shipping_info || '',
+        end_time: product.end_time || null,
+        start_time: product.start_time || null,
+        is_visible: product.is_visible !== false
       });
     }
   }, [product, isOpen]);
@@ -71,7 +78,10 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
           additional_images: formData.additional_images,
           specifications: formData.specifications,
           production_info: formData.production_info,
-          shipping_info: formData.shipping_info
+          shipping_info: formData.shipping_info,
+          end_time: formData.end_time,
+          start_time: formData.start_time,
+          is_visible: formData.is_visible
         })
         .eq('id', product.id);
 
@@ -108,7 +118,10 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
         additional_images: product.additional_images || [],
         specifications: product.specifications || {},
         production_info: product.production_info || '',
-        shipping_info: product.shipping_info || ''
+        shipping_info: product.shipping_info || '',
+        end_time: product.end_time || null,
+        start_time: product.start_time || null,
+        is_visible: product.is_visible !== false
       });
     }
     onClose();
@@ -127,11 +140,12 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
         </div>
 
         <Tabs defaultValue="basic" className="flex-1 overflow-hidden">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="basic">Basic Info</TabsTrigger>
             <TabsTrigger value="images">Images</TabsTrigger>
             <TabsTrigger value="specs">Specifications</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="timed">Timed Edition</TabsTrigger>
             <TabsTrigger value="shopify">Shopify</TabsTrigger>
           </TabsList>
 
@@ -159,6 +173,13 @@ const ProductEditModal: React.FC<ProductEditModalProps> = ({
 
             <TabsContent value="content">
               <ProductContentTab
+                formData={formData}
+                onChange={setFormData}
+              />
+            </TabsContent>
+
+            <TabsContent value="timed">
+              <ProductTimedEditionTab
                 formData={formData}
                 onChange={setFormData}
               />

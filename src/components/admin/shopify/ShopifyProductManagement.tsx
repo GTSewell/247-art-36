@@ -20,6 +20,7 @@ interface ShopifyProductManagementProps {
   onClearSelection: () => void;
   onBulkAssignment: (type: 'category' | 'artist', value: string) => void;
   onEditProduct: (product: any) => void;
+  onToggleVisibility: (productId: number, isVisible: boolean) => void;
 }
 
 const ShopifyProductManagement = ({
@@ -35,7 +36,8 @@ const ShopifyProductManagement = ({
   onShowAllProductsChange,
   onClearSelection,
   onBulkAssignment,
-  onEditProduct
+  onEditProduct,
+  onToggleVisibility
 }: ShopifyProductManagementProps) => {
   return (
     <Card>
@@ -79,6 +81,7 @@ const ShopifyProductManagement = ({
           onSelectAll={onSelectAll}
           onSync={onSync}
           onEditProduct={onEditProduct}
+          onToggleVisibility={onToggleVisibility}
         />
       </CardContent>
     </Card>

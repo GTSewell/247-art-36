@@ -2,9 +2,10 @@ import React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Package, Edit } from 'lucide-react';
+import { Package, Edit, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { RefreshCw } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 import { storeCategories } from '@/components/store/utils/categoryUtils';
 
 interface Product {
@@ -16,6 +17,7 @@ interface Product {
   artist_name?: string;
   shopify_inventory_quantity: number;
   is_featured: boolean;
+  is_visible?: boolean;
   category_source?: 'manual' | 'shopify' | 'auto';
 }
 
@@ -26,8 +28,9 @@ interface ProductListProps {
   isSyncing: boolean;
   onProductSelect: (productId: number, selected: boolean) => void;
   onSelectAll: (checked: boolean) => void;
-  onSync: () => void;
+  onSync: () => void; 
   onEditProduct?: (product: Product) => void;
+  onToggleVisibility?: (productId: number, isVisible: boolean) => void;
 }
 
 const ProductList = ({ 
@@ -38,7 +41,8 @@ const ProductList = ({
   onProductSelect, 
   onSelectAll,
   onSync,
-  onEditProduct
+  onEditProduct,
+  onToggleVisibility
 }: ProductListProps) => {
   if (products.length === 0) {
     return (
@@ -125,6 +129,16 @@ const ProductList = ({
               <Badge variant={product.is_featured ? "default" : "outline"}>
                 {product.is_featured ? "Featured" : "Standard"}
               </Badge>
+              <div className="flex items-center space-x-1">
+                {product.is_visible !== false ? <Eye className="h-3 w-3 text-green-600" /> : <EyeOff className="h-3 w-3 text-red-600" />}
+                {onToggleVisibility && (
+                  <Switch
+                    checked={product.is_visible !== false}
+                    onCheckedChange={(checked) => onToggleVisibility(product.id, checked)}
+                    size="sm"
+                  />
+                )}
+              </div>
               {onEditProduct && (
                 <Button
                   variant="outline"

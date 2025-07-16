@@ -114,33 +114,42 @@ const ProductImagesTab: React.FC<ProductImagesTabProps> = ({
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {formData.additional_images?.map((imageUrl: string, index: number) => (
-            <div key={index} className="relative group">
-              <img
-                src={imageUrl}
-                alt={`Product image ${index + 1}`}
-                className="w-full h-32 object-cover rounded border"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
-                <div className="flex space-x-2">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setAsHeroImage(imageUrl)}
-                  >
-                    Set Hero
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => removeImage(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
+          {formData.additional_images?.map((imageUrl: string, index: number) => {
+            // Handle both string URLs and objects with src property
+            const displayUrl = typeof imageUrl === 'string' ? imageUrl : imageUrl?.src || imageUrl;
+            
+            return (
+              <div key={index} className="relative group">
+                <img
+                  src={displayUrl}
+                  alt={`Product image ${index + 1}`}
+                  className="w-full h-32 object-cover rounded border"
+                  onError={(e) => {
+                    console.log('Image failed to load:', displayUrl);
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1548502499-ef49e8cf98d4?w=600&auto=format';
+                  }}
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={() => setAsHeroImage(displayUrl)}
+                    >
+                      Set Hero
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => removeImage(index)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6">

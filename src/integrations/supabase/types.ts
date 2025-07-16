@@ -463,6 +463,7 @@ export type Database = {
           image_url: string | null
           is_featured: boolean | null
           is_limited_edition: boolean | null
+          is_visible: boolean | null
           last_synced_at: string | null
           name: string
           price: number
@@ -490,6 +491,7 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           is_limited_edition?: boolean | null
+          is_visible?: boolean | null
           last_synced_at?: string | null
           name: string
           price: number
@@ -517,6 +519,7 @@ export type Database = {
           image_url?: string | null
           is_featured?: boolean | null
           is_limited_edition?: boolean | null
+          is_visible?: boolean | null
           last_synced_at?: string | null
           name?: string
           price?: number
