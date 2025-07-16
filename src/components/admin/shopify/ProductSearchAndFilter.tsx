@@ -70,7 +70,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
   const activeFilterCount = getActiveFilterCount();
 
   return (
-    <div className="space-y-4 p-4 bg-muted/20 rounded-lg border">
+    <div className="space-y-4">
       {/* Search Bar */}
       <div className="flex items-center space-x-2">
         <div className="relative flex-1">
@@ -94,7 +94,7 @@ const ProductSearchAndFilter: React.FC<ProductSearchAndFilterProps> = ({
       </div>
 
       {/* Filter Controls */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {/* Category Filter */}
         <div className="space-y-1">
           <Label className="text-xs font-medium">Category</Label>
