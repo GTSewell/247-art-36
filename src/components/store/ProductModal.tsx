@@ -119,48 +119,45 @@ const ProductModal: React.FC<ProductModalProps> = ({
   if (!product) return null;
 
   return (
-    <div className="relative">
-      {/* Navigation buttons outside modal - desktop only */}
-      {showNavigation && !isMobile && isOpen && (
-        <>
-          <button 
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-            aria-label="Previous product"
-            className="fixed left-[calc(50vw-525px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[10001] bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed pointer-events-auto"
-            style={{ pointerEvents: 'auto' }}
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          <button 
-            onClick={handleNext}
-            disabled={currentIndex === products.length - 1}
-            aria-label="Next product"
-            className="fixed right-[calc(50vw-525px)] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[10001] bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed pointer-events-auto"
-            style={{ pointerEvents: 'auto' }}
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
-        </>
-      )}
-      
-      {/* Product counter outside modal - desktop only */}
-      {showNavigation && !isMobile && isOpen && (
-        <div className="fixed top-[calc(50vh-45vh)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-[10001]">
-          <span className="text-sm text-foreground font-medium">
-            {currentIndex + 1} of {products.length}
-          </span>
-        </div>
-      )}
-
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className={`p-0 overflow-hidden bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
-          <DialogTitle className="sr-only">Product Details</DialogTitle>
-          
-          {/* Close button */}
-          <button onClick={onClose} aria-label="Close dialog" className="absolute right-2 top-2 p-2 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 bg-background/90 hover:bg-muted border border-border">
-            <X className="h-4 w-4 text-foreground" />
-          </button>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className={`relative p-0 overflow-hidden bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
+        <DialogTitle className="sr-only">Product Details</DialogTitle>
+        
+        {/* Navigation buttons inside modal - desktop only */}
+        {showNavigation && !isMobile && (
+          <>
+            <button 
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              aria-label="Previous product"
+              className="absolute left-[-60px] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <button 
+              onClick={handleNext}
+              disabled={currentIndex === products.length - 1}
+              aria-label="Next product"
+              className="absolute right-[-60px] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+          </>
+        )}
+        
+        {/* Product counter inside modal - desktop only */}
+        {showNavigation && !isMobile && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-50">
+            <span className="text-sm text-foreground font-medium">
+              {currentIndex + 1} of {products.length}
+            </span>
+          </div>
+        )}
+        
+        {/* Close button */}
+        <button onClick={onClose} aria-label="Close dialog" className="absolute right-2 top-2 p-2 rounded-full backdrop-blur-sm shadow-sm transition-colors z-50 bg-background/90 hover:bg-muted border border-border">
+          <X className="h-4 w-4 text-foreground" />
+        </button>
           
           <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
@@ -192,8 +189,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </div>
           </div>
         </DialogContent>
-      </Dialog>
-    </div>
+    </Dialog>
   );
 };
 
