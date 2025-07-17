@@ -68,7 +68,7 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
           processedArtworks.map((artwork, index) => (
             <div 
               key={index} 
-              className="relative rounded-md overflow-hidden bg-gray-100"
+              className="relative rounded-md overflow-hidden bg-transparent"
               data-artwork-cell={`cell-${index}`}
             >
               <AspectRatio ratio={1} className="w-full">
@@ -76,13 +76,13 @@ export const ArtistArtworksView: React.FC<ArtistArtworksViewProps> = ({
                   <img
                     src={artwork}
                     alt={`Artwork ${index + 1} by ${artist.name}`}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain bg-transparent"
                     onError={(e) => handleArtworkImageError(e, index, artwork)}
                     data-artwork-image={`image-${index}`}
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                    <span className="text-gray-400 text-sm">Image unavailable</span>
+                  <div className="w-full h-full flex items-center justify-center bg-transparent">
+                    <span className="text-muted-foreground text-sm">Image unavailable</span>
                   </div>
                 )}
               </AspectRatio>
