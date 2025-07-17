@@ -165,7 +165,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
               <ProductImageGallery product={product} />
             </div>
-            <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col overflow-y-auto'}`}>
+            <div className={`${isMobile ? 'w-full border-t border-border p-3' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col'} ${openAccordions.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}>
               <div className="space-y-3 md:space-y-4">
                 <RegularProductHeader 
                   name={product.name} 
