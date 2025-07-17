@@ -49,7 +49,7 @@ const PWAProductCard: React.FC<PWAProductCardProps> = ({ product, onProductClick
         <img 
           src={product.image_url || '/placeholder.svg'} 
           alt={product.name} 
-          className="w-full h-full object-contain"
+          className="w-full h-full object-contain bg-transparent"
           onError={handleImageError} 
         />
         {product.is_limited_edition && (

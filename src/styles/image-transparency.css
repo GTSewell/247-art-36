@@ -1,29 +1,59 @@
 /* Force transparent backgrounds for all image containers */
 .aspect-square,
-[class*="aspect-square"] {
+[class*="aspect-square"],
+.relative.aspect-square,
+.relative[class*="aspect-square"] {
   background-color: transparent !important;
 }
 
 .aspect-square img,
-[class*="aspect-square"] img {
+[class*="aspect-square"] img,
+.relative.aspect-square img,
+.relative[class*="aspect-square"] img {
   background-color: transparent !important;
 }
 
-/* Ensure product image containers are transparent */
+/* Force transparency on all image elements */
+img[class*="object-contain"],
+img[class*="object-cover"],
+img[class*="w-full"],
+img[class*="h-full"] {
+  background-color: transparent !important;
+}
+
+/* Target all common image container patterns */
 .product-image-container,
 .artwork-container,
-.artist-image-container {
+.artist-image-container,
+div[class*="aspect-square"],
+div[class*="min-h-fit"],
+div[class*="rounded-md"].overflow-hidden,
+div[class*="rounded-lg"].overflow-hidden {
   background-color: transparent !important;
 }
 
-/* Override any potential black backgrounds on image elements */
-img[class*="object-contain"],
-img[class*="object-cover"] {
+/* Target grid containers that might have backgrounds */
+.grid > div {
   background-color: transparent !important;
 }
 
-/* Ensure gallery and modal image containers are transparent */
-.relative.aspect-square,
-.relative[class*="aspect-square"] {
+/* Target any container with images */
+div:has(img) {
+  background-color: transparent !important;
+}
+
+/* Specific overrides for artwork and product cards */
+.group.relative.aspect-square,
+.group.relative[class*="aspect-square"],
+.group[class*="min-h-fit"],
+.group.cursor-pointer {
+  background-color: transparent !important;
+}
+
+/* Override any potential background on image wrapper divs */
+div.relative:has(img),
+div.overflow-hidden:has(img),
+div.rounded-md:has(img),
+div.rounded-lg:has(img) {
   background-color: transparent !important;
 }

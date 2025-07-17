@@ -71,7 +71,7 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({
             <img 
               src={artwork} 
               alt={`Artwork ${index + 1}`} 
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain bg-transparent"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = '/placeholder.svg';
               }}

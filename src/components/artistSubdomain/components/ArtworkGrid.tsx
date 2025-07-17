@@ -25,12 +25,12 @@ const ArtworkGrid: React.FC<ArtworkGridProps> = ({
             validArtworks.map((artwork, index) => (
               <div 
                 key={index}
-                className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer"
+                className="min-h-fit rounded-md overflow-hidden shadow-sm relative group cursor-pointer bg-transparent"
               >
                 <img 
                   src={artwork} 
                   alt={`Artwork ${index + 1}`}
-                  className="w-full object-contain"
+                  className="w-full object-contain bg-transparent"
                   onError={(e) => {
                     onArtworkImageError(e, index, artwork);
                     onRemoveArtwork(artwork);
