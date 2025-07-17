@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ProductImageGallery from './ProductImageGallery';
 import RegularProductHeader from './RegularProductHeader';
 import ProductInfoAccordion from './ProductInfoAccordion';
 import AddToCartButton from './AddToCartButton';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  ProductDialog, 
+  ProductDialogContent, 
+  ProductDialogTitle 
+} from '@/components/store/ProductDialog';
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -120,9 +124,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className={`relative p-0 bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
-          <DialogTitle className="sr-only">Product Details</DialogTitle>
+      <ProductDialog open={isOpen} onOpenChange={onClose}>
+        <ProductDialogContent className={`relative p-0 ${isMobile ? 'max-h-[90vh] w-[95vw] max-w-[95vw]' : 'max-w-[1000px] w-[1000px]'}`}>
+          <ProductDialogTitle>Product Details</ProductDialogTitle>
           
           <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
@@ -153,8 +157,8 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </div>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </ProductDialogContent>
+      </ProductDialog>
 
       {/* Navigation elements positioned outside the modal - desktop only */}
       {showNavigation && !isMobile && isOpen && (
