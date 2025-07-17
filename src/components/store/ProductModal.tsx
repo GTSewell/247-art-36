@@ -119,42 +119,10 @@ const ProductModal: React.FC<ProductModalProps> = ({
   if (!product) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`relative p-0 bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
-        <DialogTitle className="sr-only">Product Details</DialogTitle>
-        
-        {/* Navigation buttons inside modal - desktop only */}
-        {showNavigation && !isMobile && (
-          <>
-            <button 
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              aria-label="Previous product"
-              className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-10 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button 
-              onClick={handleNext}
-              disabled={currentIndex === products.length - 1}
-              aria-label="Next product"
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-10 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </>
-        )}
-        
-        {/* Product counter inside modal - desktop only */}
-        {showNavigation && !isMobile && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-10">
-            <span className="text-xs text-foreground font-medium">
-              {currentIndex + 1} of {products.length}
-            </span>
-          </div>
-        )}
-        
-        {/* Close button - now handled by dialog itself */}
+    <>
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className={`relative p-0 bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
+          <DialogTitle className="sr-only">Product Details</DialogTitle>
           
           <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
@@ -186,7 +154,40 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </div>
           </div>
         </DialogContent>
-    </Dialog>
+      </Dialog>
+
+      {/* Navigation elements positioned outside the modal - desktop only */}
+      {showNavigation && !isMobile && isOpen && (
+        <>
+          {/* Product counter above modal */}
+          <div className="fixed left-1/2 top-[8vh] -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background/95 border border-border z-[60]">
+            <span className="text-sm text-foreground font-medium">
+              {currentIndex + 1} of {products.length}
+            </span>
+          </div>
+          
+          {/* Left navigation button */}
+          <button 
+            onClick={handlePrevious}
+            disabled={currentIndex === 0}
+            aria-label="Previous product"
+            className="fixed left-[calc(50%-550px)] top-1/2 -translate-y-1/2 p-4 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[60] bg-background/95 border border-border hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          
+          {/* Right navigation button */}
+          <button 
+            onClick={handleNext}
+            disabled={currentIndex === products.length - 1}
+            aria-label="Next product"
+            className="fixed right-[calc(50%-550px)] top-1/2 -translate-y-1/2 p-4 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-[60] bg-background/95 border border-border hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </>
+      )}
+    </>
   );
 };
 
