@@ -15,6 +15,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { useModalContext } from '@/contexts/ModalContext';
+import { getZIndex } from '@/utils/z-index';
 
 interface SpecificationDropdownProps {
   value: string;
@@ -33,6 +35,7 @@ const SpecificationDropdown: React.FC<SpecificationDropdownProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [customValue, setCustomValue] = useState('');
+  const { isInModal } = useModalContext();
 
   const handleSelect = (selectedValue: string) => {
     onChange(selectedValue);
@@ -60,7 +63,7 @@ const SpecificationDropdown: React.FC<SpecificationDropdownProps> = ({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0 z-[10000] bg-background border shadow-md">
+      <PopoverContent className={`w-[300px] p-0 bg-background border shadow-md ${getZIndex('POPOVER', isInModal)}`}>
         <Command>
           <CommandInput placeholder="Search options..." />
           <CommandList>

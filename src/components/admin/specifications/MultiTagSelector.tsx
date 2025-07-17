@@ -9,6 +9,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useModalContext } from '@/contexts/ModalContext';
+import { getZIndex } from '@/utils/z-index';
 
 interface MultiTagSelectorProps {
   value: string;
@@ -27,6 +29,7 @@ const MultiTagSelector: React.FC<MultiTagSelectorProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [customValue, setCustomValue] = useState('');
+  const { isInModal } = useModalContext();
 
   // Parse the comma-separated value into an array
   const selectedValues = value ? value.split(',').map(v => v.trim()).filter(v => v) : [];
@@ -77,7 +80,7 @@ const MultiTagSelector: React.FC<MultiTagSelectorProps> = ({
             Add {label.toLowerCase()}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-80">
+        <PopoverContent className={`w-80 ${getZIndex('POPOVER', isInModal)}`}>
           <div className="space-y-3">
             <div>
               <Label className="text-sm font-medium">Select from options</Label>
