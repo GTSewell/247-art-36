@@ -7,11 +7,13 @@ import PWAPaginatedProductGrid from "./PWAPaginatedProductGrid";
 interface CategoryProductsProps {
   products: any[];
   categoryName: string;
+  onProductClick?: (product: any) => void;
 }
 
 const CategoryProducts: React.FC<CategoryProductsProps> = ({ 
   products, 
-  categoryName 
+  categoryName,
+  onProductClick 
 }) => {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -82,6 +84,7 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
               products={filteredProducts}
               itemsPerPage={itemsPerPage}
               onItemsPerPageChange={handleItemsPerPageChange}
+              onProductClick={onProductClick}
             />
           </div>
         </ScrollArea>

@@ -5,7 +5,7 @@ import Navigation from "@/components/navigation/Navigation";
 import { useAppMode } from "@/contexts/AppModeContext";
 import { TimerProvider } from "@/contexts/TimerContext";
 import { logger } from "@/utils/logger";
-import TimedEditionModal from "@/components/store/TimedEditionModal";
+import ProductModal from "@/components/store/ProductModal";
 import ProductCategoryView from "@/components/pwa/store/ProductCategoryView";
 import StoreHomeView from "@/components/pwa/store/StoreHomeView";
 import { usePWAStoreProducts } from "@/hooks/usePWAStoreProducts";
@@ -22,16 +22,24 @@ interface TimerState {
 const PWAStore = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>('merch');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-  const [selectedTimerState, setSelectedTimerState] = useState<TimerState | null>(null);
+  const [selectedProductIndex, setSelectedProductIndex] = useState<number>(0);
   const { isPWA } = useAppMode();
   const { featuredProducts, getProductsForCategory, isLoading } = usePWAStoreProducts();
   
   const categoryProducts = selectedCategory ? getProductsForCategory(selectedCategory) : [];
 
-  const handleProductSelect = (product: any, timerState: TimerState) => {
-    logger.info(`Selected product: ${product.id}, timer: ${JSON.stringify(timerState)}`);
+  const handleProductSelect = (product: any) => {
+    logger.info(`Selected product: ${product.id}`);
     setSelectedProduct(product);
-    setSelectedTimerState(timerState);
+    const index = categoryProducts.findIndex(p => p.id === product.id);
+    setSelectedProductIndex(Math.max(0, index));
+  };
+
+  const handleProductNavigation = (index: number) => {
+    if (index >= 0 && index < categoryProducts.length) {
+      setSelectedProduct(categoryProducts[index]);
+      setSelectedProductIndex(index);
+    }
   };
 
   const handleCategorySelect = (category: string) => {
@@ -78,25 +86,27 @@ const PWAStore = () => {
                 categoryId={selectedCategory}
                 products={categoryProducts}
                 onBack={handleBack}
+                onProductClick={handleProductSelect}
               />
             ) : (
               <StoreHomeView
                 featuredProducts={featuredProducts}
                 isLoading={isLoading}
-                onProductSelect={handleProductSelect}
+                onProductSelect={(product: any) => handleProductSelect(product)}
                 onCategorySelect={handleCategorySelect}
               />
             )}
           </main>
 
-          <TimedEditionModal
+          <ProductModal
             isOpen={!!selectedProduct}
             onClose={() => {
               setSelectedProduct(null);
-              setSelectedTimerState(null);
             }}
             product={selectedProduct}
-            timeLeft={selectedTimerState || { hours: 0, minutes: 0, seconds: 0 }}
+            products={categoryProducts}
+            currentIndex={selectedProductIndex}
+            onNavigate={handleProductNavigation}
           />
         </div>
       </div>

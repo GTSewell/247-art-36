@@ -8,12 +8,14 @@ interface ProductCategoryViewProps {
   categoryId: string;
   products: any[];
   onBack: () => void;
+  onProductClick?: (product: any) => void;
 }
 
 const ProductCategoryView: React.FC<ProductCategoryViewProps> = ({
   categoryId,
   products,
-  onBack
+  onBack,
+  onProductClick
 }) => {
   const getCategoryDisplayName = (categoryId: string) => {
     switch(categoryId) {
@@ -44,6 +46,7 @@ const ProductCategoryView: React.FC<ProductCategoryViewProps> = ({
       <CategoryProducts 
         products={products} 
         categoryName={categoryId}
+        onProductClick={onProductClick}
       />
     </div>
   );
