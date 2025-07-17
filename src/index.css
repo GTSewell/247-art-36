@@ -15,6 +15,7 @@
 @import './styles/components/tabs/main-tabs.css';
 @import './styles/components/tabs/inner-tabs.css';
 @import './styles/components/animations.css';
+@import './styles/image-transparency.css';
 
 @tailwind base;
 @tailwind components;

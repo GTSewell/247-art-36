@@ -115,11 +115,11 @@ const ArtistArtworksSection = ({
       <div className="grid grid-cols-2 gap-4">
         {artworksArray && artworksArray.length > 0 ? (
           artworksArray.map((artwork, index) => (
-            <div key={index} className="aspect-square rounded-lg overflow-hidden border border-border/40">
+            <div key={index} className="aspect-square rounded-lg overflow-hidden border border-border/40 bg-transparent">
               <img
                 src={artwork}
                 alt={`Artwork ${index + 1} by ${artist.name}`}
-                className="w-full h-full object-contain hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-contain hover:scale-105 transition-transform duration-300 bg-transparent"
               />
             </div>
           ))

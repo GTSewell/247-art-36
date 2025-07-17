@@ -109,7 +109,7 @@ const ArtistCard = ({
         className="group relative overflow-hidden bg-card shadow-lg transition-all duration-300 hover:shadow-xl cursor-pointer" 
         onClick={isFlipped ? stopPropagation : onSelect}
       >
-        <div className="aspect-square overflow-hidden relative">
+        <div className="aspect-square overflow-hidden relative bg-transparent">
           {!isFlipped ? (
             <ArtistCardFront 
               image={image}

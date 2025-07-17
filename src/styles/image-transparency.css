@@ -1,0 +1,29 @@
+/* Force transparent backgrounds for all image containers */
+.aspect-square,
+[class*="aspect-square"] {
+  background-color: transparent !important;
+}
+
+.aspect-square img,
+[class*="aspect-square"] img {
+  background-color: transparent !important;
+}
+
+/* Ensure product image containers are transparent */
+.product-image-container,
+.artwork-container,
+.artist-image-container {
+  background-color: transparent !important;
+}
+
+/* Override any potential black backgrounds on image elements */
+img[class*="object-contain"],
+img[class*="object-cover"] {
+  background-color: transparent !important;
+}
+
+/* Ensure gallery and modal image containers are transparent */
+.relative.aspect-square,
+.relative[class*="aspect-square"] {
+  background-color: transparent !important;
+}
