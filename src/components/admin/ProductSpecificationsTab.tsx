@@ -8,6 +8,7 @@ import { useSpecificationOptions } from '@/hooks/useSpecificationOptions';
 import SpecificationDropdown from './specifications/SpecificationDropdown';
 import SizeInput from './specifications/SizeInput';
 import ColorTagSelector from './specifications/ColorTagSelector';
+import MultiTagSelector from './specifications/MultiTagSelector';
 import EditionInput from './specifications/EditionInput';
 
 interface ProductSpecificationsTabProps {
@@ -125,6 +126,14 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
                 options={getAvailableOptions(specKey)}
                 className="w-full"
               />
+            ) : specKey === 'Media' || specKey === 'Type' || specKey === 'Style' ? (
+              <MultiTagSelector
+                value={specifications[specKey] || ''}
+                onChange={(value) => handleOptionChange(specKey, value)}
+                options={getAvailableOptions(specKey)}
+                label={specKey}
+                className="w-full"
+              />
             ) : specKey === 'Edition' ? (
               <EditionInput
                 value={specifications[specKey] || ''}
@@ -147,7 +156,7 @@ const ProductSpecificationsTab: React.FC<ProductSpecificationsTabProps> = ({
                 value={specifications[specKey] || ''}
                 onChange={(value) => handleOptionChange(specKey, value)}
                 options={getAvailableOptions(specKey)}
-                placeholder={`Select ${specKey.toLowerCase()}...`}
+                placeholder={`Select ${String(specKey).toLowerCase()}...`}
                 className="w-full"
               />
             )}
