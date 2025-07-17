@@ -120,7 +120,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`relative p-0 overflow-hidden bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
+      <DialogContent className={`relative p-0 overflow-visible bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
         {/* Navigation buttons inside modal - desktop only */}
@@ -130,25 +130,25 @@ const ProductModal: React.FC<ProductModalProps> = ({
               onClick={handlePrevious}
               disabled={currentIndex === 0}
               aria-label="Previous product"
-              className="absolute left-[-60px] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5" />
             </button>
             <button 
               onClick={handleNext}
               disabled={currentIndex === products.length - 1}
               aria-label="Next product"
-              className="absolute right-[-60px] top-1/2 -translate-y-1/2 p-3 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full backdrop-blur-md shadow-xl transition-all duration-200 z-50 bg-background border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed"
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-5 w-5" />
             </button>
           </>
         )}
         
         {/* Product counter inside modal - desktop only */}
         {showNavigation && !isMobile && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-50">
-            <span className="text-sm text-foreground font-medium">
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-50">
+            <span className="text-xs text-foreground font-medium">
               {currentIndex + 1} of {products.length}
             </span>
           </div>
