@@ -154,7 +154,13 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`relative p-0 overflow-visible bg-background rounded-xl shadow-lg border border-border ${isMobile ? 'max-h-[90vh] w-[95vw]' : 'max-w-[1000px]'}`}>
+      <DialogContent className={`
+        !fixed !inset-4 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
+        ${isMobile ? 'w-[calc(100vw-32px)] h-[calc(100vh-32px)] max-w-[95vw] max-h-[95vh]' : 'w-[1000px] h-[90vh] max-w-[calc(100vw-32px)] max-h-[90vh]'}
+        !p-0 !grid-cols-none !gap-0
+        bg-background rounded-xl shadow-lg border border-border overflow-hidden
+        z-50
+      `}>
         <DialogTitle className="sr-only">Artwork Details</DialogTitle>
         
         {/* Navigation buttons inside modal - desktop only */}
@@ -196,47 +202,46 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
         >
           <X className="h-4 w-4 text-foreground" />
         </button>
-          
-          <div className={`${isMobile ? 'flex flex-col max-h-[90vh]' : 'flex flex-col md:flex-row max-h-[90vh]'}`}>
-            <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
-              <ProductImageGallery images={artworkImages} />
-            </div>
-            <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
-              <div className="flex-grow space-y-3 md:space-y-4">
-                <RegularProductHeader 
-                  name={selectedArtwork.title} 
-                  artistName={artist.name} 
-                  price={parseFloat(selectedArtwork.price?.replace('$', '') || '0')}
-                  isLimitedEdition={false}
-                  artistDomain={artist.name ? artist.name.toLowerCase().replace(/\s+/g, '-') : undefined}
-                />
-                
-                <ProductInfoAccordion 
-                  description={selectedArtwork.description} 
-                  specifications={specifications}
-                  production_info={isRealArtist ? undefined : "This artwork is displayed for preview purposes only and is not currently available for purchase."}
-                  shipping_info={canAddToCart ? undefined : "Not available for shipping"}
-                  openAccordions={openAccordions} 
-                  onAccordionChange={handleAccordionChange} 
-                />
-              </div>
+        <div className={`relative w-full h-full flex flex-col overflow-hidden ${isMobile ? 'flex flex-col h-full' : 'flex flex-col md:flex-row h-full'}`}>
+          <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
+            <ProductImageGallery images={artworkImages} />
+          </div>
+          <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
+            <div className="flex-grow space-y-3 md:space-y-4">
+              <RegularProductHeader 
+                name={selectedArtwork.title} 
+                artistName={artist.name} 
+                price={parseFloat(selectedArtwork.price?.replace('$', '') || '0')}
+                isLimitedEdition={false}
+                artistDomain={artist.name ? artist.name.toLowerCase().replace(/\s+/g, '-') : undefined}
+              />
               
-              <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-border">
-                {canAddToCart ? (
-                  <AddToCartButton product={artworkAsProduct} />
-                ) : (
-                  <div className="space-y-4">
-                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
-                      <p className="text-sm text-amber-800 font-medium">
-                        This artwork is displayed for preview purposes only and is not currently available for purchase.
-                      </p>
-                    </div>
-                    <AddToCartButton product={artworkAsProduct} isDisabled={true} />
+              <ProductInfoAccordion 
+                description={selectedArtwork.description} 
+                specifications={specifications}
+                production_info={isRealArtist ? undefined : "This artwork is displayed for preview purposes only and is not currently available for purchase."}
+                shipping_info={canAddToCart ? undefined : "Not available for shipping"}
+                openAccordions={openAccordions} 
+                onAccordionChange={handleAccordionChange} 
+              />
+            </div>
+            
+            <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-border">
+              {canAddToCart ? (
+                <AddToCartButton product={artworkAsProduct} />
+              ) : (
+                <div className="space-y-4">
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+                    <p className="text-sm text-amber-800 font-medium">
+                      This artwork is displayed for preview purposes only and is not currently available for purchase.
+                    </p>
                   </div>
-                )}
-              </div>
+                  <AddToCartButton product={artworkAsProduct} isDisabled={true} />
+                </div>
+              )}
             </div>
           </div>
+        </div>
         </DialogContent>
     </Dialog>
   );
