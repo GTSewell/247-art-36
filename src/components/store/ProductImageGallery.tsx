@@ -128,7 +128,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
       </AnimatePresence>
 
       {/* Single image display with navigation */}
-      <div ref={imageContainerRef} className="relative aspect-square rounded-lg overflow-hidden group">
+      <div ref={imageContainerRef} className="relative aspect-square rounded-lg overflow-hidden group bg-transparent">
         <img
           src={displayImages[currentImageIndex]}
           alt={`Product image ${currentImageIndex + 1}`}
