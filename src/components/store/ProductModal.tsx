@@ -122,7 +122,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`
         !fixed !inset-4 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
-        ${isMobile ? 'w-[calc(100vw-32px)] max-h-[95vh] max-w-[95vw]' : 'w-[1000px] max-h-[90vh] max-w-[calc(100vw-32px)]'}
+        ${isMobile ? 'w-[calc(100vw-32px)] max-h-[95vh] max-w-[95vw]' : 'w-[1000px] max-h-[95vh] max-w-[calc(100vw-32px)]'}
         !p-0 !grid-cols-none !gap-0
         bg-background rounded-xl shadow-lg border border-border overflow-hidden
         z-50
@@ -162,30 +162,32 @@ const ProductModal: React.FC<ProductModalProps> = ({
           )}
           
           <div className={`${isMobile ? 'flex flex-col' : 'flex flex-col md:flex-row'}`}>
-            <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
+            <div className={`${isMobile ? 'w-full p-4' : 'w-full md:w-1/2 p-4 md:p-8'}`}>
               <ProductImageGallery product={product} />
             </div>
-            <div className={`${isMobile ? 'w-full border-t border-border p-3' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col'} ${openAccordions.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-              <div className="space-y-3 md:space-y-4">
-                <RegularProductHeader 
-                  name={product.name} 
-                  artistName={product.artists?.name} 
-                  price={product.price}
-                  isLimitedEdition={product.is_limited_edition}
-                  artistDomain={product.artists?.name ? product.artists.name.toLowerCase().replace(/\s+/g, '-') : undefined}
-                />
-                
-                <ProductInfoAccordion 
-                  description={product.custom_description || product.description} 
-                  specifications={product.specifications}
-                  production_info={product.production_info}
-                  shipping_info={product.shipping_info}
-                  openAccordions={openAccordions} 
-                  onAccordionChange={handleAccordionChange} 
-                />
+            <div className={`${isMobile ? 'w-full border-t border-border flex flex-col h-full' : 'w-full md:w-1/2 border-l border-border flex flex-col h-full'}`}>
+              <div className={`${isMobile ? 'p-3 flex-1' : 'p-4 md:p-6 flex-1'} ${openAccordions.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+                <div className="space-y-3 md:space-y-4">
+                  <RegularProductHeader 
+                    name={product.name} 
+                    artistName={product.artists?.name} 
+                    price={product.price}
+                    isLimitedEdition={product.is_limited_edition}
+                    artistDomain={product.artists?.name ? product.artists.name.toLowerCase().replace(/\s+/g, '-') : undefined}
+                  />
+                  
+                  <ProductInfoAccordion 
+                    description={product.custom_description || product.description} 
+                    specifications={product.specifications}
+                    production_info={product.production_info}
+                    shipping_info={product.shipping_info}
+                    openAccordions={openAccordions} 
+                    onAccordionChange={handleAccordionChange} 
+                  />
+                </div>
               </div>
               
-              <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-border">
+              <div className={`${isMobile ? 'p-3' : 'p-4 md:p-6'} mt-auto border-t border-border bg-background`}>
                 <AddToCartButton product={product} />
               </div>
             </div>
