@@ -122,14 +122,14 @@ const ProductModal: React.FC<ProductModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`
         !fixed !inset-4 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
-        ${isMobile ? 'w-[calc(100vw-32px)] h-[calc(100vh-32px)] max-w-[95vw] max-h-[95vh]' : 'w-[1000px] h-[90vh] max-w-[calc(100vw-32px)] max-h-[90vh]'}
+        ${isMobile ? 'w-[calc(100vw-32px)] max-h-[95vh] max-w-[95vw]' : 'w-[1000px] max-h-[90vh] max-w-[calc(100vw-32px)]'}
         !p-0 !grid-cols-none !gap-0
         bg-background rounded-xl shadow-lg border border-border overflow-hidden
         z-50
       `}>
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
-        <div className="relative w-full h-full flex flex-col overflow-hidden">
+        <div className="relative w-full flex flex-col overflow-hidden">
           {/* Navigation buttons inside modal - desktop only */}
           {showNavigation && !isMobile && (
             <>
@@ -161,12 +161,12 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </div>
           )}
           
-          <div className={`${isMobile ? 'flex flex-col h-full' : 'flex flex-col md:flex-row h-full'}`}>
+          <div className={`${isMobile ? 'flex flex-col' : 'flex flex-col md:flex-row'}`}>
             <div className={`${isMobile ? 'w-full p-3' : 'w-full md:w-1/2 p-3 md:p-6'}`}>
               <ProductImageGallery product={product} />
             </div>
-            <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col h-full overflow-y-auto'}`}>
-              <div className="flex-grow space-y-3 md:space-y-4">
+            <div className={`${isMobile ? 'w-full border-t border-border p-3 overflow-y-auto' : 'w-full md:w-1/2 border-l border-border p-4 md:p-6 flex flex-col overflow-y-auto'}`}>
+              <div className="space-y-3 md:space-y-4">
                 <RegularProductHeader 
                   name={product.name} 
                   artistName={product.artists?.name} 
