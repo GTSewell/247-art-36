@@ -153,7 +153,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
   return (
     <div className="relative">
       {/* Navigation buttons outside modal - desktop only */}
-      {showNavigation && !isMobile && (
+      {isOpen && showNavigation && !isMobile && (
         <>
           <button 
             onClick={handlePrevious}
@@ -175,7 +175,7 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
       )}
       
       {/* Artwork counter outside modal - desktop only */}
-      {showNavigation && !isMobile && (
+      {isOpen && showNavigation && !isMobile && (
         <div className="fixed top-[calc(50vh-45vh-45px)] left-1/2 -translate-x-1/2 px-4 py-2 rounded-full backdrop-blur-md shadow-xl bg-background border-2 border-primary/20 z-[100]">
           <span className="text-sm text-foreground font-medium">
             {(currentIndex || 0) + 1} of {artworks.length}
