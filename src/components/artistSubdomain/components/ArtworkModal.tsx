@@ -51,13 +51,15 @@ const ArtworkModal: React.FC<ArtworkModalProps> = ({
     }
   }, [isMobile, isOpen]);
 
-  const handlePrevious = () => {
+  const handlePrevious = (event?: React.MouseEvent) => {
+    event?.stopPropagation();
     if (onNavigate && currentIndex > 0) {
       onNavigate(currentIndex - 1);
     }
   };
 
-  const handleNext = () => {
+  const handleNext = (event?: React.MouseEvent) => {
+    event?.stopPropagation();
     if (onNavigate && currentIndex < artworks.length - 1) {
       onNavigate(currentIndex + 1);
     }

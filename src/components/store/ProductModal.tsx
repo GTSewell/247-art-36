@@ -40,13 +40,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
     setOpenAccordions(prev => prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]);
   };
 
-  const handlePrevious = () => {
+  const handlePrevious = (event?: React.MouseEvent) => {
+    event?.stopPropagation();
     if (onNavigate && currentIndex > 0) {
       onNavigate(currentIndex - 1);
     }
   };
 
-  const handleNext = () => {
+  const handleNext = (event?: React.MouseEvent) => {
+    event?.stopPropagation();
     if (onNavigate && currentIndex < products.length - 1) {
       onNavigate(currentIndex + 1);
     }
