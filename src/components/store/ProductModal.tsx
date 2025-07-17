@@ -121,15 +121,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`
-        !fixed !inset-4 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
-        ${isMobile ? 'w-[calc(100vw-32px)] max-h-[calc(100vh-20px)] max-w-[95vw]' : 'w-[1000px] max-h-[calc(100vh-20px)] max-w-[calc(100vw-32px)]'}
+        !fixed !inset-2 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
+        ${isMobile ? 'w-[calc(100vw-16px)] h-[calc(100vh-16px)] max-w-[95vw]' : 'w-[1000px] h-[calc(100vh-40px)] max-w-[calc(100vw-40px)]'}
         !p-0 !grid-cols-none !gap-0
         bg-background rounded-xl shadow-lg border border-border
-        z-50
+        z-50 flex flex-col
       `}>
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
-        <div className="relative w-full flex flex-col overflow-hidden">
+        <div className="relative w-full h-full flex flex-col">
           {/* Navigation buttons inside modal - desktop only */}
           {showNavigation && !isMobile && (
             <>
@@ -161,13 +161,19 @@ const ProductModal: React.FC<ProductModalProps> = ({
             </div>
           )}
           
-          <div className={`${isMobile ? 'flex flex-col' : 'flex flex-col md:flex-row'}`}>
-            <div className={`${isMobile ? 'w-full p-4' : 'w-full md:w-1/2 p-4 md:p-8'}`}>
-              <ProductImageGallery product={product} />
+          <div className={`${isMobile ? 'flex flex-col h-full' : 'flex flex-row h-full'}`}>
+            {/* Image Section */}
+            <div className={`${isMobile ? 'w-full flex-1 flex items-center justify-center p-4' : 'w-1/2 flex-1 flex items-center justify-center p-6'}`}>
+              <div className="w-full h-full flex items-center justify-center">
+                <ProductImageGallery product={product} />
+              </div>
             </div>
-            <div className={`${isMobile ? 'w-full border-t border-border flex flex-col h-full' : 'w-full md:w-1/2 border-l border-border flex flex-col h-full'}`}>
-              <div className={`${isMobile ? 'p-3 flex-1' : 'p-4 md:p-6 flex-1'} ${openAccordions.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-                <div className="space-y-3 md:space-y-4">
+            
+            {/* Content Section */}
+            <div className={`${isMobile ? 'w-full border-t border-border flex flex-col' : 'w-1/2 border-l border-border flex flex-col'} relative`}>
+              {/* Scrollable Content Area */}
+              <div className={`${isMobile ? 'p-4 flex-1' : 'p-6 flex-1'} ${openAccordions.length > 0 ? 'overflow-y-auto' : 'overflow-hidden'} pb-24`}>
+                <div className="space-y-4 flex flex-col items-center text-center">
                   <RegularProductHeader 
                     name={product.name} 
                     artistName={product.artists?.name} 
@@ -176,18 +182,21 @@ const ProductModal: React.FC<ProductModalProps> = ({
                     artistDomain={product.artists?.name ? product.artists.name.toLowerCase().replace(/\s+/g, '-') : undefined}
                   />
                   
-                  <ProductInfoAccordion 
-                    description={product.custom_description || product.description} 
-                    specifications={product.specifications}
-                    production_info={product.production_info}
-                    shipping_info={product.shipping_info}
-                    openAccordions={openAccordions} 
-                    onAccordionChange={handleAccordionChange} 
-                  />
+                  <div className="w-full">
+                    <ProductInfoAccordion 
+                      description={product.custom_description || product.description} 
+                      specifications={product.specifications}
+                      production_info={product.production_info}
+                      shipping_info={product.shipping_info}
+                      openAccordions={openAccordions} 
+                      onAccordionChange={handleAccordionChange} 
+                    />
+                  </div>
                 </div>
               </div>
               
-              <div className={`${isMobile ? 'p-3' : 'p-4 md:p-6'} mt-auto border-t border-border bg-background`}>
+              {/* Fixed Bottom Button */}
+              <div className={`${isMobile ? 'p-4' : 'p-6'} absolute bottom-0 left-0 right-0 bg-background border-t border-border flex items-center justify-center`}>
                 <AddToCartButton product={product} />
               </div>
             </div>
