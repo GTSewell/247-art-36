@@ -122,7 +122,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`
         !fixed !inset-4 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
-        ${isMobile ? 'w-[calc(100vw-32px)] max-h-[98vh] max-w-[95vw]' : 'w-[1000px] max-h-[98vh] max-w-[calc(100vw-32px)]'}
+        ${isMobile ? 'w-[calc(100vw-32px)] max-h-[calc(100vh-20px)] max-w-[95vw]' : 'w-[1000px] max-h-[calc(100vh-20px)] max-w-[calc(100vw-32px)]'}
         !p-0 !grid-cols-none !gap-0
         bg-background rounded-xl shadow-lg border border-border
         z-50
