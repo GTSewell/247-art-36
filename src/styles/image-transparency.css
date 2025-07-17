@@ -1,29 +1,85 @@
-/* Force transparent backgrounds for all image containers */
+/* COMPREHENSIVE IMAGE TRANSPARENCY SOLUTION */
+/* Force transparent backgrounds for ALL image containers and images */
+
+/* Core image transparency rules */
+img {
+  background-color: transparent !important;
+}
+
+img[class*="object-contain"],
+img[class*="object-cover"],
+img[class*="object-fill"],
+img[class*="object-none"],
+img[class*="object-scale-down"] {
+  background-color: transparent !important;
+}
+
+/* All aspect ratio containers */
 .aspect-square,
-[class*="aspect-square"] {
+.aspect-video,
+.aspect-auto,
+[class*="aspect-"] {
   background-color: transparent !important;
 }
 
+/* All image containers */
 .aspect-square img,
-[class*="aspect-square"] img {
+.aspect-video img,
+[class*="aspect-"] img {
   background-color: transparent !important;
 }
 
-/* Ensure product image containers are transparent */
+/* Product and artwork containers */
 .product-image-container,
 .artwork-container,
-.artist-image-container {
+.artist-image-container,
+.product-card img,
+.artwork-card img,
+.artist-card img {
   background-color: transparent !important;
 }
 
-/* Override any potential black backgrounds on image elements */
-img[class*="object-contain"],
-img[class*="object-cover"] {
-  background-color: transparent !important;
-}
-
-/* Ensure gallery and modal image containers are transparent */
+/* Gallery and modal containers */
 .relative.aspect-square,
-.relative[class*="aspect-square"] {
+.relative[class*="aspect-square"],
+.relative img,
+.group img,
+.overflow-hidden img {
+  background-color: transparent !important;
+}
+
+/* Specific component containers */
+div[class*="aspect-square"],
+div[class*="aspect-video"],
+div[class*="aspect-"] {
+  background-color: transparent !important;
+}
+
+/* Image wrapper containers */
+.image-wrapper,
+.img-container,
+.photo-container,
+[class*="image-"],
+[class*="img-"],
+[class*="photo-"] {
+  background-color: transparent !important;
+}
+
+/* Override any potential solid backgrounds */
+div:has(> img),
+div:has(> img[class*="object-"]) {
+  background-color: transparent !important;
+}
+
+/* Ensure no browser defaults interfere */
+img:not([style*="background"]) {
+  background: transparent !important;
+}
+
+/* Force transparency on common image container patterns */
+.flex img,
+.grid img,
+.block img,
+.inline-block img {
   background-color: transparent !important;
 }

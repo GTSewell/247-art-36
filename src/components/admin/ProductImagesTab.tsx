@@ -105,7 +105,8 @@ const ProductImagesTab: React.FC<ProductImagesTabProps> = ({
             <img
               src={formData.hero_image_url}
               alt="Hero image"
-              className="w-48 h-48 object-cover rounded border"
+              className="w-48 h-48 object-cover rounded border bg-transparent"
+              style={{backgroundColor: 'transparent'}}
             />
             <Button
               variant="destructive"
@@ -138,7 +139,8 @@ const ProductImagesTab: React.FC<ProductImagesTabProps> = ({
                 <img
                   src={displayUrl}
                   alt={`Product image ${index + 1}`}
-                  className="w-full h-32 object-cover rounded border"
+                  className="w-full h-32 object-cover rounded border bg-transparent"
+                  style={{backgroundColor: 'transparent'}}
                   onError={(e) => {
                     console.log('Image failed to load:', displayUrl);
                     e.currentTarget.src = 'https://images.unsplash.com/photo-1548502499-ef49e8cf98d4?w=600&auto=format';

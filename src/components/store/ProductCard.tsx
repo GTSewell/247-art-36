@@ -31,8 +31,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onProductClick }) =>
           alt={product.name} 
           data-product-id={product.id}
           data-category={product.category}
-          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105" 
+          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105 bg-transparent" 
           onError={handleImageError} 
+          style={{backgroundColor: 'transparent'}}
         />
         {product.is_limited_edition && (
           <div className="absolute top-2 right-2">
