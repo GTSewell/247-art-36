@@ -121,14 +121,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={`
-        fixed inset-0 z-50 flex items-center justify-center p-0
-        ${isMobile ? 'max-w-[95vw] max-h-[95vh]' : 'max-w-[1000px] max-h-[90vh]'}
-        !top-auto !left-auto !transform-none !translate-x-0 !translate-y-0
+        !fixed !inset-4 !top-1/2 !left-1/2 !transform !-translate-x-1/2 !-translate-y-1/2
+        ${isMobile ? 'w-[calc(100vw-32px)] h-[calc(100vh-32px)] max-w-[95vw] max-h-[95vh]' : 'w-[1000px] h-[90vh] max-w-[calc(100vw-32px)] max-h-[90vh]'}
+        !p-0 !grid-cols-none !gap-0
         bg-background rounded-xl shadow-lg border border-border overflow-hidden
+        z-50
       `}>
         <DialogTitle className="sr-only">Product Details</DialogTitle>
         
-        <div className="relative w-full h-full max-w-full max-h-full overflow-hidden">
+        <div className="relative w-full h-full flex flex-col overflow-hidden">
           {/* Navigation buttons inside modal - desktop only */}
           {showNavigation && !isMobile && (
             <>
